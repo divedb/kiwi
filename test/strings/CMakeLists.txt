@@ -1,0 +1,12 @@
+kiwi_cc_test(
+NAME
+    ascii_test
+HDRS
+SRCS
+    "ascii_test.cc"
+COPTS
+    ${KIWI_TEST_COPTS}
+DEPS
+    ${GTEST_LIBRARIES}
+    kiwi::strings
+)

@@ -153,20 +153,105 @@ constexpr bool ascii_in_az_range(unsigned char c) {
   return static_cast<signed char>(u) < threshold;
 }
 
+/// Force-inline so the compiler won't merge the short and long implementations.
+template <bool ToUpper>
+inline constexpr void ascii_str_case_fold_impl(kiwi::NotNull<char*> dst,
+                                               kiwi::NotNull<const char*> src,
+                                               size_t size) {
+  // The upper- and lowercase versions of ASCII characters differ by only 1 bit.
+  // When we need to flip the case, we can xor with this bit to achieve the
+  // desired result. Note that the choice of 'a' and 'A' here is arbitrary. We
+  // could have chosen 'z' and 'Z', or any other pair of characters as they all
+  // have the same single bit difference.
+  constexpr unsigned char kAsciiCaseBitFlip = 'a' ^ 'A';
+
+  // The `NotNull` type does not support `[]` operator.
+  // To perform indexing, we need to obtain the raw pointer.
+  auto pdst = dst.get();
+  auto psrc = src.get();
+
+  for (size_t i = 0; i < size; ++i) {
+    unsigned char v = static_cast<unsigned char>(psrc[i]);
+    v ^= ascii_in_az_range<ToUpper>(v) ? kAsciiCaseBitFlip : 0;
+    pdst[i] = static_cast<char>(v);
+  }
+}
+
+/// The string size threshold for starting using the long string version.
+constexpr size_t kCaseFoldThreshold = 16;
+
+/// No-inline so the compiler won't merge the short and long implementations.
+template <bool ToUpper>
+constexpr void ascii_str_case_fold_long(kiwi::NotNull<char*> dst,
+                                        kiwi::NotNull<const char*> src,
+                                        size_t size) {
+  assert(size >= kCaseFoldThreshold);
+  ascii_str_case_fold_impl<ToUpper>(dst, src, size);
+}
+
+/// Splitting to short and long strings to allow vectorization decisions
+/// to be made separately in the long and short cases.
+template <bool ToUpper>
+constexpr void ascii_str_case_fold(kiwi::NotNull<char*> dst,
+                                   kiwi::NotNull<const char*> src,
+                                   size_t size) {
+  size < kCaseFoldThreshold ? ascii_str_case_fold_impl<ToUpper>(dst, src, size)
+                            : ascii_str_case_fold_long<ToUpper>(dst, src, size);
+}
+
+void ascii_str_to_lower(kiwi::NotNull<char*> dst,
+                        kiwi::NotNull<const char*> src, size_t n) {
+  return ascii_str_case_fold<false>(dst, src, n);
+}
+
+void ascii_str_to_upper(kiwi::NotNull<char*> dst,
+                        kiwi::NotNull<const char*> src, size_t n) {
+  return ascii_str_case_fold<true>(dst, src, n);
+}
+
+static constexpr size_t validate_ascii_case_fold() {
+  constexpr size_t num_chars = 1 + CHAR_MAX - CHAR_MIN;
+  size_t incorrect_index = 0;
+  char lowered[num_chars] = {};
+  char uppered[num_chars] = {};
+
+  for (unsigned int i = 0; i < num_chars; ++i) {
+    uppered[i] = lowered[i] = static_cast<char>(i);
+  }
+
+  ascii_str_case_fold<false>(&lowered[0], &lowered[0], num_chars);
+  ascii_str_case_fold<true>(&uppered[0], &uppered[0], num_chars);
+  for (size_t i = 0; i < num_chars; ++i) {
+    const char ch = static_cast<char>(i),
+               ch_upper = ('a' <= ch && ch <= 'z' ? 'A' + (ch - 'a') : ch),
+               ch_lower = ('A' <= ch && ch <= 'Z' ? 'a' + (ch - 'A') : ch);
+    if (uppered[i] != ch_upper || lowered[i] != ch_lower) {
+      incorrect_index = i > 0 ? i : num_chars;
+      break;
+    }
+  }
+
+  return incorrect_index;
+}
+
+static_assert(validate_ascii_case_fold() == 0, "error in case conversion");
+
 }  // namespace ascii_internal
 
-void AsciiStrToLower(std::string* s) {
+void ascii_str_to_lower(std::string* s) {
   char* p = &(*s)[0];
-  return ascii_internal::AsciiStrCaseFold<false>(p, p, s->size());
+
+  return ascii_internal::ascii_str_case_fold<false>(p, p, s->size());
 }
 
-void AsciiStrToUpper(absl::Nonnull<std::string*> s) {
+void ascii_str_to_upper(kiwi::NotNull<std::string*> s) {
   char* p = &(*s)[0];
-  return ascii_internal::AsciiStrCaseFold<true>(p, p, s->size());
+
+  return ascii_internal::ascii_str_case_fold<true>(p, p, s->size());
 }
 
-void RemoveExtraAsciiWhitespace(absl::Nonnull<std::string*> str) {
-  auto stripped = StripAsciiWhitespace(*str);
+void remove_extra_ascii_whitespace(kiwi::NotNull<std::string*> str) {
+  auto stripped = strip_ascii_whitespace(*str);
 
   if (stripped.empty()) {
     str->clear();
@@ -181,10 +266,10 @@ void RemoveExtraAsciiWhitespace(absl::Nonnull<std::string*> str) {
   for (; input_it < input_end; ++input_it) {
     if (is_ws) {
       // Consecutive whitespace?  Keep only the last.
-      is_ws = absl::ascii_isspace(static_cast<unsigned char>(*input_it));
+      is_ws = kiwi::ascii_isspace(static_cast<unsigned char>(*input_it));
       if (is_ws) --output_it;
     } else {
-      is_ws = absl::ascii_isspace(static_cast<unsigned char>(*input_it));
+      is_ws = kiwi::ascii_isspace(static_cast<unsigned char>(*input_it));
     }
 
     *output_it = *input_it;

@@ -1,0 +1,12 @@
+kiwi_cc_test(
+NAME
+    pointers_test
+HDRS
+    ${CMAKE_SOURCE_DIR}/include
+SRCS
+    "pointers_test.cc"
+COPTS
+    ${KIWI_TEST_COPTS}
+DEPS
+    ${GTEST_LIBRARIES}
+)

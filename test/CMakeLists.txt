@@ -1,13 +1,25 @@
-set(TEST_SOURCES
-    util/pointers_test.cc
-)
+function(kiwi_cc_test)
+    # cmake_parse_arguments(<prefix> <options> <one_value_keywords> <multi_value_keywords> <args>...)
+    cmake_parse_arguments(TEST "" "NAME" "HDRS;SRCS;COPTS;DEPS" ${ARGN})
+    
+    add_executable(${TEST_NAME} ${TEST_SRCS})
 
-foreach(test_source ${TEST_SOURCES})
-    get_filename_component(target ${test_source} NAME_WE)
-    add_executable(${target} ${test_source})
-    target_include_directories(${target} PRIVATE ${GTEST_INCLUDE_DIR})
-    target_include_directories(${target} PRIVATE ${CMAKE_SOURCE_DIR}/include)
-    target_link_libraries(${target} PRIVATE ${GTEST_LIBRARIES})
+    if(TEST_HDRS)
+        target_include_directories(${TEST_NAME} PRIVATE ${TEST_HDRS})
+    endif()
 
-    add_test(NAME ${target} COMMAND ${target})
-endforeach()
+    target_include_directories(${TEST_NAME} PRIVATE ${GTEST_INCLUDE_DIR})
+    
+    if(TEST_COPTS)
+        target_compile_options(${TEST_NAME} PRIVATE ${TEST_COPTS})
+    endif()
+
+    if(TEST_DEPS)
+        target_link_libraries(${TEST_NAME} PRIVATE ${TEST_DEPS})
+    endif()
+
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+endfunction()
+
+add_subdirectory(util)
+add_subdirectory(strings)
