@@ -1,0 +1,52 @@
+\doxysection{kiwi\+::Debug\+Epoch\+Base Class Reference}
+\hypertarget{classkiwi_1_1_debug_epoch_base}{}\label{classkiwi_1_1_debug_epoch_base}\index{kiwi::DebugEpochBase@{kiwi::DebugEpochBase}}
+
+
+{\ttfamily \#include $<$epoch\+\_\+tracker.\+hh$>$}
+
+Inheritance diagram for kiwi\+::Debug\+Epoch\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.222222cm]{classkiwi_1_1_debug_epoch_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{Handle\+Base}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_a1f762b109605ac47be9daa63ce326625}{increment\+\_\+epoch}} ()
+\item 
+\mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_a00ed2dad740bd7fb852dcb13409be0e6}{\texorpdfstring{$\sim$}{\string~}\+Debug\+Epoch\+Base}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A base class for data structure classes wishing to make iterators ("{}handles"{}) pointing into themselves fail-\/fast. When building without asserts, this class is empty and does nothing.
+
+\doxylink{classkiwi_1_1_debug_epoch_base}{Debug\+Epoch\+Base} does not by itself track handles pointing into itself. The expectation is that routines touching the handles will poll on is\+Handle\+In\+Sync at appropriate points to assert that the handle they\textquotesingle{}re using is still valid. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_debug_epoch_base_a00ed2dad740bd7fb852dcb13409be0e6}\index{kiwi::DebugEpochBase@{kiwi::DebugEpochBase}!````~DebugEpochBase@{\texorpdfstring{$\sim$}{\string~}DebugEpochBase}}
+\index{````~DebugEpochBase@{\texorpdfstring{$\sim$}{\string~}DebugEpochBase}!kiwi::DebugEpochBase@{kiwi::DebugEpochBase}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}DebugEpochBase()}{\string~DebugEpochBase()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_debug_epoch_base_a00ed2dad740bd7fb852dcb13409be0e6} 
+kiwi\+::\+Debug\+Epoch\+Base\+::\texorpdfstring{$\sim$}{\string~}\+Debug\+Epoch\+Base (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+The destructor calls increment\+\_\+epoch to make use-\/after-\/free bugs more likely to crash deterministically. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_debug_epoch_base_a1f762b109605ac47be9daa63ce326625}\index{kiwi::DebugEpochBase@{kiwi::DebugEpochBase}!increment\_epoch@{increment\_epoch}}
+\index{increment\_epoch@{increment\_epoch}!kiwi::DebugEpochBase@{kiwi::DebugEpochBase}}
+\doxysubsubsection{\texorpdfstring{increment\_epoch()}{increment\_epoch()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_debug_epoch_base_a1f762b109605ac47be9daa63ce326625} 
+void kiwi\+::\+Debug\+Epoch\+Base\+::increment\+\_\+epoch (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Calling increment\+\_\+epoch invalidates all handles pointing into the calling instance. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/util/\mbox{\hyperlink{epoch__tracker_8hh}{epoch\+\_\+tracker.\+hh}}\end{DoxyCompactItemize}

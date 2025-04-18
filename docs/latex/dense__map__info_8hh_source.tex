@@ -1,0 +1,326 @@
+\doxysection{dense\+\_\+map\+\_\+info.\+hh}
+\hypertarget{dense__map__info_8hh_source}{}\label{dense__map__info_8hh_source}\index{include/kiwi/adt/dense\_map\_info.hh@{include/kiwi/adt/dense\_map\_info.hh}}
+\mbox{\hyperlink{dense__map__info_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/ADT/DenseMapInfo.h\ -\/\ Type\ traits\ for\ DenseMap\ -\/-\/-\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <tuple>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{namespace\ }densemap::detail\ \{}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ A\ bit\ mixer\ with\ very\ low\ latency\ using\ one\ multiplications\ and\ one}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ xor-\/shift.\ The\ constant\ is\ from\ splitmix64.}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{inline}\ uint64\_t\ mix(uint64\_t\ x)\ \{}
+\DoxyCodeLine{00030\ \ \ x\ *=\ 0xbf58476d1ce4e5b9u;}
+\DoxyCodeLine{00031\ \ \ x\ \string^=\ x\ >>\ 31;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{00034\ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \}\ \ \textcolor{comment}{//\ namespace\ densemap::detail}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{dense__map__info_8hh_a6cc541e9b88c34a687c3df129bee1080}{combine\_hash\_value}}(\textcolor{keywordtype}{unsigned}\ a,\ \textcolor{keywordtype}{unsigned}\ b)\ \{}
+\DoxyCodeLine{00042\ \ \ uint64\_t\ x\ =\ (uint64\_t)a\ <<\ 32\ |\ (uint64\_t)b;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned})densemap::detail::mix(x);}
+\DoxyCodeLine{00045\ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ Enable\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00055\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}\ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{//\ static\ inline\ T\ get\_empty\_key();}}
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ static\ inline\ T\ get\_tombstone\_key();}}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ static\ unsigned\ get\_hash\_value(const\ T\ \&val);}}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ static\ bool\ is\_equal(const\ T\ \&lhs,\ const\ T\ \&rhs);}}
+\DoxyCodeLine{00060\ \};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00068\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<T*>\ \{}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{//\ The\ following\ should\ hold,\ but\ it\ would\ require\ T\ to\ be\ complete:}}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//\ static\_assert(alignof(T)\ <=\ (1\ <<\ kLog2MaxAlign),}}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}DenseMap\ does\ not\ support\ pointer\ keys\ requiring\ more\ than\ "{}}}
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}kLog2MaxAlign\ bits\ of\ alignment"{});}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uintptr\_t\ kLog2MaxAlign\ =\ 12;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T*\ get\_empty\_key()\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ uintptr\_t\ val\ =\ \textcolor{keyword}{static\_cast<}uintptr\_t\textcolor{keyword}{>}(-\/1);}
+\DoxyCodeLine{00077\ \ \ \ \ val\ <<=\ kLog2MaxAlign;}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(val);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T*\ get\_tombstone\_key()\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ uintptr\_t\ val\ =\ \textcolor{keyword}{static\_cast<}uintptr\_t\textcolor{keyword}{>}(-\/2);}
+\DoxyCodeLine{00084\ \ \ \ \ val\ <<=\ kLog2MaxAlign;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(val);}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ T*\ ptr\_val)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned}((uintptr\_t)ptr\_val)\ >>\ 4)\ \string^}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ (unsigned((uintptr\_t)ptr\_val)\ >>\ 9);}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ T*\ lhs,\ \textcolor{keyword}{const}\ T*\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;\ \}}
+\DoxyCodeLine{00095\ \};}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00099\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<char>\ \{}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0;\ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0\ -\/\ 1;\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\&\ val)\ \{\ \textcolor{keywordflow}{return}\ val\ *\ 37U;\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;\ \}}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00108\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00109\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<unsigned\ char>\ \{}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0;\ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0\ -\/\ 1;\ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\&\ val)\ \{\ \textcolor{keywordflow}{return}\ val\ *\ 37U;\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\&\ rhs)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00120\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00121\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<unsigned\ short>\ \{}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ 0xFFFF;\ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ 0xFFFF\ -\/\ 1;\ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\&\ val)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ val\ *\ 37U;}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\&\ rhs)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \};}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00134\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00135\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<unsigned>\ \{}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0U;\ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0U\ -\/\ 1;\ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\&\ val)\ \{\ \textcolor{keywordflow}{return}\ val\ *\ 37U;\ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\&\ rhs)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00147\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<unsigned\ long>\ \{}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0UL;\ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0UL\ -\/\ 1L;\ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\&\ val)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\textcolor{keyword}{sizeof}(val)\ ==\ 4)}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<unsigned>::get\_hash\_value}}(val);}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ densemap::detail::mix(val);}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\&\ rhs)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ \};}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{comment}{//\ Provide\ DenseMapInfo\ for\ unsigned\ long\ longs.}}
+\DoxyCodeLine{00164\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00165\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<unsigned\ long\ long>\ \{}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0ULL;\ \}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ \string~0ULL\ -\/\ 1ULL;\ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ val)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{return}\ densemap::detail::mix(val);}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ lhs,}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ rhs)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ \};}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00180\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00181\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<short>\ \{}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{short}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ 0x7FFF;\ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{short}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ -\/0x7FFF\ -\/\ 1;\ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\&\ val)\ \{\ \textcolor{keywordflow}{return}\ val\ *\ 37U;\ \}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\&\ rhs)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ \};}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00191\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00192\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<int>\ \{}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ 0x7fffffff;\ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ -\/0x7fffffff\ -\/\ 1;\ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ val)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned})(val\ *\ 37U);}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;\ \}}
+\DoxyCodeLine{00200\ \};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00203\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00204\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<long>\ \{}
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ get\_empty\_key()\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordflow}{return}\ (1UL\ <<\ (\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{long})\ *\ 8\ -\/\ 1))\ -\/\ 1UL;}
+\DoxyCodeLine{00207\ \ \ \}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ get\_tombstone\_key()\ \{\ \textcolor{keywordflow}{return}\ get\_empty\_key()\ -\/\ 1L;\ \}}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\&\ val)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned})(val\ *\ 37UL);}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;\ \}}
+\DoxyCodeLine{00216\ \};}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00219\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00220\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<long\ long>\ \{}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ get\_empty\_key()\ \{\ \textcolor{keywordflow}{return}\ 0x7fffffffffffffffLL;\ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ get\_tombstone\_key()\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{return}\ -\/0x7fffffffffffffffLL\ -\/\ 1;}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ val)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned})(val\ *\ 37ULL);}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ lhs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ rhs)\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \};}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00236\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00237\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<std::pair<T,\ U>>\ \{}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{using\ }Pair\ =\ std::pair<T,\ U>;}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{using\ }FirstInfo\ =\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<T>}};}
+\DoxyCodeLine{00240\ \ \ \textcolor{keyword}{using\ }SecondInfo\ =\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<U>}};}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Pair\ get\_empty\_key()\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(FirstInfo::get\_empty\_key(),}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SecondInfo::get\_empty\_key());}
+\DoxyCodeLine{00245\ \ \ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Pair\ get\_tombstone\_key()\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(FirstInfo::get\_tombstone\_key(),}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SecondInfo::get\_tombstone\_key());}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ Pair\&\ pair\_val)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{dense__map__info_8hh_a6cc541e9b88c34a687c3df129bee1080}{detail::combine\_hash\_value}}(}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ FirstInfo::get\_hash\_value(pair\_val.first),}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ SecondInfo::get\_hash\_value(pair\_val.second));}
+\DoxyCodeLine{00256\ \ \ \}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info_3_01std_1_1pair_3_01_t_00_01_u_01_4_01_4_a2d9df691c49015ea2b6ef36b4e14de83}{get\_hash\_value\_piecewise}}(\textcolor{keyword}{const}\ T\&\ First,\ \textcolor{keyword}{const}\ U\&\ Second)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{dense__map__info_8hh_a6cc541e9b88c34a687c3df129bee1080}{detail::combine\_hash\_value}}(FirstInfo::get\_hash\_value(First),}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SecondInfo::get\_hash\_value(Second));}
+\DoxyCodeLine{00264\ \ \ \}}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ Pair\&\ lhs,\ \textcolor{keyword}{const}\ Pair\&\ rhs)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{return}\ FirstInfo::is\_equal(lhs.first,\ rhs.first)\ \&\&}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ SecondInfo::is\_equal(lhs.second,\ rhs.second);}
+\DoxyCodeLine{00269\ \ \ \}}
+\DoxyCodeLine{00270\ \};}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00273\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Ts>}
+\DoxyCodeLine{00274\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<std::tuple<Ts...>>\ \{}
+\DoxyCodeLine{00275\ \ \ \textcolor{keyword}{using\ }Tuple\ =\ std::tuple<Ts...>;}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Tuple\ get\_empty\_key()\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{return}\ Tuple(\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<Ts>::get\_empty\_key}}()...);}
+\DoxyCodeLine{00279\ \ \ \}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Tuple\ get\_tombstone\_key()\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ Tuple(\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<Ts>::get\_tombstone\_key}}()...);}
+\DoxyCodeLine{00283\ \ \ \}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{unsigned}\ I>}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value\_impl(\textcolor{keyword}{const}\ Tuple\&\ values,\ std::false\_type)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keyword}{using\ }EltType\ =\ std::tuple\_element\_t<I,\ Tuple>;}
+\DoxyCodeLine{00288\ \ \ \ \ std::integral\_constant<bool,\ I\ +\ 1\ ==\ \textcolor{keyword}{sizeof}...(Ts)>\ at\_end;}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{dense__map__info_8hh_a6cc541e9b88c34a687c3df129bee1080}{detail::combine\_hash\_value}}(}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<EltType>::get\_hash\_value}}(std::get<I>(values)),}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ get\_hash\_value\_impl<I\ +\ 1>(values,\ at\_end));}
+\DoxyCodeLine{00293\ \ \ \}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{unsigned}\ I>}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value\_impl(\textcolor{keyword}{const}\ Tuple\&,\ std::true\_type)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00298\ \ \ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ std::tuple<Ts...>\&\ values)\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ std::integral\_constant<bool,\ 0\ ==\ \textcolor{keyword}{sizeof}...(Ts)>\ at\_end;}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordflow}{return}\ get\_hash\_value\_impl<0>(values,\ at\_end);}
+\DoxyCodeLine{00304\ \ \ \}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{unsigned}\ I>}
+\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal\_impl(\textcolor{keyword}{const}\ Tuple\&\ lhs,\ \textcolor{keyword}{const}\ Tuple\&\ rhs,}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::false\_type)\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keyword}{using\ }EltType\ =\ std::tuple\_element\_t<I,\ Tuple>;}
+\DoxyCodeLine{00310\ \ \ \ \ std::integral\_constant<bool,\ I\ +\ 1\ ==\ \textcolor{keyword}{sizeof}...(Ts)>\ at\_end;}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<EltType>::is\_equal}}(std::get<I>(lhs),}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::get<I>(rhs))\ \&\&}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ is\_equal\_impl<I\ +\ 1>(lhs,\ rhs,\ at\_end);}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{unsigned}\ I>}
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal\_impl(\textcolor{keyword}{const}\ Tuple\&,\ \textcolor{keyword}{const}\ Tuple\&,\ std::true\_type)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00320\ \ \ \}}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ Tuple\&\ lhs,\ \textcolor{keyword}{const}\ Tuple\&\ rhs)\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ std::integral\_constant<bool,\ 0\ ==\ \textcolor{keyword}{sizeof}...(Ts)>\ at\_end;}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keywordflow}{return}\ is\_equal\_impl<0>(lhs,\ rhs,\ at\_end);}
+\DoxyCodeLine{00326\ \ \ \}}
+\DoxyCodeLine{00327\ \};}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00330\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Enum>}
+\DoxyCodeLine{00331\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo}}<Enum,\ std::enable\_if\_t<std::is\_enum\_v<Enum>>>\ \{}
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{using\ }UnderlyingType\ =\ std::underlying\_type\_t<Enum>;}
+\DoxyCodeLine{00333\ \ \ \textcolor{keyword}{using\ }Info\ =\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<UnderlyingType>}};}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \ \ \textcolor{keyword}{static}\ Enum\ get\_empty\_key()\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Enum\textcolor{keyword}{>}(Info::get\_empty\_key());}
+\DoxyCodeLine{00337\ \ \ \}}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{static}\ Enum\ get\_tombstone\_key()\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Enum\textcolor{keyword}{>}(Info::get\_tombstone\_key());}
+\DoxyCodeLine{00341\ \ \ \}}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ get\_hash\_value(\textcolor{keyword}{const}\ Enum\&\ val)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keywordflow}{return}\ Info::get\_hash\_value(\textcolor{keyword}{static\_cast<}UnderlyingType\textcolor{keyword}{>}(val));}
+\DoxyCodeLine{00345\ \ \ \}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_equal(\textcolor{keyword}{const}\ Enum\&\ lhs,\ \textcolor{keyword}{const}\ Enum\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ ==\ rhs;\ \}}
+\DoxyCodeLine{00348\ \};}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

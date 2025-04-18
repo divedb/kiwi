@@ -1,0 +1,812 @@
+\doxysection{kiwi\+::String\+Ref Class Reference}
+\hypertarget{classkiwi_1_1_string_ref}{}\label{classkiwi_1_1_string_ref}\index{kiwi::StringRef@{kiwi::StringRef}}
+
+
+{\ttfamily \#include $<$string\+\_\+ref.\+hh$>$}
+
+Inheritance diagram for kiwi\+::String\+Ref\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_string_ref}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_adc4433d12b612d89b62c96b8aa054cb2}\label{classkiwi_1_1_string_ref_adc4433d12b612d89b62c96b8aa054cb2} 
+using {\bfseries iterator} = const char\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a9608451692c8f125a3e997b4cbb4eb36}\label{classkiwi_1_1_string_ref_a9608451692c8f125a3e997b4cbb4eb36} 
+using {\bfseries const\+\_\+iterator} = const char\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a7009ee00ced5bd7de6f83182172d0235}\label{classkiwi_1_1_string_ref_a7009ee00ced5bd7de6f83182172d0235} 
+using {\bfseries size\+\_\+type} = size\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_ab97b22f444ed1c365bd3bdadb2320566}\label{classkiwi_1_1_string_ref_ab97b22f444ed1c365bd3bdadb2320566} 
+std\+::string {\bfseries lower} () const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a679def54f9930b6c202767622b2711a1}\label{classkiwi_1_1_string_ref_a679def54f9930b6c202767622b2711a1} 
+std\+::string {\bfseries upper} () const
+\begin{DoxyCompactList}\small\item\em Convert the given ASCII string to uppercase. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Constructors}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}\label{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d} 
+{\bfseries String\+Ref} ()=default
+\begin{DoxyCompactList}\small\item\em Construct an empty string ref. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref_a77b57130049c03d65ec279b5811722f4}{String\+Ref}} (std\+::nullptr\+\_\+t)=delete
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_abe24342d628dbfcbabcfb723e4a84d12}\label{classkiwi_1_1_string_ref_abe24342d628dbfcbabcfb723e4a84d12} 
+constexpr {\bfseries String\+Ref} (char const \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})
+\begin{DoxyCompactList}\small\item\em Construct a string ref from a cstring. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_aca816c69ad1d52035aa734971de0dbdf}\label{classkiwi_1_1_string_ref_aca816c69ad1d52035aa734971de0dbdf} 
+constexpr {\bfseries String\+Ref} (char const \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Construct a string ref from a pointer and length. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_af48beffb4b475a224da1959491e9e8f0}\label{classkiwi_1_1_string_ref_af48beffb4b475a224da1959491e9e8f0} 
+{\bfseries String\+Ref} (std\+::string const \&\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})
+\begin{DoxyCompactList}\small\item\em Construct a string ref from an std\+::string. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_a1bbc68eb4afd734553598c2339fa6da1}\label{classkiwi_1_1_string_ref_a1bbc68eb4afd734553598c2339fa6da1} 
+constexpr {\bfseries String\+Ref} (std\+::string\+\_\+view \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})
+\begin{DoxyCompactList}\small\item\em Construct a string ref from an std\+::string\+\_\+view. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Iterators}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a8e3078343d86682155d35b3d35653121}\label{classkiwi_1_1_string_ref_a8e3078343d86682155d35b3d35653121} 
+iterator {\bfseries begin} () const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a0ca4a74a5678be4c8d6821ee99744567}\label{classkiwi_1_1_string_ref_a0ca4a74a5678be4c8d6821ee99744567} 
+iterator {\bfseries end} () const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_aa3806f20e208b9a8a7f47407b461af5c}\label{classkiwi_1_1_string_ref_aa3806f20e208b9a8a7f47407b461af5c} 
+unsigned char const \texorpdfstring{$\ast$}{*} {\bfseries bytes\+\_\+begin} () const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a94ddfb24e4f37ddb76950d6a268ceaf9}\label{classkiwi_1_1_string_ref_a94ddfb24e4f37ddb76950d6a268ceaf9} 
+unsigned char const \texorpdfstring{$\ast$}{*} {\bfseries bytes\+\_\+end} () const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a3bb542c64c9a55abe7e23c0a7383cf78}\label{classkiwi_1_1_string_ref_a3bb542c64c9a55abe7e23c0a7383cf78} 
+iterator\+\_\+range$<$ const unsigned char \texorpdfstring{$\ast$}{*} $>$ {\bfseries bytes} () const
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ String Operations}\par
+\begin{DoxyCompactItemize}
+\item 
+constexpr char const \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}} () const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}\label{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b} 
+constexpr bool {\bfseries empty} () const
+\begin{DoxyCompactList}\small\item\em empty -\/ Check if the string is empty. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}\label{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767} 
+constexpr size\+\_\+t {\bfseries size} () const
+\begin{DoxyCompactList}\small\item\em size -\/ Get the string size. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_a8cdb3b1d9d33c912b0df77e610111113}\label{classkiwi_1_1_string_ref_a8cdb3b1d9d33c912b0df77e610111113} 
+char {\bfseries front} () const
+\begin{DoxyCompactList}\small\item\em front -\/ Get the first character in the string. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_aae30f878aa70ef86fa427b3884fe400d}\label{classkiwi_1_1_string_ref_aae30f878aa70ef86fa427b3884fe400d} 
+char {\bfseries back} () const
+\begin{DoxyCompactList}\small\item\em back -\/ Get the last character in the string. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Allocator$>$ }\\\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a55695e354ad2b50947fd1bee045029c5}{copy}} (Allocator \&alloc) const
+\begin{DoxyCompactList}\small\item\em copy -\/ Allocate copy in Allocator and return \doxylink{classkiwi_1_1_string_ref}{String\+Ref} to it. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_ac8358d88240ae38511a984e107bd16a1}\label{classkiwi_1_1_string_ref_ac8358d88240ae38511a984e107bd16a1} 
+bool {\bfseries equals\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\begin{DoxyCompactList}\small\item\em Check for string equality, ignoring case. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classkiwi_1_1_string_ref_a17b806e72a927a388a1105ee1cfad92f}{compare}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_aa60079e48811e4dd0ec9d357b276a51a}\label{classkiwi_1_1_string_ref_aa60079e48811e4dd0ec9d357b276a51a} 
+int {\bfseries compare\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\begin{DoxyCompactList}\small\item\em Compare two strings, ignoring case. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classkiwi_1_1_string_ref_aee5441db011f73e4a0844567bc13b203}{compare\+\_\+numeric}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\item 
+unsigned \mbox{\hyperlink{classkiwi_1_1_string_ref_aed622b030f75dc0a3f53ee0ab5f7f358}{edit\+\_\+distance}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Other, bool allow\+\_\+replacements=true, unsigned max\+\_\+edit\+\_\+distance=0) const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_ae0aa36e08d1762ae59dbe08967281226}\label{classkiwi_1_1_string_ref_ae0aa36e08d1762ae59dbe08967281226} 
+unsigned {\bfseries edit\+\_\+distance\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} other, bool allow\+\_\+replacements=true, unsigned max\+\_\+edit\+\_\+distance=0) const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}\label{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df} 
+std\+::string {\bfseries str} () const
+\begin{DoxyCompactList}\small\item\em str -\/ Get the contents as an std\+::string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Operator Overloads}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a14fdd12ebafa9315f3ae091bf99f7229}\label{classkiwi_1_1_string_ref_a14fdd12ebafa9315f3ae091bf99f7229} 
+char {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t index) const
+\item 
+{\footnotesize template$<$typename T$>$ }\\std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+same$<$ T, std\+::string $>$\+::value, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \& \mbox{\hyperlink{classkiwi_1_1_string_ref_ac6ece4fee89a52742f085812446d09a1}{operator=}} (T \&\&\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})=delete
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Type Conversions}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a83528a0c3a059892e8d7828481bbd1da}\label{classkiwi_1_1_string_ref_a83528a0c3a059892e8d7828481bbd1da} 
+constexpr {\bfseries operator std\+::string\+\_\+view} () const
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ String Predicates}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_ae1e3683c66100319e0fe8e5ac3b5dcbb}\label{classkiwi_1_1_string_ref_ae1e3683c66100319e0fe8e5ac3b5dcbb} 
+bool {\bfseries starts\+\_\+with} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} prefix) const
+\begin{DoxyCompactList}\small\item\em Check if this string starts with the given {\ttfamily prefix}. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_af67d3b1cfa27090d426fbae992056e4e}\label{classkiwi_1_1_string_ref_af67d3b1cfa27090d426fbae992056e4e} 
+bool {\bfseries starts\+\_\+with} (char prefix) const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_ac39b422e13c071fa87614b7a1f90dcc7}\label{classkiwi_1_1_string_ref_ac39b422e13c071fa87614b7a1f90dcc7} 
+bool {\bfseries starts\+\_\+with\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} prefix) const
+\begin{DoxyCompactList}\small\item\em Check if this string starts with the given {\ttfamily prefix}, ignoring case. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_ae070dbda0c25dde67292adadc41a9f53}\label{classkiwi_1_1_string_ref_ae070dbda0c25dde67292adadc41a9f53} 
+bool {\bfseries ends\+\_\+with} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} suffix) const
+\begin{DoxyCompactList}\small\item\em Check if this string ends with the given {\ttfamily suffix}. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_string_ref_a98aeb8b149c5261cb455247b7676c2ee}\label{classkiwi_1_1_string_ref_a98aeb8b149c5261cb455247b7676c2ee} 
+bool {\bfseries ends\+\_\+with} (char suffix) const
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a274f33a8732948f6dddfc23a56fed78d}\label{classkiwi_1_1_string_ref_a274f33a8732948f6dddfc23a56fed78d} 
+bool {\bfseries ends\+\_\+with\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} suffix) const
+\begin{DoxyCompactList}\small\item\em Check if this string ends with the given {\ttfamily suffix}, ignoring case. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ String Searching}\par
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034}{find\+\_\+insensitive}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}{find\+\_\+if}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ f, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d}{find\+\_\+if\+\_\+not}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ f, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ae1d0a701f123ffaaa5187c3c913225a1}{find}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a831c0ad9f3a0151a8e4db1da5f03439e}{find\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f}{rfind}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a7f9b1d376d87ff8bd9fdbfeb0d5c65ef}{rfind\+\_\+insensitive}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a185e34f7156b8cca9f930eb4ac196614}{rfind}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a2165028f5c9f6880c7cc2c5c01cd6e1c}{rfind\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a644a28a54cd682b6d49a34f4c64df5f3}{find\+\_\+first\+\_\+of}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ae6f943e48f403ba55b642e97b6c00684}{find\+\_\+first\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a}{find\+\_\+first\+\_\+not\+\_\+of}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a85010dcfe4cbb7adb498d13eff030af6}{find\+\_\+first\+\_\+not\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a39b564884e4f0caf04a67ba91e2f9f4c}{find\+\_\+last\+\_\+of}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a9a92f311394a6e5033e2b7e3cc279a81}{find\+\_\+last\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b}{find\+\_\+last\+\_\+not\+\_\+of}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_afb5897bfe79785e773d66a3f5a7eee50}{find\+\_\+last\+\_\+not\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=npos) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_acff4abbe83319395558d9229bfec6c39}{contains}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} other) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_a742406d0610ad2ccd423873eb284de37}{contains}} (char c) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_ac5bb11813d4958ef253306ac9b56dd64}{contains\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} other) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_a99a71d3d537f0c8bcfd9490a6ea3eefd}{contains\+\_\+insensitive}} (char c) const
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Helpful Algorithms}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a0ffa7b3e112300f48c96fbbe6eec9ef9}\label{classkiwi_1_1_string_ref_a0ffa7b3e112300f48c96fbbe6eec9ef9} 
+size\+\_\+t {\bfseries count} (char c) const
+\begin{DoxyCompactList}\small\item\em Return the number of occurrences of {\ttfamily c} in the string. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a5110375988d361d60d77b9334d3fedb2}{count}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}) const
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Substring Operations}\par
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}} (size\+\_\+t Start, size\+\_\+t N=npos) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_ace04425f92126cb4d09d7c6f46a593e2}{take\+\_\+front}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a3a06f00ae194f00af9184c2e2bfa1484}{take\+\_\+back}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a817f88db73fc820718155d3ccd50d8e1}{take\+\_\+while}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a3f0f4106a3cb8ebaae059555c7d349e3}{take\+\_\+until}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\+\_\+front}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}{drop\+\_\+back}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a12e5397f2e6a759be136a21892170e1e}{drop\+\_\+while}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a132e0e5f99c904e001f6bb0292d20a26}{drop\+\_\+until}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_a9d016a0549bebbd74606f0c3b1050ca1}{consume\+\_\+front}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Prefix)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_aa6f6da4f64876ad2071a09cbf6c2e07a}{consume\+\_\+front\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Prefix)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_ab9cb461404f6bf87f6c0d32b63b544d1}{consume\+\_\+back}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Suffix)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_ad91cca39138a6862c48f235c5e83c80a}{consume\+\_\+back\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Suffix)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}} (size\+\_\+t Start, size\+\_\+t End) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7d856db9a2d0975fdee7cda62c86e3a4}{split}} (char Separator) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_aa879c412bcb07381edc7d32f7eb44528}{split}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Separator) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_abe6239a292b29130ef8b28ed696fef5f}{rsplit}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Separator) const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_string_ref_af71cefac9720895380ea7168d2d1d4fa}{split}} (Small\+Vector\+Impl$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \&A, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Separator, int Max\+Split=-\/1, bool Keep\+Empty=true) const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_string_ref_abe76d1f6ee6d8f44296efb23ab47a908}{split}} (Small\+Vector\+Impl$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \&A, char Separator, int Max\+Split=-\/1, bool Keep\+Empty=true) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_a06dfdd2558b054349a2c29b958e21092}{rsplit}} (char Separator) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4}{ltrim}} (char Char) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_ac4ef859b88acdefc97bd41351dd4edbb}{ltrim}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Chars="{} \textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a}{rtrim}} (char Char) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a3a5557847576abd37df605df6a353fdd}{rtrim}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Chars="{} \textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_ae767fc3879ab3464fd022788abd8d33f}{trim}} (char Char) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a8c4846eecd7b654b416a7d07258ee0bd}{trim}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Chars="{} \textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a582f6e9d4c39412ff6190e7fc3c7a2ba}{detect\+EOL}} () const
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_ref_a4140783e4e5dc8166f1d6ff162e5df00}\label{classkiwi_1_1_string_ref_a4140783e4e5dc8166f1d6ff162e5df00} 
+static constexpr size\+\_\+t {\bfseries npos} = \texorpdfstring{$\sim$}{\string~}size\+\_\+t(0)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classkiwi_1_1_string_ref}{String\+Ref} -\/ Represent a constant reference to a string, i.\+e. a character array and a length, which need not be null terminated.
+
+This class does not own the string data, it is expected to be used in situations where the character data resides in some other buffer, whose lifetime extends past that of the \doxylink{classkiwi_1_1_string_ref}{String\+Ref}. For this reason, it is not in general safe to store a \doxylink{classkiwi_1_1_string_ref}{String\+Ref}. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_string_ref_a77b57130049c03d65ec279b5811722f4}\index{kiwi::StringRef@{kiwi::StringRef}!StringRef@{StringRef}}
+\index{StringRef@{StringRef}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{StringRef()}{StringRef()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a77b57130049c03d65ec279b5811722f4} 
+kiwi\+::\+String\+Ref\+::\+String\+Ref (\begin{DoxyParamCaption}\item[{std\+::nullptr\+\_\+t}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+Disable conversion from nullptr. This prevents things like if (s == nullptr) 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_string_ref_a17b806e72a927a388a1105ee1cfad92f}\index{kiwi::StringRef@{kiwi::StringRef}!compare@{compare}}
+\index{compare@{compare}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{compare()}{compare()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a17b806e72a927a388a1105ee1cfad92f} 
+int kiwi\+::\+String\+Ref\+::compare (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+compare -\/ Compare two strings; the result is negative, zero, or positive if this string is lexicographically less than, equal to, or greater than the {\ttfamily rhs}. Otherwise the prefixes match, so we only need to check the lengths.\Hypertarget{classkiwi_1_1_string_ref_aee5441db011f73e4a0844567bc13b203}\index{kiwi::StringRef@{kiwi::StringRef}!compare\_numeric@{compare\_numeric}}
+\index{compare\_numeric@{compare\_numeric}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{compare\_numeric()}{compare\_numeric()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_aee5441db011f73e4a0844567bc13b203} 
+int kiwi\+::\+String\+Ref\+::compare\+\_\+numeric (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+compare\+\_\+numeric -\/ Compare two strings, treating sequences of digits as numbers. \Hypertarget{classkiwi_1_1_string_ref_ab9cb461404f6bf87f6c0d32b63b544d1}\index{kiwi::StringRef@{kiwi::StringRef}!consume\_back@{consume\_back}}
+\index{consume\_back@{consume\_back}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{consume\_back()}{consume\_back()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ab9cb461404f6bf87f6c0d32b63b544d1} 
+bool kiwi\+::\+String\+Ref\+::consume\+\_\+back (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Suffix}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns true if this \doxylink{classkiwi_1_1_string_ref}{String\+Ref} has the given suffix and removes that suffix. \Hypertarget{classkiwi_1_1_string_ref_ad91cca39138a6862c48f235c5e83c80a}\index{kiwi::StringRef@{kiwi::StringRef}!consume\_back\_insensitive@{consume\_back\_insensitive}}
+\index{consume\_back\_insensitive@{consume\_back\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{consume\_back\_insensitive()}{consume\_back\_insensitive()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ad91cca39138a6862c48f235c5e83c80a} 
+bool kiwi\+::\+String\+Ref\+::consume\+\_\+back\+\_\+insensitive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Suffix}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns true if this \doxylink{classkiwi_1_1_string_ref}{String\+Ref} has the given suffix, ignoring case, and removes that suffix. \Hypertarget{classkiwi_1_1_string_ref_a9d016a0549bebbd74606f0c3b1050ca1}\index{kiwi::StringRef@{kiwi::StringRef}!consume\_front@{consume\_front}}
+\index{consume\_front@{consume\_front}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{consume\_front()}{consume\_front()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a9d016a0549bebbd74606f0c3b1050ca1} 
+bool kiwi\+::\+String\+Ref\+::consume\+\_\+front (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Prefix}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns true if this \doxylink{classkiwi_1_1_string_ref}{String\+Ref} has the given prefix and removes that prefix. \Hypertarget{classkiwi_1_1_string_ref_aa6f6da4f64876ad2071a09cbf6c2e07a}\index{kiwi::StringRef@{kiwi::StringRef}!consume\_front\_insensitive@{consume\_front\_insensitive}}
+\index{consume\_front\_insensitive@{consume\_front\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{consume\_front\_insensitive()}{consume\_front\_insensitive()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_aa6f6da4f64876ad2071a09cbf6c2e07a} 
+bool kiwi\+::\+String\+Ref\+::consume\+\_\+front\+\_\+insensitive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Prefix}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns true if this \doxylink{classkiwi_1_1_string_ref}{String\+Ref} has the given prefix, ignoring case, and removes that prefix. \Hypertarget{classkiwi_1_1_string_ref_a742406d0610ad2ccd423873eb284de37}\index{kiwi::StringRef@{kiwi::StringRef}!contains@{contains}}
+\index{contains@{contains}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a742406d0610ad2ccd423873eb284de37} 
+bool kiwi\+::\+String\+Ref\+::contains (\begin{DoxyParamCaption}\item[{char}]{c}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return true if the given character is contained in \texorpdfstring{$\ast$}{*}this, and false otherwise. \Hypertarget{classkiwi_1_1_string_ref_acff4abbe83319395558d9229bfec6c39}\index{kiwi::StringRef@{kiwi::StringRef}!contains@{contains}}
+\index{contains@{contains}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_acff4abbe83319395558d9229bfec6c39} 
+bool kiwi\+::\+String\+Ref\+::contains (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return true if the given string is a substring of \texorpdfstring{$\ast$}{*}this, and false otherwise. \Hypertarget{classkiwi_1_1_string_ref_a99a71d3d537f0c8bcfd9490a6ea3eefd}\index{kiwi::StringRef@{kiwi::StringRef}!contains\_insensitive@{contains\_insensitive}}
+\index{contains\_insensitive@{contains\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{contains\_insensitive()}{contains\_insensitive()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a99a71d3d537f0c8bcfd9490a6ea3eefd} 
+bool kiwi\+::\+String\+Ref\+::contains\+\_\+insensitive (\begin{DoxyParamCaption}\item[{char}]{c}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return true if the given character is contained in \texorpdfstring{$\ast$}{*}this, and false otherwise. \Hypertarget{classkiwi_1_1_string_ref_ac5bb11813d4958ef253306ac9b56dd64}\index{kiwi::StringRef@{kiwi::StringRef}!contains\_insensitive@{contains\_insensitive}}
+\index{contains\_insensitive@{contains\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{contains\_insensitive()}{contains\_insensitive()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ac5bb11813d4958ef253306ac9b56dd64} 
+bool kiwi\+::\+String\+Ref\+::contains\+\_\+insensitive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return true if the given string is a substring of \texorpdfstring{$\ast$}{*}this, and false otherwise. \Hypertarget{classkiwi_1_1_string_ref_a55695e354ad2b50947fd1bee045029c5}\index{kiwi::StringRef@{kiwi::StringRef}!copy@{copy}}
+\index{copy@{copy}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a55695e354ad2b50947fd1bee045029c5} 
+template$<$typename Allocator$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::copy (\begin{DoxyParamCaption}\item[{Allocator \&}]{alloc}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+copy -\/ Allocate copy in Allocator and return \doxylink{classkiwi_1_1_string_ref}{String\+Ref} to it. 
+
+Don\textquotesingle{}t request a length 0 copy from the allocator.\Hypertarget{classkiwi_1_1_string_ref_a5110375988d361d60d77b9334d3fedb2}\index{kiwi::StringRef@{kiwi::StringRef}!count@{count}}
+\index{count@{count}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{count()}{count()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a5110375988d361d60d77b9334d3fedb2} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::count (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{str}{}\end{DoxyParamCaption}) const}
+
+Return the number of non-\/overlapped occurrences of {\ttfamily str} in the string. \Hypertarget{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}\index{kiwi::StringRef@{kiwi::StringRef}!data@{data}}
+\index{data@{data}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{data()}{data()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d} 
+char const  \texorpdfstring{$\ast$}{*} kiwi\+::\+String\+Ref\+::data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [constexpr]}}
+
+data -\/ Get a pointer to the start of the string (which may not be null terminated). \Hypertarget{classkiwi_1_1_string_ref_a582f6e9d4c39412ff6190e7fc3c7a2ba}\index{kiwi::StringRef@{kiwi::StringRef}!detectEOL@{detectEOL}}
+\index{detectEOL@{detectEOL}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{detectEOL()}{detectEOL()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a582f6e9d4c39412ff6190e7fc3c7a2ba} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::detect\+EOL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Detect the line ending style of the string.
+
+If the string contains a line ending, return the line ending character sequence that is detected. Otherwise return \textquotesingle{}~\newline
+\textquotesingle{} for unix line endings.
+
+\begin{DoxyReturn}{Returns}
+-\/ The line ending character sequence. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}\index{kiwi::StringRef@{kiwi::StringRef}!drop\_back@{drop\_back}}
+\index{drop\_back@{drop\_back}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{drop\_back()}{drop\_back()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::drop\+\_\+back (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{N}{ = {\ttfamily 1}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a \doxylink{classkiwi_1_1_string_ref}{String\+Ref} equal to \textquotesingle{}this\textquotesingle{} but with the last {\ttfamily N} elements dropped. \Hypertarget{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}\index{kiwi::StringRef@{kiwi::StringRef}!drop\_front@{drop\_front}}
+\index{drop\_front@{drop\_front}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{drop\_front()}{drop\_front()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::drop\+\_\+front (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{N}{ = {\ttfamily 1}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a \doxylink{classkiwi_1_1_string_ref}{String\+Ref} equal to \textquotesingle{}this\textquotesingle{} but with the first {\ttfamily N} elements dropped. \Hypertarget{classkiwi_1_1_string_ref_a132e0e5f99c904e001f6bb0292d20a26}\index{kiwi::StringRef@{kiwi::StringRef}!drop\_until@{drop\_until}}
+\index{drop\_until@{drop\_until}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{drop\_until()}{drop\_until()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a132e0e5f99c904e001f6bb0292d20a26} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::drop\+\_\+until (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$}]{F}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a \doxylink{classkiwi_1_1_string_ref}{String\+Ref} equal to \textquotesingle{}this\textquotesingle{}, but with all characters not satisfying the given predicate dropped from the beginning of the string. \Hypertarget{classkiwi_1_1_string_ref_a12e5397f2e6a759be136a21892170e1e}\index{kiwi::StringRef@{kiwi::StringRef}!drop\_while@{drop\_while}}
+\index{drop\_while@{drop\_while}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{drop\_while()}{drop\_while()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a12e5397f2e6a759be136a21892170e1e} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::drop\+\_\+while (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$}]{F}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a \doxylink{classkiwi_1_1_string_ref}{String\+Ref} equal to \textquotesingle{}this\textquotesingle{}, but with all characters satisfying the given predicate dropped from the beginning of the string. \Hypertarget{classkiwi_1_1_string_ref_aed622b030f75dc0a3f53ee0ab5f7f358}\index{kiwi::StringRef@{kiwi::StringRef}!edit\_distance@{edit\_distance}}
+\index{edit\_distance@{edit\_distance}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{edit\_distance()}{edit\_distance()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_aed622b030f75dc0a3f53ee0ab5f7f358} 
+unsigned kiwi\+::\+String\+Ref\+::edit\+\_\+distance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Other}{, }\item[{bool}]{allow\+\_\+replacements}{ = {\ttfamily true}, }\item[{unsigned}]{max\+\_\+edit\+\_\+distance}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Determine the edit distance between this string and another string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Other} & the string to compare this string against.\\
+\hline
+{\em allow\+\_\+replacements} & whether to allow character replacements (change one character into another) as a single operation, rather than as two operations (an insertion and a removal).\\
+\hline
+{\em max\+\_\+edit\+\_\+distance} & If non-\/zero, the maximum edit distance that this routine is allowed to compute. If the edit distance will exceed that maximum, returns {\ttfamily max\+\_\+edit\+\_\+distance+1}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the minimum number of character insertions, removals, or (if {\ttfamily allow\+\_\+replacements} is {\ttfamily true}) replacements needed to transform one of the given strings into the other. If zero, the strings are identical. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}\index{kiwi::StringRef@{kiwi::StringRef}!find@{find}}
+\index{find@{find}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Search for the first character {\ttfamily c} in the string.
+
+\begin{DoxyReturn}{Returns}
+The index of the first occurrence of {\ttfamily c}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_ae1d0a701f123ffaaa5187c3c913225a1}\index{kiwi::StringRef@{kiwi::StringRef}!find@{find}}
+\index{find@{find}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ae1d0a701f123ffaaa5187c3c913225a1} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{str}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Search for the first string {\ttfamily str} in the string.
+
+\begin{DoxyReturn}{Returns}
+The index of the first occurrence of {\ttfamily str}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a}\index{kiwi::StringRef@{kiwi::StringRef}!find\_first\_not\_of@{find\_first\_not\_of}}
+\index{find\_first\_not\_of@{find\_first\_not\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_first\_not\_of()}{find\_first\_not\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+first\+\_\+not\+\_\+of (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Find the first character in the string that is not {\ttfamily C} or npos if not found. \Hypertarget{classkiwi_1_1_string_ref_a85010dcfe4cbb7adb498d13eff030af6}\index{kiwi::StringRef@{kiwi::StringRef}!find\_first\_not\_of@{find\_first\_not\_of}}
+\index{find\_first\_not\_of@{find\_first\_not\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_first\_not\_of()}{find\_first\_not\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a85010dcfe4cbb7adb498d13eff030af6} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+first\+\_\+not\+\_\+of (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{chars}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Find the first character in the string that is not in the string {\ttfamily chars}, or npos if not found.
+
+Complexity\+: O(\doxylink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size()} + chars.\+size()) \Hypertarget{classkiwi_1_1_string_ref_a644a28a54cd682b6d49a34f4c64df5f3}\index{kiwi::StringRef@{kiwi::StringRef}!find\_first\_of@{find\_first\_of}}
+\index{find\_first\_of@{find\_first\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_first\_of()}{find\_first\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a644a28a54cd682b6d49a34f4c64df5f3} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+first\+\_\+of (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Find the first character in the string that is {\ttfamily C}, or npos if not found. Same as find. \Hypertarget{classkiwi_1_1_string_ref_ae6f943e48f403ba55b642e97b6c00684}\index{kiwi::StringRef@{kiwi::StringRef}!find\_first\_of@{find\_first\_of}}
+\index{find\_first\_of@{find\_first\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_first\_of()}{find\_first\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ae6f943e48f403ba55b642e97b6c00684} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+first\+\_\+of (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{chars}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Find the first character in the string that is in {\ttfamily chars}, or npos if not found.
+
+Complexity\+: O(\doxylink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size()} + chars.\+size()) \Hypertarget{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}\index{kiwi::StringRef@{kiwi::StringRef}!find\_if@{find\_if}}
+\index{find\_if@{find\_if}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_if()}{find\_if()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+if (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$}]{f}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Search for the first character satisfying the predicate {\ttfamily f} 
+
+\begin{DoxyReturn}{Returns}
+The index of the first character satisfying {\ttfamily f} starting from {\ttfamily from}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d}\index{kiwi::StringRef@{kiwi::StringRef}!find\_if\_not@{find\_if\_not}}
+\index{find\_if\_not@{find\_if\_not}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_if\_not()}{find\_if\_not()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+if\+\_\+not (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$}]{f}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Search for the first character not satisfying the predicate {\ttfamily f} 
+
+\begin{DoxyReturn}{Returns}
+The index of the first character not satisfying {\ttfamily f} starting from {\ttfamily from}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034}\index{kiwi::StringRef@{kiwi::StringRef}!find\_insensitive@{find\_insensitive}}
+\index{find\_insensitive@{find\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_insensitive()}{find\_insensitive()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+insensitive (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Search for the first character {\ttfamily c} in the string, ignoring case.
+
+\begin{DoxyReturn}{Returns}
+The index of the first occurrence of {\ttfamily c}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a831c0ad9f3a0151a8e4db1da5f03439e}\index{kiwi::StringRef@{kiwi::StringRef}!find\_insensitive@{find\_insensitive}}
+\index{find\_insensitive@{find\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_insensitive()}{find\_insensitive()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a831c0ad9f3a0151a8e4db1da5f03439e} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+insensitive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{str}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily 0}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Search for the first string {\ttfamily str} in the string, ignoring case.
+
+\begin{DoxyReturn}{Returns}
+The index of the first occurrence of {\ttfamily str}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b}\index{kiwi::StringRef@{kiwi::StringRef}!find\_last\_not\_of@{find\_last\_not\_of}}
+\index{find\_last\_not\_of@{find\_last\_not\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_last\_not\_of()}{find\_last\_not\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+last\+\_\+not\+\_\+of (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Find the last character in the string that is not {\ttfamily c}, or npos if not found. \Hypertarget{classkiwi_1_1_string_ref_afb5897bfe79785e773d66a3f5a7eee50}\index{kiwi::StringRef@{kiwi::StringRef}!find\_last\_not\_of@{find\_last\_not\_of}}
+\index{find\_last\_not\_of@{find\_last\_not\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_last\_not\_of()}{find\_last\_not\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_afb5897bfe79785e773d66a3f5a7eee50} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+last\+\_\+not\+\_\+of (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{chars}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Find the last character in the string that is not in {\ttfamily chars}, or npos if not found.
+
+Complexity\+: O(\doxylink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size()} + chars.\+size()) \Hypertarget{classkiwi_1_1_string_ref_a39b564884e4f0caf04a67ba91e2f9f4c}\index{kiwi::StringRef@{kiwi::StringRef}!find\_last\_of@{find\_last\_of}}
+\index{find\_last\_of@{find\_last\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_last\_of()}{find\_last\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a39b564884e4f0caf04a67ba91e2f9f4c} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+last\+\_\+of (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Find the last character in the string that is {\ttfamily C}, or npos if not found. \Hypertarget{classkiwi_1_1_string_ref_a9a92f311394a6e5033e2b7e3cc279a81}\index{kiwi::StringRef@{kiwi::StringRef}!find\_last\_of@{find\_last\_of}}
+\index{find\_last\_of@{find\_last\_of}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{find\_last\_of()}{find\_last\_of()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a9a92f311394a6e5033e2b7e3cc279a81} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::find\+\_\+last\+\_\+of (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{chars}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Find the last character in the string that is in {\ttfamily c}, or npos if not found.
+
+Complexity\+: O(\doxylink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size()} + chars.\+size()) \Hypertarget{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4}\index{kiwi::StringRef@{kiwi::StringRef}!ltrim@{ltrim}}
+\index{ltrim@{ltrim}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{ltrim()}{ltrim()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::ltrim (\begin{DoxyParamCaption}\item[{char}]{Char}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return string with consecutive {\ttfamily Char} characters starting from the the left removed. \Hypertarget{classkiwi_1_1_string_ref_ac4ef859b88acdefc97bd41351dd4edbb}\index{kiwi::StringRef@{kiwi::StringRef}!ltrim@{ltrim}}
+\index{ltrim@{ltrim}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{ltrim()}{ltrim()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ac4ef859b88acdefc97bd41351dd4edbb} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::ltrim (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Chars}{ = {\ttfamily "{}~\textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return string with consecutive characters in {\ttfamily Chars} starting from the left removed. \Hypertarget{classkiwi_1_1_string_ref_ac6ece4fee89a52742f085812446d09a1}\index{kiwi::StringRef@{kiwi::StringRef}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ac6ece4fee89a52742f085812446d09a1} 
+template$<$typename T$>$ \\
+std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+same$<$ T, std\+::string $>$\+::value, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \& kiwi\+::\+String\+Ref\+::operator= (\begin{DoxyParamCaption}\item[{T \&\&}]{str}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+Disallow accidental assignment from a temporary std\+::string.
+
+The declaration here is extra complicated so that {\ttfamily string\+Ref = \{\}} and {\ttfamily string\+Ref = "{}abc"{}} continue to select the move assignment operator. \Hypertarget{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f}\index{kiwi::StringRef@{kiwi::StringRef}!rfind@{rfind}}
+\index{rfind@{rfind}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rfind()}{rfind()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::rfind (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Search for the last character {\ttfamily c} in the string.
+
+\begin{DoxyReturn}{Returns}
+The index of the last occurrence of {\ttfamily c}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a185e34f7156b8cca9f930eb4ac196614}\index{kiwi::StringRef@{kiwi::StringRef}!rfind@{rfind}}
+\index{rfind@{rfind}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rfind()}{rfind()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a185e34f7156b8cca9f930eb4ac196614} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::rfind (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{str}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Search for the last string {\ttfamily str} in the string.
+
+\begin{DoxyReturn}{Returns}
+The index of the last occurrence of {\ttfamily str}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a7f9b1d376d87ff8bd9fdbfeb0d5c65ef}\index{kiwi::StringRef@{kiwi::StringRef}!rfind\_insensitive@{rfind\_insensitive}}
+\index{rfind\_insensitive@{rfind\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rfind\_insensitive()}{rfind\_insensitive()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a7f9b1d376d87ff8bd9fdbfeb0d5c65ef} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::rfind\+\_\+insensitive (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{size\+\_\+t}]{from}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Search for the last character {\ttfamily c} in the string, ignoring case.
+
+\begin{DoxyReturn}{Returns}
+The index of the last occurrence of {\ttfamily c}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a2165028f5c9f6880c7cc2c5c01cd6e1c}\index{kiwi::StringRef@{kiwi::StringRef}!rfind\_insensitive@{rfind\_insensitive}}
+\index{rfind\_insensitive@{rfind\_insensitive}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rfind\_insensitive()}{rfind\_insensitive()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a2165028f5c9f6880c7cc2c5c01cd6e1c} 
+size\+\_\+t kiwi\+::\+String\+Ref\+::rfind\+\_\+insensitive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{str}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Search for the last string {\ttfamily str} in the string, ignoring case.
+
+\begin{DoxyReturn}{Returns}
+The index of the last occurrence of {\ttfamily str}, or npos if not found. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a06dfdd2558b054349a2c29b958e21092}\index{kiwi::StringRef@{kiwi::StringRef}!rsplit@{rsplit}}
+\index{rsplit@{rsplit}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rsplit()}{rsplit()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a06dfdd2558b054349a2c29b958e21092} 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ kiwi\+::\+String\+Ref\+::rsplit (\begin{DoxyParamCaption}\item[{char}]{Separator}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Split into two substrings around the last occurrence of a separator character.
+
+If {\ttfamily Separator} is in the string, then the result is a pair (LHS, RHS) such that (\texorpdfstring{$\ast$}{*}this == LHS + Separator + RHS) is true and RHS is minimal. If {\ttfamily Separator} is not in the string, then the result is a pair (LHS, RHS) where (\texorpdfstring{$\ast$}{*}this == LHS) and (RHS == "{}"{}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em Separator} & -\/ The character to split on. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/ The split substrings. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_abe6239a292b29130ef8b28ed696fef5f}\index{kiwi::StringRef@{kiwi::StringRef}!rsplit@{rsplit}}
+\index{rsplit@{rsplit}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rsplit()}{rsplit()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_abe6239a292b29130ef8b28ed696fef5f} 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ kiwi\+::\+String\+Ref\+::rsplit (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Separator}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Split into two substrings around the last occurrence of a separator string.
+
+If {\ttfamily Separator} is in the string, then the result is a pair (LHS, RHS) such that (\texorpdfstring{$\ast$}{*}this == LHS + Separator + RHS) is true and RHS is minimal. If {\ttfamily Separator} is not in the string, then the result is a pair (LHS, RHS) where (\texorpdfstring{$\ast$}{*}this == LHS) and (RHS == "{}"{}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em Separator} & -\/ The string to split on. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/ The split substrings. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a}\index{kiwi::StringRef@{kiwi::StringRef}!rtrim@{rtrim}}
+\index{rtrim@{rtrim}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rtrim()}{rtrim()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::rtrim (\begin{DoxyParamCaption}\item[{char}]{Char}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return string with consecutive {\ttfamily Char} characters starting from the right removed. \Hypertarget{classkiwi_1_1_string_ref_a3a5557847576abd37df605df6a353fdd}\index{kiwi::StringRef@{kiwi::StringRef}!rtrim@{rtrim}}
+\index{rtrim@{rtrim}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{rtrim()}{rtrim()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a3a5557847576abd37df605df6a353fdd} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::rtrim (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Chars}{ = {\ttfamily "{}~\textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return string with consecutive characters in {\ttfamily Chars} starting from the right removed. \Hypertarget{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}\index{kiwi::StringRef@{kiwi::StringRef}!slice@{slice}}
+\index{slice@{slice}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{slice()}{slice()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::slice (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{Start}{, }\item[{size\+\_\+t}]{End}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a reference to the substring from \mbox{[}Start, End).
+
+
+\begin{DoxyParams}{Parameters}
+{\em Start} & The index of the starting character in the substring; if the index is npos or greater than the length of the string then the empty substring will be returned.\\
+\hline
+{\em End} & The index following the last character to include in the substring. If this is npos or exceeds the number of characters remaining in the string, the string suffix (starting with {\ttfamily Start}) will be returned. If this is less than {\ttfamily Start}, an empty string will be returned. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_string_ref_a7d856db9a2d0975fdee7cda62c86e3a4}\index{kiwi::StringRef@{kiwi::StringRef}!split@{split}}
+\index{split@{split}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{split()}{split()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a7d856db9a2d0975fdee7cda62c86e3a4} 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ kiwi\+::\+String\+Ref\+::split (\begin{DoxyParamCaption}\item[{char}]{Separator}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Split into two substrings around the first occurrence of a separator character.
+
+If {\ttfamily Separator} is in the string, then the result is a pair (LHS, RHS) such that (\texorpdfstring{$\ast$}{*}this == LHS + Separator + RHS) is true and RHS is maximal. If {\ttfamily Separator} is not in the string, then the result is a pair (LHS, RHS) where (\texorpdfstring{$\ast$}{*}this == LHS) and (RHS == "{}"{}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em Separator} & The character to split on. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The split substrings. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_abe76d1f6ee6d8f44296efb23ab47a908}\index{kiwi::StringRef@{kiwi::StringRef}!split@{split}}
+\index{split@{split}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{split()}{split()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_abe76d1f6ee6d8f44296efb23ab47a908} 
+void kiwi\+::\+String\+Ref\+::split (\begin{DoxyParamCaption}\item[{Small\+Vector\+Impl$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \&}]{A}{, }\item[{char}]{Separator}{, }\item[{int}]{Max\+Split}{ = {\ttfamily -\/1}, }\item[{bool}]{Keep\+Empty}{ = {\ttfamily true}}\end{DoxyParamCaption}) const}
+
+Split into substrings around the occurrences of a separator character.
+
+Each substring is stored in {\ttfamily A}. If {\ttfamily Max\+Split} is \texorpdfstring{$>$}{>}= 0, at most {\ttfamily Max\+Split} splits are done and consequently \texorpdfstring{$<$}{<}= {\ttfamily Max\+Split} + 1 elements are added to A. If {\ttfamily Keep\+Empty} is false, empty strings are not added to {\ttfamily A}. They still count when considering {\ttfamily Max\+Split} An useful invariant is that Separator.\+join(\+A) == \texorpdfstring{$\ast$}{*}this if Max\+Split == -\/1 and Keep\+Empty == true
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & -\/ Where to put the substrings. \\
+\hline
+{\em Separator} & -\/ The string to split on. \\
+\hline
+{\em Max\+Split} & -\/ The maximum number of times the string is split. \\
+\hline
+{\em Keep\+Empty} & -\/ True if empty substring should be added. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_string_ref_af71cefac9720895380ea7168d2d1d4fa}\index{kiwi::StringRef@{kiwi::StringRef}!split@{split}}
+\index{split@{split}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{split()}{split()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_af71cefac9720895380ea7168d2d1d4fa} 
+void kiwi\+::\+String\+Ref\+::split (\begin{DoxyParamCaption}\item[{Small\+Vector\+Impl$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \&}]{A}{, }\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Separator}{, }\item[{int}]{Max\+Split}{ = {\ttfamily -\/1}, }\item[{bool}]{Keep\+Empty}{ = {\ttfamily true}}\end{DoxyParamCaption}) const}
+
+Split into substrings around the occurrences of a separator string.
+
+Each substring is stored in {\ttfamily A}. If {\ttfamily Max\+Split} is \texorpdfstring{$>$}{>}= 0, at most {\ttfamily Max\+Split} splits are done and consequently \texorpdfstring{$<$}{<}= {\ttfamily Max\+Split} + 1 elements are added to A. If {\ttfamily Keep\+Empty} is false, empty strings are not added to {\ttfamily A}. They still count when considering {\ttfamily Max\+Split} An useful invariant is that Separator.\+join(\+A) == \texorpdfstring{$\ast$}{*}this if Max\+Split == -\/1 and Keep\+Empty == true
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & -\/ Where to put the substrings. \\
+\hline
+{\em Separator} & -\/ The string to split on. \\
+\hline
+{\em Max\+Split} & -\/ The maximum number of times the string is split. \\
+\hline
+{\em Keep\+Empty} & -\/ True if empty substring should be added. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_string_ref_aa879c412bcb07381edc7d32f7eb44528}\index{kiwi::StringRef@{kiwi::StringRef}!split@{split}}
+\index{split@{split}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{split()}{split()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_aa879c412bcb07381edc7d32f7eb44528} 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ kiwi\+::\+String\+Ref\+::split (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Separator}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Split into two substrings around the first occurrence of a separator string.
+
+If {\ttfamily Separator} is in the string, then the result is a pair (LHS, RHS) such that (\texorpdfstring{$\ast$}{*}this == LHS + Separator + RHS) is true and RHS is maximal. If {\ttfamily Separator} is not in the string, then the result is a pair (LHS, RHS) where (\texorpdfstring{$\ast$}{*}this == LHS) and (RHS == "{}"{}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em Separator} & -\/ The string to split on. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/ The split substrings. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}\index{kiwi::StringRef@{kiwi::StringRef}!substr@{substr}}
+\index{substr@{substr}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{substr()}{substr()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::substr (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{Start}{, }\item[{size\+\_\+t}]{N}{ = {\ttfamily npos}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [constexpr]}}
+
+Return a reference to the substring from \mbox{[}Start, Start + N).
+
+
+\begin{DoxyParams}{Parameters}
+{\em Start} & The index of the starting character in the substring; if the index is npos or greater than the length of the string then the empty substring will be returned.\\
+\hline
+{\em N} & The number of characters to included in the substring. If N exceeds the number of characters remaining in the string, the string suffix (starting with {\ttfamily Start}) will be returned. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_string_ref_a3a06f00ae194f00af9184c2e2bfa1484}\index{kiwi::StringRef@{kiwi::StringRef}!take\_back@{take\_back}}
+\index{take\_back@{take\_back}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{take\_back()}{take\_back()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a3a06f00ae194f00af9184c2e2bfa1484} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::take\+\_\+back (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{N}{ = {\ttfamily 1}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a \doxylink{classkiwi_1_1_string_ref}{String\+Ref} equal to \textquotesingle{}this\textquotesingle{} but with only the last {\ttfamily N} elements remaining. If {\ttfamily N} is greater than the length of the string, the entire string is returned. \Hypertarget{classkiwi_1_1_string_ref_ace04425f92126cb4d09d7c6f46a593e2}\index{kiwi::StringRef@{kiwi::StringRef}!take\_front@{take\_front}}
+\index{take\_front@{take\_front}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{take\_front()}{take\_front()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ace04425f92126cb4d09d7c6f46a593e2} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::take\+\_\+front (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{N}{ = {\ttfamily 1}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return a \doxylink{classkiwi_1_1_string_ref}{String\+Ref} equal to \textquotesingle{}this\textquotesingle{} but with only the first {\ttfamily N} elements remaining. If {\ttfamily N} is greater than the length of the string, the entire string is returned. \Hypertarget{classkiwi_1_1_string_ref_a3f0f4106a3cb8ebaae059555c7d349e3}\index{kiwi::StringRef@{kiwi::StringRef}!take\_until@{take\_until}}
+\index{take\_until@{take\_until}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{take\_until()}{take\_until()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a3f0f4106a3cb8ebaae059555c7d349e3} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::take\+\_\+until (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$}]{F}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return the longest prefix of \textquotesingle{}this\textquotesingle{} such that no character in the prefix satisfies the given predicate. \Hypertarget{classkiwi_1_1_string_ref_a817f88db73fc820718155d3ccd50d8e1}\index{kiwi::StringRef@{kiwi::StringRef}!take\_while@{take\_while}}
+\index{take\_while@{take\_while}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{take\_while()}{take\_while()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a817f88db73fc820718155d3ccd50d8e1} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::take\+\_\+while (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$}]{F}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return the longest prefix of \textquotesingle{}this\textquotesingle{} such that every character in the prefix satisfies the given predicate. \Hypertarget{classkiwi_1_1_string_ref_ae767fc3879ab3464fd022788abd8d33f}\index{kiwi::StringRef@{kiwi::StringRef}!trim@{trim}}
+\index{trim@{trim}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{trim()}{trim()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_ae767fc3879ab3464fd022788abd8d33f} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::trim (\begin{DoxyParamCaption}\item[{char}]{Char}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return string with consecutive {\ttfamily Char} characters starting from the left and right removed. \Hypertarget{classkiwi_1_1_string_ref_a8c4846eecd7b654b416a7d07258ee0bd}\index{kiwi::StringRef@{kiwi::StringRef}!trim@{trim}}
+\index{trim@{trim}!kiwi::StringRef@{kiwi::StringRef}}
+\doxysubsubsection{\texorpdfstring{trim()}{trim()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_string_ref_a8c4846eecd7b654b416a7d07258ee0bd} 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} kiwi\+::\+String\+Ref\+::trim (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}}]{Chars}{ = {\ttfamily "{}~\textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+Return string with consecutive characters in {\ttfamily Chars} starting from the left and right removed. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/strings/string\+\_\+ref.\+hh\end{DoxyCompactItemize}

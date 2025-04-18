@@ -1,0 +1,220 @@
+\doxysection{base\+::File\+Path Class Reference}
+\hypertarget{classbase_1_1_file_path}{}\label{classbase_1_1_file_path}\index{base::FilePath@{base::FilePath}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_file_path_a52c7bbf3b3737a8bb46a28f70efcf130}\label{classbase_1_1_file_path_a52c7bbf3b3737a8bb46a28f70efcf130} 
+using {\bfseries Char\+Type} = String\+Type\+::value\+\_\+type
+\item 
+\Hypertarget{classbase_1_1_file_path_ad94cf9ebae114da3cbf09e45b924cf47}\label{classbase_1_1_file_path_ad94cf9ebae114da3cbf09e45b924cf47} 
+using {\bfseries String\+View\+Type} = std\+::basic\+\_\+string\+\_\+view$<$Char\+Type$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_file_path_a579922f7af0190154bb20099e9d361e7}\label{classbase_1_1_file_path_a579922f7af0190154bb20099e9d361e7} 
+{\bfseries File\+Path} (String\+View\+Type path)
+\item 
+\Hypertarget{classbase_1_1_file_path_abc5f77b91b51041669a6743a5f879775}\label{classbase_1_1_file_path_abc5f77b91b51041669a6743a5f879775} 
+{\bfseries File\+Path} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&that)
+\item 
+\Hypertarget{classbase_1_1_file_path_a3ac6bba8bf76f75e80b1a4922e4b3d57}\label{classbase_1_1_file_path_a3ac6bba8bf76f75e80b1a4922e4b3d57} 
+{\bfseries File\+Path} (\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&\&that) noexcept
+\item 
+\Hypertarget{classbase_1_1_file_path_abdf7f6cc8034af130e606ed05f43fc87}\label{classbase_1_1_file_path_abdf7f6cc8034af130e606ed05f43fc87} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \& {\bfseries operator=} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&that)
+\item 
+\Hypertarget{classbase_1_1_file_path_a6f73d30fad8ae281c8b79d5c236349e8}\label{classbase_1_1_file_path_a6f73d30fad8ae281c8b79d5c236349e8} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \& {\bfseries operator=} (\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&\&that) noexcept
+\item 
+\Hypertarget{classbase_1_1_file_path_ab436d196545762fb3b6588d1bc172547}\label{classbase_1_1_file_path_ab436d196545762fb3b6588d1bc172547} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&that) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a735f872a375002582bfe79429efc6c44}\label{classbase_1_1_file_path_a735f872a375002582bfe79429efc6c44} 
+auto {\bfseries operator$<$=$>$} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&that) const =default
+\item 
+\Hypertarget{classbase_1_1_file_path_a49ba0088a2b4dc3f01359ef3e74b0a73}\label{classbase_1_1_file_path_a49ba0088a2b4dc3f01359ef3e74b0a73} 
+const String\+Type \& {\bfseries value} () const LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classbase_1_1_file_path_a2f8a7145977ab37b58ddf3baf2c9db1a}\label{classbase_1_1_file_path_a2f8a7145977ab37b58ddf3baf2c9db1a} 
+bool {\bfseries empty} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_afc060c134f7cd436f5fc2393657cecd9}\label{classbase_1_1_file_path_afc060c134f7cd436f5fc2393657cecd9} 
+void {\bfseries clear} ()
+\item 
+\Hypertarget{classbase_1_1_file_path_a948aba9a18229929faa720fabbdf09c6}\label{classbase_1_1_file_path_a948aba9a18229929faa720fabbdf09c6} 
+std\+::vector$<$ File\+Path\+::\+String\+Type $>$ {\bfseries Get\+Components} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a5793a358d9748f7c75d2549725237cb8}\label{classbase_1_1_file_path_a5793a358d9748f7c75d2549725237cb8} 
+bool {\bfseries Is\+Parent} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&child) const
+\item 
+\Hypertarget{classbase_1_1_file_path_aabc353b42231c598c8ce0ee210a535a9}\label{classbase_1_1_file_path_aabc353b42231c598c8ce0ee210a535a9} 
+bool {\bfseries Append\+Relative\+Path} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&child, \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a17012bb7f3a5b93600cecb0ae2cff077}\label{classbase_1_1_file_path_a17012bb7f3a5b93600cecb0ae2cff077} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Dir\+Name} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_ad1f4e22f9a81443d721512409a00b399}\label{classbase_1_1_file_path_ad1f4e22f9a81443d721512409a00b399} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Base\+Name} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a01916ad4e06363919bae7a72280c0a2c}\label{classbase_1_1_file_path_a01916ad4e06363919bae7a72280c0a2c} 
+String\+Type {\bfseries Extension} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_aed2174e544a7bb85f90236fe8f0cceec}\label{classbase_1_1_file_path_aed2174e544a7bb85f90236fe8f0cceec} 
+String\+Type {\bfseries Final\+Extension} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_ab9f251ef76bc94506608d5300b4a84c2}\label{classbase_1_1_file_path_ab9f251ef76bc94506608d5300b4a84c2} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Remove\+Extension} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a4cfeafaea1498993d137c2778570d992}\label{classbase_1_1_file_path_a4cfeafaea1498993d137c2778570d992} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Remove\+Final\+Extension} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a186e6e8cedb3a87139efbe21fca97d0f}\label{classbase_1_1_file_path_a186e6e8cedb3a87139efbe21fca97d0f} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Insert\+Before\+Extension} (String\+View\+Type suffix) const
+\item 
+\Hypertarget{classbase_1_1_file_path_afefd8ab5a7f0af2503dd5a26ddd9348c}\label{classbase_1_1_file_path_afefd8ab5a7f0af2503dd5a26ddd9348c} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Insert\+Before\+Extension\+ASCII} (std\+::string\+\_\+view suffix) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a5bb913c6ad77285af861ffcb438d5829}\label{classbase_1_1_file_path_a5bb913c6ad77285af861ffcb438d5829} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Insert\+Before\+Extension\+UTF8} (std\+::string\+\_\+view suffix) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a23f76fa535e3d16f51df897140ac29ad}\label{classbase_1_1_file_path_a23f76fa535e3d16f51df897140ac29ad} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Add\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classbase_1_1_file_path_ad50fc3c010237c75f356dd7212237c8c}\label{classbase_1_1_file_path_ad50fc3c010237c75f356dd7212237c8c} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Add\+Extension\+ASCII} (std\+::string\+\_\+view extension) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a040a499a08e1602278809adcfd7704d6}\label{classbase_1_1_file_path_a040a499a08e1602278809adcfd7704d6} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Add\+Extension\+UTF8} (std\+::string\+\_\+view extension) const
+\item 
+\Hypertarget{classbase_1_1_file_path_acaebc838c3ad0806f0328a3a43244733}\label{classbase_1_1_file_path_acaebc838c3ad0806f0328a3a43244733} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Replace\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a8b134530b63a30b5e8dcfc7cc9fc6f4a}\label{classbase_1_1_file_path_a8b134530b63a30b5e8dcfc7cc9fc6f4a} 
+bool {\bfseries Matches\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a28e3bb7b18df4db7fe46fa550298f738}\label{classbase_1_1_file_path_a28e3bb7b18df4db7fe46fa550298f738} 
+bool {\bfseries Matches\+Final\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a550f4c55f7b96a400d1cc3b59da79359}\label{classbase_1_1_file_path_a550f4c55f7b96a400d1cc3b59da79359} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Append} (String\+View\+Type component) const
+\item 
+\Hypertarget{classbase_1_1_file_path_abf63b0f0f59fab8cfdf29cec88163add}\label{classbase_1_1_file_path_abf63b0f0f59fab8cfdf29cec88163add} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Append} (const \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} \&component) const
+\item 
+\Hypertarget{classbase_1_1_file_path_ae5a4b483660810f477ae8bf683def31b}\label{classbase_1_1_file_path_ae5a4b483660810f477ae8bf683def31b} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Append\+ASCII} (std\+::string\+\_\+view component) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a91a91b3f33b21b995e0d24b1b9135441}\label{classbase_1_1_file_path_a91a91b3f33b21b995e0d24b1b9135441} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Append\+UTF8} (std\+::string\+\_\+view component) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a9f1645e43452915f251f368513bfc989}\label{classbase_1_1_file_path_a9f1645e43452915f251f368513bfc989} 
+bool {\bfseries Is\+Absolute} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a394a36959cf856d07c5689986e3f6c2b}\label{classbase_1_1_file_path_a394a36959cf856d07c5689986e3f6c2b} 
+bool {\bfseries Is\+Network} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a855ac0193a6208dec146510483ad06fa}\label{classbase_1_1_file_path_a855ac0193a6208dec146510483ad06fa} 
+bool {\bfseries Ends\+With\+Separator} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a2fd4b9b74dbb1078fa087b9087bc8d0d}\label{classbase_1_1_file_path_a2fd4b9b74dbb1078fa087b9087bc8d0d} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries As\+Ending\+With\+Separator} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a5192d9e5bef10fd4abaf104d0ff600b4}\label{classbase_1_1_file_path_a5192d9e5bef10fd4abaf104d0ff600b4} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Strip\+Trailing\+Separators} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a2e846e9e5d5d0f52a7dcdfc387fca2f4}\label{classbase_1_1_file_path_a2e846e9e5d5d0f52a7dcdfc387fca2f4} 
+bool {\bfseries References\+Parent} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_abb7fdfbd5df82e915923c0c62579fb75}\label{classbase_1_1_file_path_abb7fdfbd5df82e915923c0c62579fb75} 
+std\+::u16string {\bfseries Lossy\+Display\+Name} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a227212a355d312136b3b8a53fdeb01b1}\label{classbase_1_1_file_path_a227212a355d312136b3b8a53fdeb01b1} 
+std\+::string {\bfseries Maybe\+As\+ASCII} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_ad1663d67f8bd766167acfdf5281b8cac}\label{classbase_1_1_file_path_ad1663d67f8bd766167acfdf5281b8cac} 
+std\+::string {\bfseries As\+UTF8\+Unsafe} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_accefdbb83dfd1b81f3140d8bf2cfdae5}\label{classbase_1_1_file_path_accefdbb83dfd1b81f3140d8bf2cfdae5} 
+std\+::u16string {\bfseries As\+UTF16\+Unsafe} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_aa4c2e1ce9dcedc3f8e222c60937753c3}\label{classbase_1_1_file_path_aa4c2e1ce9dcedc3f8e222c60937753c3} 
+void {\bfseries Write\+To\+Pickle} (Pickle \texorpdfstring{$\ast$}{*}pickle) const
+\item 
+\Hypertarget{classbase_1_1_file_path_a03266cad8984483cea5a28e151fb771b}\label{classbase_1_1_file_path_a03266cad8984483cea5a28e151fb771b} 
+bool {\bfseries Read\+From\+Pickle} (Pickle\+Iterator \texorpdfstring{$\ast$}{*}iter)
+\item 
+\Hypertarget{classbase_1_1_file_path_a3d6ab7ee4ddb7630bc8d0341611e8c83}\label{classbase_1_1_file_path_a3d6ab7ee4ddb7630bc8d0341611e8c83} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Normalize\+Path\+Separators} () const
+\item 
+\Hypertarget{classbase_1_1_file_path_a83a637c76b82861a3693a984b2802590}\label{classbase_1_1_file_path_a83a637c76b82861a3693a984b2802590} 
+\mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries Normalize\+Path\+Separators\+To} (Char\+Type separator) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_file_path_a65c43ca92eb9a58d837f1b54a56f0238}\label{classbase_1_1_file_path_a65c43ca92eb9a58d837f1b54a56f0238} 
+static void {\bfseries Initialize\+Features} ()
+\item 
+\Hypertarget{classbase_1_1_file_path_acf5f3bba2ce596a3dc12880bda1a2317}\label{classbase_1_1_file_path_acf5f3bba2ce596a3dc12880bda1a2317} 
+static bool {\bfseries Is\+Separator} (Char\+Type character)
+\item 
+\Hypertarget{classbase_1_1_file_path_aab6d114a2a22341e6931ec7027b6b4bd}\label{classbase_1_1_file_path_aab6d114a2a22341e6931ec7027b6b4bd} 
+static \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries From\+ASCII} (std\+::string\+\_\+view ascii)
+\item 
+\Hypertarget{classbase_1_1_file_path_aba353caf9cbb9efce0452c017c6e1b70}\label{classbase_1_1_file_path_aba353caf9cbb9efce0452c017c6e1b70} 
+static \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries From\+UTF8\+Unsafe} (std\+::string\+\_\+view utf8)
+\item 
+\Hypertarget{classbase_1_1_file_path_a1ae0127fd2118725d334ab0df3dfde69}\label{classbase_1_1_file_path_a1ae0127fd2118725d334ab0df3dfde69} 
+static \mbox{\hyperlink{classbase_1_1_file_path}{File\+Path}} {\bfseries From\+UTF16\+Unsafe} (std\+::u16string\+\_\+view utf16)
+\item 
+\Hypertarget{classbase_1_1_file_path_a171f0610ec671c6cc5e5799e20977cd4}\label{classbase_1_1_file_path_a171f0610ec671c6cc5e5799e20977cd4} 
+static int {\bfseries Compare\+Ignore\+Case} (String\+View\+Type string1, String\+View\+Type string2)
+\item 
+\Hypertarget{classbase_1_1_file_path_a55a5b98ceead7381a82859e89f4d7a85}\label{classbase_1_1_file_path_a55a5b98ceead7381a82859e89f4d7a85} 
+static bool {\bfseries Compare\+Equal\+Ignore\+Case} (String\+View\+Type string1, String\+View\+Type string2)
+\item 
+\Hypertarget{classbase_1_1_file_path_a891cb855df46e46532658081a02b4e94}\label{classbase_1_1_file_path_a891cb855df46e46532658081a02b4e94} 
+static bool {\bfseries Compare\+Less\+Ignore\+Case} (String\+View\+Type string1, String\+View\+Type string2)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr Char\+Type \mbox{\hyperlink{classbase_1_1_file_path_a4af216c78f1e364fc4f651b1467ad05e}{k\+Separators}} \mbox{[}$\,$\mbox{]}
+\item 
+\Hypertarget{classbase_1_1_file_path_a7e0535b07447151b59d1278dfaf73af1}\label{classbase_1_1_file_path_a7e0535b07447151b59d1278dfaf73af1} 
+static constexpr size\+\_\+t {\bfseries k\+Separators\+Length} = std\+::size(k\+Separators)
+\item 
+\Hypertarget{classbase_1_1_file_path_aa01127abdbd7462d9553c30d172a1444}\label{classbase_1_1_file_path_aa01127abdbd7462d9553c30d172a1444} 
+static constexpr Char\+Type {\bfseries k\+Current\+Directory} \mbox{[}$\,$\mbox{]} = FILE\+\_\+\+PATH\+\_\+\+LITERAL("{}."{})
+\item 
+\Hypertarget{classbase_1_1_file_path_a0c4babc1478eacc10117cb3163cae582}\label{classbase_1_1_file_path_a0c4babc1478eacc10117cb3163cae582} 
+static constexpr Char\+Type {\bfseries k\+Parent\+Directory} \mbox{[}$\,$\mbox{]} = FILE\+\_\+\+PATH\+\_\+\+LITERAL("{}.."{})
+\item 
+\Hypertarget{classbase_1_1_file_path_af81774e9231d7646798ffd3a2ea1ac98}\label{classbase_1_1_file_path_af81774e9231d7646798ffd3a2ea1ac98} 
+static constexpr Char\+Type {\bfseries k\+Extension\+Separator} = FILE\+\_\+\+PATH\+\_\+\+LITERAL(\textquotesingle{}.\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classbase_1_1_file_path_a4af216c78f1e364fc4f651b1467ad05e}\index{base::FilePath@{base::FilePath}!kSeparators@{kSeparators}}
+\index{kSeparators@{kSeparators}!base::FilePath@{base::FilePath}}
+\doxysubsubsection{\texorpdfstring{kSeparators}{kSeparators}}
+{\footnotesize\ttfamily \label{classbase_1_1_file_path_a4af216c78f1e364fc4f651b1467ad05e} 
+Char\+Type base\+::\+File\+Path\+::k\+Separators\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ }
+\DoxyCodeLine{\ \ \ \ \ \ FILE\_PATH\_LITERAL(\textcolor{stringliteral}{"{}/"{}})}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/files/filepath.\+hh\item 
+src/files/filepath.\+cc\end{DoxyCompactItemize}

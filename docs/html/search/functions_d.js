@@ -1,0 +1,14 @@
+var searchData=
+[
+  ['safebasename_0',['SafeBaseName',['../classkiwi_1_1_safe_base_name.html#a4a8119436f2620a1f434b39924335ab6',1,'kiwi::SafeBaseName']]],
+  ['size_1',['size',['../classkiwi_1_1_string_ref.html#a4c83ea33a9e5c7a41ce367bfd4837767',1,'kiwi::StringRef']]],
+  ['slice_2',['slice',['../classkiwi_1_1_string_ref.html#a438b349fddc3537dd8d3af3b2123fb53',1,'kiwi::StringRef']]],
+  ['split_3',['split',['../classkiwi_1_1_string_ref.html#a7d856db9a2d0975fdee7cda62c86e3a4',1,'kiwi::StringRef::split(char Separator) const'],['../classkiwi_1_1_string_ref.html#aa879c412bcb07381edc7d32f7eb44528',1,'kiwi::StringRef::split(StringRef Separator) const'],['../classkiwi_1_1_string_ref.html#af71cefac9720895380ea7168d2d1d4fa',1,'kiwi::StringRef::split(SmallVectorImpl&lt; StringRef &gt; &amp;A, StringRef Separator, int MaxSplit=-1, bool KeepEmpty=true) const'],['../classkiwi_1_1_string_ref.html#abe76d1f6ee6d8f44296efb23ab47a908',1,'kiwi::StringRef::split(SmallVectorImpl&lt; StringRef &gt; &amp;A, char Separator, int MaxSplit=-1, bool KeepEmpty=true) const']]],
+  ['starts_5fwith_4',['starts_with',['../classkiwi_1_1_string_ref.html#ae1e3683c66100319e0fe8e5ac3b5dcbb',1,'kiwi::StringRef']]],
+  ['starts_5fwith_5finsensitive_5',['starts_with_insensitive',['../classkiwi_1_1_string_ref.html#ac39b422e13c071fa87614b7a1f90dcc7',1,'kiwi::StringRef']]],
+  ['str_6',['str',['../classkiwi_1_1_string_ref.html#a08acfd071aa09f21b66170149e3437df',1,'kiwi::StringRef']]],
+  ['strictnotnull_7',['StrictNotNull',['../classkiwi_1_1_strict_not_null.html#abbe33c146b016601603e80fb2b91f472',1,'kiwi::StrictNotNull::StrictNotNull(StrictNotNull &amp;&amp;other) noexcept(std::is_nothrow_copy_constructible&lt; T &gt;::value)=default'],['../classkiwi_1_1_strict_not_null.html#ae61ba5b38a498bfdfe1dde5ab73d3b65',1,'kiwi::StrictNotNull::StrictNotNull(std::nullptr_t)=delete']]],
+  ['stringref_8',['StringRef',['../classkiwi_1_1_string_ref.html#a2d0c38b0b5a70314f2637ca6d241560d',1,'kiwi::StringRef::StringRef()=default'],['../classkiwi_1_1_string_ref.html#a77b57130049c03d65ec279b5811722f4',1,'kiwi::StringRef::StringRef(std::nullptr_t)=delete'],['../classkiwi_1_1_string_ref.html#abe24342d628dbfcbabcfb723e4a84d12',1,'kiwi::StringRef::StringRef(char const *str)'],['../classkiwi_1_1_string_ref.html#aca816c69ad1d52035aa734971de0dbdf',1,'kiwi::StringRef::StringRef(char const *data, size_t length)'],['../classkiwi_1_1_string_ref.html#af48beffb4b475a224da1959491e9e8f0',1,'kiwi::StringRef::StringRef(std::string const &amp;str)'],['../classkiwi_1_1_string_ref.html#a1bbc68eb4afd734553598c2339fa6da1',1,'kiwi::StringRef::StringRef(std::string_view str)']]],
+  ['substr_9',['substr',['../classkiwi_1_1_string_ref.html#a477e226619a6e46ca152c778e024a5f4',1,'kiwi::StringRef']]],
+  ['swap_10',['swap',['../classkiwi_1_1fbstring__core.html#a2cc428623effb9345011f24a75c52779',1,'kiwi::fbstring_core']]]
+];

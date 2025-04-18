@@ -1,0 +1,1265 @@
+\doxysection{dense\+\_\+map.\+hh}
+\hypertarget{dense__map_8hh_source}{}\label{dense__map_8hh_source}\index{include/kiwi/adt/dense\_map.hh@{include/kiwi/adt/dense\_map.hh}}
+\mbox{\hyperlink{dense__map_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/ADT/DenseMap.h\ -\/\ Dense\ probed\ hash\ table\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <initializer\_list>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <new>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{dense__map__info_8hh}{kiwi/adt/dense\_map\_info.hh}}"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{epoch__tracker_8hh}{kiwi/util/epoch\_tracker.hh}}"{}}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT>}
+\DoxyCodeLine{00035\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_dense_map_pair}{DenseMapPair}}\ :\ \textcolor{keyword}{public}\ std::pair<KeyT,\ ValueT>\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{using\ }std::pair<KeyT,\ ValueT>::pair;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ KeyT\&\ get\_first()\ \{\ \textcolor{keywordflow}{return}\ std::pair<KeyT,\ ValueT>::first;\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{const}\ KeyT\&\ get\_first()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::pair<KeyT,\ ValueT>::first;\ \}}
+\DoxyCodeLine{00040\ \ \ ValueT\&\ get\_second()\ \{\ \textcolor{keywordflow}{return}\ std::pair<KeyT,\ ValueT>::second;\ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{const}\ ValueT\&\ get\_second()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::pair<KeyT,\ ValueT>::second;\ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \}\ \ \textcolor{comment}{//\ end\ namespace\ detail}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ KeyInfoT\ =\ \mbox{\hyperlink{structkiwi_1_1_dense_map_info}{DenseMapInfo<KeyT>}},}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Bucket\ =\ \mbox{\hyperlink{structkiwi_1_1detail_1_1_dense_map_pair}{kiwi::detail::DenseMapPair<KeyT,\ ValueT>}},}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsConst\ =\ \textcolor{keyword}{false}>}
+\DoxyCodeLine{00050\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{DenseMapIterator}};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{class\ }DenseMapBase\ :\ \textcolor{keyword}{public}\ DebugEpochBase\ \{}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{using\ }const\_arg\_type\_t\ =\ \textcolor{keyword}{typename}\ const\_pointer\_or\_const\_ref<T>::type;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ unsigned;}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{using\ }key\_type\ =\ KeyT;}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{using\ }mapped\_type\ =\ ValueT;}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ BucketT;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{DenseMapIterator<KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}};}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{DenseMapIterator<KeyT,\ ValueT,\ KeyInfoT,\ BucketT,\ true>}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{inline}\ iterator\ begin()\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ When\ the\ map\ is\ empty,\ avoid\ the\ overhead\ of\ advancing/retreating\ past}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ empty\ buckets.}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (empty())\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ end();}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ makeIterator(getBucketsEnd()\ -\/\ 1,\ getBuckets(),\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ makeIterator(getBuckets(),\ getBucketsEnd(),\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{inline}\ iterator\ end()\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ makeIterator(getBucketsEnd(),\ getBucketsEnd(),\ *\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{inline}\ const\_iterator\ begin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{if}\ (empty())\ \textcolor{keywordflow}{return}\ end();}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ makeConstIterator(getBucketsEnd()\ -\/\ 1,\ getBuckets(),\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ makeConstIterator(getBuckets(),\ getBucketsEnd(),\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{inline}\ const\_iterator\ end()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ makeConstIterator(getBucketsEnd(),\ getBucketsEnd(),\ *\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ empty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ getNumEntries()\ ==\ 0;\ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{unsigned}\ size()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ getNumEntries();\ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_aa76130952b4fc0497c71156c96814f32}{reserve}}(size\_type\ NumEntries)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{auto}\ NumBuckets\ =\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a021a01ee49681d76c7f9eefe1dd38625}{getMinBucketToReserveForEntries}}(NumEntries);}
+\DoxyCodeLine{00101\ \ \ \ \ incrementEpoch();}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (NumBuckets\ >\ getNumBuckets())\ grow(NumBuckets);}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ incrementEpoch();}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{if}\ (getNumEntries()\ ==\ 0\ \&\&\ getNumTombstones()\ ==\ 0)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{comment}{//\ If\ the\ capacity\ of\ the\ array\ is\ huge,\ and\ the\ \#\ elements\ used\ is\ small,}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//\ shrink\ the\ array.}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (getNumEntries()\ *\ 4\ <\ getNumBuckets()\ \&\&\ getNumBuckets()\ >\ 64)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ shrink\_and\_clear();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey();}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{if}\ (std::is\_trivially\_destructible<ValueT>::value)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ a\ simpler\ loop\ when\ values\ don't\ need\ destruction.}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (BucketT\ *P\ =\ getBuckets(),\ *E\ =\ getBucketsEnd();\ P\ !=\ E;\ ++P)}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ P-\/>get\_first()\ =\ EmptyKey;}
+\DoxyCodeLine{00121\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ TombstoneKey\ =\ getTombstoneKey();}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NumEntries\ =\ getNumEntries();}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (BucketT\ *P\ =\ getBuckets(),\ *E\ =\ getBucketsEnd();\ P\ !=\ E;\ ++P)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(P-\/>get\_first(),\ EmptyKey))\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(P-\/>get\_first(),\ TombstoneKey))\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ P-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/NumEntries;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ P-\/>get\_first()\ =\ EmptyKey;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ assert(NumEntries\ ==\ 0\ \&\&\ \textcolor{stringliteral}{"{}Node\ count\ imbalance!"{}});}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ (void)NumEntries;}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ setNumEntries(0);}
+\DoxyCodeLine{00137\ \ \ \ \ setNumTombstones(0);}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a879c2e65a6e96e7ffcb9779436130cb8}{contains}}(const\_arg\_type\_t<KeyT>\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ doFind(Val)\ !=\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00146\ \ \ size\_type\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_aebb7fe7e08f465230e01c2a0a2d750e1}{count}}(const\_arg\_type\_t<KeyT>\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a879c2e65a6e96e7ffcb9779436130cb8}{contains}}(Val)\ ?\ 1\ :\ 0;}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ iterator\ find(const\_arg\_type\_t<KeyT>\ Val)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{if}\ (BucketT*\ Bucket\ =\ doFind(Val))}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ makeIterator(}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ Bucket,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ end();}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ const\_iterator\ find(const\_arg\_type\_t<KeyT>\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ BucketT*\ Bucket\ =\ doFind(Val))}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ makeConstIterator(}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ Bucket,}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ end();}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LookupKeyT>}
+\DoxyCodeLine{00173\ \ \ iterator\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_afff21ada000fcb4618916dc984fae7ad}{find\_as}}(\textcolor{keyword}{const}\ LookupKeyT\&\ Val)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{if}\ (BucketT*\ Bucket\ =\ doFind(Val))}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ makeIterator(}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ Bucket,}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ end();}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LookupKeyT>}
+\DoxyCodeLine{00182\ \ \ const\_iterator\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_afff21ada000fcb4618916dc984fae7ad}{find\_as}}(\textcolor{keyword}{const}\ LookupKeyT\&\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ BucketT*\ Bucket\ =\ doFind(Val))}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ makeConstIterator(}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ Bucket,}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ end();}
+\DoxyCodeLine{00189\ \ \ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00193\ \ \ ValueT\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a118aa132b8e5caeb336228ac547d17b1}{lookup}}(const\_arg\_type\_t<KeyT>\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ BucketT*\ Bucket\ =\ doFind(Val))\ \textcolor{keywordflow}{return}\ Bucket-\/>get\_second();}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ ValueT();}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{const}\ ValueT\&\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_aead015820434aab7a6c101420e2c8dcb}{at}}(const\_arg\_type\_t<KeyT>\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{auto}\ Iter\ =\ this-\/>find(std::move(Val));}
+\DoxyCodeLine{00202\ \ \ \ \ assert(Iter\ !=\ this-\/>end()\ \&\&\ \textcolor{stringliteral}{"{}DenseMap::at\ failed\ due\ to\ a\ missing\ key"{}});}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{return}\ Iter-\/>second;}
+\DoxyCodeLine{00204\ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ Inserts\ key,value\ pair\ into\ the\ map\ if\ the\ key\ isn't\ already\ in\ the\ map.}}
+\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ already\ in\ the\ map,\ it\ returns\ false\ and\ doesn't\ update\ the}}
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//\ value.}}
+\DoxyCodeLine{00209\ \ \ std::pair<iterator,\ bool>\ insert(\textcolor{keyword}{const}\ std::pair<KeyT,\ ValueT>\&\ KV)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{return}\ try\_emplace(KV.first,\ KV.second);}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \textcolor{comment}{//\ Inserts\ key,value\ pair\ into\ the\ map\ if\ the\ key\ isn't\ already\ in\ the\ map.}}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ already\ in\ the\ map,\ it\ returns\ false\ and\ doesn't\ update\ the}}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ value.}}
+\DoxyCodeLine{00216\ \ \ std::pair<iterator,\ bool>\ insert(std::pair<KeyT,\ ValueT>\&\&\ KV)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}\ try\_emplace(std::move(KV.first),\ std::move(KV.second));}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//\ Inserts\ key,value\ pair\ into\ the\ map\ if\ the\ key\ isn't\ already\ in\ the\ map.}}
+\DoxyCodeLine{00221\ \ \ \textcolor{comment}{//\ The\ value\ is\ constructed\ in-\/place\ if\ the\ key\ is\ not\ in\ the\ map,\ otherwise}}
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//\ it\ is\ not\ moved.}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Ts>}
+\DoxyCodeLine{00224\ \ \ std::pair<iterator,\ bool>\ try\_emplace(KeyT\&\&\ Key,\ Ts\&\&...\ Args)\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ BucketT*\ TheBucket;}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{if}\ (LookupBucketFor(Key,\ TheBucket))}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ makeIterator(}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TheBucket,}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true}),}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false});\ \ \textcolor{comment}{//\ Already\ in\ map.}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{comment}{//\ Otherwise,\ insert\ the\ new\ element.}}
+\DoxyCodeLine{00235\ \ \ \ \ TheBucket\ =}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ InsertIntoBucket(TheBucket,\ std::move(Key),\ std::forward<Ts>(Args)...);}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ makeIterator(}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ TheBucket,}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true}),}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{keyword}{true});}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{comment}{//\ Inserts\ key,value\ pair\ into\ the\ map\ if\ the\ key\ isn't\ already\ in\ the\ map.}}
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ The\ value\ is\ constructed\ in-\/place\ if\ the\ key\ is\ not\ in\ the\ map,\ otherwise}}
+\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ it\ is\ not\ moved.}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Ts>}
+\DoxyCodeLine{00249\ \ \ std::pair<iterator,\ bool>\ try\_emplace(\textcolor{keyword}{const}\ KeyT\&\ Key,\ Ts\&\&...\ Args)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ BucketT*\ TheBucket;}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordflow}{if}\ (LookupBucketFor(Key,\ TheBucket))}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ makeIterator(}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TheBucket,}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true}),}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false});\ \ \textcolor{comment}{//\ Already\ in\ map.}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{comment}{//\ Otherwise,\ insert\ the\ new\ element.}}
+\DoxyCodeLine{00260\ \ \ \ \ TheBucket\ =\ InsertIntoBucket(TheBucket,\ Key,\ std::forward<Ts>(Args)...);}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ makeIterator(}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ TheBucket,}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true}),}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{keyword}{true});}
+\DoxyCodeLine{00267\ \ \ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ LookupKeyT>}
+\DoxyCodeLine{00275\ \ \ std::pair<iterator,\ bool>\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_ae48502816f7f3685789435b28ac2c501}{insert\_as}}(std::pair<KeyT,\ ValueT>\&\&\ KV,}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LookupKeyT\&\ Val)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ BucketT*\ TheBucket;}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{if}\ (LookupBucketFor(Val,\ TheBucket))}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ makeIterator(}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TheBucket,}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true}),}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false});\ \ \textcolor{comment}{//\ Already\ in\ map.}}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{comment}{//\ Otherwise,\ insert\ the\ new\ element.}}
+\DoxyCodeLine{00287\ \ \ \ \ TheBucket\ =\ InsertIntoBucketWithLookup(TheBucket,\ std::move(KV.first),}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::move(KV.second),\ Val);}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ makeIterator(}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ TheBucket,}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ should\_reverse\_iterate<KeyT>()\ ?\ getBuckets()\ :\ getBucketsEnd(),}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this},\ \textcolor{keyword}{true}),}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \textcolor{keyword}{true});}
+\DoxyCodeLine{00295\ \ \ \}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ InputIt>}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_ae9a3aefa3581a80180a0c5693ae91efe}{insert}}(InputIt\ I,\ InputIt\ E)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ I\ !=\ E;\ ++I)\ insert(*I);}
+\DoxyCodeLine{00301\ \ \ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00304\ \ \ std::pair<iterator,\ bool>\ insert\_or\_assign(\textcolor{keyword}{const}\ KeyT\&\ Key,\ V\&\&\ Val)\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keyword}{auto}\ Ret\ =\ try\_emplace(Key,\ std::forward<V>(Val));}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Ret.second)\ Ret.first-\/>second\ =\ std::forward<V>(Val);}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordflow}{return}\ Ret;}
+\DoxyCodeLine{00308\ \ \ \}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00311\ \ \ std::pair<iterator,\ bool>\ insert\_or\_assign(KeyT\&\&\ Key,\ V\&\&\ Val)\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{auto}\ Ret\ =\ try\_emplace(std::move(Key),\ std::forward<V>(Val));}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Ret.second)\ Ret.first-\/>second\ =\ std::forward<V>(Val);}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{return}\ Ret;}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00320\ \ \ ValueT\&\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a3422646a5febc172b574b3fb0de68d73}{getOrInsertDefault}}(KeyT\&\&\ Key)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{return}\ try\_emplace(Key).first-\/>second;}
+\DoxyCodeLine{00322\ \ \ \}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00327\ \ \ ValueT\&\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_adc1edf1f07f2875cc4788cb4e8055c65}{getOrInsertDefault}}(\textcolor{keyword}{const}\ KeyT\&\ Key)\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{return}\ try\_emplace(Key).first-\/>second;}
+\DoxyCodeLine{00329\ \ \ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \textcolor{keywordtype}{bool}\ erase(\textcolor{keyword}{const}\ KeyT\&\ Val)\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ BucketT*\ TheBucket\ =\ doFind(Val);}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{if}\ (!TheBucket)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \textcolor{comment}{//\ not\ in\ map.}}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \ \ \ \ TheBucket-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00336\ \ \ \ \ TheBucket-\/>get\_first()\ =\ getTombstoneKey();}
+\DoxyCodeLine{00337\ \ \ \ \ decrementNumEntries();}
+\DoxyCodeLine{00338\ \ \ \ \ incrementNumTombstones();}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00340\ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \textcolor{keywordtype}{void}\ erase(iterator\ I)\ \{}
+\DoxyCodeLine{00342\ \ \ \ \ BucketT*\ TheBucket\ =\ \&*I;}
+\DoxyCodeLine{00343\ \ \ \ \ TheBucket-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00344\ \ \ \ \ TheBucket-\/>get\_first()\ =\ getTombstoneKey();}
+\DoxyCodeLine{00345\ \ \ \ \ decrementNumEntries();}
+\DoxyCodeLine{00346\ \ \ \ \ incrementNumTombstones();}
+\DoxyCodeLine{00347\ \ \ \}}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ value\_type\&\ FindAndConstruct(\textcolor{keyword}{const}\ KeyT\&\ Key)\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ BucketT*\ TheBucket;}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keywordflow}{if}\ (LookupBucketFor(Key,\ TheBucket))\ \textcolor{keywordflow}{return}\ *TheBucket;}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordflow}{return}\ *InsertIntoBucket(TheBucket,\ Key);}
+\DoxyCodeLine{00354\ \ \ \}}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ ValueT\&\ operator[](\textcolor{keyword}{const}\ KeyT\&\ Key)\ \{\ \textcolor{keywordflow}{return}\ FindAndConstruct(Key).second;\ \}}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ value\_type\&\ FindAndConstruct(KeyT\&\&\ Key)\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ BucketT*\ TheBucket;}
+\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keywordflow}{if}\ (LookupBucketFor(Key,\ TheBucket))\ \textcolor{keywordflow}{return}\ *TheBucket;}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordflow}{return}\ *InsertIntoBucket(TheBucket,\ std::move(Key));}
+\DoxyCodeLine{00363\ \ \ \}}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \ \ ValueT\&\ operator[](KeyT\&\&\ Key)\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keywordflow}{return}\ FindAndConstruct(std::move(Key)).second;}
+\DoxyCodeLine{00367\ \ \ \}}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00372\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a48c686ef33cb6bac5526c3fd5b3bb195}{isPointerIntoBucketsArray}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ Ptr)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordflow}{return}\ Ptr\ >=\ getBuckets()\ \&\&\ Ptr\ <\ getBucketsEnd();}
+\DoxyCodeLine{00374\ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a8dcb11e23a9632b81bbdb6029e141ff9}{getPointerIntoBucketsArray}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ getBuckets();\ \}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00382\ \ \ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \textcolor{keywordtype}{void}\ destroyAll()\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordflow}{if}\ (getNumBuckets()\ ==\ 0)\ \ \textcolor{comment}{//\ Nothing\ to\ do.}}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey(),\ TombstoneKey\ =\ getTombstoneKey();}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{keywordflow}{for}\ (BucketT\ *P\ =\ getBuckets(),\ *E\ =\ getBucketsEnd();\ P\ !=\ E;\ ++P)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(P-\/>get\_first(),\ EmptyKey)\ \&\&}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(P-\/>get\_first(),\ TombstoneKey))}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ P-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ P-\/>get\_first().\string~KeyT();}
+\DoxyCodeLine{00394\ \ \ \ \ \}}
+\DoxyCodeLine{00395\ \ \ \}}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \ \ \textcolor{keywordtype}{void}\ initEmpty()\ \{}
+\DoxyCodeLine{00398\ \ \ \ \ setNumEntries(0);}
+\DoxyCodeLine{00399\ \ \ \ \ setNumTombstones(0);}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \ \ assert((getNumBuckets()\ \&\ (getNumBuckets()\ -\/\ 1))\ ==\ 0\ \&\&}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\#\ initial\ buckets\ must\ be\ a\ power\ of\ two!"{}});}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey();}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keywordflow}{for}\ (BucketT\ *B\ =\ getBuckets(),\ *E\ =\ getBucketsEnd();\ B\ !=\ E;\ ++B)}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ ::new\ (\&B-\/>get\_first())\ KeyT(EmptyKey);}
+\DoxyCodeLine{00406\ \ \ \}}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00410\ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a021a01ee49681d76c7f9eefe1dd38625}{getMinBucketToReserveForEntries}}(\textcolor{keywordtype}{unsigned}\ NumEntries)\ \{}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{comment}{//\ Ensure\ that\ "{}NumEntries\ *\ 4\ <\ NumBuckets\ *\ 3"{}}}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordflow}{if}\ (NumEntries\ ==\ 0)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00413\ \ \ \ \ \textcolor{comment}{//\ +1\ is\ required\ because\ of\ the\ strict\ equality.}}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{comment}{//\ For\ example\ if\ NumEntries\ is\ 48,\ we\ need\ to\ return\ 401.}}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordflow}{return}\ NextPowerOf2(NumEntries\ *\ 4\ /\ 3\ +\ 1);}
+\DoxyCodeLine{00416\ \ \ \}}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \textcolor{keywordtype}{void}\ moveFromOldBuckets(BucketT*\ OldBucketsBegin,\ BucketT*\ OldBucketsEnd)\ \{}
+\DoxyCodeLine{00419\ \ \ \ \ initEmpty();}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{comment}{//\ Insert\ all\ the\ old\ elements.}}
+\DoxyCodeLine{00422\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey();}
+\DoxyCodeLine{00423\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ TombstoneKey\ =\ getTombstoneKey();}
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordflow}{for}\ (BucketT\ *B\ =\ OldBucketsBegin,\ *E\ =\ OldBucketsEnd;\ B\ !=\ E;\ ++B)\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(B-\/>get\_first(),\ EmptyKey)\ \&\&}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(B-\/>get\_first(),\ TombstoneKey))\ \{}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Insert\ the\ key/value\ into\ the\ new\ table.}}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ BucketT*\ DestBucket;}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ FoundVal\ =\ LookupBucketFor(B-\/>get\_first(),\ DestBucket);}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ (void)FoundVal;\ \ \textcolor{comment}{//\ silence\ warning.}}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ assert(!FoundVal\ \&\&\ \textcolor{stringliteral}{"{}Key\ already\ in\ new\ map?"{}});}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ DestBucket-\/>get\_first()\ =\ std::move(B-\/>get\_first());}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ ::new\ (\&DestBucket-\/>get\_second())\ ValueT(std::move(B-\/>get\_second()));}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ incrementNumEntries();}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Free\ the\ value.}}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ B-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ B-\/>get\_first().\string~KeyT();}
+\DoxyCodeLine{00440\ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \ \ template\ <typename\ OtherBaseT>}
+\DoxyCodeLine{00444\ \ \ \textcolor{keywordtype}{void}\ copyFrom(}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ const\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase}}<OtherBaseT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>\&\ other)\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ assert(\&other\ !=\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00447\ \ \ \ \ assert(getNumBuckets()\ ==\ other.getNumBuckets());}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \ \ \ \ setNumEntries(other.getNumEntries());}
+\DoxyCodeLine{00450\ \ \ \ \ setNumTombstones(other.getNumTombstones());}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ \ \ \ \ \textcolor{keywordflow}{if}\ (std::is\_trivially\_copyable<KeyT>::value\ \&\&}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ std::is\_trivially\_copyable<ValueT>::value)}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ memcpy(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(getBuckets()),\ other.getBuckets(),}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ getNumBuckets()\ *\ \textcolor{keyword}{sizeof}(BucketT));}
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ getNumBuckets();\ ++i)\ \{}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ ::new\ (\&getBuckets()[i].get\_first())}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ KeyT(other.getBuckets()[i].get\_first());}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ if\ (!KeyInfoT::isEqual(getBuckets()[i].get\_first(),\ getEmptyKey())\ \&\&}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(getBuckets()[i].get\_first(),\ getTombstoneKey()))}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ ::new\ (\&getBuckets()[i].get\_second())}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ValueT(other.getBuckets()[i].get\_second());}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00465\ \ \ \}}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ static\ \textcolor{keywordtype}{unsigned}\ getHashValue(const\ KeyT\&\ Val)\ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \textcolor{keywordflow}{return}\ KeyInfoT::getHashValue(Val);}
+\DoxyCodeLine{00469\ \ \ \}}
+\DoxyCodeLine{00470\ }
+\DoxyCodeLine{00471\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ LookupKeyT>}
+\DoxyCodeLine{00472\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ getHashValue(\textcolor{keyword}{const}\ LookupKeyT\&\ Val)\ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordflow}{return}\ KeyInfoT::getHashValue(Val);}
+\DoxyCodeLine{00474\ \ \ \}}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00476\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ KeyT\ getEmptyKey()\ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_base\_of<DenseMapBase,\ DerivedT>::value,}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Must\ pass\ the\ derived\ type\ to\ this\ template!"{}});}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keywordflow}{return}\ KeyInfoT::getEmptyKey();}
+\DoxyCodeLine{00480\ \ \ \}}
+\DoxyCodeLine{00481\ }
+\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ KeyT\ getTombstoneKey()\ \{\ \textcolor{keywordflow}{return}\ KeyInfoT::getTombstoneKey();\ \}}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00485\ \ \ iterator\ makeIterator(BucketT*\ P,\ BucketT*\ E,\ DebugEpochBase\&\ Epoch,}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ NoAdvance\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \{}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ BucketT*\ B\ =\ P\ ==\ getBucketsEnd()\ ?\ getBuckets()\ :\ P\ +\ 1;}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ iterator(B,\ E,\ Epoch,\ NoAdvance);}
+\DoxyCodeLine{00490\ \ \ \ \ \}}
+\DoxyCodeLine{00491\ \ \ \ \ \textcolor{keywordflow}{return}\ iterator(P,\ E,\ Epoch,\ NoAdvance);}
+\DoxyCodeLine{00492\ \ \ \}}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ const\_iterator\ makeConstIterator(\textcolor{keyword}{const}\ BucketT*\ P,\ \textcolor{keyword}{const}\ BucketT*\ E,}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DebugEpochBase\&\ Epoch,}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ NoAdvance\ =\ \textcolor{keyword}{false})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \{}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \textcolor{keyword}{const}\ BucketT*\ B\ =\ P\ ==\ getBucketsEnd()\ ?\ getBuckets()\ :\ P\ +\ 1;}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ const\_iterator(B,\ E,\ Epoch,\ NoAdvance);}
+\DoxyCodeLine{00500\ \ \ \ \ \}}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{return}\ const\_iterator(P,\ E,\ Epoch,\ NoAdvance);}
+\DoxyCodeLine{00502\ \ \ \}}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \ \ \textcolor{keywordtype}{unsigned}\ getNumEntries()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00505\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getNumEntries();}
+\DoxyCodeLine{00506\ \ \ \}}
+\DoxyCodeLine{00507\ }
+\DoxyCodeLine{00508\ \ \ \textcolor{keywordtype}{void}\ setNumEntries(\textcolor{keywordtype}{unsigned}\ Num)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keyword}{static\_cast<}DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>setNumEntries(Num);}
+\DoxyCodeLine{00510\ \ \ \}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \ \textcolor{keywordtype}{void}\ incrementNumEntries()\ \{\ setNumEntries(getNumEntries()\ +\ 1);\ \}}
+\DoxyCodeLine{00513\ }
+\DoxyCodeLine{00514\ \ \ \textcolor{keywordtype}{void}\ decrementNumEntries()\ \{\ setNumEntries(getNumEntries()\ -\/\ 1);\ \}}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \textcolor{keywordtype}{unsigned}\ getNumTombstones()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getNumTombstones();}
+\DoxyCodeLine{00518\ \ \ \}}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \ \ \textcolor{keywordtype}{void}\ setNumTombstones(\textcolor{keywordtype}{unsigned}\ Num)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keyword}{static\_cast<}DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>setNumTombstones(Num);}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ \textcolor{keywordtype}{void}\ incrementNumTombstones()\ \{\ setNumTombstones(getNumTombstones()\ +\ 1);\ \}}
+\DoxyCodeLine{00525\ }
+\DoxyCodeLine{00526\ \ \ \textcolor{keywordtype}{void}\ decrementNumTombstones()\ \{\ setNumTombstones(getNumTombstones()\ -\/\ 1);\ \}}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00528\ \ \ \textcolor{keyword}{const}\ BucketT*\ getBuckets()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00529\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getBuckets();}
+\DoxyCodeLine{00530\ \ \ \}}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \ BucketT*\ getBuckets()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getBuckets();\ \}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \ \ \textcolor{keywordtype}{unsigned}\ getNumBuckets()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00535\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getNumBuckets();}
+\DoxyCodeLine{00536\ \ \ \}}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \ \ BucketT*\ getBucketsEnd()\ \{\ \textcolor{keywordflow}{return}\ getBuckets()\ +\ getNumBuckets();\ \}}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \textcolor{keyword}{const}\ BucketT*\ getBucketsEnd()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keywordflow}{return}\ getBuckets()\ +\ getNumBuckets();}
+\DoxyCodeLine{00542\ \ \ \}}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \ \ \textcolor{keywordtype}{void}\ grow(\textcolor{keywordtype}{unsigned}\ AtLeast)\ \{\ \textcolor{keyword}{static\_cast<}DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>grow(AtLeast);\ \}}
+\DoxyCodeLine{00545\ }
+\DoxyCodeLine{00546\ \ \ \textcolor{keywordtype}{void}\ shrink\_and\_clear()\ \{\ \textcolor{keyword}{static\_cast<}DerivedT*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>shrink\_and\_clear();\ \}}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00548\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyArg,\ \textcolor{keyword}{typename}...\ ValueArgs>}
+\DoxyCodeLine{00549\ \ \ BucketT*\ InsertIntoBucket(BucketT*\ TheBucket,\ KeyArg\&\&\ Key,}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ValueArgs\&\&...\ Values)\ \{}
+\DoxyCodeLine{00551\ \ \ \ \ TheBucket\ =\ InsertIntoBucketImpl(Key,\ Key,\ TheBucket);}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \ \ \ \ TheBucket-\/>get\_first()\ =\ std::forward<KeyArg>(Key);}
+\DoxyCodeLine{00554\ \ \ \ \ ::new\ (\&TheBucket-\/>get\_second())\ ValueT(std::forward<ValueArgs>(Values)...);}
+\DoxyCodeLine{00555\ \ \ \ \ return\ TheBucket;}
+\DoxyCodeLine{00556\ \ \ \}}
+\DoxyCodeLine{00557\ }
+\DoxyCodeLine{00558\ \ \ template\ <typename\ LookupKeyT>}
+\DoxyCodeLine{00559\ \ \ BucketT*\ InsertIntoBucketWithLookup(BucketT*\ TheBucket,\ KeyT\&\&\ Key,}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ValueT\&\&\ Value,\ LookupKeyT\&\ Lookup)\ \{}
+\DoxyCodeLine{00561\ \ \ \ \ TheBucket\ =\ InsertIntoBucketImpl(Key,\ Lookup,\ TheBucket);}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \ \ \ \ TheBucket-\/>get\_first()\ =\ std::move(Key);}
+\DoxyCodeLine{00564\ \ \ \ \ ::new\ (\&TheBucket-\/>get\_second())\ ValueT(std::move(Value));}
+\DoxyCodeLine{00565\ \ \ \ \ return\ TheBucket;}
+\DoxyCodeLine{00566\ \ \ \}}
+\DoxyCodeLine{00567\ }
+\DoxyCodeLine{00568\ \ \ template\ <typename\ LookupKeyT>}
+\DoxyCodeLine{00569\ \ \ BucketT*\ InsertIntoBucketImpl(const\ KeyT\&\ Key,\ const\ LookupKeyT\&\ Lookup,}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BucketT*\ TheBucket)\ \{}
+\DoxyCodeLine{00571\ \ \ \ \ incrementEpoch();}
+\DoxyCodeLine{00572\ }
+\DoxyCodeLine{00573\ \ \ \ \ \textcolor{comment}{//\ If\ the\ load\ of\ the\ hash\ table\ is\ more\ than\ 3/4,\ or\ if\ fewer\ than\ 1/8\ of}}
+\DoxyCodeLine{00574\ \ \ \ \ \textcolor{comment}{//\ the\ buckets\ are\ empty\ (meaning\ that\ many\ are\ filled\ with\ tombstones),}}
+\DoxyCodeLine{00575\ \ \ \ \ \textcolor{comment}{//\ grow\ the\ table.}}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00577\ \ \ \ \ \textcolor{comment}{//\ The\ later\ case\ is\ tricky.\ \ For\ example,\ if\ we\ had\ one\ empty\ bucket\ with}}
+\DoxyCodeLine{00578\ \ \ \ \ \textcolor{comment}{//\ tons\ of\ tombstones,\ failing\ lookups\ (e.g.\ for\ insertion)\ would\ have\ to}}
+\DoxyCodeLine{00579\ \ \ \ \ \textcolor{comment}{//\ probe\ almost\ the\ entire\ table\ until\ it\ found\ the\ empty\ bucket.\ \ If\ the}}
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{comment}{//\ table\ completely\ filled\ with\ tombstones,\ no\ lookup\ would\ ever\ succeed,}}
+\DoxyCodeLine{00581\ \ \ \ \ \textcolor{comment}{//\ causing\ infinite\ loops\ in\ lookup.}}
+\DoxyCodeLine{00582\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NewNumEntries\ =\ getNumEntries()\ +\ 1;}
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NumBuckets\ =\ getNumBuckets();}
+\DoxyCodeLine{00584\ \ \ \ \ \textcolor{keywordflow}{if}\ (LLVM\_UNLIKELY(NewNumEntries\ *\ 4\ >=\ NumBuckets\ *\ 3))\ \{}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ this-\/>grow(NumBuckets\ *\ 2);}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ LookupBucketFor(Lookup,\ TheBucket);}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ NumBuckets\ =\ getNumBuckets();}
+\DoxyCodeLine{00588\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (LLVM\_UNLIKELY(NumBuckets\ -\/}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (NewNumEntries\ +\ getNumTombstones())\ <=}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NumBuckets\ /\ 8))\ \{}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ this-\/>grow(NumBuckets);}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ LookupBucketFor(Lookup,\ TheBucket);}
+\DoxyCodeLine{00593\ \ \ \ \ \}}
+\DoxyCodeLine{00594\ \ \ \ \ assert(TheBucket);}
+\DoxyCodeLine{00595\ }
+\DoxyCodeLine{00596\ \ \ \ \ \textcolor{comment}{//\ Only\ update\ the\ state\ after\ we've\ grown\ our\ bucket\ space\ appropriately}}
+\DoxyCodeLine{00597\ \ \ \ \ \textcolor{comment}{//\ so\ that\ when\ growing\ buckets\ we\ have\ self-\/consistent\ entry\ count.}}
+\DoxyCodeLine{00598\ \ \ \ \ incrementNumEntries();}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{comment}{//\ If\ we\ are\ writing\ over\ a\ tombstone,\ remember\ this.}}
+\DoxyCodeLine{00601\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey();}
+\DoxyCodeLine{00602\ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(TheBucket-\/>get\_first(),\ EmptyKey))}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ decrementNumTombstones();}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keywordflow}{return}\ TheBucket;}
+\DoxyCodeLine{00606\ \ \ \}}
+\DoxyCodeLine{00607\ }
+\DoxyCodeLine{00608\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ LookupKeyT>}
+\DoxyCodeLine{00609\ \ \ BucketT*\ doFind(\textcolor{keyword}{const}\ LookupKeyT\&\ Val)\ \{}
+\DoxyCodeLine{00610\ \ \ \ \ BucketT*\ BucketsPtr\ =\ getBuckets();}
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ NumBuckets\ =\ getNumBuckets();}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keywordflow}{if}\ (NumBuckets\ ==\ 0)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey();}
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ BucketNo\ =\ getHashValue(Val)\ \&\ (NumBuckets\ -\/\ 1);}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ ProbeAmt\ =\ 1;}
+\DoxyCodeLine{00617\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ BucketT*\ Bucket\ =\ BucketsPtr\ +\ BucketNo;}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (LLVM\_LIKELY(KeyInfoT::isEqual(Val,\ Bucket-\/>get\_first())))}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Bucket;}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (LLVM\_LIKELY(KeyInfoT::isEqual(Bucket-\/>get\_first(),\ EmptyKey)))}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00623\ }
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \textcolor{comment}{//\ Otherwise,\ it's\ a\ hash\ collision\ or\ a\ tombstone,\ continue\ quadratic}}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \textcolor{comment}{//\ probing.}}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ BucketNo\ +=\ ProbeAmt++;}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ BucketNo\ \&=\ NumBuckets\ -\/\ 1;}
+\DoxyCodeLine{00628\ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \}}
+\DoxyCodeLine{00630\ }
+\DoxyCodeLine{00631\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ LookupKeyT>}
+\DoxyCodeLine{00632\ \ \ \textcolor{keyword}{const}\ BucketT*\ doFind(\textcolor{keyword}{const}\ LookupKeyT\&\ Val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}DenseMapBase*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>doFind(Val);\ \ \textcolor{comment}{//\ NOLINT}}
+\DoxyCodeLine{00634\ \ \ \}}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00640\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ LookupKeyT>}
+\DoxyCodeLine{00641\ \ \ \textcolor{keywordtype}{bool}\ LookupBucketFor(\textcolor{keyword}{const}\ LookupKeyT\&\ Val,}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ BucketT*\&\ FoundBucket)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00643\ \ \ \ \ \textcolor{keyword}{const}\ BucketT*\ BucketsPtr\ =\ getBuckets();}
+\DoxyCodeLine{00644\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ NumBuckets\ =\ getNumBuckets();}
+\DoxyCodeLine{00645\ }
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{keywordflow}{if}\ (NumBuckets\ ==\ 0)\ \{}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ FoundBucket\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00649\ \ \ \ \ \}}
+\DoxyCodeLine{00650\ }
+\DoxyCodeLine{00651\ \ \ \ \ \textcolor{comment}{//\ FoundTombstone\ -\/\ Keep\ track\ of\ whether\ we\ find\ a\ tombstone\ while\ probing.}}
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{keyword}{const}\ BucketT*\ FoundTombstone\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00653\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ getEmptyKey();}
+\DoxyCodeLine{00654\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ TombstoneKey\ =\ getTombstoneKey();}
+\DoxyCodeLine{00655\ \ \ \ \ assert(!KeyInfoT::isEqual(Val,\ EmptyKey)\ \&\&}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(Val,\ TombstoneKey)\ \&\&}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Empty/Tombstone\ value\ shouldn't\ be\ inserted\ into\ map!"{}});}
+\DoxyCodeLine{00658\ }
+\DoxyCodeLine{00659\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ BucketNo\ =\ getHashValue(Val)\ \&\ (NumBuckets\ -\/\ 1);}
+\DoxyCodeLine{00660\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ ProbeAmt\ =\ 1;}
+\DoxyCodeLine{00661\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \textcolor{keyword}{const}\ BucketT*\ ThisBucket\ =\ BucketsPtr\ +\ BucketNo;}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \textcolor{comment}{//\ Found\ Val's\ bucket?\ \ If\ so,\ return\ it.}}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (LLVM\_LIKELY(KeyInfoT::isEqual(Val,\ ThisBucket-\/>get\_first())))\ \{}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ FoundBucket\ =\ ThisBucket;}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ we\ found\ an\ empty\ bucket,\ the\ key\ doesn't\ exist\ in\ the\ set.}}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \textcolor{comment}{//\ Insert\ it\ and\ return\ the\ default\ value.}}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (LLVM\_LIKELY(KeyInfoT::isEqual(ThisBucket-\/>get\_first(),\ EmptyKey)))\ \{}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ we've\ already\ seen\ a\ tombstone\ while\ probing,\ fill\ it\ in\ instead}}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ of\ the\ empty\ bucket\ we\ eventually\ probed\ to.}}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ FoundBucket\ =\ FoundTombstone\ ?\ FoundTombstone\ :\ ThisBucket;}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ this\ is\ a\ tombstone,\ remember\ it.\ \ If\ Val\ ends\ up\ not\ in\ the\ map,\ we}}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \textcolor{comment}{//\ prefer\ to\ return\ it\ than\ something\ that\ would\ require\ more\ probing.}}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (KeyInfoT::isEqual(ThisBucket-\/>get\_first(),\ TombstoneKey)\ \&\&}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ !FoundTombstone)}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ FoundTombstone\ =\ ThisBucket;\ \ \textcolor{comment}{//\ Remember\ the\ first\ tombstone\ found.}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \textcolor{comment}{//\ Otherwise,\ it's\ a\ hash\ collision\ or\ a\ tombstone,\ continue\ quadratic}}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \textcolor{comment}{//\ probing.}}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ BucketNo\ +=\ ProbeAmt++;}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ BucketNo\ \&=\ (NumBuckets\ -\/\ 1);}
+\DoxyCodeLine{00688\ \ \ \ \ \}}
+\DoxyCodeLine{00689\ \ \ \}}
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00691\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ LookupKeyT>}
+\DoxyCodeLine{00692\ \ \ \textcolor{keywordtype}{bool}\ LookupBucketFor(\textcolor{keyword}{const}\ LookupKeyT\&\ Val,\ BucketT*\&\ FoundBucket)\ \{}
+\DoxyCodeLine{00693\ \ \ \ \ \textcolor{keyword}{const}\ BucketT*\ ConstFoundBucket;}
+\DoxyCodeLine{00694\ \ \ \ \ \textcolor{keywordtype}{bool}\ Result\ =\ \textcolor{keyword}{const\_cast<}\textcolor{keyword}{const\ }DenseMapBase*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>LookupBucketFor(}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ Val,\ ConstFoundBucket);}
+\DoxyCodeLine{00696\ \ \ \ \ FoundBucket\ =\ \textcolor{keyword}{const\_cast<}BucketT*\textcolor{keyword}{>}(ConstFoundBucket);}
+\DoxyCodeLine{00697\ \ \ \ \ \textcolor{keywordflow}{return}\ Result;}
+\DoxyCodeLine{00698\ \ \ \}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00705\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_abf942df6d167edfadcbd4e5ceff7d3b8}{getMemorySize}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ getNumBuckets()\ *\ \textcolor{keyword}{sizeof}(BucketT);\ \}}
+\DoxyCodeLine{00706\ \};}
+\DoxyCodeLine{00707\ }
+\DoxyCodeLine{00714\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
+\DoxyCodeLine{00716\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(}
+\DoxyCodeLine{00717\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ LHS,}
+\DoxyCodeLine{00718\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ RHS)\ \{}
+\DoxyCodeLine{00719\ \ \ \textcolor{keywordflow}{if}\ (LHS.size()\ !=\ RHS.size())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00720\ }
+\DoxyCodeLine{00721\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ KV\ :\ LHS)\ \{}
+\DoxyCodeLine{00722\ \ \ \ \ \textcolor{keyword}{auto}\ I\ =\ RHS.find(KV.first);}
+\DoxyCodeLine{00723\ \ \ \ \ \textcolor{keywordflow}{if}\ (I\ ==\ RHS.end()\ ||\ I-\/>second\ !=\ KV.second)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00724\ \ \ \}}
+\DoxyCodeLine{00725\ }
+\DoxyCodeLine{00726\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00727\ \}}
+\DoxyCodeLine{00728\ }
+\DoxyCodeLine{00732\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
+\DoxyCodeLine{00734\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{dense__map_8hh_a008449c6439d3cbc96cc662630b49736}{operator!=}}(}
+\DoxyCodeLine{00735\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ LHS,}
+\DoxyCodeLine{00736\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ RHS)\ \{}
+\DoxyCodeLine{00737\ \ \ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);}
+\DoxyCodeLine{00738\ \}}
+\DoxyCodeLine{00739\ }
+\DoxyCodeLine{00740\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ KeyInfoT\ =\ DenseMapInfo<KeyT>,}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT\ =\ \mbox{\hyperlink{structkiwi_1_1detail_1_1_dense_map_pair}{kiwi::detail::DenseMapPair<KeyT,\ ValueT>}}>}
+\DoxyCodeLine{00743\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_dense_map_ac437d37bbfa55af95f431b1f44dafb11}{DenseMap}}\ :\ \textcolor{keyword}{public}\ DenseMapBase<DenseMap<KeyT,\ ValueT,\ KeyInfoT,\ BucketT>,}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>\ \{}
+\DoxyCodeLine{00745\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }DenseMapBase<\mbox{\hyperlink{classkiwi_1_1_dense_map_ac437d37bbfa55af95f431b1f44dafb11}{DenseMap}},\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>;}
+\DoxyCodeLine{00746\ }
+\DoxyCodeLine{00747\ \ \ \textcolor{comment}{//\ Lift\ some\ types\ from\ the\ dependent\ base\ class\ into\ this\ class\ for}}
+\DoxyCodeLine{00748\ \ \ \textcolor{comment}{//\ simplicity\ of\ referring\ to\ them.}}
+\DoxyCodeLine{00749\ \ \ \textcolor{keyword}{using\ }BaseT\ =\ DenseMapBase<DenseMap,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>;}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00751\ \ \ BucketT*\ Buckets;}
+\DoxyCodeLine{00752\ \ \ \textcolor{keywordtype}{unsigned}\ NumEntries;}
+\DoxyCodeLine{00753\ \ \ \textcolor{keywordtype}{unsigned}\ NumTombstones;}
+\DoxyCodeLine{00754\ \ \ \textcolor{keywordtype}{unsigned}\ NumBuckets;}
+\DoxyCodeLine{00755\ }
+\DoxyCodeLine{00756\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00759\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_ac437d37bbfa55af95f431b1f44dafb11}{DenseMap}}(\textcolor{keywordtype}{unsigned}\ InitialReserve\ =\ 0)\ \{\ init(InitialReserve);\ \}}
+\DoxyCodeLine{00760\ }
+\DoxyCodeLine{00761\ \ \ \mbox{\hyperlink{classkiwi_1_1_dense_map}{DenseMap}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map}{DenseMap}}\&\ other)\ :\ BaseT()\ \{}
+\DoxyCodeLine{00762\ \ \ \ \ init(0);}
+\DoxyCodeLine{00763\ \ \ \ \ copyFrom(other);}
+\DoxyCodeLine{00764\ \ \ \}}
+\DoxyCodeLine{00765\ }
+\DoxyCodeLine{00766\ \ \ DenseMap(DenseMap\&\&\ other)\ :\ BaseT()\ \{}
+\DoxyCodeLine{00767\ \ \ \ \ init(0);}
+\DoxyCodeLine{00768\ \ \ \ \ swap(other);}
+\DoxyCodeLine{00769\ \ \ \}}
+\DoxyCodeLine{00770\ }
+\DoxyCodeLine{00771\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ InputIt>}
+\DoxyCodeLine{00772\ \ \ DenseMap(\textcolor{keyword}{const}\ InputIt\&\ I,\ \textcolor{keyword}{const}\ InputIt\&\ E)\ \{}
+\DoxyCodeLine{00773\ \ \ \ \ init(std::distance(I,\ E));}
+\DoxyCodeLine{00774\ \ \ \ \ this-\/>insert(I,\ E);}
+\DoxyCodeLine{00775\ \ \ \}}
+\DoxyCodeLine{00776\ }
+\DoxyCodeLine{00777\ \ \ DenseMap(std::initializer\_list<typename\ BaseT::value\_type>\ Vals)\ \{}
+\DoxyCodeLine{00778\ \ \ \ \ init(Vals.size());}
+\DoxyCodeLine{00779\ \ \ \ \ this-\/>insert(Vals.begin(),\ Vals.end());}
+\DoxyCodeLine{00780\ \ \ \}}
+\DoxyCodeLine{00781\ }
+\DoxyCodeLine{00782\ \ \ \string~DenseMap()\ \{}
+\DoxyCodeLine{00783\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{00784\ \ \ \ \ deallocate\_buffer(Buckets,\ \textcolor{keyword}{sizeof}(BucketT)\ *\ NumBuckets,\ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{00785\ \ \ \}}
+\DoxyCodeLine{00786\ }
+\DoxyCodeLine{00787\ \ \ \textcolor{keywordtype}{void}\ swap(DenseMap\&\ RHS)\ \{}
+\DoxyCodeLine{00788\ \ \ \ \ this-\/>incrementEpoch();}
+\DoxyCodeLine{00789\ \ \ \ \ RHS.incrementEpoch();}
+\DoxyCodeLine{00790\ \ \ \ \ std::swap(Buckets,\ RHS.Buckets);}
+\DoxyCodeLine{00791\ \ \ \ \ std::swap(NumEntries,\ RHS.NumEntries);}
+\DoxyCodeLine{00792\ \ \ \ \ std::swap(NumTombstones,\ RHS.NumTombstones);}
+\DoxyCodeLine{00793\ \ \ \ \ std::swap(NumBuckets,\ RHS.NumBuckets);}
+\DoxyCodeLine{00794\ \ \ \}}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00796\ \ \ DenseMap\&\ operator=(\textcolor{keyword}{const}\ DenseMap\&\ other)\ \{}
+\DoxyCodeLine{00797\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&other\ !=\ \textcolor{keyword}{this})\ copyFrom(other);}
+\DoxyCodeLine{00798\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00799\ \ \ \}}
+\DoxyCodeLine{00800\ }
+\DoxyCodeLine{00801\ \ \ DenseMap\&\ operator=(DenseMap\&\&\ other)\ \{}
+\DoxyCodeLine{00802\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{00803\ \ \ \ \ deallocate\_buffer(Buckets,\ \textcolor{keyword}{sizeof}(BucketT)\ *\ NumBuckets,\ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{00804\ \ \ \ \ init(0);}
+\DoxyCodeLine{00805\ \ \ \ \ swap(other);}
+\DoxyCodeLine{00806\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00807\ \ \ \}}
+\DoxyCodeLine{00808\ }
+\DoxyCodeLine{00809\ \ \ \textcolor{keywordtype}{void}\ copyFrom(\textcolor{keyword}{const}\ DenseMap\&\ other)\ \{}
+\DoxyCodeLine{00810\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{00811\ \ \ \ \ deallocate\_buffer(Buckets,\ \textcolor{keyword}{sizeof}(BucketT)\ *\ NumBuckets,\ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{00812\ \ \ \ \ \textcolor{keywordflow}{if}\ (allocateBuckets(other.NumBuckets))\ \{}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ this-\/>BaseT::copyFrom(other);}
+\DoxyCodeLine{00814\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ NumEntries\ =\ 0;}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ NumTombstones\ =\ 0;}
+\DoxyCodeLine{00817\ \ \ \ \ \}}
+\DoxyCodeLine{00818\ \ \ \}}
+\DoxyCodeLine{00819\ }
+\DoxyCodeLine{00820\ \ \ \textcolor{keywordtype}{void}\ init(\textcolor{keywordtype}{unsigned}\ InitNumEntries)\ \{}
+\DoxyCodeLine{00821\ \ \ \ \ \textcolor{keyword}{auto}\ InitBuckets\ =\ BaseT::getMinBucketToReserveForEntries(InitNumEntries);}
+\DoxyCodeLine{00822\ \ \ \ \ \textcolor{keywordflow}{if}\ (allocateBuckets(InitBuckets))\ \{}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ this-\/>BaseT::initEmpty();}
+\DoxyCodeLine{00824\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ NumEntries\ =\ 0;}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ NumTombstones\ =\ 0;}
+\DoxyCodeLine{00827\ \ \ \ \ \}}
+\DoxyCodeLine{00828\ \ \ \}}
+\DoxyCodeLine{00829\ }
+\DoxyCodeLine{00830\ \ \ \textcolor{keywordtype}{void}\ grow(\textcolor{keywordtype}{unsigned}\ AtLeast)\ \{}
+\DoxyCodeLine{00831\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ OldNumBuckets\ =\ NumBuckets;}
+\DoxyCodeLine{00832\ \ \ \ \ BucketT*\ OldBuckets\ =\ Buckets;}
+\DoxyCodeLine{00833\ }
+\DoxyCodeLine{00834\ \ \ \ \ allocateBuckets(std::max<unsigned>(}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \ \ 64,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\textcolor{keyword}{>}(NextPowerOf2(AtLeast\ -\/\ 1))));}
+\DoxyCodeLine{00836\ \ \ \ \ assert(Buckets);}
+\DoxyCodeLine{00837\ \ \ \ \ \textcolor{keywordflow}{if}\ (!OldBuckets)\ \{}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ this-\/>BaseT::initEmpty();}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00840\ \ \ \ \ \}}
+\DoxyCodeLine{00841\ }
+\DoxyCodeLine{00842\ \ \ \ \ this-\/>moveFromOldBuckets(OldBuckets,\ OldBuckets\ +\ OldNumBuckets);}
+\DoxyCodeLine{00843\ }
+\DoxyCodeLine{00844\ \ \ \ \ \textcolor{comment}{//\ Free\ the\ old\ table.}}
+\DoxyCodeLine{00845\ \ \ \ \ deallocate\_buffer(OldBuckets,\ \textcolor{keyword}{sizeof}(BucketT)\ *\ OldNumBuckets,}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{00847\ \ \ \}}
+\DoxyCodeLine{00848\ }
+\DoxyCodeLine{00849\ \ \ \textcolor{keywordtype}{void}\ shrink\_and\_clear()\ \{}
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ OldNumBuckets\ =\ NumBuckets;}
+\DoxyCodeLine{00851\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ OldNumEntries\ =\ NumEntries;}
+\DoxyCodeLine{00852\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{00853\ }
+\DoxyCodeLine{00854\ \ \ \ \ \textcolor{comment}{//\ Reduce\ the\ number\ of\ buckets.}}
+\DoxyCodeLine{00855\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NewNumBuckets\ =\ 0;}
+\DoxyCodeLine{00856\ \ \ \ \ \textcolor{keywordflow}{if}\ (OldNumEntries)}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ NewNumBuckets\ =\ std::max(64,\ 1\ <<\ (Log2\_32\_Ceil(OldNumEntries)\ +\ 1));}
+\DoxyCodeLine{00858\ \ \ \ \ \textcolor{keywordflow}{if}\ (NewNumBuckets\ ==\ NumBuckets)\ \{}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ this-\/>BaseT::initEmpty();}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00861\ \ \ \ \ \}}
+\DoxyCodeLine{00862\ }
+\DoxyCodeLine{00863\ \ \ \ \ deallocate\_buffer(Buckets,\ \textcolor{keyword}{sizeof}(BucketT)\ *\ OldNumBuckets,}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{00865\ \ \ \ \ init(NewNumBuckets);}
+\DoxyCodeLine{00866\ \ \ \}}
+\DoxyCodeLine{00867\ }
+\DoxyCodeLine{00868\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00869\ \ \ \textcolor{keywordtype}{unsigned}\ getNumEntries()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ NumEntries;\ \}}
+\DoxyCodeLine{00870\ }
+\DoxyCodeLine{00871\ \ \ \textcolor{keywordtype}{void}\ setNumEntries(\textcolor{keywordtype}{unsigned}\ Num)\ \{\ NumEntries\ =\ Num;\ \}}
+\DoxyCodeLine{00872\ }
+\DoxyCodeLine{00873\ \ \ \textcolor{keywordtype}{unsigned}\ getNumTombstones()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ NumTombstones;\ \}}
+\DoxyCodeLine{00874\ }
+\DoxyCodeLine{00875\ \ \ \textcolor{keywordtype}{void}\ setNumTombstones(\textcolor{keywordtype}{unsigned}\ Num)\ \{\ NumTombstones\ =\ Num;\ \}}
+\DoxyCodeLine{00876\ }
+\DoxyCodeLine{00877\ \ \ BucketT*\ getBuckets()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Buckets;\ \}}
+\DoxyCodeLine{00878\ }
+\DoxyCodeLine{00879\ \ \ \textcolor{keywordtype}{unsigned}\ getNumBuckets()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ NumBuckets;\ \}}
+\DoxyCodeLine{00880\ }
+\DoxyCodeLine{00881\ \ \ \textcolor{keywordtype}{bool}\ allocateBuckets(\textcolor{keywordtype}{unsigned}\ Num)\ \{}
+\DoxyCodeLine{00882\ \ \ \ \ NumBuckets\ =\ Num;}
+\DoxyCodeLine{00883\ \ \ \ \ \textcolor{keywordflow}{if}\ (NumBuckets\ ==\ 0)\ \{}
+\DoxyCodeLine{00884\ \ \ \ \ \ \ Buckets\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00885\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00886\ \ \ \ \ \}}
+\DoxyCodeLine{00887\ }
+\DoxyCodeLine{00888\ \ \ \ \ Buckets\ =\ \textcolor{keyword}{static\_cast<}BucketT*\textcolor{keyword}{>}(}
+\DoxyCodeLine{00889\ \ \ \ \ \ \ \ \ allocate\_buffer(\textcolor{keyword}{sizeof}(BucketT)\ *\ NumBuckets,\ \textcolor{keyword}{alignof}(BucketT)));}
+\DoxyCodeLine{00890\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00891\ \ \ \}}
+\DoxyCodeLine{00892\ \};}
+\DoxyCodeLine{00893\ }
+\DoxyCodeLine{00894\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keywordtype}{unsigned}\ InlineBuckets\ =\ 4,}
+\DoxyCodeLine{00895\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ KeyInfoT\ =\ DenseMapInfo<KeyT>,}
+\DoxyCodeLine{00896\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT\ =\ kiwi::detail::DenseMapPair<KeyT,\ ValueT>>}
+\DoxyCodeLine{00897\ \textcolor{keyword}{class\ }SmallDenseMap}
+\DoxyCodeLine{00898\ \ \ \ \ :\ \textcolor{keyword}{public}\ DenseMapBase<}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \ \ \ \ SmallDenseMap<KeyT,\ ValueT,\ InlineBuckets,\ KeyInfoT,\ BucketT>,\ KeyT,}
+\DoxyCodeLine{00900\ \ \ \ \ \ \ \ \ \ \ ValueT,\ KeyInfoT,\ BucketT>\ \{}
+\DoxyCodeLine{00901\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }DenseMapBase<SmallDenseMap,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>;}
+\DoxyCodeLine{00902\ }
+\DoxyCodeLine{00903\ \ \ \textcolor{comment}{//\ Lift\ some\ types\ from\ the\ dependent\ base\ class\ into\ this\ class\ for}}
+\DoxyCodeLine{00904\ \ \ \textcolor{comment}{//\ simplicity\ of\ referring\ to\ them.}}
+\DoxyCodeLine{00905\ \ \ \textcolor{keyword}{using\ }BaseT\ =\ DenseMapBase<SmallDenseMap,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>;}
+\DoxyCodeLine{00906\ }
+\DoxyCodeLine{00907\ \ \ \textcolor{keyword}{static\_assert}(isPowerOf2\_64(InlineBuckets),}
+\DoxyCodeLine{00908\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}InlineBuckets\ must\ be\ a\ power\ of\ 2."{}});}
+\DoxyCodeLine{00909\ }
+\DoxyCodeLine{00910\ \ \ \textcolor{keywordtype}{unsigned}\ Small\ :\ 1;}
+\DoxyCodeLine{00911\ \ \ \textcolor{keywordtype}{unsigned}\ NumEntries\ :\ 31;}
+\DoxyCodeLine{00912\ \ \ \textcolor{keywordtype}{unsigned}\ NumTombstones;}
+\DoxyCodeLine{00913\ }
+\DoxyCodeLine{00914\ \ \ \textcolor{keyword}{struct\ }LargeRep\ \{}
+\DoxyCodeLine{00915\ \ \ \ \ BucketT*\ Buckets;}
+\DoxyCodeLine{00916\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NumBuckets;}
+\DoxyCodeLine{00917\ \ \ \};}
+\DoxyCodeLine{00918\ }
+\DoxyCodeLine{00921\ \ \ AlignedCharArrayUnion<BucketT[InlineBuckets],\ LargeRep>\ storage;}
+\DoxyCodeLine{00922\ }
+\DoxyCodeLine{00923\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00924\ \ \ \textcolor{keyword}{explicit}\ SmallDenseMap(\textcolor{keywordtype}{unsigned}\ NumInitBuckets\ =\ 0)\ \{}
+\DoxyCodeLine{00925\ \ \ \ \ \textcolor{keywordflow}{if}\ (NumInitBuckets\ >\ InlineBuckets)}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ NumInitBuckets\ =\ llvm::bit\_ceil(NumInitBuckets);}
+\DoxyCodeLine{00927\ \ \ \ \ init(NumInitBuckets);}
+\DoxyCodeLine{00928\ \ \ \}}
+\DoxyCodeLine{00929\ }
+\DoxyCodeLine{00930\ \ \ SmallDenseMap(\textcolor{keyword}{const}\ SmallDenseMap\&\ other)\ :\ BaseT()\ \{}
+\DoxyCodeLine{00931\ \ \ \ \ init(0);}
+\DoxyCodeLine{00932\ \ \ \ \ copyFrom(other);}
+\DoxyCodeLine{00933\ \ \ \}}
+\DoxyCodeLine{00934\ }
+\DoxyCodeLine{00935\ \ \ SmallDenseMap(SmallDenseMap\&\&\ other)\ :\ BaseT()\ \{}
+\DoxyCodeLine{00936\ \ \ \ \ init(0);}
+\DoxyCodeLine{00937\ \ \ \ \ swap(other);}
+\DoxyCodeLine{00938\ \ \ \}}
+\DoxyCodeLine{00939\ }
+\DoxyCodeLine{00940\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ InputIt>}
+\DoxyCodeLine{00941\ \ \ SmallDenseMap(\textcolor{keyword}{const}\ InputIt\&\ I,\ \textcolor{keyword}{const}\ InputIt\&\ E)\ \{}
+\DoxyCodeLine{00942\ \ \ \ \ init(NextPowerOf2(std::distance(I,\ E)));}
+\DoxyCodeLine{00943\ \ \ \ \ this-\/>insert(I,\ E);}
+\DoxyCodeLine{00944\ \ \ \}}
+\DoxyCodeLine{00945\ }
+\DoxyCodeLine{00946\ \ \ SmallDenseMap(std::initializer\_list<typename\ BaseT::value\_type>\ Vals)}
+\DoxyCodeLine{00947\ \ \ \ \ \ \ :\ SmallDenseMap(Vals.begin(),\ Vals.end())\ \{\}}
+\DoxyCodeLine{00948\ }
+\DoxyCodeLine{00949\ \ \ \string~SmallDenseMap()\ \{}
+\DoxyCodeLine{00950\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{00951\ \ \ \ \ deallocateBuckets();}
+\DoxyCodeLine{00952\ \ \ \}}
+\DoxyCodeLine{00953\ }
+\DoxyCodeLine{00954\ \ \ \textcolor{keywordtype}{void}\ swap(SmallDenseMap\&\ RHS)\ \{}
+\DoxyCodeLine{00955\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ TmpNumEntries\ =\ RHS.NumEntries;}
+\DoxyCodeLine{00956\ \ \ \ \ RHS.NumEntries\ =\ NumEntries;}
+\DoxyCodeLine{00957\ \ \ \ \ NumEntries\ =\ TmpNumEntries;}
+\DoxyCodeLine{00958\ \ \ \ \ std::swap(NumTombstones,\ RHS.NumTombstones);}
+\DoxyCodeLine{00959\ }
+\DoxyCodeLine{00960\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ this-\/>getEmptyKey();}
+\DoxyCodeLine{00961\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ TombstoneKey\ =\ this-\/>getTombstoneKey();}
+\DoxyCodeLine{00962\ \ \ \ \ \textcolor{keywordflow}{if}\ (Small\ \&\&\ RHS.Small)\ \{}
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ we're\ swapping\ inline\ bucket\ arrays,\ we\ have\ to\ cope\ with\ some\ of}}
+\DoxyCodeLine{00964\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ tricky\ bits\ of\ DenseMap's\ storage\ system:\ the\ buckets\ are\ not}}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \textcolor{comment}{//\ fully\ initialized.\ Thus\ we\ swap\ every\ key,\ but\ we\ may\ have}}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \textcolor{comment}{//\ a\ one-\/directional\ move\ of\ the\ value.}}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ i\ =\ 0,\ e\ =\ InlineBuckets;\ i\ !=\ e;\ ++i)\ \{}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \ \ BucketT\ *LHSB\ =\ \&getInlineBuckets()[i],}
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *RHSB\ =\ \&RHS.getInlineBuckets()[i];}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ hasLHSValue\ =}
+\DoxyCodeLine{00971\ \ \ \ \ \ \ \ \ \ \ \ \ (!KeyInfoT::isEqual(LHSB-\/>get\_first(),\ EmptyKey)\ \&\&}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(LHSB-\/>get\_first(),\ TombstoneKey));}
+\DoxyCodeLine{00973\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ hasRHSValue\ =}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ \ \ \ \ \ \ (!KeyInfoT::isEqual(RHSB-\/>get\_first(),\ EmptyKey)\ \&\&}
+\DoxyCodeLine{00975\ \ \ \ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(RHSB-\/>get\_first(),\ TombstoneKey));}
+\DoxyCodeLine{00976\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hasLHSValue\ \&\&\ hasRHSValue)\ \{}
+\DoxyCodeLine{00977\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Swap\ together\ if\ we\ can...}}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \ \ \ \ std::swap(*LHSB,\ *RHSB);}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Swap\ separately\ and\ handle\ any\ asymmetry.}}
+\DoxyCodeLine{00982\ \ \ \ \ \ \ \ \ std::swap(LHSB-\/>get\_first(),\ RHSB-\/>get\_first());}
+\DoxyCodeLine{00983\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hasLHSValue)\ \{}
+\DoxyCodeLine{00984\ \ \ \ \ \ \ \ \ \ \ ::new\ (\&RHSB-\/>get\_second())\ ValueT(std::move(LHSB-\/>get\_second()));}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \ \ \ \ LHSB-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (hasRHSValue)\ \{}
+\DoxyCodeLine{00987\ \ \ \ \ \ \ \ \ \ \ ::new\ (\&LHSB-\/>get\_second())\ ValueT(std::move(RHSB-\/>get\_second()));}
+\DoxyCodeLine{00988\ \ \ \ \ \ \ \ \ \ \ RHSB-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{00989\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00992\ \ \ \ \ \}}
+\DoxyCodeLine{00993\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Small\ \&\&\ !RHS.Small)\ \{}
+\DoxyCodeLine{00994\ \ \ \ \ \ \ std::swap(getLargeRep()-\/>Buckets,\ RHS.getLargeRep()-\/>Buckets);}
+\DoxyCodeLine{00995\ \ \ \ \ \ \ std::swap(getLargeRep()-\/>NumBuckets,\ RHS.getLargeRep()-\/>NumBuckets);}
+\DoxyCodeLine{00996\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00997\ \ \ \ \ \}}
+\DoxyCodeLine{00998\ }
+\DoxyCodeLine{00999\ \ \ \ \ SmallDenseMap\&\ SmallSide\ =\ Small\ ?\ *this\ :\ RHS;}
+\DoxyCodeLine{01000\ \ \ \ \ SmallDenseMap\&\ LargeSide\ =\ Small\ ?\ RHS\ :\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{01001\ }
+\DoxyCodeLine{01002\ \ \ \ \ \textcolor{comment}{//\ First\ stash\ the\ large\ side's\ rep\ and\ move\ the\ small\ side\ across.}}
+\DoxyCodeLine{01003\ \ \ \ \ LargeRep\ TmpRep\ =\ std::move(*LargeSide.getLargeRep());}
+\DoxyCodeLine{01004\ \ \ \ \ LargeSide.getLargeRep()-\/>\string~LargeRep();}
+\DoxyCodeLine{01005\ \ \ \ \ LargeSide.Small\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01006\ \ \ \ \ \textcolor{comment}{//\ This\ is\ similar\ to\ the\ standard\ move-\/from-\/old-\/buckets,\ but\ the\ bucket}}
+\DoxyCodeLine{01007\ \ \ \ \ \textcolor{comment}{//\ count\ hasn't\ actually\ rotated\ in\ this\ case.\ So\ we\ have\ to\ carefully}}
+\DoxyCodeLine{01008\ \ \ \ \ \textcolor{comment}{//\ move\ construct\ the\ keys\ and\ values\ into\ their\ new\ locations,\ but\ there}}
+\DoxyCodeLine{01009\ \ \ \ \ \textcolor{comment}{//\ is\ no\ need\ to\ re-\/hash\ things.}}
+\DoxyCodeLine{01010\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ i\ =\ 0,\ e\ =\ InlineBuckets;\ i\ !=\ e;\ ++i)\ \{}
+\DoxyCodeLine{01011\ \ \ \ \ \ \ BucketT\ *NewB\ =\ \&LargeSide.getInlineBuckets()[i],}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *OldB\ =\ \&SmallSide.getInlineBuckets()[i];}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ ::new\ (\&NewB-\/>get\_first())\ KeyT(std::move(OldB-\/>get\_first()));}
+\DoxyCodeLine{01014\ \ \ \ \ \ \ OldB-\/>get\_first().\string~KeyT();}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(NewB-\/>get\_first(),\ EmptyKey)\ \&\&}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(NewB-\/>get\_first(),\ TombstoneKey))\ \{}
+\DoxyCodeLine{01017\ \ \ \ \ \ \ \ \ ::new\ (\&NewB-\/>get\_second())\ ValueT(std::move(OldB-\/>get\_second()));}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ OldB-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01020\ \ \ \ \ \}}
+\DoxyCodeLine{01021\ }
+\DoxyCodeLine{01022\ \ \ \ \ \textcolor{comment}{//\ The\ hard\ part\ of\ moving\ the\ small\ buckets\ across\ is\ done,\ just\ move}}
+\DoxyCodeLine{01023\ \ \ \ \ \textcolor{comment}{//\ the\ TmpRep\ into\ its\ new\ home.}}
+\DoxyCodeLine{01024\ \ \ \ \ SmallSide.Small\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01025\ \ \ \ \ \textcolor{keyword}{new}\ (SmallSide.getLargeRep())\ LargeRep(std::move(TmpRep));}
+\DoxyCodeLine{01026\ \ \ \}}
+\DoxyCodeLine{01027\ }
+\DoxyCodeLine{01028\ \ \ SmallDenseMap\&\ operator=(\textcolor{keyword}{const}\ SmallDenseMap\&\ other)\ \{}
+\DoxyCodeLine{01029\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&other\ !=\ \textcolor{keyword}{this})\ copyFrom(other);}
+\DoxyCodeLine{01030\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{01031\ \ \ \}}
+\DoxyCodeLine{01032\ }
+\DoxyCodeLine{01033\ \ \ SmallDenseMap\&\ operator=(SmallDenseMap\&\&\ other)\ \{}
+\DoxyCodeLine{01034\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{01035\ \ \ \ \ deallocateBuckets();}
+\DoxyCodeLine{01036\ \ \ \ \ init(0);}
+\DoxyCodeLine{01037\ \ \ \ \ swap(other);}
+\DoxyCodeLine{01038\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{01039\ \ \ \}}
+\DoxyCodeLine{01040\ }
+\DoxyCodeLine{01041\ \ \ \textcolor{keywordtype}{void}\ copyFrom(\textcolor{keyword}{const}\ SmallDenseMap\&\ other)\ \{}
+\DoxyCodeLine{01042\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{01043\ \ \ \ \ deallocateBuckets();}
+\DoxyCodeLine{01044\ \ \ \ \ Small\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01045\ \ \ \ \ \textcolor{keywordflow}{if}\ (other.getNumBuckets()\ >\ InlineBuckets)\ \{}
+\DoxyCodeLine{01046\ \ \ \ \ \ \ Small\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01047\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (getLargeRep())\ LargeRep(allocateBuckets(other.getNumBuckets()));}
+\DoxyCodeLine{01048\ \ \ \ \ \}}
+\DoxyCodeLine{01049\ \ \ \ \ this-\/>BaseT::copyFrom(other);}
+\DoxyCodeLine{01050\ \ \ \}}
+\DoxyCodeLine{01051\ }
+\DoxyCodeLine{01052\ \ \ \textcolor{keywordtype}{void}\ init(\textcolor{keywordtype}{unsigned}\ InitBuckets)\ \{}
+\DoxyCodeLine{01053\ \ \ \ \ Small\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01054\ \ \ \ \ \textcolor{keywordflow}{if}\ (InitBuckets\ >\ InlineBuckets)\ \{}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ Small\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01056\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (getLargeRep())\ LargeRep(allocateBuckets(InitBuckets));}
+\DoxyCodeLine{01057\ \ \ \ \ \}}
+\DoxyCodeLine{01058\ \ \ \ \ this-\/>BaseT::initEmpty();}
+\DoxyCodeLine{01059\ \ \ \}}
+\DoxyCodeLine{01060\ }
+\DoxyCodeLine{01061\ \ \ \textcolor{keywordtype}{void}\ grow(\textcolor{keywordtype}{unsigned}\ AtLeast)\ \{}
+\DoxyCodeLine{01062\ \ \ \ \ \textcolor{keywordflow}{if}\ (AtLeast\ >\ InlineBuckets)}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ AtLeast\ =\ std::max<unsigned>(64,\ NextPowerOf2(AtLeast\ -\/\ 1));}
+\DoxyCodeLine{01064\ }
+\DoxyCodeLine{01065\ \ \ \ \ \textcolor{keywordflow}{if}\ (Small)\ \{}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \textcolor{comment}{//\ First\ move\ the\ inline\ buckets\ into\ a\ temporary\ storage.}}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ AlignedCharArrayUnion<BucketT[InlineBuckets]>\ TmpStorage;}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ BucketT*\ TmpBegin\ =\ \textcolor{keyword}{reinterpret\_cast<}BucketT*\textcolor{keyword}{>}(\&TmpStorage);}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ BucketT*\ TmpEnd\ =\ TmpBegin;}
+\DoxyCodeLine{01070\ }
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \textcolor{comment}{//\ Loop\ over\ the\ buckets,\ moving\ non-\/empty,\ non-\/tombstones\ into\ the}}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ \textcolor{comment}{//\ temporary\ storage.\ Have\ the\ loop\ move\ the\ TmpEnd\ forward\ as\ it\ goes.}}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ EmptyKey\ =\ this-\/>getEmptyKey();}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ TombstoneKey\ =\ this-\/>getTombstoneKey();}
+\DoxyCodeLine{01075\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (BucketT\ *P\ =\ getBuckets(),\ *E\ =\ P\ +\ InlineBuckets;\ P\ !=\ E;\ ++P)\ \{}
+\DoxyCodeLine{01076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!KeyInfoT::isEqual(P-\/>get\_first(),\ EmptyKey)\ \&\&}
+\DoxyCodeLine{01077\ \ \ \ \ \ \ \ \ \ \ \ \ !KeyInfoT::isEqual(P-\/>get\_first(),\ TombstoneKey))\ \{}
+\DoxyCodeLine{01078\ \ \ \ \ \ \ \ \ \ \ assert(\textcolor{keywordtype}{size\_t}(TmpEnd\ -\/\ TmpBegin)\ <\ InlineBuckets\ \&\&}
+\DoxyCodeLine{01079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Too\ many\ inline\ buckets!"{}});}
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ ::new\ (\&TmpEnd-\/>get\_first())\ KeyT(std::move(P-\/>get\_first()));}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ \ \ ::new\ (\&TmpEnd-\/>get\_second())\ ValueT(std::move(P-\/>get\_second()));}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \ \ ++TmpEnd;}
+\DoxyCodeLine{01083\ \ \ \ \ \ \ \ \ \ \ P-\/>get\_second().\string~ValueT();}
+\DoxyCodeLine{01084\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ P-\/>get\_first().\string~KeyT();}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01087\ }
+\DoxyCodeLine{01088\ \ \ \ \ \ \ \textcolor{comment}{//\ AtLeast\ ==\ InlineBuckets\ can\ happen\ if\ there\ are\ many\ tombstones,}}
+\DoxyCodeLine{01089\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ grow()\ is\ used\ to\ remove\ them.\ Usually\ we\ always\ switch\ to\ the}}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ \textcolor{comment}{//\ large\ rep\ here.}}
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtLeast\ >\ InlineBuckets)\ \{}
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ Small\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ (getLargeRep())\ LargeRep(allocateBuckets(AtLeast));}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ this-\/>moveFromOldBuckets(TmpBegin,\ TmpEnd);}
+\DoxyCodeLine{01096\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01097\ \ \ \ \ \}}
+\DoxyCodeLine{01098\ }
+\DoxyCodeLine{01099\ \ \ \ \ LargeRep\ OldRep\ =\ std::move(*getLargeRep());}
+\DoxyCodeLine{01100\ \ \ \ \ getLargeRep()-\/>\string~LargeRep();}
+\DoxyCodeLine{01101\ \ \ \ \ \textcolor{keywordflow}{if}\ (AtLeast\ <=\ InlineBuckets)\ \{}
+\DoxyCodeLine{01102\ \ \ \ \ \ \ Small\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01103\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01104\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (getLargeRep())\ LargeRep(allocateBuckets(AtLeast));}
+\DoxyCodeLine{01105\ \ \ \ \ \}}
+\DoxyCodeLine{01106\ }
+\DoxyCodeLine{01107\ \ \ \ \ this-\/>moveFromOldBuckets(OldRep.Buckets,}
+\DoxyCodeLine{01108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ OldRep.Buckets\ +\ OldRep.NumBuckets);}
+\DoxyCodeLine{01109\ }
+\DoxyCodeLine{01110\ \ \ \ \ \textcolor{comment}{//\ Free\ the\ old\ table.}}
+\DoxyCodeLine{01111\ \ \ \ \ deallocate\_buffer(OldRep.Buckets,\ \textcolor{keyword}{sizeof}(BucketT)\ *\ OldRep.NumBuckets,}
+\DoxyCodeLine{01112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{01113\ \ \ \}}
+\DoxyCodeLine{01114\ }
+\DoxyCodeLine{01115\ \ \ \textcolor{keywordtype}{void}\ shrink\_and\_clear()\ \{}
+\DoxyCodeLine{01116\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ OldSize\ =\ this-\/>size();}
+\DoxyCodeLine{01117\ \ \ \ \ this-\/>destroyAll();}
+\DoxyCodeLine{01118\ }
+\DoxyCodeLine{01119\ \ \ \ \ \textcolor{comment}{//\ Reduce\ the\ number\ of\ buckets.}}
+\DoxyCodeLine{01120\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NewNumBuckets\ =\ 0;}
+\DoxyCodeLine{01121\ \ \ \ \ \textcolor{keywordflow}{if}\ (OldSize)\ \{}
+\DoxyCodeLine{01122\ \ \ \ \ \ \ NewNumBuckets\ =\ 1\ <<\ (Log2\_32\_Ceil(OldSize)\ +\ 1);}
+\DoxyCodeLine{01123\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NewNumBuckets\ >\ InlineBuckets\ \&\&\ NewNumBuckets\ <\ 64u)}
+\DoxyCodeLine{01124\ \ \ \ \ \ \ \ \ NewNumBuckets\ =\ 64;}
+\DoxyCodeLine{01125\ \ \ \ \ \}}
+\DoxyCodeLine{01126\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Small\ \&\&\ NewNumBuckets\ <=\ InlineBuckets)\ ||}
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \ \ (!Small\ \&\&\ NewNumBuckets\ ==\ getLargeRep()-\/>NumBuckets))\ \{}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ this-\/>BaseT::initEmpty();}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01130\ \ \ \ \ \}}
+\DoxyCodeLine{01131\ }
+\DoxyCodeLine{01132\ \ \ \ \ deallocateBuckets();}
+\DoxyCodeLine{01133\ \ \ \ \ init(NewNumBuckets);}
+\DoxyCodeLine{01134\ \ \ \}}
+\DoxyCodeLine{01135\ }
+\DoxyCodeLine{01136\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01137\ \ \ \textcolor{keywordtype}{unsigned}\ getNumEntries()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ NumEntries;\ \}}
+\DoxyCodeLine{01138\ }
+\DoxyCodeLine{01139\ \ \ \textcolor{keywordtype}{void}\ setNumEntries(\textcolor{keywordtype}{unsigned}\ Num)\ \{}
+\DoxyCodeLine{01140\ \ \ \ \ \textcolor{comment}{//\ NumEntries\ is\ hardcoded\ to\ be\ 31\ bits\ wide.}}
+\DoxyCodeLine{01141\ \ \ \ \ assert(Num\ <\ (1U\ <<\ 31)\ \&\&\ \textcolor{stringliteral}{"{}Cannot\ support\ more\ than\ 1<<31\ entries"{}});}
+\DoxyCodeLine{01142\ \ \ \ \ NumEntries\ =\ Num;}
+\DoxyCodeLine{01143\ \ \ \}}
+\DoxyCodeLine{01144\ }
+\DoxyCodeLine{01145\ \ \ \textcolor{keywordtype}{unsigned}\ getNumTombstones()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ NumTombstones;\ \}}
+\DoxyCodeLine{01146\ }
+\DoxyCodeLine{01147\ \ \ \textcolor{keywordtype}{void}\ setNumTombstones(\textcolor{keywordtype}{unsigned}\ Num)\ \{\ NumTombstones\ =\ Num;\ \}}
+\DoxyCodeLine{01148\ }
+\DoxyCodeLine{01149\ \ \ \textcolor{keyword}{const}\ BucketT*\ getInlineBuckets()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01150\ \ \ \ \ assert(Small);}
+\DoxyCodeLine{01151\ \ \ \ \ \textcolor{comment}{//\ Note\ that\ this\ cast\ does\ not\ violate\ aliasing\ rules\ as\ we\ assert\ that}}
+\DoxyCodeLine{01152\ \ \ \ \ \textcolor{comment}{//\ the\ memory's\ dynamic\ type\ is\ the\ small,\ inline\ bucket\ buffer,\ and\ the}}
+\DoxyCodeLine{01153\ \ \ \ \ \textcolor{comment}{//\ 'storage'\ is\ a\ POD\ containing\ a\ char\ buffer.}}
+\DoxyCodeLine{01154\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }BucketT*\textcolor{keyword}{>}(\&storage);}
+\DoxyCodeLine{01155\ \ \ \}}
+\DoxyCodeLine{01156\ }
+\DoxyCodeLine{01157\ \ \ BucketT*\ getInlineBuckets()\ \{}
+\DoxyCodeLine{01158\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}BucketT*\textcolor{keyword}{>}(}
+\DoxyCodeLine{01159\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const\_cast<}\textcolor{keyword}{const\ }SmallDenseMap*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getInlineBuckets());}
+\DoxyCodeLine{01160\ \ \ \}}
+\DoxyCodeLine{01161\ }
+\DoxyCodeLine{01162\ \ \ \textcolor{keyword}{const}\ LargeRep*\ getLargeRep()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01163\ \ \ \ \ assert(!Small);}
+\DoxyCodeLine{01164\ \ \ \ \ \textcolor{comment}{//\ Note,\ same\ rule\ about\ aliasing\ as\ with\ getInlineBuckets.}}
+\DoxyCodeLine{01165\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }LargeRep*\textcolor{keyword}{>}(\&storage);}
+\DoxyCodeLine{01166\ \ \ \}}
+\DoxyCodeLine{01167\ }
+\DoxyCodeLine{01168\ \ \ LargeRep*\ getLargeRep()\ \{}
+\DoxyCodeLine{01169\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}LargeRep*\textcolor{keyword}{>}(}
+\DoxyCodeLine{01170\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const\_cast<}\textcolor{keyword}{const\ }SmallDenseMap*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getLargeRep());}
+\DoxyCodeLine{01171\ \ \ \}}
+\DoxyCodeLine{01172\ }
+\DoxyCodeLine{01173\ \ \ \textcolor{keyword}{const}\ BucketT*\ getBuckets()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01174\ \ \ \ \ \textcolor{keywordflow}{return}\ Small\ ?\ getInlineBuckets()\ :\ getLargeRep()-\/>Buckets;}
+\DoxyCodeLine{01175\ \ \ \}}
+\DoxyCodeLine{01176\ }
+\DoxyCodeLine{01177\ \ \ BucketT*\ getBuckets()\ \{}
+\DoxyCodeLine{01178\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}BucketT*\textcolor{keyword}{>}(}
+\DoxyCodeLine{01179\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const\_cast<}\textcolor{keyword}{const\ }SmallDenseMap*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>getBuckets());}
+\DoxyCodeLine{01180\ \ \ \}}
+\DoxyCodeLine{01181\ }
+\DoxyCodeLine{01182\ \ \ \textcolor{keywordtype}{unsigned}\ getNumBuckets()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01183\ \ \ \ \ \textcolor{keywordflow}{return}\ Small\ ?\ InlineBuckets\ :\ getLargeRep()-\/>NumBuckets;}
+\DoxyCodeLine{01184\ \ \ \}}
+\DoxyCodeLine{01185\ }
+\DoxyCodeLine{01186\ \ \ \textcolor{keywordtype}{void}\ deallocateBuckets()\ \{}
+\DoxyCodeLine{01187\ \ \ \ \ \textcolor{keywordflow}{if}\ (Small)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01188\ }
+\DoxyCodeLine{01189\ \ \ \ \ deallocate\_buffer(getLargeRep()-\/>Buckets,}
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(BucketT)\ *\ getLargeRep()-\/>NumBuckets,}
+\DoxyCodeLine{01191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignof}(BucketT));}
+\DoxyCodeLine{01192\ \ \ \ \ getLargeRep()-\/>\string~LargeRep();}
+\DoxyCodeLine{01193\ \ \ \}}
+\DoxyCodeLine{01194\ }
+\DoxyCodeLine{01195\ \ \ LargeRep\ allocateBuckets(\textcolor{keywordtype}{unsigned}\ Num)\ \{}
+\DoxyCodeLine{01196\ \ \ \ \ assert(Num\ >\ InlineBuckets\ \&\&\ \textcolor{stringliteral}{"{}Must\ allocate\ more\ buckets\ than\ are\ inline"{}});}
+\DoxyCodeLine{01197\ \ \ \ \ LargeRep\ Rep\ =\ \{\textcolor{keyword}{static\_cast<}BucketT*\textcolor{keyword}{>}(allocate\_buffer(\textcolor{keyword}{sizeof}(BucketT)\ *\ Num,}
+\DoxyCodeLine{01198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignof}(BucketT))),}
+\DoxyCodeLine{01199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Num\};}
+\DoxyCodeLine{01200\ \ \ \ \ \textcolor{keywordflow}{return}\ Rep;}
+\DoxyCodeLine{01201\ \ \ \}}
+\DoxyCodeLine{01202\ \};}
+\DoxyCodeLine{01203\ }
+\DoxyCodeLine{01204\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,\ \textcolor{keyword}{typename}\ Bucket,}
+\DoxyCodeLine{01205\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsConst>}
+\DoxyCodeLine{01206\ \textcolor{keyword}{class\ }DenseMapIterator\ :\ \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{DebugEpochBase::HandleBase}}\ \{}
+\DoxyCodeLine{01207\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }DenseMapIterator<KeyT,\ ValueT,\ KeyInfoT,\ Bucket,\ true>;}
+\DoxyCodeLine{01208\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }DenseMapIterator<KeyT,\ ValueT,\ KeyInfoT,\ Bucket,\ false>;}
+\DoxyCodeLine{01209\ }
+\DoxyCodeLine{01210\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01211\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ ptrdiff\_t;}
+\DoxyCodeLine{01212\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ std::conditional\_t<IsConst,\ const\ Bucket,\ Bucket>;}
+\DoxyCodeLine{01213\ \ \ \textcolor{keyword}{using\ }pointer\ =\ value\_type*;}
+\DoxyCodeLine{01214\ \ \ \textcolor{keyword}{using\ }reference\ =\ value\_type\&;}
+\DoxyCodeLine{01215\ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ std::forward\_iterator\_tag;}
+\DoxyCodeLine{01216\ }
+\DoxyCodeLine{01217\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01218\ \ \ pointer\ Ptr\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01219\ \ \ pointer\ End\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01220\ }
+\DoxyCodeLine{01221\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01222\ \ \ DenseMapIterator()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{01223\ }
+\DoxyCodeLine{01224\ \ \ DenseMapIterator(pointer\ Pos,\ pointer\ E,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base}{DebugEpochBase}}\&\ Epoch,}
+\DoxyCodeLine{01225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ NoAdvance\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{01226\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{DebugEpochBase::HandleBase}}(\&Epoch),\ Ptr(Pos),\ End(E)\ \{}
+\DoxyCodeLine{01227\ \ \ \ \ assert(\mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a9c3bb8788ab6c9ef7c64e1f18f8a3bdb}{is\_handle\_in\_sync}}()\ \&\&\ \textcolor{stringliteral}{"{}invalid\ construction!"{}});}
+\DoxyCodeLine{01228\ }
+\DoxyCodeLine{01229\ \ \ \ \ \textcolor{keywordflow}{if}\ (NoAdvance)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01230\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \{}
+\DoxyCodeLine{01231\ \ \ \ \ \ \ RetreatPastEmptyBuckets();}
+\DoxyCodeLine{01232\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01233\ \ \ \ \ \}}
+\DoxyCodeLine{01234\ \ \ \ \ AdvancePastEmptyBuckets();}
+\DoxyCodeLine{01235\ \ \ \}}
+\DoxyCodeLine{01236\ }
+\DoxyCodeLine{01237\ \ \ \textcolor{comment}{//\ Converting\ ctor\ from\ non-\/const\ iterators\ to\ const\ iterators.\ SFINAE'd\ out}}
+\DoxyCodeLine{01238\ \ \ \textcolor{comment}{//\ for\ const\ iterator\ destinations\ so\ it\ doesn't\ end\ up\ as\ a\ user\ defined\ copy}}
+\DoxyCodeLine{01239\ \ \ \textcolor{comment}{//\ constructor.}}
+\DoxyCodeLine{01240\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{bool}\ IsConstSrc,}
+\DoxyCodeLine{01241\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<!IsConstSrc\ \&\&\ IsConst>>}
+\DoxyCodeLine{01242\ \ \ DenseMapIterator(}
+\DoxyCodeLine{01243\ \ \ \ \ \ \ \textcolor{keyword}{const}\ DenseMapIterator<KeyT,\ ValueT,\ KeyInfoT,\ Bucket,\ IsConstSrc>\&\ I)}
+\DoxyCodeLine{01244\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{DebugEpochBase::HandleBase}}(I),\ Ptr(I.Ptr),\ End(I.End)\ \{\}}
+\DoxyCodeLine{01245\ }
+\DoxyCodeLine{01246\ \ \ reference\ operator*()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01247\ \ \ \ \ assert(isHandleInSync()\ \&\&\ \textcolor{stringliteral}{"{}invalid\ iterator\ access!"{}});}
+\DoxyCodeLine{01248\ \ \ \ \ assert(Ptr\ !=\ End\ \&\&\ \textcolor{stringliteral}{"{}dereferencing\ end()\ iterator"{}});}
+\DoxyCodeLine{01249\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \textcolor{keywordflow}{return}\ Ptr[-\/1];}
+\DoxyCodeLine{01250\ \ \ \ \ \textcolor{keywordflow}{return}\ *Ptr;}
+\DoxyCodeLine{01251\ \ \ \}}
+\DoxyCodeLine{01252\ \ \ pointer\ operator-\/>()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01253\ \ \ \ \ assert(isHandleInSync()\ \&\&\ \textcolor{stringliteral}{"{}invalid\ iterator\ access!"{}});}
+\DoxyCodeLine{01254\ \ \ \ \ assert(Ptr\ !=\ End\ \&\&\ \textcolor{stringliteral}{"{}dereferencing\ end()\ iterator"{}});}
+\DoxyCodeLine{01255\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \textcolor{keywordflow}{return}\ \&(Ptr[-\/1]);}
+\DoxyCodeLine{01256\ \ \ \ \ \textcolor{keywordflow}{return}\ Ptr;}
+\DoxyCodeLine{01257\ \ \ \}}
+\DoxyCodeLine{01258\ }
+\DoxyCodeLine{01259\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ DenseMapIterator\&\ LHS,}
+\DoxyCodeLine{01260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DenseMapIterator\&\ RHS)\ \{}
+\DoxyCodeLine{01261\ \ \ \ \ assert((!LHS.Ptr\ ||\ LHS.isHandleInSync())\ \&\&\ \textcolor{stringliteral}{"{}handle\ not\ in\ sync!"{}});}
+\DoxyCodeLine{01262\ \ \ \ \ assert((!RHS.Ptr\ ||\ RHS.isHandleInSync())\ \&\&\ \textcolor{stringliteral}{"{}handle\ not\ in\ sync!"{}});}
+\DoxyCodeLine{01263\ \ \ \ \ assert(LHS.getEpochAddress()\ ==\ RHS.getEpochAddress()\ \&\&}
+\DoxyCodeLine{01264\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}comparing\ incomparable\ iterators!"{}});}
+\DoxyCodeLine{01265\ \ \ \ \ \textcolor{keywordflow}{return}\ LHS.Ptr\ ==\ RHS.Ptr;}
+\DoxyCodeLine{01266\ \ \ \}}
+\DoxyCodeLine{01267\ }
+\DoxyCodeLine{01268\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ DenseMapIterator\&\ LHS,}
+\DoxyCodeLine{01269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DenseMapIterator\&\ RHS)\ \{}
+\DoxyCodeLine{01270\ \ \ \ \ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);}
+\DoxyCodeLine{01271\ \ \ \}}
+\DoxyCodeLine{01272\ }
+\DoxyCodeLine{01273\ \ \ \textcolor{keyword}{inline}\ DenseMapIterator\&\ operator++()\ \{\ \ \textcolor{comment}{//\ Preincrement}}
+\DoxyCodeLine{01274\ \ \ \ \ assert(isHandleInSync()\ \&\&\ \textcolor{stringliteral}{"{}invalid\ iterator\ access!"{}});}
+\DoxyCodeLine{01275\ \ \ \ \ assert(Ptr\ !=\ End\ \&\&\ \textcolor{stringliteral}{"{}incrementing\ end()\ iterator"{}});}
+\DoxyCodeLine{01276\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_reverse\_iterate<KeyT>())\ \{}
+\DoxyCodeLine{01277\ \ \ \ \ \ \ -\/-\/Ptr;}
+\DoxyCodeLine{01278\ \ \ \ \ \ \ RetreatPastEmptyBuckets();}
+\DoxyCodeLine{01279\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{01280\ \ \ \ \ \}}
+\DoxyCodeLine{01281\ \ \ \ \ ++Ptr;}
+\DoxyCodeLine{01282\ \ \ \ \ AdvancePastEmptyBuckets();}
+\DoxyCodeLine{01283\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{01284\ \ \ \}}
+\DoxyCodeLine{01285\ \ \ DenseMapIterator\ operator++(\textcolor{keywordtype}{int})\ \{\ \ \textcolor{comment}{//\ Postincrement}}
+\DoxyCodeLine{01286\ \ \ \ \ assert(isHandleInSync()\ \&\&\ \textcolor{stringliteral}{"{}invalid\ iterator\ access!"{}});}
+\DoxyCodeLine{01287\ \ \ \ \ DenseMapIterator\ tmp\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{01288\ \ \ \ \ ++*\textcolor{keyword}{this};}
+\DoxyCodeLine{01289\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{01290\ \ \ \}}
+\DoxyCodeLine{01291\ }
+\DoxyCodeLine{01292\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01293\ \ \ \textcolor{keywordtype}{void}\ AdvancePastEmptyBuckets()\ \{}
+\DoxyCodeLine{01294\ \ \ \ \ assert(Ptr\ <=\ End);}
+\DoxyCodeLine{01295\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ Empty\ =\ KeyInfoT::getEmptyKey();}
+\DoxyCodeLine{01296\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ Tombstone\ =\ KeyInfoT::getTombstoneKey();}
+\DoxyCodeLine{01297\ }
+\DoxyCodeLine{01298\ \ \ \ \ \textcolor{keywordflow}{while}\ (Ptr\ !=\ End\ \&\&\ (KeyInfoT::isEqual(Ptr-\/>get\_first(),\ Empty)\ ||}
+\DoxyCodeLine{01299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ KeyInfoT::isEqual(Ptr-\/>get\_first(),\ Tombstone)))}
+\DoxyCodeLine{01300\ \ \ \ \ \ \ ++Ptr;}
+\DoxyCodeLine{01301\ \ \ \}}
+\DoxyCodeLine{01302\ }
+\DoxyCodeLine{01303\ \ \ \textcolor{keywordtype}{void}\ RetreatPastEmptyBuckets()\ \{}
+\DoxyCodeLine{01304\ \ \ \ \ assert(Ptr\ >=\ End);}
+\DoxyCodeLine{01305\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ Empty\ =\ KeyInfoT::getEmptyKey();}
+\DoxyCodeLine{01306\ \ \ \ \ \textcolor{keyword}{const}\ KeyT\ Tombstone\ =\ KeyInfoT::getTombstoneKey();}
+\DoxyCodeLine{01307\ }
+\DoxyCodeLine{01308\ \ \ \ \ \textcolor{keywordflow}{while}\ (Ptr\ !=\ End\ \&\&\ (KeyInfoT::isEqual(Ptr[-\/1].get\_first(),\ Empty)\ ||}
+\DoxyCodeLine{01309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ KeyInfoT::isEqual(Ptr[-\/1].get\_first(),\ Tombstone)))}
+\DoxyCodeLine{01310\ \ \ \ \ \ \ -\/-\/Ptr;}
+\DoxyCodeLine{01311\ \ \ \}}
+\DoxyCodeLine{01312\ \};}
+\DoxyCodeLine{01313\ }
+\DoxyCodeLine{01314\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT>}
+\DoxyCodeLine{01315\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ capacity\_in\_bytes(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map}{DenseMap<KeyT,\ ValueT,\ KeyInfoT>}}\&\ X)\ \{}
+\DoxyCodeLine{01316\ \ \ \textcolor{keywordflow}{return}\ X.\mbox{\hyperlink{classkiwi_1_1_dense_map_base_abf942df6d167edfadcbd4e5ceff7d3b8}{getMemorySize}}();}
+\DoxyCodeLine{01317\ \}}
+\DoxyCodeLine{01318\ }
+\DoxyCodeLine{01319\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

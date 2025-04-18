@@ -1,0 +1,50 @@
+\doxysection{kiwi\+::Function\+Pointer\+Like\+Type\+Traits\texorpdfstring{$<$}{<} Alignment, Function\+PointerT \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1_function_pointer_like_type_traits}{}\label{structkiwi_1_1_function_pointer_like_type_traits}\index{kiwi::FunctionPointerLikeTypeTraits$<$ Alignment, FunctionPointerT $>$@{kiwi::FunctionPointerLikeTypeTraits$<$ Alignment, FunctionPointerT $>$}}
+
+
+{\ttfamily \#include $<$pointer\+\_\+like\+\_\+type\+\_\+traits.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_function_pointer_like_type_traits_afd5ef23bc16067d129909fc9097dd100}\label{structkiwi_1_1_function_pointer_like_type_traits_afd5ef23bc16067d129909fc9097dd100} 
+static void \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+as\+\_\+void\+\_\+pointer} (Function\+PointerT p)
+\item 
+\Hypertarget{structkiwi_1_1_function_pointer_like_type_traits_a6f1b131d92e813025f1e2b6bfbdb95f4}\label{structkiwi_1_1_function_pointer_like_type_traits_a6f1b131d92e813025f1e2b6bfbdb95f4} 
+static Function\+PointerT {\bfseries get\+\_\+from\+\_\+void\+\_\+pointer} (void \texorpdfstring{$\ast$}{*}p)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits_a86e88ba0e43eddeb6bbeb3c19f87cd2e}{k\+Num\+Low\+Bits\+Available}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$int Alignment, typename Function\+PointerT$>$\newline
+struct kiwi\+::\+Function\+Pointer\+Like\+Type\+Traits$<$ Alignment, Function\+Pointer\+T $>$}
+Provide suitable custom traits struct for function pointers.
+
+Function pointers can\textquotesingle{}t be directly given these traits as functions can\textquotesingle{}t have their alignment computed with {\ttfamily alignof} and we need different casting.
+
+To rely on higher alignment for a specialized use, you can provide a customized form of this template explicitly with higher alignment, and potentially use alignment attributes on functions to satisfy that. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1_function_pointer_like_type_traits_a86e88ba0e43eddeb6bbeb3c19f87cd2e}\index{kiwi::FunctionPointerLikeTypeTraits$<$ Alignment, FunctionPointerT $>$@{kiwi::FunctionPointerLikeTypeTraits$<$ Alignment, FunctionPointerT $>$}!kNumLowBitsAvailable@{kNumLowBitsAvailable}}
+\index{kNumLowBitsAvailable@{kNumLowBitsAvailable}!kiwi::FunctionPointerLikeTypeTraits$<$ Alignment, FunctionPointerT $>$@{kiwi::FunctionPointerLikeTypeTraits$<$ Alignment, FunctionPointerT $>$}}
+\doxysubsubsection{\texorpdfstring{kNumLowBitsAvailable}{kNumLowBitsAvailable}}
+{\footnotesize\ttfamily \label{structkiwi_1_1_function_pointer_like_type_traits_a86e88ba0e43eddeb6bbeb3c19f87cd2e} 
+template$<$int Alignment, typename Function\+PointerT$>$ \\
+int \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits}{kiwi\+::\+Function\+Pointer\+Like\+Type\+Traits}}$<$ Alignment, Function\+PointerT $>$\+::k\+Num\+Low\+Bits\+Available\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1_constant_log2}{detail::ConstantLog2<Alignment>::value}}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/support/pointer\+\_\+like\+\_\+type\+\_\+traits.\+hh\end{DoxyCompactItemize}

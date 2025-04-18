@@ -1,0 +1,69 @@
+\doxysection{RWSpin\+Lock Class Reference}
+\hypertarget{class_r_w_spin_lock}{}\label{class_r_w_spin_lock}\index{RWSpinLock@{RWSpinLock}}
+
+
+i\+OS doesn\textquotesingle{}t define \+\_\+mm\+\_\+cvtsi64\+\_\+si128 and friends  
+
+
+
+
+{\ttfamily \#include $<$rw\+\_\+spinlock.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_r_w_spin_lock_a0ff2f2e424eaca9d671cf8542b4844b9}\label{class_r_w_spin_lock_a0ff2f2e424eaca9d671cf8542b4844b9} 
+{\bfseries RWSpin\+Lock} (const \mbox{\hyperlink{class_r_w_spin_lock}{RWSpin\+Lock}} \&)=delete
+\item 
+\Hypertarget{class_r_w_spin_lock_acb79284ea182ca333786d5ab30aa2aab}\label{class_r_w_spin_lock_acb79284ea182ca333786d5ab30aa2aab} 
+\mbox{\hyperlink{class_r_w_spin_lock}{RWSpin\+Lock}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_r_w_spin_lock}{RWSpin\+Lock}} \&)=delete
+\item 
+\Hypertarget{class_r_w_spin_lock_a036ad2bf4b728cfccc1c8fad5eebd476}\label{class_r_w_spin_lock_a036ad2bf4b728cfccc1c8fad5eebd476} 
+void {\bfseries Lock} ()
+\item 
+\Hypertarget{class_r_w_spin_lock_a8b4f68a941f78e50d27ed4f04dc4b9c3}\label{class_r_w_spin_lock_a8b4f68a941f78e50d27ed4f04dc4b9c3} 
+bool {\bfseries Try\+Lock} ()
+\begin{DoxyCompactList}\small\item\em Attempt to acquire writer permission. Return false if we didn\textquotesingle{}t get it. \end{DoxyCompactList}\item 
+\Hypertarget{class_r_w_spin_lock_a8ca446e18329fb52a5e537ef85a7a749}\label{class_r_w_spin_lock_a8ca446e18329fb52a5e537ef85a7a749} 
+void {\bfseries Un\+Lock} ()
+\begin{DoxyCompactList}\small\item\em Writer is responsible for clearing up both the UPGRADED and WRITER bits. \end{DoxyCompactList}\item 
+\Hypertarget{class_r_w_spin_lock_a9790b70dcc253200d9101b1093b773be}\label{class_r_w_spin_lock_a9790b70dcc253200d9101b1093b773be} 
+void {\bfseries Lock\+Shared} ()
+\item 
+\Hypertarget{class_r_w_spin_lock_a32f55706c913a0c741b978d4d427bd24}\label{class_r_w_spin_lock_a32f55706c913a0c741b978d4d427bd24} 
+void {\bfseries Un\+Lock\+Shared} ()
+\item 
+bool \mbox{\hyperlink{class_r_w_spin_lock_a0750904761e909d73647b5fe678f434d}{Try\+Lock\+Shared}} ()
+\item 
+\Hypertarget{class_r_w_spin_lock_a72428139a12d632a48817aca191848cb}\label{class_r_w_spin_lock_a72428139a12d632a48817aca191848cb} 
+void {\bfseries Un\+Lock\+And\+Lock\+Shared} ()
+\begin{DoxyCompactList}\small\item\em Downgrade the lock from writer status to reader status. \end{DoxyCompactList}\item 
+\Hypertarget{class_r_w_spin_lock_a066be65125c7c85186ec6c5ad45ce905}\label{class_r_w_spin_lock_a066be65125c7c85186ec6c5ad45ce905} 
+bool {\bfseries Try\+Lock\+Upgrade} ()
+\begin{DoxyCompactList}\small\item\em Try to acquire an upgradable lock. \end{DoxyCompactList}\item 
+\Hypertarget{class_r_w_spin_lock_a83933b06afbead9d0d99eef9a44ed9c0}\label{class_r_w_spin_lock_a83933b06afbead9d0d99eef9a44ed9c0} 
+int32\+\_\+t {\bfseries bits} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+i\+OS doesn\textquotesingle{}t define \+\_\+mm\+\_\+cvtsi64\+\_\+si128 and friends 
+
+A simple, small (4-\/bytes), but unfair rwlock. Use it when you want a nice writer and don\textquotesingle{}t expect a lot of write/read contention, or when you need small rwlocks since you are creating a large number of them.
+
+Note that the unfairness here is extreme\+: if the lock is continually accessed for read, writers will never get a chance. If the lock can be that highly contended this class is probably not an ideal choice anyway.
+
+It currently implements most of the Lockable, Shared\+Lockable and Upgrade\+Lockable concepts except the Timed\+Lockable related locking/unlocking interfaces. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_r_w_spin_lock_a0750904761e909d73647b5fe678f434d}\index{RWSpinLock@{RWSpinLock}!TryLockShared@{TryLockShared}}
+\index{TryLockShared@{TryLockShared}!RWSpinLock@{RWSpinLock}}
+\doxysubsubsection{\texorpdfstring{TryLockShared()}{TryLockShared()}}
+{\footnotesize\ttfamily \label{class_r_w_spin_lock_a0750904761e909d73647b5fe678f434d} 
+bool RWSpin\+Lock\+::\+Try\+Lock\+Shared (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Try to get reader permission on the lock. This can fail if we find out someone is a writer or upgrader. Setting the UPGRADED bit would allow a writer-\/to-\/be to indicate its intention to write and block any new readers while waiting for existing readers to finish and release their read locks. This helps avoid starving writers (promoted from upgraders). 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/sync/rw\+\_\+spinlock.\+hh\end{DoxyCompactItemize}

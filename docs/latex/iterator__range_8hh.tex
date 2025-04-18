@@ -1,0 +1,17 @@
+\doxysection{include/kiwi/util/iterator\+\_\+range.hh File Reference}
+\hypertarget{iterator__range_8hh}{}\label{iterator__range_8hh}\index{include/kiwi/util/iterator\_range.hh@{include/kiwi/util/iterator\_range.hh}}
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1explicitly__convertible}{kiwi\+::explicitly\+\_\+convertible$<$ From, To, typename $>$}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942}{kiwi\+::explicitly\+\_\+convertible$<$ From, To, std\+::void\+\_\+t$<$ decltype(static\+\_\+cast$<$ To $>$(std\+::declval$<$ std\+::add\+\_\+rvalue\+\_\+reference\+\_\+t$<$ From $>$ $>$()))$>$ $>$}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This provides a very simple, boring adaptor for a begin and end iterator into a range type. This should be used to build range views that work well with range based for loops and range based constructors.
+
+Note that code here follows more standards-\/based coding conventions as it is mirroring proposed interfaces for standardization. 

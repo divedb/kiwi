@@ -1,0 +1,49 @@
+\doxysection{assert.\+hh}
+\hypertarget{assert_8hh_source}{}\label{assert_8hh_source}\index{include/kiwi/util/assert.hh@{include/kiwi/util/assert.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Copyright\ (c)\ 2015\ Microsoft\ Corporation.\ All\ rights\ reserved.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ This\ code\ is\ licensed\ under\ the\ MIT\ License\ (MIT).}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ IMPLIED,\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ AUTHORS\ OR\ COPYRIGHT\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <exception>}\ \ \textcolor{comment}{//\ for\ std::terminate()}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)\ ||\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ KIWI\_LIKELY(x)\ \_\_builtin\_expect(!!(x),\ 1)}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ KIWI\_UNLIKELY(x)\ \_\_builtin\_expect(!!(x),\ 0)}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ KIWI\_LIKELY(x)\ (!!(x))}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ KIWI\_UNLIKELY(x)\ (!!(x))}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(\_\_clang\_\_)\ ||\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ [[noreturn]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ terminate()\ noexcept\ \{\ std::terminate();\ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ KIWI\_CONTRACT\_CHECK(type,\ cond)\ \(\backslash\)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ (KIWI\_LIKELY(cond)\ ?\ static\_cast<void>(0)\ :\ detail::terminate())}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ EXPECT(cond)\ KIWI\_CONTRACT\_CHECK("{}Precondition"{},\ cond)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ ENSURE(cond)\ KIWI\_CONTRACT\_CHECK("{}Postcondition"{},\ cond)}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

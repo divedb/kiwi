@@ -1,0 +1,37 @@
+\doxysection{kiwi\+::Pointer\+Like\+Type\+Traits\texorpdfstring{$<$}{<} ReturnT(\texorpdfstring{$\ast$}{*})(Param\+Ts...)\texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1_pointer_like_type_traits_3_01_return_t_07_5_08_07_param_ts_8_8_8_08_4}{}\label{structkiwi_1_1_pointer_like_type_traits_3_01_return_t_07_5_08_07_param_ts_8_8_8_08_4}\index{kiwi::PointerLikeTypeTraits$<$ ReturnT(\texorpdfstring{$\ast$}{*})(ParamTs...)$>$@{kiwi::PointerLikeTypeTraits$<$ ReturnT(\texorpdfstring{$\ast$}{*})(ParamTs...)$>$}}
+
+
+{\ttfamily \#include $<$pointer\+\_\+like\+\_\+type\+\_\+traits.\+hh$>$}
+
+Inheritance diagram for kiwi\+::Pointer\+Like\+Type\+Traits\texorpdfstring{$<$}{<} ReturnT(\texorpdfstring{$\ast$}{*})(Param\+Ts...)\texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structkiwi_1_1_pointer_like_type_traits_3_01_return_t_07_5_08_07_param_ts_8_8_8_08_4}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits}{kiwi\+::\+Function\+Pointer\+Like\+Type\+Traits$<$ 4, Return\+T(\texorpdfstring{$\ast$}{*})(\+Param\+Ts...)$>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+as\+\_\+void\+\_\+pointer} (ReturnT(\texorpdfstring{$\ast$}{*})(Param\+Ts...) p)
+\item 
+static ReturnT(\texorpdfstring{$\ast$}{*})(Param\+Ts...) {\bfseries get\+\_\+from\+\_\+void\+\_\+pointer} (void \texorpdfstring{$\ast$}{*}p)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits}{kiwi\+::\+Function\+Pointer\+Like\+Type\+Traits$<$ 4, Return\+T(\texorpdfstring{$\ast$}{*})(\+Param\+Ts...)$>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int {\bfseries k\+Num\+Low\+Bits\+Available}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename ReturnT, typename... Param\+Ts$>$\newline
+struct kiwi\+::\+Pointer\+Like\+Type\+Traits$<$ Return\+T(\texorpdfstring{$\ast$}{*})(\+Param\+Ts...)$>$}
+Provide a default specialization for function pointers that assumes 4-\/byte alignment.
+
+We assume here that functions used with this are always at least 4-\/byte aligned. This means that, for example, thumb functions won\textquotesingle{}t work or systems with weird unaligned function pointers won\textquotesingle{}t work. But all practical systems we support satisfy this requirement. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/support/pointer\+\_\+like\+\_\+type\+\_\+traits.\+hh\end{DoxyCompactItemize}

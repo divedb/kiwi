@@ -1,0 +1,241 @@
+\doxysection{rw\+\_\+spinlock.\+hh}
+\hypertarget{rw__spinlock_8hh_source}{}\label{rw__spinlock_8hh_source}\index{include/kiwi/sync/rw\_spinlock.hh@{include/kiwi/sync/rw\_spinlock.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ N.B.\ You\ most\ likely\ do\ \_not\_\ want\ to\ use\ RWSpinLock\ or\ any\ other}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ kind\ of\ spinlock.\ \ Use\ SharedMutex\ instead.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ In\ short,\ spinlocks\ in\ preemptive\ multi-\/tasking\ operating\ systems}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ have\ serious\ problems\ and\ fast\ mutexes\ like\ SharedMutex\ are\ almost}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ certainly\ the\ better\ choice,\ because\ letting\ the\ OS\ scheduler\ put\ a}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *\ thread\ to\ sleep\ is\ better\ for\ system\ responsiveness\ and\ throughput}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ than\ wasting\ a\ timeslice\ repeatedly\ querying\ a\ lock\ held\ by\ a}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ *\ thread\ that's\ blocked,\ and\ you\ can't\ prevent\ userspace}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ programs\ blocking.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ Spinlocks\ in\ an\ operating\ system\ kernel\ make\ much\ more\ sense\ than}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ they\ do\ in\ userspace.}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ Two\ Read-\/Write\ spin\ lock\ implementations.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *\ \ Ref:\ http://locklessinc.com/articles/locks}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *\ \ Both\ locks\ here\ are\ faster\ than\ pthread\_rwlock\ and\ have\ very\ low}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *\ \ overhead\ (usually\ 20-\/30ns).\ \ They\ don't\ use\ any\ system\ mutexes\ and}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *\ \ are\ very\ compact\ (4/8\ bytes),\ so\ are\ suitable\ for\ per-\/instance}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ \ based\ locking,\ particularly\ when\ contention\ is\ not\ expected.}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ \ For\ a\ spinlock,\ RWSpinLock\ is\ a\ reasonable\ choice.\ \ (See\ the\ note}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ \ about\ for\ why\ a\ spin\ lock\ is\ frequently\ a\ bad\ idea\ generally.)}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ \ RWSpinLock\ has\ minimal\ overhead,\ and\ comparable\ contention}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ \ performance\ when\ the\ number\ of\ competing\ threads\ is\ less\ than\ or}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ \ equal\ to\ the\ number\ of\ logical\ CPUs.\ \ Even\ as\ the\ number\ of}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *\ \ threads\ gets\ larger,\ RWSpinLock\ can\ still\ be\ very\ competitive\ in}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ \ READ,\ although\ it\ is\ slower\ on\ WRITE,\ and\ also\ inherently\ unfair}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ *\ \ to\ writers.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *\ \ RWTicketSpinLock\ shows\ more\ balanced\ READ/WRITE\ performance.\ \ If}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ *\ \ your\ application\ really\ needs\ a\ lot\ more\ threads,\ and\ a}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ \ higher-\/priority\ writer,\ prefer\ one\ of\ the\ RWTicketSpinLock\ locks.}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ *\ \ Caveats:}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ *\ \ \ \ RWTicketSpinLock\ locks\ can\ only\ be\ used\ with\ GCC\ on\ x86/x86-\/64}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ *\ \ \ \ based\ systems.}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ *\ \ \ \ RWTicketSpinLock<32>\ only\ allows\ up\ to\ 2\string^8\ -\/\ 1\ concurrent}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ *\ \ \ \ readers\ and\ writers.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ *\ \ \ \ RWTicketSpinLock<64>\ only\ allows\ up\ to\ 2\string^16\ -\/\ 1\ concurrent}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ *\ \ \ \ readers\ and\ writers.}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ *\ \ \ \ RWTicketSpinLock<...,\ true>\ (kFavorWriter\ =\ true,\ that\ is,\ strict}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ *\ \ \ \ writer\ priority)\ is\ NOT\ reentrant,\ even\ for\ lock\_shared().}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ *\ \ \ \ The\ lock\ will\ not\ grant\ any\ new\ shared\ (read)\ accesses\ while\ a\ thread}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ *\ \ \ \ attempting\ to\ acquire\ the\ lock\ in\ write\ mode\ is\ blocked.\ (That\ is,}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ *\ \ \ \ if\ the\ lock\ is\ held\ in\ shared\ mode\ by\ N\ threads,\ and\ a\ thread\ attempts}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ *\ \ \ \ to\ acquire\ it\ in\ write\ mode,\ no\ one\ else\ can\ acquire\ it\ in\ shared\ mode}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ *\ \ \ \ until\ these\ N\ threads\ release\ the\ lock\ and\ then\ the\ blocked\ thread}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ *\ \ \ \ acquires\ and\ releases\ the\ exclusive\ lock.)\ This\ also\ applies\ for}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ *\ \ \ \ attempts\ to\ reacquire\ the\ lock\ in\ shared\ mode\ by\ threads\ that\ already}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ *\ \ \ \ hold\ it\ in\ shared\ mode,\ making\ the\ lock\ non-\/reentrant.}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *\ \ \ \ RWSpinLock\ handles\ 2\string^30\ -\/\ 1\ concurrent\ readers.}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#include\ "{}kiwi/port/compiler.hh"{}}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#include\ "{}kiwi/port/os.hh"{}}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00092\ \textcolor{comment}{========================================================================}}
+\DoxyCodeLine{00093\ \textcolor{comment}{Benchmark\ on\ (Intel(R)\ Xeon(R)\ CPU\ \ L5630\ \ @\ 2.13GHz)\ \ 8\ cores(16\ HTs)}}
+\DoxyCodeLine{00094\ \textcolor{comment}{========================================================================}}
+\DoxyCodeLine{00095\ \textcolor{comment}{}}
+\DoxyCodeLine{00096\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00097\ \textcolor{comment}{1.\ Single\ thread\ benchmark\ (read/write\ lock\ +\ unlock\ overhead)}}
+\DoxyCodeLine{00098\ \textcolor{comment}{Benchmark\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Iters\ \ \ Total\ t\ \ \ \ t/iter\ iter/sec}}
+\DoxyCodeLine{00099\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00100\ \textcolor{comment}{*\ \ \ \ \ \ BM\_RWSpinLockRead\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ 1.786\ ms\ \ 17.86\ ns\ \ \ 53.4M}}
+\DoxyCodeLine{00101\ \textcolor{comment}{+30.5\%\ BM\_RWSpinLockWrite\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ 2.331\ ms\ \ 23.31\ ns\ \ 40.91M}}
+\DoxyCodeLine{00102\ \textcolor{comment}{+85.7\%\ BM\_RWTicketSpinLock32Read\ \ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ 3.317\ ms\ \ 33.17\ ns\ \ 28.75M}}
+\DoxyCodeLine{00103\ \textcolor{comment}{+96.0\%\ BM\_RWTicketSpinLock32Write\ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ \ \ 3.5\ ms\ \ \ \ \ 35\ ns\ \ 27.25M}}
+\DoxyCodeLine{00104\ \textcolor{comment}{+85.6\%\ BM\_RWTicketSpinLock64Read\ \ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ 3.315\ ms\ \ 33.15\ ns\ \ 28.77M}}
+\DoxyCodeLine{00105\ \textcolor{comment}{+96.0\%\ BM\_RWTicketSpinLock64Write\ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ \ \ 3.5\ ms\ \ \ \ \ 35\ ns\ \ 27.25M}}
+\DoxyCodeLine{00106\ \textcolor{comment}{+85.7\%\ BM\_RWTicketSpinLock32FavorWriterRead\ \ 100000\ \ 3.317\ ms\ \ 33.17\ ns\ \ 28.75M}}
+\DoxyCodeLine{00107\ \textcolor{comment}{+29.7\%\ BM\_RWTicketSpinLock32FavorWriterWrite\ 100000\ \ 2.316\ ms\ \ 23.16\ ns\ \ 41.18M}}
+\DoxyCodeLine{00108\ \textcolor{comment}{+85.3\%\ BM\_RWTicketSpinLock64FavorWriterRead\ \ 100000\ \ 3.309\ ms\ \ 33.09\ ns\ \ 28.82M}}
+\DoxyCodeLine{00109\ \textcolor{comment}{+30.2\%\ BM\_RWTicketSpinLock64FavorWriterWrite\ 100000\ \ 2.325\ ms\ \ 23.25\ ns\ \ 41.02M}}
+\DoxyCodeLine{00110\ \textcolor{comment}{+\ 175\%\ BM\_PThreadRWMutexRead\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ 4.917\ ms\ \ 49.17\ ns\ \ \ 19.4M}}
+\DoxyCodeLine{00111\ \textcolor{comment}{+\ 166\%\ BM\_PThreadRWMutexWrite\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 100000\ \ 4.757\ ms\ \ 47.57\ ns\ \ 20.05M}}
+\DoxyCodeLine{00112\ \textcolor{comment}{}}
+\DoxyCodeLine{00113\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00114\ \textcolor{comment}{2.\ Contention\ Benchmark\ \ \ \ \ \ 90\%\ read\ \ 10\%\ write}}
+\DoxyCodeLine{00115\ \textcolor{comment}{Benchmark\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hits\ \ \ \ \ \ \ average\ \ \ \ min\ \ \ \ \ \ \ max\ \ \ \ \ \ \ \ sigma}}
+\DoxyCodeLine{00116\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00117\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ 8\ \ threads\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00118\ \textcolor{comment}{RWSpinLock\ \ \ \ \ \ \ Write\ \ \ \ \ \ \ 142666\ \ \ \ \ 220ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ 40.8us\ \ \ \ \ 269ns}}
+\DoxyCodeLine{00119\ \textcolor{comment}{RWSpinLock\ \ \ \ \ \ \ Read\ \ \ \ \ \ \ \ 1282297\ \ \ \ 222ns\ \ \ \ \ \ 80ns\ \ \ \ \ \ 37.7us\ \ \ \ \ 248ns}}
+\DoxyCodeLine{00120\ \textcolor{comment}{RWTicketSpinLock\ Write\ \ \ \ \ \ \ 85692\ \ \ \ \ \ 209ns\ \ \ \ \ \ 71ns\ \ \ \ \ \ 17.9us\ \ \ \ \ 252ns}}
+\DoxyCodeLine{00121\ \textcolor{comment}{RWTicketSpinLock\ Read\ \ \ \ \ \ \ \ 769571\ \ \ \ \ 215ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ 33.4us\ \ \ \ \ 251ns}}
+\DoxyCodeLine{00122\ \textcolor{comment}{pthread\_rwlock\_t\ Write\ \ \ \ \ \ \ 84248\ \ \ \ \ \ 2.48us\ \ \ \ \ 99ns\ \ \ \ \ \ 269us\ \ \ \ \ \ 8.19us}}
+\DoxyCodeLine{00123\ \textcolor{comment}{pthread\_rwlock\_t\ Read\ \ \ \ \ \ \ \ 761646\ \ \ \ \ 933ns\ \ \ \ \ \ 101ns\ \ \ \ \ 374us\ \ \ \ \ \ 3.25us}}
+\DoxyCodeLine{00124\ \textcolor{comment}{}}
+\DoxyCodeLine{00125\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ 16\ threads\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00126\ \textcolor{comment}{RWSpinLock\ \ \ \ \ \ \ Write\ \ \ \ \ \ \ 124236\ \ \ \ \ 237ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ 261us\ \ \ \ \ \ 801ns}}
+\DoxyCodeLine{00127\ \textcolor{comment}{RWSpinLock\ \ \ \ \ \ \ Read\ \ \ \ \ \ \ \ 1115807\ \ \ \ 236ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ 2.27ms\ \ \ \ \ 2.17us}}
+\DoxyCodeLine{00128\ \textcolor{comment}{RWTicketSpinLock\ Write\ \ \ \ \ \ \ 81781\ \ \ \ \ \ 231ns\ \ \ \ \ \ 71ns\ \ \ \ \ \ 31.4us\ \ \ \ \ 351ns}}
+\DoxyCodeLine{00129\ \textcolor{comment}{RWTicketSpinLock\ Read\ \ \ \ \ \ \ \ 734518\ \ \ \ \ 238ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ 73.6us\ \ \ \ \ 379ns}}
+\DoxyCodeLine{00130\ \textcolor{comment}{pthread\_rwlock\_t\ Write\ \ \ \ \ \ \ 83363\ \ \ \ \ \ 7.12us\ \ \ \ \ 99ns\ \ \ \ \ \ 785us\ \ \ \ \ \ 28.1us}}
+\DoxyCodeLine{00131\ \textcolor{comment}{pthread\_rwlock\_t\ Read\ \ \ \ \ \ \ \ 754978\ \ \ \ \ 2.18us\ \ \ \ \ 101ns\ \ \ \ \ 1.02ms\ \ \ \ \ 14.3us}}
+\DoxyCodeLine{00132\ \textcolor{comment}{}}
+\DoxyCodeLine{00133\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ 50\ threads\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00134\ \textcolor{comment}{RWSpinLock\ \ \ \ \ \ \ Write\ \ \ \ \ \ \ 131142\ \ \ \ \ 1.37us\ \ \ \ \ 82ns\ \ \ \ \ \ 7.53ms\ \ \ \ \ 68.2us}}
+\DoxyCodeLine{00135\ \textcolor{comment}{RWSpinLock\ \ \ \ \ \ \ Read\ \ \ \ \ \ \ \ 1181240\ \ \ \ 262ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ 6.62ms\ \ \ \ \ 12.7us}}
+\DoxyCodeLine{00136\ \textcolor{comment}{RWTicketSpinLock\ Write\ \ \ \ \ \ \ 83045\ \ \ \ \ \ 397ns\ \ \ \ \ \ 73ns\ \ \ \ \ \ 7.01ms\ \ \ \ \ 31.5us}}
+\DoxyCodeLine{00137\ \textcolor{comment}{RWTicketSpinLock\ Read\ \ \ \ \ \ \ \ 744133\ \ \ \ \ 386ns\ \ \ \ \ \ 78ns\ \ \ \ \ \ \ \ 11ms\ \ \ \ \ 31.4us}}
+\DoxyCodeLine{00138\ \textcolor{comment}{pthread\_rwlock\_t\ Write\ \ \ \ \ \ \ 80849\ \ \ \ \ \ 112us\ \ \ \ \ \ 103ns\ \ \ \ \ 4.52ms\ \ \ \ \ 263us}}
+\DoxyCodeLine{00139\ \textcolor{comment}{pthread\_rwlock\_t\ Read\ \ \ \ \ \ \ \ 728698\ \ \ \ \ 24us\ \ \ \ \ \ \ 101ns\ \ \ \ \ 7.28ms\ \ \ \ \ 194us}}
+\DoxyCodeLine{00140\ \textcolor{comment}{}}
+\DoxyCodeLine{00141\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#if\ IS\_GNUC()\ ||\ IS\_I386()\ ||\ IS\_X64()}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#define\ RW\_SPINLOCK\_USE\_X86\_INTRINSIC\_}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#include\ <x86intrin.h>}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#elif\ IS\_MSC()\ \&\&\ IS\_X64()}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#define\ RW\_SPINLOCK\_USE\_X86\_INTRINSIC\_}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#elif\ IS\_ARM64()}}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#define\ RW\_SPINLOCK\_USE\_X86\_INTRINSIC\_}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#undef\ RW\_SPINLOCK\_USE\_X86\_INTRINSIC\_}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#if\ (SSE\_VER\ >=\ 2)\ \&\&\ IS\_X64()}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#define\ RW\_SPINLOCK\_USE\_SSE\_INSTRUCTIONS\_}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#undef\ RW\_SPINLOCK\_USE\_SSE\_INSTRUCTIONS\_}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00174\ \textcolor{keyword}{class\ }RWSpinLock\ \{}
+\DoxyCodeLine{00175\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{constexpr}\ RWSpinLock()\ :\ bits\_\{0\}\ \{\}}
+\DoxyCodeLine{00177\ \ \ RWSpinLock(\textcolor{keyword}{const}\ RWSpinLock\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00178\ \ \ RWSpinLock\&\ operator=(\textcolor{keyword}{const}\ RWSpinLock\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{void}\ Lock()\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ uint32\_t\ count\ =\ 0;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{while}\ (!LIKELY(\mbox{\hyperlink{class_r_w_spin_lock_a8b4f68a941f78e50d27ed4f04dc4b9c3}{TryLock}}()))\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (++count\ >\ 1000)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ std::this\_thread::yield();}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_r_w_spin_lock_a8b4f68a941f78e50d27ed4f04dc4b9c3}{TryLock}}()\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ int32\_t\ expect\ =\ 0;}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ bits\_.compare\_exchange\_strong(expect,\ kWriter,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::memory\_order\_acq\_rel);}
+\DoxyCodeLine{00195\ \ \ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_r_w_spin_lock_a8ca446e18329fb52a5e537ef85a7a749}{UnLock}}()\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{static\_assert}(kReader\ >\ kWriter\ +\ kUpgraded,\ \textcolor{stringliteral}{"{}Wrong\ bits!"{}});}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ bits\_.fetch\_and(\string~(kWriter\ |\ kUpgraded),\ std::memory\_order\_release);}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{void}\ LockShared()\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ uint32\_t\ count\ =\ 0;}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{while}\ (!LIKELY(\mbox{\hyperlink{class_r_w_spin_lock_a0750904761e909d73647b5fe678f434d}{TryLockShared}}()))\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (++count\ >\ 1000)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ std::this\_thread::yield();}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \textcolor{keywordtype}{void}\ UnLockShared()\ \{\ bits\_.fetch\_add(-\/kReader,\ std::memory\_order\_release);\ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_r_w_spin_lock_a0750904761e909d73647b5fe678f434d}{TryLockShared}}()\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ fetch\_add\ is\ considerably\ (100\%)\ faster\ than\ compare\_exchange,}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{comment}{//\ so\ here\ we\ are\ optimizing\ for\ the\ common\ (lock\ success)\ case.}}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{auto}\ value\ =\ bits\_.fetch\_add(kReader,\ std::memory\_order\_acquire);}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{if}\ (UNLIKELY(value\ \&\ (kWriter\ |\ kUpgraded)))\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ bits\_.fetch\_add(-\/kReader,\ std::memory\_order\_release);}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00234\ \ \ \}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00237\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_r_w_spin_lock_a72428139a12d632a48817aca191848cb}{UnLockAndLockShared}}()\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ bits\_.fetch\_add(kReader,\ std::memory\_order\_acquire);}
+\DoxyCodeLine{00239\ \ \ \ \ \mbox{\hyperlink{class_r_w_spin_lock_a8ca446e18329fb52a5e537ef85a7a749}{UnLock}}();}
+\DoxyCodeLine{00240\ \ \ \}}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_r_w_spin_lock_a066be65125c7c85186ec6c5ad45ce905}{TryLockUpgrade}}()\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{auto}\ value\ =\ bits\_.fetch\_or(kUpgraded,\ std::memory\_order\_acquire);}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{comment}{//\ Note:\ when\ failed,\ we\ cannot\ flip\ the\ UPGRADED\ bit\ back,}}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ as\ in\ this\ case\ there\ is\ either\ another\ upgrade\ lock\ or\ a\ write\ lock.}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{comment}{//\ If\ it's\ a\ write\ lock,\ the\ bit\ will\ get\ cleared\ up\ when\ that\ lock's\ done}}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{comment}{//\ with\ unlock().}}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{return}\ ((value\ \&\ (kUpgraded\ |\ kWriter))\ ==\ 0);}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ int32\_t\ bits()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bits\_.load(std::memory\_order\_acquire);\ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00256\ \ \ enum\ :\ int32\_t\ \{\ kReader\ =\ 4,\ kUpgraded\ =\ 2,\ kWriter\ =\ 1\ \};}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ std::atomic<int32\_t>\ bits\_;}
+\DoxyCodeLine{00259\ \};}
+
+\end{DoxyCode}

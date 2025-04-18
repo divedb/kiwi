@@ -1,0 +1,32 @@
+\doxysection{base\+\_\+export.\+hh}
+\hypertarget{base__export_8hh_source}{}\label{base__export_8hh_source}\index{include/kiwi/config/base\_export.hh@{include/kiwi/config/base\_export.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#if\ defined(COMPONENT\_BUILD)}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#if\ defined(WIN32)}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#if\ defined(BASE\_IMPLEMENTATION)}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ BASE\_EXPORT\ \_\_declspec(dllexport)}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ BASE\_EXPORT\ \_\_declspec(dllimport)}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(BASE\_IMPLEMENTATION)}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#else\ \ }\textcolor{comment}{//\ defined(WIN32)}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#if\ defined(BASE\_IMPLEMENTATION)}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ BASE\_EXPORT\ \_\_attribute\_\_((visibility("{}default"{})))}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ BASE\_EXPORT}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(BASE\_IMPLEMENTATION)}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#else\ \ }\textcolor{comment}{//\ defined(COMPONENT\_BUILD)}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ BASE\_EXPORT}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

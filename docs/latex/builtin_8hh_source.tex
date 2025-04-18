@@ -1,0 +1,24 @@
+\doxysection{builtin.\+hh}
+\hypertarget{builtin_8hh_source}{}\label{builtin_8hh_source}\index{include/kiwi/port/builtin.hh@{include/kiwi/port/builtin.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}kiwi/port/builtin.hh"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ [[noreturn]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ unreachable()\ \{}
+\DoxyCodeLine{00008\ \ \ \textcolor{comment}{//\ Uses\ compiler\ specific\ extensions\ if\ possible.}}
+\DoxyCodeLine{00009\ \ \ \textcolor{comment}{//\ Even\ if\ no\ extension\ is\ used,\ undefined\ behavior\ is\ still\ raised\ by}}
+\DoxyCodeLine{00010\ \ \ \textcolor{comment}{//\ an\ empty\ function\ body\ and\ the\ noreturn\ attribute.}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#if\ IS\_MSC()\ \&\&\ !IS\_CLANG()\ \ }\textcolor{comment}{//\ MSVC}}
+\DoxyCodeLine{00012\ \ \ \_\_assume(\textcolor{keyword}{false});}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#else\ \ }\textcolor{comment}{//\ GCC,\ Clang}}
+\DoxyCodeLine{00014\ \ \ \_\_builtin\_unreachable();}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00016\ \}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

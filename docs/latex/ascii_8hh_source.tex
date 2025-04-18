@@ -1,0 +1,206 @@
+\doxysection{ascii.\+hh}
+\hypertarget{ascii_8hh_source}{}\label{ascii_8hh_source}\index{include/kiwi/strings/ascii.hh@{include/kiwi/strings/ascii.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Abseil\ Authors.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ \ \ \ \ https://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ File:\ ascii.h}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ This\ package\ contains\ functions\ operating\ on\ characters\ and\ strings}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ restricted\ to\ standard\ ASCII.\ These\ include\ character\ classification}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ functions\ analogous\ to\ those\ found\ in\ the\ ANSI\ C\ Standard\ Library\ <ctype.h>}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ header\ file.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ C++\ implementations\ provide\ <ctype.h>\ functionality\ based\ on\ their}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ C\ environment\ locale.\ In\ general,\ reliance\ on\ such\ a\ locale\ is\ not\ ideal,\ as}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ the\ locale\ standard\ is\ problematic\ (and\ may\ not\ return\ invariant\ information}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ for\ the\ same\ character\ set,\ for\ example).\ These\ \`{}ascii\_*()`\ functions\ are}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ hard-\/wired\ for\ standard\ ASCII,\ much\ faster,\ and\ guaranteed\ to\ behave}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ consistently.\ \ They\ will\ never\ be\ overloaded,\ nor\ will\ their\ function}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ signature\ change.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \`{}ascii\_isalnum()`,\ \`{}ascii\_isalpha()`,\ \`{}ascii\_isascii()`,\ \`{}ascii\_isblank()`,}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ \`{}ascii\_iscntrl()`,\ \`{}ascii\_isdigit()`,\ \`{}ascii\_isgraph()`,\ \`{}ascii\_islower()`,}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ \`{}ascii\_isprint()`,\ \`{}ascii\_ispunct()`,\ \`{}ascii\_isspace()`,\ \`{}ascii\_isupper()`,}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \`{}ascii\_isxdigit()`}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ \ Analogous\ to\ the\ <ctype.h>\ functions\ with\ similar\ names,\ these}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ \ functions\ take\ an\ unsigned\ char\ and\ return\ a\ bool,\ based\ on\ whether\ the}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ character\ matches\ the\ condition\ specified.}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ \ If\ the\ input\ character\ has\ a\ numerical\ value\ greater\ than\ 127,\ these}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ functions\ return\ \`{}false`.}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \`{}ascii\_tolower()`,\ \`{}ascii\_toupper()`}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ Analogous\ to\ the\ <ctype.h>\ functions\ with\ similar\ names,\ these\ functions}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ take\ an\ unsigned\ char\ and\ return\ a\ char.}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ If\ the\ input\ character\ is\ not\ an\ ASCII\ \{lower,upper\}-\/case\ letter\ (including}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ numerical\ values\ greater\ than\ 127)\ then\ the\ functions\ return\ the\ same\ value}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ \ \ as\ the\ input\ character.}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/internal/resize\_uninitialized.hh"{}}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/pointers.hh"{}}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{namespace\ }ascii\_internal\ \{}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ kPropertyBits[256];}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ kToUpper[256];}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ kToLower[256];}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_lower(kiwi::NotNull<char*>\ dst,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::NotNull<const\ char*>\ src,\ \textcolor{keywordtype}{size\_t}\ n);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_upper(kiwi::NotNull<char*>\ dst,}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::NotNull<const\ char*>\ src,\ \textcolor{keywordtype}{size\_t}\ n);}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \}\ \ \textcolor{comment}{//\ namespace\ ascii\_internal}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00084\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isalpha(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x01)\ !=\ 0;}
+\DoxyCodeLine{00086\ \}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isalnum(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x04)\ !=\ 0;}
+\DoxyCodeLine{00091\ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00095\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isspace(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x08)\ !=\ 0;}
+\DoxyCodeLine{00097\ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_ispunct(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x10)\ !=\ 0;}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00105\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isblank(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x20)\ !=\ 0;}
+\DoxyCodeLine{00107\ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00110\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_iscntrl(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x40)\ !=\ 0;}
+\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00116\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isxdigit(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x80)\ !=\ 0;}
+\DoxyCodeLine{00118\ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00122\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isdigit(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'9'};\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00125\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isprint(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ 32\ \&\&\ c\ <\ 127;\ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isgraph(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >\ 32\ \&\&\ c\ <\ 127;\ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00131\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isupper(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'};\ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00134\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_islower(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'};\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00137\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isascii(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ <\ 128;\ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ ascii\_tolower(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordflow}{return}\ ascii\_internal::kToLower[c];}
+\DoxyCodeLine{00143\ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00146\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_lower(kiwi::NotNull<std::string*>\ s);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00149\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_lower(std::string\_view\ s)\ \{}
+\DoxyCodeLine{00150\ \ \ std::string\ result;}
+\DoxyCodeLine{00151\ \ \ strings\_internal::STLStringResizeUninitialized(\&result,\ s.size());}
+\DoxyCodeLine{00152\ \ \ ascii\_internal::ascii\_str\_to\_lower(\&result[0],\ s.data(),\ s.size());}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00155\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00160\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ DoNotSpecify>}
+\DoxyCodeLine{00161\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_lower(std::string\&\&\ s)\ \{}
+\DoxyCodeLine{00162\ \ \ std::string\ result\ =\ std::move(s);}
+\DoxyCodeLine{00163\ \ \ kiwi::ascii\_str\_to\_lower(\&result);}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00166\ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00170\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ ascii\_toupper(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordflow}{return}\ ascii\_internal::kToUpper[c];}
+\DoxyCodeLine{00172\ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00175\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_upper(kiwi::NotNull<std::string*>\ s);}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00178\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_upper(std::string\_view\ s)\ \{}
+\DoxyCodeLine{00179\ \ \ std::string\ result;}
+\DoxyCodeLine{00180\ \ \ strings\_internal::STLStringResizeUninitialized(\&result,\ s.size());}
+\DoxyCodeLine{00181\ \ \ ascii\_internal::ascii\_str\_to\_upper(\&result[0],\ s.data(),\ s.size());}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00184\ \}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00189\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ DoNotSpecify>}
+\DoxyCodeLine{00190\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_upper(std::string\&\&\ s)\ \{}
+\DoxyCodeLine{00191\ \ \ std::string\ result\ =\ std::move(s);}
+\DoxyCodeLine{00192\ \ \ kiwi::ascii\_str\_to\_upper(\&result);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00195\ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00199\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ strip\_leading\_ascii\_whitespace(}
+\DoxyCodeLine{00200\ \ \ \ \ std::string\_view\ str)\ \{}
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str.begin(),\ str.end(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordflow}{return}\ str.substr(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(it\ -\/\ str.begin()));}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00207\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ strip\_leading\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str)\ \{}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str-\/>begin(),\ str-\/>end(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00209\ \ \ str-\/>erase(str-\/>begin(),\ it);}
+\DoxyCodeLine{00210\ \}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00214\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ strip\_trailing\_ascii\_whitespace(}
+\DoxyCodeLine{00215\ \ \ \ \ std::string\_view\ str)\ \{}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str.rbegin(),\ str.rend(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \textcolor{keywordflow}{return}\ str.substr(0,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(str.rend()\ -\/\ it));}
+\DoxyCodeLine{00219\ \}}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00222\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ strip\_trailing\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str)\ \{}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str-\/>rbegin(),\ str-\/>rend(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00224\ \ \ str-\/>erase(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(str-\/>rend()\ -\/\ it));}
+\DoxyCodeLine{00225\ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00229\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ strip\_ascii\_whitespace(}
+\DoxyCodeLine{00230\ \ \ \ \ std::string\_view\ str)\ \{}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordflow}{return}\ strip\_trailing\_ascii\_whitespace(strip\_leading\_ascii\_whitespace(str));}
+\DoxyCodeLine{00232\ \}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00235\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ strip\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str)\ \{}
+\DoxyCodeLine{00236\ \ \ strip\_trailing\_ascii\_whitespace(str);}
+\DoxyCodeLine{00237\ \ \ strip\_leading\_ascii\_whitespace(str);}
+\DoxyCodeLine{00238\ \}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00241\ \textcolor{keywordtype}{void}\ remove\_extra\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str);}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

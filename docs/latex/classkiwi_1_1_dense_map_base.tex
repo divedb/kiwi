@@ -1,0 +1,268 @@
+\doxysection{kiwi\+::Dense\+Map\+Base\texorpdfstring{$<$}{<} DerivedT, KeyT, ValueT, Key\+InfoT, BucketT \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_dense_map_base}{}\label{classkiwi_1_1_dense_map_base}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+Inheritance diagram for kiwi\+::Dense\+Map\+Base\texorpdfstring{$<$}{<} DerivedT, KeyT, ValueT, Key\+InfoT, BucketT \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.926605cm]{classkiwi_1_1_dense_map_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a1ad657f06440e6f66af2ed59d0236bb0}\label{classkiwi_1_1_dense_map_base_a1ad657f06440e6f66af2ed59d0236bb0} 
+using {\bfseries size\+\_\+type} = unsigned
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a5a413be5600dfa39f05f303f76c92bbf}\label{classkiwi_1_1_dense_map_base_a5a413be5600dfa39f05f303f76c92bbf} 
+using {\bfseries key\+\_\+type} = KeyT
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a9ce50999262d9e6ea88215ef19337189}\label{classkiwi_1_1_dense_map_base_a9ce50999262d9e6ea88215ef19337189} 
+using {\bfseries mapped\+\_\+type} = ValueT
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_aceeca8d85a547b0ecfc52cca33586309}\label{classkiwi_1_1_dense_map_base_aceeca8d85a547b0ecfc52cca33586309} 
+using {\bfseries value\+\_\+type} = BucketT
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_aed35bf3112a6608827f9e2b588de1b1f}\label{classkiwi_1_1_dense_map_base_aed35bf3112a6608827f9e2b588de1b1f} 
+using {\bfseries iterator} = \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}}$<$KeyT, ValueT, Key\+InfoT, BucketT$>$
+\item 
+using \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a100ee9e2ac1ca2759b3098076890c6e7}{const\+\_\+iterator}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_aa3c3b4ff19c1e1224d35a2f84ac227a1}\label{classkiwi_1_1_dense_map_base_aa3c3b4ff19c1e1224d35a2f84ac227a1} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}} {\bfseries begin} ()
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a942c41e9ab63fb34d7ca76103fac3a24}\label{classkiwi_1_1_dense_map_base_a942c41e9ab63fb34d7ca76103fac3a24} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}} {\bfseries end} ()
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a994596b7497e132b56f407197d788962}\label{classkiwi_1_1_dense_map_base_a994596b7497e132b56f407197d788962} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{const\+\_\+iterator}} {\bfseries begin} () const
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a3ad12d8144b7072327f2dcb5b4803f33}\label{classkiwi_1_1_dense_map_base_a3ad12d8144b7072327f2dcb5b4803f33} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{const\+\_\+iterator}} {\bfseries end} () const
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a1ff7c8527def0000162d757b466ce5c1}\label{classkiwi_1_1_dense_map_base_a1ff7c8527def0000162d757b466ce5c1} 
+bool {\bfseries empty} () const
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_aebdb07dd7b1ea57b3bfe3f1274988c7c}\label{classkiwi_1_1_dense_map_base_aebdb07dd7b1ea57b3bfe3f1274988c7c} 
+unsigned {\bfseries size} () const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_dense_map_base_aa76130952b4fc0497c71156c96814f32}{reserve}} (size\+\_\+type Num\+Entries)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a6c47860fdeb508dee659dba583eea15a}\label{classkiwi_1_1_dense_map_base_a6c47860fdeb508dee659dba583eea15a} 
+void {\bfseries clear} ()
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a879c2e65a6e96e7ffcb9779436130cb8}\label{classkiwi_1_1_dense_map_base_a879c2e65a6e96e7ffcb9779436130cb8} 
+bool {\bfseries contains} (const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$ Val) const
+\begin{DoxyCompactList}\small\item\em Return true if the specified key is in the map, false otherwise. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_aebb7fe7e08f465230e01c2a0a2d750e1}\label{classkiwi_1_1_dense_map_base_aebb7fe7e08f465230e01c2a0a2d750e1} 
+size\+\_\+type {\bfseries count} (const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$ Val) const
+\begin{DoxyCompactList}\small\item\em Return 1 if the specified key is in the map, 0 otherwise. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a264e92bec6b85f06ecf9a29b947bdfcf}\label{classkiwi_1_1_dense_map_base_a264e92bec6b85f06ecf9a29b947bdfcf} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}} {\bfseries find} (const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$ Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a5dd40be423ee8f119caade40eef0f4d4}\label{classkiwi_1_1_dense_map_base_a5dd40be423ee8f119caade40eef0f4d4} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{const\+\_\+iterator}} {\bfseries find} (const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$ Val) const
+\item 
+{\footnotesize template$<$class Lookup\+KeyT$>$ }\\\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}} \mbox{\hyperlink{classkiwi_1_1_dense_map_base_afff21ada000fcb4618916dc984fae7ad}{find\+\_\+as}} (const Lookup\+KeyT \&Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a37745305fad1a61126bd7121f7f69bb8}\label{classkiwi_1_1_dense_map_base_a37745305fad1a61126bd7121f7f69bb8} 
+{\footnotesize template$<$class Lookup\+KeyT$>$ }\\\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{const\+\_\+iterator}} {\bfseries find\+\_\+as} (const Lookup\+KeyT \&Val) const
+\item 
+ValueT \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a118aa132b8e5caeb336228ac547d17b1}{lookup}} (const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$ Val) const
+\item 
+const ValueT \& \mbox{\hyperlink{classkiwi_1_1_dense_map_base_aead015820434aab7a6c101420e2c8dcb}{at}} (const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$ Val) const
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a2b8e5f1813d8d6bcc9d0efd486f1e025}\label{classkiwi_1_1_dense_map_base_a2b8e5f1813d8d6bcc9d0efd486f1e025} 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ {\bfseries insert} (const std\+::pair$<$ KeyT, ValueT $>$ \&KV)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_ab51d0e7c4d48d5a96b03878deb54d0b6}\label{classkiwi_1_1_dense_map_base_ab51d0e7c4d48d5a96b03878deb54d0b6} 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ {\bfseries insert} (std\+::pair$<$ KeyT, ValueT $>$ \&\&KV)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_ad3cc6456aca47776bb232853c0db5ba8}\label{classkiwi_1_1_dense_map_base_ad3cc6456aca47776bb232853c0db5ba8} 
+{\footnotesize template$<$typename... Ts$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ {\bfseries try\+\_\+emplace} (KeyT \&\&Key, Ts \&\&... Args)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a26ba2a0ec9fc61c445fa24d1731a4189}\label{classkiwi_1_1_dense_map_base_a26ba2a0ec9fc61c445fa24d1731a4189} 
+{\footnotesize template$<$typename... Ts$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ {\bfseries try\+\_\+emplace} (const KeyT \&Key, Ts \&\&... Args)
+\item 
+{\footnotesize template$<$typename Lookup\+KeyT$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ \mbox{\hyperlink{classkiwi_1_1_dense_map_base_ae48502816f7f3685789435b28ac2c501}{insert\+\_\+as}} (std\+::pair$<$ KeyT, ValueT $>$ \&\&KV, const Lookup\+KeyT \&Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_ae9a3aefa3581a80180a0c5693ae91efe}\label{classkiwi_1_1_dense_map_base_ae9a3aefa3581a80180a0c5693ae91efe} 
+{\footnotesize template$<$typename Input\+It$>$ }\\void {\bfseries insert} (Input\+It I, Input\+It E)
+\begin{DoxyCompactList}\small\item\em insert -\/ Range insertion of pairs. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a7742bc6c700062748c8c0869a1e1f1c5}\label{classkiwi_1_1_dense_map_base_a7742bc6c700062748c8c0869a1e1f1c5} 
+{\footnotesize template$<$typename V$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ {\bfseries insert\+\_\+or\+\_\+assign} (const KeyT \&Key, V \&\&Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a09caa3d6b32f1939dbf858d13d685984}\label{classkiwi_1_1_dense_map_base_a09caa3d6b32f1939dbf858d13d685984} 
+{\footnotesize template$<$typename V$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ {\bfseries insert\+\_\+or\+\_\+assign} (KeyT \&\&Key, V \&\&Val)
+\item 
+ValueT \& \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a3422646a5febc172b574b3fb0de68d73}{get\+Or\+Insert\+Default}} (KeyT \&\&Key)
+\item 
+ValueT \& \mbox{\hyperlink{classkiwi_1_1_dense_map_base_adc1edf1f07f2875cc4788cb4e8055c65}{get\+Or\+Insert\+Default}} (const KeyT \&Key)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_aeeaf14b23702be1379cb7928e59de685}\label{classkiwi_1_1_dense_map_base_aeeaf14b23702be1379cb7928e59de685} 
+bool {\bfseries erase} (const KeyT \&Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a2875034c4994e5ad67d80e19eb6f059e}\label{classkiwi_1_1_dense_map_base_a2875034c4994e5ad67d80e19eb6f059e} 
+void {\bfseries erase} (\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}} I)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a27b5171197995a1d32cdbcc4062dd029}\label{classkiwi_1_1_dense_map_base_a27b5171197995a1d32cdbcc4062dd029} 
+value\+\_\+type \& {\bfseries Find\+And\+Construct} (const KeyT \&Key)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a0896ae2c7bc989e0aff524528e6d6e8d}\label{classkiwi_1_1_dense_map_base_a0896ae2c7bc989e0aff524528e6d6e8d} 
+ValueT \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const KeyT \&Key)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a32ff97e0d84dc731db7d0645ae59fa0e}\label{classkiwi_1_1_dense_map_base_a32ff97e0d84dc731db7d0645ae59fa0e} 
+value\+\_\+type \& {\bfseries Find\+And\+Construct} (KeyT \&\&Key)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a3be165b22f694685f17ece67f16e34de}\label{classkiwi_1_1_dense_map_base_a3be165b22f694685f17ece67f16e34de} 
+ValueT \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (KeyT \&\&Key)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a48c686ef33cb6bac5526c3fd5b3bb195}{is\+Pointer\+Into\+Buckets\+Array}} (const void \texorpdfstring{$\ast$}{*}Ptr) const
+\item 
+const void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a8dcb11e23a9632b81bbdb6029e141ff9}{get\+Pointer\+Into\+Buckets\+Array}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_dense_map_base_abf942df6d167edfadcbd4e5ceff7d3b8}{get\+Memory\+Size}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base}{kiwi\+::\+Debug\+Epoch\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_a1f762b109605ac47be9daa63ce326625}{increment\+\_\+epoch}} ()
+\item 
+\mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_a00ed2dad740bd7fb852dcb13409be0e6}{\texorpdfstring{$\sim$}{\string~}\+Debug\+Epoch\+Base}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a4cbfdce6ccb6b2cb3b1b0e9169313f41}\label{classkiwi_1_1_dense_map_base_a4cbfdce6ccb6b2cb3b1b0e9169313f41} 
+void {\bfseries destroy\+All} ()
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a02f7c06c29d68f3e91b6d91e2ce34d93}\label{classkiwi_1_1_dense_map_base_a02f7c06c29d68f3e91b6d91e2ce34d93} 
+void {\bfseries init\+Empty} ()
+\item 
+unsigned \mbox{\hyperlink{classkiwi_1_1_dense_map_base_a021a01ee49681d76c7f9eefe1dd38625}{get\+Min\+Bucket\+To\+Reserve\+For\+Entries}} (unsigned Num\+Entries)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a968e6fe674703c4c263f2601c02387a1}\label{classkiwi_1_1_dense_map_base_a968e6fe674703c4c263f2601c02387a1} 
+void {\bfseries move\+From\+Old\+Buckets} (BucketT \texorpdfstring{$\ast$}{*}Old\+Buckets\+Begin, BucketT \texorpdfstring{$\ast$}{*}Old\+Buckets\+End)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_afdeb34ad3db728506b2a650f5b8c14ec}\label{classkiwi_1_1_dense_map_base_afdeb34ad3db728506b2a650f5b8c14ec} 
+{\footnotesize template$<$typename Other\+BaseT$>$ }\\void {\bfseries copy\+From} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ Other\+BaseT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&other)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a3743232674c83f6229c8a63ee8a97639}\label{classkiwi_1_1_dense_map_base_a3743232674c83f6229c8a63ee8a97639} 
+static unsigned {\bfseries get\+Hash\+Value} (const KeyT \&Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a10e862e4327514468d6476db498e3627}\label{classkiwi_1_1_dense_map_base_a10e862e4327514468d6476db498e3627} 
+{\footnotesize template$<$typename Lookup\+KeyT$>$ }\\static unsigned {\bfseries get\+Hash\+Value} (const Lookup\+KeyT \&Val)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a7f521b7d40ab4e461286e78caf070ae0}\label{classkiwi_1_1_dense_map_base_a7f521b7d40ab4e461286e78caf070ae0} 
+static const KeyT {\bfseries get\+Empty\+Key} ()
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_base_a5cf73e49b7b07b1cd8ce0ffa86db8460}\label{classkiwi_1_1_dense_map_base_a5cf73e49b7b07b1cd8ce0ffa86db8460} 
+static const KeyT {\bfseries get\+Tombstone\+Key} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classkiwi_1_1_dense_map_base_a100ee9e2ac1ca2759b3098076890c6e7}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!const\_iterator@{const\_iterator}}
+\index{const\_iterator@{const\_iterator}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{const\_iterator}{const\_iterator}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_a100ee9e2ac1ca2759b3098076890c6e7} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+using \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::const\+\_\+iterator}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{DenseMapIterator<KeyT,\ ValueT,\ KeyInfoT,\ BucketT,\ true>}}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_dense_map_base_aead015820434aab7a6c101420e2c8dcb}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!at@{at}}
+\index{at@{at}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{at()}{at()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_aead015820434aab7a6c101420e2c8dcb} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+const ValueT \& \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::at (\begin{DoxyParamCaption}\item[{const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$}]{Val}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+at -\/ Return the entry for the specified key, or abort if no such entry exists. \Hypertarget{classkiwi_1_1_dense_map_base_afff21ada000fcb4618916dc984fae7ad}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!find\_as@{find\_as}}
+\index{find\_as@{find\_as}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{find\_as()}{find\_as()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_afff21ada000fcb4618916dc984fae7ad} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+template$<$class Lookup\+KeyT$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}} \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::find\+\_\+as (\begin{DoxyParamCaption}\item[{const Lookup\+KeyT \&}]{Val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Alternate version of find() which allows a different, and possibly less expensive, key type. The \doxylink{structkiwi_1_1_dense_map_info}{Dense\+Map\+Info} is responsible for supplying methods get\+Hash\+Value(\+Lookup\+Key\+T) and is\+Equal(\+Lookup\+Key\+T, Key\+T) for each key type used. \Hypertarget{classkiwi_1_1_dense_map_base_abf942df6d167edfadcbd4e5ceff7d3b8}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!getMemorySize@{getMemorySize}}
+\index{getMemorySize@{getMemorySize}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{getMemorySize()}{getMemorySize()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_abf942df6d167edfadcbd4e5ceff7d3b8} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::get\+Memory\+Size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return the approximate size (in bytes) of the actual map. This is just the raw memory used by \doxylink{classkiwi_1_1_dense_map}{Dense\+Map}. If entries are pointers to objects, the size of the referenced objects are not included. \Hypertarget{classkiwi_1_1_dense_map_base_a021a01ee49681d76c7f9eefe1dd38625}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!getMinBucketToReserveForEntries@{getMinBucketToReserveForEntries}}
+\index{getMinBucketToReserveForEntries@{getMinBucketToReserveForEntries}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{getMinBucketToReserveForEntries()}{getMinBucketToReserveForEntries()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_a021a01ee49681d76c7f9eefe1dd38625} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+unsigned \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::get\+Min\+Bucket\+To\+Reserve\+For\+Entries (\begin{DoxyParamCaption}\item[{unsigned}]{Num\+Entries}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+Returns the number of buckets to allocate to ensure that the \doxylink{classkiwi_1_1_dense_map}{Dense\+Map} can accommodate {\ttfamily Num\+Entries} without need to grow(). \Hypertarget{classkiwi_1_1_dense_map_base_adc1edf1f07f2875cc4788cb4e8055c65}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!getOrInsertDefault@{getOrInsertDefault}}
+\index{getOrInsertDefault@{getOrInsertDefault}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{getOrInsertDefault()}{getOrInsertDefault()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_adc1edf1f07f2875cc4788cb4e8055c65} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+ValueT \& \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::get\+Or\+Insert\+Default (\begin{DoxyParamCaption}\item[{const KeyT \&}]{Key}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the value associated to the key in the map if it exists. If it does not exist, emplace a default value for the key and returns a reference to the newly created value. \Hypertarget{classkiwi_1_1_dense_map_base_a3422646a5febc172b574b3fb0de68d73}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!getOrInsertDefault@{getOrInsertDefault}}
+\index{getOrInsertDefault@{getOrInsertDefault}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{getOrInsertDefault()}{getOrInsertDefault()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_a3422646a5febc172b574b3fb0de68d73} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+ValueT \& \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::get\+Or\+Insert\+Default (\begin{DoxyParamCaption}\item[{KeyT \&\&}]{Key}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the value associated to the key in the map if it exists. If it does not exist, emplace a default value for the key and returns a reference to the newly created value. \Hypertarget{classkiwi_1_1_dense_map_base_a8dcb11e23a9632b81bbdb6029e141ff9}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!getPointerIntoBucketsArray@{getPointerIntoBucketsArray}}
+\index{getPointerIntoBucketsArray@{getPointerIntoBucketsArray}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{getPointerIntoBucketsArray()}{getPointerIntoBucketsArray()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_a8dcb11e23a9632b81bbdb6029e141ff9} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+const void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::get\+Pointer\+Into\+Buckets\+Array (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\doxylink{classkiwi_1_1_dense_map_base_a8dcb11e23a9632b81bbdb6029e141ff9}{get\+Pointer\+Into\+Buckets\+Array()} -\/ Return an opaque pointer into the buckets array. In conjunction with the previous method, this can be used to determine whether an insertion caused the \doxylink{classkiwi_1_1_dense_map}{Dense\+Map} to reallocate. \Hypertarget{classkiwi_1_1_dense_map_base_ae48502816f7f3685789435b28ac2c501}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!insert\_as@{insert\_as}}
+\index{insert\_as@{insert\_as}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{insert\_as()}{insert\_as()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_ae48502816f7f3685789435b28ac2c501} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+template$<$typename Lookup\+KeyT$>$ \\
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{iterator}}, bool $>$ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::insert\+\_\+as (\begin{DoxyParamCaption}\item[{std\+::pair$<$ KeyT, ValueT $>$ \&\&}]{KV}{, }\item[{const Lookup\+KeyT \&}]{Val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Alternate version of insert() which allows a different, and possibly less expensive, key type. The \doxylink{structkiwi_1_1_dense_map_info}{Dense\+Map\+Info} is responsible for supplying methods get\+Hash\+Value(\+Lookup\+Key\+T) and is\+Equal(\+Lookup\+Key\+T, Key\+T) for each key type used. \Hypertarget{classkiwi_1_1_dense_map_base_a48c686ef33cb6bac5526c3fd5b3bb195}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!isPointerIntoBucketsArray@{isPointerIntoBucketsArray}}
+\index{isPointerIntoBucketsArray@{isPointerIntoBucketsArray}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{isPointerIntoBucketsArray()}{isPointerIntoBucketsArray()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_a48c686ef33cb6bac5526c3fd5b3bb195} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+bool \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::is\+Pointer\+Into\+Buckets\+Array (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{Ptr}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+is\+Pointer\+Into\+Buckets\+Array -\/ Return true if the specified pointer points somewhere into the \doxylink{classkiwi_1_1_dense_map}{Dense\+Map}\textquotesingle{}s array of buckets (i.\+e. either to a key or value in the \doxylink{classkiwi_1_1_dense_map}{Dense\+Map}). \Hypertarget{classkiwi_1_1_dense_map_base_a118aa132b8e5caeb336228ac547d17b1}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!lookup@{lookup}}
+\index{lookup@{lookup}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{lookup()}{lookup()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_a118aa132b8e5caeb336228ac547d17b1} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+ValueT \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::lookup (\begin{DoxyParamCaption}\item[{const\+\_\+arg\+\_\+type\+\_\+t$<$ KeyT $>$}]{Val}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+lookup -\/ Return the entry for the specified key, or a default constructed value if no such entry exists. \Hypertarget{classkiwi_1_1_dense_map_base_aa76130952b4fc0497c71156c96814f32}\index{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}!reserve@{reserve}}
+\index{reserve@{reserve}!kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$@{kiwi::DenseMapBase$<$ DerivedT, KeyT, ValueT, KeyInfoT, BucketT $>$}}
+\doxysubsubsection{\texorpdfstring{reserve()}{reserve()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_dense_map_base_aa76130952b4fc0497c71156c96814f32} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+void \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$\+::reserve (\begin{DoxyParamCaption}\item[{size\+\_\+type}]{Num\+Entries}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Grow the densemap so that it can contain at least {\ttfamily Num\+Entries} items before resizing again. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/adt/\mbox{\hyperlink{dense__map_8hh}{dense\+\_\+map.\+hh}}\end{DoxyCompactItemize}

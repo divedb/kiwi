@@ -1,0 +1,144 @@
+\doxysection{pointer\+\_\+like\+\_\+type\+\_\+traits.\+hh}
+\hypertarget{pointer__like__type__traits_8hh_source}{}\label{pointer__like__type__traits_8hh_source}\index{include/kiwi/support/pointer\_like\_type\_traits.hh@{include/kiwi/support/pointer\_like\_type\_traits.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/Support/PointerLikeTypeTraits.h\ -\/\ Pointer\ Traits\ -\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ This\ file\ defines\ the\ PointerLikeTypeTraits\ class.\ \ This\ allows\ data}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ structures\ to\ reason\ about\ pointers\ and\ other\ things\ that\ are\ pointer\ sized.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00025\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00030\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_constant_log2}{ConstantLog2}}}
+\DoxyCodeLine{00031\ \ \ \ \ :\ std::integral\_constant<size\_t,\ ConstantLog2<N\ /\ 2>::value\ +\ 1>\ \{\};}
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_constant_log2}{ConstantLog2}}<1>\ :\ std::integral\_constant<size\_t,\ 0>\ \{\};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ Provide\ a\ trait\ to\ check\ if\ T\ is\ pointer-\/like.}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00037\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_has_pointer_like_type_traits}{HasPointerLikeTypeTraits}}\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ value\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00043\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_has_pointer_like_type_traits}{HasPointerLikeTypeTraits}}<}
+\DoxyCodeLine{00044\ \ \ \ \ T,\ decltype((sizeof(\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<T>)\ +\ sizeof(T)),\ void())>\ \{}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ value\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00049\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_is_pointer_like}{IsPointerLike}}\ \{}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ value\ =\ HasPointerLikeTypeTraits<T>::value;}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_is_pointer_like}{IsPointerLike}}<T*>\ \{}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ value\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00062\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<T*>\ \{}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}*\ get\_as\_void\_pointer(T*\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T*\ get\_from\_void\_pointer(\textcolor{keywordtype}{void}*\ p)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T*\textcolor{keyword}{>}(p);\ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kNumLowBitsAvailable\ =}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1_constant_log2}{detail::ConstantLog2}}<\textcolor{keyword}{alignof}(T)>::value;}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00071\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<void*>\ \{}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}*\ get\_as\_void\_pointer(\textcolor{keywordtype}{void}*\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}*\ get\_from\_void\_pointer(\textcolor{keywordtype}{void}*\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a2797ecd6f373d966cff0d468edb4df04}{kNumLowBitsAvailable}}\ =\ 2;}
+\DoxyCodeLine{00083\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00087\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<const\ T>\ \{}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits<T>}}\ NonConst;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ get\_as\_void\_pointer(\textcolor{keyword}{const}\ T\ p)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ NonConst::get\_as\_void\_pointer(p);}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T\ get\_from\_void\_pointer(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ p)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ NonConst::get\_from\_void\_pointer(\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(p));}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kNumLowBitsAvailable\ =\ NonConst::kNumLowBitsAvailable;}
+\DoxyCodeLine{00099\ \};}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00102\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00103\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<const\ T*>\ \{}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits<T*>}}\ NonConst;}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ get\_as\_void\_pointer(\textcolor{keyword}{const}\ T*\ p)\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ NonConst::get\_as\_void\_pointer(\textcolor{keyword}{const\_cast<}T*\textcolor{keyword}{>}(p));}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T*\ get\_from\_void\_pointer(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ p)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{return}\ NonConst::get\_from\_void\_pointer(\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(p));}
+\DoxyCodeLine{00112\ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kNumLowBitsAvailable\ =\ NonConst::kNumLowBitsAvailable;}
+\DoxyCodeLine{00115\ \};}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00119\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<uintptr\_t>\ \{}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}*\ get\_as\_void\_pointer(uintptr\_t\ p)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(p);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uintptr\_t\ get\_from\_void\_pointer(\textcolor{keywordtype}{void}*\ p)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(p);}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ No\ bits\ are\ available!}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kNumLowBitsAvailable\ =\ 0;}
+\DoxyCodeLine{00130\ \};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00140\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ Alignment,\ \textcolor{keyword}{typename}\ FunctionPo\textcolor{keywordtype}{int}erT>}
+\DoxyCodeLine{00141\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits}{FunctionPointerLikeTypeTraits}}\ \{}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kNumLowBitsAvailable\ =}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1_constant_log2}{detail::ConstantLog2<Alignment>::value}};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}*\ get\_as\_void\_pointer(FunctionPointerT\ p)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ assert((\textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(p)\ \&}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \string~((uintptr\_t)-\/1\ <<\ kNumLowBitsAvailable))\ ==\ 0\ \&\&}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Alignment\ not\ satisfied\ for\ an\ actual\ function\ pointer!"{}});}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(p);}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ FunctionPointerT\ get\_from\_void\_pointer(\textcolor{keywordtype}{void}*\ p)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}FunctionPointerT\textcolor{keyword}{>}(p);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00164\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ReturnT,\ \textcolor{keyword}{typename}...\ ParamTs>}
+\DoxyCodeLine{00165\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{PointerLikeTypeTraits}}<ReturnT\ (*)(ParamTs...)>}
+\DoxyCodeLine{00166\ \ \ \ \ :\ \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits}{FunctionPointerLikeTypeTraits}}<4,\ ReturnT\ (*)(ParamTs...)>\ \{\};}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

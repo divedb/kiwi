@@ -1,0 +1,40 @@
+\doxysection{kiwi\+::Compressed\+Pair\+Elem\texorpdfstring{$<$}{<} Tp, Idx, Can\+Be\+Empty\+Base \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_compressed_pair_elem}{}\label{classkiwi_1_1_compressed_pair_elem}\index{kiwi::CompressedPairElem$<$ Tp, Idx, CanBeEmptyBase $>$@{kiwi::CompressedPairElem$<$ Tp, Idx, CanBeEmptyBase $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_ac7eead19bded794f5659224b3a746492}\label{classkiwi_1_1_compressed_pair_elem_ac7eead19bded794f5659224b3a746492} 
+using {\bfseries ParamT} = Tp
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_ab86d13bd155de00c0633aa7ad580ea2b}\label{classkiwi_1_1_compressed_pair_elem_ab86d13bd155de00c0633aa7ad580ea2b} 
+using {\bfseries reference} = Tp\&
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_a2de08dac99b0ab4e33857fbc7f98ef30}\label{classkiwi_1_1_compressed_pair_elem_a2de08dac99b0ab4e33857fbc7f98ef30} 
+using {\bfseries const\+\_\+reference} = const Tp\&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_aac458b4c9490a285369138efe10c89be}\label{classkiwi_1_1_compressed_pair_elem_aac458b4c9490a285369138efe10c89be} 
+constexpr {\bfseries Compressed\+Pair\+Elem} (\mbox{\hyperlink{structkiwi_1_1_default_init_tag}{Default\+Init\+Tag}})
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_a25924069a6f660128d37b2a8afc0c503}\label{classkiwi_1_1_compressed_pair_elem_a25924069a6f660128d37b2a8afc0c503} 
+constexpr {\bfseries Compressed\+Pair\+Elem} (\mbox{\hyperlink{structkiwi_1_1_value_init_tag}{Value\+Init\+Tag}})
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_a0ae175a972fa1b5c5ca3a576a81c441f}\label{classkiwi_1_1_compressed_pair_elem_a0ae175a972fa1b5c5ca3a576a81c441f} 
+{\footnotesize template$<$typename Up, std\+::enable\+\_\+if\+\_\+t$<$ !std\+::is\+\_\+same\+\_\+v$<$ \mbox{\hyperlink{classkiwi_1_1_compressed_pair_elem}{Compressed\+Pair\+Elem}}, std\+::decay\+\_\+t$<$ Up $>$ $>$, int $>$ = 0$>$ }\\constexpr {\bfseries Compressed\+Pair\+Elem} (Up \&\&u)
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_aad8b2ea3c7a91e37a2f4764e3e1c5b24}\label{classkiwi_1_1_compressed_pair_elem_aad8b2ea3c7a91e37a2f4764e3e1c5b24} 
+{\footnotesize template$<$typename... Args, size\+\_\+t... Indexes$>$ }\\constexpr {\bfseries Compressed\+Pair\+Elem} (std\+::piecewise\+\_\+construct\+\_\+t, std\+::tuple$<$ Args... $>$ args, std\+::index\+\_\+sequence$<$ Indexes... $>$)
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_a7724cbfb36c61bb2d421485909545074}\label{classkiwi_1_1_compressed_pair_elem_a7724cbfb36c61bb2d421485909545074} 
+reference {\bfseries Get} () noexcept
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_elem_a2f15d07424c96506c75d8ee20838380d}\label{classkiwi_1_1_compressed_pair_elem_a2f15d07424c96506c75d8ee20838380d} 
+const\+\_\+reference {\bfseries Get} () const noexcept
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/util/compressed\+\_\+pair.\+hh\end{DoxyCompactItemize}

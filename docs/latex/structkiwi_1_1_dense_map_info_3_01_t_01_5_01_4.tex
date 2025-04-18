@@ -1,0 +1,37 @@
+\doxysection{kiwi\+::Dense\+Map\+Info\texorpdfstring{$<$}{<} T \texorpdfstring{$\ast$}{*} \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4}{}\label{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4}\index{kiwi::DenseMapInfo$<$ T \texorpdfstring{$\ast$}{*} $>$@{kiwi::DenseMapInfo$<$ T \texorpdfstring{$\ast$}{*} $>$}}
+
+
+{\ttfamily \#include $<$dense\+\_\+map\+\_\+info.\+hh$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a89f987648a30cd96d3bfb7ee26f8d0f5}\label{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a89f987648a30cd96d3bfb7ee26f8d0f5} 
+static T \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+empty\+\_\+key} ()
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a26037eff5e2d93d11a9a09dc243574ca}\label{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a26037eff5e2d93d11a9a09dc243574ca} 
+static T \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+tombstone\+\_\+key} ()
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a2035e5892c186f5cf25f2ae1feeddf4f}\label{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a2035e5892c186f5cf25f2ae1feeddf4f} 
+static unsigned {\bfseries get\+\_\+hash\+\_\+value} (const T \texorpdfstring{$\ast$}{*}ptr\+\_\+val)
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a3ffd17e1e86665780f60a2d1fb43e984}\label{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_a3ffd17e1e86665780f60a2d1fb43e984} 
+static bool {\bfseries is\+\_\+equal} (const T \texorpdfstring{$\ast$}{*}lhs, const T \texorpdfstring{$\ast$}{*}rhs)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_ad963e8ea2ebfc52bd965acd545cf088a}\label{structkiwi_1_1_dense_map_info_3_01_t_01_5_01_4_ad963e8ea2ebfc52bd965acd545cf088a} 
+static constexpr uintptr\+\_\+t {\bfseries k\+Log2\+Max\+Align} = 12
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct kiwi\+::\+Dense\+Map\+Info$<$ T \texorpdfstring{$\ast$}{*} $>$}
+Provide \doxylink{structkiwi_1_1_dense_map_info}{Dense\+Map\+Info} for all pointers. Come up with sentinel pointer values that are aligned to alignof(\+T) bytes, but try to avoid requiring T to be complete. This allows clients to instantiate \doxylink{classkiwi_1_1_dense_map}{Dense\+Map$<$\+T\texorpdfstring{$\ast$}{*}, ...$>$} with forward declared key types. Assume that no pointer key type requires more than 4096 bytes of alignment. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/adt/\mbox{\hyperlink{dense__map__info_8hh}{dense\+\_\+map\+\_\+info.\+hh}}\end{DoxyCompactItemize}

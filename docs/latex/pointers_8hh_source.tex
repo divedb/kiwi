@@ -1,0 +1,272 @@
+\doxysection{pointers.\+hh}
+\hypertarget{pointers_8hh_source}{}\label{pointers_8hh_source}\index{include/kiwi/util/pointers.hh@{include/kiwi/util/pointers.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Copyright\ (c)\ 2015\ Microsoft\ Corporation.\ All\ rights\ reserved.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ This\ code\ is\ licensed\ under\ the\ MIT\ License\ (MIT).}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ IMPLIED,\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ AUTHORS\ OR\ COPYRIGHT\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <algorithm>}\ \ \ \ \ \textcolor{comment}{//\ for\ forward}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <cstddef>}\ \ \ \ \ \ \ \textcolor{comment}{//\ for\ ptrdiff\_t,\ nullptr\_t,\ size\_t}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <memory>}\ \ \ \ \ \ \ \ \textcolor{comment}{//\ for\ shared\_ptr,\ unique\_ptr}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <system\_error>}\ \ \textcolor{comment}{//\ for\ hash}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <type\_traits>}\ \ \ \textcolor{comment}{//\ for\ enable\_if\_t,\ is\_convertible,\ is\_assignable}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <utility>}\ \ \ \ \ \ \ \textcolor{comment}{//\ for\ declval}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/assert.hh"{}}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1is__comparable__to__nullptr}{is\_comparable\_to\_nullptr}}\ :\ std::false\_type\ \{\};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00036\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1is__comparable__to__nullptr}{is\_comparable\_to\_nullptr}}<}
+\DoxyCodeLine{00037\ \ \ \ \ T,\ std::enable\_if\_t<std::is\_convertible<}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ decltype(std::declval<T>()\ !=\ nullptr),\ bool>::value>>}
+\DoxyCodeLine{00039\ \ \ \ \ :\ std::true\_type\ \{\};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00047\ \textcolor{keyword}{using\ }value\_or\_reference\_return\_t\ =}
+\DoxyCodeLine{00048\ \ \ \ \ std::conditional\_t<\textcolor{keyword}{sizeof}(T)\ <\ 2\ *\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{void}*)\ \&\&}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_trivially\_copy\_constructible<T>::value,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ T,\ \textcolor{keyword}{const}\ T\&>;}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{using\ }std::shared\_ptr;}
+\DoxyCodeLine{00055\ \textcolor{keyword}{using\ }std::unique\_ptr;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00065\ template\ <class\ T,\ class\ =\ std::enable\_if\_t<std::is\_pointer<T>::value>>}
+\DoxyCodeLine{00066\ \textcolor{keyword}{using\ }Owner\ =\ T;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00079\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00080\ \textcolor{keyword}{class\ }NotNull\ \{}
+\DoxyCodeLine{00081\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static\_assert}(\mbox{\hyperlink{structkiwi_1_1detail_1_1is__comparable__to__nullptr}{detail::is\_comparable\_to\_nullptr<T>::value}},}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}T\ cannot\ be\ compared\ to\ nullptr."{}});}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U,}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_convertible<U,\ T>::value>>}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{constexpr}\ NotNull(U\&\&\ u)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ std::is\_nothrow\_move\_constructible<T>::value)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ :\ ptr\_(std::forward<U>(u))\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ EXPECT(ptr\_\ !=\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{template}\ <}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<!std::is\_same<std::nullptr\_t,\ T>::value>>}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{constexpr}\ NotNull(T\ u)\ \textcolor{keyword}{noexcept}(std::is\_nothrow\_move\_constructible<T>::value)}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ :\ ptr\_(std::move(u))\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ EXPECT(ptr\_\ !=\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00101\ \ \ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U,}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_convertible<U,\ T>::value>>}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{constexpr}\ NotNull(\textcolor{keyword}{const}\ NotNull<U>\&\ other)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ std::is\_nothrow\_move\_constructible<T>::value)}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ :\ NotNull(other.get())\ \{\}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ NotNull(\textcolor{keyword}{const}\ NotNull\&\ other)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ NotNull\&\ operator=(\textcolor{keyword}{const}\ NotNull\&\ other)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{constexpr}\ detail::value\_or\_reference\_return\_t<T>\ get()\ \textcolor{keyword}{const}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(\textcolor{keyword}{noexcept}(detail::value\_or\_reference\_return\_t<T>\{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ std::declval<T\&>()\}))\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ ptr\_;}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ T()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ get();\ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{decltype}(\textcolor{keyword}{auto})\ operator-\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ get();\ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{decltype}(\textcolor{keyword}{auto})\ \textcolor{keyword}{operator}*()\ \textcolor{keyword}{const}\ \{\ \textcolor{keywordflow}{return}\ *get();\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00126\ \ \ \mbox{\hyperlink{classkiwi_1_1_not_null_a9bc72b51cd400fb7efbc2eb962fab7ff}{NotNull}}(std::nullptr\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00127\ \ \ NotNull\&\ operator=(std::nullptr\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00130\ \ \ NotNull\&\ \mbox{\hyperlink{classkiwi_1_1_not_null_a4f7e3debb41e401bc7be5892457ab2dc}{operator++}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00131\ \ \ NotNull\&\ operator-\/-\/()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00132\ \ \ NotNull\ \mbox{\hyperlink{classkiwi_1_1_not_null_a4f7e3debb41e401bc7be5892457ab2dc}{operator++}}(\textcolor{keywordtype}{int})\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00133\ \ \ NotNull\ operator-\/-\/(\textcolor{keywordtype}{int})\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00134\ \ \ NotNull\&\ operator+=(std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00135\ \ \ NotNull\&\ operator-\/=(std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{void}\ operator[](std::ptrdiff\_t)\ \textcolor{keyword}{const}\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00139\ \ \ T\ ptr\_;}
+\DoxyCodeLine{00140\ \};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00143\ \textcolor{keyword}{auto}\ make\_not\_null(T\&\&\ t)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<std::remove\_cv\_t<std::remove\_reference\_t<T>}}>>\{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ std::forward<T>(t)\};}
+\DoxyCodeLine{00146\ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00149\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{noexcept}(lhs.get()\ ==\ rhs.get()))\ -\/>\ \textcolor{keyword}{decltype}(lhs.get()\ ==\ rhs.get())\ \{}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordflow}{return}\ lhs.get()\ ==\ rhs.get();}
+\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00155\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{dense__map_8hh_a008449c6439d3cbc96cc662630b49736}{operator!=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{noexcept}(lhs.get()\ !=\ rhs.get()))\ -\/>\ \textcolor{keyword}{decltype}(lhs.get()\ !=\ rhs.get())\ \{}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordflow}{return}\ lhs.get()\ !=\ rhs.get();}
+\DoxyCodeLine{00158\ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00161\ \textcolor{keyword}{auto}\ operator<(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{noexcept}(std::less<>\{\}(lhs.get(),\ rhs.get())))}
+\DoxyCodeLine{00163\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(std::less<>\{\}(lhs.get(),\ rhs.get()))\ \{}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordflow}{return}\ std::less<>\{\}(lhs.get(),\ rhs.get());}
+\DoxyCodeLine{00165\ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00168\ \textcolor{keyword}{auto}\ operator<=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{noexcept}(std::less\_equal<>\{\}(lhs.get(),\ rhs.get())))}
+\DoxyCodeLine{00170\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(std::less\_equal<>\{\}(lhs.get(),\ rhs.get()))\ \{}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordflow}{return}\ std::less\_equal<>\{\}(lhs.get(),\ rhs.get());}
+\DoxyCodeLine{00172\ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00175\ \textcolor{keyword}{auto}\ operator>(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{noexcept}(std::greater<>\{\}(lhs.get(),\ rhs.get())))}
+\DoxyCodeLine{00177\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(std::greater<>\{\}(lhs.get(),\ rhs.get()))\ \{}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordflow}{return}\ std::greater<>\{\}(lhs.get(),\ rhs.get());}
+\DoxyCodeLine{00179\ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00182\ \textcolor{keyword}{auto}\ operator>=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keyword}{noexcept}(std::greater\_equal<>\{\}(lhs.get(),\ rhs.get())))}
+\DoxyCodeLine{00184\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(std::greater\_equal<>\{\}(lhs.get(),\ rhs.get()))\ \{}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordflow}{return}\ std::greater\_equal<>\{\}(lhs.get(),\ rhs.get());}
+\DoxyCodeLine{00186\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00189\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00190\ std::ptrdiff\_t\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00191\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00192\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00193\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00194\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00195\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00196\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\ operator+(std::ptrdiff\_t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ template\ <typename\ T,\ typename\ U\ =\ decltype(std::declval<const\ T\&>().get()),}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ =\ std::is\_default\_constructible<std::hash<U>>::value>}
+\DoxyCodeLine{00200\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{NotNullHash}}\ \{}
+\DoxyCodeLine{00201\ \ \ std::size\_t\ operator()(\textcolor{keyword}{const}\ T\&\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{return}\ std::hash<U>\{\}(value.get());}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ \};}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00207\ \textcolor{keyword}{struct\ }NotNullHash<T,\ U,\ false>\ \{}
+\DoxyCodeLine{00208\ \ \ NotNullHash()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00209\ \ \ NotNullHash(\textcolor{keyword}{const}\ NotNullHash\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00210\ \ \ NotNullHash\&\ operator=(\textcolor{keyword}{const}\ NotNullHash\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00211\ \};}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \textcolor{keyword}{namespace\ }std\ \{}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00218\ \textcolor{keyword}{struct\ }hash<kiwi::NotNull<T>>\ :\ \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{kiwi::NotNullHash}}<kiwi::NotNull<T>>\ \{\};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \}\ \ \textcolor{comment}{//\ namespace\ std}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00237\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00238\ \textcolor{keyword}{class\ }StrictNotNull\ :\ \textcolor{keyword}{public}\ NotNull<T>\ \{}
+\DoxyCodeLine{00239\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00240\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U,}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_convertible<U,\ T>::value>>}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ StrictNotNull(U\&\&\ u)\ :\ NotNull<T>(std::forward<U>(u))\ \{\}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{template}\ <}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<!std::is\_same<std::nullptr\_t,\ T>::value>>}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ StrictNotNull(T\ u)\ :\ NotNull<T>(u)\ \{\}}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U,}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_convertible<U,\ T>::value>>}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{constexpr}\ StrictNotNull(\textcolor{keyword}{const}\ NotNull<U>\&\ other)\ :\ NotNull<T>(other)\ \{\}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U,}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_convertible<U,\ T>::value>>}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{constexpr}\ StrictNotNull(\textcolor{keyword}{const}\ StrictNotNull<U>\&\ other)\ :\ NotNull<T>(other)\ \{\}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00259\ \ \ \mbox{\hyperlink{classkiwi_1_1_strict_not_null_abbe33c146b016601603e80fb2b91f472}{StrictNotNull}}(StrictNotNull\&\&\ other)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ std::is\_nothrow\_copy\_constructible<T>::value)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00261\ \ \ StrictNotNull(\textcolor{keyword}{const}\ StrictNotNull\&\ other)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00262\ \ \ StrictNotNull\&\ operator=(\textcolor{keyword}{const}\ StrictNotNull\&\ other)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00263\ \ \ StrictNotNull\&\ operator=(\textcolor{keyword}{const}\ NotNull<T>\&\ other)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ NotNull<T>::operator=(other);}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00266\ \ \ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00270\ \ \ \mbox{\hyperlink{classkiwi_1_1_strict_not_null_ae61ba5b38a498bfdfe1dde5ab73d3b65}{StrictNotNull}}(std::nullptr\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00271\ \ \ StrictNotNull\&\ operator=(std::nullptr\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00274\ \ \ StrictNotNull\&\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null_a5ebff0ebc8e520c9a339f609c11a04a1}{operator++}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00275\ \ \ StrictNotNull\&\ operator-\/-\/()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00276\ \ \ StrictNotNull\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null_a5ebff0ebc8e520c9a339f609c11a04a1}{operator++}}(\textcolor{keywordtype}{int})\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00277\ \ \ StrictNotNull\ operator-\/-\/(\textcolor{keywordtype}{int})\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00278\ \ \ StrictNotNull\&\ operator+=(std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00279\ \ \ StrictNotNull\&\ operator-\/=(std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00280\ \ \ \textcolor{keywordtype}{void}\ operator[](std::ptrdiff\_t)\ \textcolor{keyword}{const}\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00281\ \};}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \textcolor{comment}{//\ more\ unwanted\ operators}}
+\DoxyCodeLine{00284\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00285\ std::ptrdiff\_t\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<U>}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00287\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00288\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00289\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00290\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00291\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00292\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\ operator+(std::ptrdiff\_t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00295\ \textcolor{keyword}{auto}\ make\_strict\_not\_null(T\&\&\ t)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00296\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<std::remove\_cv\_t<std::remove\_reference\_t<T>}}>>\{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ std::forward<T>(t)\};}
+\DoxyCodeLine{00298\ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#if\ (\_\_cplusplus\ >=\ 201703L)}}
+\DoxyCodeLine{00301\ \textcolor{comment}{//\ Deduction\ guides\ to\ prevent\ the\ ctad-\/maybe-\/unsupported\ warning}}
+\DoxyCodeLine{00302\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00303\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull}}(T)\ -\/>\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}};}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00306\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull}}(T)\ -\/>\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}};}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \textcolor{keyword}{namespace\ }std\ \{}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00314\ \textcolor{keyword}{struct\ }hash<kiwi::StrictNotNull<T>>}
+\DoxyCodeLine{00315\ \ \ \ \ :\ \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{kiwi::NotNullHash}}<kiwi::StrictNotNull<T>>\ \{\};}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \}\ \ \textcolor{comment}{//\ namespace\ std}}
+
+\end{DoxyCode}

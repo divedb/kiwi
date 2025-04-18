@@ -1,0 +1,62 @@
+\doxysection{resize\+\_\+uninitialized.\+hh}
+\hypertarget{resize__uninitialized_8hh_source}{}\label{resize__uninitialized_8hh_source}\index{include/kiwi/strings/internal/resize\_uninitialized.hh@{include/kiwi/strings/internal/resize\_uninitialized.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Abseil\ Authors.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ \ \ \ \ https://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{namespace\ }strings\_internal\ \{}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{string}\_type,\ \textcolor{keyword}{typename}\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00032\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits}{ResizeUninitializedTraits}}\ \{}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{using\ }HasMember\ =\ std::false\_type;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ resize(string\_type*\ s,\ \textcolor{keywordtype}{size\_t}\ new\_size)\ \{\ s-\/>resize(new\_size);\ \}}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{string}\_type>}
+\DoxyCodeLine{00039\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits}{ResizeUninitializedTraits}}<}
+\DoxyCodeLine{00040\ \ \ \ \ string\_type,\ std::void\_t<decltype(std::declval<string\_type\&>()}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .\_\_resize\_default\_init(237))>\ >\ \{}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{using\ }HasMember\ =\ std::true\_type;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ resize(string\_type*\ s,\ \textcolor{keywordtype}{size\_t}\ new\_size)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ s-\/>\_\_resize\_default\_init(new\_size);}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{string}\_type>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ STLStringSupportsNontrashingResize(string\_type*)\ \{}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits}{ResizeUninitializedTraits<string\_type>::HasMember::value}};}
+\DoxyCodeLine{00056\ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{string}\_type,\ \textcolor{keyword}{typename}\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00063\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ STLStringResizeUninitialized(string\_type*\ s,\ \textcolor{keywordtype}{size\_t}\ new\_size)\ \{}
+\DoxyCodeLine{00064\ \ \ ResizeUninitializedTraits<string\_type>::resize(s,\ new\_size);}
+\DoxyCodeLine{00065\ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \}\ \ \textcolor{comment}{//\ namespace\ strings\_internal}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

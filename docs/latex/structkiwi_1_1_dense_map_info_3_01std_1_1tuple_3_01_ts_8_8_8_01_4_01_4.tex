@@ -1,0 +1,54 @@
+\doxysection{kiwi\+::Dense\+Map\+Info\texorpdfstring{$<$}{<} std\+::tuple\texorpdfstring{$<$}{<} Ts... \texorpdfstring{$>$}{>} \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4}{}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4}\index{kiwi::DenseMapInfo$<$ std::tuple$<$ Ts... $>$ $>$@{kiwi::DenseMapInfo$<$ std::tuple$<$ Ts... $>$ $>$}}
+
+
+Provide \doxylink{structkiwi_1_1_dense_map_info}{Dense\+Map\+Info} for all tuples whose members have info.  
+
+
+
+
+{\ttfamily \#include $<$dense\+\_\+map\+\_\+info.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a47e08d1ba1a8e0b505ee29ee6c9eb26c}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a47e08d1ba1a8e0b505ee29ee6c9eb26c} 
+using {\bfseries Tuple} = std\+::tuple$<$Ts...$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_ae24853878756a3af25f9bb8b6a7dbb6a}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_ae24853878756a3af25f9bb8b6a7dbb6a} 
+static Tuple {\bfseries get\+\_\+empty\+\_\+key} ()
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a133634967f1dc6992f819a0ebb8aac95}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a133634967f1dc6992f819a0ebb8aac95} 
+static Tuple {\bfseries get\+\_\+tombstone\+\_\+key} ()
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a40fd8375197d4d6df82ee7c5793d5647}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a40fd8375197d4d6df82ee7c5793d5647} 
+{\footnotesize template$<$unsigned I$>$ }\\static unsigned {\bfseries get\+\_\+hash\+\_\+value\+\_\+impl} (const Tuple \&values, std\+::false\+\_\+type)
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_ab66dee7fa311cc3b019d62cfbd1ff3e8}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_ab66dee7fa311cc3b019d62cfbd1ff3e8} 
+{\footnotesize template$<$unsigned I$>$ }\\static unsigned {\bfseries get\+\_\+hash\+\_\+value\+\_\+impl} (const Tuple \&, std\+::true\+\_\+type)
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a0e2ee7be3c95a91b9d5dc4c52cdc3cae}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a0e2ee7be3c95a91b9d5dc4c52cdc3cae} 
+static unsigned {\bfseries get\+\_\+hash\+\_\+value} (const std\+::tuple$<$ Ts... $>$ \&values)
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a6c9a1b3f72feda8b4f01ff05614dd28a}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a6c9a1b3f72feda8b4f01ff05614dd28a} 
+{\footnotesize template$<$unsigned I$>$ }\\static bool {\bfseries is\+\_\+equal\+\_\+impl} (const Tuple \&lhs, const Tuple \&rhs, std\+::false\+\_\+type)
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_aae04fd726cc5e8bea8462097ef2ce4d3}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_aae04fd726cc5e8bea8462097ef2ce4d3} 
+{\footnotesize template$<$unsigned I$>$ }\\static bool {\bfseries is\+\_\+equal\+\_\+impl} (const Tuple \&, const Tuple \&, std\+::true\+\_\+type)
+\item 
+\Hypertarget{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a53bb45e09837d44e24873822767ddebf}\label{structkiwi_1_1_dense_map_info_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4_a53bb45e09837d44e24873822767ddebf} 
+static bool {\bfseries is\+\_\+equal} (const Tuple \&lhs, const Tuple \&rhs)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename... Ts$>$\newline
+struct kiwi\+::\+Dense\+Map\+Info$<$ std\+::tuple$<$ Ts... $>$ $>$}
+Provide \doxylink{structkiwi_1_1_dense_map_info}{Dense\+Map\+Info} for all tuples whose members have info. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/adt/\mbox{\hyperlink{dense__map__info_8hh}{dense\+\_\+map\+\_\+info.\+hh}}\end{DoxyCompactItemize}

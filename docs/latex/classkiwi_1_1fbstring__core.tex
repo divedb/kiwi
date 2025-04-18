@@ -1,0 +1,88 @@
+\doxysection{kiwi\+::fbstring\+\_\+core\texorpdfstring{$<$}{<} Char \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1fbstring__core}{}\label{classkiwi_1_1fbstring__core}\index{kiwi::fbstring\_core$<$ Char $>$@{kiwi::fbstring\_core$<$ Char $>$}}
+
+
+{\ttfamily \#include $<$fbstring.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a694e64f6571ec52e1a4e6604b0eedfc3}\label{classkiwi_1_1fbstring__core_a694e64f6571ec52e1a4e6604b0eedfc3} 
+{\bfseries fbstring\+\_\+core} (const \mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a20116839de20ae53eb28124110d2d9ce}\label{classkiwi_1_1fbstring__core_a20116839de20ae53eb28124110d2d9ce} 
+\mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core}} \&rhs)=delete
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_aedd12493aced3d04c208472a676b2af1}\label{classkiwi_1_1fbstring__core_aedd12493aced3d04c208472a676b2af1} 
+{\bfseries fbstring\+\_\+core} (\mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core}} \&\&goner) noexcept
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_addd1e8c5e88db5974507b1ff4cface97}\label{classkiwi_1_1fbstring__core_addd1e8c5e88db5974507b1ff4cface97} 
+{\bfseries fbstring\+\_\+core} (const Char \texorpdfstring{$\ast$}{*}const \mbox{\hyperlink{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7}{data}}, const size\+\_\+t size, bool disable\+\_\+sso=FBSTRING\+\_\+\+DISABLE\+\_\+\+SSO)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_aec7b5e9bb63876f5a07cea3ce3707505}\label{classkiwi_1_1fbstring__core_aec7b5e9bb63876f5a07cea3ce3707505} 
+{\bfseries fbstring\+\_\+core} (Char \texorpdfstring{$\ast$}{*}const \mbox{\hyperlink{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7}{data}}, const size\+\_\+t size, const size\+\_\+t allocated\+\_\+size, Acquire\+Mallocated\+String)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1fbstring__core_a2cc428623effb9345011f24a75c52779}{swap}} (\mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7}\label{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7} 
+const Char \texorpdfstring{$\ast$}{*} {\bfseries data} () const
+\begin{DoxyCompactList}\small\item\em In C++11 data() and c\+\_\+str() are 100\% equivalent. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a2e11aae01d7853cf30ab93ebe3abe496}\label{classkiwi_1_1fbstring__core_a2e11aae01d7853cf30ab93ebe3abe496} 
+Char \texorpdfstring{$\ast$}{*} {\bfseries data} ()
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a905be71fbabb8db913098e6ac7fcb778}\label{classkiwi_1_1fbstring__core_a905be71fbabb8db913098e6ac7fcb778} 
+Char \texorpdfstring{$\ast$}{*} {\bfseries mutable\+\_\+data} ()
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a9cb90f8a9a5a08c12aefcfec9fe93581}\label{classkiwi_1_1fbstring__core_a9cb90f8a9a5a08c12aefcfec9fe93581} 
+const Char \texorpdfstring{$\ast$}{*} {\bfseries c\+\_\+str} () const
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_abc1ae71c1f003d221207098ef7a7ad31}\label{classkiwi_1_1fbstring__core_abc1ae71c1f003d221207098ef7a7ad31} 
+void {\bfseries Shrink} (const size\+\_\+t delta)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_ad2b23be89a85e720dbd7484404285690}\label{classkiwi_1_1fbstring__core_ad2b23be89a85e720dbd7484404285690} 
+FOLLY\+\_\+\+NOINLINE void {\bfseries reserve} (size\+\_\+t min\+Capacity, bool disable\+SSO=FBSTRING\+\_\+\+DISABLE\+\_\+\+SSO)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a6aabe960aa6c63047933aa8f1d57e63e}\label{classkiwi_1_1fbstring__core_a6aabe960aa6c63047933aa8f1d57e63e} 
+Char \texorpdfstring{$\ast$}{*} {\bfseries expand\+Noinit} (const size\+\_\+t delta, bool exp\+Growth=false, bool disable\+SSO=FBSTRING\+\_\+\+DISABLE\+\_\+\+SSO)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_ac00077fa6ec10d8d888fe93909c0b7db}\label{classkiwi_1_1fbstring__core_ac00077fa6ec10d8d888fe93909c0b7db} 
+void {\bfseries push\+\_\+back} (Char c)
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a9fd916998b63f00b1032de1e76ee5b6d}\label{classkiwi_1_1fbstring__core_a9fd916998b63f00b1032de1e76ee5b6d} 
+size\+\_\+t {\bfseries size} () const
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_acfbb8b6e62b36ce7c962dfda61e9ddad}\label{classkiwi_1_1fbstring__core_acfbb8b6e62b36ce7c962dfda61e9ddad} 
+size\+\_\+t {\bfseries capacity} () const
+\item 
+\Hypertarget{classkiwi_1_1fbstring__core_a4437a9df7d2490173895bd91613c8cd2}\label{classkiwi_1_1fbstring__core_a4437a9df7d2490173895bd91613c8cd2} 
+bool {\bfseries is\+Shared} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Char$>$\newline
+class kiwi\+::fbstring\+\_\+core$<$ Char $>$}
+This is the core of the string. The code should work on 32-\/ and 64-\/bit and both big-\/ and little-\/endianan architectures with any Char size.
+
+The storage is selected as follows (assuming we store one-\/byte characters on a 64-\/bit machine)\+: (a) "{}small"{} strings between 0 and 23 chars are stored in-\/situ without allocation (the rightmost byte stores the size); (b) "{}medium"{} strings from 24 through 254 chars are stored in malloc-\/allocated memory that is copied eagerly; (c) "{}large"{} strings of 255 chars and above are stored in a similar structure as medium arrays, except that the string is reference-\/counted and copied lazily. the reference count is allocated right before the character array.
+
+The discriminator between these three strategies sits in two bits of the rightmost char of the storage\+:
+\begin{DoxyItemize}
+\item If neither is set, then the string is small. Its length is represented by the lower-\/order bits on little-\/endian or the high-\/order bits on big-\/endian of that rightmost character. The value of these six bits is {\ttfamily max\+Small\+Size -\/ size}, so this quantity must be subtracted from {\ttfamily max\+Small\+Size} to compute the {\ttfamily size} of the string (see {\ttfamily small\+Size()}). This scheme ensures that when {\ttfamily size ==}max\+Small\+Size{\ttfamily , the last byte in / the storage is \textbackslash{}0. This way, storage will be a null-\/terminated sequence of / bytes, even if all 23 bytes of data are used on a 64-\/bit architecture. / This enables}c\+\_\+str(){\ttfamily and}data()\`{} to simply return a pointer to the storage.
+\item If the MSb is set, the string is medium width.
+\item If the second MSb is set, then the string is large. On little-\/endian, these 2 bits are the 2 MSbs of Medium\+Large\+::capacity\+\_\+, while on big-\/endian, these 2 bits are the 2 LSbs. This keeps both little-\/endian and big-\/endian \doxylink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core} equivalent with merely different ops used to extract capacity/category. 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1fbstring__core_a2cc428623effb9345011f24a75c52779}\index{kiwi::fbstring\_core$<$ Char $>$@{kiwi::fbstring\_core$<$ Char $>$}!swap@{swap}}
+\index{swap@{swap}!kiwi::fbstring\_core$<$ Char $>$@{kiwi::fbstring\_core$<$ Char $>$}}
+\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1fbstring__core_a2cc428623effb9345011f24a75c52779} 
+template$<$typename Char$>$ \\
+void \mbox{\hyperlink{classkiwi_1_1fbstring__core}{kiwi\+::fbstring\+\_\+core}}$<$ Char $>$\+::swap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\+\_\+core}}$<$ Char $>$ \&}]{rhs}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+swap below doesn\textquotesingle{}t test whether \&rhs == this (and instead potentially does extra work) on the premise that the rarity of that situation actually makes the check more expensive than is worth. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/fbstring.\+hh\end{DoxyCompactItemize}

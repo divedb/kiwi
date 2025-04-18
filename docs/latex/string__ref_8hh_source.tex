@@ -1,0 +1,498 @@
+\doxysection{string\+\_\+ref.\+hh}
+\hypertarget{string__ref_8hh_source}{}\label{string__ref_8hh_source}\index{include/kiwi/strings/string\_ref.hh@{include/kiwi/strings/string\_ref.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ StringRef.h\ -\/\ Constant\ String\ Reference\ Wrapper\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/function\_extras.hh"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \{}
+\DoxyCodeLine{00033\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ npos\ =\ \string~size\_t(0);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ size\_t;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{size\_t}\ length\_\ =\ 0;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ compare\_memory(\textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ lhs,\ \textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ rhs,\ \textcolor{keywordtype}{size\_t}\ length)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (length\ ==\ 0)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ return\ ::memcmp(lhs,\ rhs,\ length);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{/*implicit*/}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classkiwi_1_1_string_ref_a77b57130049c03d65ec279b5811722f4}{StringRef}}(std::nullptr\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{/*implicit*/}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_abe24342d628dbfcbabcfb723e4a84d12}{StringRef}}(\textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ :\ data\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}),}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ length\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}\ ?}
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//\ GCC\ 7\ doesn't\ have\ constexpr\ char\_traits.\ Fall\ back\ to\ \_\_builtin\_strlen.}}
+\DoxyCodeLine{00073\ \#if\ defined(\_GLIBCXX\_RELEASE)\ \&\&\ \_GLIBCXX\_RELEASE\ <\ 8}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_builtin\_strlen(Str)}
+\DoxyCodeLine{00075\ \#else}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::char\_traits<char>::length(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})}
+\DoxyCodeLine{00077\ \#endif}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ 0)\ \{}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{/*implicit*/}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aca816c69ad1d52035aa734971de0dbdf}{StringRef}}(\textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}},\ \textcolor{keywordtype}{size\_t}\ length)}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ :\ data\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}),\ length\_(length)\ \{\}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{/*implicit*/}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_af48beffb4b475a224da1959491e9e8f0}{StringRef}}(std::string\ \textcolor{keyword}{const}\&\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ :\ data\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}.\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}()),\ length\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}.length())\ \{\}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{/*implicit*/}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a1bbc68eb4afd734553598c2339fa6da1}{StringRef}}(std::string\_view\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ :\ data\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}.\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}()),\ length\_(\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ \{\}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ iterator\ begin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
+\DoxyCodeLine{00099\ \ \ iterator\ end()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_\ +\ length\_;\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ bytes\_begin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ const*\textcolor{keyword}{>}(begin());}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ bytes\_end()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ const*\textcolor{keyword}{>}(end());}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ iterator\_range<const\ unsigned\ char*>\ bytes()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ make\_range(bytes\_begin(),\ bytes\_end());}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00117\ \ \ [[nodiscard]]\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00120\ \ \ [[nodiscard]]\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ length\_\ ==\ 0;\ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00123\ \ \ [[nodiscard]]\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ length\_;\ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00126\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a8cdb3b1d9d33c912b0df77e610111113}{front}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ assert(!\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}());}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[0];}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00132\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aae30f878aa70ef86fa427b3884fe400d}{back}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00133\ \ \ \ \ assert(!\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}());}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[length\_\ -\/\ 1];}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Allocator>}
+\DoxyCodeLine{00139\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a55695e354ad2b50947fd1bee045029c5}{copy}}(Allocator\&\ alloc)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}())\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}();}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordtype}{char}*\ s\ =\ alloc.template\ Allocate<char>(length\_);}
+\DoxyCodeLine{00146\ \ \ \ \ std::copy(begin(),\ end(),\ s);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(s,\ length\_);}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00152\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ac8358d88240ae38511a984e107bd16a1}{equals\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ length\_\ ==\ rhs.length\_\ \&\&\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aa60079e48811e4dd0ec9d357b276a51a}{compare\_insensitive}}(rhs)\ ==\ 0;}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00159\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a17b806e72a927a388a1105ee1cfad92f}{compare}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{comment}{//\ Check\ the\ prefix\ for\ a\ mismatch.}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{int}\ res\ =}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ compare\_memory(data\_,\ rhs.data\_,\ std::min(length\_,\ rhs.length\_)))\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res\ <\ 0\ ?\ -\/1\ :\ 1;}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{if}\ (length\_\ ==\ rhs.length\_)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ length\_\ <\ rhs.length\_\ ?\ -\/1\ :\ 1;}
+\DoxyCodeLine{00172\ \ \ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00175\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aa60079e48811e4dd0ec9d357b276a51a}{compare\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ rhs)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00179\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aee5441db011f73e4a0844567bc13b203}{compare\_numeric}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ rhs)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00199\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aed622b030f75dc0a3f53ee0ab5f7f358}{edit\_distance}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Other,}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ allow\_replacements\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ max\_edit\_distance\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{unsigned}\ edit\_distance\_insensitive(}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ other,\ \textcolor{keywordtype}{bool}\ allow\_replacements\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ max\_edit\_distance\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00208\ \ \ [[nodiscard]]\ std::string\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (!data\_)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::string();}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{return}\ std::string(data\_,\ length\_);}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{char}\ operator[](\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00221\ \ \ \ \ assert(index\ <\ length\_\ \&\&\ \textcolor{stringliteral}{"{}Invalid\ index!"{}});}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[index];}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00230\ \ \ std::enable\_if\_t<std::is\_same<T,\ std::string>::value,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}>\&\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ac6ece4fee89a52742f085812446d09a1}{operator=}}(}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ T\&\&\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ std::string\_view()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ std::string\_view(\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}(),\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}());}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00246\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae1e3683c66100319e0fe8e5ac3b5dcbb}{starts\_with}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ prefix)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{return}\ length\_\ >=\ prefix.length\_\ \&\&}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ compare\_memory(data\_,\ prefix.data\_,\ prefix.length\_)\ ==\ 0;}
+\DoxyCodeLine{00249\ \ \ \}}
+\DoxyCodeLine{00250\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae1e3683c66100319e0fe8e5ac3b5dcbb}{starts\_with}}(\textcolor{keywordtype}{char}\ prefix)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordflow}{return}\ !\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}()\ \&\&\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a8cdb3b1d9d33c912b0df77e610111113}{front}}()\ ==\ prefix;}
+\DoxyCodeLine{00252\ \ \ \}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00255\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ac39b422e13c071fa87614b7a1f90dcc7}{starts\_with\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ prefix)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00258\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae070dbda0c25dde67292adadc41a9f53}{ends\_with}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ suffix)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{return}\ length\ >=\ suffix.length\_\ \&\&}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ compare\_memory(end()\ -\/\ suffix.length\_,\ suffix.data\_,}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ suffix.length\_)\ ==\ 0;}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae070dbda0c25dde67292adadc41a9f53}{ends\_with}}(\textcolor{keywordtype}{char}\ suffix)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{return}\ !\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}()\ \&\&\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aae30f878aa70ef86fa427b3884fe400d}{back}}()\ ==\ suffix;}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00268\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a274f33a8732948f6dddfc23a56fed78d}{ends\_with\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ suffix)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00278\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{return}\ std::string\_view(*this).find(c,\ from);}
+\DoxyCodeLine{00280\ \ \ \}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00286\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034}{find\_insensitive}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00292\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}{find\_if}}(\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<\textcolor{keywordtype}{bool}(\textcolor{keywordtype}{char})>\ f,}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00294\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ s\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\_front}}(from);}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordflow}{while}\ (!s.\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}())\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (f(s.\mbox{\hyperlink{classkiwi_1_1_string_ref_a8cdb3b1d9d33c912b0df77e610111113}{front}}()))\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ -\/\ s.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}();}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \ \ \ \ s\ =\ s.\mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\_front}}();}
+\DoxyCodeLine{00301\ \ \ \ \ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordflow}{return}\ npos;}
+\DoxyCodeLine{00304\ \ \ \}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00310\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d}{find\_if\_not}}(\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<\textcolor{keywordtype}{bool}(\textcolor{keywordtype}{char})>\ f,}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}{find\_if}}([f](\textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ !f(c);\ \},\ from);}
+\DoxyCodeLine{00313\ \ \ \}}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00319\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae1d0a701f123ffaaa5187c3c913225a1}{find}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}},\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00325\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a831c0ad9f3a0151a8e4db1da5f03439e}{find\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}},\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00331\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f}{rfind}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ npos)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ std::min(from,\ length\_);}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{while}\ (i)\ \{}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ -\/-\/i;}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}[i]\ ==\ c)\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ \}}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{return}\ npos;}
+\DoxyCodeLine{00341\ \ \ \}}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00347\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7f9b1d376d87ff8bd9fdbfeb0d5c65ef}{rfind\_insensitive}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ npos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00353\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a185e34f7156b8cca9f930eb4ac196614}{rfind}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00359\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2165028f5c9f6880c7cc2c5c01cd6e1c}{rfind\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00363\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a644a28a54cd682b6d49a34f4c64df5f3}{find\_first\_of}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}}(c,\ from);}
+\DoxyCodeLine{00365\ \ \ \}}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00371\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae6f943e48f403ba55b642e97b6c00684}{find\_first\_of}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ chars,\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00375\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a}{find\_first\_not\_of}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00381\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a85010dcfe4cbb7adb498d13eff030af6}{find\_first\_not\_of}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ chars,}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00386\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a39b564884e4f0caf04a67ba91e2f9f4c}{find\_last\_of}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ npos)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f}{rfind}}(c,\ from);}
+\DoxyCodeLine{00388\ \ \ \}}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00394\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a9a92f311394a6e5033e2b7e3cc279a81}{find\_last\_of}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ chars,\ \textcolor{keywordtype}{size\_t}\ from\ =\ npos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00398\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b}{find\_last\_not\_of}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{size\_t}\ from\ =\ npos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00404\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_afb5897bfe79785e773d66a3f5a7eee50}{find\_last\_not\_of}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ chars,}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ npos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00409\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_acff4abbe83319395558d9229bfec6c39}{contains}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}}(other)\ !=\ npos;}
+\DoxyCodeLine{00411\ \ \ \}}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00415\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a742406d0610ad2ccd423873eb284de37}{contains}}(\textcolor{keywordtype}{char}\ c)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a644a28a54cd682b6d49a34f4c64df5f3}{find\_first\_of}}(c)\ !=\ npos;\ \}}
+\DoxyCodeLine{00416\ }
+\DoxyCodeLine{00419\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ac5bb11813d4958ef253306ac9b56dd64}{contains\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00420\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034}{find\_insensitive}}(other)\ !=\ npos;}
+\DoxyCodeLine{00421\ \ \ \}}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00425\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a99a71d3d537f0c8bcfd9490a6ea3eefd}{contains\_insensitive}}(\textcolor{keywordtype}{char}\ c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034}{find\_insensitive}}(c)\ !=\ npos;}
+\DoxyCodeLine{00427\ \ \ \}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00435\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0ffa7b3e112300f48c96fbbe6eec9ef9}{count}}(\textcolor{keywordtype}{char}\ c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0ffa7b3e112300f48c96fbbe6eec9ef9}{count}}\ =\ 0;}
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ !=\ length\_;\ ++i)\ \{}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\_[i]\ ==\ c)\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ ++\mbox{\hyperlink{classkiwi_1_1_string_ref_a0ffa7b3e112300f48c96fbbe6eec9ef9}{count}};}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \ \ \}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0ffa7b3e112300f48c96fbbe6eec9ef9}{count}};}
+\DoxyCodeLine{00444\ \ \ \}}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00448\ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a5110375988d361d60d77b9334d3fedb2}{count}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ \ \ \textcolor{comment}{//\ Convert\ the\ given\ ASCII\ string\ to\ lowercase.}}
+\DoxyCodeLine{00453\ \ \ [[nodiscard]]\ std::string\ lower()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00456\ \ \ [[nodiscard]]\ std::string\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a679def54f9930b6c202767622b2711a1}{upper}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00457\ }
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00470\ \ \ [[nodiscard]]\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(\textcolor{keywordtype}{size\_t}\ Start,}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ N\ =\ npos)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00472\ \ \ \ \ Start\ =\ std::min(Start,\ Length);}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(Data\ +\ Start,\ std::min(N,\ Length\ -\/\ Start));}
+\DoxyCodeLine{00474\ \ \ \}}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00479\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ace04425f92126cb4d09d7c6f46a593e2}{take\_front}}(\textcolor{keywordtype}{size\_t}\ N\ =\ 1)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordflow}{if}\ (N\ >=\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00481\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}{drop\_back}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ -\/\ N);}
+\DoxyCodeLine{00482\ \ \ \}}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00487\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a3a06f00ae194f00af9184c2e2bfa1484}{take\_back}}(\textcolor{keywordtype}{size\_t}\ N\ =\ 1)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00488\ \ \ \ \ \textcolor{keywordflow}{if}\ (N\ >=\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\_front}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ -\/\ N);}
+\DoxyCodeLine{00490\ \ \ \}}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00494\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a817f88db73fc820718155d3ccd50d8e1}{take\_while}}(\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<\textcolor{keywordtype}{bool}(\textcolor{keywordtype}{char})>\ F)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(0,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d}{find\_if\_not}}(F));}
+\DoxyCodeLine{00496\ \ \ \}}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00500\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a3f0f4106a3cb8ebaae059555c7d349e3}{take\_until}}(\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<\textcolor{keywordtype}{bool}(\textcolor{keywordtype}{char})>\ F)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(0,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}{find\_if}}(F));}
+\DoxyCodeLine{00502\ \ \ \}}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00506\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\_front}}(\textcolor{keywordtype}{size\_t}\ N\ =\ 1)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00507\ \ \ \ \ assert(\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ >=\ N\ \&\&\ \textcolor{stringliteral}{"{}Dropping\ more\ elements\ than\ exist"{}});}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(N);}
+\DoxyCodeLine{00509\ \ \ \}}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00513\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}{drop\_back}}(\textcolor{keywordtype}{size\_t}\ N\ =\ 1)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00514\ \ \ \ \ assert(\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ >=\ N\ \&\&\ \textcolor{stringliteral}{"{}Dropping\ more\ elements\ than\ exist"{}});}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(0,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ -\/\ N);}
+\DoxyCodeLine{00516\ \ \ \}}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00520\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a12e5397f2e6a759be136a21892170e1e}{drop\_while}}(\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<\textcolor{keywordtype}{bool}(\textcolor{keywordtype}{char})>\ F)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d}{find\_if\_not}}(F));}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00526\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a132e0e5f99c904e001f6bb0292d20a26}{drop\_until}}(\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<\textcolor{keywordtype}{bool}(\textcolor{keywordtype}{char})>\ F)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00527\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}{find\_if}}(F));}
+\DoxyCodeLine{00528\ \ \ \}}
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00532\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a9d016a0549bebbd74606f0c3b1050ca1}{consume\_front}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Prefix)\ \{}
+\DoxyCodeLine{00533\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_string_ref_ae1e3683c66100319e0fe8e5ac3b5dcbb}{starts\_with}}(Prefix))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00534\ }
+\DoxyCodeLine{00535\ \ \ \ \ *\textcolor{keyword}{this}\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(Prefix.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}());}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00537\ \ \ \}}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00541\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aa6f6da4f64876ad2071a09cbf6c2e07a}{consume\_front\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Prefix)\ \{}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_string_ref_ac39b422e13c071fa87614b7a1f90dcc7}{starts\_with\_insensitive}}(Prefix))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \ \ \ \ *\textcolor{keyword}{this}\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(Prefix.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}());}
+\DoxyCodeLine{00545\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00546\ \ \ \}}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00550\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ab9cb461404f6bf87f6c0d32b63b544d1}{consume\_back}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Suffix)\ \{}
+\DoxyCodeLine{00551\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_string_ref_ae070dbda0c25dde67292adadc41a9f53}{ends\_with}}(Suffix))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \ \ \ \ *\textcolor{keyword}{this}\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(0,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ -\/\ Suffix.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}());}
+\DoxyCodeLine{00554\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00555\ \ \ \}}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00559\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ad91cca39138a6862c48f235c5e83c80a}{consume\_back\_insensitive}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Suffix)\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_string_ref_a274f33a8732948f6dddfc23a56fed78d}{ends\_with\_insensitive}}(Suffix))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \ \ \ \ *\textcolor{keyword}{this}\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}}(0,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ -\/\ Suffix.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}());}
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00564\ \ \ \}}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00577\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}}(\textcolor{keywordtype}{size\_t}\ Start,\ \textcolor{keywordtype}{size\_t}\ End)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00578\ \ \ \ \ Start\ =\ std::min(Start,\ Length);}
+\DoxyCodeLine{00579\ \ \ \ \ End\ =\ std::clamp(End,\ Start,\ Length);}
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(Data\ +\ Start,\ End\ -\/\ Start);}
+\DoxyCodeLine{00581\ \ \ \}}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00593\ \ \ [[nodiscard]]\ std::pair<StringRef,\ StringRef>\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7d856db9a2d0975fdee7cda62c86e3a4}{split}}(\textcolor{keywordtype}{char}\ Separator)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7d856db9a2d0975fdee7cda62c86e3a4}{split}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(\&Separator,\ 1));}
+\DoxyCodeLine{00595\ \ \ \}}
+\DoxyCodeLine{00596\ }
+\DoxyCodeLine{00607\ \ \ [[nodiscard]]\ std::pair<StringRef,\ StringRef>\ \mbox{\hyperlink{classkiwi_1_1_string_ref_aa879c412bcb07381edc7d32f7eb44528}{split}}(}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Separator)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00609\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Idx\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}}(Separator);}
+\DoxyCodeLine{00610\ \ \ \ \ \textcolor{keywordflow}{if}\ (Idx\ ==\ npos)\ \textcolor{keywordflow}{return}\ std::make\_pair(*\textcolor{keyword}{this},\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}());}
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(\mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}}(0,\ Idx),\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}}(Idx\ +\ Separator.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}(),\ npos));}
+\DoxyCodeLine{00612\ \ \ \}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00624\ \ \ [[nodiscard]]\ std::pair<StringRef,\ StringRef>\ \mbox{\hyperlink{classkiwi_1_1_string_ref_abe6239a292b29130ef8b28ed696fef5f}{rsplit}}(}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Separator)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Idx\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f}{rfind}}(Separator);}
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keywordflow}{if}\ (Idx\ ==\ npos)\ \textcolor{keywordflow}{return}\ std::make\_pair(*\textcolor{keyword}{this},\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}());}
+\DoxyCodeLine{00628\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(\mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}}(0,\ Idx),\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}}(Idx\ +\ Separator.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}(),\ npos));}
+\DoxyCodeLine{00629\ \ \ \}}
+\DoxyCodeLine{00630\ }
+\DoxyCodeLine{00645\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_af71cefac9720895380ea7168d2d1d4fa}{split}}(SmallVectorImpl<StringRef>\&\ A,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Separator,}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ MaxSplit\ =\ -\/1,\ \textcolor{keywordtype}{bool}\ KeepEmpty\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00662\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_abe76d1f6ee6d8f44296efb23ab47a908}{split}}(SmallVectorImpl<StringRef>\&\ A,\ \textcolor{keywordtype}{char}\ Separator,\ \textcolor{keywordtype}{int}\ MaxSplit\ =\ -\/1,}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ KeepEmpty\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00664\ }
+\DoxyCodeLine{00675\ \ \ [[nodiscard]]\ std::pair<StringRef,\ StringRef>\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a06dfdd2558b054349a2c29b958e21092}{rsplit}}(\textcolor{keywordtype}{char}\ Separator)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00676\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_abe6239a292b29130ef8b28ed696fef5f}{rsplit}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(\&Separator,\ 1));}
+\DoxyCodeLine{00677\ \ \ \}}
+\DoxyCodeLine{00678\ }
+\DoxyCodeLine{00681\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4}{ltrim}}(\textcolor{keywordtype}{char}\ Char)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00682\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\_front}}(std::min(Length,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a}{find\_first\_not\_of}}(Char)));}
+\DoxyCodeLine{00683\ \ \ \}}
+\DoxyCodeLine{00684\ }
+\DoxyCodeLine{00687\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ac4ef859b88acdefc97bd41351dd4edbb}{ltrim}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Chars\ =\ \textcolor{stringliteral}{"{}\ \(\backslash\)t\(\backslash\)n\(\backslash\)v\(\backslash\)f\(\backslash\)r"{}})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00688\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\_front}}(std::min(Length,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a}{find\_first\_not\_of}}(Chars)));}
+\DoxyCodeLine{00689\ \ \ \}}
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00693\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a}{rtrim}}(\textcolor{keywordtype}{char}\ Char)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00694\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}{drop\_back}}(Length\ -\/\ std::min(Length,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b}{find\_last\_not\_of}}(Char)\ +\ 1));}
+\DoxyCodeLine{00695\ \ \ \}}
+\DoxyCodeLine{00696\ }
+\DoxyCodeLine{00699\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a3a5557847576abd37df605df6a353fdd}{rtrim}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Chars\ =\ \textcolor{stringliteral}{"{}\ \(\backslash\)t\(\backslash\)n\(\backslash\)v\(\backslash\)f\(\backslash\)r"{}})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00700\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}{drop\_back}}(Length\ -\/\ std::min(Length,\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b}{find\_last\_not\_of}}(Chars)\ +\ 1));}
+\DoxyCodeLine{00701\ \ \ \}}
+\DoxyCodeLine{00702\ }
+\DoxyCodeLine{00705\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_ae767fc3879ab3464fd022788abd8d33f}{trim}}(\textcolor{keywordtype}{char}\ Char)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00706\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4}{ltrim}}(Char).\mbox{\hyperlink{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a}{rtrim}}(Char);}
+\DoxyCodeLine{00707\ \ \ \}}
+\DoxyCodeLine{00708\ }
+\DoxyCodeLine{00711\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a8c4846eecd7b654b416a7d07258ee0bd}{trim}}(\mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ Chars\ =\ \textcolor{stringliteral}{"{}\ \(\backslash\)t\(\backslash\)n\(\backslash\)v\(\backslash\)f\(\backslash\)r"{}})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00712\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4}{ltrim}}(Chars).\mbox{\hyperlink{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a}{rtrim}}(Chars);}
+\DoxyCodeLine{00713\ \ \ \}}
+\DoxyCodeLine{00714\ }
+\DoxyCodeLine{00721\ \ \ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a582f6e9d4c39412ff6190e7fc3c7a2ba}{detectEOL}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00722\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Pos\ =\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}}(\textcolor{charliteral}{'\(\backslash\)r'});}
+\DoxyCodeLine{00723\ \ \ \ \ \textcolor{keywordflow}{if}\ (Pos\ ==\ npos)\ \{}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ there\ is\ no\ carriage\ return,\ assume\ unix}}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{00726\ \ \ \ \ \}}
+\DoxyCodeLine{00727\ \ \ \ \ \textcolor{keywordflow}{if}\ (Pos\ +\ 1\ <\ Length\ \&\&\ Data[Pos\ +\ 1]\ ==\ \textcolor{charliteral}{'\(\backslash\)n'})\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\(\backslash\)r\(\backslash\)n"{}};\ \ \textcolor{comment}{//\ Windows}}
+\DoxyCodeLine{00728\ \ \ \ \ \textcolor{keywordflow}{if}\ (Pos\ >\ 0\ \&\&\ Data[Pos\ -\/\ 1]\ ==\ \textcolor{charliteral}{'\(\backslash\)n'})\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)r"{}};\ \ \textcolor{comment}{//\ You\ monster!}}
+\DoxyCodeLine{00729\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\(\backslash\)r"{}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Classic\ Mac}}
+\DoxyCodeLine{00730\ \ \ \}}
+\DoxyCodeLine{00732\ \};}
+\DoxyCodeLine{00733\ }
+\DoxyCodeLine{00741\ \textcolor{keyword}{class\ }StringLiteral\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}\ \{}
+\DoxyCodeLine{00742\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00743\ \ \ \textcolor{keyword}{constexpr}\ StringLiteral(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ Str,\ \textcolor{keywordtype}{size\_t}\ N)\ :\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(Str,\ N)\ \{\}}
+\DoxyCodeLine{00744\ }
+\DoxyCodeLine{00745\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00746\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00747\ \ \ \textcolor{keyword}{constexpr}\ StringLiteral(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ (\&Str)[N])}
+\DoxyCodeLine{00748\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)\ \&\&\ \_\_has\_attribute(enable\_if)}}
+\DoxyCodeLine{00749\ \textcolor{preprocessor}{\#pragma\ clang\ diagnostic\ push}}
+\DoxyCodeLine{00750\ \textcolor{preprocessor}{\#pragma\ clang\ diagnostic\ ignored\ "{}-\/Wgcc-\/compat"{}}}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \_\_attribute((enable\_if(\_\_builtin\_strlen(Str)\ ==\ N\ -\/\ 1,}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ string\ literal"{}})))}
+\DoxyCodeLine{00753\ \textcolor{preprocessor}{\#pragma\ clang\ diagnostic\ pop}}
+\DoxyCodeLine{00754\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classkiwi_1_1_string_ref_a2d0c38b0b5a70314f2637ca6d241560d}{StringRef}}(Str,\ N\ -\/\ 1)\ \{}
+\DoxyCodeLine{00756\ \ \ \}}
+\DoxyCodeLine{00757\ }
+\DoxyCodeLine{00758\ \ \ \textcolor{comment}{//\ Explicit\ construction\ for\ strings\ like\ "{}foo\(\backslash\)0bar"{}.}}
+\DoxyCodeLine{00759\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00760\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ StringLiteral\ withInnerNUL(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ (\&Str)[N])\ \{}
+\DoxyCodeLine{00761\ \ \ \ \ \textcolor{keywordflow}{return}\ StringLiteral(Str,\ N\ -\/\ 1);}
+\DoxyCodeLine{00762\ \ \ \}}
+\DoxyCodeLine{00763\ \};}
+\DoxyCodeLine{00764\ }
+\DoxyCodeLine{00767\ }
+\DoxyCodeLine{00768\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
+\DoxyCodeLine{00769\ \ \ \textcolor{keywordflow}{if}\ (LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ !=\ RHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00770\ \ \ \textcolor{keywordflow}{if}\ (LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00771\ \ \ return\ ::memcmp(LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}(),\ RHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}(),\ LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ ==\ 0;}
+\DoxyCodeLine{00772\ \}}
+\DoxyCodeLine{00773\ }
+\DoxyCodeLine{00774\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator!=(StringRef\ LHS,\ StringRef\ RHS)\ \{\ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);\ \}}
+\DoxyCodeLine{00775\ }
+\DoxyCodeLine{00776\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator<(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
+\DoxyCodeLine{00777\ \ \ \textcolor{keywordflow}{return}\ LHS.compare(RHS)\ <\ 0;}
+\DoxyCodeLine{00778\ \}}
+\DoxyCodeLine{00779\ }
+\DoxyCodeLine{00780\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator<=(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
+\DoxyCodeLine{00781\ \ \ \textcolor{keywordflow}{return}\ LHS.compare(RHS)\ <=\ 0;}
+\DoxyCodeLine{00782\ \}}
+\DoxyCodeLine{00783\ }
+\DoxyCodeLine{00784\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator>(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
+\DoxyCodeLine{00785\ \ \ \textcolor{keywordflow}{return}\ LHS.compare(RHS)\ >\ 0;}
+\DoxyCodeLine{00786\ \}}
+\DoxyCodeLine{00787\ }
+\DoxyCodeLine{00788\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator>=(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
+\DoxyCodeLine{00789\ \ \ \textcolor{keywordflow}{return}\ LHS.compare(RHS)\ >=\ 0;}
+\DoxyCodeLine{00790\ \}}
+\DoxyCodeLine{00791\ }
+\DoxyCodeLine{00792\ \textcolor{keyword}{inline}\ std::string\&\ operator+=(std::string\&\ buffer,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ \textcolor{keywordtype}{string})\ \{}
+\DoxyCodeLine{00793\ \ \ \textcolor{keywordflow}{return}\ buffer.append(\textcolor{keywordtype}{string}.data(),\ \textcolor{keywordtype}{string}.size());}
+\DoxyCodeLine{00794\ \}}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00797\ }
+\DoxyCodeLine{00798\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

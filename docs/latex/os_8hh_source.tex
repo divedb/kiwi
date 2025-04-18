@@ -1,0 +1,90 @@
+\doxysection{os.\+hh}
+\hypertarget{os_8hh_source}{}\label{os_8hh_source}\index{include/kiwi/port/os.hh@{include/kiwi/port/os.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ IS\_X64}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ IS\_X64()\ (defined(\_M\_X64)\ ||\ defined(\_\_x86\_64\_\_)\ ||\ defined(\_\_amd64\_\_))}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ IS\_I386}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ IS\_I386()\ (defined(\_M\_IX86)\ ||\ defined(\_\_i386\_\_)\ ||\ defined(\_\_i386))}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#ifndef\ IS\_MSC}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ IS\_MSC()\ (defined(\_MSC\_VER))}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#ifndef\ IS\_ARM32}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ IS\_ARM32()\ (defined(\_\_arm\_\_)\ ||\ defined(\_\_thumb\_\_)\ ||\ defined(\_M\_ARM))}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#ifndef\ IS\_ARM64}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ IS\_ARM64()\ (defined(\_\_aarch64\_\_)\ ||\ defined(\_M\_ARM64))}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#if\ defined(\_\_SSE\_\_)}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 1}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 0}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#elif\ defined(\_\_SSE2\_\_)}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 2}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 0}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#elif\ defined(\_\_SSE3\_\_)}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 3}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 0}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#elif\ defined(\_\_SSE4\_\_)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 4}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 0}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#elif\ defined(\_\_SSE4\_1\_\_)}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 4}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 1}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#elif\ defined(\_\_SSE4\_2\_\_)}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 4}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 2}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ SSE\_VER\ 0}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ SSE\_MINOR\ 0}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#ifndef\ HAS\_SSSE3}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ HAS\_SSSE3()\ (defined(\_\_SSSE3\_\_))}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#ifndef\ HAS\_SSE\_MATH}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ HAS\_SSE\_MATH()\ (defined(\_\_SSE\_MATH\_\_))}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#ifndef\ HAS\_SSE2\_MATH}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ HAS\_SSE2\_MATH()\ (defined(\_\_SSE2\_MATH\_\_))}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#ifndef\ HAS\_AVX}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ HAS\_AVX()\ (defined(\_\_AVX\_\_))}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#ifndef\ HAS\_AVX2}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ HAS\_AVX2()\ (defined(\_\_AVX2\_\_))}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#ifndef\ HAS\_AVX512F}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ HAS\_AVX512F()\ (defined(\_\_AVX512F\_\_))}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#ifndef\ HAS\_AVX512CD}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ HAS\_AVX512CD()\ (defined(\_\_AVX512CD\_\_))}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#ifndef\ HAS\_AVX512ER}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ HAS\_AVX512ER()\ (defined(\_\_AVX512ER\_\_))}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#ifndef\ HAS\_AVX512PF}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ HAS\_AVX512PF()\ (defined(\_\_AVX512PF\_\_))}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ kIsLittleEndian\ =}
+\DoxyCodeLine{00103\ \ \ \ \ \_\_BYTE\_ORDER\_\_\ ==\ \_\_ORDER\_LITTLE\_ENDIAN\_\_;}
+\DoxyCodeLine{00104\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ kIsBigEndian\ =\ !kIsLittleEndian;}
+
+\end{DoxyCode}

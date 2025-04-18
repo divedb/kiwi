@@ -1,0 +1,23 @@
+\doxysection{reverse\+\_\+iteration.\+hh}
+\hypertarget{reverse__iteration_8hh_source}{}\label{reverse__iteration_8hh_source}\index{include/kiwi/support/reverse\_iteration.hh@{include/kiwi/support/reverse\_iteration.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}kiwi/support/pointer\_like\_type\_traits.hh"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\ =\ \textcolor{keywordtype}{void}*>}
+\DoxyCodeLine{00008\ \textcolor{keywordtype}{bool}\ should\_reverse\_iterate()\ \{}
+\DoxyCodeLine{00009\ \ \ \textcolor{comment}{//\ TODO(gc):\ Needs\ to\ figure\ out\ why\ reversing\ iteration?}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#if\ LLVM\_ENABLE\_REVERSE\_ITERATION}}
+\DoxyCodeLine{00011\ \ \ \textcolor{keywordflow}{return}\ detail::IsPointerLike<T>::value;}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00013\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00015\ \}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

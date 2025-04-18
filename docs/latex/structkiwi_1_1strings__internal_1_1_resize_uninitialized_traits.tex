@@ -1,0 +1,28 @@
+\doxysection{kiwi\+::strings\+\_\+internal\+::Resize\+Uninitialized\+Traits\texorpdfstring{$<$}{<} string\+\_\+type, typename \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits}{}\label{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits}\index{kiwi::strings\_internal::ResizeUninitializedTraits$<$ string\_type, typename $>$@{kiwi::strings\_internal::ResizeUninitializedTraits$<$ string\_type, typename $>$}}
+
+
+{\ttfamily \#include $<$resize\+\_\+uninitialized.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_a513c7b0b4b0d9f33c28e6989d1194cdc}\label{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_a513c7b0b4b0d9f33c28e6989d1194cdc} 
+using {\bfseries Has\+Member} = std\+::false\+\_\+type
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_a1a900a6592f113eb8caa42de7bc454d7}\label{structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_a1a900a6592f113eb8caa42de7bc454d7} 
+static void {\bfseries resize} (string\+\_\+type \texorpdfstring{$\ast$}{*}s, size\+\_\+t new\+\_\+size)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename string\+\_\+type, typename = void$>$\newline
+struct kiwi\+::strings\+\_\+internal\+::\+Resize\+Uninitialized\+Traits$<$ string\+\_\+type, typename $>$}
+In this type trait, we look for a \+\_\+\+\_\+resize\+\_\+default\+\_\+init member function, and we use it if available, otherwise, we use resize. We provide Has\+Member to indicate whether \+\_\+\+\_\+resize\+\_\+default\+\_\+init is present. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/strings/internal/resize\+\_\+uninitialized.\+hh\end{DoxyCompactItemize}

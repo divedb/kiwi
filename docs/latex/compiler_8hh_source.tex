@@ -1,0 +1,39 @@
+\doxysection{compiler.\+hh}
+\hypertarget{compiler_8hh_source}{}\label{compiler_8hh_source}\index{include/kiwi/port/compiler.hh@{include/kiwi/port/compiler.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#ifndef\ IS\_GNUC}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ IS\_GNUC()\ (defined(\_\_GNUC\_\_))}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ IS\_CLANG}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ IS\_CLANG()\ (defined(\_\_clang\_\_))}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ IS\_MSC}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ IS\_MSC()\ (defined(\_MSC\_VER))}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#if\ defined(\_\_has\_feature)}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_FEATURE(...)\ \_\_has\_feature(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ KWI\_HAS\_FEATURE(...)\ 0}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#if\ defined(\_\_has\_builtin)}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_BUILTIN(...)\ \_\_has\_builtin(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_BUILTIN(...)\ 0}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#if\ IS\_GNUC()}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ LIKELY(x)\ (\_\_builtin\_expect((x),\ 1))}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ UNLIKELY(x)\ (\_\_builtin\_expect((x),\ 0))}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ LIKELY(x)\ (x)}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ UNLIKELY(x)\ (x)}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

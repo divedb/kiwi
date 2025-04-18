@@ -1,0 +1,431 @@
+\doxysection{build\+\_\+config.\+hh}
+\hypertarget{build__config_8hh_source}{}\label{build__config_8hh_source}\index{include/kiwi/config/build\_config.hh@{include/kiwi/config/build\_config.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ This\ file\ doesn't\ belong\ to\ any\ GN\ target\ by\ design\ for\ faster\ build\ and}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ less\ developer\ overhead.}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ This\ file\ adds\ build\ flags\ about\ the\ OS\ we're\ currently\ building\ on.\ They\ are}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ defined\ directly\ in\ this\ file\ instead\ of\ via\ a\ \`{}buildflag\_header`\ target\ in\ a}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ GN\ file\ for\ faster\ build.\ They\ are\ defined\ using\ the\ corresponding\ OS\ defines}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ (e.g.\ OS\_WIN)\ which\ are\ also\ defined\ in\ this\ file\ (except\ for\ OS\_CHROMEOS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ which\ is\ set\ by\ the\ build\ system).\ These\ defines\ are\ deprecated\ and\ should}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ NOT\ be\ used\ directly.\ For\ example:}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ Please\ Use:\ \#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ Deprecated:\ \#if\ defined(OS\_WIN)}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ Operating\ System:}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ IS\_AIX\ /\ IS\_ANDROID\ /\ IS\_ASMJS\ /\ IS\_CHROMEOS\ /\ IS\_FREEBSD\ /\ IS\_FUCHSIA\ /}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ \ \ \ IS\_IOS\ /\ IS\_IOS\_MACCATALYST\ /\ IS\_IOS\_TVOS\ /\ IS\_LINUX\ /\ IS\_MAC\ /\ IS\_NACL\ /}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ \ \ IS\_NETBSD\ /\ IS\_OPENBSD\ /\ IS\_QNX\ /\ IS\_SOLARIS\ /\ IS\_WATCHOS\ /\ IS\_WIN}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ Operating\ System\ family:}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ \ \ IS\_APPLE:\ IOS\ or\ MAC\ or\ IOS\_MACCATALYST\ or\ IOS\_TVOS\ or\ WATCHOS}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ \ \ IS\_BSD:\ FREEBSD\ or\ NETBSD\ or\ OPENBSD}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ \ \ IS\_POSIX:\ AIX\ or\ ANDROID\ or\ ASMJS\ or\ CHROMEOS\ or\ FREEBSD\ or\ IOS\ or\ LINUX}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ or\ MAC\ or\ NACL\ or\ NETBSD\ or\ OPENBSD\ or\ QNX\ or\ SOLARIS}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ This\ file\ also\ adds\ defines\ specific\ to\ the\ platform,\ architecture\ etc.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ Platform:}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ \ \ IS\_OZONE}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ Compiler:}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ \ \ COMPILER\_MSVC\ /\ COMPILER\_GCC}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ \ Processor:}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_ARM64\ /\ ARCH\_CPU\_ARMEL\ /\ ARCH\_CPU\_LOONGARCH32\ /}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_LOONGARCH64\ /\ ARCH\_CPU\_MIPS\ /\ ARCH\_CPU\_MIPS64\ /}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_MIPS64EL\ /\ ARCH\_CPU\_MIPSEL\ /\ ARCH\_CPU\_PPC64\ /\ ARCH\_CPU\_S390\ /}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_S390X\ /\ ARCH\_CPU\_X86\ /\ ARCH\_CPU\_X86\_64\ /\ ARCH\_CPU\_RISCV64}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ Processor\ family:}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_ARM\_FAMILY:\ ARMEL\ or\ ARM64}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_LOONGARCH\_FAMILY:\ LOONGARCH32\ or\ LOONGARCH64}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_MIPS\_FAMILY:\ MIPS64EL\ or\ MIPSEL\ or\ MIPS64\ or\ MIPS}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_PPC64\_FAMILY:\ PPC64}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_S390\_FAMILY:\ S390\ or\ S390X}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_X86\_FAMILY:\ X86\ or\ X86\_64}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_RISCV\_FAMILY:\ Riscv64}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ Processor\ features:}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_31\_BITS\ /\ ARCH\_CPU\_32\_BITS\ /\ ARCH\_CPU\_64\_BITS}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ \ \ \ ARCH\_CPU\_BIG\_ENDIAN\ /\ ARCH\_CPU\_LITTLE\_ENDIAN}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}kiwi/config/build\_flag.hh"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ Clangd\ does\ not\ detect\ BUILDFLAG\_INTERNAL\_*\ indirect\ usage,\ so\ mark\ the}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ header\ as\ "{}always\_keep"{}\ to\ avoid\ "{}unused\ include"{}\ warning.}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ IWYU\ pragma:\ always\_keep}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ A\ set\ of\ macros\ to\ use\ for\ platform\ detection.}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#if\ defined(\_\_native\_client\_\_)}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ \_\_native\_client\_\_\ must\ be\ first,\ so\ that\ other\ OS\_\ defines\ are\ not\ set.}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ OS\_NACL\ 1}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#elif\ defined(ANDROID)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ OS\_ANDROID\ 1}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#elif\ defined(\_\_APPLE\_\_)}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ Only\ include\ TargetConditionals\ after\ testing\ ANDROID\ as\ some\ Android\ builds}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ on\ the\ Mac\ have\ this\ header\ available\ and\ it's\ not\ needed\ unless\ the\ target}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ is\ really\ an\ Apple\ platform.}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#include\ <TargetConditionals.h>}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#if\ defined(TARGET\_OS\_IPHONE)\ \&\&\ TARGET\_OS\_IPHONE}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ OS\_IOS\ 1}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ Catalyst\ is\ the\ technology\ that\ allows\ running\ iOS\ apps\ on\ macOS.\ These}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ builds\ are\ both\ OS\_IOS\ and\ OS\_IOS\_MACCATALYST.}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#if\ defined(TARGET\_OS\_MACCATALYST)\ \&\&\ TARGET\_OS\_MACCATALYST}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ OS\_IOS\_MACCATALYST}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(TARGET\_OS\_MACCATALYST)\ \&\&\ TARGET\_OS\_MACCATALYST}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#if\ defined(TARGET\_OS\_TV)\ \&\&\ TARGET\_OS\_TV}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ OS\_IOS\_TVOS\ 1}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(TARGET\_OS\_TV)\ \&\&\ TARGET\_OS\_TV}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#if\ defined(TARGET\_OS\_WATCH)\ \&\&\ TARGET\_OS\_WATCH}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ OS\_WATCHOS\ 1}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(TARGET\_OS\_WATCH)\ \&\&\ TARGET\_OS\_WATCH}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ OS\_MAC\ 1}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(TARGET\_OS\_IPHONE)\ \&\&\ TARGET\_OS\_IPHONE}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#elif\ defined(\_\_linux\_\_)}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#if\ !defined(OS\_CHROMEOS)}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ Do\ not\ define\ OS\_LINUX\ on\ Chrome\ OS\ build.}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ The\ OS\_CHROMEOS\ macro\ is\ defined\ in\ GN.}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ OS\_LINUX\ 1}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !defined(OS\_CHROMEOS)}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ Include\ a\ system\ header\ to\ pull\ in\ features.h\ for\ glibc/uclibc\ macros.}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#include\ <assert.h>}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#if\ defined(\_\_GLIBC\_\_)\ \&\&\ !defined(\_\_UCLIBC\_\_)}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ We\ really\ are\ using\ glibc,\ not\ uClibc\ pretending\ to\ be\ glibc.}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ LIBC\_GLIBC\ 1}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#elif\ defined(\_WIN32)}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ OS\_WIN\ 1}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#elif\ defined(\_\_Fuchsia\_\_)}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#define\ OS\_FUCHSIA\ 1}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#elif\ defined(\_\_FreeBSD\_\_)}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ OS\_FREEBSD\ 1}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#elif\ defined(\_\_NetBSD\_\_)}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ OS\_NETBSD\ 1}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#elif\ defined(\_\_OpenBSD\_\_)}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ OS\_OPENBSD\ 1}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#elif\ defined(\_\_sun)}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ OS\_SOLARIS\ 1}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#elif\ defined(\_\_QNXNTO\_\_)}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ OS\_QNX\ 1}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#elif\ defined(\_AIX)}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ OS\_AIX\ 1}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#elif\ defined(\_\_asmjs\_\_)\ ||\ defined(\_\_wasm\_\_)}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#define\ OS\_ASMJS\ 1}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#elif\ defined(\_\_MVS\_\_)}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ OS\_ZOS\ 1}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ platform\ in\ build/build\_config.h}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ NOTE:\ Adding\ a\ new\ port?\ Please\ follow}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ https://chromium.googlesource.com/chromium/src/+/main/docs/new\_port\_policy.md}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#if\ defined(OS\_MAC)\ ||\ defined(OS\_IOS)}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ OS\_APPLE\ 1}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ For\ access\ to\ standard\ BSD\ features,\ use\ OS\_BSD\ instead\ of\ a}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ more\ specific\ macro.}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#if\ defined(OS\_FREEBSD)\ ||\ defined(OS\_NETBSD)\ ||\ defined(OS\_OPENBSD)}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ OS\_BSD\ 1}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{comment}{//\ For\ access\ to\ standard\ POSIXish\ features,\ use\ OS\_POSIX\ instead\ of\ a}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\ more\ specific\ macro.}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#if\ defined(OS\_AIX)\ ||\ defined(OS\_ANDROID)\ ||\ defined(OS\_ASMJS)\ ||\ \ \(\backslash\)}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\ \ \ \ defined(OS\_FREEBSD)\ ||\ defined(OS\_IOS)\ ||\ defined(OS\_LINUX)\ ||\ \ \(\backslash\)}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\ \ \ \ defined(OS\_CHROMEOS)\ ||\ defined(OS\_MAC)\ ||\ defined(OS\_NACL)\ ||\ \ \(\backslash\)}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\ \ \ \ defined(OS\_NETBSD)\ ||\ defined(OS\_OPENBSD)\ ||\ defined(OS\_QNX)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\ \ \ \ defined(OS\_SOLARIS)\ ||\ defined(OS\_ZOS)}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ OS\_POSIX\ 1}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{comment}{//\ OS\ build\ flags}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#if\ defined(OS\_AIX)}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_AIX()\ (1)}}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_AIX()\ (0)}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#if\ defined(OS\_ANDROID)}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_ANDROID()\ (1)}}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_ANDROID()\ (0)}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#if\ defined(OS\_APPLE)}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_APPLE()\ (1)}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_APPLE()\ (0)}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#if\ defined(OS\_ASMJS)}}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_ASMJS()\ (1)}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_ASMJS()\ (0)}}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#if\ defined(OS\_BSD)}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_BSD()\ (1)}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_BSD()\ (0)}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#if\ defined(OS\_CHROMEOS)}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_CHROMEOS()\ (1)}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_CHROMEOS()\ (0)}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\#if\ defined(OS\_FREEBSD)}}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_FREEBSD()\ (1)}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_FREEBSD()\ (0)}}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#if\ defined(OS\_FUCHSIA)}}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_FUCHSIA()\ (1)}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_FUCHSIA()\ (0)}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#if\ defined(OS\_IOS)}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_IOS()\ (1)}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_IOS()\ (0)}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\#if\ defined(OS\_IOS\_MACCATALYST)}}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_IOS\_MACCATALYST()\ (1)}}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_IOS\_MACCATALYST()\ (0)}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\#if\ defined(OS\_IOS\_TVOS)}}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_IOS\_TVOS()\ (1)}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_IOS\_TVOS()\ (0)}}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#if\ defined(OS\_LINUX)}}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_LINUX()\ (1)}}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_LINUX()\ (0)}}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#if\ defined(OS\_MAC)}}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_MAC()\ (1)}}
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_MAC()\ (0)}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#if\ defined(OS\_NACL)}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_NACL()\ (1)}}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_NACL()\ (0)}}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#if\ defined(OS\_NETBSD)}}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_NETBSD()\ (1)}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_NETBSD()\ (0)}}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#if\ defined(OS\_OPENBSD)}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_OPENBSD()\ (1)}}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_OPENBSD()\ (0)}}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#if\ defined(OS\_POSIX)}}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_POSIX()\ (1)}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_POSIX()\ (0)}}
+\DoxyCodeLine{00247\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#if\ defined(OS\_QNX)}}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_QNX()\ (1)}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_QNX()\ (0)}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#if\ defined(OS\_SOLARIS)}}
+\DoxyCodeLine{00256\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_SOLARIS()\ (1)}}
+\DoxyCodeLine{00257\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_SOLARIS()\ (0)}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \textcolor{preprocessor}{\#if\ defined(OS\_WATCHOS)}}
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_WATCHOS()\ (1)}}
+\DoxyCodeLine{00263\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_WATCHOS()\ (0)}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#if\ defined(OS\_WIN)}}
+\DoxyCodeLine{00268\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_WIN()\ (1)}}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_WIN()\ (0)}}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#if\ defined(USE\_OZONE)}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_OZONE()\ (1)}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#define\ BUILDFLAG\_INTERNAL\_IS\_OZONE()\ (0)}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \textcolor{comment}{//\ Compiler\ detection.\ Note:\ clang\ masquerades\ as\ GCC\ on\ POSIX\ and\ as\ MSVC\ on}}
+\DoxyCodeLine{00280\ \textcolor{comment}{//\ Windows.}}
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{\#if\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#define\ COMPILER\_GCC\ 1}}
+\DoxyCodeLine{00283\ \textcolor{preprocessor}{\#elif\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#define\ COMPILER\_MSVC\ 1}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ compiler\ in\ build/build\_config.h}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \textcolor{comment}{//\ Processor\ architecture\ detection.\ \ For\ more\ info\ on\ what's\ defined,\ see:}}
+\DoxyCodeLine{00290\ \textcolor{comment}{//\ \ \ http://msdn.microsoft.com/en-\/us/library/b0084kay.aspx}}
+\DoxyCodeLine{00291\ \textcolor{comment}{//\ \ \ http://www.agner.org/optimize/calling\_conventions.pdf}}
+\DoxyCodeLine{00292\ \textcolor{comment}{//\ \ \ or\ with\ gcc,\ run:\ "{}echo\ |\ gcc\ -\/E\ -\/dM\ -\/"{}}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#if\ defined(\_M\_X64)\ ||\ defined(\_\_x86\_64\_\_)}}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_X86\_FAMILY\ 1}}
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_X86\_64\ 1}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#elif\ defined(\_M\_IX86)\ ||\ defined(\_\_i386\_\_)}}
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_X86\_FAMILY\ 1}}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_X86\ 1}}
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_32\_BITS\ 1}}
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#elif\ defined(\_\_s390x\_\_)}}
+\DoxyCodeLine{00304\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_S390\_FAMILY\ 1}}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_S390X\ 1}}
+\DoxyCodeLine{00306\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_BIG\_ENDIAN\ 1}}
+\DoxyCodeLine{00308\ \textcolor{preprocessor}{\#elif\ defined(\_\_s390\_\_)}}
+\DoxyCodeLine{00309\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_S390\_FAMILY\ 1}}
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_S390\ 1}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_31\_BITS\ 1}}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_BIG\_ENDIAN\ 1}}
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#elif\ (defined(\_\_PPC64\_\_)\ ||\ defined(\_\_PPC\_\_))\ \&\&\ defined(\_\_BIG\_ENDIAN\_\_)}}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_PPC64\_FAMILY\ 1}}
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_PPC64\ 1}}
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_BIG\_ENDIAN\ 1}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\#elif\ defined(\_\_PPC64\_\_)}}
+\DoxyCodeLine{00319\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_PPC64\_FAMILY\ 1}}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_PPC64\ 1}}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\#elif\ defined(\_\_ARMEL\_\_)}}
+\DoxyCodeLine{00324\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_ARM\_FAMILY\ 1}}
+\DoxyCodeLine{00325\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_ARMEL\ 1}}
+\DoxyCodeLine{00326\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_32\_BITS\ 1}}
+\DoxyCodeLine{00327\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#elif\ defined(\_\_aarch64\_\_)\ ||\ defined(\_M\_ARM64)}}
+\DoxyCodeLine{00329\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_ARM\_FAMILY\ 1}}
+\DoxyCodeLine{00330\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_ARM64\ 1}}
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#elif\ defined(\_\_pnacl\_\_)\ ||\ defined(\_\_asmjs\_\_)\ ||\ defined(\_\_wasm\_\_)}}
+\DoxyCodeLine{00334\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_32\_BITS\ 1}}
+\DoxyCodeLine{00335\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\#elif\ defined(\_\_MIPSEL\_\_)}}
+\DoxyCodeLine{00337\ \textcolor{preprocessor}{\#if\ defined(\_\_LP64\_\_)}}
+\DoxyCodeLine{00338\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS\_FAMILY\ 1}}
+\DoxyCodeLine{00339\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS64EL\ 1}}
+\DoxyCodeLine{00340\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00341\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00343\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS\_FAMILY\ 1}}
+\DoxyCodeLine{00344\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPSEL\ 1}}
+\DoxyCodeLine{00345\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_32\_BITS\ 1}}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\#elif\ defined(\_\_MIPSEB\_\_)}}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#if\ defined(\_\_LP64\_\_)}}
+\DoxyCodeLine{00350\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS\_FAMILY\ 1}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS64\ 1}}
+\DoxyCodeLine{00352\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00353\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_BIG\_ENDIAN\ 1}}
+\DoxyCodeLine{00354\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00355\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS\_FAMILY\ 1}}
+\DoxyCodeLine{00356\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_MIPS\ 1}}
+\DoxyCodeLine{00357\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_32\_BITS\ 1}}
+\DoxyCodeLine{00358\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_BIG\_ENDIAN\ 1}}
+\DoxyCodeLine{00359\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#elif\ defined(\_\_loongarch\_\_)}}
+\DoxyCodeLine{00361\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LOONGARCH\_FAMILY\ 1}}
+\DoxyCodeLine{00362\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00363\ \textcolor{preprocessor}{\#if\ \_\_loongarch\_grlen\ ==\ 64}}
+\DoxyCodeLine{00364\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LOONGARCH64\ 1}}
+\DoxyCodeLine{00365\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00366\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00367\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LOONGARCH32\ 1}}
+\DoxyCodeLine{00368\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_32\_BITS\ 1}}
+\DoxyCodeLine{00369\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00370\ \textcolor{preprocessor}{\#elif\ defined(\_\_riscv)\ \&\&\ (\_\_riscv\_xlen\ ==\ 64)}}
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_RISCV\_FAMILY\ 1}}
+\DoxyCodeLine{00372\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_RISCV64\ 1}}
+\DoxyCodeLine{00373\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
+\DoxyCodeLine{00374\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
+\DoxyCodeLine{00375\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00376\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ architecture\ in\ build/build\_config.h}}
+\DoxyCodeLine{00377\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \textcolor{comment}{//\ Type\ detection\ for\ wchar\_t.}}
+\DoxyCodeLine{00380\ \textcolor{preprocessor}{\#if\ defined(OS\_WIN)}}
+\DoxyCodeLine{00381\ \textcolor{preprocessor}{\#define\ WCHAR\_T\_IS\_16\_BIT}}
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#elif\ defined(OS\_FUCHSIA)}}
+\DoxyCodeLine{00383\ \textcolor{preprocessor}{\#define\ WCHAR\_T\_IS\_32\_BIT}}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#elif\ defined(OS\_POSIX)\ \&\&\ defined(COMPILER\_GCC)\ \&\&\ defined(\_\_WCHAR\_MAX\_\_)\ \&\&\ \(\backslash\)}}
+\DoxyCodeLine{00385\ \textcolor{preprocessor}{\ \ \ \ (\_\_WCHAR\_MAX\_\_\ ==\ 0x7fffffff\ ||\ \_\_WCHAR\_MAX\_\_\ ==\ 0xffffffff)}}
+\DoxyCodeLine{00386\ \textcolor{preprocessor}{\#define\ WCHAR\_T\_IS\_32\_BIT}}
+\DoxyCodeLine{00387\ \textcolor{preprocessor}{\#elif\ defined(OS\_POSIX)\ \&\&\ defined(COMPILER\_GCC)\ \&\&\ defined(\_\_WCHAR\_MAX\_\_)\ \&\&\ \(\backslash\)}}
+\DoxyCodeLine{00388\ \textcolor{preprocessor}{\ \ \ \ (\_\_WCHAR\_MAX\_\_\ ==\ 0x7fff\ ||\ \_\_WCHAR\_MAX\_\_\ ==\ 0xffff)}}
+\DoxyCodeLine{00389\ \textcolor{comment}{//\ On\ Posix,\ we'll\ detect\ short\ wchar\_t,\ but\ projects\ aren't\ guaranteed\ to}}
+\DoxyCodeLine{00390\ \textcolor{comment}{//\ compile\ in\ this\ mode\ (in\ particular,\ Chrome\ doesn't).\ This\ is\ intended\ for}}
+\DoxyCodeLine{00391\ \textcolor{comment}{//\ other\ projects\ using\ base\ who\ manage\ their\ own\ dependencies\ and\ make\ sure}}
+\DoxyCodeLine{00392\ \textcolor{comment}{//\ short\ wchar\ works\ for\ them.}}
+\DoxyCodeLine{00393\ \textcolor{preprocessor}{\#define\ WCHAR\_T\_IS\_16\_BIT}}
+\DoxyCodeLine{00394\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ compiler\ in\ build/build\_config.h}}
+\DoxyCodeLine{00396\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \textcolor{preprocessor}{\#if\ defined(OS\_ANDROID)}}
+\DoxyCodeLine{00399\ \textcolor{comment}{//\ The\ compiler\ thinks\ std::string::const\_iterator\ and\ "{}const\ char*"{}\ are}}
+\DoxyCodeLine{00400\ \textcolor{comment}{//\ equivalent\ types.}}
+\DoxyCodeLine{00401\ \textcolor{preprocessor}{\#define\ STD\_STRING\_ITERATOR\_IS\_CHAR\_POINTER}}
+\DoxyCodeLine{00402\ \textcolor{comment}{//\ The\ compiler\ thinks\ std::u16string::const\_iterator\ and\ "{}char16*"{}\ are}}
+\DoxyCodeLine{00403\ \textcolor{comment}{//\ equivalent\ types.}}
+\DoxyCodeLine{00404\ \textcolor{preprocessor}{\#define\ BASE\_STRING16\_ITERATOR\_IS\_CHAR16\_POINTER}}
+\DoxyCodeLine{00405\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{comment}{//\ Architecture-\/specific\ feature\ detection.}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \textcolor{preprocessor}{\#if\ !defined(CPU\_ARM\_NEON)}}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_ARM\_FAMILY)\ \&\&\ \(\backslash\)}}
+\DoxyCodeLine{00411\ \textcolor{preprocessor}{\ \ \ \ (defined(\_\_ARM\_NEON\_\_)\ ||\ defined(\_\_ARM\_NEON))}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#define\ CPU\_ARM\_NEON\ 1}}
+\DoxyCodeLine{00413\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00414\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !defined(CPU\_ARM\_NEON)}}
+\DoxyCodeLine{00415\ }
+\DoxyCodeLine{00416\ \textcolor{comment}{//\ Sanity\ check.}}
+\DoxyCodeLine{00417\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_ARM64)\ \&\&\ !defined(CPU\_ARM\_NEON)}}
+\DoxyCodeLine{00418\ \textcolor{preprocessor}{\#error\ "{}AArch64\ mandates\ NEON,\ should\ be\ detected"{}}}
+\DoxyCodeLine{00419\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#if\ !defined(HAVE\_MIPS\_MSA\_INTRINSICS)}}
+\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#if\ defined(\_\_mips\_msa)\ \&\&\ defined(\_\_mips\_isa\_rev)\ \&\&\ (\_\_mips\_isa\_rev\ >=\ 5)}}
+\DoxyCodeLine{00423\ \textcolor{preprocessor}{\#define\ HAVE\_MIPS\_MSA\_INTRINSICS\ 1}}
+\DoxyCodeLine{00424\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00425\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

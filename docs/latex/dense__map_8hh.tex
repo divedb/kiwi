@@ -1,0 +1,61 @@
+\doxysection{include/kiwi/adt/dense\+\_\+map.hh File Reference}
+\hypertarget{dense__map_8hh}{}\label{dense__map_8hh}\index{include/kiwi/adt/dense\_map.hh@{include/kiwi/adt/dense\_map.hh}}
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$initializer\+\_\+list$>$}\newline
+{\ttfamily \#include $<$iterator$>$}\newline
+{\ttfamily \#include $<$new$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include "{}kiwi/adt/dense\+\_\+map\+\_\+info.\+hh"{}}\newline
+{\ttfamily \#include "{}kiwi/util/epoch\+\_\+tracker.\+hh"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1detail_1_1_dense_map_pair}{kiwi\+::detail\+::\+Dense\+Map\+Pair$<$ Key\+T, Value\+T $>$}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{kiwi\+::\+Dense\+Map\+Base$<$ Derived\+T, Key\+T, Value\+T, Key\+Info\+T, Bucket\+T $>$}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_dense_map}{kiwi\+::\+Dense\+Map$<$ Key\+T, Value\+T, Key\+Info\+T, Bucket\+T $>$}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_small_dense_map}{kiwi\+::\+Small\+Dense\+Map$<$ Key\+T, Value\+T, Inline\+Buckets, Key\+Info\+T, Bucket\+T $>$}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{kiwi\+::\+Dense\+Map\+Iterator$<$ Key\+T, Value\+T, Key\+Info\+T, Bucket, Is\+Const $>$}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}{kiwi\+::operator==}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
+\item 
+{\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{dense__map_8hh_a008449c6439d3cbc96cc662630b49736}{kiwi\+::operator!=}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
+\item 
+\Hypertarget{dense__map_8hh_a17e2f3adbc1f7b74232fafa46584e5ee}\label{dense__map_8hh_a17e2f3adbc1f7b74232fafa46584e5ee} 
+{\footnotesize template$<$typename KeyT, typename ValueT, typename Key\+InfoT$>$ }\\size\+\_\+t {\bfseries kiwi\+::capacity\+\_\+in\+\_\+bytes} (const \mbox{\hyperlink{classkiwi_1_1_dense_map}{Dense\+Map}}$<$ KeyT, ValueT, Key\+InfoT $>$ \&X)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file defines the Dense\+Map class. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{dense__map_8hh_a008449c6439d3cbc96cc662630b49736}\index{dense\_map.hh@{dense\_map.hh}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!dense\_map.hh@{dense\_map.hh}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily \label{dense__map_8hh_a008449c6439d3cbc96cc662630b49736} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+bool kiwi\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&}]{LHS}{, }\item[{const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&}]{RHS}{}\end{DoxyParamCaption})}
+
+Inequality comparison for Dense\+Map.
+
+Equivalent to !(LHS == RHS). See operator== for performance notes. \Hypertarget{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}\index{dense\_map.hh@{dense\_map.hh}!operator==@{operator==}}
+\index{operator==@{operator==}!dense\_map.hh@{dense\_map.hh}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46} 
+template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ \\
+bool kiwi\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&}]{LHS}{, }\item[{const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&}]{RHS}{}\end{DoxyParamCaption})}
+
+Equality comparison for Dense\+Map.
+
+Iterates over elements of LHS confirming that each (key, value) pair in LHS is also in RHS, and that no additional pairs are in RHS. Equivalent to N calls to RHS.\+find and N value comparisons. Amortized complexity is linear, worst case is O(\+N\texorpdfstring{$^\wedge$}{\string^}2) (if every hash collides). 

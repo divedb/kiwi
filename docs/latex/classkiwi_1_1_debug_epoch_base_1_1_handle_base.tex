@@ -1,0 +1,47 @@
+\doxysection{kiwi\+::Debug\+Epoch\+Base\+::Handle\+Base Class Reference}
+\hypertarget{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{}\label{classkiwi_1_1_debug_epoch_base_1_1_handle_base}\index{kiwi::DebugEpochBase::HandleBase@{kiwi::DebugEpochBase::HandleBase}}
+
+
+{\ttfamily \#include $<$epoch\+\_\+tracker.\+hh$>$}
+
+Inheritance diagram for kiwi\+::Debug\+Epoch\+Base\+::Handle\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.919540cm]{classkiwi_1_1_debug_epoch_base_1_1_handle_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a6fb68ce863df7c8ffe829ddcedd20ae6}\label{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a6fb68ce863df7c8ffe829ddcedd20ae6} 
+{\bfseries Handle\+Base} (const \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base}{Debug\+Epoch\+Base}} \texorpdfstring{$\ast$}{*}parent)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a9c3bb8788ab6c9ef7c64e1f18f8a3bdb}{is\+\_\+handle\+\_\+in\+\_\+sync}} () const
+\item 
+const void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a5a2ce40a856c600ce45ea895f4b0493c}{get\+\_\+epoch\+\_\+address}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A base class for iterator classes ("{}handles"{}) that wish to poll for iterator invalidating modifications in the underlying data structure. When LLVM is built without asserts, this class is empty and does nothing.
+
+\doxylink{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{Handle\+Base} does not track the parent data structure by itself. It expects the routines modifying the data structure to call increment\+\_\+epoch when they make an iterator-\/invalidating modification. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a5a2ce40a856c600ce45ea895f4b0493c}\index{kiwi::DebugEpochBase::HandleBase@{kiwi::DebugEpochBase::HandleBase}!get\_epoch\_address@{get\_epoch\_address}}
+\index{get\_epoch\_address@{get\_epoch\_address}!kiwi::DebugEpochBase::HandleBase@{kiwi::DebugEpochBase::HandleBase}}
+\doxysubsubsection{\texorpdfstring{get\_epoch\_address()}{get\_epoch\_address()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a5a2ce40a856c600ce45ea895f4b0493c} 
+const void \texorpdfstring{$\ast$}{*} kiwi\+::\+Debug\+Epoch\+Base\+::\+Handle\+Base\+::get\+\_\+epoch\+\_\+address (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a pointer to the epoch word stored in the data structure this handle points into. Can be used to check if two iterators point into the same data structure. \Hypertarget{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a9c3bb8788ab6c9ef7c64e1f18f8a3bdb}\index{kiwi::DebugEpochBase::HandleBase@{kiwi::DebugEpochBase::HandleBase}!is\_handle\_in\_sync@{is\_handle\_in\_sync}}
+\index{is\_handle\_in\_sync@{is\_handle\_in\_sync}!kiwi::DebugEpochBase::HandleBase@{kiwi::DebugEpochBase::HandleBase}}
+\doxysubsubsection{\texorpdfstring{is\_handle\_in\_sync()}{is\_handle\_in\_sync()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_debug_epoch_base_1_1_handle_base_a9c3bb8788ab6c9ef7c64e1f18f8a3bdb} 
+bool kiwi\+::\+Debug\+Epoch\+Base\+::\+Handle\+Base\+::is\+\_\+handle\+\_\+in\+\_\+sync (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns true if the \doxylink{classkiwi_1_1_debug_epoch_base}{Debug\+Epoch\+Base} this Handle is linked to has not called increment\+\_\+epoch on itself since the creation of this \doxylink{classkiwi_1_1_debug_epoch_base_1_1_handle_base}{Handle\+Base} instance. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/util/\mbox{\hyperlink{epoch__tracker_8hh}{epoch\+\_\+tracker.\+hh}}\end{DoxyCompactItemize}

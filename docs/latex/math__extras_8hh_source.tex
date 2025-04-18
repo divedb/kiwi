@@ -1,0 +1,33 @@
+\doxysection{math\+\_\+extras.\+hh}
+\hypertarget{math__extras_8hh_source}{}\label{math__extras_8hh_source}\index{include/kiwi/util/math\_extras.hh@{include/kiwi/util/math\_extras.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/-\/\ llvm/Support/MathExtras.h\ -\/\ Useful\ math\ functions\ -\/-\/-\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ xpache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ xpache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ This\ file\ contains\ some\ functions\ that\ are\ useful\ for\ math\ stuff.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{constexpr}\ uint64\_t\ next\_power\_of\_2(uint64\_t\ x)\ \{}
+\DoxyCodeLine{00020\ \ \ x\ |=\ (x\ >>\ 1);}
+\DoxyCodeLine{00021\ \ \ x\ |=\ (x\ >>\ 2);}
+\DoxyCodeLine{00022\ \ \ x\ |=\ (x\ >>\ 4);}
+\DoxyCodeLine{00023\ \ \ x\ |=\ (x\ >>\ 8);}
+\DoxyCodeLine{00024\ \ \ x\ |=\ (x\ >>\ 16);}
+\DoxyCodeLine{00025\ \ \ x\ |=\ (x\ >>\ 32);}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{return}\ x\ +\ 1;}
+\DoxyCodeLine{00027\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

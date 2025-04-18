@@ -1,0 +1,67 @@
+\doxysection{kiwi\+::Dense\+Map\+Iterator\texorpdfstring{$<$}{<} KeyT, ValueT, Key\+InfoT, Bucket, Is\+Const \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_dense_map_iterator}{}\label{classkiwi_1_1_dense_map_iterator}\index{kiwi::DenseMapIterator$<$ KeyT, ValueT, KeyInfoT, Bucket, IsConst $>$@{kiwi::DenseMapIterator$<$ KeyT, ValueT, KeyInfoT, Bucket, IsConst $>$}}
+Inheritance diagram for kiwi\+::Dense\+Map\+Iterator\texorpdfstring{$<$}{<} KeyT, ValueT, Key\+InfoT, Bucket, Is\+Const \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_dense_map_iterator}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a22a29dc5bdc9f6897baecd57a7de3568}\label{classkiwi_1_1_dense_map_iterator_a22a29dc5bdc9f6897baecd57a7de3568} 
+using {\bfseries difference\+\_\+type} = ptrdiff\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_ad69403694256b0de811c1cbdc7d1d4b8}\label{classkiwi_1_1_dense_map_iterator_ad69403694256b0de811c1cbdc7d1d4b8} 
+using {\bfseries value\+\_\+type} = std\+::conditional\+\_\+t$<$Is\+Const, const Bucket, Bucket$>$
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_aa22bd2e972690671e88a5d51a62c536a}\label{classkiwi_1_1_dense_map_iterator_aa22bd2e972690671e88a5d51a62c536a} 
+using {\bfseries pointer} = value\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a64dbfd7c561cc8d32d08eab2f94f5039}\label{classkiwi_1_1_dense_map_iterator_a64dbfd7c561cc8d32d08eab2f94f5039} 
+using {\bfseries reference} = value\+\_\+type\&
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a506a8252ae9f528c8f1d6f032930c501}\label{classkiwi_1_1_dense_map_iterator_a506a8252ae9f528c8f1d6f032930c501} 
+using {\bfseries iterator\+\_\+category} = std\+::forward\+\_\+iterator\+\_\+tag
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a8946560585ad509ad81784c2fafa1fdc}\label{classkiwi_1_1_dense_map_iterator_a8946560585ad509ad81784c2fafa1fdc} 
+{\bfseries Dense\+Map\+Iterator} (pointer Pos, pointer E, const \mbox{\hyperlink{classkiwi_1_1_debug_epoch_base}{Debug\+Epoch\+Base}} \&Epoch, bool No\+Advance=false)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a24ddb75dc409b6314b28b80d37efcea8}\label{classkiwi_1_1_dense_map_iterator_a24ddb75dc409b6314b28b80d37efcea8} 
+{\footnotesize template$<$bool Is\+Const\+Src, typename = std\+::enable\+\_\+if\+\_\+t$<$!\+Is\+Const\+Src \&\& Is\+Const$>$$>$ }\\{\bfseries Dense\+Map\+Iterator} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}}$<$ KeyT, ValueT, Key\+InfoT, Bucket, Is\+Const\+Src $>$ \&I)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_ad9a43a35ffabe8fcbca48dfdc721f60b}\label{classkiwi_1_1_dense_map_iterator_ad9a43a35ffabe8fcbca48dfdc721f60b} 
+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a69e5087920bcd1e46081422cc7702c8c}\label{classkiwi_1_1_dense_map_iterator_a69e5087920bcd1e46081422cc7702c8c} 
+pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a0d6ad07ae9d6c1e7a47f0c321a631cc1}\label{classkiwi_1_1_dense_map_iterator_a0d6ad07ae9d6c1e7a47f0c321a631cc1} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}} \& {\bfseries operator++} ()
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a93115ea6b5c8b21adaf988112465d19e}\label{classkiwi_1_1_dense_map_iterator_a93115ea6b5c8b21adaf988112465d19e} 
+\mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}} {\bfseries operator++} (int)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a23fecc41ced0ef34262b1bdc413c87f8}\label{classkiwi_1_1_dense_map_iterator_a23fecc41ced0ef34262b1bdc413c87f8} 
+class {\bfseries Dense\+Map\+Iterator$<$ Key\+T, Value\+T, Key\+Info\+T, Bucket, true $>$}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_ac199153a9b1599cd2925a12dfcc18037}\label{classkiwi_1_1_dense_map_iterator_ac199153a9b1599cd2925a12dfcc18037} 
+class {\bfseries Dense\+Map\+Iterator$<$ Key\+T, Value\+T, Key\+Info\+T, Bucket, false $>$}
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_adeca35bbc6b375432b67d483739a742c}\label{classkiwi_1_1_dense_map_iterator_adeca35bbc6b375432b67d483739a742c} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}} \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}} \&RHS)
+\item 
+\Hypertarget{classkiwi_1_1_dense_map_iterator_a230413618d127ff321dc2d599288715d}\label{classkiwi_1_1_dense_map_iterator_a230413618d127ff321dc2d599288715d} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}} \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_iterator}{Dense\+Map\+Iterator}} \&RHS)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/adt/\mbox{\hyperlink{dense__map_8hh}{dense\+\_\+map.\+hh}}\end{DoxyCompactItemize}

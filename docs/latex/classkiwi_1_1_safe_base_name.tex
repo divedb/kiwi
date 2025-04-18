@@ -1,0 +1,108 @@
+\doxysection{kiwi\+::Safe\+Base\+Name Class Reference}
+\hypertarget{classkiwi_1_1_safe_base_name}{}\label{classkiwi_1_1_safe_base_name}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_safe_base_name_a4a8119436f2620a1f434b39924335ab6}\label{classkiwi_1_1_safe_base_name_a4a8119436f2620a1f434b39924335ab6} 
+{\bfseries Safe\+Base\+Name} ()=default
+\begin{DoxyCompactList}\small\item\em Creates an empty \doxylink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}. \end{DoxyCompactList}\item 
+const File\+Path \& \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}{path}} () const LIFETIME\+\_\+\+BOUND
+\item 
+const std\+::string \mbox{\hyperlink{classkiwi_1_1_safe_base_name_ad4d5eaeb3de0e3fab3983c5f24933d96}{As\+UTF8\+Unsafe}} () const
+\item 
+const File\+Path\+::\+String\+Type \& \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a9cd6fda74d2d6a602a3e2cfc739c4d9c}{value}} () const LIFETIME\+\_\+\+BOUND
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_safe_base_name_af986a9df8652b1522ef04f3c4ab5fa71}{empty}} () const
+\item 
+constexpr bool \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a6f7b783641055cd976e7421a1d9cbcbe}{operator==}} (const \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} \&that) const
+\item 
+\Hypertarget{classkiwi_1_1_safe_base_name_a680b4c85011e63114940eedfcfcc51ba}\label{classkiwi_1_1_safe_base_name_a680b4c85011e63114940eedfcfcc51ba} 
+constexpr bool {\bfseries operator!=} (const \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} \&that) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::optional$<$ \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} $>$ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a775c207f9df73f170f9620b9e06dafb5}{Create}} (const File\+Path \&\mbox{\hyperlink{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}{path}})
+\item 
+\Hypertarget{classkiwi_1_1_safe_base_name_a092bddef2b47d32d58d8782371de7487}\label{classkiwi_1_1_safe_base_name_a092bddef2b47d32d58d8782371de7487} 
+static std\+::optional$<$ \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} $>$ {\bfseries Create} (File\+Path\+::\+String\+View\+Type)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_safe_base_name_ad4d5eaeb3de0e3fab3983c5f24933d96}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}!AsUTF8Unsafe@{AsUTF8Unsafe}}
+\index{AsUTF8Unsafe@{AsUTF8Unsafe}!kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection{\texorpdfstring{AsUTF8Unsafe()}{AsUTF8Unsafe()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_safe_base_name_ad4d5eaeb3de0e3fab3983c5f24933d96} 
+const std\+::string kiwi\+::\+Safe\+Base\+Name\+::\+As\+UTF8\+Unsafe (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the underlying path as a UTF8 std\+::string (potentially unsafe).
+
+Note\+: "{}\+Unsafe"{} in the name implies that this conversion might not handle all possible platform native path characters correctly if they are not valid UTF8.
+
+\begin{DoxyReturn}{Returns}
+The path as a UTF8 string. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_safe_base_name_a775c207f9df73f170f9620b9e06dafb5}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}!Create@{Create}}
+\index{Create@{Create}!kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection{\texorpdfstring{Create()}{Create()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_safe_base_name_a775c207f9df73f170f9620b9e06dafb5} 
+std\+::optional$<$ \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} $>$ kiwi\+::\+Safe\+Base\+Name\+::\+Create (\begin{DoxyParamCaption}\item[{const File\+Path \&}]{path}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Factory method that attempts to create a \doxylink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name} from a File\+Path. Performs validation to ensure the input File\+Path represents a safe base name (not absolute, no parent references like \textquotesingle{}..\textquotesingle{}, not ends with separator).
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The File\+Path to attempt to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A valid \doxylink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name} wrapped in std\+::optional if validation succeeds, otherwise returns std\+::nullopt. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_safe_base_name_af986a9df8652b1522ef04f3c4ab5fa71}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}!empty@{empty}}
+\index{empty@{empty}!kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_safe_base_name_af986a9df8652b1522ef04f3c4ab5fa71} 
+bool kiwi\+::\+Safe\+Base\+Name\+::empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+\begin{DoxyReturn}{Returns}
+True if the path is empty, otherwise false. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_safe_base_name_a6f7b783641055cd976e7421a1d9cbcbe}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}!operator==@{operator==}}
+\index{operator==@{operator==}!kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_safe_base_name_a6f7b783641055cd976e7421a1d9cbcbe} 
+bool kiwi\+::\+Safe\+Base\+Name\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} \&}]{that}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The other \doxylink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name} object to compare with. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the underlying paths are equal, otherwise false. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}!path@{path}}
+\index{path@{path}!kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection{\texorpdfstring{path()}{path()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f} 
+const File\+Path \& kiwi\+::\+Safe\+Base\+Name\+::path (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to the internal File\+Path object. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_safe_base_name_a9cd6fda74d2d6a602a3e2cfc739c4d9c}\index{kiwi::SafeBaseName@{kiwi::SafeBaseName}!value@{value}}
+\index{value@{value}!kiwi::SafeBaseName@{kiwi::SafeBaseName}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_safe_base_name_a9cd6fda74d2d6a602a3e2cfc739c4d9c} 
+const File\+Path\+::\+String\+Type \& kiwi\+::\+Safe\+Base\+Name\+::value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to the internal platform-\/native string value. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/files/safe\+\_\+base\+\_\+name.\+hh\item 
+src/files/safe\+\_\+base\+\_\+name.\+cc\end{DoxyCompactItemize}

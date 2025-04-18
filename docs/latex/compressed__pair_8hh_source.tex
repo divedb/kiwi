@@ -1,0 +1,160 @@
+\doxysection{compressed\+\_\+pair.\+hh}
+\hypertarget{compressed__pair_8hh_source}{}\label{compressed__pair_8hh_source}\index{include/kiwi/util/compressed\_pair.hh@{include/kiwi/util/compressed\_pair.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ -\/*-\/\ C++\ -\/*-\/}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Tp,\ \textcolor{keywordtype}{bool}>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_dependent_type}{DependentType}}\ :\ \textcolor{keyword}{public}\ Tp\ \{\};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_default_init_tag}{DefaultInitTag}}\ \{\};}
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_value_init_tag}{ValueInitTag}}\ \{\};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Tp,\ \textcolor{keywordtype}{int}\ Idx,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ CanBeEmptyBase\ =\ std::is\_empty\_v<Tp>\ \&\&\ !std::is\_final\_v<Tp>>}
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }CompressedPairElem\ \{}
+\DoxyCodeLine{00027\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{using\ }ParamT\ =\ Tp;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{using\ }reference\ =\ Tp\&;}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{const}\ Tp\&;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem(\mbox{\hyperlink{structkiwi_1_1_default_init_tag}{DefaultInitTag}})\ \{\}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem(\mbox{\hyperlink{structkiwi_1_1_value_init_tag}{ValueInitTag}})\ :\ value\_()\ \{\}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Up,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !std::is\_same\_v<CompressedPairElem,\ std::decay\_t<Up>>,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ CompressedPairElem(Up\&\&\ u)\ :\ value\_(std::forward<Up>(u))\ \{\}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Args,\ \textcolor{keywordtype}{size\_t}...\ Indexes>}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem(std::piecewise\_construct\_t,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::tuple<Args...>\ args,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::index\_sequence<Indexes...>)}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ :\ value\_(std::forward<Args>(std::get<Indexes>(args))...)\ \{\}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ reference\ Get()\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ value\_;\ \}}
+\DoxyCodeLine{00047\ \ \ const\_reference\ Get()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ value\_;\ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00050\ \ \ Tp\ value\_;}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Tp,\ \textcolor{keywordtype}{int}\ Idx>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{class\ }CompressedPairElem<Tp,\ Idx,\ true>\ :\ \textcolor{keyword}{private}\ Tp\ \{}
+\DoxyCodeLine{00055\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{using\ }ParamT\ =\ Tp;}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{using\ }reference\ =\ Tp\&;}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{const}\ Tp\&;}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ Tp;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem(\mbox{\hyperlink{structkiwi_1_1_default_init_tag}{DefaultInitTag}})\ \{\}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem(\mbox{\hyperlink{structkiwi_1_1_value_init_tag}{ValueInitTag}})\ :\ value\_type()\ \{\}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Up,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !std::is\_same\_v<CompressedPairElem,\ std::decay\_t<Up>>,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ CompressedPairElem(Up\&\&\ u)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ :\ value\_type(std::forward<Up>(u))\ \{\}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Args,\ \textcolor{keywordtype}{size\_t}...\ Indexes>}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{constexpr}\ CompressedPairElem(std::piecewise\_construct\_t,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::tuple<Args...>\ args,}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::index\_sequence<Indexes...>)}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ :\ value\_type(std::forward<Args>(std::get<Indexes>(args))...)\ \{\}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ reference\ Get()\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00078\ \ \ const\_reference\ Get()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00082\ \textcolor{keyword}{class\ }CompressedPair\ :\ \textcolor{keyword}{private}\ CompressedPairElem<T1,\ 0>,}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ CompressedPairElem<T2,\ 1>\ \{}
+\DoxyCodeLine{00084\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static\_assert}(}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ (!std::is\_same\_v<T1,\ T2>),}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}CompressedPairElem\ cannot\ be\ instantiated\ when\ T1\ and\ T2\ are\ the\ same\ "{}}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}type;\ The\ current\ implementation\ is\ NOT\ ABI-\/compatible\ with\ the\ "{}}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}previous\ implementation\ for\ this\ configuration"{}});}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}\ =\ CompressedPairElem<T1,\ 0>;}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{using\ }Base2\ =\ CompressedPairElem<T2,\ 1>;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{template}\ <}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Dummy\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1_dependent_type}{DependentType<std::is\_default\_constructible<T1>}},\ Dummy>::value\ \&\&}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1_dependent_type}{DependentType<std::is\_default\_constructible<T2>}},\ Dummy>::value>>}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{constexpr}\ CompressedPair()\ :\ \mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}(\mbox{\hyperlink{structkiwi_1_1_value_init_tag}{ValueInitTag}}()),\ Base2(\mbox{\hyperlink{structkiwi_1_1_value_init_tag}{ValueInitTag}}())\ \{\}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U1,\ \textcolor{keyword}{typename}\ U2>}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{CompressedPair}}(U1\&\&\ u1,\ U2\&\&\ u2)}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}(std::forward<U1>(u1)),\ Base2(std::forward<U2>(u2))\ \{\}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Args1,\ \textcolor{keyword}{typename}...\ Args2>}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{constexpr}\ CompressedPair(std::piecewise\_construct\_t\ pc,}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::tuple<Args1...>\ first\_args,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::tuple<Args2...>\ second\_args)}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}(pc,\ std::move(first\_args),}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::make\_index\_sequence<sizeof...(Args1)>()),}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ Base2(pc,\ std::move(second\_args),}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::make\_index\_sequence<sizeof...(Args2)>())\ \{\}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{typename}\ Base1::reference\ First()\ noexcept\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}\&\textcolor{keyword}{>}(*this).Get();}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{typename}\ Base1::const\_reference\ First()\ const\ noexcept\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }\mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}\&\textcolor{keyword}{>}(*this).Get();}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{typename}\ Base2::reference\ Second()\ noexcept\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Base2\&\textcolor{keyword}{>}(*this).Get();}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{typename}\ Base2::const\_reference\ Second()\ const\ noexcept\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }Base2\&\textcolor{keyword}{>}(*this).Get();}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}*\ GetFirstBase(CompressedPair*\ pair)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}}*\textcolor{keyword}{>}(pair);}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ Base2*\ GetSecondBase(CompressedPair*\ pair)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Base2*\textcolor{keyword}{>}(pair);}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordtype}{void}\ swap(CompressedPair\&\ other)\ \textcolor{keyword}{noexcept}(std::is\_nothrow\_swappable\_v<T1>\ \&\&}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_nothrow\_swappable\_v<T2>)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{using\ }std::swap;}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ swap(First(),\ other.First());}
+\DoxyCodeLine{00147\ \ \ \ \ swap(Second(),\ other.Second());}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \};}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00152\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ swap(}
+\DoxyCodeLine{00153\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{CompressedPair<T1,\ T2>}}\&\ lhs,}
+\DoxyCodeLine{00154\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{CompressedPair<T1,\ T2>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(std::is\_nothrow\_swappable\_v<T1>\ \&\&}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_nothrow\_swappable\_v<T2>)\ \{}
+\DoxyCodeLine{00156\ \ \ lhs.swap(rhs);}
+\DoxyCodeLine{00157\ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

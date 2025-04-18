@@ -1,0 +1,112 @@
+\doxysection{adl.\+hh}
+\hypertarget{adl_8hh_source}{}\label{adl_8hh_source}\index{include/kiwi/util/adl.hh@{include/kiwi/util/adl.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/ADT/ADL.h\ -\/\ Argument\ dependent\ lookup\ utilities\ -\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }adl\_detail\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{using\ }std::begin;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00022\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ begin\_impl(RangeT\&\&\ range)}
+\DoxyCodeLine{00023\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(begin(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordflow}{return}\ begin(std::forward<RangeT>(range));}
+\DoxyCodeLine{00025\ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{using\ }std::end;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00030\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ end\_impl(RangeT\&\&\ range)}
+\DoxyCodeLine{00031\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(end(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{return}\ end(std::forward<RangeT>(range));}
+\DoxyCodeLine{00033\ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{using\ }std::rbegin;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00038\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ rbegin\_impl(RangeT\&\&\ range)}
+\DoxyCodeLine{00039\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(rbegin(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{return}\ rbegin(std::forward<RangeT>(range));}
+\DoxyCodeLine{00041\ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{keyword}{using\ }std::rend;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00046\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ rend\_impl(RangeT\&\&\ range)}
+\DoxyCodeLine{00047\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(rend(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{return}\ rend(std::forward<RangeT>(range));}
+\DoxyCodeLine{00049\ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{using\ }std::swap;}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ swap\_impl(T\&\&\ lhs,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\&\&\ rhs)\ \textcolor{keyword}{noexcept}(\textcolor{keyword}{noexcept}(swap(std::declval<T>(),}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::declval<T>())))\ \{}
+\DoxyCodeLine{00057\ \ \ swap(std::forward<T>(lhs),\ std::forward<T>(rhs));}
+\DoxyCodeLine{00058\ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{using\ }std::size;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00063\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ size\_impl(RangeT\&\&\ range)}
+\DoxyCodeLine{00064\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(size(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordflow}{return}\ size(std::forward<RangeT>(range));}
+\DoxyCodeLine{00066\ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \}\ \ \textcolor{comment}{//\ namespace\ adl\_detail}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00072\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00073\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ adl\_begin(RangeT\&\&\ range)}
+\DoxyCodeLine{00074\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(adl\_detail::begin\_impl(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{return}\ adl\_detail::begin\_impl(std::forward<RangeT>(range));}
+\DoxyCodeLine{00076\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00081\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ adl\_end(RangeT\&\&\ range)}
+\DoxyCodeLine{00082\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(adl\_detail::end\_impl(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordflow}{return}\ adl\_detail::end\_impl(std::forward<RangeT>(range));}
+\DoxyCodeLine{00084\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00089\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ adl\_rbegin(RangeT\&\&\ range)}
+\DoxyCodeLine{00090\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(adl\_detail::rbegin\_impl(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordflow}{return}\ adl\_detail::rbegin\_impl(std::forward<RangeT>(range));}
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00096\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00097\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ adl\_rend(RangeT\&\&\ range)}
+\DoxyCodeLine{00098\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(adl\_detail::rend\_impl(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordflow}{return}\ adl\_detail::rend\_impl(std::forward<RangeT>(range));}
+\DoxyCodeLine{00100\ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00105\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ adl\_swap(T\&\&\ lhs,\ T\&\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{noexcept}(adl\_detail::swap\_impl(std::declval<T>(),\ std::declval<T>())))\ \{}
+\DoxyCodeLine{00107\ \ \ adl\_detail::swap\_impl(std::forward<T>(lhs),\ std::forward<T>(rhs));}
+\DoxyCodeLine{00108\ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ RangeT>}
+\DoxyCodeLine{00113\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ adl\_size(RangeT\&\&\ range)}
+\DoxyCodeLine{00114\ \ \ \ \ -\/>\ \textcolor{keyword}{decltype}(adl\_detail::size\_impl(std::forward<RangeT>(range)))\ \{}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordflow}{return}\ adl\_detail::size\_impl(std::forward<RangeT>(range));}
+\DoxyCodeLine{00116\ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

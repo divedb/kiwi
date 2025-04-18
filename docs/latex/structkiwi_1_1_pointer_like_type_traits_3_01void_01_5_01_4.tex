@@ -1,0 +1,32 @@
+\doxysection{kiwi\+::Pointer\+Like\+Type\+Traits\texorpdfstring{$<$}{<} void \texorpdfstring{$\ast$}{*} \texorpdfstring{$>$}{>} Struct Reference}
+\hypertarget{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4}{}\label{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4}\index{kiwi::PointerLikeTypeTraits$<$ void \texorpdfstring{$\ast$}{*} $>$@{kiwi::PointerLikeTypeTraits$<$ void \texorpdfstring{$\ast$}{*} $>$}}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a5ac0051e2302f8334e3d4d676615c6b9}\label{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a5ac0051e2302f8334e3d4d676615c6b9} 
+static void \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+as\+\_\+void\+\_\+pointer} (void \texorpdfstring{$\ast$}{*}p)
+\item 
+\Hypertarget{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a5e4f1bc933f4b961c650646a1e7545ac}\label{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a5e4f1bc933f4b961c650646a1e7545ac} 
+static void \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+from\+\_\+void\+\_\+pointer} (void \texorpdfstring{$\ast$}{*}p)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int \mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a2797ecd6f373d966cff0d468edb4df04}{k\+Num\+Low\+Bits\+Available}} = 2
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a2797ecd6f373d966cff0d468edb4df04}\index{kiwi::PointerLikeTypeTraits$<$ void \texorpdfstring{$\ast$}{*} $>$@{kiwi::PointerLikeTypeTraits$<$ void \texorpdfstring{$\ast$}{*} $>$}!kNumLowBitsAvailable@{kNumLowBitsAvailable}}
+\index{kNumLowBitsAvailable@{kNumLowBitsAvailable}!kiwi::PointerLikeTypeTraits$<$ void \texorpdfstring{$\ast$}{*} $>$@{kiwi::PointerLikeTypeTraits$<$ void \texorpdfstring{$\ast$}{*} $>$}}
+\doxysubsubsection{\texorpdfstring{kNumLowBitsAvailable}{kNumLowBitsAvailable}}
+{\footnotesize\ttfamily \label{structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4_a2797ecd6f373d966cff0d468edb4df04} 
+int \mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{kiwi\+::\+Pointer\+Like\+Type\+Traits}}$<$ void \texorpdfstring{$\ast$}{*} $>$\+::k\+Num\+Low\+Bits\+Available = 2\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+Note, we assume here that void\texorpdfstring{$\ast$}{*} is related to raw malloc\textquotesingle{}ed memory and that malloc returns objects at least 4-\/byte aligned. However, this may be wrong, or pointers may be from something other than malloc. In this case, you should specify a real typed pointer or avoid this template.
+
+All clients should use assertions to do a run-\/time check to ensure that this is actually true. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/support/pointer\+\_\+like\+\_\+type\+\_\+traits.\+hh\end{DoxyCompactItemize}

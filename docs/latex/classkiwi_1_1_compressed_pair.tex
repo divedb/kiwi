@@ -1,0 +1,64 @@
+\doxysection{kiwi\+::Compressed\+Pair\texorpdfstring{$<$}{<} T1, T2 \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_compressed_pair}{}\label{classkiwi_1_1_compressed_pair}\index{kiwi::CompressedPair$<$ T1, T2 $>$@{kiwi::CompressedPair$<$ T1, T2 $>$}}
+Inheritance diagram for kiwi\+::Compressed\+Pair\texorpdfstring{$<$}{<} T1, T2 \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_compressed_pair}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}} = \mbox{\hyperlink{classkiwi_1_1_compressed_pair_elem}{Compressed\+Pair\+Elem}}$<$T1, 0$>$
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_abddbd15d306068f9aad51f0f5178f8e4}\label{classkiwi_1_1_compressed_pair_abddbd15d306068f9aad51f0f5178f8e4} 
+using {\bfseries Base2} = \mbox{\hyperlink{classkiwi_1_1_compressed_pair_elem}{Compressed\+Pair\+Elem}}$<$T2, 1$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a28b1f41ea6651c541e5e28adb9ed4a40}\label{classkiwi_1_1_compressed_pair_a28b1f41ea6651c541e5e28adb9ed4a40} 
+{\footnotesize template$<$typename U1, typename U2$>$ }\\constexpr {\bfseries Compressed\+Pair} (U1 \&\&u1, U2 \&\&u2)
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a904446c795377e7b8772d56e8d0241f7}\label{classkiwi_1_1_compressed_pair_a904446c795377e7b8772d56e8d0241f7} 
+{\footnotesize template$<$typename... Args1, typename... Args2$>$ }\\constexpr {\bfseries Compressed\+Pair} (std\+::piecewise\+\_\+construct\+\_\+t pc, std\+::tuple$<$ Args1... $>$ first\+\_\+args, std\+::tuple$<$ Args2... $>$ second\+\_\+args)
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_aace961640886981a0627bfb93773307a}\label{classkiwi_1_1_compressed_pair_aace961640886981a0627bfb93773307a} 
+Base1\+::reference {\bfseries First} () noexcept
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a6f62acbbfa67e5e3c6d6a5277fca342a}\label{classkiwi_1_1_compressed_pair_a6f62acbbfa67e5e3c6d6a5277fca342a} 
+Base1\+::const\+\_\+reference {\bfseries First} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a71339070effcf832e9578046e68ab8fc}\label{classkiwi_1_1_compressed_pair_a71339070effcf832e9578046e68ab8fc} 
+Base2\+::reference {\bfseries Second} () noexcept
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a682ac9823dec5d122483260af54024d6}\label{classkiwi_1_1_compressed_pair_a682ac9823dec5d122483260af54024d6} 
+Base2\+::const\+\_\+reference {\bfseries Second} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a6459ab53cd28677aaa589c294d06f3b7}\label{classkiwi_1_1_compressed_pair_a6459ab53cd28677aaa589c294d06f3b7} 
+void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}} \&other) noexcept(std\+::is\+\_\+nothrow\+\_\+swappable\+\_\+v$<$ T1 $>$ \&\&std\+::is\+\_\+nothrow\+\_\+swappable\+\_\+v$<$ T2 $>$)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_a2f61e02d7a3b99c0a0a2dfd7bc05d0e6}\label{classkiwi_1_1_compressed_pair_a2f61e02d7a3b99c0a0a2dfd7bc05d0e6} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}{Base1}} \texorpdfstring{$\ast$}{*} {\bfseries Get\+First\+Base} (\mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}} \texorpdfstring{$\ast$}{*}pair) noexcept
+\item 
+\Hypertarget{classkiwi_1_1_compressed_pair_abbd90bcffd861972d2315e0819ab0f66}\label{classkiwi_1_1_compressed_pair_abbd90bcffd861972d2315e0819ab0f66} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_compressed_pair_elem}{Base2}} \texorpdfstring{$\ast$}{*} {\bfseries Get\+Second\+Base} (\mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}} \texorpdfstring{$\ast$}{*}pair) noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1}\index{kiwi::CompressedPair$<$ T1, T2 $>$@{kiwi::CompressedPair$<$ T1, T2 $>$}!Base1@{Base1}}
+\index{Base1@{Base1}!kiwi::CompressedPair$<$ T1, T2 $>$@{kiwi::CompressedPair$<$ T1, T2 $>$}}
+\doxysubsubsection{\texorpdfstring{Base1}{Base1}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_compressed_pair_a46b144323e84bbe516ddde3aac0594d1} 
+template$<$typename T1, typename T2$>$ \\
+using \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{kiwi\+::\+Compressed\+Pair}}$<$ T1, T2 $>$\+::\+Base1 = \mbox{\hyperlink{classkiwi_1_1_compressed_pair_elem}{Compressed\+Pair\+Elem}}$<$T1, 0$>$}
+
+NOTE\+: This static assert should never fire because \doxylink{classkiwi_1_1_compressed_pair_elem}{Compressed\+Pair\+Elem} is {\itshape almost never} used in a scenario where it\textquotesingle{}s possible for T1 == T2. (The exception is std\+::function where it is possible that the function object and the allocator have the same type). 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/util/compressed\+\_\+pair.\+hh\end{DoxyCompactItemize}

@@ -1,0 +1,104 @@
+\doxysection{kiwi\+::Not\+Null\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_not_null}{}\label{classkiwi_1_1_not_null}\index{kiwi::NotNull$<$ T $>$@{kiwi::NotNull$<$ T $>$}}
+
+
+Restricts a pointer or smart pointer to only hold non-\/null values. And it has zero size overhead over T.  
+
+
+
+
+{\ttfamily \#include $<$pointers.\+hh$>$}
+
+Inheritance diagram for kiwi\+::Not\+Null\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_not_null}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a9fd25bacc955bf8142e8a39bea5cbc64}\label{classkiwi_1_1_not_null_a9fd25bacc955bf8142e8a39bea5cbc64} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \&other)=default
+\item 
+\Hypertarget{classkiwi_1_1_not_null_aa5d961e0f35fae76c20156a34e577857}\label{classkiwi_1_1_not_null_aa5d961e0f35fae76c20156a34e577857} 
+constexpr detail\+::value\+\_\+or\+\_\+reference\+\_\+return\+\_\+t$<$ T $>$ {\bfseries get} () const noexcept(noexcept(detail\+::value\+\_\+or\+\_\+reference\+\_\+return\+\_\+t$<$ T $>$\{ std\+::declval$<$ T \& $>$()\}))
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a509e6df5630f89931ac137a2d6b24efe}\label{classkiwi_1_1_not_null_a509e6df5630f89931ac137a2d6b24efe} 
+constexpr {\bfseries operator T} () const
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a567f64380fb13175e36bfa479db4e77e}\label{classkiwi_1_1_not_null_a567f64380fb13175e36bfa479db4e77e} 
+constexpr decltype(auto) {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a066099bd79d53a32aa319c814d07dc72}\label{classkiwi_1_1_not_null_a066099bd79d53a32aa319c814d07dc72} 
+constexpr decltype(auto) {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a9bc72b51cd400fb7efbc2eb962fab7ff}\label{classkiwi_1_1_not_null_a9bc72b51cd400fb7efbc2eb962fab7ff} 
+{\bfseries Not\+Null} (std\+::nullptr\+\_\+t)=delete
+\begin{DoxyCompactList}\small\item\em Prevents compilation when someone attempts to assign a null pointer constant. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_not_null_a0848ec2a13f97eaeac2cdeb75828f56f}\label{classkiwi_1_1_not_null_a0848ec2a13f97eaeac2cdeb75828f56f} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \& {\bfseries operator=} (std\+::nullptr\+\_\+t)=delete
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a4f7e3debb41e401bc7be5892457ab2dc}\label{classkiwi_1_1_not_null_a4f7e3debb41e401bc7be5892457ab2dc} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \& {\bfseries operator++} ()=delete
+\begin{DoxyCompactList}\small\item\em Unwanted operators...pointers only point to single objects! \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_not_null_a1f4153b44e460849c5f94153788c1368}\label{classkiwi_1_1_not_null_a1f4153b44e460849c5f94153788c1368} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \& {\bfseries operator-\/-\/} ()=delete
+\item 
+\Hypertarget{classkiwi_1_1_not_null_ad05ccde00fcfa6338c2c7b2e9fd485ee}\label{classkiwi_1_1_not_null_ad05ccde00fcfa6338c2c7b2e9fd485ee} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} {\bfseries operator++} (int)=delete
+\item 
+\Hypertarget{classkiwi_1_1_not_null_acb725e7a5ab8ce5519a79aa2a7786387}\label{classkiwi_1_1_not_null_acb725e7a5ab8ce5519a79aa2a7786387} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} {\bfseries operator-\/-\/} (int)=delete
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a7bee9f429a1cd084b1c3774cc6ad3f4b}\label{classkiwi_1_1_not_null_a7bee9f429a1cd084b1c3774cc6ad3f4b} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \& {\bfseries operator+=} (std\+::ptrdiff\+\_\+t)=delete
+\item 
+\Hypertarget{classkiwi_1_1_not_null_ab1a63e74444a19d8fabe09721c0f9b5e}\label{classkiwi_1_1_not_null_ab1a63e74444a19d8fabe09721c0f9b5e} 
+\mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \& {\bfseries operator-\/=} (std\+::ptrdiff\+\_\+t)=delete
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a60af704b9a33b91fa212bf01a6ffef0e}\label{classkiwi_1_1_not_null_a60af704b9a33b91fa212bf01a6ffef0e} 
+void {\bfseries operator\mbox{[}$\,$\mbox{]}} (std\+::ptrdiff\+\_\+t) const =delete
+\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Constructors.}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a9e23f2ba0957c70cb8ed341294954de7}\label{classkiwi_1_1_not_null_a9e23f2ba0957c70cb8ed341294954de7} 
+{\footnotesize template$<$typename U, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+convertible$<$\+U, T$>$\+::value$>$$>$ }\\constexpr {\bfseries Not\+Null} (U \&\&u) noexcept(std\+::is\+\_\+nothrow\+\_\+move\+\_\+constructible$<$ T $>$\+::value)
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a17496067d1bcf85c926bc634a8a0f127}\label{classkiwi_1_1_not_null_a17496067d1bcf85c926bc634a8a0f127} 
+{\footnotesize template$<$typename = std\+::enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+same$<$std\+::nullptr\+\_\+t, T$>$\+::value$>$$>$ }\\constexpr {\bfseries Not\+Null} (T u) noexcept(std\+::is\+\_\+nothrow\+\_\+move\+\_\+constructible$<$ T $>$\+::value)
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a118e878461a63bafa3a74c49301ca9da}\label{classkiwi_1_1_not_null_a118e878461a63bafa3a74c49301ca9da} 
+{\footnotesize template$<$typename U, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+convertible$<$\+U, T$>$\+::value$>$$>$ }\\constexpr {\bfseries Not\+Null} (const \mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}}$<$ U $>$ \&other) noexcept(std\+::is\+\_\+nothrow\+\_\+move\+\_\+constructible$<$ T $>$\+::value)
+\item 
+\Hypertarget{classkiwi_1_1_not_null_a578feb0f301d798ea775baf5e0e6af72}\label{classkiwi_1_1_not_null_a578feb0f301d798ea775baf5e0e6af72} 
+{\bfseries Not\+Null} (const \mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}} \&other)=default
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class kiwi\+::\+Not\+Null$<$ T $>$}
+Restricts a pointer or smart pointer to only hold non-\/null values. And it has zero size overhead over T. 
+
+If T is a pointer (i.\+e. T == U\texorpdfstring{$\ast$}{*}) then
+\begin{DoxyItemize}
+\item allow construction from U\texorpdfstring{$\ast$}{*}
+\item disallow construction from nullptr\+\_\+t
+\item disallow default construction
+\item ensure construction from null U\texorpdfstring{$\ast$}{*} fails
+\item allow implicit conversion to U\texorpdfstring{$\ast$}{*}
+\end{DoxyItemize}
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Must be type of pointer or comparable with pointer. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/util/pointers.\+hh\end{DoxyCompactItemize}

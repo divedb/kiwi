@@ -1,0 +1,242 @@
+\doxysection{kiwi\+::String\+Literal Class Reference}
+\hypertarget{classkiwi_1_1_string_literal}{}\label{classkiwi_1_1_string_literal}\index{kiwi::StringLiteral@{kiwi::StringLiteral}}
+
+
+{\ttfamily \#include $<$string\+\_\+ref.\+hh$>$}
+
+Inheritance diagram for kiwi\+::String\+Literal\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_string_literal}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_literal_a5a918abda3aa6fc33b65cc63909f6407}\label{classkiwi_1_1_string_literal_a5a918abda3aa6fc33b65cc63909f6407} 
+{\footnotesize template$<$size\+\_\+t N$>$ }\\constexpr {\bfseries String\+Literal} (const char(\&Str)\mbox{[}N\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1_string_ref}{kiwi\+::\+String\+Ref}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string {\bfseries lower} () const
+\item 
+std\+::string {\bfseries upper} () const
+\begin{DoxyCompactList}\small\item\em Convert the given ASCII string to uppercase. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries String\+Ref} ()=default
+\begin{DoxyCompactList}\small\item\em Construct an empty string ref. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref_a77b57130049c03d65ec279b5811722f4}{String\+Ref}} (std\+::nullptr\+\_\+t)=delete
+\item 
+constexpr {\bfseries String\+Ref} (char const \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})
+\begin{DoxyCompactList}\small\item\em Construct a string ref from a cstring. \end{DoxyCompactList}\item 
+constexpr {\bfseries String\+Ref} (char const \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Construct a string ref from a pointer and length. \end{DoxyCompactList}\item 
+{\bfseries String\+Ref} (std\+::string const \&\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})
+\begin{DoxyCompactList}\small\item\em Construct a string ref from an std\+::string. \end{DoxyCompactList}\item 
+constexpr {\bfseries String\+Ref} (std\+::string\+\_\+view \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})
+\begin{DoxyCompactList}\small\item\em Construct a string ref from an std\+::string\+\_\+view. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+iterator {\bfseries begin} () const
+\item 
+iterator {\bfseries end} () const
+\item 
+unsigned char const \texorpdfstring{$\ast$}{*} {\bfseries bytes\+\_\+begin} () const
+\item 
+unsigned char const \texorpdfstring{$\ast$}{*} {\bfseries bytes\+\_\+end} () const
+\item 
+iterator\+\_\+range$<$ const unsigned char \texorpdfstring{$\ast$}{*} $>$ {\bfseries bytes} () const
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+constexpr char const \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}} () const
+\item 
+constexpr bool {\bfseries empty} () const
+\begin{DoxyCompactList}\small\item\em empty -\/ Check if the string is empty. \end{DoxyCompactList}\item 
+constexpr size\+\_\+t {\bfseries size} () const
+\begin{DoxyCompactList}\small\item\em size -\/ Get the string size. \end{DoxyCompactList}\item 
+char {\bfseries front} () const
+\begin{DoxyCompactList}\small\item\em front -\/ Get the first character in the string. \end{DoxyCompactList}\item 
+char {\bfseries back} () const
+\begin{DoxyCompactList}\small\item\em back -\/ Get the last character in the string. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Allocator$>$ }\\\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a55695e354ad2b50947fd1bee045029c5}{copy}} (Allocator \&alloc) const
+\begin{DoxyCompactList}\small\item\em copy -\/ Allocate copy in Allocator and return \doxylink{classkiwi_1_1_string_ref}{String\+Ref} to it. \end{DoxyCompactList}\item 
+bool {\bfseries equals\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\begin{DoxyCompactList}\small\item\em Check for string equality, ignoring case. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classkiwi_1_1_string_ref_a17b806e72a927a388a1105ee1cfad92f}{compare}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\item 
+int {\bfseries compare\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\begin{DoxyCompactList}\small\item\em Compare two strings, ignoring case. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classkiwi_1_1_string_ref_aee5441db011f73e4a0844567bc13b203}{compare\+\_\+numeric}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} rhs) const
+\item 
+unsigned \mbox{\hyperlink{classkiwi_1_1_string_ref_aed622b030f75dc0a3f53ee0ab5f7f358}{edit\+\_\+distance}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Other, bool allow\+\_\+replacements=true, unsigned max\+\_\+edit\+\_\+distance=0) const
+\item 
+unsigned {\bfseries edit\+\_\+distance\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} other, bool allow\+\_\+replacements=true, unsigned max\+\_\+edit\+\_\+distance=0) const
+\item 
+std\+::string {\bfseries str} () const
+\begin{DoxyCompactList}\small\item\em str -\/ Get the contents as an std\+::string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+char {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t index) const
+\item 
+{\footnotesize template$<$typename T$>$ }\\std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+same$<$ T, std\+::string $>$\+::value, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \& \mbox{\hyperlink{classkiwi_1_1_string_ref_ac6ece4fee89a52742f085812446d09a1}{operator=}} (T \&\&\mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}})=delete
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+constexpr {\bfseries operator std\+::string\+\_\+view} () const
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries starts\+\_\+with} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} prefix) const
+\begin{DoxyCompactList}\small\item\em Check if this string starts with the given {\ttfamily prefix}. \end{DoxyCompactList}\item 
+bool {\bfseries starts\+\_\+with} (char prefix) const
+\item 
+bool {\bfseries starts\+\_\+with\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} prefix) const
+\begin{DoxyCompactList}\small\item\em Check if this string starts with the given {\ttfamily prefix}, ignoring case. \end{DoxyCompactList}\item 
+bool {\bfseries ends\+\_\+with} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} suffix) const
+\begin{DoxyCompactList}\small\item\em Check if this string ends with the given {\ttfamily suffix}. \end{DoxyCompactList}\item 
+bool {\bfseries ends\+\_\+with} (char suffix) const
+\item 
+bool {\bfseries ends\+\_\+with\+\_\+insensitive} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} suffix) const
+\begin{DoxyCompactList}\small\item\em Check if this string ends with the given {\ttfamily suffix}, ignoring case. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a0163b614966f4600e148c0e40bcffd76}{find}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a3edc036bcafd56573b1d39e7c7092034}{find\+\_\+insensitive}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ad091e81efa5eade0a0f455ee3a11d231}{find\+\_\+if}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ f, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a14ab6507267c211ff35af8f63b236c2d}{find\+\_\+if\+\_\+not}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ f, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ae1d0a701f123ffaaa5187c3c913225a1}{find}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a831c0ad9f3a0151a8e4db1da5f03439e}{find\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ab150c70366d633b69300c85c6a46e80f}{rfind}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a7f9b1d376d87ff8bd9fdbfeb0d5c65ef}{rfind\+\_\+insensitive}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a185e34f7156b8cca9f930eb4ac196614}{rfind}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a2165028f5c9f6880c7cc2c5c01cd6e1c}{rfind\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a644a28a54cd682b6d49a34f4c64df5f3}{find\+\_\+first\+\_\+of}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_ae6f943e48f403ba55b642e97b6c00684}{find\+\_\+first\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a4d3b373f12405332c50f98d34335c01a}{find\+\_\+first\+\_\+not\+\_\+of}} (char c, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a85010dcfe4cbb7adb498d13eff030af6}{find\+\_\+first\+\_\+not\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=0) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a39b564884e4f0caf04a67ba91e2f9f4c}{find\+\_\+last\+\_\+of}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a9a92f311394a6e5033e2b7e3cc279a81}{find\+\_\+last\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a7cc11c886651b33bb25212d9e560fd6b}{find\+\_\+last\+\_\+not\+\_\+of}} (char c, size\+\_\+t from=npos) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_afb5897bfe79785e773d66a3f5a7eee50}{find\+\_\+last\+\_\+not\+\_\+of}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} chars, size\+\_\+t from=npos) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_acff4abbe83319395558d9229bfec6c39}{contains}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} other) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_a742406d0610ad2ccd423873eb284de37}{contains}} (char c) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_ac5bb11813d4958ef253306ac9b56dd64}{contains\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} other) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_a99a71d3d537f0c8bcfd9490a6ea3eefd}{contains\+\_\+insensitive}} (char c) const
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t {\bfseries count} (char c) const
+\begin{DoxyCompactList}\small\item\em Return the number of occurrences of {\ttfamily c} in the string. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_string_ref_a5110375988d361d60d77b9334d3fedb2}{count}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a08acfd071aa09f21b66170149e3437df}{str}}) const
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a477e226619a6e46ca152c778e024a5f4}{substr}} (size\+\_\+t Start, size\+\_\+t N=npos) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_ace04425f92126cb4d09d7c6f46a593e2}{take\+\_\+front}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a3a06f00ae194f00af9184c2e2bfa1484}{take\+\_\+back}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a817f88db73fc820718155d3ccd50d8e1}{take\+\_\+while}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a3f0f4106a3cb8ebaae059555c7d349e3}{take\+\_\+until}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a0dc8341df1ba3e891f40905824517185}{drop\+\_\+front}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a90ca0e37984d033c04aaa71291cb35a5}{drop\+\_\+back}} (size\+\_\+t N=1) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a12e5397f2e6a759be136a21892170e1e}{drop\+\_\+while}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a132e0e5f99c904e001f6bb0292d20a26}{drop\+\_\+until}} (\mbox{\hyperlink{classkiwi_1_1function__ref}{function\+\_\+ref}}$<$ bool(char)$>$ F) const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_a9d016a0549bebbd74606f0c3b1050ca1}{consume\+\_\+front}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Prefix)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_aa6f6da4f64876ad2071a09cbf6c2e07a}{consume\+\_\+front\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Prefix)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_ab9cb461404f6bf87f6c0d32b63b544d1}{consume\+\_\+back}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Suffix)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_string_ref_ad91cca39138a6862c48f235c5e83c80a}{consume\+\_\+back\+\_\+insensitive}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Suffix)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a438b349fddc3537dd8d3af3b2123fb53}{slice}} (size\+\_\+t Start, size\+\_\+t End) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_a7d856db9a2d0975fdee7cda62c86e3a4}{split}} (char Separator) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_aa879c412bcb07381edc7d32f7eb44528}{split}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Separator) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_abe6239a292b29130ef8b28ed696fef5f}{rsplit}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Separator) const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_string_ref_af71cefac9720895380ea7168d2d1d4fa}{split}} (Small\+Vector\+Impl$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \&A, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Separator, int Max\+Split=-\/1, bool Keep\+Empty=true) const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_string_ref_abe76d1f6ee6d8f44296efb23ab47a908}{split}} (Small\+Vector\+Impl$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \&A, char Separator, int Max\+Split=-\/1, bool Keep\+Empty=true) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}, \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} $>$ \mbox{\hyperlink{classkiwi_1_1_string_ref_a06dfdd2558b054349a2c29b958e21092}{rsplit}} (char Separator) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a7ed5a8d4213802fb7bcbb769316935c4}{ltrim}} (char Char) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_ac4ef859b88acdefc97bd41351dd4edbb}{ltrim}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Chars="{} \textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a8528aa9ec10b90a47bec089ede8d594a}{rtrim}} (char Char) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a3a5557847576abd37df605df6a353fdd}{rtrim}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Chars="{} \textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_ae767fc3879ab3464fd022788abd8d33f}{trim}} (char Char) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a8c4846eecd7b654b416a7d07258ee0bd}{trim}} (\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} Chars="{} \textbackslash{}t\textbackslash{}n\textbackslash{}v\textbackslash{}f\textbackslash{}r"{}) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}} \mbox{\hyperlink{classkiwi_1_1_string_ref_a582f6e9d4c39412ff6190e7fc3c7a2ba}{detect\+EOL}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_string_literal_aae7b0f8b52bf8d1b26428b37d8647122}\label{classkiwi_1_1_string_literal_aae7b0f8b52bf8d1b26428b37d8647122} 
+{\footnotesize template$<$size\+\_\+t N$>$ }\\static constexpr \mbox{\hyperlink{classkiwi_1_1_string_literal}{String\+Literal}} {\bfseries with\+Inner\+NUL} (const char(\&Str)\mbox{[}N\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classkiwi_1_1_string_ref}{kiwi\+::\+String\+Ref}}}
+\begin{DoxyCompactItemize}
+\item 
+using {\bfseries iterator} = const char\texorpdfstring{$\ast$}{*}
+\item 
+using {\bfseries const\+\_\+iterator} = const char\texorpdfstring{$\ast$}{*}
+\item 
+using {\bfseries size\+\_\+type} = size\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classkiwi_1_1_string_ref}{kiwi\+::\+String\+Ref}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr size\+\_\+t {\bfseries npos} = \texorpdfstring{$\sim$}{\string~}size\+\_\+t(0)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A wrapper around a string literal that serves as a proxy for constructing global tables of String\+Refs with the length computed at compile time. In order to avoid the invocation of a global constructor, \doxylink{classkiwi_1_1_string_literal}{String\+Literal} should {\itshape only} be used in a constexpr context, as such\+:
+
+constexpr \doxylink{classkiwi_1_1_string_literal}{String\+Literal} S("{}test"{}); 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/strings/string\+\_\+ref.\+hh\end{DoxyCompactItemize}
