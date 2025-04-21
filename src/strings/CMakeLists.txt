@@ -1,0 +1,12 @@
+kiwi_cc_library(
+NAME
+    strings
+HDRS
+SRCS
+    "strings/ascii.cc"
+COPTS
+    ${KIWI_LIB_COPTS}
+DEPS
+ALIAS
+    kiwi::strings
+)

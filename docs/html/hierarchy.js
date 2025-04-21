@@ -40,7 +40,7 @@ var hierarchy =
       [ "kiwi::explicitly_convertible< From, To, typename >", "structkiwi_1_1explicitly__convertible.html", null ]
     ] ],
     [ "kiwi::fbstring_core< Char >", "classkiwi_1_1fbstring__core.html", null ],
-    [ "base::FilePath", "classbase_1_1_file_path.html", null ],
+    [ "kiwi::FilePath", "classkiwi_1_1_file_path.html", null ],
     [ "kiwi::function_ref< Fn >", "classkiwi_1_1function__ref.html", null ],
     [ "kiwi::function_ref< Ret(Params...)>", "classkiwi_1_1function__ref_3_01_ret_07_params_8_8_8_08_4.html", null ],
     [ "kiwi::FunctionPointerLikeTypeTraits< Alignment, FunctionPointerT >", "structkiwi_1_1_function_pointer_like_type_traits.html", null ],
@@ -52,7 +52,7 @@ var hierarchy =
       [ "kiwi::DenseMapIterator< KeyT, ValueT, KeyInfoT, BucketT, true >", "classkiwi_1_1_dense_map_iterator.html", null ],
       [ "kiwi::DenseMapIterator< KeyT, ValueT, KeyInfoT, Bucket, IsConst >", "classkiwi_1_1_dense_map_iterator.html", null ]
     ] ],
-    [ "std::hash< base::FilePath >", "structstd_1_1hash_3_01base_1_1_file_path_01_4.html", null ],
+    [ "std::hash< kiwi::FilePath >", "structstd_1_1hash_3_01kiwi_1_1_file_path_01_4.html", null ],
     [ "kiwi::detail::HasPointerLikeTypeTraits< T, U >", "structkiwi_1_1detail_1_1_has_pointer_like_type_traits.html", null ],
     [ "kiwi::detail::HasPointerLikeTypeTraits< T, decltype((sizeof(PointerLikeTypeTraits< T >)+sizeof(T)), void())>", "structkiwi_1_1detail_1_1_has_pointer_like_type_traits_3_01_t_00_01decltype_07_07sizeof_07_pointe84db658051dbf5db860bef75f83dda49.html", null ],
     [ "std::integral_constant", null, [

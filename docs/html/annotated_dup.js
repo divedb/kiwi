@@ -1,8 +1,5 @@
 var annotated_dup =
 [
-    [ "base", null, [
-      [ "FilePath", "classbase_1_1_file_path.html", null ]
-    ] ],
     [ "kiwi", null, [
       [ "detail", null, [
         [ "ConstantLog2", "structkiwi_1_1detail_1_1_constant_log2.html", null ],
@@ -46,6 +43,7 @@ var annotated_dup =
       [ "explicitly_convertible", "structkiwi_1_1explicitly__convertible.html", null ],
       [ "explicitly_convertible< From, To, std::void_t< decltype(static_cast< To >(std::declval< std::add_rvalue_reference_t< From > >()))> >", "structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942.html", null ],
       [ "fbstring_core", "classkiwi_1_1fbstring__core.html", "classkiwi_1_1fbstring__core" ],
+      [ "FilePath", "classkiwi_1_1_file_path.html", "classkiwi_1_1_file_path" ],
       [ "function_ref", "classkiwi_1_1function__ref.html", null ],
       [ "function_ref< Ret(Params...)>", "classkiwi_1_1function__ref_3_01_ret_07_params_8_8_8_08_4.html", null ],
       [ "FunctionPointerLikeTypeTraits", "structkiwi_1_1_function_pointer_like_type_traits.html", null ],
@@ -66,7 +64,7 @@ var annotated_dup =
       [ "ValueInitTag", "structkiwi_1_1_value_init_tag.html", null ]
     ] ],
     [ "std", null, [
-      [ "hash< base::FilePath >", "structstd_1_1hash_3_01base_1_1_file_path_01_4.html", null ],
+      [ "hash< kiwi::FilePath >", "structstd_1_1hash_3_01kiwi_1_1_file_path_01_4.html", null ],
       [ "hash< kiwi::NotNull< T > >", "structstd_1_1hash_3_01kiwi_1_1_not_null_3_01_t_01_4_01_4.html", null ],
       [ "hash< kiwi::StrictNotNull< T > >", "structstd_1_1hash_3_01kiwi_1_1_strict_not_null_3_01_t_01_4_01_4.html", null ]
     ] ],

@@ -15,20 +15,20 @@
 
 // #include "base/check_op.h"
 // #include "base/features.h"
-#include "base/files/safe_base_name.h"
+// #include "base/files/safe_base_name.h"
 #include "base/numerics/safe_conversions.h"
-#include "base/pickle.h"
+// #include "base/pickle.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/trace_event/base_tracing.h"
+// #include "base/trace_event/base_tracing.h"
 #include "kiwi/files/file_path.hh"
 
 #if BUILDFLAG(IS_APPLE)
-#include "base/apple/scoped_cftyperef.h"
-#include "base/third_party/icu/icu_utf.h"
+// #include "base/apple/scoped_cftyperef.h"
+// #include "base/third_party/icu/icu_utf.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -39,7 +39,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
-namespace base {
+namespace kiwi {
 
 using StringType = FilePath::StringType;
 using StringViewType = FilePath::StringViewType;
@@ -1618,4 +1618,4 @@ bool FilePath::IsContentUri() const {
 }
 #endif
 
-}  // namespace base
+}  // namespace kiwi

@@ -109,6 +109,8 @@ $(function(){initNavTree('classkiwi_1_1_safe_base_name.html',''); initResizable(
   <div class="headertitle"><div class="title">kiwi::SafeBaseName Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="safe__base__name_8hh_source.html">safe_base_name.hh</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,7 +118,7 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SafeBaseName</b> ()=default</td></tr>
 <tr class="memdesc:a4a8119436f2620a1f434b39924335ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a>. <br /></td></tr>
 <tr class="separator:a4a8119436f2620a1f434b39924335ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49529f853ea85af0030c298b324bc00f" id="r_a49529f853ea85af0030c298b324bc00f"><td class="memItemLeft" align="right" valign="top">const FilePath &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49529f853ea85af0030c298b324bc00f">path</a> () const LIFETIME_BOUND</td></tr>
+<tr class="memitem:a49529f853ea85af0030c298b324bc00f" id="r_a49529f853ea85af0030c298b324bc00f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49529f853ea85af0030c298b324bc00f">path</a> () const LIFETIME_BOUND</td></tr>
 <tr class="separator:a49529f853ea85af0030c298b324bc00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4d5eaeb3de0e3fab3983c5f24933d96" id="r_ad4d5eaeb3de0e3fab3983c5f24933d96"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4d5eaeb3de0e3fab3983c5f24933d96">AsUTF8Unsafe</a> () const</td></tr>
 <tr class="separator:ad4d5eaeb3de0e3fab3983c5f24933d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,13 +134,20 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=<
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a775c207f9df73f170f9620b9e06dafb5" id="r_a775c207f9df73f170f9620b9e06dafb5"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a775c207f9df73f170f9620b9e06dafb5">Create</a> (const FilePath &amp;<a class="el" href="#a49529f853ea85af0030c298b324bc00f">path</a>)</td></tr>
+<tr class="memitem:a775c207f9df73f170f9620b9e06dafb5" id="r_a775c207f9df73f170f9620b9e06dafb5"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a775c207f9df73f170f9620b9e06dafb5">Create</a> (const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;<a class="el" href="#a49529f853ea85af0030c298b324bc00f">path</a>)</td></tr>
 <tr class="separator:a775c207f9df73f170f9620b9e06dafb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a092bddef2b47d32d58d8782371de7487" id="r_a092bddef2b47d32d58d8782371de7487"><td class="memItemLeft" align="right" valign="top"><a id="a092bddef2b47d32d58d8782371de7487" name="a092bddef2b47d32d58d8782371de7487"></a>
 static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (FilePath::StringViewType)</td></tr>
 <tr class="separator:a092bddef2b47d32d58d8782371de7487"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents the last path component of a <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> object, either a file or a directory. This type does not allow absolute paths or references to parent directories and is considered safe to be passed over IPC. </p><dl class="section see"><dt>See also</dt><dd>FilePath::BaseName().</dd></dl>
+<p>Usage example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> a = (<a class="code hl_function" href="#a775c207f9df73f170f9620b9e06dafb5">SafeBaseName::Create</a>(FILE_PATH_LITERAL(<span class="stringliteral">&quot;file.txt&quot;</span>)));</div>
+<div class="line"><a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> dir(FILE_PATH_LITERAL(<span class="stringliteral">&quot;foo&quot;</span>));</div>
+<div class="line">dir.Append(*a);</div>
+<div class="ttc" id="aclasskiwi_1_1_file_path_html"><div class="ttname"><a href="classkiwi_1_1_file_path.html">kiwi::FilePath</a></div><div class="ttdef"><b>Definition</b> file_path.hh:158</div></div>
+<div class="ttc" id="aclasskiwi_1_1_safe_base_name_html_a775c207f9df73f170f9620b9e06dafb5"><div class="ttname"><a href="#a775c207f9df73f170f9620b9e06dafb5">kiwi::SafeBaseName::Create</a></div><div class="ttdeci">static std::optional&lt; SafeBaseName &gt; Create(const FilePath &amp;path)</div><div class="ttdef"><b>Definition</b> safe_base_name.cc:10</div></div>
+</div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad4d5eaeb3de0e3fab3983c5f24933d96" name="ad4d5eaeb3de0e3fab3983c5f24933d96"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad4d5eaeb3de0e3fab3983c5f24933d96">&#9670;&#160;</a></span>AsUTF8Unsafe()</h2>
 
@@ -179,7 +188,7 @@ static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">
         <tr>
           <td class="memname">std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a> &gt; kiwi::SafeBaseName::Create </td>
           <td>(</td>
-          <td class="paramtype">const FilePath &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -189,10 +198,10 @@ static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Factory method that attempts to create a <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a> from a FilePath. Performs validation to ensure the input FilePath represents a safe base name (not absolute, no parent references like '..', not ends with separator).</p>
+<p>Factory method that attempts to create a <a class="el" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a> from a <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a>. Performs validation to ensure the input <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> represents a safe base name (not absolute, no parent references like '..', not ends with separator).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>The FilePath to attempt to convert. </td></tr>
+    <tr><td class="paramname">path</td><td>The <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> to attempt to convert. </td></tr>
   </table>
   </dd>
 </dl>
@@ -268,7 +277,7 @@ static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const FilePath &amp; kiwi::SafeBaseName::path </td>
+          <td class="memname">const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp; kiwi::SafeBaseName::path </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -280,7 +289,7 @@ static std::optional&lt; <a class="el" href="classkiwi_1_1_safe_base_name.html">
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>A const reference to the internal FilePath object. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A const reference to the internal <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> object. </dd></dl>
 
 </div>
 </div>

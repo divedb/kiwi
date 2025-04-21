@@ -1,0 +1,549 @@
+\doxysection{file\+\_\+path.\+hh}
+\hypertarget{file__path_8hh_source}{}\label{file__path_8hh_source}\index{include/kiwi/files/file\_path.hh@{include/kiwi/files/file\_path.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ FilePath\ is\ a\ container\ for\ pathnames\ stored\ in\ a\ platform's\ native\ string}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ type,\ providing\ containers\ for\ manipulation\ in\ according\ with\ the}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ platform's\ conventions\ for\ pathnames.\ \ It\ supports\ the\ following\ path}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ types:}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ POSIX\ \ \ \ \ \ \ \ \ \ \ \ Windows}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ Fundamental\ type\ \ char[]\ \ \ \ \ \ \ \ \ \ \ wchar\_t[]}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ Encoding\ \ \ \ \ \ \ \ \ \ unspecified*\ \ \ \ \ UTF-\/16}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ Separator\ \ \ \ \ \ \ \ \ /\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\),\ tolerant\ of\ /}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Drive\ letters\ \ \ \ \ no\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ case-\/insensitive\ A-\/Z\ followed\ by\ :}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ Alternate\ root\ \ \ \ //\ (surprise!)\ \ \ \(\backslash\)\(\backslash\)\ (2\ Separators),\ for\ UNC\ paths}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ *\ The\ encoding\ need\ not\ be\ specified\ on\ POSIX\ systems,\ although\ some}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ \ \ POSIX-\/compliant\ systems\ do\ specify\ an\ encoding.\ \ Mac\ OS\ X\ uses\ UTF-\/8.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ \ Chrome\ OS\ also\ uses\ UTF-\/8.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ \ Linux\ does\ not\ specify\ an\ encoding,\ but\ in\ practice,\ the\ locale's}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ \ character\ set\ may\ be\ used.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ For\ more\ arcane\ bits\ of\ path\ trivia,\ see\ below.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ FilePath\ objects\ are\ intended\ to\ be\ used\ anywhere\ paths\ are.\ \ An}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ application\ may\ pass\ FilePath\ objects\ around\ internally,\ masking\ the}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ underlying\ differences\ between\ systems,\ only\ differing\ in\ implementation}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ where\ interfacing\ directly\ with\ the\ system.\ \ For\ example,\ a\ single}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ OpenFile(const\ FilePath\ \&)\ function\ may\ be\ made\ available,\ allowing\ all}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ callers\ to\ operate\ without\ regard\ to\ the\ underlying\ implementation.\ \ On}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ POSIX-\/like\ platforms,\ OpenFile\ might\ wrap\ fopen,\ and\ on\ Windows,\ it\ might}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ wrap\ \_wfopen\_s,\ perhaps\ both\ by\ calling\ file\_path.value().c\_str().\ \ This}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ allows\ each\ platform\ to\ pass\ pathnames\ around\ without\ requiring\ conversions}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ between\ encodings,\ which\ has\ an\ impact\ on\ performance,\ but\ more\ imporantly,}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ has\ an\ impact\ on\ correctness\ on\ platforms\ that\ do\ not\ have\ well-\/defined}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ encodings\ for\ pathnames.}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ Several\ methods\ are\ available\ to\ perform\ common\ operations\ on\ a\ FilePath}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ object,\ such\ as\ determining\ the\ parent\ directory\ (DirName),\ isolating\ the}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ final\ path\ component\ (BaseName),\ and\ appending\ a\ relative\ pathname\ string}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ to\ an\ existing\ FilePath\ object\ (Append).\ \ These\ methods\ are\ highly}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ recommended\ over\ attempting\ to\ split\ and\ concatenate\ strings\ directly.}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ These\ methods\ are\ based\ purely\ on\ string\ manipulation\ and\ knowledge\ of}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ platform-\/specific\ pathname\ conventions,\ and\ do\ not\ consult\ the\ filesystem}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ at\ all,\ making\ them\ safe\ to\ use\ without\ fear\ of\ blocking\ on\ I/O\ operations.}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ These\ methods\ do\ not\ function\ as\ mutators\ but\ instead\ return\ distinct}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ instances\ of\ FilePath\ objects,\ and\ are\ therefore\ safe\ to\ use\ on\ const}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ objects.\ \ The\ objects\ themselves\ are\ safe\ to\ share\ between\ threads.}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ To\ aid\ in\ initialization\ of\ FilePath\ objects\ from\ string\ literals,\ a}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ FILE\_PATH\_LITERAL\ macro\ is\ provided,\ which\ accounts\ for\ the\ difference}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ between\ char[]-\/based\ pathnames\ on\ POSIX\ systems\ and\ wchar\_t[]-\/based}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ pathnames\ on\ Windows.}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ As\ a\ precaution\ against\ premature\ truncation,\ paths\ can't\ contain\ NULs.}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ Because\ a\ FilePath\ object\ should\ not\ be\ instantiated\ at\ the\ global\ scope,}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ instead,\ use\ a\ FilePath::CharType[]\ and\ initialize\ it\ with}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ FILE\_PATH\_LITERAL.\ \ At\ runtime,\ a\ FilePath\ object\ can\ be\ created\ from\ the}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ character\ array.\ \ Example:}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ |\ const\ FilePath::CharType\ kLogFileName[]\ =\ FILE\_PATH\_LITERAL("{}log.txt"{});}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ |}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ |\ void\ Function()\ \{}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ |\ \ \ FilePath\ log\_file\_path(kLogFileName);}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ |\ \ \ [...]}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ |\ \}}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ WARNING:\ FilePaths\ should\ ALWAYS\ be\ displayed\ with\ LTR\ directionality,\ even}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ when\ the\ UI\ language\ is\ RTL.\ This\ means\ you\ always\ need\ to\ pass\ filepaths}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ through\ base::i18n::WrapPathWithLTRFormatting()\ before\ displaying\ it\ in\ the}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ RTL\ UI.}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ This\ is\ a\ very\ common\ source\ of\ bugs,\ please\ try\ to\ keep\ this\ in\ mind.}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ ARCANE\ BITS\ OF\ PATH\ TRIVIA}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ \ -\/\ A\ double\ leading\ slash\ is\ actually\ part\ of\ the\ POSIX\ standard.\ \ Systems}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ \ \ \ are\ allowed\ to\ treat\ //\ as\ an\ alternate\ root,\ as\ Windows\ does\ for\ UNC}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ \ \ \ (network\ share)\ paths.\ \ Most\ POSIX\ systems\ don't\ do\ anything\ special}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ \ \ \ with\ two\ leading\ slashes,\ but\ FilePath\ handles\ this\ case\ properly}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ \ \ \ in\ case\ it\ ever\ comes\ across\ such\ a\ system.\ \ FilePath\ needs\ this\ support}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ \ \ \ for\ Windows\ UNC\ paths,\ anyway.}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ \ \ \ References:}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ \ \ \ The\ Open\ Group\ Base\ Specifications\ Issue\ 7,\ sections\ 3.267\ ("{}Pathname"{})}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ \ \ \ and\ 4.12\ ("{}Pathname\ Resolution"{}),\ available\ at:}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ \ \ \ http://www.opengroup.org/onlinepubs/9699919799/basedefs/V1\_chap03.html\#tag\_03\_267}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ \ \ \ http://www.opengroup.org/onlinepubs/9699919799/basedefs/V1\_chap04.html\#tag\_04\_12}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ \ -\/\ Windows\ treats\ c:\(\backslash\)\(\backslash\)\ the\ same\ way\ it\ treats\ \(\backslash\)\(\backslash\).\ \ This\ was\ intended\ to}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ \ \ \ allow\ older\ applications\ that\ require\ drive\ letters\ to\ support\ UNC\ paths}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ \ \ \ like\ \(\backslash\)\(\backslash\)server\(\backslash\)share\(\backslash\)path,\ by\ permitting\ c:\(\backslash\)\(\backslash\)server\(\backslash\)share\(\backslash\)path\ as\ an}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ \ equivalent.\ \ Since\ the\ OS\ treats\ these\ paths\ specially,\ FilePath\ needs}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ \ \ to\ do\ the\ same.\ \ Since\ Windows\ can\ use\ either\ /\ or\ \(\backslash\)\ as\ the\ separator,}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \ \ \ FilePath\ treats\ c://,\ c:\(\backslash\)\(\backslash\),\ //,\ and\ \(\backslash\)\(\backslash\)\ all\ equivalently.}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ \ \ Reference:}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ \ The\ Old\ New\ Thing,\ "{}Why\ is\ a\ drive\ letter\ permitted\ in\ front\ of\ UNC}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ \ \ \ paths\ (sometimes)?"{},\ available\ at:}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ \ \ http://blogs.msdn.com/oldnewthing/archive/2005/11/22/495740.aspx}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#include\ <iosfwd>}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#include\ "{}kiwi/config/base\_export.hh"{}}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#include\ "{}kiwi/config/build\_config.hh"{}}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#include\ "{}kiwi/config/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{comment}{//\ Windows-\/style\ drive\ letter\ support\ and\ pathname\ separator\ characters\ can\ be}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ enabled\ and\ disabled\ independently,\ to\ aid\ testing.\ \ These\ \#defines\ are}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ here\ so\ that\ the\ same\ setting\ can\ be\ used\ in\ both\ the\ implementation\ and}}
+\DoxyCodeLine{00117\ \textcolor{comment}{//\ in\ the\ unit\ test.}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ FILE\_PATH\_USES\_DRIVE\_LETTERS}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ FILE\_PATH\_USES\_WIN\_SEPARATORS}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ To\ print\ path\ names\ portably\ use\ PR\_FILE\_PATH\ (based\ on\ PRIuS\ and\ friends}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ from\ C99\ and\ format\_macros.h)\ like\ this:\ base::StringPrintf("{}Path\ is\ \%"{}}}
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ PR\_FILE\_PATH\ "{}.\(\backslash\)n"{},\ path.value().c\_str());}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ PR\_FILE\_PATH\ "{}ls"{}}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#define\ PR\_FILE\_PATH\ "{}s"{}}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ Macros\ for\ string\ literal\ initialization\ of\ FilePath::CharType[].}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \textcolor{comment}{//\ The\ \`{}FILE\_PATH\_LITERAL\_INTERNAL`\ indirection\ allows\ \`{}FILE\_PATH\_LITERAL`\ to}}
+\DoxyCodeLine{00136\ \textcolor{comment}{//\ work\ correctly\ with\ macro\ parameters,\ for\ example}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\ \`{}FILE\_PATH\_LITERAL(TEST\_FILE)`\ where\ \`{}TEST\_FILE`\ is\ a\ macro\ \#defined\ as}}
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ "{}TestFile"{}.}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#define\ FILE\_PATH\_LITERAL\_INTERNAL(x)\ L\#\#x}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#define\ FILE\_PATH\_LITERAL(x)\ FILE\_PATH\_LITERAL\_INTERNAL(x)}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ FILE\_PATH\_LITERAL(x)\ x}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00147\ \textcolor{keyword}{using\ }CFStringRef\ =\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct\ }\_\_CFString*;}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_safe_base_name}{SafeBaseName}};}
+\DoxyCodeLine{00153\ \textcolor{keyword}{class\ }Pickle;}
+\DoxyCodeLine{00154\ \textcolor{keyword}{class\ }PickleIterator;}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00158\ \textcolor{keyword}{class\ }BASE\_EXPORT\ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\ \{}
+\DoxyCodeLine{00159\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{using\ }StringType\ =\ std::wstring;}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{using\ }StringType\ =\ std::string;}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{using\ }CharType\ =\ StringType::value\_type;}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{using\ }StringViewType\ =\ std::basic\_string\_view<CharType>;}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ CharType\ \mbox{\hyperlink{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c}{kSeparators}}[]\ =}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#if\ defined(FILE\_PATH\_USES\_WIN\_SEPARATORS)}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ FILE\_PATH\_LITERAL(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)/"{}});}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#else\ \ \ }\textcolor{comment}{//\ FILE\_PATH\_USES\_WIN\_SEPARATORS}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ FILE\_PATH\_LITERAL(\textcolor{stringliteral}{"{}/"{}});}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ FILE\_PATH\_USES\_WIN\_SEPARATORS}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a4fc5b556aea57198fa0c99ccac5803cb}{kSeparatorsLength}}\ =\ std::size(\mbox{\hyperlink{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c}{kSeparators}});}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ CharType\ \mbox{\hyperlink{classkiwi_1_1_file_path_ae8e6dc9f3a5902fb71479368ea468535}{kCurrentDirectory}}[]\ =\ FILE\_PATH\_LITERAL(\textcolor{stringliteral}{"{}."{}});}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ CharType\ \mbox{\hyperlink{classkiwi_1_1_file_path_a2f0214db244325a97c7ba229145fea70}{kParentDirectory}}[]\ =\ FILE\_PATH\_LITERAL(\textcolor{stringliteral}{"{}.."{}});}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ CharType\ \mbox{\hyperlink{classkiwi_1_1_file_path_af9b9abdc5d3fced82bea002db4dfed26}{kExtensionSeparator}}\ =\ FILE\_PATH\_LITERAL(\textcolor{charliteral}{'.'});}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a65c43ca92eb9a58d837f1b54a56f0238}{InitializeFeatures}}();}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00202\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}();}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}(StringViewType\ path);}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00212\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path_abc5f77b91b51041669a6743a5f879775}{FilePath}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\ that);}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ Constructs\ FilePath\ with\ the\ contents\ of\ |that|,\ which\ is\ left\ in\ valid\ but}}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ unspecified\ state.}}
+\DoxyCodeLine{00218\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path_a3ac6bba8bf76f75e80b1a4922e4b3d57}{FilePath}}(\mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\&\ that)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00221\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path_a1b7642f944077c476e1139071729dd6d}{\string~FilePath}}();}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00227\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_file_path_abdf7f6cc8034af130e606ed05f43fc87}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\ that);}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00234\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_file_path_a6f73d30fad8ae281c8b79d5c236349e8}{operator=}}(\mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\&\ that)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//\ On\ systems\ which\ use\ drive\ letters,\ the\ drive\ letters\ are\ compared}}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ case-\/insensitively.}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_file_path_ab436d196545762fb3b6588d1bc172547}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\ that)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a0521858e6819bd9bf6374d0d08cb7830}{operator<=>}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}{FilePath}}\&\ that)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00255\ \ \ \textcolor{keyword}{const}\ StringType\&\ \mbox{\hyperlink{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}{value}}()\ const\ LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ path\_;\ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ empty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ path\_.empty();\ \}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{void}\ clear()\ \{\ path\_.clear();\ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ |character|\ is\ in\ kSeparators.}}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsSeparator(CharType\ character);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//\ Returns\ a\ vector\ of\ all\ of\ the\ components\ of\ the\ provided\ path.\ It\ is}}
+\DoxyCodeLine{00265\ \ \ \textcolor{comment}{//\ equivalent\ to\ calling\ DirName().value()\ on\ the\ path's\ root\ component,}}
+\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//\ and\ BaseName().value()\ on\ each\ child\ component.}}
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ To\ make\ sure\ this\ is\ lossless\ so\ we\ can\ differentiate\ absolute\ and}}
+\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//\ relative\ paths,\ the\ root\ slash\ will\ be\ included\ even\ though\ no\ other}}
+\DoxyCodeLine{00270\ \ \ \textcolor{comment}{//\ slashes\ will\ be.\ The\ precise\ behavior\ is:}}
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//\ Posix:\ \ "{}/foo/bar"{}\ \ -\/>\ \ [\ "{}/"{},\ "{}foo"{},\ "{}bar"{}\ ]}}
+\DoxyCodeLine{00273\ \ \ \textcolor{comment}{//\ Windows:\ \ "{}C:\(\backslash\)foo\(\backslash\)bar"{}\ \ -\/>\ \ [\ "{}C:"{},\ "{}\(\backslash\)\(\backslash\)"{},\ "{}foo"{},\ "{}bar"{}\ ]}}
+\DoxyCodeLine{00274\ \ \ std::vector<FilePath::StringType>\ GetComponents()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ this\ FilePath\ is\ a\ parent\ or\ ancestor\ of\ the\ |child|.}}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//\ Absolute\ and\ relative\ paths\ are\ accepted\ i.e.\ /foo\ is\ a\ parent\ to\ /foo/bar,}}
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//\ and\ foo\ is\ a\ parent\ to\ foo/bar.\ Any\ ancestor\ is\ considered\ a\ parent\ i.e.\ /a}}
+\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ is\ a\ parent\ to\ both\ /a/b\ and\ /a/b/c.\ \ Does\ not\ convert\ paths\ to\ absolute,}}
+\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ follow\ symlinks\ or\ directory\ navigation\ (e.g.\ "{}.."{}).\ A\ path\ is\ *NOT*\ its}}
+\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ own\ parent.}}
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{bool}\ IsParent(\textcolor{keyword}{const}\ FilePath\&\ child)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ If\ IsParent(child)\ holds,\ appends\ to\ path\ (if\ non-\/NULL)\ the}}
+\DoxyCodeLine{00285\ \ \ \textcolor{comment}{//\ relative\ path\ to\ child\ and\ returns\ true.\ \ For\ example,\ if\ parent}}
+\DoxyCodeLine{00286\ \ \ \textcolor{comment}{//\ holds\ "{}/Users/johndoe/Library/Application\ Support"{},\ child\ holds}}
+\DoxyCodeLine{00287\ \ \ \textcolor{comment}{//\ "{}/Users/johndoe/Library/Application\ Support/Google/Chrome/Default"{},\ and}}
+\DoxyCodeLine{00288\ \ \ \textcolor{comment}{//\ *path\ holds\ "{}/Users/johndoe/Library/Caches"{},\ then\ after}}
+\DoxyCodeLine{00289\ \ \ \textcolor{comment}{//\ parent.AppendRelativePath(child,\ path)\ is\ called\ *path\ will\ hold}}
+\DoxyCodeLine{00290\ \ \ \textcolor{comment}{//\ "{}/Users/johndoe/Library/Caches/Google/Chrome/Default"{}.\ \ Otherwise,}}
+\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ returns\ false.}}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{bool}\ AppendRelativePath(\textcolor{keyword}{const}\ FilePath\&\ child,\ FilePath*\ path)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{//\ Returns\ a\ FilePath\ corresponding\ to\ the\ directory\ containing\ the\ path}}
+\DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ named\ by\ this\ object,\ stripping\ away\ the\ file\ component.\ \ If\ this\ object}}
+\DoxyCodeLine{00296\ \ \ \textcolor{comment}{//\ only\ contains\ one\ component,\ returns\ a\ FilePath\ identifying}}
+\DoxyCodeLine{00297\ \ \ \textcolor{comment}{//\ kCurrentDirectory.\ \ If\ this\ object\ already\ refers\ to\ the\ root\ directory,}}
+\DoxyCodeLine{00298\ \ \ \textcolor{comment}{//\ returns\ a\ FilePath\ identifying\ the\ root\ directory.\ Please\ note\ that\ this}}
+\DoxyCodeLine{00299\ \ \ \textcolor{comment}{//\ doesn't\ resolve\ directory\ navigation,\ e.g.\ the\ result\ for\ "{}../a"{}\ is\ "{}.."{}.}}
+\DoxyCodeLine{00300\ \ \ [[nodiscard]]\ FilePath\ DirName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \textcolor{comment}{//\ Returns\ a\ FilePath\ corresponding\ to\ the\ last\ path\ component\ of\ this}}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ object,\ either\ a\ file\ or\ a\ directory.\ \ If\ this\ object\ already\ refers\ to}}
+\DoxyCodeLine{00304\ \ \ \textcolor{comment}{//\ the\ root\ directory,\ returns\ a\ FilePath\ identifying\ the\ root\ directory;}}
+\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ this\ is\ the\ only\ situation\ in\ which\ BaseName\ will\ return\ an\ absolute\ path.}}
+\DoxyCodeLine{00306\ \ \ [[nodiscard]]\ FilePath\ BaseName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \textcolor{comment}{//\ Returns\ the\ extension\ of\ a\ file\ path.\ \ This\ method\ works\ very\ similarly\ to}}
+\DoxyCodeLine{00309\ \ \ \textcolor{comment}{//\ FinalExtension(),\ except\ when\ the\ file\ path\ ends\ with\ a\ common}}
+\DoxyCodeLine{00310\ \ \ \textcolor{comment}{//\ double-\/extension.\ \ For\ common\ double-\/extensions\ like\ "{}.tar.gz"{}\ and}}
+\DoxyCodeLine{00311\ \ \ \textcolor{comment}{//\ "{}.user.js"{},\ this\ method\ returns\ the\ combined\ extension.}}
+\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//\ Common\ means\ that\ detecting\ double-\/extensions\ is\ based\ on\ a\ hard-\/coded}}
+\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ allow-\/list\ (including\ but\ not\ limited\ to\ "{}.*.gz"{}\ and\ "{}.user.js"{})\ and\ isn't}}
+\DoxyCodeLine{00315\ \ \ \textcolor{comment}{//\ solely\ dependent\ on\ the\ number\ of\ dots.\ \ Specifically,\ even\ if\ somebody}}
+\DoxyCodeLine{00316\ \ \ \textcolor{comment}{//\ invents\ a\ new\ Blah\ compression\ algorithm:}}
+\DoxyCodeLine{00317\ \ \ \textcolor{comment}{//\ \ \ -\/\ calling\ this\ function\ with\ "{}foo.tar.bz2"{}\ will\ return\ "{}.tar.bz2"{},\ but}}
+\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//\ \ \ -\/\ calling\ this\ function\ with\ "{}foo.tar.blah"{}\ will\ return\ just\ "{}.blah"{}}}
+\DoxyCodeLine{00319\ \ \ \textcolor{comment}{//\ \ \ \ \ until\ "{}.*.blah"{}\ is\ added\ to\ the\ hard-\/coded\ allow-\/list.}}
+\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00321\ \ \ \textcolor{comment}{//\ That\ hard-\/coded\ allow-\/list\ is\ case-\/insensitive:\ "{}.GZ"{}\ and\ "{}.gz"{}\ are}}
+\DoxyCodeLine{00322\ \ \ \textcolor{comment}{//\ equivalent.\ However,\ the\ StringType\ returned\ is\ not\ canonicalized\ for}}
+\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//\ case:\ "{}foo.TAR.bz2"{}\ input\ will\ produce\ "{}.TAR.bz2"{},\ not\ "{}.tar.bz2"{},\ and}}
+\DoxyCodeLine{00324\ \ \ \textcolor{comment}{//\ "{}bar.EXT"{},\ which\ is\ not\ a\ double-\/extension,\ will\ produce\ "{}.EXT"{}.}}
+\DoxyCodeLine{00325\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00326\ \ \ \textcolor{comment}{//\ The\ following\ code\ should\ always\ work\ regardless\ of\ the\ value\ of\ path.}}
+\DoxyCodeLine{00327\ \ \ \textcolor{comment}{//\ \ \ new\_path\ =\ path.RemoveExtension().value().append(path.Extension());}}
+\DoxyCodeLine{00328\ \ \ \textcolor{comment}{//\ \ \ ASSERT(new\_path\ ==\ path.value());}}
+\DoxyCodeLine{00329\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00330\ \ \ \textcolor{comment}{//\ NOTE:\ this\ is\ different\ from\ the\ original\ file\_util\ implementation\ which}}
+\DoxyCodeLine{00331\ \ \ \textcolor{comment}{//\ returned\ the\ extension\ without\ a\ leading\ "{}."{}\ ("{}jpg"{}\ instead\ of\ "{}.jpg"{}).}}
+\DoxyCodeLine{00332\ \ \ [[nodiscard]]\ StringType\ Extension()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \textcolor{comment}{//\ Returns\ the\ final\ extension\ of\ a\ file\ path,\ or\ an\ empty\ string\ if\ the\ file}}
+\DoxyCodeLine{00335\ \ \ \textcolor{comment}{//\ path\ has\ no\ extension.\ \ In\ most\ cases,\ the\ final\ extension\ of\ a\ file\ path}}
+\DoxyCodeLine{00336\ \ \ \textcolor{comment}{//\ refers\ to\ the\ part\ of\ the\ file\ path\ from\ the\ last\ dot\ to\ the\ end\ (including}}
+\DoxyCodeLine{00337\ \ \ \textcolor{comment}{//\ the\ dot\ itself).\ \ For\ example,\ this\ method\ applied\ to\ "{}/pics/jojo.jpg"{}}}
+\DoxyCodeLine{00338\ \ \ \textcolor{comment}{//\ and\ "{}/pics/jojo."{}\ returns\ "{}.jpg"{}\ and\ "{}."{},\ respectively.\ \ However,\ if\ the}}
+\DoxyCodeLine{00339\ \ \ \textcolor{comment}{//\ base\ name\ of\ the\ file\ path\ is\ either\ "{}."{}\ or\ "{}.."{},\ this\ method\ returns\ an}}
+\DoxyCodeLine{00340\ \ \ \textcolor{comment}{//\ empty\ string.}}
+\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ TODO(davidben):\ Check\ all\ our\ extension-\/sensitive\ code\ to\ see\ if}}
+\DoxyCodeLine{00343\ \ \ \textcolor{comment}{//\ we\ can\ rename\ this\ to\ Extension()\ and\ the\ other\ to\ something\ like}}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//\ LongExtension(),\ defaulting\ to\ short\ extensions\ and\ leaving\ the}}
+\DoxyCodeLine{00345\ \ \ \textcolor{comment}{//\ long\ "{}extensions"{}\ to\ logic\ like\ base::GetUniquePathNumber().}}
+\DoxyCodeLine{00346\ \ \ [[nodiscard]]\ StringType\ FinalExtension()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ Returns\ "{}C:\(\backslash\)pics\(\backslash\)jojo"{}\ for\ path\ "{}C:\(\backslash\)pics\(\backslash\)jojo.jpg"{}}}
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//\ NOTE:\ this\ is\ slightly\ different\ from\ the\ similar\ file\_util\ implementation}}
+\DoxyCodeLine{00350\ \ \ \textcolor{comment}{//\ which\ returned\ simply\ 'jojo'.}}
+\DoxyCodeLine{00351\ \ \ [[nodiscard]]\ FilePath\ RemoveExtension()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ Removes\ the\ path's\ file\ extension,\ as\ in\ RemoveExtension(),\ but}}
+\DoxyCodeLine{00354\ \ \ \textcolor{comment}{//\ ignores\ double\ extensions.}}
+\DoxyCodeLine{00355\ \ \ [[nodiscard]]\ FilePath\ RemoveFinalExtension()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//\ Inserts\ |suffix|\ after\ the\ file\ name\ portion\ of\ |path|\ but\ before\ the}}
+\DoxyCodeLine{00358\ \ \ \textcolor{comment}{//\ extension.\ \ Returns\ "{}"{}\ if\ BaseName()\ ==\ "{}."{}\ or\ "{}.."{}.}}
+\DoxyCodeLine{00359\ \ \ \textcolor{comment}{//\ Examples:}}
+\DoxyCodeLine{00360\ \ \ \textcolor{comment}{//\ path\ ==\ "{}C:\(\backslash\)pics\(\backslash\)jojo.jpg"{}\ suffix\ ==\ "{}\ (1)"{},\ returns\ "{}C:\(\backslash\)pics\(\backslash\)jojo\ (1).jpg"{}}}
+\DoxyCodeLine{00361\ \ \ \textcolor{comment}{//\ path\ ==\ "{}jojo.jpg"{}\ \ \ \ \ \ \ \ \ suffix\ ==\ "{}\ (1)"{},\ returns\ "{}jojo\ (1).jpg"{}}}
+\DoxyCodeLine{00362\ \ \ \textcolor{comment}{//\ path\ ==\ "{}C:\(\backslash\)pics\(\backslash\)jojo"{}\ \ \ \ \ suffix\ ==\ "{}\ (1)"{},\ returns\ "{}C:\(\backslash\)pics\(\backslash\)jojo\ (1)"{}}}
+\DoxyCodeLine{00363\ \ \ \textcolor{comment}{//\ path\ ==\ "{}C:\(\backslash\)pics.old\(\backslash\)jojo"{}\ suffix\ ==\ "{}\ (1)"{},\ returns\ "{}C:\(\backslash\)pics.old\(\backslash\)jojo\ (1)"{}}}
+\DoxyCodeLine{00364\ \ \ [[nodiscard]]\ FilePath\ InsertBeforeExtension(StringViewType\ suffix)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00365\ \ \ [[nodiscard]]\ FilePath\ InsertBeforeExtensionASCII(}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ std::string\_view\ suffix)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \textcolor{comment}{//\ Like\ above,\ but\ takes\ the\ \`{}suffix`\ as\ an\ UTF8\ string.}}
+\DoxyCodeLine{00369\ \ \ \textcolor{comment}{//\ While\ all\ modern\ OSes\ support\ UTF-\/8,\ there\ is\ no\ requirement\ for\ the}}
+\DoxyCodeLine{00370\ \ \ \textcolor{comment}{//\ filenames\ to\ actually\ be\ UTF-\/8,\ e.g.\ on\ Linux.\ So\ inserting\ UTF-\/8\ could}}
+\DoxyCodeLine{00371\ \ \ \textcolor{comment}{//\ result\ in\ Mojibake\ filenames.}}
+\DoxyCodeLine{00372\ \ \ [[nodiscard]]\ FilePath\ InsertBeforeExtensionUTF8(}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ std::string\_view\ suffix)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \ \ \textcolor{comment}{//\ Adds\ |extension|\ to\ |file\_name|.\ Returns\ the\ current\ FilePath\ if}}
+\DoxyCodeLine{00376\ \ \ \textcolor{comment}{//\ |extension|\ is\ empty.\ Returns\ "{}"{}\ if\ BaseName()\ ==\ "{}."{}\ or\ "{}.."{}.}}
+\DoxyCodeLine{00377\ \ \ [[nodiscard]]\ FilePath\ AddExtension(StringViewType\ extension)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \textcolor{comment}{//\ Like\ above,\ but\ takes\ the\ extension\ as\ an\ ASCII\ string.\ See\ AppendASCII\ for}}
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{//\ details\ on\ how\ this\ is\ handled.}}
+\DoxyCodeLine{00381\ \ \ [[nodiscard]]\ FilePath\ AddExtensionASCII(std::string\_view\ extension)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \ \ \textcolor{comment}{//\ Like\ above,\ but\ takes\ the\ extension\ as\ an\ UTF8\ string.\ See\ AppendUTF8\ for}}
+\DoxyCodeLine{00384\ \ \ \textcolor{comment}{//\ details\ on\ how\ this\ is\ handled.}}
+\DoxyCodeLine{00385\ \ \ \textcolor{comment}{//\ While\ all\ modern\ OSes\ support\ UTF-\/8,\ there\ is\ no\ requirement\ for\ the}}
+\DoxyCodeLine{00386\ \ \ \textcolor{comment}{//\ filenames\ to\ actually\ be\ UTF-\/8,\ e.g.\ on\ Linux.\ So\ appending\ UTF-\/8\ could}}
+\DoxyCodeLine{00387\ \ \ \textcolor{comment}{//\ result\ in\ Mojibake\ filenames.}}
+\DoxyCodeLine{00388\ \ \ [[nodiscard]]\ FilePath\ AddExtensionUTF8(std::string\_view\ extension)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \ \ \textcolor{comment}{//\ Replaces\ the\ extension\ of\ |file\_name|\ with\ |extension|.\ \ If\ |file\_name|}}
+\DoxyCodeLine{00391\ \ \ \textcolor{comment}{//\ does\ not\ have\ an\ extension,\ then\ |extension|\ is\ added.\ \ If\ |extension|\ is}}
+\DoxyCodeLine{00392\ \ \ \textcolor{comment}{//\ empty,\ then\ the\ extension\ is\ removed\ from\ |file\_name|.}}
+\DoxyCodeLine{00393\ \ \ \textcolor{comment}{//\ Returns\ "{}"{}\ if\ BaseName()\ ==\ "{}."{}\ or\ "{}.."{}.}}
+\DoxyCodeLine{00394\ \ \ [[nodiscard]]\ FilePath\ ReplaceExtension(StringViewType\ extension)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ file\ path's\ Extension()\ matches\ \`{}extension`.\ The\ test\ is}}
+\DoxyCodeLine{00397\ \ \ \textcolor{comment}{//\ case\ insensitive.\ Don't\ forget\ the\ leading\ period\ if\ appropriate.}}
+\DoxyCodeLine{00398\ \ \ \textcolor{keywordtype}{bool}\ MatchesExtension(StringViewType\ extension)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ file\ path's\ FinalExtension()\ matches\ \`{}extension`.\ The}}
+\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//\ test\ is\ case\ insensitive.\ Don't\ forget\ the\ leading\ period\ if\ appropriate.}}
+\DoxyCodeLine{00402\ \ \ \textcolor{keywordtype}{bool}\ MatchesFinalExtension(StringViewType\ extension)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \textcolor{comment}{//\ Returns\ a\ FilePath\ by\ appending\ a\ separator\ and\ the\ supplied\ path}}
+\DoxyCodeLine{00405\ \ \ \textcolor{comment}{//\ component\ to\ this\ object's\ path.\ \ Append\ takes\ care\ to\ avoid\ adding}}
+\DoxyCodeLine{00406\ \ \ \textcolor{comment}{//\ excessive\ separators\ if\ this\ object's\ path\ already\ ends\ with\ a\ separator.}}
+\DoxyCodeLine{00407\ \ \ \textcolor{comment}{//\ If\ this\ object's\ path\ is\ kCurrentDirectory\ ('.'),\ a\ new\ FilePath}}
+\DoxyCodeLine{00408\ \ \ \textcolor{comment}{//\ corresponding\ only\ to\ |component|\ is\ returned.\ \ |component|\ must\ be\ a}}
+\DoxyCodeLine{00409\ \ \ \textcolor{comment}{//\ relative\ path;\ it\ is\ an\ error\ to\ pass\ an\ absolute\ path.}}
+\DoxyCodeLine{00410\ \ \ [[nodiscard]]\ FilePath\ Append(StringViewType\ component)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00411\ \ \ [[nodiscard]]\ FilePath\ Append(\textcolor{keyword}{const}\ FilePath\&\ component)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ [[nodiscard]]\ FilePath\ Append(\textcolor{keyword}{const}\ SafeBaseName\&\ component)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \textcolor{comment}{//\ Although\ Windows\ StringType\ is\ std::wstring,\ since\ the\ encoding\ it\ uses\ for}}
+\DoxyCodeLine{00416\ \ \ \textcolor{comment}{//\ paths\ is\ well\ defined,\ it\ can\ handle\ ASCII\ path\ components\ as\ well.}}
+\DoxyCodeLine{00417\ \ \ \textcolor{comment}{//\ Mac\ uses\ UTF8,\ and\ since\ ASCII\ is\ a\ subset\ of\ that,\ it\ works\ there\ as\ well.}}
+\DoxyCodeLine{00418\ \ \ \textcolor{comment}{//\ On\ Linux,\ although\ it\ can\ use\ any\ 8-\/bit\ encoding\ for\ paths,\ we\ assume\ that}}
+\DoxyCodeLine{00419\ \ \ \textcolor{comment}{//\ ASCII\ is\ a\ valid\ subset,\ regardless\ of\ the\ encoding,\ since\ many\ operating}}
+\DoxyCodeLine{00420\ \ \ \textcolor{comment}{//\ system\ paths\ will\ always\ be\ ASCII.}}
+\DoxyCodeLine{00421\ \ \ [[nodiscard]]\ FilePath\ AppendASCII(std::string\_view\ component)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \ \ \textcolor{comment}{//\ Like\ above,\ but\ takes\ the\ \`{}component`\ as\ an\ UTF8\ string.}}
+\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//\ While\ all\ modern\ OSes\ support\ UTF-\/8,\ there\ is\ no\ requirement\ for\ the}}
+\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ filenames\ to\ actually\ be\ UTF-\/8,\ e.g.\ on\ Linux.\ So\ appending\ UTF-\/8\ could}}
+\DoxyCodeLine{00426\ \ \ \textcolor{comment}{//\ result\ in\ Mojibake\ filenames.}}
+\DoxyCodeLine{00427\ \ \ [[nodiscard]]\ FilePath\ AppendUTF8(std::string\_view\ component)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ this\ FilePath\ contains\ an\ absolute\ path.\ \ On\ Windows,\ an}}
+\DoxyCodeLine{00430\ \ \ \textcolor{comment}{//\ absolute\ path\ begins\ with\ either\ a\ drive\ letter\ specification\ followed\ by}}
+\DoxyCodeLine{00431\ \ \ \textcolor{comment}{//\ a\ separator\ character,\ or\ with\ two\ separator\ characters.\ \ On\ POSIX}}
+\DoxyCodeLine{00432\ \ \ \textcolor{comment}{//\ platforms,\ an\ absolute\ path\ begins\ with\ a\ separator\ character.}}
+\DoxyCodeLine{00433\ \ \ \textcolor{keywordtype}{bool}\ IsAbsolute()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ this\ FilePath\ is\ a\ network\ path\ which\ starts\ with\ 2\ path}}
+\DoxyCodeLine{00436\ \ \ \textcolor{comment}{//\ separators.\ See\ class\ documentation\ for\ 'Alternate\ root'.}}
+\DoxyCodeLine{00437\ \ \ \textcolor{keywordtype}{bool}\ IsNetwork()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ the\ patch\ ends\ with\ a\ path\ separator\ character.}}
+\DoxyCodeLine{00440\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ EndsWithSeparator()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ \ \ \textcolor{comment}{//\ Returns\ a\ copy\ of\ this\ FilePath\ that\ ends\ with\ a\ trailing\ separator.\ If}}
+\DoxyCodeLine{00443\ \ \ \textcolor{comment}{//\ the\ input\ path\ is\ empty,\ an\ empty\ FilePath\ will\ be\ returned.}}
+\DoxyCodeLine{00444\ \ \ [[nodiscard]]\ FilePath\ AsEndingWithSeparator()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//\ Returns\ a\ copy\ of\ this\ FilePath\ that\ does\ not\ end\ with\ a\ trailing}}
+\DoxyCodeLine{00447\ \ \ \textcolor{comment}{//\ separator.}}
+\DoxyCodeLine{00448\ \ \ [[nodiscard]]\ FilePath\ StripTrailingSeparators()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00450\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ this\ FilePath\ contains\ an\ attempt\ to\ reference\ a\ parent}}
+\DoxyCodeLine{00451\ \ \ \textcolor{comment}{//\ directory\ (e.g.\ has\ a\ path\ component\ that\ is\ "{}.."{}).}}
+\DoxyCodeLine{00452\ \ \ \textcolor{keywordtype}{bool}\ ReferencesParent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ \ \ \textcolor{comment}{//\ Return\ a\ Unicode\ human-\/readable\ version\ of\ this\ path.}}
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ Warning:\ you\ can\ *not*,\ in\ general,\ go\ from\ a\ display\ name\ back\ to\ a\ real}}
+\DoxyCodeLine{00456\ \ \ \textcolor{comment}{//\ path.\ \ Only\ use\ this\ when\ displaying\ paths\ to\ users,\ not\ just\ when\ you}}
+\DoxyCodeLine{00457\ \ \ \textcolor{comment}{//\ want\ to\ stuff\ a\ std::u16string\ into\ some\ other\ API.}}
+\DoxyCodeLine{00458\ \ \ std::u16string\ LossyDisplayName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00459\ }
+\DoxyCodeLine{00460\ \ \ \textcolor{comment}{//\ Return\ the\ path\ as\ ASCII,\ or\ the\ empty\ string\ if\ the\ path\ is\ not\ ASCII.}}
+\DoxyCodeLine{00461\ \ \ \textcolor{comment}{//\ This\ should\ only\ be\ used\ for\ cases\ where\ the\ FilePath\ is\ representing\ a}}
+\DoxyCodeLine{00462\ \ \ \textcolor{comment}{//\ known-\/ASCII\ filename.}}
+\DoxyCodeLine{00463\ \ \ std::string\ MaybeAsASCII()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ \textcolor{comment}{//\ Return\ the\ path\ as\ UTF-\/8.}}
+\DoxyCodeLine{00466\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00467\ \ \ \textcolor{comment}{//\ This\ function\ is\ *unsafe*\ as\ there\ is\ no\ way\ to\ tell\ what\ encoding\ is}}
+\DoxyCodeLine{00468\ \ \ \textcolor{comment}{//\ used\ in\ file\ names\ on\ POSIX\ systems\ other\ than\ Mac\ and\ Chrome\ OS,}}
+\DoxyCodeLine{00469\ \ \ \textcolor{comment}{//\ although\ UTF-\/8\ is\ practically\ used\ everywhere\ these\ days.\ To\ mitigate}}
+\DoxyCodeLine{00470\ \ \ \textcolor{comment}{//\ the\ encoding\ issue,\ this\ function\ internally\ calls}}
+\DoxyCodeLine{00471\ \ \ \textcolor{comment}{//\ SysNativeMBToWide()\ on\ POSIX\ systems\ other\ than\ Mac\ and\ Chrome\ OS,}}
+\DoxyCodeLine{00472\ \ \ \textcolor{comment}{//\ per\ assumption\ that\ the\ current\ locale's\ encoding\ is\ used\ in\ file}}
+\DoxyCodeLine{00473\ \ \ \textcolor{comment}{//\ names,\ but\ this\ isn't\ a\ perfect\ solution.}}
+\DoxyCodeLine{00474\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00475\ \ \ \textcolor{comment}{//\ Once\ it\ becomes\ safe\ to\ to\ stop\ caring\ about\ non-\/UTF-\/8\ file\ names,}}
+\DoxyCodeLine{00476\ \ \ \textcolor{comment}{//\ the\ SysNativeMBToWide()\ hack\ will\ be\ removed\ from\ the\ code,\ along}}
+\DoxyCodeLine{00477\ \ \ \textcolor{comment}{//\ with\ "{}Unsafe"{}\ in\ the\ function\ name.}}
+\DoxyCodeLine{00478\ \ \ std::string\ AsUTF8Unsafe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ \ \ \textcolor{comment}{//\ Similar\ to\ AsUTF8Unsafe,\ but\ returns\ UTF-\/16\ instead.}}
+\DoxyCodeLine{00481\ \ \ std::u16string\ AsUTF16Unsafe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \textcolor{comment}{//\ Returns\ a\ FilePath\ object\ from\ a\ path\ name\ in\ ASCII.}}
+\DoxyCodeLine{00484\ \ \ \textcolor{keyword}{static}\ FilePath\ FromASCII(std::string\_view\ ascii);}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00486\ \ \ \textcolor{comment}{//\ Returns\ a\ FilePath\ object\ from\ a\ path\ name\ in\ UTF-\/8.\ This\ function}}
+\DoxyCodeLine{00487\ \ \ \textcolor{comment}{//\ should\ only\ be\ used\ for\ cases\ where\ you\ are\ sure\ that\ the\ input}}
+\DoxyCodeLine{00488\ \ \ \textcolor{comment}{//\ string\ is\ UTF-\/8.}}
+\DoxyCodeLine{00489\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00490\ \ \ \textcolor{comment}{//\ Like\ AsUTF8Unsafe(),\ this\ function\ is\ unsafe.\ This\ function}}
+\DoxyCodeLine{00491\ \ \ \textcolor{comment}{//\ internally\ calls\ SysWideToNativeMB()\ on\ POSIX\ systems\ other\ than\ Mac}}
+\DoxyCodeLine{00492\ \ \ \textcolor{comment}{//\ and\ Chrome\ OS,\ to\ mitigate\ the\ encoding\ issue.\ See\ the\ comment\ at}}
+\DoxyCodeLine{00493\ \ \ \textcolor{comment}{//\ AsUTF8Unsafe()\ for\ details.}}
+\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{static}\ FilePath\ FromUTF8Unsafe(std::string\_view\ utf8);}
+\DoxyCodeLine{00495\ }
+\DoxyCodeLine{00496\ \ \ \textcolor{comment}{//\ Similar\ to\ FromUTF8Unsafe,\ but\ accepts\ UTF-\/16\ instead.}}
+\DoxyCodeLine{00497\ \ \ \textcolor{keyword}{static}\ FilePath\ FromUTF16Unsafe(std::u16string\_view\ utf16);}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \textcolor{keywordtype}{void}\ WriteToPickle(Pickle*\ pickle)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00500\ \ \ \textcolor{keywordtype}{bool}\ ReadFromPickle(PickleIterator*\ iter);}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ \textcolor{comment}{//\ Normalize\ all\ path\ separators\ to\ backslash\ on\ Windows}}
+\DoxyCodeLine{00503\ \ \ \textcolor{comment}{//\ (if\ FILE\_PATH\_USES\_WIN\_SEPARATORS\ is\ true),\ or\ do\ nothing\ on\ POSIX\ systems.}}
+\DoxyCodeLine{00504\ \ \ [[nodiscard]]\ FilePath\ NormalizePathSeparators()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00505\ }
+\DoxyCodeLine{00506\ \ \ \textcolor{comment}{//\ Normalize\ all\ path\ separators\ to\ given\ type\ on\ Windows}}
+\DoxyCodeLine{00507\ \ \ \textcolor{comment}{//\ (if\ FILE\_PATH\_USES\_WIN\_SEPARATORS\ is\ true),\ or\ do\ nothing\ on\ POSIX\ systems.}}
+\DoxyCodeLine{00508\ \ \ [[nodiscard]]\ FilePath\ NormalizePathSeparatorsTo(CharType\ separator)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \ \ \textcolor{comment}{//\ Compare\ two\ strings\ in\ the\ same\ way\ the\ file\ system\ does.}}
+\DoxyCodeLine{00511\ \ \ \textcolor{comment}{//\ Note\ that\ these\ always\ ignore\ case,\ even\ on\ file\ systems\ that\ are\ case-\/}}
+\DoxyCodeLine{00512\ \ \ \textcolor{comment}{//\ sensitive.\ If\ case-\/sensitive\ comparison\ is\ ever\ needed,\ add\ corresponding}}
+\DoxyCodeLine{00513\ \ \ \textcolor{comment}{//\ methods\ here.}}
+\DoxyCodeLine{00514\ \ \ \textcolor{comment}{//\ The\ methods\ are\ written\ as\ a\ static\ method\ so\ that\ they\ can\ also\ be\ used}}
+\DoxyCodeLine{00515\ \ \ \textcolor{comment}{//\ on\ parts\ of\ a\ file\ path,\ e.g.,\ just\ the\ extension.}}
+\DoxyCodeLine{00516\ \ \ \textcolor{comment}{//\ CompareIgnoreCase()\ returns\ -\/1,\ 0\ or\ 1\ for\ less-\/than,\ equal-\/to\ and}}
+\DoxyCodeLine{00517\ \ \ \textcolor{comment}{//\ greater-\/than\ respectively.}}
+\DoxyCodeLine{00518\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareIgnoreCase(StringViewType\ string1,\ StringViewType\ string2);}
+\DoxyCodeLine{00519\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CompareEqualIgnoreCase(StringViewType\ string1,}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ StringViewType\ string2)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keywordflow}{return}\ CompareIgnoreCase(string1,\ string2)\ ==\ 0;}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CompareLessIgnoreCase(StringViewType\ string1,}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ StringViewType\ string2)\ \{}
+\DoxyCodeLine{00525\ \ \ \ \ \textcolor{keywordflow}{return}\ CompareIgnoreCase(string1,\ string2)\ <\ 0;}
+\DoxyCodeLine{00526\ \ \ \}}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00528\ \ \ \textcolor{comment}{//\ Serialise\ this\ object\ into\ a\ trace.}}
+\DoxyCodeLine{00529\ \ \ \textcolor{comment}{//\ void\ WriteIntoTrace(perfetto::TracedValue\ context)\ const;}}
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00531\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00532\ \ \ \textcolor{comment}{//\ Returns\ the\ string\ in\ the\ special\ canonical\ decomposed\ form\ as\ defined\ for}}
+\DoxyCodeLine{00533\ \ \ \textcolor{comment}{//\ HFS,\ which\ is\ close\ to,\ but\ not\ quite,\ decomposition\ form\ D.\ See}}
+\DoxyCodeLine{00534\ \ \ \textcolor{comment}{//\ http://developer.apple.com/mac/library/technotes/tn/tn1150.html\#UnicodeSubtleties}}
+\DoxyCodeLine{00535\ \ \ \textcolor{comment}{//\ for\ further\ comments.}}
+\DoxyCodeLine{00536\ \ \ \textcolor{comment}{//\ Returns\ the\ empty\ string\ if\ the\ conversion\ failed.}}
+\DoxyCodeLine{00537\ \ \ \textcolor{keyword}{static}\ StringType\ GetHFSDecomposedForm(StringViewType\ \textcolor{keywordtype}{string});}
+\DoxyCodeLine{00538\ \ \ \textcolor{keyword}{static}\ StringType\ GetHFSDecomposedForm(CFStringRef\ cfstring);}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \textcolor{comment}{//\ Special\ UTF-\/8\ version\ of\ FastUnicodeCompare.\ Cf:}}
+\DoxyCodeLine{00541\ \ \ \textcolor{comment}{//\ http://developer.apple.com/mac/library/technotes/tn/tn1150.html\#StringComparisonAlgorithm}}
+\DoxyCodeLine{00542\ \ \ \textcolor{comment}{//\ IMPORTANT:\ The\ input\ strings\ must\ be\ in\ the\ special\ HFS\ decomposed\ form!}}
+\DoxyCodeLine{00543\ \ \ \textcolor{comment}{//\ (cf.\ above\ GetHFSDecomposedForm\ method)}}
+\DoxyCodeLine{00544\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ HFSFastUnicodeCompare(StringViewType\ string1,}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ StringViewType\ string2);}
+\DoxyCodeLine{00546\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00548\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00549\ \ \ \textcolor{comment}{//\ On\ android,\ file\ selection\ dialog\ can\ return\ a\ file\ with\ content\ uri}}
+\DoxyCodeLine{00550\ \ \ \textcolor{comment}{//\ scheme(starting\ with\ content://).\ Content\ uri\ needs\ to\ be\ opened\ with}}
+\DoxyCodeLine{00551\ \ \ \textcolor{comment}{//\ ContentResolver\ to\ guarantee\ that\ the\ app\ has\ appropriate\ permissions}}
+\DoxyCodeLine{00552\ \ \ \textcolor{comment}{//\ to\ access\ it.}}
+\DoxyCodeLine{00553\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ the\ path\ is\ a\ content\ uri,\ or\ false\ otherwise.}}
+\DoxyCodeLine{00554\ \ \ \textcolor{keywordtype}{bool}\ IsContentUri()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00555\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00557\ \ \ \textcolor{comment}{//\ NOTE:\ When\ adding\ a\ new\ public\ method,\ consider\ adding\ it\ to}}
+\DoxyCodeLine{00558\ \ \ \textcolor{comment}{//\ file\_path\_fuzzer.cc\ as\ well.}}
+\DoxyCodeLine{00559\ }
+\DoxyCodeLine{00560\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00561\ \ \ \textcolor{comment}{//\ Remove\ trailing\ separators\ from\ this\ object.\ \ If\ the\ path\ is\ absolute,\ it}}
+\DoxyCodeLine{00562\ \ \ \textcolor{comment}{//\ will\ never\ be\ stripped\ any\ more\ than\ to\ refer\ to\ the\ absolute\ root}}
+\DoxyCodeLine{00563\ \ \ \textcolor{comment}{//\ directory,\ so\ "{}////"{}\ will\ become\ "{}/"{},\ not\ "{}"{}.\ \ A\ leading\ pair\ of}}
+\DoxyCodeLine{00564\ \ \ \textcolor{comment}{//\ separators\ is\ never\ stripped,\ to\ support\ alternate\ roots.\ \ This\ is\ used\ to}}
+\DoxyCodeLine{00565\ \ \ \textcolor{comment}{//\ support\ UNC\ paths\ on\ Windows.}}
+\DoxyCodeLine{00566\ \ \ \textcolor{keywordtype}{void}\ StripTrailingSeparatorsInternal();}
+\DoxyCodeLine{00567\ }
+\DoxyCodeLine{00568\ \ \ \textcolor{keywordtype}{bool}\ IsParentFast(\textcolor{keyword}{const}\ FilePath\&\ child)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00569\ \ \ \textcolor{keywordtype}{bool}\ IsParentSlow(\textcolor{keyword}{const}\ FilePath\&\ child)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \ \ StringType\ path\_;}
+\DoxyCodeLine{00572\ \};}
+\DoxyCodeLine{00573\ }
+\DoxyCodeLine{00574\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ file\_path);}
+\DoxyCodeLine{00576\ }
+\DoxyCodeLine{00577\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \textcolor{keyword}{namespace\ }std\ \{}
+\DoxyCodeLine{00580\ }
+\DoxyCodeLine{00581\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00582\ \textcolor{keyword}{struct\ }hash<kiwi::FilePath>\ \{}
+\DoxyCodeLine{00583\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi::FilePath}}\ argument\_type;}
+\DoxyCodeLine{00584\ \ \ \textcolor{keyword}{typedef}\ std::size\_t\ result\_type;}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \ \ result\_type\ operator()(argument\_type\ \textcolor{keyword}{const}\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00587\ \ \ \ \ \textcolor{keywordflow}{return}\ hash<kiwi::FilePath::StringType>()(f.\mbox{\hyperlink{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}{value}}());}
+\DoxyCodeLine{00588\ \ \ \}}
+\DoxyCodeLine{00589\ \};}
+\DoxyCodeLine{00590\ }
+\DoxyCodeLine{00591\ \}\ \ \textcolor{comment}{//\ namespace\ std}}
+
+\end{DoxyCode}

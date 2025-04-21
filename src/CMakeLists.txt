@@ -19,16 +19,3 @@ function(kiwi_cc_library)
         target_link_libraries(${LIB_NAME} PRIVATE ${LIB_DEPS})
     endif()
 endfunction()
-
-kiwi_cc_library(
-NAME
-    strings
-HDRS
-SRCS
-    "strings/ascii.cc"
-COPTS
-    ${KIWI_LIB_COPTS}
-DEPS
-ALIAS
-    kiwi::strings
-)

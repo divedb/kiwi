@@ -1,0 +1,361 @@
+\doxysection{kiwi\+::File\+Path Class Reference}
+\hypertarget{classkiwi_1_1_file_path}{}\label{classkiwi_1_1_file_path}\index{kiwi::FilePath@{kiwi::FilePath}}
+
+
+{\ttfamily \#include $<$file\+\_\+path.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_file_path_abe4ae7eedbaf99a76b9526fc1e9212da}\label{classkiwi_1_1_file_path_abe4ae7eedbaf99a76b9526fc1e9212da} 
+using {\bfseries Char\+Type} = String\+Type\+::value\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1_file_path_af30826e1563a9ec4d8f08c04f8947941}\label{classkiwi_1_1_file_path_af30826e1563a9ec4d8f08c04f8947941} 
+using {\bfseries String\+View\+Type} = std\+::basic\+\_\+string\+\_\+view$<$Char\+Type$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912}\label{classkiwi_1_1_file_path_a3a8040a5ffa3e029cd181f799302e912} 
+{\bfseries File\+Path} ()
+\begin{DoxyCompactList}\small\item\em Constructs an empty \doxylink{classkiwi_1_1_file_path}{File\+Path}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkiwi_1_1_file_path_a579922f7af0190154bb20099e9d361e7}{File\+Path}} (String\+View\+Type path)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_path_abc5f77b91b51041669a6743a5f879775}{File\+Path}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&that)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_path_a3ac6bba8bf76f75e80b1a4922e4b3d57}{File\+Path}} (\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&\&that) noexcept
+\begin{DoxyCompactList}\small\item\em /// \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_file_path_a1b7642f944077c476e1139071729dd6d}\label{classkiwi_1_1_file_path_a1b7642f944077c476e1139071729dd6d} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+File\+Path} ()
+\begin{DoxyCompactList}\small\item\em Destroys the \doxylink{classkiwi_1_1_file_path}{File\+Path} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \& \mbox{\hyperlink{classkiwi_1_1_file_path_abdf7f6cc8034af130e606ed05f43fc87}{operator=}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&that)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \& \mbox{\hyperlink{classkiwi_1_1_file_path_a6f73d30fad8ae281c8b79d5c236349e8}{operator=}} (\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&\&that) noexcept
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_file_path_ab436d196545762fb3b6588d1bc172547}{operator==}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&that) const
+\item 
+auto \mbox{\hyperlink{classkiwi_1_1_file_path_a0521858e6819bd9bf6374d0d08cb7830}{operator$<$=$>$}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&that) const =default
+\item 
+const String\+Type \& \mbox{\hyperlink{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}{value}} () const LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a9dfa92903e8b0a36440f5eada6b84e0e}\label{classkiwi_1_1_file_path_a9dfa92903e8b0a36440f5eada6b84e0e} 
+bool {\bfseries empty} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a1e985818282ead9557ac2e6bfffd6244}\label{classkiwi_1_1_file_path_a1e985818282ead9557ac2e6bfffd6244} 
+void {\bfseries clear} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a948aba9a18229929faa720fabbdf09c6}\label{classkiwi_1_1_file_path_a948aba9a18229929faa720fabbdf09c6} 
+std\+::vector$<$ File\+Path\+::\+String\+Type $>$ {\bfseries Get\+Components} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a5793a358d9748f7c75d2549725237cb8}\label{classkiwi_1_1_file_path_a5793a358d9748f7c75d2549725237cb8} 
+bool {\bfseries Is\+Parent} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&child) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_aabc353b42231c598c8ce0ee210a535a9}\label{classkiwi_1_1_file_path_aabc353b42231c598c8ce0ee210a535a9} 
+bool {\bfseries Append\+Relative\+Path} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&child, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a17012bb7f3a5b93600cecb0ae2cff077}\label{classkiwi_1_1_file_path_a17012bb7f3a5b93600cecb0ae2cff077} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Dir\+Name} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_ad1f4e22f9a81443d721512409a00b399}\label{classkiwi_1_1_file_path_ad1f4e22f9a81443d721512409a00b399} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Base\+Name} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a01916ad4e06363919bae7a72280c0a2c}\label{classkiwi_1_1_file_path_a01916ad4e06363919bae7a72280c0a2c} 
+String\+Type {\bfseries Extension} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_aed2174e544a7bb85f90236fe8f0cceec}\label{classkiwi_1_1_file_path_aed2174e544a7bb85f90236fe8f0cceec} 
+String\+Type {\bfseries Final\+Extension} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_ab9f251ef76bc94506608d5300b4a84c2}\label{classkiwi_1_1_file_path_ab9f251ef76bc94506608d5300b4a84c2} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Remove\+Extension} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a4cfeafaea1498993d137c2778570d992}\label{classkiwi_1_1_file_path_a4cfeafaea1498993d137c2778570d992} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Remove\+Final\+Extension} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a186e6e8cedb3a87139efbe21fca97d0f}\label{classkiwi_1_1_file_path_a186e6e8cedb3a87139efbe21fca97d0f} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Insert\+Before\+Extension} (String\+View\+Type suffix) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_afefd8ab5a7f0af2503dd5a26ddd9348c}\label{classkiwi_1_1_file_path_afefd8ab5a7f0af2503dd5a26ddd9348c} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Insert\+Before\+Extension\+ASCII} (std\+::string\+\_\+view suffix) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a5bb913c6ad77285af861ffcb438d5829}\label{classkiwi_1_1_file_path_a5bb913c6ad77285af861ffcb438d5829} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Insert\+Before\+Extension\+UTF8} (std\+::string\+\_\+view suffix) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a23f76fa535e3d16f51df897140ac29ad}\label{classkiwi_1_1_file_path_a23f76fa535e3d16f51df897140ac29ad} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Add\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_ad50fc3c010237c75f356dd7212237c8c}\label{classkiwi_1_1_file_path_ad50fc3c010237c75f356dd7212237c8c} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Add\+Extension\+ASCII} (std\+::string\+\_\+view extension) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a040a499a08e1602278809adcfd7704d6}\label{classkiwi_1_1_file_path_a040a499a08e1602278809adcfd7704d6} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Add\+Extension\+UTF8} (std\+::string\+\_\+view extension) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_acaebc838c3ad0806f0328a3a43244733}\label{classkiwi_1_1_file_path_acaebc838c3ad0806f0328a3a43244733} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Replace\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a8b134530b63a30b5e8dcfc7cc9fc6f4a}\label{classkiwi_1_1_file_path_a8b134530b63a30b5e8dcfc7cc9fc6f4a} 
+bool {\bfseries Matches\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a28e3bb7b18df4db7fe46fa550298f738}\label{classkiwi_1_1_file_path_a28e3bb7b18df4db7fe46fa550298f738} 
+bool {\bfseries Matches\+Final\+Extension} (String\+View\+Type extension) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a550f4c55f7b96a400d1cc3b59da79359}\label{classkiwi_1_1_file_path_a550f4c55f7b96a400d1cc3b59da79359} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Append} (String\+View\+Type component) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_abf63b0f0f59fab8cfdf29cec88163add}\label{classkiwi_1_1_file_path_abf63b0f0f59fab8cfdf29cec88163add} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Append} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&component) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_ab8197643e2344a4f491c17b7321f3e34}\label{classkiwi_1_1_file_path_ab8197643e2344a4f491c17b7321f3e34} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Append} (const \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}} \&component) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_ae5a4b483660810f477ae8bf683def31b}\label{classkiwi_1_1_file_path_ae5a4b483660810f477ae8bf683def31b} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Append\+ASCII} (std\+::string\+\_\+view component) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a91a91b3f33b21b995e0d24b1b9135441}\label{classkiwi_1_1_file_path_a91a91b3f33b21b995e0d24b1b9135441} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Append\+UTF8} (std\+::string\+\_\+view component) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a9f1645e43452915f251f368513bfc989}\label{classkiwi_1_1_file_path_a9f1645e43452915f251f368513bfc989} 
+bool {\bfseries Is\+Absolute} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a394a36959cf856d07c5689986e3f6c2b}\label{classkiwi_1_1_file_path_a394a36959cf856d07c5689986e3f6c2b} 
+bool {\bfseries Is\+Network} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a855ac0193a6208dec146510483ad06fa}\label{classkiwi_1_1_file_path_a855ac0193a6208dec146510483ad06fa} 
+bool {\bfseries Ends\+With\+Separator} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a2fd4b9b74dbb1078fa087b9087bc8d0d}\label{classkiwi_1_1_file_path_a2fd4b9b74dbb1078fa087b9087bc8d0d} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries As\+Ending\+With\+Separator} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a5192d9e5bef10fd4abaf104d0ff600b4}\label{classkiwi_1_1_file_path_a5192d9e5bef10fd4abaf104d0ff600b4} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Strip\+Trailing\+Separators} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a2e846e9e5d5d0f52a7dcdfc387fca2f4}\label{classkiwi_1_1_file_path_a2e846e9e5d5d0f52a7dcdfc387fca2f4} 
+bool {\bfseries References\+Parent} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_aaa6fd38f7f395676b0c26f7eaeef9a2c}\label{classkiwi_1_1_file_path_aaa6fd38f7f395676b0c26f7eaeef9a2c} 
+std\+::u16string {\bfseries Lossy\+Display\+Name} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a87a69d60c2d0ec0286e8e83ef683da6b}\label{classkiwi_1_1_file_path_a87a69d60c2d0ec0286e8e83ef683da6b} 
+std\+::string {\bfseries Maybe\+As\+ASCII} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a285939ddd6c9fef938a61f9203b33bc7}\label{classkiwi_1_1_file_path_a285939ddd6c9fef938a61f9203b33bc7} 
+std\+::string {\bfseries As\+UTF8\+Unsafe} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a7a70a59efe5227a0b3a9001351976da1}\label{classkiwi_1_1_file_path_a7a70a59efe5227a0b3a9001351976da1} 
+std\+::u16string {\bfseries As\+UTF16\+Unsafe} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_aa4c2e1ce9dcedc3f8e222c60937753c3}\label{classkiwi_1_1_file_path_aa4c2e1ce9dcedc3f8e222c60937753c3} 
+void {\bfseries Write\+To\+Pickle} (Pickle \texorpdfstring{$\ast$}{*}pickle) const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a03266cad8984483cea5a28e151fb771b}\label{classkiwi_1_1_file_path_a03266cad8984483cea5a28e151fb771b} 
+bool {\bfseries Read\+From\+Pickle} (Pickle\+Iterator \texorpdfstring{$\ast$}{*}iter)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a3d6ab7ee4ddb7630bc8d0341611e8c83}\label{classkiwi_1_1_file_path_a3d6ab7ee4ddb7630bc8d0341611e8c83} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Normalize\+Path\+Separators} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a83a637c76b82861a3693a984b2802590}\label{classkiwi_1_1_file_path_a83a637c76b82861a3693a984b2802590} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Normalize\+Path\+Separators\+To} (Char\+Type separator) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classkiwi_1_1_file_path_a65c43ca92eb9a58d837f1b54a56f0238}{Initialize\+Features}} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_path_acf5f3bba2ce596a3dc12880bda1a2317}\label{classkiwi_1_1_file_path_acf5f3bba2ce596a3dc12880bda1a2317} 
+static bool {\bfseries Is\+Separator} (Char\+Type character)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a04a3cdb26d98f406dc974f99a3cdebe6}\label{classkiwi_1_1_file_path_a04a3cdb26d98f406dc974f99a3cdebe6} 
+static \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries From\+ASCII} (std\+::string\+\_\+view ascii)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a1e17fb17720f9aea3eeefd4d4dbacd29}\label{classkiwi_1_1_file_path_a1e17fb17720f9aea3eeefd4d4dbacd29} 
+static \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries From\+UTF8\+Unsafe} (std\+::string\+\_\+view utf8)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_aaf646098bfe652f36a331090a28d40af}\label{classkiwi_1_1_file_path_aaf646098bfe652f36a331090a28d40af} 
+static \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries From\+UTF16\+Unsafe} (std\+::u16string\+\_\+view utf16)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a34abfa95f311110a505da566339441f9}\label{classkiwi_1_1_file_path_a34abfa95f311110a505da566339441f9} 
+static int {\bfseries Compare\+Ignore\+Case} (String\+View\+Type string1, String\+View\+Type string2)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_af59b6bad4ee33f35184edb3d229a7bab}\label{classkiwi_1_1_file_path_af59b6bad4ee33f35184edb3d229a7bab} 
+static bool {\bfseries Compare\+Equal\+Ignore\+Case} (String\+View\+Type string1, String\+View\+Type string2)
+\item 
+\Hypertarget{classkiwi_1_1_file_path_a1e17e301e74fb449d4a933560e8d4ef2}\label{classkiwi_1_1_file_path_a1e17e301e74fb449d4a933560e8d4ef2} 
+static bool {\bfseries Compare\+Less\+Ignore\+Case} (String\+View\+Type string1, String\+View\+Type string2)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr Char\+Type \mbox{\hyperlink{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c}{k\+Separators}} \mbox{[}$\,$\mbox{]}
+\item 
+static constexpr size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_file_path_a4fc5b556aea57198fa0c99ccac5803cb}{k\+Separators\+Length}} = std\+::size(\mbox{\hyperlink{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c}{k\+Separators}})
+\item 
+\Hypertarget{classkiwi_1_1_file_path_ae8e6dc9f3a5902fb71479368ea468535}\label{classkiwi_1_1_file_path_ae8e6dc9f3a5902fb71479368ea468535} 
+static constexpr Char\+Type {\bfseries k\+Current\+Directory} \mbox{[}$\,$\mbox{]} = FILE\+\_\+\+PATH\+\_\+\+LITERAL("{}."{})
+\begin{DoxyCompactList}\small\item\em The special path component meaning "{}this directory."{}. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_file_path_a2f0214db244325a97c7ba229145fea70}\label{classkiwi_1_1_file_path_a2f0214db244325a97c7ba229145fea70} 
+static constexpr Char\+Type {\bfseries k\+Parent\+Directory} \mbox{[}$\,$\mbox{]} = FILE\+\_\+\+PATH\+\_\+\+LITERAL("{}.."{})
+\begin{DoxyCompactList}\small\item\em The special path component meaning "{}the parent directory."{}. \end{DoxyCompactList}\item 
+\Hypertarget{classkiwi_1_1_file_path_af9b9abdc5d3fced82bea002db4dfed26}\label{classkiwi_1_1_file_path_af9b9abdc5d3fced82bea002db4dfed26} 
+static constexpr Char\+Type {\bfseries k\+Extension\+Separator} = FILE\+\_\+\+PATH\+\_\+\+LITERAL(\textquotesingle{}.\textquotesingle{})
+\begin{DoxyCompactList}\small\item\em The character used to identify a file extension. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An abstraction to isolate users from the differences between native pathnames on different platforms. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_file_path_a579922f7af0190154bb20099e9d361e7}\index{kiwi::FilePath@{kiwi::FilePath}!FilePath@{FilePath}}
+\index{FilePath@{FilePath}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{FilePath()}{FilePath()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a579922f7af0190154bb20099e9d361e7} 
+base\+::\+File\+Path\+::\+File\+Path (\begin{DoxyParamCaption}\item[{String\+View\+Type}]{path}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Constructs a \doxylink{classkiwi_1_1_file_path}{File\+Path} from a string view.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The path string view. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_file_path_abc5f77b91b51041669a6743a5f879775}\index{kiwi::FilePath@{kiwi::FilePath}!FilePath@{FilePath}}
+\index{FilePath@{FilePath}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{FilePath()}{FilePath()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_abc5f77b91b51041669a6743a5f879775} 
+base\+::\+File\+Path\+::\+File\+Path (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+Constructs a \doxylink{classkiwi_1_1_file_path}{File\+Path} by copying another \doxylink{classkiwi_1_1_file_path}{File\+Path}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The \doxylink{classkiwi_1_1_file_path}{File\+Path} object to copy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_file_path_a3ac6bba8bf76f75e80b1a4922e4b3d57}\index{kiwi::FilePath@{kiwi::FilePath}!FilePath@{FilePath}}
+\index{FilePath@{FilePath}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{FilePath()}{FilePath()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a3ac6bba8bf76f75e80b1a4922e4b3d57} 
+base\+::\+File\+Path\+::\+File\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&\&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}, {\ttfamily [noexcept]}}
+
+
+
+/// 
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The \doxylink{classkiwi_1_1_file_path}{File\+Path} object to move. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_file_path_a65c43ca92eb9a58d837f1b54a56f0238}\index{kiwi::FilePath@{kiwi::FilePath}!InitializeFeatures@{InitializeFeatures}}
+\index{InitializeFeatures@{InitializeFeatures}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{InitializeFeatures()}{InitializeFeatures()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a65c43ca92eb9a58d837f1b54a56f0238} 
+void base\+::\+File\+Path\+::\+Initialize\+Features (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Initializes features for this class. \begin{DoxySeeAlso}{See also}
+{\ttfamily base\+::features\+::\+Init()}. 
+\end{DoxySeeAlso}
+\Hypertarget{classkiwi_1_1_file_path_a0521858e6819bd9bf6374d0d08cb7830}\index{kiwi::FilePath@{kiwi::FilePath}!operator$<$=$>$@{operator$<$=$>$}}
+\index{operator$<$=$>$@{operator$<$=$>$}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{operator$<$=$>$()}{operator<=>()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a0521858e6819bd9bf6374d0d08cb7830} 
+auto kiwi\+::\+File\+Path\+::operator$<$=$>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{that}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [default]}}
+
+Performs a three-\/way comparison with another \doxylink{classkiwi_1_1_file_path}{File\+Path}. Required for some STL containers and operations.
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The \doxylink{classkiwi_1_1_file_path}{File\+Path} to compare with. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the comparison. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_path_abdf7f6cc8034af130e606ed05f43fc87}\index{kiwi::FilePath@{kiwi::FilePath}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_abdf7f6cc8034af130e606ed05f43fc87} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \& base\+::\+File\+Path\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+Assigns the contents of another \doxylink{classkiwi_1_1_file_path}{File\+Path} to this one by copying.
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The \doxylink{classkiwi_1_1_file_path}{File\+Path} object to copy. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A reference to this \doxylink{classkiwi_1_1_file_path}{File\+Path} object. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_path_a6f73d30fad8ae281c8b79d5c236349e8}\index{kiwi::FilePath@{kiwi::FilePath}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a6f73d30fad8ae281c8b79d5c236349e8} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \& base\+::\+File\+Path\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&\&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}, {\ttfamily [noexcept]}}
+
+Replaces the contents with those of \texorpdfstring{$\vert$}{|}that\texorpdfstring{$\vert$}{|}, which is left in valid but unspecified state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The \doxylink{classkiwi_1_1_file_path}{File\+Path} object to move. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A reference to this \doxylink{classkiwi_1_1_file_path}{File\+Path} object. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_path_ab436d196545762fb3b6588d1bc172547}\index{kiwi::FilePath@{kiwi::FilePath}!operator==@{operator==}}
+\index{operator==@{operator==}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_ab436d196545762fb3b6588d1bc172547} 
+bool base\+::\+File\+Path\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{that}{}\end{DoxyParamCaption}) const}
+
+Checks if this \doxylink{classkiwi_1_1_file_path}{File\+Path} is equal to another. On systems which use drive letters, the drive letters are compared case-\/insensitively.
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & The \doxylink{classkiwi_1_1_file_path}{File\+Path} to compare with. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the paths are equal, otherwise false. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}\index{kiwi::FilePath@{kiwi::FilePath}!value@{value}}
+\index{value@{value}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700} 
+const String\+Type \& kiwi\+::\+File\+Path\+::value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+A const reference to the underlying path string. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c}\index{kiwi::FilePath@{kiwi::FilePath}!kSeparators@{kSeparators}}
+\index{kSeparators@{kSeparators}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{kSeparators}{kSeparators}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c} 
+Char\+Type kiwi\+::\+File\+Path\+::k\+Separators\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ }
+\DoxyCodeLine{\ \ \ \ \ \ FILE\_PATH\_LITERAL(\textcolor{stringliteral}{"{}/"{}})}
+
+\end{DoxyCode}
+Null-\/terminated array of separators used to separate components in paths. Each character in this array is a valid separator, but k\+Separators\mbox{[}0\mbox{]} is treated as the canonical separator and is used when composing pathnames. \Hypertarget{classkiwi_1_1_file_path_a4fc5b556aea57198fa0c99ccac5803cb}\index{kiwi::FilePath@{kiwi::FilePath}!kSeparatorsLength@{kSeparatorsLength}}
+\index{kSeparatorsLength@{kSeparatorsLength}!kiwi::FilePath@{kiwi::FilePath}}
+\doxysubsubsection{\texorpdfstring{kSeparatorsLength}{kSeparatorsLength}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a4fc5b556aea57198fa0c99ccac5803cb} 
+size\+\_\+t kiwi\+::\+File\+Path\+::k\+Separators\+Length = std\+::size(\mbox{\hyperlink{classkiwi_1_1_file_path_a02b43d6427f8f5e468fd34baae7ff45c}{k\+Separators}})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+std\+::size(k\+Separators), i.\+e., the number of separators in k\+Separators plus one (the null terminator at the end of k\+Separators). 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/files/file\+\_\+path.\+hh\item 
+src/files/file\+\_\+path.\+cc\end{DoxyCompactItemize}

@@ -1,25 +1,47 @@
+# cmake_parse_arguments(<prefix> <options> <one_value_keywords> 
+#                       <multi_value_keywords> <args>...)
+#
+# The <options> argument contains all options for the respective function or macro. 
+# These are keywords that have no value following them, like the OPTIONAL keyword of the install() command.
+#
+# Arguments:
+#   NAME: The name of the test executable and CTest test (REQUIRED).
+#   SRCS: List of source files for the test executable (REQUIRED).
+#   HDRS: List of header files associated with the test (OPTIONAL).
+#   COPTS: List of compile options to apply to the test executable (OPTIONAL).
+#   DEPS: List of libraries to link against (OPTIONAL).
 function(kiwi_cc_test)
-    # cmake_parse_arguments(<prefix> <options> <one_value_keywords> <multi_value_keywords> <args>...)
-    cmake_parse_arguments(TEST "" "NAME" "HDRS;SRCS;COPTS;DEPS" ${ARGN})
-    
-    add_executable(${TEST_NAME} ${TEST_SRCS})
+    # kiwi_cc_test(NAME <name> SRCS <srcs> [HDRS <hdrs>] [COPTS <opts>] [DEPS <deps>])
+    cmake_parse_arguments(KIWI_TARGET "" "NAME" "HDRS;SRCS;COPTS;DEPS" ${ARGN})
 
-    if(TEST_HDRS)
-        target_include_directories(${TEST_NAME} PRIVATE ${TEST_HDRS})
+    if(NOT KIWI_TARGET_NAME)
+        message(FATAL_ERROR "kiwi_cc_test requires NAME to be set.")
     endif()
 
-    target_include_directories(${TEST_NAME} PRIVATE ${GTEST_INCLUDE_DIR})
-    
-    if(TEST_COPTS)
-        target_compile_options(${TEST_NAME} PRIVATE ${TEST_COPTS})
+    if(NOT KIWI_TARGET_SRCS)
+        message(FATAL_ERROR "kiwi_cc_test requires SRCS to be set.")
     endif()
 
-    if(TEST_DEPS)
-        target_link_libraries(${TEST_NAME} PRIVATE ${TEST_DEPS})
+    add_executable(${KIWI_TARGET_NAME})
+    target_sources(${KIWI_TARGET_NAME} PRIVATE ${KIWI_TARGET_SRCS})
+    target_compile_features(${KIWI_TARGET_NAME} PRIVATE cxx_std_20)
+
+    if(KIWI_TARGET_HDRS)
+        target_include_directories(${KIWI_TARGET_NAME} PRIVATE ${KIWI_TARGET_HDRS})
     endif()
 
-    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+    if(KIWI_TARGET_COPTS)
+        target_compile_options(${KIWI_TARGET_NAME} PRIVATE ${KIWI_TARGET_COPTS})
+    endif()
+
+    if(KIWI_TARGET_DEPS)
+        target_link_libraries(${KIWI_TARGET_NAME} PRIVATE ${KIWI_TARGET_DEPS})
+    endif()
+
+    add_test(NAME ${KIWI_TARGET_NAME} COMMAND ${KIWI_TARGET_NAME})
 endfunction()
 
-add_subdirectory(util)
-add_subdirectory(strings)
+
+# add_subdirectory(util)
+# add_subdirectory(strings)
+add_subdirectory(containers)

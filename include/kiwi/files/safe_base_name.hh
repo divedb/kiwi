@@ -6,20 +6,23 @@
 
 #include <optional>
 
-#include "base/files/file_path.h"
 #include "kiwi/config/base_export.hh"
 #include "kiwi/config/compiler_specific.hh"
+#include "kiwi/files/file_path.hh"
 
 namespace kiwi {
 
-// Represents the last path component of a FilePath object, either a file or a
-// directory. This type does not allow absolute paths or references to parent
-// directories and is considered safe to be passed over IPC. See
-// FilePath::BaseName().
-// Usage examples:
-// std::optional<SafeBaseName> a
-//     (SafeBaseName::Create(FILE_PATH_LITERAL("file.txt")));
-// FilePath dir(FILE_PATH_LITERAL("foo")); dir.Append(*a);
+/// Represents the last path component of a FilePath object, either a file or a
+/// directory. This type does not allow absolute paths or references to parent
+/// directories and is considered safe to be passed over IPC.
+/// \see FilePath::BaseName().
+///
+/// Usage example:
+/// \code
+/// auto a = (SafeBaseName::Create(FILE_PATH_LITERAL("file.txt")));
+/// FilePath dir(FILE_PATH_LITERAL("foo"));
+/// dir.Append(*a);
+/// \endcode
 class BASE_EXPORT SafeBaseName {
   /// Constructs a new SafeBaseName from the given FilePath.
   explicit SafeBaseName(const FilePath& path) : path_(path) {}
@@ -30,8 +33,8 @@ class BASE_EXPORT SafeBaseName {
   /// name (not absolute, no parent references like '..', not ends with
   /// separator).
   ///
-  /// @param path The FilePath to attempt to convert.
-  /// @return A valid SafeBaseName wrapped in std::optional if validation
+  /// \param path The FilePath to attempt to convert.
+  /// \return A valid SafeBaseName wrapped in std::optional if validation
   ///         succeeds, otherwise returns std::nullopt.
   static std::optional<SafeBaseName> Create(const FilePath& path);
 
@@ -41,7 +44,7 @@ class BASE_EXPORT SafeBaseName {
   /// Creates an empty SafeBaseName.
   SafeBaseName() = default;
 
-  /// @return A const reference to the internal FilePath object.
+  /// \return A const reference to the internal FilePath object.
   const FilePath& path() const LIFETIME_BOUND { return path_; }
 
   /// Get the underlying path as a UTF8 std::string (potentially unsafe).
@@ -50,19 +53,19 @@ class BASE_EXPORT SafeBaseName {
   /// all possible platform native path characters correctly if they are not
   /// valid UTF8.
   ///
-  /// @return The path as a UTF8 string.
+  /// \return The path as a UTF8 string.
   const std::string AsUTF8Unsafe() const { return path_.AsUTF8Unsafe(); }
 
-  /// @return A const reference to the internal platform-native string value.
+  /// \return A const reference to the internal platform-native string value.
   const FilePath::StringType& value() const LIFETIME_BOUND {
     return path_.value();
   }
 
-  /// @return True if the path is empty, otherwise false.
+  /// \return True if the path is empty, otherwise false.
   [[nodiscard]] bool empty() const { return path_.empty(); }
 
-  /// @param that The other SafeBaseName object to compare with.
-  /// @return True if the underlying paths are equal, otherwise false.
+  /// \param that The other SafeBaseName object to compare with.
+  /// \return True if the underlying paths are equal, otherwise false.
   constexpr bool operator==(const SafeBaseName& that) const {
     return path_ == that.path_;
   }

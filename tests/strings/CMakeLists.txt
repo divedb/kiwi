@@ -2,6 +2,7 @@ kiwi_cc_test(
 NAME
     ascii_test
 HDRS
+    ${GTEST_INCLUDE_DIR}
 SRCS
     "ascii_test.cc"
 COPTS

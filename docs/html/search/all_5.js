@@ -1,7 +1,7 @@
 var searchData=
 [
   ['fbstring_5fcore_0',['fbstring_core',['../classkiwi_1_1fbstring__core.html',1,'kiwi']]],
-  ['filepath_1',['FilePath',['../classbase_1_1_file_path.html',1,'base']]],
+  ['filepath_1',['FilePath',['../classkiwi_1_1_file_path.html',1,'kiwi::FilePath'],['../classkiwi_1_1_file_path.html#a3a8040a5ffa3e029cd181f799302e912',1,'kiwi::FilePath::FilePath()'],['../classkiwi_1_1_file_path.html#a579922f7af0190154bb20099e9d361e7',1,'kiwi::FilePath::FilePath(StringViewType path)'],['../classkiwi_1_1_file_path.html#abc5f77b91b51041669a6743a5f879775',1,'kiwi::FilePath::FilePath(const FilePath &amp;that)'],['../classkiwi_1_1_file_path.html#a3ac6bba8bf76f75e80b1a4922e4b3d57',1,'kiwi::FilePath::FilePath(FilePath &amp;&amp;that) noexcept']]],
   ['find_2',['find',['../classkiwi_1_1_string_ref.html#a0163b614966f4600e148c0e40bcffd76',1,'kiwi::StringRef::find(char c, size_t from=0) const'],['../classkiwi_1_1_string_ref.html#ae1d0a701f123ffaaa5187c3c913225a1',1,'kiwi::StringRef::find(StringRef str, size_t from=0) const']]],
   ['find_5fas_3',['find_as',['../classkiwi_1_1_dense_map_base.html#afff21ada000fcb4618916dc984fae7ad',1,'kiwi::DenseMapBase']]],
   ['find_5ffirst_5fnot_5fof_4',['find_first_not_of',['../classkiwi_1_1_string_ref.html#a4d3b373f12405332c50f98d34335c01a',1,'kiwi::StringRef::find_first_not_of(char c, size_t from=0) const'],['../classkiwi_1_1_string_ref.html#a85010dcfe4cbb7adb498d13eff030af6',1,'kiwi::StringRef::find_first_not_of(StringRef chars, size_t from=0) const']]],
