@@ -661,9 +661,9 @@ std::basic_string_view<CharT> MakeStringViewWithNulChars(
 }  // namespace kiwi
 
 #if BUILDFLAG(IS_WIN)
-#include "base/strings/string_util_win.h"
+#include "kiwi/strings/string_util_win.h"
 #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-#include "base/strings/string_util_posix.h"
+#include "kiwi/strings/string_util_posix.hh"
 #else
 #error Define string operations appropriately for your platform
 #endif
