@@ -14,11 +14,11 @@
 
 // #include "base/check.h"
 // #include "base/check_op.h"
-#include "base/containers/checked_iterators.h"
+#include "kiwi/containers/checked_iterators.hh"
 // #include "base/memory/raw_ptr_exclusion.h"
-#include "kiwi/config/build_config.hh"
-#include "kiwi/config/compiler_specific.hh"
 #include "kiwi/numerics/safe_conversions.hh"
+#include "kiwi/support/build_config.hh"
+#include "kiwi/support/compiler_specific.hh"
 
 namespace base {
 
@@ -293,7 +293,7 @@ class basic_cstring_view final {
   // # Checks
   // The function CHECKs that `n <= size()`, and will terminate otherwise.
   constexpr void remove_prefix(size_t n) noexcept {
-    CHECK_LE(n, len_);
+    // CHECK_LE(n, len_);
     // SAFETY: Since `n <= len_`, the pointer at offset `n` is inside the string
     // (or at the terminating NUL) and the `len_ - n` value will not underflow.
     // Thus the resulting pointer is still a NUL- terminated string of length

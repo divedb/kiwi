@@ -15,10 +15,10 @@
 #include <type_traits>
 
 // #include "base/check.h"
-#include "kiwi/config/compiler_specific.hh"
 #include "kiwi/containers/span_forward_internal.hh"
+#include "kiwi/support/compiler_specific.hh"
 // #include "base/memory/raw_ptr_exclusion.h"
-#include "kiwi/config/build_config.hh"
+#include "kiwi/support/build_config.hh"
 
 namespace kiwi {
 

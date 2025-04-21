@@ -8,7 +8,7 @@ function(kiwi_cc_library)
     endif()
 
     if(LIB_HDRS)
-        target_include_directories(${LIB_NAME} ${LIB_HDRS})
+        target_include_directories(${LIB_NAME} PRIVATE ${LIB_HDRS})
     endif()
 
     if(LIB_COPTS)
@@ -19,3 +19,5 @@ function(kiwi_cc_library)
         target_link_libraries(${LIB_NAME} PRIVATE ${LIB_DEPS})
     endif()
 endfunction()
+
+add_subdirectory(strings)

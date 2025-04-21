@@ -2,8 +2,10 @@ kiwi_cc_library(
 NAME
     strings
 HDRS
+    ${KIWI_INCLUDE_DIR}
 SRCS
-    "strings/ascii.cc"
+    "ascii.cc"
+    "strcat.cc"
 COPTS
     ${KIWI_LIB_COPTS}
 DEPS
