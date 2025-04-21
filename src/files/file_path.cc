@@ -27,8 +27,9 @@
 #include "kiwi/files/file_path.hh"
 
 #if BUILDFLAG(IS_APPLE)
+// TODO(gc):
 // #include "base/apple/scoped_cftyperef.h"
-// #include "base/third_party/icu/icu_utf.h"
+#include "kiwi/icu/icu_utf.hh"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -278,11 +279,12 @@ std::atomic_bool g_fast_file_path_is_parent{false};
 }  // namespace
 
 void FilePath::InitializeFeatures() {
+  // TODO(gc):
   // `std::memory_order_relaxed` because there are no dependencies with other
   // memory operations.
-  g_fast_file_path_is_parent.store(
-      FeatureList::IsEnabled(features::kFastFilePathIsParent),
-      std::memory_order_relaxed);
+  //   g_fast_file_path_is_parent.store(
+  //       FeatureList::IsEnabled(features::kFastFilePathIsParent),
+  //       std::memory_order_relaxed);
 }
 
 FilePath::FilePath() = default;
@@ -412,7 +414,8 @@ bool FilePath::IsParentFast(const FilePath& child) const {
     }
 
     if (parent_component.empty()) {
-      CHECK(parent_remainder.empty());
+      // TODO(gc):
+      // CHECK(parent_remainder.empty());
       // The components of `this` are a prefix of the components of `child`:
       // `this` is a parent of `child` only if `child` has more components
       // (because a path is not its own parent).
@@ -435,7 +438,8 @@ bool FilePath::IsParentFast(const FilePath& child) const {
         // hostname. https://tools.ietf.org/html/rfc3986#section-3.2.2
         !(component_index == 1 && IsNetwork() &&
           EqualsCaseInsensitiveASCII(parent_component, child_component))) {
-      CHECK(!child_component.empty() || child_remainder.empty());
+      // TODO(gc):
+      // CHECK(!child_component.empty() || child_remainder.empty());
       return false;
     }
 
@@ -481,7 +485,7 @@ bool FilePath::AppendRelativePath(const FilePath& child, FilePath* path) const {
   // https://tools.ietf.org/html/rfc3986#section-3.2.2
   if (IsNetwork() && parent_components.size() > 1) {
     if (*parent_comp++ != *child_comp++ ||
-        !base::EqualsCaseInsensitiveASCII(*parent_comp++, *child_comp++)) {
+        !kiwi::EqualsCaseInsensitiveASCII(*parent_comp++, *child_comp++)) {
       return false;
     }
   }
@@ -612,16 +616,19 @@ FilePath FilePath::InsertBeforeExtension(StringViewType suffix) const {
   }
 
   return FilePath(
-      base::StrCat({RemoveExtension().value(), suffix, Extension()}));
+      kiwi::StrCat({RemoveExtension().value(), suffix, Extension()}));
 }
 
 FilePath FilePath::InsertBeforeExtensionASCII(std::string_view suffix) const {
-  DCHECK(IsStringASCII(suffix));
+  // TODO(gc):
+  // DCHECK(IsStringASCII(suffix));
+
   return InsertBeforeExtensionUTF8(suffix);
 }
 
 FilePath FilePath::InsertBeforeExtensionUTF8(std::string_view suffix) const {
-  DCHECK(IsStringUTF8(suffix));
+  // TODO(gc):
+  // DCHECK(IsStringUTF8(suffix));
 #if BUILDFLAG(IS_WIN)
   return InsertBeforeExtension(UTF8ToWide(suffix));
 #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
@@ -650,12 +657,14 @@ FilePath FilePath::AddExtension(StringViewType extension) const {
 }
 
 FilePath FilePath::AddExtensionASCII(std::string_view extension) const {
-  DCHECK(IsStringASCII(extension));
+  // TODO(gc):
+  // DCHECK(IsStringASCII(extension));
   return AddExtensionUTF8(extension);
 }
 
 FilePath FilePath::AddExtensionUTF8(std::string_view extension) const {
-  DCHECK(IsStringUTF8(extension));
+  // TODO(gc):
+  // DCHECK(IsStringUTF8(extension));
 #if BUILDFLAG(IS_WIN)
   return AddExtension(UTF8ToWide(extension));
 #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
@@ -684,7 +693,8 @@ FilePath FilePath::ReplaceExtension(StringViewType extension) const {
 }
 
 bool FilePath::MatchesExtension(StringViewType extension) const {
-  DCHECK(extension.empty() || extension[0] == kExtensionSeparator);
+  // TODO(gc):
+  // DCHECK(extension.empty() || extension[0] == kExtensionSeparator);
 
   StringType current_extension = Extension();
 
@@ -696,7 +706,8 @@ bool FilePath::MatchesExtension(StringViewType extension) const {
 }
 
 bool FilePath::MatchesFinalExtension(StringViewType extension) const {
-  DCHECK(extension.empty() || extension[0] == kExtensionSeparator);
+  // TODO(gc):
+  // DCHECK(extension.empty() || extension[0] == kExtensionSeparator);
 
   StringType current_final_extension = FinalExtension();
 
@@ -717,7 +728,8 @@ FilePath FilePath::Append(StringViewType component) const {
     appended = StringViewType(without_nuls);
   }
 
-  DCHECK(!IsPathAbsolute(appended));
+  // TODO(gc):
+  // DCHECK(!IsPathAbsolute(appended));
 
   if (path_.compare(kCurrentDirectory) == 0 && !appended.empty()) {
     // Append normally doesn't do any normalization, but as a special case,
@@ -760,12 +772,14 @@ FilePath FilePath::Append(const SafeBaseName& component) const {
 }
 
 FilePath FilePath::AppendASCII(std::string_view component) const {
-  DCHECK(base::IsStringASCII(component));
+  // TODO(gc):
+  // DCHECK(base::IsStringASCII(component));
   return AppendUTF8(component);
 }
 
 FilePath FilePath::AppendUTF8(std::string_view component) const {
-  DCHECK(base::IsStringUTF8(component));
+  // TODO(gc):
+  // DCHECK(base::IsStringUTF8(component));
 #if BUILDFLAG(IS_WIN)
   return Append(UTF8ToWide(component));
 #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
@@ -844,7 +858,8 @@ std::u16string FilePath::AsUTF16Unsafe() const { return WideToUTF16(value()); }
 
 // static
 FilePath FilePath::FromASCII(std::string_view ascii) {
-  DCHECK(base::IsStringASCII(ascii));
+  // TODO(gc):
+  // DCHECK(base::IsStringASCII(ascii));
   return FilePath(ASCIIToWide(ascii));
 }
 
@@ -868,7 +883,7 @@ std::u16string FilePath::LossyDisplayName() const {
 }
 
 std::string FilePath::MaybeAsASCII() const {
-  if (base::IsStringASCII(path_)) {
+  if (kiwi::IsStringASCII(path_)) {
     return path_;
   }
   return std::string();
@@ -892,7 +907,8 @@ std::u16string FilePath::AsUTF16Unsafe() const {
 
 // static
 FilePath FilePath::FromASCII(std::string_view ascii) {
-  DCHECK(base::IsStringASCII(ascii));
+  // TODO(gc):
+  // DCHECK(base::IsStringASCII(ascii));
   return FilePath(ascii);
 }
 
@@ -916,37 +932,39 @@ FilePath FilePath::FromUTF16Unsafe(std::u16string_view utf16) {
 
 #endif  // BUILDFLAG(IS_WIN)
 
-void FilePath::WriteToPickle(Pickle* pickle) const {
-#if BUILDFLAG(IS_WIN)
-  pickle->WriteString16(AsStringPiece16(path_));
-#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-  pickle->WriteString(path_);
-#else
-#error Unsupported platform
-#endif
-}
+// TODO(gc):
+// void FilePath::WriteToPickle(Pickle* pickle) const {
+// #if BUILDFLAG(IS_WIN)
+//   pickle->WriteString16(AsStringPiece16(path_));
+// #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+//   pickle->WriteString(path_);
+// #else
+// #error Unsupported platform
+// #endif
+// }
 
-bool FilePath::ReadFromPickle(PickleIterator* iter) {
-#if BUILDFLAG(IS_WIN)
-  std::u16string path;
-  if (!iter->ReadString16(&path)) {
-    return false;
-  }
-  path_ = UTF16ToWide(path);
-#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-  if (!iter->ReadString(&path_)) {
-    return false;
-  }
-#else
-#error Unsupported platform
-#endif
+// TODO(gc):
+// bool FilePath::ReadFromPickle(PickleIterator* iter) {
+// #if BUILDFLAG(IS_WIN)
+//   std::u16string path;
+//   if (!iter->ReadString16(&path)) {
+//     return false;
+//   }
+//   path_ = UTF16ToWide(path);
+// #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+//   if (!iter->ReadString(&path_)) {
+//     return false;
+//   }
+// #else
+// #error Unsupported platform
+// #endif
 
-  if (path_.find(kStringTerminator) != StringType::npos) {
-    return false;
-  }
+//   if (path_.find(kStringTerminator) != StringType::npos) {
+//     return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
 #if BUILDFLAG(IS_WIN)
 // Windows specific implementation of file string comparisons.
@@ -1410,6 +1428,8 @@ const UInt16 lower_case_table[11 * 256] = {
 };
 // clang-format on
 
+// TODO(gc):
+/*
 // Returns the next non-ignorable codepoint within `string` starting from the
 // position indicated by `index`, or zero if there are no more.
 // The passed-in `index` is automatically advanced as the characters in the
@@ -1441,13 +1461,17 @@ inline base_icu::UChar32 HFSReadNextNonIgnorableCodepoint(const char* string,
   return codepoint;
 }
 
+*/
 }  // namespace
 
+/*
 // Special UTF-8 version of FastUnicodeCompare. Cf:
-// http://developer.apple.com/mac/library/technotes/tn/tn1150.html#StringComparisonAlgorithm
-// The input strings must be in the special HFS decomposed form.
-int FilePath::HFSFastUnicodeCompare(StringViewType string1,
-                                    StringViewType string2) {
+//
+http://developer.apple.com/mac/library/technotes/tn/tn1150.html#StringComparisonAlgorithm
+        // The input strings must be in the special HFS decomposed form.
+       int
+       FilePath::HFSFastUnicodeCompare(StringViewType string1,
+                                       StringViewType string2) {
   size_t length1 = string1.length();
   size_t length2 = string2.length();
   size_t index1 = 0;
@@ -1462,8 +1486,9 @@ int FilePath::HFSFastUnicodeCompare(StringViewType string1,
       return (codepoint1 < codepoint2) ? -1 : 1;
     }
     if (codepoint1 == 0) {
-      DCHECK_EQ(index1, length1);
-      DCHECK_EQ(index2, length2);
+      // TODO(gc):
+      // DCHECK_EQ(index1, length1);
+      // DCHECK_EQ(index2, length2);
       return 0;
     }
   }
@@ -1487,7 +1512,8 @@ StringType FilePath::GetHFSDecomposedForm(CFStringRef cfstring) {
   // will overestimate the required space. The return value also already
   // includes the space needed for a terminating 0.
   CFIndex length = CFStringGetMaximumSizeOfFileSystemRepresentation(cfstring);
-  DCHECK_GT(length, 0);  // should be at least 1 for the 0-terminator.
+  // TODO(gc):
+  // DCHECK_GT(length, 0);  // should be at least 1 for the 0-terminator.
   // Reserve enough space for CFStringGetFileSystemRepresentation to write
   // into. Also set the length to the maximum so that we can shrink it later.
   // (Increasing rather than decreasing it would clobber the string contents!)
@@ -1567,6 +1593,7 @@ int FilePath::CompareIgnoreCase(StringViewType string1,
   return 0;
 }
 
+*/
 #endif  // OS versions of CompareIgnoreCase()
 
 void FilePath::StripTrailingSeparatorsInternal() {
@@ -1594,9 +1621,12 @@ FilePath FilePath::NormalizePathSeparators() const {
   return NormalizePathSeparatorsTo(kSeparators[0]);
 }
 
+// TODO(gc):
+/*
 void FilePath::WriteIntoTrace(perfetto::TracedValue context) const {
   perfetto::WriteIntoTracedValue(std::move(context), value());
 }
+*/
 
 FilePath FilePath::NormalizePathSeparatorsTo(CharType separator) const {
 #if defined(FILE_PATH_USES_WIN_SEPARATORS)

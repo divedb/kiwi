@@ -112,8 +112,9 @@ BASE_EXPORT bool IsWprintfFormatPortable(const wchar_t* format);
 template <typename CharT, typename Iter>
 constexpr std::basic_string_view<CharT> MakeBasicStringPiece(Iter begin,
                                                              Iter end) {
-  DCHECK_GE(end - begin, 0);
-  return {base::to_address(begin), static_cast<size_t>(end - begin)};
+  // TODO(gc):
+  // DCHECK_GE(end - begin, 0);
+  return {kiwi::to_address(begin), static_cast<size_t>(end - begin)};
 }
 
 // Explicit instantiations of MakeBasicStringPiece.
@@ -510,7 +511,9 @@ constexpr bool IsHexDigit(Char c) {
 // Assumes the input is a valid hex character.
 BASE_EXPORT char HexDigitToInt(char c);
 inline char HexDigitToInt(char16_t c) {
-  DCHECK(IsHexDigit(c));
+  // TODO(gc):
+  // DCHECK(IsHexDigit(c));
+
   return HexDigitToInt(static_cast<char>(c));
 }
 
@@ -636,11 +639,11 @@ BASE_EXPORT std::u16string JoinString(
 // ReplaceStringPlaceholders(
 //     u"$1", base::span<const std::u16string>({ReturnU16string()}), nullptr).
 BASE_EXPORT std::u16string ReplaceStringPlaceholders(
-    std::u16string_view format_string, base::span<const std::u16string> subst,
+    std::u16string_view format_string, kiwi::span<const std::u16string> subst,
     std::vector<size_t>* offsets);
 
 BASE_EXPORT std::string ReplaceStringPlaceholders(
-    std::string_view format_string, base::span<const std::string> subst,
+    std::string_view format_string, kiwi::span<const std::string> subst,
     std::vector<size_t>* offsets);
 
 // Single-string shortcut for ReplaceStringHolders. |offset| may be NULL.

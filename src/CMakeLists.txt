@@ -21,3 +21,4 @@ function(kiwi_cc_library)
 endfunction()
 
 add_subdirectory(strings)
+add_subdirectory(files)

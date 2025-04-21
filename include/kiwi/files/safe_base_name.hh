@@ -6,9 +6,9 @@
 
 #include <optional>
 
-#include "kiwi/config/base_export.hh"
-#include "kiwi/config/compiler_specific.hh"
 #include "kiwi/files/file_path.hh"
+#include "kiwi/support/base_export.hh"
+#include "kiwi/support/compiler_specific.hh"
 
 namespace kiwi {
 

@@ -1,0 +1,14 @@
+kiwi_cc_library(
+NAME
+    files
+HDRS
+    ${KIWI_INCLUDE_DIR}
+SRCS
+    "file_path.cc"
+    "safe_base_name.cc"
+COPTS
+    ${KIWI_LIB_COPTS}
+DEPS
+ALIAS
+    kiwi::files
+)
