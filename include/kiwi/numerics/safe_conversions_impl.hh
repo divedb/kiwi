@@ -349,7 +349,7 @@ INTEGER_FOR_DIGITS_AND_SIGN(uint64_t);
 
 template <size_t Size, bool IsSigned>
 using IntegerForDigitsAndSign =
-    IntegerForDigitsAndSignImpl<Size, IsSigned>::type;
+    typename IntegerForDigitsAndSignImpl<Size, IsSigned>::type;
 
 // WARNING: We have no IntegerForSizeAndSign<16, *>. If we ever add one to
 // support 128-bit math, then the ArithmeticPromotion template below will need
@@ -410,7 +410,7 @@ struct BigEnoughPromotionImpl<Lhs, Rhs, true, false> {
 };
 
 template <typename Lhs, typename Rhs>
-using BigEnoughPromotion = BigEnoughPromotionImpl<Lhs, Rhs>::type;
+using BigEnoughPromotion = typename BigEnoughPromotionImpl<Lhs, Rhs>::type;
 
 template <typename Lhs, typename Rhs>
 inline constexpr bool kIsBigEnoughPromotionContained =
@@ -452,7 +452,7 @@ struct FastIntegerArithmeticPromotionImpl<Lhs, Rhs> {
 
 template <typename Lhs, typename Rhs>
 using FastIntegerArithmeticPromotion =
-    FastIntegerArithmeticPromotionImpl<Lhs, Rhs>::type;
+    typename FastIntegerArithmeticPromotionImpl<Lhs, Rhs>::type;
 
 template <typename Lhs, typename Rhs>
 inline constexpr bool kIsFastIntegerArithmeticPromotionContained =
@@ -466,7 +466,7 @@ struct ArithmeticOrIntegralConstant {
 template <typename T>
   requires IntegralConstantLike<T>
 struct ArithmeticOrIntegralConstant<T> {
-  using type = T::value_type;
+  using type = typename T::value_type;
 };
 
 // Extracts the underlying type from an enum.
@@ -527,7 +527,7 @@ struct UnderlyingTypeImpl<StrictNumeric<T>> {
   using type = T;
 };
 template <typename T>
-using UnderlyingType = UnderlyingTypeImpl<T>::type;
+using UnderlyingType = typename UnderlyingTypeImpl<T>::type;
 
 template <typename T>
 inline constexpr bool kIsNumeric = std::is_arithmetic_v<UnderlyingType<T>>;

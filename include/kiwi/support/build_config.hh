@@ -51,7 +51,7 @@
 
 #pragma once
 
-#include "kiwi/config/build_flag.hh"  // IWYU pragma: export
+#include "kiwi/support/build_flag.hh"  // IWYU pragma: export
 
 // Clangd does not detect BUILDFLAG_INTERNAL_* indirect usage, so mark the
 // header as "always_keep" to avoid "unused include" warning.

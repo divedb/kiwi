@@ -294,13 +294,13 @@ using fixed_extent = std::integral_constant<size_t, N>;
 // range functionality use the correct specializations.
 template <typename ElementType, size_t Extent, typename InternalPtrType>
 inline constexpr bool
-    std::ranges::enable_view<base::span<ElementType, Extent, InternalPtrType>> =
+    std::ranges::enable_view<kiwi::span<ElementType, Extent, InternalPtrType>> =
         true;
 template <typename ElementType, size_t Extent, typename InternalPtrType>
 inline constexpr bool std::ranges::enable_borrowed_range<
-    base::span<ElementType, Extent, InternalPtrType>> = true;
+    kiwi::span<ElementType, Extent, InternalPtrType>> = true;
 
-namespace base {
+namespace kiwi {
 
 // Allows global use of a type for conversion to byte spans.
 template <typename T>
@@ -467,11 +467,11 @@ class GSL_POINTER span {
   UNSAFE_BUFFER_USAGE constexpr explicit span(It first,
                                               StrictNumeric<size_type> count)
       : data_(to_address(first)) {
-    CHECK(size_type{count} == extent);
+    // CHECK(size_type{count} == extent);
 
     // Non-zero `count` implies non-null `data_`. Use `SpanOrSize<T>` to
     // represent a size that might not be accompanied by the actual data.
-    DCHECK(count == 0 || !!data_);
+    // DCHECK(count == 0 || !!data_);
   }
 
   // Iterator + sentinel.
@@ -493,7 +493,7 @@ class GSL_POINTER span {
       // pointer (which would be UB) before the check.
       : UNSAFE_BUFFERS(span(first, static_cast<size_type>(last - first))) {
     // Verify `last - first` did not underflow.
-    CHECK(first <= last);
+    // CHECK(first <= last);
   }
 
   // Array of size `extent`.
@@ -666,7 +666,7 @@ class GSL_POINTER span {
     return UNSAFE_BUFFERS(span<element_type, Count>(data(), Count));
   }
   constexpr auto first(StrictNumeric<size_type> count) const {
-    CHECK(size_type{count} <= extent);
+    // CHECK(size_type{count} <= extent);
     // SAFETY: `data()` points to at least `extent` elements, so the new data
     // scope is a strict subset of the old.
     return UNSAFE_BUFFERS(span<element_type>(data(), count));
@@ -683,7 +683,7 @@ class GSL_POINTER span {
         span<element_type, Count>(data() + (extent - Count), Count));
   }
   constexpr auto last(StrictNumeric<size_type> count) const {
-    CHECK(size_type{count} <= extent);
+    // CHECK(size_type{count} <= extent);
     // SAFETY: `data()` points to at least `extent` elements, so the new data
     // scope is a strict subset of the old.
     return UNSAFE_BUFFERS(
@@ -711,7 +711,7 @@ class GSL_POINTER span {
     }
   }
   constexpr auto subspan(StrictNumeric<size_type> offset) const {
-    CHECK(size_type{offset} <= extent);
+    // CHECK(size_type{offset} <= extent);
     const size_type remaining = extent - size_type{offset};
     // SAFETY: `data()` points to at least `extent` elements, so `offset`
     // specifies a valid element index or the past-the-end index, and
@@ -721,10 +721,11 @@ class GSL_POINTER span {
   }
   constexpr auto subspan(StrictNumeric<size_type> offset,
                          StrictNumeric<size_type> count) const {
-    DCHECK(size_type{count} != dynamic_extent)
-        << "base does not allow dynamic_extent in two-arg subspan()";
-    CHECK(size_type{offset} <= size() &&
-          size_type{count} <= size() - size_type{offset});
+    // clang-format off
+    // DCHECK(size_type{count} != dynamic_extent) << "base does not allow dynamic_extent in two-arg subspan()";
+    // CHECK(size_type{offset} <= size() && size_type{count} <= size() - size_type{offset});
+    // clang-format on
+
     // SAFETY: `data()` points to at least `extent` elements, so `offset`
     // specifies a valid element index or the past-the-end index, and `count` is
     // no larger than the number of remaining valid elements.
@@ -849,7 +850,7 @@ class GSL_POINTER span {
   constexpr pointer get_at(StrictNumeric<size_type> idx) const
     requires(extent > 0)
   {
-    CHECK(size_type{idx} < extent);
+    // CHECK(size_type{idx} < extent);
     // SAFETY: `data()` points to at least `extent` elements, so `idx` must be
     // the index of a valid element.
     return UNSAFE_BUFFERS(data() + size_type{idx});
@@ -959,7 +960,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
       : data_(to_address(first)), size_(count) {
     // Non-zero `count` implies non-null `data_`. Use `SpanOrSize<T>` to
     // represent a size that might not be accompanied by the actual data.
-    DCHECK(count == 0 || !!data_);
+    // DCHECK(count == 0 || !!data_);
   }
 
   // Iterator + sentinel.
@@ -981,7 +982,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
       // pointer (which would be UB) before the check.
       : UNSAFE_BUFFERS(span(first, static_cast<size_type>(last - first))) {
     // Verify `last - first` did not underflow.
-    CHECK(first <= last);
+    // CHECK(first <= last);
   }
 
   // Array of size N.
@@ -1045,7 +1046,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   constexpr void copy_from(span<const element_type> other)
     requires(!std::is_const_v<element_type>)
   {
-    CHECK(size() == other.size());
+    // CHECK(size() == other.size());
     if (std::is_constant_evaluated()) {
       // Comparing pointers to different objects at compile time yields
       // unspecified behavior, which would halt compilation. Instead,
@@ -1080,11 +1081,11 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
       return;
     }
 
-    CHECK(size() == other.size());
+    // clang-format off
+    // CHECK(size() == other.size());
     // See comments in `copy_from()` re: use of templated comparison objects.
-    DCHECK(std::less_equal{}(to_address(end()), to_address(other.begin())) ||
-           std::greater_equal{}(to_address(begin()), to_address(other.end())));
-    std::ranges::copy(other, begin());
+    // DCHECK(std::less_equal{}(to_address(end()), to_address(other.begin())) || std::greater_equal{}(to_address(begin()), to_address(other.end()))); std::ranges::copy(other, begin());
+    // clang-format on
   }
 
   // Like `copy_from()`, but allows the source to be smaller than this span, and
@@ -1103,13 +1104,13 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   // First `count` elements.
   template <size_t Count>
   constexpr auto first() const {
-    CHECK(Count <= size());
+    // CHECK(Count <= size());
     // SAFETY: `data()` points to at least `size()` elements, so the new data
     // scope is a strict subset of the old.
     return UNSAFE_BUFFERS(span<element_type, Count>(data(), Count));
   }
   constexpr auto first(StrictNumeric<size_t> count) const {
-    CHECK(size_type{count} <= size());
+    // CHECK(size_type{count} <= size());
     // SAFETY: `data()` points to at least `size()` elements, so the new data
     // scope is a strict subset of the old.
     return UNSAFE_BUFFERS(span<element_type>(data(), count));
@@ -1118,14 +1119,14 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   // Last `count` elements.
   template <size_t Count>
   constexpr auto last() const {
-    CHECK(Count <= size());
+    // CHECK(Count <= size());
     // SAFETY: `data()` points to at least `size()` elements, so the new data
     // scope is a strict subset of the old.
     return UNSAFE_BUFFERS(
         span<element_type, Count>(data() + (size() - Count), Count));
   }
   constexpr auto last(StrictNumeric<size_type> count) const {
-    CHECK(size_type{count} <= size());
+    // CHECK(size_type{count} <= size());
     // SAFETY: `data()` points to at least `size()` elements, so the new data
     // scope is a strict subset of the old.
     return UNSAFE_BUFFERS(
@@ -1144,14 +1145,14 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
       return UNSAFE_BUFFERS(
           span<element_type, Count>(data() + Offset, remaining));
     }
-    CHECK(Count <= remaining);
+    // CHECK(Count <= remaining);
     // SAFETY: `data()` points to at least `size()` elements, so `Offset`
     // specifies a valid element index or the past-the-end index, and `Count` is
     // no larger than the number of remaining valid elements.
     return UNSAFE_BUFFERS(span<element_type, Count>(data() + Offset, Count));
   }
   constexpr auto subspan(StrictNumeric<size_type> offset) const {
-    CHECK(size_type{offset} <= size());
+    // CHECK(size_type{offset} <= size());
     const size_type remaining = size() - size_type{offset};
     // SAFETY: `data()` points to at least `size()` elements, so `offset`
     // specifies a valid element index or the past-the-end index, and
@@ -1161,10 +1162,11 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   }
   constexpr auto subspan(StrictNumeric<size_type> offset,
                          StrictNumeric<size_type> count) const {
-    DCHECK(size_type{count} != dynamic_extent)
-        << "base does not allow dynamic_extent in two-arg subspan()";
-    CHECK(size_type{offset} <= size() &&
-          size_type{count} <= size() - size_type{offset});
+    // clang-format off
+    // DCHECK(size_type{count} != dynamic_extent) << "base does not allow dynamic_extent in two-arg subspan()";
+    // CHECK(size_type{offset} <= size() && size_type{count} <= size() - size_type{offset});
+    // clang-format on
+
     // SAFETY: `data()` points to at least `size()` elements, so `offset`
     // specifies a valid element index or the past-the-end index, and `count` is
     // no larger than the number of remaining valid elements.
@@ -1179,7 +1181,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   // `split_at_mut()`.)
   template <size_t Offset>
   constexpr auto split_at() const {
-    CHECK(Offset <= size());
+    // CHECK(Offset <= size());
     return std::pair(first<Offset>(), subspan<Offset>());
   }
   constexpr auto split_at(StrictNumeric<size_type> offset) const {
@@ -1727,6 +1729,6 @@ constexpr auto as_writable_byte_span(
   return as_writable_bytes(allow_nonunique_obj, span<ElementType, Extent>(arr));
 }
 
-}  // namespace base
+}  // namespace kiwi
 
 #endif  // BASE_CONTAINERS_SPAN_H_

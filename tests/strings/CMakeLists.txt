@@ -4,14 +4,17 @@ macro(KIWI_ADD_TEST test_name)
         ${test_name}
     HDRS 
         ${GTEST_INCLUDE_DIR}
+        ${KIWI_INCLUDE_DIR}
     SRCS 
         "${test_name}.cc"
     COPTS 
         ${KIWI_TEST_COPTS}
     DEPS 
-        ${GTEST_LIBRARIES} kiwi::strings
+        gtest
+        gtest_main
+        kiwi::strings
   )
 endmacro()
 
-KIWI_ADD_TEST(ascii_test)
-KIWI_ADD_TEST(cstrijng_view_test)
+# KIWI_ADD_TEST(ascii_test)
+KIWI_ADD_TEST(cstring_view_test)

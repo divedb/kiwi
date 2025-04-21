@@ -11,7 +11,7 @@
 // #include "base/debug/alias.h"
 #include <gtest/gtest.h>
 
-#include "kiwi/config/build_config.hh"
+#include "kiwi/support/build_config.hh"
 
 namespace kiwi {
 

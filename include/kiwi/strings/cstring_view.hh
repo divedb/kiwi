@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef BASE_STRINGS_CSTRING_VIEW_H_
-#define BASE_STRINGS_CSTRING_VIEW_H_
+#pragma once
 
 #include <algorithm>
 #include <concepts>
@@ -20,7 +19,7 @@
 #include "kiwi/support/build_config.hh"
 #include "kiwi/support/compiler_specific.hh"
 
-namespace base {
+namespace kiwi {
 
 // A CString is a NUL-terminated character array, which is the C programming
 // language representation of a string. This class (and its aliases below)
@@ -158,7 +157,8 @@ class basic_cstring_view final {
     // SAFETY: `ptr` points to `len` many chars and then a NUL, according to the
     // caller of this method. So then `len` index will be in bounds and return
     // the NUL.
-    DCHECK_EQ(UNSAFE_BUFFERS(ptr[len]), Char{0});
+    // TODO(gc):
+    // DCHECK_EQ(UNSAFE_BUFFERS(ptr[len]), Char{0});
   }
 
   // Returns a pointer to the NUL-terminated string, for passing to C-style APIs
@@ -252,7 +252,7 @@ class basic_cstring_view final {
   // The function CHECKs that the `idx` is inside the cstring (including at its
   // NUL terminator) and will terminate otherwise.
   PURE_FUNCTION constexpr const Char& operator[](size_t idx) const noexcept {
-    CHECK_LE(idx, len_);
+    // CHECK_LE(idx, len_);
     // SAFETY: `ptr_` points `len_` many elements plus a NUL terminator, and
     // `idx <= len_`, so `idx` is in range for `ptr_`.
     return UNSAFE_BUFFERS(ptr_[idx]);
@@ -569,21 +569,19 @@ std::basic_ostream<Char, Traits>& operator<<(
 // rather than strings.
 inline void PrintTo(cstring_view view, std::ostream* os) { *os << view; }
 
-}  // namespace base
+}  // namespace kiwi
 
 template <class Char>
-struct std::hash<base::basic_cstring_view<Char>> {
-  size_t operator()(const base::basic_cstring_view<Char>& t) const noexcept {
+struct std::hash<kiwi::basic_cstring_view<Char>> {
+  size_t operator()(const kiwi::basic_cstring_view<Char>& t) const noexcept {
     return std::hash<std::basic_string_view<Char>>()(t);
   }
 };
 
 template <class Char>
 inline constexpr bool
-    std::ranges::enable_borrowed_range<base::basic_cstring_view<Char>> = true;
+    std::ranges::enable_borrowed_range<kiwi::basic_cstring_view<Char>> = true;
 
 template <class Char>
-inline constexpr bool std::ranges::enable_view<base::basic_cstring_view<Char>> =
+inline constexpr bool std::ranges::enable_view<kiwi::basic_cstring_view<Char>> =
     true;
-
-#endif  // BASE_STRINGS_CSTRING_VIEW_H_

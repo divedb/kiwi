@@ -4,7 +4,6 @@ NAME
 HDRS
     ${KIWI_INCLUDE_DIR}
 SRCS
-    "ascii.cc"
     "strcat.cc"
 COPTS
     ${KIWI_LIB_COPTS}
