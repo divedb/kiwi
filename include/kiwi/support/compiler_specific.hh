@@ -1114,3 +1114,13 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 #else
 #define ENABLE_IF_ATTR(cond, msg)
 #endif
+
+#if defined(_MSC_VER)
+#define UNREACHABLE() __assume(0)
+#elif defined(__GNUC__) || defined(__clang__)
+#define UNREACHABLE() __builtin_unreachable()
+#else
+#define UNREACHABLE() \
+  do {                \
+  } while (0)
+#endif

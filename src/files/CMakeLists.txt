@@ -4,6 +4,7 @@ NAME
 HDRS
     ${KIWI_INCLUDE_DIR}
 SRCS
+    "file.cc"
     "file_path.cc"
     "safe_base_name.cc"
 COPTS
