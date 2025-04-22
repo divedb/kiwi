@@ -18,3 +18,4 @@ endmacro()
 
 # KIWI_ADD_TEST(ascii_test)
 KIWI_ADD_TEST(cstring_view_test)
+KIWI_ADD_TEST(utf_string_conversion_utils_test)

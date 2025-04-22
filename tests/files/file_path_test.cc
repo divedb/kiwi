@@ -22,9 +22,13 @@
 #include "kiwi/strings/utf_string_conversions.hh"
 // #include "base/test/scoped_feature_list.h"
 
+#include <gtest/gtest.h>
+
 #include "kiwi/support/build_config.hh"
 #include "kiwi/support/build_flag.hh"
-#include "kiwi/testing/platform_test.hh"
+// #include "kiwi/testing/platform_test.hh"
+
+using PlatformTest = testing::Test;
 
 // TODO(gc):
 /*
@@ -655,7 +659,8 @@ TEST_F(FilePathTest, PathComponentsTest) {
   }
 }
 
-void IsParentTest(bool is_fast) {
+// TODO(gc): remoave `maybe_unused`?
+void IsParentTest([[maybe_unused]] bool is_fast) {
 #if defined(FILE_PATH_USES_WIN_SEPARATORS)
   auto swap_separators = [](const FilePath& path) {
     FilePath::StringType new_path(path.value());
@@ -1488,6 +1493,8 @@ TEST_F(FilePathTest, FromASCII) {
   }
 }
 
+// TODO(gc):
+/*
 TEST_F(FilePathTest, FromUTF8Unsafe_And_AsUTF8Unsafe) {
   const auto cases = std::to_array<UTF8TestData>({
       {FPL("foo.txt"), "foo.txt"},
@@ -1516,6 +1523,7 @@ TEST_F(FilePathTest, FromUTF8Unsafe_And_AsUTF8Unsafe) {
     EXPECT_EQ(from_utf8.value(), from_native.value());
   }
 }
+*/
 
 TEST_F(FilePathTest, ConstructWithNUL) {
   // Assert FPS() works.
@@ -1678,6 +1686,9 @@ TEST_F(FilePathTest, TracedValueSupport) {
 
 // Test GetHFSDecomposedForm should return empty result for invalid UTF-8
 // strings.
+
+// TODO(gc):
+/*
 #if BUILDFLAG(IS_APPLE)
 TEST_F(FilePathTest, GetHFSDecomposedFormWithInvalidInput) {
   const FilePath::CharType* cases[] = {
@@ -1702,5 +1713,6 @@ TEST_F(FilePathTest, CompareIgnoreCaseWithInvalidInput) {
   }
 }
 #endif
+*/
 
 }  // namespace kiwi

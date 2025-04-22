@@ -4,7 +4,13 @@ NAME
 HDRS
     ${KIWI_INCLUDE_DIR}
 SRCS
-    "strcat.cc"
+    strcat.cc
+    string_util.cc
+    string_util_constants.cc
+    sys_string_conversions_posix.cc
+    utf_ostream_operators.cc
+    utf_string_conversion_utils.cc
+    utf_string_conversions.cc
 COPTS
     ${KIWI_LIB_COPTS}
 DEPS

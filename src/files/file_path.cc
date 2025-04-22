@@ -62,7 +62,8 @@ constexpr size_t kDriveLetterComponentLength = 2;
 // otherwise returns npos.  This can only be true on Windows, when a pathname
 // begins with a letter followed by a colon.  On other platforms, this always
 // returns npos.
-StringViewType::size_type FindDriveLetter(StringViewType path) {
+StringViewType::size_type FindDriveLetter(
+    [[maybe_unused]] StringViewType path) {
 #if defined(FILE_PATH_USES_DRIVE_LETTERS)
   // This is dependent on an ASCII-based character set, but that's a
   // reasonable assumption.  iswalpha can be too inclusive here.
@@ -208,7 +209,8 @@ bool IsEmptyOrSpecialCase(const StringType& path) {
 // drive letter in `path` must be extracted as a standalone component, even if
 // not followed by a separator.
 std::pair<FilePath::StringViewType, FilePath::StringViewType>
-ExtractFirstComponent(FilePath::StringViewType path, bool can_be_drive_letter) {
+ExtractFirstComponent(FilePath::StringViewType path,
+                      [[maybe_unused]] bool can_be_drive_letter) {
   if (path.empty()) {
     return {};
   }
@@ -1005,6 +1007,23 @@ int FilePath::CompareIgnoreCase(StringViewType string1,
 }
 
 #elif BUILDFLAG(IS_APPLE)
+
+// TODO(gc):
+// This is a posix implementation, move it here just for temporary usage.
+// Make sure how the macOS HFS+ and APFS filesystem works.
+int FilePath::CompareIgnoreCase(StringViewType string1,
+                                StringViewType string2) {
+  size_t rlen = std::min(string1.size(), string2.size());
+  int comparison = strncasecmp(string1.data(), string2.data(), rlen);
+  if (comparison < 0 || (comparison == 0 && string1.size() < string2.size())) {
+    return -1;
+  }
+  if (comparison > 0 || (comparison == 0 && string1.size() > string2.size())) {
+    return 1;
+  }
+  return 0;
+}
+
 // Mac OS X specific implementation of file string comparisons.
 
 // cf.
@@ -1464,14 +1483,13 @@ inline base_icu::UChar32 HFSReadNextNonIgnorableCodepoint(const char* string,
 */
 }  // namespace
 
-/*
 // Special UTF-8 version of FastUnicodeCompare. Cf:
-//
-http://developer.apple.com/mac/library/technotes/tn/tn1150.html#StringComparisonAlgorithm
-        // The input strings must be in the special HFS decomposed form.
-       int
-       FilePath::HFSFastUnicodeCompare(StringViewType string1,
-                                       StringViewType string2) {
+// http://developer.apple.com/mac/library/technotes/tn/tn1150.html#StringComparisonAlgorithm
+// The input strings must be in the special HFS decomposed form.
+
+/*
+int FilePath::HFSFastUnicodeCompare(StringViewType string1,
+                                    StringViewType string2) {
   size_t length1 = string1.length();
   size_t length2 = string2.length();
   size_t index1 = 0;
@@ -1628,7 +1646,8 @@ void FilePath::WriteIntoTrace(perfetto::TracedValue context) const {
 }
 */
 
-FilePath FilePath::NormalizePathSeparatorsTo(CharType separator) const {
+FilePath FilePath::NormalizePathSeparatorsTo(
+    [[maybe_unused]] CharType separator) const {
 #if defined(FILE_PATH_USES_WIN_SEPARATORS)
   DCHECK_NE(kSeparators + kSeparatorsLength,
             std::find(kSeparators, kSeparators + kSeparatorsLength, separator));

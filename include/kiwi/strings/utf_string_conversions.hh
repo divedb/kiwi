@@ -65,19 +65,21 @@ BASE_EXPORT bool UTF16ToUTF8(const char16_t* src, size_t src_len,
 // Wide) should be used. Catch those cases with overloads that assert at compile
 // time.
 template <size_t N>
-[[noreturn]] std::u16string WideToUTF16(const wchar_t (&str)[N]) {
+[[noreturn]] std::u16string WideToUTF16(
+    [[maybe_unused]] const wchar_t (&str)[N]) {
   static_assert(AlwaysFalse<decltype(N)>,
                 "Error: Use u\"...\" to create a std::u16string literal.");
 }
 
 template <size_t N>
-[[noreturn]] std::u16string UTF8ToUTF16(const char (&str)[N]) {
+[[noreturn]] std::u16string UTF8ToUTF16([[maybe_unused]] const char (&str)[N]) {
   static_assert(AlwaysFalse<decltype(N)>,
                 "Error: Use u\"...\" to create a std::u16string literal.");
 }
 
 template <size_t N>
-[[noreturn]] std::u16string ASCIIToUTF16(const char (&str)[N]) {
+[[noreturn]] std::u16string ASCIIToUTF16(
+    [[maybe_unused]] const char (&str)[N]) {
   static_assert(AlwaysFalse<decltype(N)>,
                 "Error: Use u\"...\" to create a std::u16string literal.");
 }

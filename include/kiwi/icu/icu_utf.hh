@@ -373,9 +373,9 @@ typedef int32_t UChar32;
  * @return supplementary code point (U+10000..U+10ffff)
  * @stable ICU 2.4
  */
-#define CBU16_GET_SUPPLEMENTARY(lead, trail)                              \
-  (((::base_icu::UChar32)(lead) << 10UL) + (::base_icu::UChar32)(trail) - \
-   CBU16_SURROGATE_OFFSET)
+#define CBU16_GET_SUPPLEMENTARY(lead, trail)   \
+  (((kiwi::base_icu::UChar32)(lead) << 10UL) + \
+   (kiwi::base_icu::UChar32)(trail) - CBU16_SURROGATE_OFFSET)
 
 /**
  * Get the lead surrogate (0xd800..0xdbff) for a
@@ -385,7 +385,7 @@ typedef int32_t UChar32;
  * @stable ICU 2.4
  */
 #define CBU16_LEAD(supplementary) \
-  (::base_icu::UChar)(((supplementary) >> 10) + 0xd7c0)
+  (kiwi::base_icu::UChar)(((supplementary) >> 10) + 0xd7c0)
 
 /**
  * Get the trail surrogate (0xdc00..0xdfff) for a
@@ -395,7 +395,7 @@ typedef int32_t UChar32;
  * @stable ICU 2.4
  */
 #define CBU16_TRAIL(supplementary) \
-  (::base_icu::UChar)(((supplementary) & 0x3ff) | 0xdc00)
+  (kiwi::base_icu::UChar)(((supplementary) & 0x3ff) | 0xdc00)
 
 /**
  * How many 16-bit code units are used to encode this Unicode code point? (1 or

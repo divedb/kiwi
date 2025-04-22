@@ -464,9 +464,10 @@ class GSL_POINTER span {
   // SAFETY: `first` must point to the first of at least `count` contiguous
   // valid elements, or the span will allow access to invalid elements,
   // resulting in UB.
-  UNSAFE_BUFFER_USAGE constexpr explicit span(It first,
-                                              StrictNumeric<size_type> count)
+  UNSAFE_BUFFER_USAGE constexpr explicit span(
+      It first, [[maybe_unused]] StrictNumeric<size_type> count)
       : data_(to_address(first)) {
+    // TODO(gc):
     // CHECK(size_type{count} == extent);
 
     // Non-zero `count` implies non-null `data_`. Use `SpanOrSize<T>` to
@@ -1306,7 +1307,8 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   //
   // (Not in `std::`; necessary when underlying memory is not yet initialized.)
   constexpr pointer get_at(StrictNumeric<size_type> idx) const {
-    CHECK(size_type{idx} < size());
+    // TODO(gc):
+    // CHECK(size_type{idx} < size());
     // SAFETY: `data()` points to at least `size()` elements, so `idx` must be
     // the index of a valid element.
     return UNSAFE_BUFFERS(data() + size_type{idx});

@@ -219,9 +219,9 @@ TEST(CStringViewTest, IterateReverse) {
 
 TEST(CStringViewDeathTest, IterateBoundsChecked) {
   // TODO(gc):
-  auto use = [](auto x) { /*kiwi::debug::Alias(&x);*/ };
+  // auto use = [](auto x) { /*kiwi::debug::Alias(&x);*/ };
 
-  constexpr auto stuff = cstring_view("stuff");
+  // constexpr auto stuff = cstring_view("stuff");
 
   // TODO(gc):
   // The NUL terminator is out of bounds for iterating (checked by indexing into

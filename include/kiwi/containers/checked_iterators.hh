@@ -233,7 +233,9 @@ class CheckedContiguousIterator {
         current_(pointers.current),
         end_(pointers.end) {}
 
-  constexpr void CheckComparable(const CheckedContiguousIterator& other) const {
+  constexpr void CheckComparable(
+      [[maybe_unused]] const CheckedContiguousIterator& other) const {
+    // TODO(gc):
     // CHECK(start_ == other.start_);
     // CHECK(end_ == other.end_);
   }
