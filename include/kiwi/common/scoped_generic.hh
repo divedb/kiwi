@@ -236,7 +236,7 @@ class ScopedGeneric {
     ~Receiver() {
       if (scoped_generic_) {
         // CHECK(scoped_generic_->receiving_);
-        scoped_generic_->reset(value_);
+        scoped_generic_->Reset(value_);
         scoped_generic_->receiving_ = false;
       }
     }

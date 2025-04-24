@@ -13,5 +13,13 @@ enable_testing()
 find_package(GTest REQUIRED)
 link_directories(/usr/local/lib)
 
+option(USE_ZLIB "Enable ZLIB compression support" OFF)
+
+if(USE_ZLIB)
+    find_package(ZLIB REQUIRED)    
+    message(STATUS "ZLIB found: ${ZLIB_INCLUDE_DIRS}")
+    add_definitions(-DENABLE_ZLIB)
+endif()
+
 add_subdirectory(src)
 add_subdirectory(tests)

@@ -43,6 +43,7 @@ endfunction()
 
 
 # add_subdirectory(util)
+add_subdirectory(metrics)
 add_subdirectory(strings)
 add_subdirectory(containers)
 add_subdirectory(types)

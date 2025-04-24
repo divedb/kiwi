@@ -20,5 +20,6 @@ function(kiwi_cc_library)
     endif()
 endfunction()
 
+add_subdirectory(metrics)
 add_subdirectory(strings)
 add_subdirectory(files)

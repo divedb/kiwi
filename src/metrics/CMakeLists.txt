@@ -1,0 +1,13 @@
+kiwi_cc_library(
+NAME
+    metrics
+HDRS
+    ${KIWI_INCLUDE_DIR}
+SRCS
+    "crc32.cc"
+COPTS
+    ${KIWI_LIB_COPTS}
+DEPS
+ALIAS
+    kiwi::metrics
+)
