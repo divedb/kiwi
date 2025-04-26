@@ -49,6 +49,12 @@ class LittleEndian {
     b[7] = static_cast<uint8_t>(v >> 56);
   }
 
+  static constexpr uint8_t* AppendUint8(uint8_t* b, uint8_t v) {
+    *b++ = v;
+
+    return b;
+  }
+
   static constexpr uint8_t* AppendUint16(uint8_t* b, uint16_t v) {
     *b++ = static_cast<uint8_t>(v);
     *b++ = static_cast<uint8_t>(v >> 8);
@@ -122,6 +128,12 @@ class BigEndian {
     b[5] = static_cast<uint8_t>(v >> 16);
     b[6] = static_cast<uint8_t>(v >> 8);
     b[7] = static_cast<uint8_t>(v);
+  }
+
+  static constexpr uint8_t* AppendUint8(uint8_t* b, uint8_t v) {
+    *b++ = v;
+
+    return b;
   }
 
   static constexpr uint8_t* AppendUint16(uint8_t* b, uint16_t v) {
