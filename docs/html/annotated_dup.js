@@ -1,6 +1,19 @@
 var annotated_dup =
 [
-    [ "kiwi", null, [
+    [ "base", null, [
+      [ "time_internal", null, [
+        [ "TimeBase", "classbase_1_1time__internal_1_1_time_base.html", null ]
+      ] ],
+      [ "LiveTicks", "classbase_1_1_live_ticks.html", null ],
+      [ "ThreadTicks", "classbase_1_1_thread_ticks.html", null ],
+      [ "Time", "classbase_1_1_time.html", "classbase_1_1_time" ],
+      [ "TimeDelta", "classbase_1_1_time_delta.html", null ],
+      [ "TimeTicks", "classbase_1_1_time_ticks.html", null ]
+    ] ],
+    [ "chibicpp", null, [
+      [ "ErrorOr", "classchibicpp_1_1_error_or.html", "classchibicpp_1_1_error_or" ]
+    ] ],
+    [ "kiwi", "namespacekiwi.html", [
       [ "detail", null, [
         [ "ConstantLog2", "structkiwi_1_1detail_1_1_constant_log2.html", null ],
         [ "ConstantLog2< 1 >", "structkiwi_1_1detail_1_1_constant_log2_3_011_01_4.html", null ],
@@ -10,12 +23,66 @@ var annotated_dup =
         [ "is_comparable_to_nullptr", "structkiwi_1_1detail_1_1is__comparable__to__nullptr.html", null ],
         [ "is_comparable_to_nullptr< T, std::enable_if_t< std::is_convertible< decltype(std::declval< T >() !=nullptr), bool >::value > >", "structkiwi_1_1detail_1_1is__comparable__to__nullptr_3_01_t_00_01std_1_1enable__if__t_3_01std_1_148c1e83e8fb5b34a745631a606e7a54f.html", null ],
         [ "IsPointerLike", "structkiwi_1_1detail_1_1_is_pointer_like.html", null ],
-        [ "IsPointerLike< T * >", "structkiwi_1_1detail_1_1_is_pointer_like_3_01_t_01_5_01_4.html", null ]
+        [ "IsPointerLike< T * >", "structkiwi_1_1detail_1_1_is_pointer_like_3_01_t_01_5_01_4.html", null ],
+        [ "IsUniquePtrToSL", "structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l.html", null ],
+        [ "IsUniquePtrToSL< std::unique_ptr< T, D > >", "structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l_3_01std_1_1unique__ptr_3_01_t_00_01_d_01_4_01_4.html", null ]
+      ] ],
+      [ "internal", null, [
+        [ "AlwaysFalseHelper", "structkiwi_1_1internal_1_1_always_false_helper.html", null ],
+        [ "ArithmeticOrIntegralConstant", "structkiwi_1_1internal_1_1_arithmetic_or_integral_constant.html", null ],
+        [ "ArithmeticOrIntegralConstant< T >", "structkiwi_1_1internal_1_1_arithmetic_or_integral_constant_3_01_t_01_4.html", null ],
+        [ "BigEnoughPromotionImpl", "structkiwi_1_1internal_1_1_big_enough_promotion_impl.html", null ],
+        [ "BigEnoughPromotionImpl< Lhs, Rhs, false, false >", "structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4.html", null ],
+        [ "BigEnoughPromotionImpl< Lhs, Rhs, true, false >", "structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01true_00_01false_01_4.html", null ],
+        [ "CharacterMatcher", "structkiwi_1_1internal_1_1_character_matcher.html", null ],
+        [ "CheckedNumeric", "classkiwi_1_1internal_1_1_checked_numeric.html", null ],
+        [ "CheckOnFailure", "structkiwi_1_1internal_1_1_check_on_failure.html", null ],
+        [ "ClampedNumeric", "classkiwi_1_1internal_1_1_clamped_numeric.html", null ],
+        [ "DstRangeRelationToSrcRangeImpl", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl.html", null ],
+        [ "DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kSigned, IntegerRepresentation::kSigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_8276cc0c51876b175673621e3d4d6c36.html", null ],
+        [ "DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kSigned, IntegerRepresentation::kUnsigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_b5ff0de3dac7b218349d8b0532835ded.html", null ],
+        [ "DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kSigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_068019bfc45e94b50e41ebc27487aac3.html", null ],
+        [ "DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kUnsigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_28e8c4d5749e96dd2728056f98fd8aaf.html", null ],
+        [ "FastIntegerArithmeticPromotionImpl", "structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl.html", null ],
+        [ "FastIntegerArithmeticPromotionImpl< Lhs, Rhs >", "structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl_3_01_lhs_00_01_rhs_01_4.html", null ],
+        [ "IntegerForDigitsAndSignImpl", "structkiwi_1_1internal_1_1_integer_for_digits_and_sign_impl.html", null ],
+        [ "IsEqual", "structkiwi_1_1internal_1_1_is_equal.html", null ],
+        [ "IsGreater", "structkiwi_1_1internal_1_1_is_greater.html", null ],
+        [ "IsGreaterOrEqual", "structkiwi_1_1internal_1_1_is_greater_or_equal.html", null ],
+        [ "IsLess", "structkiwi_1_1internal_1_1_is_less.html", null ],
+        [ "IsLessOrEqual", "structkiwi_1_1internal_1_1_is_less_or_equal.html", null ],
+        [ "IsNotEqual", "structkiwi_1_1internal_1_1_is_not_equal.html", null ],
+        [ "IsValueInRangeFastOp", "structkiwi_1_1internal_1_1_is_value_in_range_fast_op.html", null ],
+        [ "IsValueInRangeFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_is_value_in_range_fast_op_3_01_dst_00_01_src_01_4.html", null ],
+        [ "NarrowingRange", "structkiwi_1_1internal_1_1_narrowing_range.html", null ],
+        [ "RangeCheck", "classkiwi_1_1internal_1_1_range_check.html", null ],
+        [ "ReplacementOffset", "structkiwi_1_1internal_1_1_replacement_offset.html", null ],
+        [ "SaturateFastAsmOp", "structkiwi_1_1internal_1_1_saturate_fast_asm_op.html", null ],
+        [ "SaturateFastOp", "structkiwi_1_1internal_1_1_saturate_fast_op.html", null ],
+        [ "SaturateFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_op_3_01_dst_00_01_src_01_4.html", null ],
+        [ "SaturationDefaultLimits", "structkiwi_1_1internal_1_1_saturation_default_limits.html", null ],
+        [ "ScopedFILECloser", "structkiwi_1_1internal_1_1_scoped_f_i_l_e_closer.html", null ],
+        [ "StrictNumeric", "classkiwi_1_1internal_1_1_strict_numeric.html", null ],
+        [ "SubstringMatcher", "structkiwi_1_1internal_1_1_substring_matcher.html", null ],
+        [ "ToStringHelper", "structkiwi_1_1internal_1_1_to_string_helper.html", null ],
+        [ "ToStringHelper< bool >", "structkiwi_1_1internal_1_1_to_string_helper_3_01bool_01_4.html", null ],
+        [ "ToStringHelper< std::tuple< T... > >", "structkiwi_1_1internal_1_1_to_string_helper_3_01std_1_1tuple_3_01_t_8_8_8_01_4_01_4.html", null ],
+        [ "ToStringHelper< T >", "structkiwi_1_1internal_1_1_to_string_helper_3_01_t_01_4.html", null ],
+        [ "UnderlyingTypeImpl", "structkiwi_1_1internal_1_1_underlying_type_impl.html", null ],
+        [ "UnderlyingTypeImpl< CheckedNumeric< T > >", "structkiwi_1_1internal_1_1_underlying_type_impl_3_01_checked_numeric_3_01_t_01_4_01_4.html", null ],
+        [ "UnderlyingTypeImpl< ClampedNumeric< T > >", "structkiwi_1_1internal_1_1_underlying_type_impl_3_01_clamped_numeric_3_01_t_01_4_01_4.html", null ],
+        [ "UnderlyingTypeImpl< StrictNumeric< T > >", "structkiwi_1_1internal_1_1_underlying_type_impl_3_01_strict_numeric_3_01_t_01_4_01_4.html", null ]
       ] ],
       [ "strings_internal", null, [
         [ "ResizeUninitializedTraits", "structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits.html", null ],
         [ "ResizeUninitializedTraits< string_type, std::void_t< decltype(std::declval< string_type & >() .__resize_default_init(237))> >", "structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_3_01string__type_00_01std_1_1voi910255a708a951398ec96b81ff4fb79c.html", null ]
       ] ],
+      [ "AlignedCharArrayUnion", "structkiwi_1_1_aligned_char_array_union.html", null ],
+      [ "allow_nonunique_obj_t", "structkiwi_1_1allow__nonunique__obj__t.html", null ],
+      [ "basic_cstring_view", "classkiwi_1_1basic__cstring__view.html", null ],
+      [ "BigEndian", "classkiwi_1_1_big_endian.html", null ],
+      [ "CaseInsensitiveCompareASCII", "structkiwi_1_1_case_insensitive_compare_a_s_c_i_i.html", null ],
+      [ "CheckedContiguousIterator", "classkiwi_1_1_checked_contiguous_iterator.html", null ],
       [ "CompressedPair", "classkiwi_1_1_compressed_pair.html", "classkiwi_1_1_compressed_pair" ],
       [ "CompressedPairElem", "classkiwi_1_1_compressed_pair_elem.html", null ],
       [ "CompressedPairElem< Tp, Idx, true >", "classkiwi_1_1_compressed_pair_elem_3_01_tp_00_01_idx_00_01true_01_4.html", null ],
@@ -43,10 +110,23 @@ var annotated_dup =
       [ "explicitly_convertible", "structkiwi_1_1explicitly__convertible.html", null ],
       [ "explicitly_convertible< From, To, std::void_t< decltype(static_cast< To >(std::declval< std::add_rvalue_reference_t< From > >()))> >", "structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942.html", null ],
       [ "fbstring_core", "classkiwi_1_1fbstring__core.html", "classkiwi_1_1fbstring__core" ],
+      [ "File", "classkiwi_1_1_file.html", "classkiwi_1_1_file" ],
       [ "FilePath", "classkiwi_1_1_file_path.html", "classkiwi_1_1_file_path" ],
+      [ "FileTracing", "classkiwi_1_1_file_tracing.html", "classkiwi_1_1_file_tracing" ],
       [ "function_ref", "classkiwi_1_1function__ref.html", null ],
       [ "function_ref< Ret(Params...)>", "classkiwi_1_1function__ref_3_01_ret_07_params_8_8_8_08_4.html", null ],
       [ "FunctionPointerLikeTypeTraits", "structkiwi_1_1_function_pointer_like_type_traits.html", null ],
+      [ "IOBuf", "classkiwi_1_1_i_o_buf.html", "classkiwi_1_1_i_o_buf" ],
+      [ "IOBufCompare", "structkiwi_1_1_i_o_buf_compare.html", null ],
+      [ "IOBufEqualTo", "structkiwi_1_1_i_o_buf_equal_to.html", null ],
+      [ "IOBufGreater", "structkiwi_1_1_i_o_buf_greater.html", null ],
+      [ "IOBufGreaterEqual", "structkiwi_1_1_i_o_buf_greater_equal.html", null ],
+      [ "IOBufHash", "structkiwi_1_1_i_o_buf_hash.html", null ],
+      [ "IOBufLess", "structkiwi_1_1_i_o_buf_less.html", null ],
+      [ "IOBufLessEqual", "structkiwi_1_1_i_o_buf_less_equal.html", null ],
+      [ "IOBufNotEqualTo", "structkiwi_1_1_i_o_buf_not_equal_to.html", null ],
+      [ "LittleEndian", "classkiwi_1_1_little_endian.html", null ],
+      [ "NoDestructor", "classkiwi_1_1_no_destructor.html", null ],
       [ "NotNull", "classkiwi_1_1_not_null.html", "classkiwi_1_1_not_null" ],
       [ "NotNullHash", "structkiwi_1_1_not_null_hash.html", null ],
       [ "NotNullHash< T, U, false >", "structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4.html", null ],
@@ -57,16 +137,23 @@ var annotated_dup =
       [ "PointerLikeTypeTraits< uintptr_t >", "structkiwi_1_1_pointer_like_type_traits_3_01uintptr__t_01_4.html", null ],
       [ "PointerLikeTypeTraits< void * >", "structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4.html", null ],
       [ "SafeBaseName", "classkiwi_1_1_safe_base_name.html", "classkiwi_1_1_safe_base_name" ],
+      [ "ScopedGeneric", "classkiwi_1_1_scoped_generic.html", "classkiwi_1_1_scoped_generic" ],
+      [ "ScopedGenericOwnershipTracking", "structkiwi_1_1_scoped_generic_ownership_tracking.html", null ],
       [ "SmallDenseMap", "classkiwi_1_1_small_dense_map.html", null ],
+      [ "span", "classkiwi_1_1span.html", null ],
+      [ "span< ElementType, dynamic_extent, InternalPtrType >", "classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4.html", null ],
       [ "StrictNotNull", "classkiwi_1_1_strict_not_null.html", "classkiwi_1_1_strict_not_null" ],
+      [ "StrictNumeric", "classkiwi_1_1_strict_numeric.html", null ],
       [ "StringLiteral", "classkiwi_1_1_string_literal.html", null ],
       [ "StringRef", "classkiwi_1_1_string_ref.html", "classkiwi_1_1_string_ref" ],
       [ "ValueInitTag", "structkiwi_1_1_value_init_tag.html", null ]
     ] ],
     [ "std", null, [
+      [ "hash< kiwi::basic_cstring_view< Char > >", "structstd_1_1hash_3_01kiwi_1_1basic__cstring__view_3_01_char_01_4_01_4.html", null ],
       [ "hash< kiwi::FilePath >", "structstd_1_1hash_3_01kiwi_1_1_file_path_01_4.html", null ],
       [ "hash< kiwi::NotNull< T > >", "structstd_1_1hash_3_01kiwi_1_1_not_null_3_01_t_01_4_01_4.html", null ],
-      [ "hash< kiwi::StrictNotNull< T > >", "structstd_1_1hash_3_01kiwi_1_1_strict_not_null_3_01_t_01_4_01_4.html", null ]
+      [ "hash< kiwi::StrictNotNull< T > >", "structstd_1_1hash_3_01kiwi_1_1_strict_not_null_3_01_t_01_4_01_4.html", null ],
+      [ "pointer_traits<::kiwi::CheckedContiguousIterator< T > >", "structstd_1_1pointer__traits_3_1_1kiwi_1_1_checked_contiguous_iterator_3_01_t_01_4_01_4.html", null ]
     ] ],
     [ "RWSpinLock", "class_r_w_spin_lock.html", "class_r_w_spin_lock" ]
 ];

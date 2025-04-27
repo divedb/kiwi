@@ -1,0 +1,11 @@
+\doxysection{kiwi\+::internal\+::Compatible\+Iter Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_compatible_iter}{}\label{conceptkiwi_1_1internal_1_1_compatible_iter}\index{kiwi::internal::CompatibleIter@{kiwi::internal::CompatibleIter}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ It>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{kiwi::internal::CompatibleIter}}\ =\ }
+\DoxyCodeLine{\ \ \ \ std::contiguous\_iterator<It>\ \&\&}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion<std::remove\_reference\_t<std::iter\_reference\_t<It>}}>,\ T>}
+
+\end{DoxyCode}

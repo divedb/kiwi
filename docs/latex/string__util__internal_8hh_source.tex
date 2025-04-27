@@ -1,0 +1,72 @@
+\doxysection{string\+\_\+util\+\_\+internal.\+hh}
+\hypertarget{string__util__internal_8hh_source}{}\label{string__util__internal_8hh_source}\index{include/kiwi/strings/string\_util\_internal.hh@{include/kiwi/strings/string\_util\_internal.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2020\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#ifndef\ BASE\_STRINGS\_STRING\_UTIL\_INTERNAL\_H\_}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ BASE\_STRINGS\_STRING\_UTIL\_INTERNAL\_H\_}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ ASCII-\/specific\ tolower.\ \ The\ standard\ library's\ tolower\ is\ locale\ sensitive,}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ so\ we\ don't\ want\ to\ use\ it\ here.}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{requires}(std::integral<CharT>)}
+\DoxyCodeLine{00019\ \textcolor{keyword}{constexpr}\ CharT\ ToLowerASCII(CharT\ c)\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordflow}{return}\ (c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'})\ ?\ (c\ +\ (\textcolor{charliteral}{'a'}\ -\/\ \textcolor{charliteral}{'A'}))\ :\ c;}
+\DoxyCodeLine{00021\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{requires}(std::integral<typename\ T::value\_type>)}
+\DoxyCodeLine{00025\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ CompareCaseInsensitiveASCIIT(T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ Find\ the\ first\ characters\ that\ aren't\ equal\ and\ compare\ them.\ \ If\ the\ end}}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ of\ one\ of\ the\ strings\ is\ found\ before\ a\ nonequal\ character,\ the\ lengths}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ of\ the\ strings\ are\ compared.\ Compare\ using\ the\ unsigned\ type\ so\ the\ sort}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ order\ is\ independent\ of\ the\ signedness\ of\ \`{}char`.}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{using\ }UCharT\ =\ std::make\_unsigned\_t<typename\ T::value\_type>;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{while}\ (i\ <\ a.length()\ \&\&\ i\ <\ b.length())\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ UCharT\ lower\_a\ =\ \textcolor{keyword}{static\_cast<}UCharT\textcolor{keyword}{>}(ToLowerASCII(a[i]));}
+\DoxyCodeLine{00034\ \ \ \ \ UCharT\ lower\_b\ =\ \textcolor{keyword}{static\_cast<}UCharT\textcolor{keyword}{>}(ToLowerASCII(b[i]));}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (lower\_a\ <\ lower\_b)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (lower\_a\ >\ lower\_b)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ i++;}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ End\ of\ one\ string\ hit\ before\ finding\ a\ different\ character.\ Expect\ the}}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ common\ case\ to\ be\ "{}strings\ equal"{}\ at\ this\ point\ so\ check\ that\ first.}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordflow}{if}\ (a.length()\ ==\ b.length())\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordflow}{if}\ (a.length()\ <\ b.length())\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00054\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keyword}{typename}\ CharU>}
+\DoxyCodeLine{00057\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ EqualsCaseInsensitiveASCIIT(std::basic\_string\_view<CharT>\ a,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::basic\_string\_view<CharU>\ b)\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordflow}{return}\ std::ranges::equal(a,\ b,\ [](\textcolor{keyword}{auto}\ lhs,\ \textcolor{keyword}{auto}\ rhs)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ ToLowerASCII(lhs)\ ==\ ToLowerASCII(rhs);}
+\DoxyCodeLine{00061\ \ \ \});}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_STRINGS\_STRING\_UTIL\_INTERNAL\_H\_}}
+
+\end{DoxyCode}

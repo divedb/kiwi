@@ -1,0 +1,49 @@
+\doxysection{utf\+\_\+ostream\+\_\+operators.\+hh}
+\hypertarget{utf__ostream__operators_8hh_source}{}\label{utf__ostream__operators_8hh_source}\index{include/kiwi/strings/utf\_ostream\_operators.hh@{include/kiwi/strings/utf\_ostream\_operators.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2023\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <iosfwd>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ Note\ that\ "{}The\ behavior\ of\ a\ C++\ program\ is\ undefined\ if\ it\ adds\ declarations}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ or\ definitions\ to\ namespace\ std\ or\ to\ a\ namespace\ within\ namespace\ std\ unless}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ otherwise\ specified."{}\ -\/-\/C++11[namespace.std]}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ We've\ checked\ that\ this\ particular\ definition\ has\ the\ intended\ behavior\ on}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ our\ implementations,\ but\ it's\ prone\ to\ breaking\ in\ the\ future,\ and\ please}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ don't\ imitate\ this\ in\ your\ own\ definitions\ without\ checking\ with\ some}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ standard\ library\ experts.}}
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }std\ \{}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ These\ functions\ are\ provided\ as\ a\ convenience\ for\ logging,\ which\ is\ where\ we}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ use\ streams\ (it\ is\ against\ Google\ style\ to\ use\ streams\ in\ other\ places).\ It}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ is\ designed\ to\ allow\ you\ to\ emit\ non-\/ASCII\ Unicode\ strings\ to\ the\ log\ file,}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ which\ is\ normally\ ASCII.\ It\ is\ relatively\ slow,\ so\ try\ not\ to\ use\ it\ for}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ common\ cases.\ Non-\/ASCII\ characters\ will\ be\ converted\ to\ UTF-\/8\ by\ these}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ operators.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ The\ \`{}std::basic\_string<T>`\ overloads\ are\ necessary\ to\ allow\ logging\ types}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ which\ are\ implicitly\ convertible\ to\ \`{}std::basic\_string<T>`.\ Simply\ taking}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \`{}std::basic\_string\_view<T>`\ would\ not\ work\ because\ C++\ only\ allows\ one}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ implicit\ conversion.}}
+\DoxyCodeLine{00033\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ wstr);}
+\DoxyCodeLine{00034\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,\ std::wstring\_view\ wstr);}
+\DoxyCodeLine{00035\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::wstring\&\ wstr);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}*\ str16);}
+\DoxyCodeLine{00039\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ str16);}
+\DoxyCodeLine{00041\ BASE\_EXPORT\ std::ostream\&\ operator<<(std::ostream\&\ out,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::u16string\&\ str16);}
+\DoxyCodeLine{00043\ \}\ \ \textcolor{comment}{//\ namespace\ std}}
+
+\end{DoxyCode}

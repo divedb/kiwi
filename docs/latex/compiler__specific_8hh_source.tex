@@ -1,5 +1,5 @@
 \doxysection{compiler\+\_\+specific.\+hh}
-\hypertarget{compiler__specific_8hh_source}{}\label{compiler__specific_8hh_source}\index{include/kiwi/config/compiler\_specific.hh@{include/kiwi/config/compiler\_specific.hh}}
+\hypertarget{compiler__specific_8hh_source}{}\label{compiler__specific_8hh_source}\index{include/kiwi/portability/compiler\_specific.hh@{include/kiwi/portability/compiler\_specific.hh}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
@@ -8,7 +8,7 @@
 \DoxyCodeLine{00004\ }
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}kiwi/config/build\_config.hh"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
 \DoxyCodeLine{00008\ }
 \DoxyCodeLine{00009\ \textcolor{preprocessor}{\#if\ defined(COMPILER\_MSVC)\ \&\&\ !defined(\_\_clang\_\_)}}
 \DoxyCodeLine{00010\ \textcolor{preprocessor}{\#error\ "{}Only\ clang-\/cl\ is\ supported\ on\ Windows,\ see\ https://crbug.com/988071"{}}}
@@ -1040,80 +1040,130 @@
 \DoxyCodeLine{01036\ \textcolor{comment}{//\ Disabling\ \`{}clang-\/format`\ allows\ each\ \`{}\_Pragma`\ to\ be\ on\ its\ own\ line,\ as}}
 \DoxyCodeLine{01037\ \textcolor{comment}{//\ recommended\ by\ https://gcc.gnu.org/onlinedocs/cpp/Pragmas.html.}}
 \DoxyCodeLine{01038\ \textcolor{comment}{//\ clang-\/format\ off}}
-\DoxyCodeLine{01039\ \textcolor{preprocessor}{\#define\ UNSAFE\_BUFFERS(...)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{01040\ \textcolor{preprocessor}{\ \ \_Pragma("{}clang\ unsafe\_buffer\_usage\ begin"{})\ \(\backslash\)}}
-\DoxyCodeLine{01041\ \textcolor{preprocessor}{\ \ \_\_VA\_ARGS\_\_\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{01042\ \textcolor{preprocessor}{\ \ \_Pragma("{}clang\ unsafe\_buffer\_usage\ end"{})}}
-\DoxyCodeLine{01043\ \textcolor{comment}{//\ clang-\/format\ on}}
-\DoxyCodeLine{01044\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01039\ \textcolor{comment}{//\ \#define\ UNSAFE\_BUFFERS(...)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01040\ \textcolor{comment}{//\ \ \ \_Pragma("{}clang\ unsafe\_buffer\_usage\ begin"{})\ \(\backslash\)}}
+\DoxyCodeLine{01041\ \textcolor{comment}{//\ \ \ \_\_VA\_ARGS\_\_\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01042\ \textcolor{comment}{//\ \ \ \_Pragma("{}clang\ unsafe\_buffer\_usage\ end"{})}}
+\DoxyCodeLine{01043\ }
+\DoxyCodeLine{01044\ \textcolor{comment}{//\ TODO(gc):\ unknown\ pragma,\ modify\ later.}}
 \DoxyCodeLine{01045\ \textcolor{preprocessor}{\#define\ UNSAFE\_BUFFERS(...)\ \_\_VA\_ARGS\_\_}}
-\DoxyCodeLine{01046\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{01047\ }
-\DoxyCodeLine{01048\ \textcolor{comment}{//\ Annotates\ code\ indicating\ that\ it\ should\ be\ temporarily\ exempted\ from}}
-\DoxyCodeLine{01049\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`.\ While\ this\ is\ functionally\ the\ same\ as}}
-\DoxyCodeLine{01050\ \textcolor{comment}{//\ \`{}UNSAFE\_BUFFERS()`,\ semantically\ it\ indicates\ that\ this\ is\ for\ migration}}
-\DoxyCodeLine{01051\ \textcolor{comment}{//\ purposes,\ and\ should\ be\ cleaned\ up\ as\ soon\ as\ possible.}}
-\DoxyCodeLine{01052\ \textcolor{comment}{//}}
-\DoxyCodeLine{01053\ \textcolor{comment}{//\ Usage:}}
-\DoxyCodeLine{01054\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{01055\ \textcolor{comment}{//\ \ \ //\ The\ following\ call\ will\ not\ trigger\ a\ compiler\ warning\ even\ if\ \`{}Func()`}}
-\DoxyCodeLine{01056\ \textcolor{comment}{//\ \ \ //\ is\ annotated\ \`{}UNSAFE\_BUFFER\_USAGE`.}}
-\DoxyCodeLine{01057\ \textcolor{comment}{//\ \ \ return\ UNSAFE\_TODO(Func(input,\ end));}}
-\DoxyCodeLine{01058\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{01059\ \textcolor{preprocessor}{\#define\ UNSAFE\_TODO(...)\ UNSAFE\_BUFFERS(\_\_VA\_ARGS\_\_)}}
-\DoxyCodeLine{01060\ }
-\DoxyCodeLine{01061\ \textcolor{comment}{//\ Annotates\ a\ function\ restricting\ its\ availability\ based\ on\ compile-\/time}}
-\DoxyCodeLine{01062\ \textcolor{comment}{//\ information\ in\ the\ evaluated\ context.\ Useful\ to\ convert\ runtime\ errors\ to}}
-\DoxyCodeLine{01063\ \textcolor{comment}{//\ compile-\/time\ errors\ if\ functions'\ arguments\ are\ always\ known\ at\ compile\ time.}}
-\DoxyCodeLine{01064\ \textcolor{comment}{//}}
-\DoxyCodeLine{01065\ \textcolor{comment}{//\ SFINAE\ and\ \`{}requires`\ clauses\ can\ restrict\ function\ availability\ based\ on\ the}}
-\DoxyCodeLine{01066\ \textcolor{comment}{//\ unevaluated\ context\ (type\ information\ and\ syntactic\ correctness).\ This}}
-\DoxyCodeLine{01067\ \textcolor{comment}{//\ provides\ a\ similar\ capability\ based\ on\ the\ evaluated\ context\ (variable}}
-\DoxyCodeLine{01068\ \textcolor{comment}{//\ values).\ If\ the\ condition\ fails,\ or\ cannot\ be\ determined\ at\ compile\ time,\ the}}
-\DoxyCodeLine{01069\ \textcolor{comment}{//\ function\ is\ excluded\ from\ the\ overload\ set.}}
-\DoxyCodeLine{01070\ \textcolor{comment}{//}}
-\DoxyCodeLine{01071\ \textcolor{comment}{//\ Some\ use\ cases\ could\ be\ satisfied\ without\ this\ by\ marking\ the\ function}}
-\DoxyCodeLine{01072\ \textcolor{comment}{//\ \`{}consteval`\ and\ breaking\ compile\ when\ the\ condition\ fails\ (e.g.\ via}}
-\DoxyCodeLine{01073\ \textcolor{comment}{//\ \`{}CHECK()`/`assert()`).\ However,\ \`{}ENABLE\_IF\_ATTR()`\ is\ generally\ superior:}}
-\DoxyCodeLine{01074\ \textcolor{comment}{//\ \ \ -\/\ Not\ all\ desired\ functions\ can\ be\ made\ \`{}consteval`;\ e.g.\ most}}
-\DoxyCodeLine{01075\ \textcolor{comment}{//\ \ \ \ \ constructors.}}
-\DoxyCodeLine{01076\ \textcolor{comment}{//\ \ \ -\/\ The\ error\ message\ in\ the\ macro\ case\ is\ clearer\ and\ more\ actionable.}}
-\DoxyCodeLine{01077\ \textcolor{comment}{//\ \ \ -\/\ \`{}ENABLE\_IF\_ATTR()`\ interacts\ better\ with\ template\ metaprogramming.}}
-\DoxyCodeLine{01078\ \textcolor{comment}{//}}
-\DoxyCodeLine{01079\ \textcolor{comment}{//\ See\ also:}}
-\DoxyCodeLine{01080\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#enable-\/if}}
-\DoxyCodeLine{01081\ \textcolor{comment}{//\ \ \ https://github.com/chromium/subspace/issues/266}}
-\DoxyCodeLine{01082\ \textcolor{comment}{//}}
-\DoxyCodeLine{01083\ \textcolor{comment}{//\ Usage:}}
-\DoxyCodeLine{01084\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{01085\ \textcolor{comment}{//\ \ \ void\ NotConsteval(int\ a)\ \{}}
-\DoxyCodeLine{01086\ \textcolor{comment}{//\ \ \ \ \ assert(a\ >\ 0);}}
-\DoxyCodeLine{01087\ \textcolor{comment}{//\ \ \ \}}}
-\DoxyCodeLine{01088\ \textcolor{comment}{//\ \ \ consteval\ void\ WithoutEnableIf(int\ a)\ \{}}
+\DoxyCodeLine{01046\ \textcolor{comment}{//\ clang-\/format\ on}}
+\DoxyCodeLine{01047\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01048\ \textcolor{preprocessor}{\#define\ UNSAFE\_BUFFERS(...)\ \_\_VA\_ARGS\_\_}}
+\DoxyCodeLine{01049\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01050\ }
+\DoxyCodeLine{01051\ \textcolor{comment}{//\ Annotates\ code\ indicating\ that\ it\ should\ be\ temporarily\ exempted\ from}}
+\DoxyCodeLine{01052\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`.\ While\ this\ is\ functionally\ the\ same\ as}}
+\DoxyCodeLine{01053\ \textcolor{comment}{//\ \`{}UNSAFE\_BUFFERS()`,\ semantically\ it\ indicates\ that\ this\ is\ for\ migration}}
+\DoxyCodeLine{01054\ \textcolor{comment}{//\ purposes,\ and\ should\ be\ cleaned\ up\ as\ soon\ as\ possible.}}
+\DoxyCodeLine{01055\ \textcolor{comment}{//}}
+\DoxyCodeLine{01056\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{01057\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{01058\ \textcolor{comment}{//\ \ \ //\ The\ following\ call\ will\ not\ trigger\ a\ compiler\ warning\ even\ if\ \`{}Func()`}}
+\DoxyCodeLine{01059\ \textcolor{comment}{//\ \ \ //\ is\ annotated\ \`{}UNSAFE\_BUFFER\_USAGE`.}}
+\DoxyCodeLine{01060\ \textcolor{comment}{//\ \ \ return\ UNSAFE\_TODO(Func(input,\ end));}}
+\DoxyCodeLine{01061\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{01062\ \textcolor{preprocessor}{\#define\ UNSAFE\_TODO(...)\ UNSAFE\_BUFFERS(\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{01063\ }
+\DoxyCodeLine{01064\ \textcolor{comment}{//\ Annotates\ a\ function\ restricting\ its\ availability\ based\ on\ compile-\/time}}
+\DoxyCodeLine{01065\ \textcolor{comment}{//\ information\ in\ the\ evaluated\ context.\ Useful\ to\ convert\ runtime\ errors\ to}}
+\DoxyCodeLine{01066\ \textcolor{comment}{//\ compile-\/time\ errors\ if\ functions'\ arguments\ are\ always\ known\ at\ compile\ time.}}
+\DoxyCodeLine{01067\ \textcolor{comment}{//}}
+\DoxyCodeLine{01068\ \textcolor{comment}{//\ SFINAE\ and\ \`{}requires`\ clauses\ can\ restrict\ function\ availability\ based\ on\ the}}
+\DoxyCodeLine{01069\ \textcolor{comment}{//\ unevaluated\ context\ (type\ information\ and\ syntactic\ correctness).\ This}}
+\DoxyCodeLine{01070\ \textcolor{comment}{//\ provides\ a\ similar\ capability\ based\ on\ the\ evaluated\ context\ (variable}}
+\DoxyCodeLine{01071\ \textcolor{comment}{//\ values).\ If\ the\ condition\ fails,\ or\ cannot\ be\ determined\ at\ compile\ time,\ the}}
+\DoxyCodeLine{01072\ \textcolor{comment}{//\ function\ is\ excluded\ from\ the\ overload\ set.}}
+\DoxyCodeLine{01073\ \textcolor{comment}{//}}
+\DoxyCodeLine{01074\ \textcolor{comment}{//\ Some\ use\ cases\ could\ be\ satisfied\ without\ this\ by\ marking\ the\ function}}
+\DoxyCodeLine{01075\ \textcolor{comment}{//\ \`{}consteval`\ and\ breaking\ compile\ when\ the\ condition\ fails\ (e.g.\ via}}
+\DoxyCodeLine{01076\ \textcolor{comment}{//\ \`{}CHECK()`/`assert()`).\ However,\ \`{}ENABLE\_IF\_ATTR()`\ is\ generally\ superior:}}
+\DoxyCodeLine{01077\ \textcolor{comment}{//\ \ \ -\/\ Not\ all\ desired\ functions\ can\ be\ made\ \`{}consteval`;\ e.g.\ most}}
+\DoxyCodeLine{01078\ \textcolor{comment}{//\ \ \ \ \ constructors.}}
+\DoxyCodeLine{01079\ \textcolor{comment}{//\ \ \ -\/\ The\ error\ message\ in\ the\ macro\ case\ is\ clearer\ and\ more\ actionable.}}
+\DoxyCodeLine{01080\ \textcolor{comment}{//\ \ \ -\/\ \`{}ENABLE\_IF\_ATTR()`\ interacts\ better\ with\ template\ metaprogramming.}}
+\DoxyCodeLine{01081\ \textcolor{comment}{//}}
+\DoxyCodeLine{01082\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{01083\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#enable-\/if}}
+\DoxyCodeLine{01084\ \textcolor{comment}{//\ \ \ https://github.com/chromium/subspace/issues/266}}
+\DoxyCodeLine{01085\ \textcolor{comment}{//}}
+\DoxyCodeLine{01086\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{01087\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{01088\ \textcolor{comment}{//\ \ \ void\ NotConsteval(int\ a)\ \{}}
 \DoxyCodeLine{01089\ \textcolor{comment}{//\ \ \ \ \ assert(a\ >\ 0);}}
 \DoxyCodeLine{01090\ \textcolor{comment}{//\ \ \ \}}}
-\DoxyCodeLine{01091\ \textcolor{comment}{//\ \ \ void\ WithEnableIf(int\ a)\ ENABLE\_IF\_ATTR(a\ >\ 0,\ "{}arg\ must\ be\ positive"{})\ \{\}}}
-\DoxyCodeLine{01092\ \textcolor{comment}{//\ \ \ void\ Func(int\ i)\ \{}}
-\DoxyCodeLine{01093\ \textcolor{comment}{//\ \ \ \ \ //\ Compiles;\ assertion\ fails\ at\ runtime.}}
-\DoxyCodeLine{01094\ \textcolor{comment}{//\ \ \ \ \ NotConsteval(-\/1);}}
-\DoxyCodeLine{01095\ \textcolor{comment}{//}}
-\DoxyCodeLine{01096\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile;\ diagnosed\ as\ not\ a\ constant\ expression.}}
-\DoxyCodeLine{01097\ \textcolor{comment}{//\ \ \ \ \ WithoutEnableIf(-\/1);}}
+\DoxyCodeLine{01091\ \textcolor{comment}{//\ \ \ consteval\ void\ WithoutEnableIf(int\ a)\ \{}}
+\DoxyCodeLine{01092\ \textcolor{comment}{//\ \ \ \ \ assert(a\ >\ 0);}}
+\DoxyCodeLine{01093\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{01094\ \textcolor{comment}{//\ \ \ void\ WithEnableIf(int\ a)\ ENABLE\_IF\_ATTR(a\ >\ 0,\ "{}arg\ must\ be\ positive"{})\ \{\}}}
+\DoxyCodeLine{01095\ \textcolor{comment}{//\ \ \ void\ Func(int\ i)\ \{}}
+\DoxyCodeLine{01096\ \textcolor{comment}{//\ \ \ \ \ //\ Compiles;\ assertion\ fails\ at\ runtime.}}
+\DoxyCodeLine{01097\ \textcolor{comment}{//\ \ \ \ \ NotConsteval(-\/1);}}
 \DoxyCodeLine{01098\ \textcolor{comment}{//}}
-\DoxyCodeLine{01099\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile;\ diagnosed\ as\ no\ matching\ function\ call\ with}}
-\DoxyCodeLine{01100\ \textcolor{comment}{//\ \ \ \ \ //\ "{}note:\ candidate\ disabled:\ arg\ must\ be\ positive"{}.}}
-\DoxyCodeLine{01101\ \textcolor{comment}{//\ \ \ \ \ WithEnableIf(-\/1);}}
-\DoxyCodeLine{01102\ \textcolor{comment}{//}}
-\DoxyCodeLine{01103\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile\ (same\ reason).\ Marking\ \`{}Func()`\ as}}
-\DoxyCodeLine{01104\ \textcolor{comment}{//\ \ \ \ \ //\ \`{}ENABLE\_IF\_ATTR(i\ >\ 0,\ ...)`\ will\ not\ help;\ the\ compiler's\ analysis\ is}}
-\DoxyCodeLine{01105\ \textcolor{comment}{//\ \ \ \ \ //\ not\ sufficiently\ sophisticated\ to\ propagate\ this\ constraint.}}
-\DoxyCodeLine{01106\ \textcolor{comment}{//\ \ \ \ \ WithEnableIf(i);}}
-\DoxyCodeLine{01107\ \textcolor{comment}{//\ \ \ \}}}
-\DoxyCodeLine{01108\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{01109\ \textcolor{preprocessor}{\#if\ HAS\_ATTRIBUTE(enable\_if)}}
-\DoxyCodeLine{01110\ \textcolor{preprocessor}{\#define\ ENABLE\_IF\_ATTR(cond,\ msg)\ \_\_attribute\_\_((enable\_if(cond,\ msg)))}}
-\DoxyCodeLine{01111\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{01112\ \textcolor{preprocessor}{\#define\ ENABLE\_IF\_ATTR(cond,\ msg)}}
-\DoxyCodeLine{01113\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01099\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile;\ diagnosed\ as\ not\ a\ constant\ expression.}}
+\DoxyCodeLine{01100\ \textcolor{comment}{//\ \ \ \ \ WithoutEnableIf(-\/1);}}
+\DoxyCodeLine{01101\ \textcolor{comment}{//}}
+\DoxyCodeLine{01102\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile;\ diagnosed\ as\ no\ matching\ function\ call\ with}}
+\DoxyCodeLine{01103\ \textcolor{comment}{//\ \ \ \ \ //\ "{}note:\ candidate\ disabled:\ arg\ must\ be\ positive"{}.}}
+\DoxyCodeLine{01104\ \textcolor{comment}{//\ \ \ \ \ WithEnableIf(-\/1);}}
+\DoxyCodeLine{01105\ \textcolor{comment}{//}}
+\DoxyCodeLine{01106\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile\ (same\ reason).\ Marking\ \`{}Func()`\ as}}
+\DoxyCodeLine{01107\ \textcolor{comment}{//\ \ \ \ \ //\ \`{}ENABLE\_IF\_ATTR(i\ >\ 0,\ ...)`\ will\ not\ help;\ the\ compiler's\ analysis\ is}}
+\DoxyCodeLine{01108\ \textcolor{comment}{//\ \ \ \ \ //\ not\ sufficiently\ sophisticated\ to\ propagate\ this\ constraint.}}
+\DoxyCodeLine{01109\ \textcolor{comment}{//\ \ \ \ \ WithEnableIf(i);}}
+\DoxyCodeLine{01110\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{01111\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{01112\ \textcolor{preprocessor}{\#if\ HAS\_ATTRIBUTE(enable\_if)}}
+\DoxyCodeLine{01113\ \textcolor{preprocessor}{\#define\ ENABLE\_IF\_ATTR(cond,\ msg)\ \_\_attribute\_\_((enable\_if(cond,\ msg)))}}
+\DoxyCodeLine{01114\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01115\ \textcolor{preprocessor}{\#define\ ENABLE\_IF\_ATTR(cond,\ msg)}}
+\DoxyCodeLine{01116\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01117\ }
+\DoxyCodeLine{01118\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{01119\ \textcolor{preprocessor}{\#define\ UNREACHABLE()\ \_\_assume(0)}}
+\DoxyCodeLine{01120\ \textcolor{preprocessor}{\#elif\ defined(\_\_GNUC\_\_)\ ||\ defined(\_\_clang\_\_)}}
+\DoxyCodeLine{01121\ \textcolor{preprocessor}{\#define\ UNREACHABLE()\ \_\_builtin\_unreachable()}}
+\DoxyCodeLine{01122\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01123\ \textcolor{preprocessor}{\#define\ UNREACHABLE()\ \(\backslash\)}}
+\DoxyCodeLine{01124\ \textcolor{preprocessor}{\ \ do\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01125\ \textcolor{preprocessor}{\ \ \}\ while\ (0)}}
+\DoxyCodeLine{01126\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01127\ }
+\DoxyCodeLine{01128\ \textcolor{comment}{//\ Generalize\ warning\ push/pop.}}
+\DoxyCodeLine{01129\ \textcolor{preprocessor}{\#if\ defined(\_\_GNUC\_\_)\ ||\ defined(\_\_clang\_\_)}}
+\DoxyCodeLine{01130\ \textcolor{comment}{//\ Clang\ \&\ GCC}}
+\DoxyCodeLine{01131\ \textcolor{preprocessor}{\#define\ KIWI\_PUSH\_WARNING\ \_Pragma("{}GCC\ diagnostic\ push"{})}}
+\DoxyCodeLine{01132\ \textcolor{preprocessor}{\#define\ KIWI\_POP\_WARNING\ \_Pragma("{}GCC\ diagnostic\ pop"{})}}
+\DoxyCodeLine{01133\ \textcolor{preprocessor}{\#define\ KIWI\_GNU\_DISABLE\_WARNING\_INTERNAL2(warning\_name)\ \#warning\_name}}
+\DoxyCodeLine{01134\ \textcolor{preprocessor}{\#define\ KIWI\_GNU\_DISABLE\_WARNING(warning\_name)\ \(\backslash\)}}
+\DoxyCodeLine{01135\ \textcolor{preprocessor}{\ \ \_Pragma(\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01136\ \textcolor{preprocessor}{\ \ \ \ \ \ KIWI\_GNU\_DISABLE\_WARNING\_INTERNAL2(GCC\ diagnostic\ ignored\ warning\_name))}}
+\DoxyCodeLine{01137\ \textcolor{preprocessor}{\#ifdef\ \_\_clang\_\_}}
+\DoxyCodeLine{01138\ \textcolor{preprocessor}{\#define\ KIWI\_CLANG\_DISABLE\_WARNING(warning\_name)\ \(\backslash\)}}
+\DoxyCodeLine{01139\ \textcolor{preprocessor}{\ \ KIWI\_GNU\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01140\ \textcolor{preprocessor}{\#define\ KIWI\_GCC\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01141\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01142\ \textcolor{preprocessor}{\#define\ KIWI\_CLANG\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01143\ \textcolor{preprocessor}{\#define\ KIWI\_GCC\_DISABLE\_WARNING(warning\_name)\ \(\backslash\)}}
+\DoxyCodeLine{01144\ \textcolor{preprocessor}{\ \ KIWI\_GNU\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01145\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01146\ \textcolor{preprocessor}{\#define\ KIWI\_MSVC\_DISABLE\_WARNING(warning\_number)}}
+\DoxyCodeLine{01147\ \textcolor{preprocessor}{\#elif\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{01148\ \textcolor{preprocessor}{\#define\ KIWI\_PUSH\_WARNING\ \_\_pragma(warning(push))}}
+\DoxyCodeLine{01149\ \textcolor{preprocessor}{\#define\ KIWI\_POP\_WARNING\ \_\_pragma(warning(pop))}}
+\DoxyCodeLine{01150\ \textcolor{comment}{//\ Disable\ the\ GCC\ warnings.}}
+\DoxyCodeLine{01151\ \textcolor{preprocessor}{\#define\ KIWI\_GNU\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01152\ \textcolor{preprocessor}{\#define\ KIWI\_GCC\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01153\ \textcolor{preprocessor}{\#define\ KIWI\_CLANG\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01154\ \textcolor{preprocessor}{\#define\ KIWI\_MSVC\_DISABLE\_WARNING(warning\_number)\ \(\backslash\)}}
+\DoxyCodeLine{01155\ \textcolor{preprocessor}{\ \ \_\_pragma(warning(disable\ :\ warning\_number))}}
+\DoxyCodeLine{01156\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01157\ \textcolor{preprocessor}{\#define\ KIWI\_PUSH\_WARNING}}
+\DoxyCodeLine{01158\ \textcolor{preprocessor}{\#define\ KIWI\_POP\_WARNING}}
+\DoxyCodeLine{01159\ \textcolor{preprocessor}{\#define\ KIWI\_GNU\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01160\ \textcolor{preprocessor}{\#define\ KIWI\_GCC\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01161\ \textcolor{preprocessor}{\#define\ KIWI\_CLANG\_DISABLE\_WARNING(warning\_name)}}
+\DoxyCodeLine{01162\ \textcolor{preprocessor}{\#define\ KIWI\_MSVC\_DISABLE\_WARNING(warning\_number)}}
+\DoxyCodeLine{01163\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

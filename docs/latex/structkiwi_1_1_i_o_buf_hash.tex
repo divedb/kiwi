@@ -1,0 +1,27 @@
+\doxysection{kiwi\+::IOBuf\+Hash Struct Reference}
+\hypertarget{structkiwi_1_1_i_o_buf_hash}{}\label{structkiwi_1_1_i_o_buf_hash}\index{kiwi::IOBufHash@{kiwi::IOBufHash}}
+
+
+{\ttfamily \#include $<$iobuf.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_hash_add6dca5707d34802c53b694cf12d1f54}\label{structkiwi_1_1_i_o_buf_hash_add6dca5707d34802c53b694cf12d1f54} 
+size\+\_\+t {\bfseries operator()} (const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&buf) const noexcept
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_hash_a5f5294fa55719d951408cdc4dc2a0cee}\label{structkiwi_1_1_i_o_buf_hash_a5f5294fa55719d951408cdc4dc2a0cee} 
+size\+\_\+t {\bfseries operator()} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&buf) const noexcept
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_hash_aa996abdbb07607c18b09985d0fb1487a}\label{structkiwi_1_1_i_o_buf_hash_aa996abdbb07607c18b09985d0fb1487a} 
+size\+\_\+t {\bfseries operator()} (const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*}buf) const noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Hasher for \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects. Hashes the entire chain using Spooky\+Hash\+V2. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/io/iobuf.\+hh\item 
+src/io/iobuf.\+cc\end{DoxyCompactItemize}

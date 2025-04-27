@@ -1,0 +1,135 @@
+\doxysection{kiwi\+::Scoped\+Generic\texorpdfstring{$<$}{<} T, Traits \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_scoped_generic}{}\label{classkiwi_1_1_scoped_generic}\index{kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_scoped_generic_1_1_receiver}{Receiver}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a719bc7fe3a43c00110b97bfc848021d2}\label{classkiwi_1_1_scoped_generic_a719bc7fe3a43c00110b97bfc848021d2} 
+using {\bfseries element\+\_\+type} = T
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a60e31a2926145134f8368d838485d8b4}\label{classkiwi_1_1_scoped_generic_a60e31a2926145134f8368d838485d8b4} 
+using {\bfseries traits\+\_\+type} = Traits
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}\label{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68} 
+{\bfseries Scoped\+Generic} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. Creates a \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} holding the invalid value. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic_ab0af4d0592bd5e04e26b77b7b1421790}{Scoped\+Generic}} (const element\+\_\+type \&value)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a196904e0719262616712ccf336e9759a}{Scoped\+Generic}} (const element\+\_\+type \&value, const traits\+\_\+type \&traits)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a4a08a761fd1fa75ee99ac6e901c42d70}{Scoped\+Generic}} (\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&\&rvalue)
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_ac03912ea58f97fbeaca2dbf7e7a33c28}\label{classkiwi_1_1_scoped_generic_ac03912ea58f97fbeaca2dbf7e7a33c28} 
+{\bfseries Scoped\+Generic} (const \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a99fea3b53dbf95bc457b7ee95c5d0487}\label{classkiwi_1_1_scoped_generic_a99fea3b53dbf95bc457b7ee95c5d0487} 
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a6b63edeb0c531e98e9d3b0a7a3ab0bbf}\label{classkiwi_1_1_scoped_generic_a6b63edeb0c531e98e9d3b0a7a3ab0bbf} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Scoped\+Generic} ()
+\begin{DoxyCompactList}\small\item\em Destructor. Frees the owned resource if it is valid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}} \& \mbox{\hyperlink{classkiwi_1_1_scoped_generic_ae0b7bd0251f6b850caf247e25ca05882}{operator=}} (\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&\&rvalue)
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5}\label{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5} 
+void {\bfseries Reset} (const element\+\_\+type \&value=traits\+\_\+type\+::\+Invalid\+Value())
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_abf18fb0e144de3661e26fc08a5da968a}\label{classkiwi_1_1_scoped_generic_abf18fb0e144de3661e26fc08a5da968a} 
+element\+\_\+type {\bfseries Release} ()
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a6c98540ab77344d0b834dfac58cc9c2b}\label{classkiwi_1_1_scoped_generic_a6c98540ab77344d0b834dfac58cc9c2b} 
+const element\+\_\+type \& {\bfseries get} () const
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a32e4b8ec645a45bc469262fac5dfc90b}\label{classkiwi_1_1_scoped_generic_a32e4b8ec645a45bc469262fac5dfc90b} 
+bool {\bfseries is\+\_\+valid} () const
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_af5e9075f35eb6991a9260a14288096f1}\label{classkiwi_1_1_scoped_generic_af5e9075f35eb6991a9260a14288096f1} 
+bool {\bfseries operator==} (const element\+\_\+type \&value) const
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_a0d0bbd350e7b473dacce69c8ede99a8a}\label{classkiwi_1_1_scoped_generic_a0d0bbd350e7b473dacce69c8ede99a8a} 
+bool {\bfseries operator!=} (const element\+\_\+type \&value) const
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_ae67232254eb9c3e1b43a7bdc0f6123ae}\label{classkiwi_1_1_scoped_generic_ae67232254eb9c3e1b43a7bdc0f6123ae} 
+Traits \& {\bfseries get\+\_\+traits} () LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_scoped_generic_aa41c529441a4a1f2329285bda117c16f}\label{classkiwi_1_1_scoped_generic_aa41c529441a4a1f2329285bda117c16f} 
+const Traits \& {\bfseries get\+\_\+traits} () const LIFETIME\+\_\+\+BOUND
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_scoped_generic_ab0af4d0592bd5e04e26b77b7b1421790}\index{kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}!ScopedGeneric@{ScopedGeneric}}
+\index{ScopedGeneric@{ScopedGeneric}!kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}}
+\doxysubsubsection{\texorpdfstring{ScopedGeneric()}{ScopedGeneric()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_scoped_generic_ab0af4d0592bd5e04e26b77b7b1421790} 
+template$<$typename T, typename Traits$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{kiwi\+::\+Scoped\+Generic}}$<$ T, Traits $>$\+::\+Scoped\+Generic (\begin{DoxyParamCaption}\item[{const element\+\_\+type \&}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+Constructor. Takes responsibility for freeing the resource associated with the object T.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The resource object to take ownership of. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_scoped_generic_a196904e0719262616712ccf336e9759a}\index{kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}!ScopedGeneric@{ScopedGeneric}}
+\index{ScopedGeneric@{ScopedGeneric}!kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}}
+\doxysubsubsection{\texorpdfstring{ScopedGeneric()}{ScopedGeneric()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_scoped_generic_a196904e0719262616712ccf336e9759a} 
+template$<$typename T, typename Traits$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{kiwi\+::\+Scoped\+Generic}}$<$ T, Traits $>$\+::\+Scoped\+Generic (\begin{DoxyParamCaption}\item[{const element\+\_\+type \&}]{value}{, }\item[{const traits\+\_\+type \&}]{traits}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor. Allows initialization of a stateful traits object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The resource object to take ownership of. \\
+\hline
+{\em traits} & The stateful traits object to copy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_scoped_generic_a4a08a761fd1fa75ee99ac6e901c42d70}\index{kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}!ScopedGeneric@{ScopedGeneric}}
+\index{ScopedGeneric@{ScopedGeneric}!kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}}
+\doxysubsubsection{\texorpdfstring{ScopedGeneric()}{ScopedGeneric()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_scoped_generic_a4a08a761fd1fa75ee99ac6e901c42d70} 
+template$<$typename T, typename Traits$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{kiwi\+::\+Scoped\+Generic}}$<$ T, Traits $>$\+::\+Scoped\+Generic (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&\&}]{rvalue}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Move constructor. Allows initialization from a \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} rvalue.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rvalue} & The \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} to move the resource from. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_scoped_generic_ae0b7bd0251f6b850caf247e25ca05882}\index{kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_scoped_generic_ae0b7bd0251f6b850caf247e25ca05882} 
+template$<$typename T, typename Traits$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}} \& \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{kiwi\+::\+Scoped\+Generic}}$<$ T, Traits $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&\&}]{rvalue}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Move assignment operator. Allows assignment from a \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} rvalue.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rvalue} & The \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} to move the resource from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A reference to this \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} object. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/scoped\+\_\+generic.\+hh\end{DoxyCompactItemize}

@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['handlebase_0',['HandleBase',['../classkiwi_1_1_debug_epoch_base_1_1_handle_base.html',1,'kiwi::DebugEpochBase']]],
-  ['hash_3c_20kiwi_3a_3afilepath_20_3e_1',['hash&lt; kiwi::FilePath &gt;',['../structstd_1_1hash_3_01kiwi_1_1_file_path_01_4.html',1,'std']]],
-  ['hash_3c_20kiwi_3a_3anotnull_3c_20t_20_3e_20_3e_2',['hash&lt; kiwi::NotNull&lt; T &gt; &gt;',['../structstd_1_1hash_3_01kiwi_1_1_not_null_3_01_t_01_4_01_4.html',1,'std']]],
-  ['hash_3c_20kiwi_3a_3astrictnotnull_3c_20t_20_3e_20_3e_3',['hash&lt; kiwi::StrictNotNull&lt; T &gt; &gt;',['../structstd_1_1hash_3_01kiwi_1_1_strict_not_null_3_01_t_01_4_01_4.html',1,'std']]],
-  ['haspointerliketypetraits_4',['HasPointerLikeTypeTraits',['../structkiwi_1_1detail_1_1_has_pointer_like_type_traits.html',1,'kiwi::detail']]],
-  ['haspointerliketypetraits_3c_20t_2c_20decltype_28_28sizeof_28pointerliketypetraits_3c_20t_20_3e_29_2bsizeof_28t_29_29_2c_20void_28_29_29_3e_5',['HasPointerLikeTypeTraits&lt; T, decltype((sizeof(PointerLikeTypeTraits&lt; T &gt;)+sizeof(T)), void())&gt;',['../structkiwi_1_1detail_1_1_has_pointer_like_type_traits_3_01_t_00_01decltype_07_07sizeof_07_pointe84db658051dbf5db860bef75f83dda49.html',1,'kiwi::detail']]]
+  ['erroror_0',['ErrorOr',['../classchibicpp_1_1_error_or.html',1,'chibicpp']]],
+  ['explicitly_5fconvertible_1',['explicitly_convertible',['../structkiwi_1_1explicitly__convertible.html',1,'kiwi']]],
+  ['explicitly_5fconvertible_3c_20from_2c_20to_2c_20std_3a_3avoid_5ft_3c_20decltype_28static_5fcast_3c_20to_20_3e_28std_3a_3adeclval_3c_20std_3a_3aadd_5frvalue_5freference_5ft_3c_20from_20_3e_20_3e_28_29_29_29_3e_20_3e_2',['explicitly_convertible&lt; From, To, std::void_t&lt; decltype(static_cast&lt; To &gt;(std::declval&lt; std::add_rvalue_reference_t&lt; From &gt; &gt;()))&gt; &gt;',['../structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942.html',1,'kiwi']]],
+  ['exploded_3',['Exploded',['../structbase_1_1_time_1_1_exploded.html',1,'base::Time']]]
 ];

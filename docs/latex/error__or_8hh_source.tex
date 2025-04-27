@@ -1,0 +1,232 @@
+\doxysection{error\+\_\+or.\+hh}
+\hypertarget{error__or_8hh_source}{}\label{error__or_8hh_source}\index{include/kiwi/support/error\_or.hh@{include/kiwi/support/error\_or.hh}}
+\mbox{\hyperlink{error__or_8hh}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/Support/ErrorOr.h\ -\/\ Error\ Smart\ Pointer\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <system\_error>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}kiwi/support/align\_of.hh"{}}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{namespace\ }chibicpp\ \{}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00056\ \textcolor{keyword}{class\ }ErrorOr\ \{}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }ErrorOr;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{using\ }wrap\ =\ std::reference\_wrapper<std::remove\_reference\_t<T>>;}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{using\ }reference\ =\ std::remove\_reference\_t<T>\&;}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{const}\ std::remove\_reference\_t<T>\&;}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{using\ }pointer\ =\ std::remove\_reference<T>*;}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ \textcolor{keyword}{const}\ std::remove\_reference<T>*;}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{using\ }storage\_type\ =\ std::conditional\_t<std::is\_reference\_v<T>,\ wrap,\ T>;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ E>}
+\DoxyCodeLine{00070\ \ \ ErrorOr(E\ err\_code,}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_error\_code\_enum<E>::value\ ||}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_error\_condition\_enum<E>::value,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*>\ =\ \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ :\ has\_error\_(\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{new}\ (GetErrorStorage())\ std::error\_code(std::make\_error\_code(err\_code));}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ ErrorOr(std::error\_code\ ec)\ :\ has\_error\_(\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{new}\ (GetErrorStorage())\ std::error\_code(ec);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00083\ \ \ ErrorOr(OtherT\&\&\ val,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_convertible\_v<OtherT,\ T>>*\ =\ \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ :\ has\_error\_(\textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{new}\ (GetStorage())\ storage\_type(std::forward<OtherT>(val));}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ ErrorOr(\textcolor{keyword}{const}\ ErrorOr\&\ other)\ \{\ CopyConstruct(other);\ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00092\ \ \ ErrorOr(\textcolor{keyword}{const}\ ErrorOr<OtherT>\&\ other,}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_convertible\_v<OtherT,\ T>>*\ =\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ CopyConstruct(other);}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{explicit}\ ErrorOr(}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keyword}{const}\ ErrorOr<OtherT>\&\ other,}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ std::enable\_if\_t<!std::is\_convertible\_v<OtherT,\ const\ T\&>>*\ =\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ CopyConstruct(other);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ ErrorOr(ErrorOr\&\&\ other)\ \{\ MoveConstruct(std::move(other));\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00107\ \ \ ErrorOr(ErrorOr<OtherT>\&\&\ other,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_convertible\_v<OtherT,\ T>>*\ =\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ MoveConstruct(std::move(other));}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//\ This\ might\ eventually\ need\ SFINAE\ but\ it's\ more\ complex\ than\ is\_convertible}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//\ \&\ I'm\ too\ lazy\ to\ write\ it\ right\ now.}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{explicit}\ ErrorOr(}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ ErrorOr<OtherT>\&\&\ other,}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ std::enable\_if\_t<!std::is\_convertible\_v<OtherT,\ T>>*\ =\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ MoveConstruct(std::move(other));}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ ErrorOr\&\ operator=(\textcolor{keyword}{const}\ ErrorOr\&\ other)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ CopyAssign(other);}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ ErrorOr\&\ operator=(ErrorOr\&\&\ other)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ MoveAssign(std::move(other));}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \string~ErrorOr()\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (!has\_error\_)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ GetStorage()-\/>\string~storage\_type();}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !has\_error\_;\ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ reference\ Get()\ \{\ \textcolor{keywordflow}{return}\ *GetStorage();\ \}}
+\DoxyCodeLine{00143\ \ \ const\_reference\ Get()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}ErrorOr<T>*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>Get();\ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ std::error\_code\ GetError()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ has\_error\_\ ?\ *GetErrorStorage()\ :\ std::error\_code();}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ pointer\ operator-\/>()\ \{\ \textcolor{keywordflow}{return}\ ToPointer(GetStorage());\ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ const\_pointer\ operator-\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ToPointer(GetStorage());\ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ reference\ operator*()\ \{\ \textcolor{keywordflow}{return}\ *GetStorage();\ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ const\_reference\ operator*()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *GetStorage();\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ CopyConstruct(\textcolor{keyword}{const}\ ErrorOr<OtherT>\&\ other)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (!other.has\_error\_)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ the\ other\ value.}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ has\_error\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (GetStorage())\ storage\_type(*other.GetStorage());}
+\DoxyCodeLine{00165\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ other's\ error.}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ has\_error\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (GetErrorStorage())\ std::error\_code(other.GetError());}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CompareThisIfSameType(\textcolor{keyword}{const}\ T1\&\ a,\ \textcolor{keyword}{const}\ T1\&\ b)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{return}\ \&a\ ==\ \&b;}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CompareThisIfSameType(\textcolor{keyword}{const}\ T1\&,\ \textcolor{keyword}{const}\ T2\&)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{void}\ CopyAssign(\textcolor{keyword}{const}\ ErrorOr<OtherT>\&\ other)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{if}\ (CompareThisIfSameType(*\textcolor{keyword}{this},\ other))\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \ \ this-\/>\string~ErrorOr();}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{new}\ (\textcolor{keyword}{this})\ ErrorOr(other);}
+\DoxyCodeLine{00191\ \ \ \}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ MoveConstruct(ErrorOr<OtherT>\&\&\ other)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{if}\ (!other.has\_error\_)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ the\ other\ value.}}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ has\_error\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (GetStorage())\ storage\_type(std::move(*other.GetStorage()));}
+\DoxyCodeLine{00199\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ other's\ error.}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ has\_error\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keyword}{new}\ (GetErrorStorage())\ std::error\_code(other.GetError());}
+\DoxyCodeLine{00203\ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OtherT>}
+\DoxyCodeLine{00207\ \ \ \textcolor{keywordtype}{void}\ MoveAssign(ErrorOr<OtherT>\&\&\ other)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{if}\ (CompareThisIfSameType(*\textcolor{keyword}{this},\ other))\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \ \ this-\/>\string~ErrorOr();}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keyword}{new}\ (\textcolor{keyword}{this})\ ErrorOr(std::move(other));}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ pointer\ ToPointer(pointer\ val)\ \{\ \textcolor{keywordflow}{return}\ val;\ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ const\_pointer\ ToPointer(const\_pointer\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ val;\ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ pointer\ ToPointer(wrap*\ val)\ \{\ \textcolor{keywordflow}{return}\ \&val-\/>Get();\ \}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ const\_pointer\ ToPointer(\textcolor{keyword}{const}\ wrap*\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \&val-\/>Get();\ \}}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ storage\_type*\ GetStorage()\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ assert(!has\_error\_\ \&\&\ \textcolor{stringliteral}{"{}Cannot\ get\ value\ when\ an\ error\ exists!"{}});}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}storage\_type*\textcolor{keyword}{>}(\&t\_storage);}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{const}\ storage\_type*\ GetStorage()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ assert(!has\_error\_\ \&\&\ \textcolor{stringliteral}{"{}Cannot\ get\ value\ when\ an\ error\ exists!"{}});}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }storage\_type*\textcolor{keyword}{>}(\&t\_storage);}
+\DoxyCodeLine{00234\ \ \ \}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ std::error\_code*\ GetErrorStorage()\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ assert(has\_error\_\ \&\&\ \textcolor{stringliteral}{"{}Cannot\ get\ error\ when\ a\ value\ exists!"{}});}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}std::error\_code*\textcolor{keyword}{>}(\&error\_storage);}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{const}\ std::error\_code*\ GetErrorStorage()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}ErrorOr<T>*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>GetErrorStorage();}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{union\ }\{}
+\DoxyCodeLine{00246\ \ \ \ \ AlignedCharArrayUnion<storage\_type>\ t\_storage;}
+\DoxyCodeLine{00247\ \ \ \ \ AlignedCharArrayUnion<std::error\_code>\ error\_storage;}
+\DoxyCodeLine{00248\ \ \ \};}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{bool}\ has\_error\_\ :\ 1;}
+\DoxyCodeLine{00251\ \};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ E>}
+\DoxyCodeLine{00254\ std::enable\_if\_t<std::is\_error\_code\_enum<E>::value\ ||}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_error\_condition\_enum<E>::value,}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}>}
+\DoxyCodeLine{00257\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classchibicpp_1_1_error_or}{ErrorOr<T>}}\&\ err,\ E\ code)\ \{}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordflow}{return}\ err.GetError()\ ==\ code;}
+\DoxyCodeLine{00259\ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \}\ \ \textcolor{comment}{//\ namespace\ chibicpp}}
+
+\end{DoxyCode}

@@ -1,0 +1,27 @@
+\doxysection{span\+\_\+forward\+\_\+internal.\+hh}
+\hypertarget{span__forward__internal_8hh_source}{}\label{span__forward__internal_8hh_source}\index{include/kiwi/containers/span\_forward\_internal.hh@{include/kiwi/containers/span\_forward\_internal.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2025\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dynamic\_extent\ =\ std::numeric\_limits<size\_t>::max();}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Extent\ =\ dynamic\_extent,}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Storage\ pointer\ customization.\ By\ default\ this\ is\ not\ a}}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}raw\_ptr<>`,\ since\ \`{}span`\ is\ mostly\ used\ for\ stack\ variables.\ Use}}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}raw\_span`\ instead\ for\ class\ fields,\ which\ sets\ this\ to}}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}raw\_ptr<T>`.}}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ InternalPtrType\ =\ ElementType*>}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1span}{span}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \}\ \ \textcolor{comment}{//\ namespace\ base}}
+\DoxyCodeLine{00023\ }
+
+\end{DoxyCode}

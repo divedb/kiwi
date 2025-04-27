@@ -1,5 +1,21 @@
 var searchData=
 [
   ['back_0',['back',['../classkiwi_1_1_string_ref.html#aae30f878aa70ef86fa427b3884fe400d',1,'kiwi::StringRef']]],
-  ['base1_1',['Base1',['../classkiwi_1_1_compressed_pair.html#a46b144323e84bbe516ddde3aac0594d1',1,'kiwi::CompressedPair']]]
+  ['base1_1',['Base1',['../classkiwi_1_1_compressed_pair.html#a46b144323e84bbe516ddde3aac0594d1',1,'kiwi::CompressedPair']]],
+  ['basename_2',['BaseName',['../classkiwi_1_1_file_path.html#addf8d007b5113191da07a2f90b5eca81',1,'kiwi::FilePath']]],
+  ['basic_5fcstring_5fview_3',['basic_cstring_view',['../classkiwi_1_1basic__cstring__view.html',1,'kiwi']]],
+  ['basic_5fcstring_5fview_3c_20char_20_3e_4',['basic_cstring_view&lt; char &gt;',['../classkiwi_1_1basic__cstring__view.html',1,'kiwi']]],
+  ['basic_5fcstring_5fview_3c_20char16_5ft_20_3e_5',['basic_cstring_view&lt; char16_t &gt;',['../classkiwi_1_1basic__cstring__view.html',1,'kiwi']]],
+  ['basic_5fcstring_5fview_3c_20char32_5ft_20_3e_6',['basic_cstring_view&lt; char32_t &gt;',['../classkiwi_1_1basic__cstring__view.html',1,'kiwi']]],
+  ['begin_7',['begin',['../classkiwi_1_1_i_o_buf.html#af9acb767b93f0efd67990f4a4351a223',1,'kiwi::IOBuf']]],
+  ['bigendian_8',['BigEndian',['../classkiwi_1_1_big_endian.html',1,'kiwi']]],
+  ['bigenoughpromotionimpl_9',['BigEnoughPromotionImpl',['../structkiwi_1_1internal_1_1_big_enough_promotion_impl.html',1,'kiwi::internal']]],
+  ['bigenoughpromotionimpl_3c_20lhs_2c_20rhs_2c_20false_2c_20false_20_3e_10',['BigEnoughPromotionImpl&lt; Lhs, Rhs, false, false &gt;',['../structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4.html',1,'kiwi::internal']]],
+  ['bigenoughpromotionimpl_3c_20lhs_2c_20rhs_2c_20true_2c_20false_20_3e_11',['BigEnoughPromotionImpl&lt; Lhs, Rhs, true, false &gt;',['../structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01true_00_01false_01_4.html',1,'kiwi::internal']]],
+  ['bitsare_12',['BitsAre',['../conceptkiwi_1_1_0d066213132031337175374203243225120302073357074022_1_1_bits_are.html',1,'kiwi::@066213132031337175374203243225120302073357074022']]],
+  ['buffer_13',['buffer',['../classkiwi_1_1_i_o_buf.html#a2e241c00471e7626c88e4d6ab6adde47',1,'kiwi::IOBuf']]],
+  ['buffer_20sharing_14',['Buffer Sharing',['../classkiwi_1_1_i_o_buf.html#autotoc_md2',1,'']]],
+  ['bufferend_15',['bufferEnd',['../classkiwi_1_1_i_o_buf.html#a52101c7e9f2f5124cbbb3198dc2db17c',1,'kiwi::IOBuf']]],
+  ['bytespanconstructiblefrom_16',['ByteSpanConstructibleFrom',['../conceptkiwi_1_1internal_1_1_byte_span_constructible_from.html',1,'kiwi::internal']]],
+  ['bytespanconstructiblefromnonunique_17',['ByteSpanConstructibleFromNonUnique',['../conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique.html',1,'kiwi::internal']]]
 ];

@@ -39,7 +39,7 @@
 \DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}kiwi/port/builtin.hh"{}}}
 \DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}kiwi/port/os.hh"{}}}
 \DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00039\ }
 \DoxyCodeLine{00040\ \textcolor{comment}{//\ When\ compiling\ with\ ASan,\ always\ heap-\/allocate\ the\ string\ even\ if}}
 \DoxyCodeLine{00041\ \textcolor{comment}{//\ it\ would\ fit\ in-\/situ,\ so\ that\ ASan\ can\ detect\ access\ to\ the\ string}}
@@ -112,7 +112,7 @@
 \DoxyCodeLine{00125\ }
 \DoxyCodeLine{00126\ \}\ \ \textcolor{comment}{//\ namespace\ fbstring\_detail}}
 \DoxyCodeLine{00127\ }
-\DoxyCodeLine{00132\ \textcolor{keyword}{enum\ class}\ AcquireMallocatedString\ \{\};}
+\DoxyCodeLine{00132\ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespacekiwi_a7df83edab5560ff28ed4ebc60cebed70}{AcquireMallocatedString}}\ \{\};}
 \DoxyCodeLine{00133\ }
 \DoxyCodeLine{00134\ \textcolor{comment}{/*}}
 \DoxyCodeLine{00135\ \textcolor{comment}{\ *\ fbstring\_core\_model\ is\ a\ mock-\/up\ type\ that\ defines\ all\ required}}
@@ -244,7 +244,7 @@
 \DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ So\ if\ you\ want\ a\ 2-\/character\ string,\ pass\ malloc(3)\ as\ "{}data"{},}}
 \DoxyCodeLine{00296\ \ \ \textcolor{comment}{//\ pass\ 2\ as\ "{}size"{},\ and\ pass\ 3\ as\ "{}allocatedSize"{}.}}
 \DoxyCodeLine{00297\ \ \ fbstring\_core(Char*\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7}{data}},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size,}
-\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ allocated\_size,\ AcquireMallocatedString)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ allocated\_size,\ \mbox{\hyperlink{namespacekiwi_a7df83edab5560ff28ed4ebc60cebed70}{AcquireMallocatedString}})\ \{}
 \DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{if}\ (size\ >\ 0)\ \{}
 \DoxyCodeLine{00300\ \ \ \ \ \ \ assert(allocated\_size\ >=\ size\ +\ 1);}
 \DoxyCodeLine{00301\ \ \ \ \ \ \ assert(\mbox{\hyperlink{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7}{data}}[size]\ ==\ \textcolor{charliteral}{'\(\backslash\)0'});}

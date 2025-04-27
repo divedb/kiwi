@@ -1,0 +1,102 @@
+\doxysection{sys\+\_\+string\+\_\+conversions.\+hh}
+\hypertarget{sys__string__conversions_8hh_source}{}\label{sys__string__conversions_8hh_source}\index{include/kiwi/strings/sys\_string\_conversions.hh@{include/kiwi/strings/sys\_string\_conversions.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Provides\ system-\/dependent\ string\ type\ conversions\ for\ cases\ where\ it's}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ necessary\ to\ not\ use\ ICU.\ Generally,\ you\ should\ not\ need\ this\ in\ Chrome,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ but\ it\ is\ used\ in\ some\ shared\ code.\ Dependencies\ should\ be\ minimal.}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <CoreFoundation/CoreFoundation.h>}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \#include\ "{}base/apple/scoped\_cftyperef.h"{}}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#ifdef\ \_\_OBJC\_\_}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{@class}\ NSString;}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ Converts\ between\ wide\ and\ UTF-\/8\ representations\ of\ a\ string.\ On\ error,\ the}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ result\ is\ system-\/dependent.}}
+\DoxyCodeLine{00035\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ SysWideToUTF8(\textcolor{keyword}{const}\ std::wstring\&\ wide);}
+\DoxyCodeLine{00036\ [[nodiscard]]\ BASE\_EXPORT\ std::wstring\ SysUTF8ToWide(std::string\_view\ utf8);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Converts\ between\ wide\ and\ the\ system\ multi-\/byte\ representations\ of\ a\ string.}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ DANGER:\ This\ will\ lose\ information\ and\ can\ change\ (on\ Windows,\ this\ can}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ change\ between\ reboots).}}
+\DoxyCodeLine{00041\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ SysWideToNativeMB(}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ std::wstring\&\ wide);}
+\DoxyCodeLine{00043\ [[nodiscard]]\ BASE\_EXPORT\ std::wstring\ SysNativeMBToWide(}
+\DoxyCodeLine{00044\ \ \ \ \ std::string\_view\ native\_mb);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ Windows-\/specific\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Converts\ between\ 8-\/bit\ and\ wide\ strings,\ using\ the\ given\ code\ page.\ The}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ code\ page\ identifier\ is\ one\ accepted\ by\ the\ Windows\ function}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ MultiByteToWideChar().}}
+\DoxyCodeLine{00053\ [[nodiscard]]\ BASE\_EXPORT\ std::wstring\ SysMultiByteToWide(std::string\_view\ mb,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ code\_page);}
+\DoxyCodeLine{00055\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ SysWideToMultiByte(}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ std::wstring\&\ wide,\ uint32\_t\ code\_page);}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ Mac-\/specific\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00063\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\#if\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00065\ \textcolor{comment}{}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ Converts\ between\ strings\ and\ CFStringRefs/NSStrings.}}
+\DoxyCodeLine{00067\ \textcolor{comment}{}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ Converts\ a\ string\ to\ a\ CFStringRef.\ Returns\ null\ on\ failure.}}
+\DoxyCodeLine{00069\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ apple::ScopedCFTypeRef<CFStringRef>}}
+\DoxyCodeLine{00070\ \textcolor{comment}{SysUTF8ToCFStringRef(std::string\_view\ utf8);}}
+\DoxyCodeLine{00071\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ apple::ScopedCFTypeRef<CFStringRef>}}
+\DoxyCodeLine{00072\ \textcolor{comment}{SysUTF16ToCFStringRef(std::u16string\_view\ utf16);}}
+\DoxyCodeLine{00073\ \textcolor{comment}{}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ Converts\ a\ CFStringRef\ to\ a\ string.\ Returns\ an\ empty\ string\ on\ failure.\ It\ is}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ not\ valid\ to\ call\ these\ with\ a\ null\ \`{}ref`.}}
+\DoxyCodeLine{00076\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ std::string\ SysCFStringRefToUTF8(CFStringRef\ ref);}}
+\DoxyCodeLine{00077\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ std::u16string\ SysCFStringRefToUTF16(CFStringRef\ ref);}}
+\DoxyCodeLine{00078\ \textcolor{comment}{}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\#ifdef\ \_\_OBJC\_\_}}
+\DoxyCodeLine{00080\ \textcolor{comment}{}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ Converts\ a\ string\ to\ an\ autoreleased\ NSString.\ Returns\ nil\ on\ failure.}}
+\DoxyCodeLine{00082\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ NSString*\ SysUTF8ToNSString(std::string\_view\ utf8);}}
+\DoxyCodeLine{00083\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ NSString*\ SysUTF16ToNSString(}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ \ \ std::u16string\_view\ utf16);}}
+\DoxyCodeLine{00085\ \textcolor{comment}{}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ Converts\ an\ NSString\ to\ a\ string.\ Returns\ an\ empty\ string\ on\ failure\ or\ if}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ \`{}ref`\ is\ nil.}}
+\DoxyCodeLine{00088\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ std::string\ SysNSStringToUTF8(NSString*\ ref);}}
+\DoxyCodeLine{00089\ \textcolor{comment}{[[nodiscard]]\ BASE\_EXPORT\ std::u16string\ SysNSStringToUTF16(NSString*\ ref);}}
+\DoxyCodeLine{00090\ \textcolor{comment}{}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\#endif\ \ //\ \_\_OBJC\_\_}}
+\DoxyCodeLine{00092\ \textcolor{comment}{}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\#endif\ \ //\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00094\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

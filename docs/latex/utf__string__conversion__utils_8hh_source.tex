@@ -1,0 +1,119 @@
+\doxysection{utf\+\_\+string\+\_\+conversion\+\_\+utils.\+hh}
+\hypertarget{utf__string__conversion__utils_8hh_source}{}\label{utf__string__conversion__utils_8hh_source}\index{include/kiwi/strings/utf\_string\_conversion\_utils.hh@{include/kiwi/strings/utf\_string\_conversion\_utils.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2011\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Low-\/level\ UTF\ handling\ functions.\ Most\ code\ will\ want\ to\ use\ the\ functions}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ in\ utf\_string\_conversions.h}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/icu/icu\_utf.hh"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsValidCodepoint(base\_icu::UChar32\ code\_point)\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{comment}{//\ Excludes\ code\ points\ that\ are\ not\ Unicode\ scalar\ values,\ i.e.}}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ surrogate\ code\ points\ ([0xD800,\ 0xDFFF]).\ Additionally,\ excludes}}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ code\ points\ larger\ than\ 0x10FFFF\ (the\ highest\ codepoint\ allowed).}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ Non-\/characters\ and\ unassigned\ code\ points\ are\ allowed.}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ https://unicode.org/glossary/\#unicode\_scalar\_value}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordflow}{return}\ (code\_point\ >=\ 0\ \&\&\ code\_point\ <\ 0xD800)\ ||}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ (code\_point\ >=\ 0xE000\ \&\&\ code\_point\ <=\ 0x10FFFF);}
+\DoxyCodeLine{00032\ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsValidCharacter(base\_icu::UChar32\ code\_point)\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ Excludes\ non-\/characters\ (U+FDD0..U+FDEF,\ and\ all\ code\ points}}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ ending\ in\ 0xFFFE\ or\ 0xFFFF)\ from\ the\ set\ of\ valid\ code\ points.}}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ https://unicode.org/faq/private\_use.html\#nonchar1}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{return}\ (code\_point\ >=\ 0\ \&\&\ code\_point\ <\ 0xD800)\ ||}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ (code\_point\ >=\ 0xE000\ \&\&\ code\_point\ <\ 0xFDD0)\ ||}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ (code\_point\ >\ 0xFDEF\ \&\&\ code\_point\ <=\ 0x10FFFF\ \&\&}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ (code\_point\ \&\ 0xFFFE)\ !=\ 0xFFFE);}
+\DoxyCodeLine{00042\ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ CountUnicodeCharacters\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ Returns\ the\ number\ of\ Unicode\ characters\ in\ \`{}text`,\ up\ to\ the\ supplied}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \`{}limit`,\ if\ \`{}text`\ contains\ valid\ UTF-\/8.\ Returns\ \`{}nullopt`\ otherwise.}}
+\DoxyCodeLine{00048\ BASE\_EXPORT\ std::optional<size\_t>\ CountUnicodeCharacters(}
+\DoxyCodeLine{00049\ \ \ \ \ std::string\_view\ text,\ \textcolor{keywordtype}{size\_t}\ limit\ =\ std::numeric\_limits<size\_t>::max());}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ ReadUnicodeCharacter\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ Reads\ a\ UTF-\/8\ stream,\ placing\ the\ next\ code\ point\ into\ the\ given\ output}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ |*code\_point|.\ |src|\ represents\ the\ entire\ string\ to\ read,\ and\ |*char\_index|}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ is\ the\ character\ offset\ within\ the\ string\ to\ start\ reading\ at.\ |*char\_index|}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ will\ be\ updated\ to\ index\ the\ last\ character\ read,\ such\ that\ incrementing\ it}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ (as\ in\ a\ for\ loop)\ will\ take\ the\ reader\ to\ the\ next\ character.}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ Returns\ true\ on\ success.\ On\ false,\ |*code\_point|\ will\ be\ invalid.}}
+\DoxyCodeLine{00060\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadUnicodeCharacter(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ char\_index,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\_icu::UChar32*\ code\_point\_out);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ Reads\ a\ UTF-\/16\ character.\ The\ usage\ is\ the\ same\ as\ the\ 8-\/bit\ version\ above.}}
+\DoxyCodeLine{00065\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadUnicodeCharacter(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ char\_index,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\_icu::UChar32*\ code\_point);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#if\ defined(WCHAR\_T\_IS\_32\_BIT)}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ Reads\ UTF-\/32\ character.\ The\ usage\ is\ the\ same\ as\ the\ 8-\/bit\ version\ above.}}
+\DoxyCodeLine{00071\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadUnicodeCharacter(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ char\_index,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base\_icu::UChar32*\ code\_point);}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(WCHAR\_T\_IS\_32\_BIT)}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ WriteUnicodeCharacter\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ Appends\ a\ UTF-\/8\ character\ to\ the\ given\ 8-\/bit\ string.\ \ Returns\ the\ number\ of}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ bytes\ written.}}
+\DoxyCodeLine{00080\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ WriteUnicodeCharacter(base\_icu::UChar32\ code\_point,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ Appends\ the\ given\ code\ point\ as\ a\ UTF-\/16\ character\ to\ the\ given\ 16-\/bit}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ string.\ \ Returns\ the\ number\ of\ 16-\/bit\ values\ written.}}
+\DoxyCodeLine{00085\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ WriteUnicodeCharacter(base\_icu::UChar32\ code\_point,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#if\ defined(WCHAR\_T\_IS\_32\_BIT)}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ Appends\ the\ given\ UTF-\/32\ character\ to\ the\ given\ 32-\/bit\ string.\ \ Returns\ the}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ number\ of\ 32-\/bit\ values\ written.}}
+\DoxyCodeLine{00091\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ WriteUnicodeCharacter(base\_icu::UChar32\ code\_point,}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::wstring*\ output)\ \{}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ This\ is\ the\ easy\ case,\ just\ append\ the\ character.}}
+\DoxyCodeLine{00094\ \ \ output-\/>push\_back(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{wchar\_t}\textcolor{keyword}{>}(code\_point));}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00096\ \}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(WCHAR\_T\_IS\_32\_BIT)}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ Generalized\ Unicode\ converter\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ Guesses\ the\ length\ of\ the\ output\ in\ UTF-\/8\ in\ bytes,\ clears\ that\ output}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ string,\ and\ reserves\ that\ amount\ of\ space.\ \ We\ assume\ that\ the\ input}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ character\ types\ are\ unsigned,\ which\ will\ be\ true\ for\ UTF-\/16\ and\ -\/32\ on\ our}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ systems.}}
+\DoxyCodeLine{00105\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CHAR>}
+\DoxyCodeLine{00106\ \textcolor{keywordtype}{void}\ PrepareForUTF8Output(\textcolor{keyword}{const}\ CHAR*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,\ std::string*\ output);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ Prepares\ an\ output\ buffer\ (containing\ either\ UTF-\/16\ or\ -\/32\ data)\ given\ some}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ UTF-\/8\ input\ that\ will\ be\ converted\ to\ it.\ \ See\ PrepareForUTF8Output().}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ STRING>}
+\DoxyCodeLine{00111\ \textcolor{keywordtype}{void}\ PrepareForUTF16Or32Output(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,\ STRING*\ output);}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

@@ -142,7 +142,7 @@ $(function(){initNavTree('fbstring_8hh_source.html',''); initResizable(true); })
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;kiwi/port/builtin.hh&quot;</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;kiwi/port/os.hh&quot;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">namespace </span>kiwi {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacekiwi.html">kiwi</a> {</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">// When compiling with ASan, always heap-allocate the string even if</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">// it would fit in-situ, so that ASan can detect access to the string</span></div>
@@ -215,7 +215,7 @@ $(function(){initNavTree('fbstring_8hh_source.html',''); initResizable(true); })
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>}  <span class="comment">// namespace fbstring_detail</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keyword">enum class</span> AcquireMallocatedString {};</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacekiwi.html#a7df83edab5560ff28ed4ebc60cebed70">  132</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespacekiwi.html#a7df83edab5560ff28ed4ebc60cebed70">AcquireMallocatedString</a> {};</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment"> * fbstring_core_model is a mock-up type that defines all required</span></div>
@@ -348,7 +348,7 @@ $(function(){initNavTree('fbstring_8hh_source.html',''); initResizable(true); })
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="comment">// So if you want a 2-character string, pass malloc(3) as &quot;data&quot;,</span></div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="comment">// pass 2 as &quot;size&quot;, and pass 3 as &quot;allocatedSize&quot;.</span></div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  fbstring_core(Char* <span class="keyword">const</span> <a class="code hl_function" href="classkiwi_1_1fbstring__core.html#a9c13e797d636505b5b1229034788a7c7">data</a>, <span class="keyword">const</span> <span class="keywordtype">size_t</span> size,</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> allocated_size, AcquireMallocatedString) {</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> allocated_size, <a class="code hl_enumeration" href="namespacekiwi.html#a7df83edab5560ff28ed4ebc60cebed70">AcquireMallocatedString</a>) {</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keywordflow">if</span> (size &gt; 0) {</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>      assert(allocated_size &gt;= size + 1);</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>      assert(<a class="code hl_function" href="classkiwi_1_1fbstring__core.html#a9c13e797d636505b5b1229034788a7c7">data</a>[size] == <span class="charliteral">&#39;\0&#39;</span>);</div>
@@ -2862,6 +2862,8 @@ $(function(){initNavTree('fbstring_8hh_source.html',''); initResizable(true); })
 <div class="ttc" id="aclasskiwi_1_1fbstring__core_html"><div class="ttname"><a href="classkiwi_1_1fbstring__core.html">kiwi::fbstring_core</a></div><div class="ttdef"><b>Definition</b> fbstring.hh:234</div></div>
 <div class="ttc" id="aclasskiwi_1_1fbstring__core_html_a2cc428623effb9345011f24a75c52779"><div class="ttname"><a href="classkiwi_1_1fbstring__core.html#a2cc428623effb9345011f24a75c52779">kiwi::fbstring_core::swap</a></div><div class="ttdeci">void swap(fbstring_core &amp;rhs)</div><div class="ttdef"><b>Definition</b> fbstring.hh:318</div></div>
 <div class="ttc" id="aclasskiwi_1_1fbstring__core_html_a9c13e797d636505b5b1229034788a7c7"><div class="ttname"><a href="classkiwi_1_1fbstring__core.html#a9c13e797d636505b5b1229034788a7c7">kiwi::fbstring_core::data</a></div><div class="ttdeci">const Char * data() const</div><div class="ttdoc">In C++11 data() and c_str() are 100% equivalent.</div><div class="ttdef"><b>Definition</b> fbstring.hh:325</div></div>
+<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> file.cc:23</div></div>
+<div class="ttc" id="anamespacekiwi_html_a7df83edab5560ff28ed4ebc60cebed70"><div class="ttname"><a href="namespacekiwi.html#a7df83edab5560ff28ed4ebc60cebed70">kiwi::AcquireMallocatedString</a></div><div class="ttdeci">AcquireMallocatedString</div><div class="ttdef"><b>Definition</b> fbstring.hh:132</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

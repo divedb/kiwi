@@ -1,0 +1,99 @@
+\doxysection{file\+\_\+tracing.\+hh}
+\hypertarget{file__tracing_8hh_source}{}\label{file__tracing_8hh_source}\index{include/kiwi/io/file\_tracing.hh@{include/kiwi/io/file\_tracing.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2015\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \#include\ "{}base/memory/raw\_ptr.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ FILE\_TRACING\_PREFIX\ "{}File"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ SCOPED\_FILE\_TRACE\_WITH\_SIZE(name,\ size)\ \(\backslash\)}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ FileTracing::ScopedTrace\ scoped\_file\_trace;\ \ \ \(\backslash\)}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ if\ (FileTracing::IsCategoryEnabled())\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ scoped\_file\_trace.Initialize(FILE\_TRACING\_PREFIX\ "{}::"{}\ name,\ this,\ size)}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ SCOPED\_FILE\_TRACE(name)\ SCOPED\_FILE\_TRACE\_WITH\_SIZE(name,\ 0)}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_file}{File}};}
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }BASE\_EXPORT\ FileTracing\ \{}
+\DoxyCodeLine{00027\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ Whether\ the\ file\ tracing\ category\ is\ enabled.}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsCategoryEnabled();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_file_tracing_1_1_provider}{Provider}}\ \{}
+\DoxyCodeLine{00032\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classkiwi_1_1_file_tracing_1_1_provider}{\string~Provider}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ Whether\ the\ file\ tracing\ category\ is\ currently\ enabled.}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ FileTracingCategoryIsEnabled()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ Enables\ file\ tracing\ for\ |id|.\ Must\ be\ called\ before\ recording\ events.}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FileTracingEnable(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \textcolor{keywordtype}{id})\ =\ 0;}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ Disables\ file\ tracing\ for\ |id|.}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FileTracingDisable(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \textcolor{keywordtype}{id})\ =\ 0;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ Begins\ an\ event\ for\ |id|\ with\ |name|.\ |path|\ tells\ where\ in\ the\ directory}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ structure\ the\ event\ is\ happening\ (and\ may\ be\ blank).\ |size|\ is\ the\ number}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ of\ bytes\ involved\ in\ the\ event.}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FileTracingEventBegin(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \textcolor{keywordtype}{id},}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ path,\ int64\_t\ size)\ =\ 0;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ Ends\ an\ event\ for\ |id|\ with\ |name|.}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FileTracingEventEnd(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \textcolor{keywordtype}{id})\ =\ 0;}
+\DoxyCodeLine{00052\ \ \ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ Sets\ a\ global\ file\ tracing\ provider\ to\ query\ categories\ and\ record\ events.}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetProvider(\mbox{\hyperlink{classkiwi_1_1_file_tracing_1_1_provider}{Provider}}*\ provider);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ Enables\ file\ tracing\ while\ in\ scope.}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{class\ }ScopedEnabler\ \{}
+\DoxyCodeLine{00059\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00060\ \ \ \ \ ScopedEnabler();}
+\DoxyCodeLine{00061\ \ \ \ \ \string~ScopedEnabler();}
+\DoxyCodeLine{00062\ \ \ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{class\ }ScopedTrace\ \{}
+\DoxyCodeLine{00065\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00066\ \ \ \ \ ScopedTrace()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00067\ \ \ \ \ ScopedTrace(\textcolor{keyword}{const}\ ScopedTrace\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00068\ \ \ \ \ ScopedTrace\&\ operator=(\textcolor{keyword}{const}\ ScopedTrace\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00069\ \ \ \ \ \string~ScopedTrace();}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ Called\ only\ if\ the\ tracing\ category\ is\ enabled.\ |name|\ is\ the\ name\ of\ the}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ event\ to\ trace\ (e.g.\ "{}Read"{},\ "{}Write"{})\ and\ must\ have\ an\ application}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ lifetime\ (e.g.\ static\ or\ literal).\ |file|\ is\ the\ file\ being\ traced;\ must}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ outlive\ this\ class.\ |size|\ is\ the\ size\ (in\ bytes)\ of\ this\ event.}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ Initialize(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file}{File}}*\ file,\ int64\_t\ size);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{//\ The\ ID\ of\ this\ trace.\ Based\ on\ the\ |file|\ passed\ to\ |Initialize()|.\ Must}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{comment}{//\ outlive\ this\ class.}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{comment}{//\ raw\_ptr<const\ void>\ id\_\ =\ nullptr;}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ id\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ The\ name\ of\ the\ event\ to\ trace\ (e.g.\ "{}Read"{},\ "{}Write"{}).\ Prefixed\ with}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ "{}File"{}.}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name\_;}
+\DoxyCodeLine{00087\ \ \ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ FileTracing(\textcolor{keyword}{const}\ FileTracing\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00090\ \ \ FileTracing\&\ operator=(\textcolor{keyword}{const}\ FileTracing\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00091\ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

@@ -1,0 +1,41 @@
+\doxysection{kiwi\+::internal\+::Big\+Enough\+Promotion\+Impl\texorpdfstring{$<$}{<} Lhs, Rhs, false, false \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4}{}\label{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4}\index{kiwi::internal::BigEnoughPromotionImpl$<$ Lhs, Rhs, false, false $>$@{kiwi::internal::BigEnoughPromotionImpl$<$ Lhs, Rhs, false, false $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4_a3c2719fdcb286423dc4c1562f77360cb}{type}}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_big_enough_promotion_impl_af177cc43c9f036f90ff13830c118bfb4}\label{structkiwi_1_1internal_1_1_big_enough_promotion_impl_af177cc43c9f036f90ff13830c118bfb4} 
+using {\bfseries type}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4_a714a9ba8f86c75d6a98ad37974f5770e}\label{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4_a714a9ba8f86c75d6a98ad37974f5770e} 
+static constexpr bool {\bfseries k\+Contained} = true
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_big_enough_promotion_impl_affa7519440ccfafbc68493cd6aeddf19}\label{structkiwi_1_1internal_1_1_big_enough_promotion_impl_affa7519440ccfafbc68493cd6aeddf19} 
+static constexpr bool {\bfseries k\+Contained}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4_a3c2719fdcb286423dc4c1562f77360cb}\index{kiwi::internal::BigEnoughPromotionImpl$<$ Lhs, Rhs, false, false $>$@{kiwi::internal::BigEnoughPromotionImpl$<$ Lhs, Rhs, false, false $>$}!type@{type}}
+\index{type@{type}!kiwi::internal::BigEnoughPromotionImpl$<$ Lhs, Rhs, false, false $>$@{kiwi::internal::BigEnoughPromotionImpl$<$ Lhs, Rhs, false, false $>$}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily \label{structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4_a3c2719fdcb286423dc4c1562f77360cb} 
+template$<$typename Lhs, typename Rhs$>$ \\
+using \mbox{\hyperlink{structkiwi_1_1internal_1_1_big_enough_promotion_impl}{kiwi\+::internal\+::\+Big\+Enough\+Promotion\+Impl}}$<$ Lhs, Rhs, false, false $>$\+::type}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ TwiceWiderInteger<MaxExponentPromotion<Lhs,\ Rhs>,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Lhs>\ ||\ std::is\_signed\_v<Rhs>>}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/numerics/safe\+\_\+conversions\+\_\+impl.\+hh\end{DoxyCompactItemize}

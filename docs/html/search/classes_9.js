@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['safebasename_0',['SafeBaseName',['../classkiwi_1_1_safe_base_name.html',1,'kiwi']]],
-  ['smalldensemap_1',['SmallDenseMap',['../classkiwi_1_1_small_dense_map.html',1,'kiwi']]],
-  ['strictnotnull_2',['StrictNotNull',['../classkiwi_1_1_strict_not_null.html',1,'kiwi']]],
-  ['stringliteral_3',['StringLiteral',['../classkiwi_1_1_string_literal.html',1,'kiwi']]],
-  ['stringref_4',['StringRef',['../classkiwi_1_1_string_ref.html',1,'kiwi']]]
+  ['narrowingrange_0',['NarrowingRange',['../structkiwi_1_1internal_1_1_narrowing_range.html',1,'kiwi::internal']]],
+  ['nodestructor_1',['NoDestructor',['../classkiwi_1_1_no_destructor.html',1,'kiwi']]],
+  ['notnull_2',['NotNull',['../classkiwi_1_1_not_null.html',1,'kiwi']]],
+  ['notnullhash_3',['NotNullHash',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20kiwi_3a_3anotnull_3c_20t_20_3e_20_3e_4',['NotNullHash&lt; kiwi::NotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20kiwi_3a_3astrictnotnull_3c_20t_20_3e_20_3e_5',['NotNullHash&lt; kiwi::StrictNotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20t_2c_20u_2c_20false_20_3e_6',['NotNullHash&lt; T, U, false &gt;',['../structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4.html',1,'kiwi']]]
 ];

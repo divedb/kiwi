@@ -1,0 +1,9 @@
+\doxysection{kiwi\+::internal\+::Span\+Constructible\+From Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_span_constructible_from}{}\label{conceptkiwi_1_1internal_1_1_span_constructible_from}\index{kiwi::internal::SpanConstructibleFrom@{kiwi::internal::SpanConstructibleFrom}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{kiwi::internal::SpanConstructibleFrom}}\ =\ \ \textcolor{keyword}{requires}(T\&\&\ t)\ \{\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(std::forward<T>(t));\ \}}
+
+\end{DoxyCode}

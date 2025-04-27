@@ -1,0 +1,33 @@
+\doxysection{kiwi\+::IOBuf\+::Heap\+Prefix Struct Reference}
+\hypertarget{structkiwi_1_1_i_o_buf_1_1_heap_prefix}{}\label{structkiwi_1_1_i_o_buf_1_1_heap_prefix}\index{kiwi::IOBuf::HeapPrefix@{kiwi::IOBuf::HeapPrefix}}
+
+
+Use free for size \texorpdfstring{$>$}{>}= 4GB since we can store only 32 bits in the size var.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_1_1_heap_prefix_ac74432ccb13ecff1642d723f878d88be}\label{structkiwi_1_1_i_o_buf_1_1_heap_prefix_ac74432ccb13ecff1642d723f878d88be} 
+{\bfseries Heap\+Prefix} (uint16\+\_\+t flg, size\+\_\+t sz)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_1_1_heap_prefix_ae1e578725ff525db91437f26e3409aab}\label{structkiwi_1_1_i_o_buf_1_1_heap_prefix_ae1e578725ff525db91437f26e3409aab} 
+uint16\+\_\+t {\bfseries magic}
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_1_1_heap_prefix_a3782bacc514c6bee891b60dc076efaac}\label{structkiwi_1_1_i_o_buf_1_1_heap_prefix_a3782bacc514c6bee891b60dc076efaac} 
+std\+::atomic$<$ uint16\+\_\+t $>$ {\bfseries flags}
+\item 
+\Hypertarget{structkiwi_1_1_i_o_buf_1_1_heap_prefix_a1cd175033c51c950524416fb094e13c1}\label{structkiwi_1_1_i_o_buf_1_1_heap_prefix_a1cd175033c51c950524416fb094e13c1} 
+uint32\+\_\+t {\bfseries size}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Use free for size \texorpdfstring{$>$}{>}= 4GB since we can store only 32 bits in the size var. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/io/iobuf.\+cc\end{DoxyCompactItemize}

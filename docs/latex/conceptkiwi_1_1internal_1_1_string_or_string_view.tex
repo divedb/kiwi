@@ -1,0 +1,11 @@
+\doxysection{kiwi\+::internal\+::String\+Or\+String\+View Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_string_or_string_view}{}\label{conceptkiwi_1_1internal_1_1_string_or_string_view}\index{kiwi::internal::StringOrStringView@{kiwi::internal::StringOrStringView}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT,\ \textcolor{keyword}{typename}\ TBaseT\ std::remove\_cvref\_t<T>>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_string_or_string_view}{kiwi::internal::StringOrStringView}}\ =\ }
+\DoxyCodeLine{\ \ \ \ std::same\_as<TBaseT,\ std::basic\_string<CharT>>\ ||}
+\DoxyCodeLine{\ \ \ \ std::same\_as<TBaseT,\ std::basic\_string\_view<CharT>>}
+
+\end{DoxyCode}

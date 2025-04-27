@@ -28,7 +28,7 @@
 \DoxyCodeLine{00025\ }
 \DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/assert.hh"{}}}
 \DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00029\ }
 \DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }detail\ \{}
 \DoxyCodeLine{00031\ }
@@ -53,7 +53,7 @@
 \DoxyCodeLine{00055\ \textcolor{keyword}{using\ }std::unique\_ptr;}
 \DoxyCodeLine{00056\ }
 \DoxyCodeLine{00065\ template\ <class\ T,\ class\ =\ std::enable\_if\_t<std::is\_pointer<T>::value>>}
-\DoxyCodeLine{00066\ \textcolor{keyword}{using\ }Owner\ =\ T;}
+\DoxyCodeLine{00066\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacekiwi_a4091a6e55c2adb06034f8816c093ab88}{Owner}}\ =\ T;}
 \DoxyCodeLine{00067\ }
 \DoxyCodeLine{00079\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{00080\ \textcolor{keyword}{class\ }NotNull\ \{}
@@ -119,13 +119,13 @@
 \DoxyCodeLine{00146\ \}}
 \DoxyCodeLine{00147\ }
 \DoxyCodeLine{00148\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
-\DoxyCodeLine{00149\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00149\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
 \DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{noexcept}(lhs.get()\ ==\ rhs.get()))\ -\/>\ \textcolor{keyword}{decltype}(lhs.get()\ ==\ rhs.get())\ \{}
 \DoxyCodeLine{00151\ \ \ \textcolor{keywordflow}{return}\ lhs.get()\ ==\ rhs.get();}
 \DoxyCodeLine{00152\ \}}
 \DoxyCodeLine{00153\ }
 \DoxyCodeLine{00154\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
-\DoxyCodeLine{00155\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{dense__map_8hh_a008449c6439d3cbc96cc662630b49736}{operator!=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00155\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&\ rhs)\ \textcolor{keyword}{noexcept}(}
 \DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{noexcept}(lhs.get()\ !=\ rhs.get()))\ -\/>\ \textcolor{keyword}{decltype}(lhs.get()\ !=\ rhs.get())\ \{}
 \DoxyCodeLine{00157\ \ \ \textcolor{keywordflow}{return}\ lhs.get()\ !=\ rhs.get();}
 \DoxyCodeLine{00158\ \}}
@@ -159,9 +159,9 @@
 \DoxyCodeLine{00186\ \}}
 \DoxyCodeLine{00187\ }
 \DoxyCodeLine{00189\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
-\DoxyCodeLine{00190\ std::ptrdiff\_t\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00190\ std::ptrdiff\_t\ \mbox{\hyperlink{namespacekiwi_ac58a34846cc70877525ef045889b5847}{operator-\/}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<U>}}\&)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00191\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00192\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00192\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\ \mbox{\hyperlink{namespacekiwi_ac58a34846cc70877525ef045889b5847}{operator-\/}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00193\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{00194\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_not_null}{NotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00195\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
@@ -187,11 +187,11 @@
 \DoxyCodeLine{00215\ \textcolor{keyword}{namespace\ }std\ \{}
 \DoxyCodeLine{00216\ }
 \DoxyCodeLine{00217\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00218\ \textcolor{keyword}{struct\ }hash<kiwi::NotNull<T>>\ :\ \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{kiwi::NotNullHash}}<kiwi::NotNull<T>>\ \{\};}
+\DoxyCodeLine{00218\ \textcolor{keyword}{struct\ }hash<\mbox{\hyperlink{namespacekiwi}{kiwi}}::NotNull<T>>\ :\ \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{kiwi::NotNullHash}}<kiwi::NotNull<T>>\ \{\};}
 \DoxyCodeLine{00219\ }
 \DoxyCodeLine{00220\ \}\ \ \textcolor{comment}{//\ namespace\ std}}
 \DoxyCodeLine{00221\ }
-\DoxyCodeLine{00222\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00222\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00223\ }
 \DoxyCodeLine{00237\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{00238\ \textcolor{keyword}{class\ }StrictNotNull\ :\ \textcolor{keyword}{public}\ NotNull<T>\ \{}
@@ -235,10 +235,10 @@
 \DoxyCodeLine{00282\ }
 \DoxyCodeLine{00283\ \textcolor{comment}{//\ more\ unwanted\ operators}}
 \DoxyCodeLine{00284\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
-\DoxyCodeLine{00285\ std::ptrdiff\_t\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,}
+\DoxyCodeLine{00285\ std::ptrdiff\_t\ \mbox{\hyperlink{namespacekiwi_ac58a34846cc70877525ef045889b5847}{operator-\/}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,}
 \DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<U>}}\&)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00287\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00288\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00288\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\ \mbox{\hyperlink{namespacekiwi_ac58a34846cc70877525ef045889b5847}{operator-\/}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00289\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{00290\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_strict_not_null}{StrictNotNull<T>}}\&,\ std::ptrdiff\_t)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00291\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
@@ -264,7 +264,7 @@
 \DoxyCodeLine{00311\ \textcolor{keyword}{namespace\ }std\ \{}
 \DoxyCodeLine{00312\ }
 \DoxyCodeLine{00313\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00314\ \textcolor{keyword}{struct\ }hash<kiwi::StrictNotNull<T>>}
+\DoxyCodeLine{00314\ \textcolor{keyword}{struct\ }hash<\mbox{\hyperlink{namespacekiwi}{kiwi}}::StrictNotNull<T>>}
 \DoxyCodeLine{00315\ \ \ \ \ :\ \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{kiwi::NotNullHash}}<kiwi::StrictNotNull<T>>\ \{\};}
 \DoxyCodeLine{00316\ }
 \DoxyCodeLine{00317\ \}\ \ \textcolor{comment}{//\ namespace\ std}}

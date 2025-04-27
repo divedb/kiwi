@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['path_0',['path',['../classkiwi_1_1_safe_base_name.html#a49529f853ea85af0030c298b324bc00f',1,'kiwi::SafeBaseName']]],
-  ['pointerliketypetraits_1',['PointerLikeTypeTraits',['../structkiwi_1_1_pointer_like_type_traits.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20const_20t_20_2a_20_3e_2',['PointerLikeTypeTraits&lt; const T * &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_5_01_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20const_20t_20_3e_3',['PointerLikeTypeTraits&lt; const T &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20returnt_28_2a_29_28paramts_2e_2e_2e_29_3e_4',['PointerLikeTypeTraits&lt; ReturnT(*)(ParamTs...)&gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01_return_t_07_5_08_07_param_ts_8_8_8_08_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20uintptr_5ft_20_3e_5',['PointerLikeTypeTraits&lt; uintptr_t &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01uintptr__t_01_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20void_20_2a_20_3e_6',['PointerLikeTypeTraits&lt; void * &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4.html',1,'kiwi']]]
+  ['object_20allocation_0',['IOBuf Object Allocation',['../classkiwi_1_1_i_o_buf.html#autotoc_md5',1,'']]],
+  ['operator_20bool_1',['operator bool',['../classchibicpp_1_1_error_or.html#ae44a4eb7cacc264a6f545cb785f278fa',1,'chibicpp::ErrorOr']]],
+  ['operator_20delete_2',['operator delete',['../classkiwi_1_1_i_o_buf.html#a829520f671679944efa49a7cc5e5825e',1,'kiwi::IOBuf::operator delete(void *ptr)'],['../classkiwi_1_1_i_o_buf.html#a5245be1b4fc1fa9382af992ad44d0467',1,'kiwi::IOBuf::operator delete(void *ptr, void *placement)']]],
+  ['operator_20new_3',['operator new',['../classkiwi_1_1_i_o_buf.html#aecfe95dfc5c8c960b180839fe6b0dd56',1,'kiwi::IOBuf::operator new(size_t size)'],['../classkiwi_1_1_i_o_buf.html#a5974de2f2b4d0e99a1dbdd1272097b21',1,'kiwi::IOBuf::operator new(size_t size, void *ptr)']]],
+  ['operator_21_3d_4',['operator!=',['../namespacekiwi.html#a008449c6439d3cbc96cc662630b49736',1,'kiwi']]],
+  ['operator_2b_2b_5',['operator++',['../classkiwi_1_1_not_null.html#a4f7e3debb41e401bc7be5892457ab2dc',1,'kiwi::NotNull::operator++()'],['../classkiwi_1_1_strict_not_null.html#a5ebff0ebc8e520c9a339f609c11a04a1',1,'kiwi::StrictNotNull::operator++()']]],
+  ['operator_2d_6',['operator-',['../namespacekiwi.html#ac58a34846cc70877525ef045889b5847',1,'kiwi']]],
+  ['operator_3c_3d_3e_7',['operator&lt;=&gt;',['../classkiwi_1_1_file_path.html#a0521858e6819bd9bf6374d0d08cb7830',1,'kiwi::FilePath']]],
+  ['operator_3d_8',['operator=',['../classkiwi_1_1_scoped_generic.html#ae0b7bd0251f6b850caf247e25ca05882',1,'kiwi::ScopedGeneric::operator=()'],['../classkiwi_1_1_file_path.html#a4774b14bf9d49a5646e714d819836214',1,'kiwi::FilePath::operator=(const FilePath &amp;that)'],['../classkiwi_1_1_file_path.html#a7cf73a1b9cd5aed193ef30e124c5a5dc',1,'kiwi::FilePath::operator=(FilePath &amp;&amp;that) noexcept'],['../classkiwi_1_1_i_o_buf.html#a3ebf9feefdc07aa06d61ca2c58f81fa4',1,'kiwi::IOBuf::operator=(IOBuf &amp;&amp;other) noexcept'],['../classkiwi_1_1_i_o_buf.html#ae17f40ce23314a50600522d1fa78a485',1,'kiwi::IOBuf::operator=(const IOBuf &amp;other)'],['../classkiwi_1_1_string_ref.html#ac6ece4fee89a52742f085812446d09a1',1,'kiwi::StringRef::operator=()']]],
+  ['operator_3d_3d_9',['operator==',['../classkiwi_1_1_file_path.html#a4dd7106c446bdb203701ea0f57f2cbb1',1,'kiwi::FilePath::operator==()'],['../classkiwi_1_1_safe_base_name.html#a6f7b783641055cd976e7421a1d9cbcbe',1,'kiwi::SafeBaseName::operator==()'],['../namespacekiwi.html#a0d27e9ac9b943e14361fe2ba7ec21a46',1,'kiwi::operator==(const DenseMapBase&lt; DerivedT, KeyT, ValueT, KeyInfoT, BucketT &gt; &amp;LHS, const DenseMapBase&lt; DerivedT, KeyT, ValueT, KeyInfoT, BucketT &gt; &amp;RHS)']]],
+  ['owner_10',['Owner',['../namespacekiwi.html#a4091a6e55c2adb06034f8816c093ab88',1,'kiwi']]]
 ];

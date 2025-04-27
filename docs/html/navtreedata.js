@@ -25,13 +25,23 @@
 var NAVTREE =
 [
   [ "kiwi", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ]
+      ] ]
+    ] ],
+    [ "Concepts", "concepts.html", "concepts" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ]
       ] ]
@@ -44,7 +54,10 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"adl_8hh_source.html"
+"adl_8hh_source.html",
+"classkiwi_1_1_i_o_buf.html#a3c1716d549a392455b8ff73320d75b01",
+"classkiwi_1_1_string_ref.html#a817f88db73fc820718155d3ccd50d8e1",
+"namespacekiwi.html#aafd2344a5cb4e995b1be3bb5d28eb116"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

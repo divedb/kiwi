@@ -1,0 +1,30 @@
+\doxysection{kiwi\+::Aligned\+Char\+Array\+Union\texorpdfstring{$<$}{<} T, Ts \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1_aligned_char_array_union}{}\label{structkiwi_1_1_aligned_char_array_union}\index{kiwi::AlignedCharArrayUnion$<$ T, Ts $>$@{kiwi::AlignedCharArrayUnion$<$ T, Ts $>$}}
+
+
+{\ttfamily \#include $<$align\+\_\+of.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_aligned_char_array_union_a81d90ebd8c62e3691dbbed72614e7d7b}\label{structkiwi_1_1_aligned_char_array_union_a81d90ebd8c62e3691dbbed72614e7d7b} 
+using {\bfseries Aligned\+Union} = std\+::aligned\+\_\+union\+\_\+t$<$1, T, Ts...$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_aligned_char_array_union_add3bfd53363dbae23476584a4991fa23}\label{structkiwi_1_1_aligned_char_array_union_add3bfd53363dbae23476584a4991fa23} 
+char {\bfseries buffer} \mbox{[}sizeof(Aligned\+Union)\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename... Ts$>$\newline
+struct kiwi\+::\+Aligned\+Char\+Array\+Union$<$ T, Ts $>$}
+A suitably aligned and sized character array member which can hold elements of any type.
+
+This template is equivalent to std\+::aligned\+\_\+union\+\_\+t$<$1, ...$>$, but we cannot use it due to a bug in the MSVC x86 compiler\+: \href{https://github.com/microsoft/STL/issues/1533}{\texttt{ https\+://github.\+com/microsoft/\+STL/issues/1533}} Using {\ttfamily alignas} here works around the bug. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/support/align\+\_\+of.\+hh\end{DoxyCompactItemize}

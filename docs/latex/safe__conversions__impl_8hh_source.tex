@@ -1,0 +1,697 @@
+\doxysection{safe\+\_\+conversions\+\_\+impl.\+hh}
+\hypertarget{safe__conversions__impl_8hh_source}{}\label{safe__conversions__impl_8hh_source}\index{include/kiwi/numerics/safe\_conversions\_impl.hh@{include/kiwi/numerics/safe\_conversions\_impl.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2014\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ IWYU\ pragma:\ private,\ include\ "{}base/numerics/safe\_conversions.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/integral\_constant\_like.hh"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ The\ std\ library\ doesn't\ provide\ a\ binary\ max\_exponent\ for\ integers,\ however}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ we\ can\ compute\ an\ analog\ using\ std::numeric\_limits<>::digits.}}
+\DoxyCodeLine{00023\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumericType>}
+\DoxyCodeLine{00024\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kMaxExponent\ =}
+\DoxyCodeLine{00025\ \ \ \ \ std::is\_floating\_point\_v<NumericType>}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ ?\ std::numeric\_limits<NumericType>::max\_exponent}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ :\ std::numeric\_limits<NumericType>::digits\ +\ 1;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ The\ number\ of\ bits\ (including\ the\ sign)\ in\ an\ integer.\ Eliminates\ sizeof}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ hacks.}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumericType>}
+\DoxyCodeLine{00032\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kIntegerBitsPlusSign\ =}
+\DoxyCodeLine{00033\ \ \ \ \ std::numeric\_limits<NumericType>::digits\ +\ std::is\_signed\_v<NumericType>;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ Determines\ if\ a\ numeric\ value\ is\ negative\ without\ throwing\ compiler}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ warnings\ on:\ unsigned(value)\ <\ 0.}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<T>)}
+\DoxyCodeLine{00039\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsValueNegative(T\ value)\ \{}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_signed\_v<T>)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ value\ <\ 0;}
+\DoxyCodeLine{00042\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ This\ performs\ a\ fast\ negation,\ returning\ a\ signed\ value.\ It\ works\ on\ unsigned}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ arguments,\ but\ probably\ doesn't\ do\ what\ you\ want\ for\ any\ unsigned\ value}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ larger\ than\ max\ /\ 2\ +\ 1\ (i.e.\ signed\ min\ cast\ to\ unsigned).}}
+\DoxyCodeLine{00050\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{requires}\ std::is\_integral\_v<T>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ ConditionalNegate(T\ x,\ \textcolor{keywordtype}{bool}\ is\_negative)\ \{}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{using\ }SignedT\ =\ std::make\_signed\_t<T>;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{using\ }UnsignedT\ =\ std::make\_unsigned\_t<T>;}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}SignedT\textcolor{keyword}{>}((\textcolor{keyword}{static\_cast<}UnsignedT\textcolor{keyword}{>}(x)\ \string^}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}UnsignedT\textcolor{keyword}{>}(-\/SignedT(is\_negative)))\ +}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ is\_negative);}
+\DoxyCodeLine{00058\ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ This\ performs\ a\ safe,\ absolute\ value\ via\ unsigned\ overflow.}}
+\DoxyCodeLine{00061\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{requires}\ std::is\_integral\_v<T>}
+\DoxyCodeLine{00063\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ SafeUnsignedAbs(T\ value)\ \{}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{using\ }UnsignedT\ =\ std::make\_unsigned\_t<T>;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordflow}{return}\ IsValueNegative(value)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}UnsignedT\textcolor{keyword}{>}(0u\ -\/\ \textcolor{keyword}{static\_cast<}UnsignedT\textcolor{keyword}{>}(value))}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ static\_cast<UnsignedT>(value);}
+\DoxyCodeLine{00068\ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ TODO(jschuh):\ Debug\ builds\ don't\ reliably\ propagate\ constants,\ so\ we\ restrict}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ some\ accelerated\ runtime\ paths\ to\ release\ builds\ until\ this\ can\ be\ forced}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ with\ consteval\ support\ in\ C++20\ or\ C++23.}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#if\ defined(NDEBUG)}}
+\DoxyCodeLine{00074\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kEnableAsmCode\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00076\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kEnableAsmCode\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ Forces\ a\ crash,\ like\ a\ NOTREACHED().\ Used\ for\ numeric\ boundary\ errors.}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ Also\ used\ in\ a\ constexpr\ template\ to\ trigger\ a\ compilation\ failure\ on}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ an\ error\ condition.}}
+\DoxyCodeLine{00082\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_check_on_failure}{CheckOnFailure}}\ \{}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ T\ HandleFailure()\ \{}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00086\ \ \ \ \ \_\_debugbreak();}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#elif\ defined(\_\_GNUC\_\_)\ ||\ defined(\_\_clang\_\_)}}
+\DoxyCodeLine{00088\ \ \ \ \ \_\_builtin\_trap();}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00090\ \ \ \ \ ((void)(*(\textcolor{keyword}{volatile}\ \textcolor{keywordtype}{char}*)0\ =\ 0));}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ T();}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{keyword}{enum\ class}\ IntegerRepresentation\ \{\ kUnsigned,\ kSigned\ \};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ A\ range\ for\ a\ given\ nunmeric\ Src\ type\ is\ contained\ for\ a\ given\ numeric\ Dst}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ type\ if\ both\ numeric\_limits<Src>::max()\ <=\ numeric\_limits<Dst>::max()\ and}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ numeric\_limits<Src>::lowest()\ >=\ numeric\_limits<Dst>::lowest()\ are\ true.}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ We\ implement\ this\ as\ template\ specializations\ rather\ than\ simple\ static}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ comparisons\ to\ ensure\ type\ correctness\ in\ our\ comparisons.}}
+\DoxyCodeLine{00103\ \textcolor{keyword}{enum\ class}\ NumericRangeRepresentation\ \{\ kNotContained,\ kContained\ \};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ Helper\ templates\ to\ statically\ determine\ if\ our\ destination\ type\ can\ contain}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ maximum\ and\ minimum\ values\ represented\ by\ the\ source\ type.}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ Default\ case,\ used\ for\ same\ sign:\ Dst\ is\ guaranteed\ to\ contain\ Src\ only\ if}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ its\ range\ is\ equal\ or\ larger.}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ IntegerRepresentation\ DstSign\ =}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Dst>\ ?\ IntegerRepresentation::kSigned}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ IntegerRepresentation\ SrcSign\ =}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Src>\ ?\ IntegerRepresentation::kSigned}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ IntegerRepresentation::kUnsigned>}
+\DoxyCodeLine{00117\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ kStaticDstRangeRelationToSrcRange\ =}
+\DoxyCodeLine{00118\ \ \ \ \ kMaxExponent<Dst>\ >=\ kMaxExponent<Src>}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ ?\ NumericRangeRepresentation::kContained}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ :\ NumericRangeRepresentation::kNotContained;}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ Unsigned\ to\ signed:\ Dst\ is\ guaranteed\ to\ contain\ source\ only\ if\ its\ range\ is}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ larger.}}
+\DoxyCodeLine{00124\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00125\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}}
+\DoxyCodeLine{00126\ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ Src,\ IntegerRepresentation::kSigned,}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IntegerRepresentation::kUnsigned>\ =}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ kMaxExponent<Dst>\ >\ kMaxExponent<Src>}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ ?\ NumericRangeRepresentation::kContained}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ :\ NumericRangeRepresentation::kNotContained;}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ Signed\ to\ unsigned:\ Dst\ cannot\ be\ statically\ determined\ to\ contain\ Src.}}
+\DoxyCodeLine{00133\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00134\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ kStaticDstRangeRelationToSrcRange<}
+\DoxyCodeLine{00135\ \ \ \ \ Dst,\ Src,\ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00136\ \ \ \ \ IntegerRepresentation::kSigned>\ =\ NumericRangeRepresentation::kNotContained;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ This\ class\ wraps\ the\ range\ constraints\ as\ separate\ booleans\ so\ the\ compiler}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//\ can\ identify\ constants\ and\ eliminate\ unused\ code\ paths.}}
+\DoxyCodeLine{00140\ \textcolor{keyword}{class\ }RangeCheck\ \{}
+\DoxyCodeLine{00141\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{constexpr}\ RangeCheck()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{constexpr}\ RangeCheck(\textcolor{keywordtype}{bool}\ is\_in\_lower\_bound,\ \textcolor{keywordtype}{bool}\ is\_in\_upper\_bound)}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ :\ is\_underflow\_(!is\_in\_lower\_bound),\ is\_overflow\_(!is\_in\_upper\_bound)\ \{\}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ RangeCheck\&\ rhs)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !is\_overflow\_\ \&\&\ !is\_underflow\_;\ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsInvalid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ is\_overflow\_\ \&\&\ is\_underflow\_;\ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsOverflow()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ is\_overflow\_\ \&\&\ !is\_underflow\_;\ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsUnderflow()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !is\_overflow\_\ \&\&\ is\_underflow\_;\ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsOverflowFlagSet()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ is\_overflow\_;\ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsUnderflowFlagSet()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ is\_underflow\_;\ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ Do\ not\ change\ the\ order\ of\ these\ member\ variables.\ The\ integral\ conversion}}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ optimization\ depends\ on\ this\ exact\ order.}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_underflow\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_overflow\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00160\ \};}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{comment}{//\ The\ following\ helper\ template\ addresses\ a\ corner\ case\ in\ range\ checks\ for}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//\ conversion\ from\ a\ floating-\/point\ type\ to\ an\ integral\ type\ of\ smaller\ range}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ but\ larger\ precision\ (e.g.\ float\ -\/>\ unsigned).\ The\ problem\ is\ as\ follows:}}
+\DoxyCodeLine{00165\ \textcolor{comment}{//\ \ \ 1.\ Integral\ maximum\ is\ always\ one\ less\ than\ a\ power\ of\ two,\ so\ it\ must\ be}}
+\DoxyCodeLine{00166\ \textcolor{comment}{//\ \ \ \ \ \ truncated\ to\ fit\ the\ mantissa\ of\ the\ floating\ point.\ The\ direction\ of}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//\ \ \ \ \ \ rounding\ is\ implementation\ defined,\ but\ by\ default\ it's\ always\ IEEE}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//\ \ \ \ \ \ floats,\ which\ round\ to\ nearest\ and\ thus\ result\ in\ a\ value\ of\ larger}}
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ \ \ \ \ \ magnitude\ than\ the\ integral\ value.}}
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ \ \ \ \ \ Example:\ float\ f\ =\ UINT\_MAX;\ //\ f\ is\ 4294967296f\ but\ UINT\_MAX}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ is\ 4294967295u.}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ \ \ 2.\ If\ the\ floating\ point\ value\ is\ equal\ to\ the\ promoted\ integral\ maximum}}
+\DoxyCodeLine{00173\ \textcolor{comment}{//\ \ \ \ \ \ value,\ a\ range\ check\ will\ erroneously\ pass.}}
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ \ \ \ \ \ Example:\ (4294967296f\ <=\ 4294967295u)\ //\ This\ is\ true\ due\ to\ a\ precision}}
+\DoxyCodeLine{00175\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ loss\ in\ rounding\ up\ to\ float.}}
+\DoxyCodeLine{00176\ \textcolor{comment}{//\ \ \ 3.\ When\ the\ floating\ point\ value\ is\ then\ converted\ to\ an\ integral,\ the}}
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ \ \ \ \ \ resulting\ value\ is\ out\ of\ range\ for\ the\ target\ integral\ type\ and}}
+\DoxyCodeLine{00178\ \textcolor{comment}{//\ \ \ \ \ \ thus\ is\ implementation\ defined.}}
+\DoxyCodeLine{00179\ \textcolor{comment}{//\ \ \ \ \ \ Example:\ unsigned\ u\ =\ (float)INT\_MAX;\ //\ u\ will\ typically\ overflow\ to\ 0.}}
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ To\ fix\ this\ bug\ we\ manually\ truncate\ the\ maximum\ value\ when\ the\ destination}}
+\DoxyCodeLine{00181\ \textcolor{comment}{//\ type\ is\ an\ integral\ of\ larger\ precision\ than\ the\ source\ floating-\/point\ type,}}
+\DoxyCodeLine{00182\ \textcolor{comment}{//\ such\ that\ the\ resulting\ maximum\ is\ represented\ exactly\ as\ a\ floating\ point.}}
+\DoxyCodeLine{00183\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds>}
+\DoxyCodeLine{00184\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{NarrowingRange}}\ \{}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{using\ }SrcLimits\ =\ std::numeric\_limits<Src>;}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{using\ }DstLimits\ =\ std::numeric\_limits<Dst>;}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \textcolor{comment}{//\ Computes\ the\ mask\ required\ to\ make\ an\ accurate\ comparison\ between\ types.}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ kShift\ =\ (kMaxExponent<Src>\ >\ kMaxExponent<Dst>\ \&\&}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SrcLimits::digits\ <\ DstLimits::digits)}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (DstLimits::digits\ -\/\ SrcLimits::digits)}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ 0;}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{requires}(std::same\_as<T,\ Dst>\ \&\&}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ ((std::integral<T>\ \&\&\ kShift\ <\ DstLimits::digits)\ ||}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (std::floating\_point<T>\ \&\&\ kShift\ ==\ 0)))}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ Masks\ out\ the\ integer\ bits\ that\ are\ beyond\ the\ precision\ of\ the}}
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//\ intermediate\ type\ used\ for\ comparison.}}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ Adjust(T\ value)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::integral<T>)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keyword}{using\ }UnsignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned\_t<T>;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ ConditionalNegate(SafeUnsignedAbs(value)\ \&}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \string~((UnsignedDst\{1\}\ <<\ kShift)\ -\/\ UnsignedDst\{1\}),}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IsValueNegative(value)));}
+\DoxyCodeLine{00207\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ max()\ \{\ \textcolor{keywordflow}{return}\ Adjust(Bounds<Dst>::max());\ \}}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ lowest()\ \{\ \textcolor{keywordflow}{return}\ Adjust(Bounds<Dst>::lowest());\ \}}
+\DoxyCodeLine{00214\ \};}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \textcolor{comment}{//\ The\ following\ templates\ are\ for\ ranges\ that\ must\ be\ verified\ at\ runtime.\ We}}
+\DoxyCodeLine{00217\ \textcolor{comment}{//\ split\ it\ into\ checks\ based\ on\ signedness\ to\ avoid\ confusing\ casts\ and}}
+\DoxyCodeLine{00218\ \textcolor{comment}{//\ compiler\ warnings\ on\ signed\ an\ unsigned\ comparisons.}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{comment}{//\ Default\ case,\ used\ for\ same\ sign\ narrowing:\ The\ range\ is\ contained\ for\ normal}}
+\DoxyCodeLine{00221\ \textcolor{comment}{//\ limits.}}
+\DoxyCodeLine{00222\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds,}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ IntegerRepresentation\ DstSign\ =}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Dst>\ ?\ IntegerRepresentation::kSigned}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ IntegerRepresentation\ SrcSign\ =}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Src>\ ?\ IntegerRepresentation::kSigned}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ NumericRangeRepresentation\ DstRange\ =}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ Src>>}
+\DoxyCodeLine{00231\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl}{DstRangeRelationToSrcRangeImpl}}\ \{}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ Check(Src\ value)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{using\ }SrcLimits\ =\ std::numeric\_limits<Src>;}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{using\ }DstLimits\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{NarrowingRange<Dst,\ Src,\ Bounds>}};}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}(}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(SrcLimits::lowest())\ >=\ DstLimits::lowest()\ ||}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value)\ >=\ DstLimits::lowest(),}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(SrcLimits::max())\ <=\ DstLimits::max()\ ||}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value)\ <=\ DstLimits::max());}
+\DoxyCodeLine{00240\ \ \ \}}
+\DoxyCodeLine{00241\ \};}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \textcolor{comment}{//\ Signed\ to\ signed\ narrowing:\ Both\ the\ upper\ and\ lower\ boundaries\ may\ be}}
+\DoxyCodeLine{00244\ \textcolor{comment}{//\ exceeded\ for\ standard\ limits.}}
+\DoxyCodeLine{00245\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds>}
+\DoxyCodeLine{00246\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl}{DstRangeRelationToSrcRangeImpl}}<}
+\DoxyCodeLine{00247\ \ \ \ \ Dst,\ Src,\ Bounds,\ IntegerRepresentation::kSigned,}
+\DoxyCodeLine{00248\ \ \ \ \ IntegerRepresentation::kSigned,\ NumericRangeRepresentation::kNotContained>\ \{}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ Check(Src\ value)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keyword}{using\ }DstLimits\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{NarrowingRange<Dst,\ Src,\ Bounds>}};}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}(value\ >=\ DstLimits::lowest(),\ value\ <=\ DstLimits::max());}
+\DoxyCodeLine{00252\ \ \ \}}
+\DoxyCodeLine{00253\ \};}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{comment}{//\ Unsigned\ to\ unsigned\ narrowing:\ Only\ the\ upper\ bound\ can\ be\ exceeded\ for}}
+\DoxyCodeLine{00256\ \textcolor{comment}{//\ standard\ limits.}}
+\DoxyCodeLine{00257\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds>}
+\DoxyCodeLine{00258\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl}{DstRangeRelationToSrcRangeImpl}}<}
+\DoxyCodeLine{00259\ \ \ \ \ Dst,\ Src,\ Bounds,\ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00260\ \ \ \ \ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00261\ \ \ \ \ NumericRangeRepresentation::kNotContained>\ \{}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ Check(Src\ value)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keyword}{using\ }DstLimits\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{NarrowingRange<Dst,\ Src,\ Bounds>}};}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}(}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ DstLimits::lowest()\ ==\ Dst\{0\}\ ||\ value\ >=\ DstLimits::lowest(),}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ value\ <=\ DstLimits::max());}
+\DoxyCodeLine{00267\ \ \ \}}
+\DoxyCodeLine{00268\ \};}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \textcolor{comment}{//\ Unsigned\ to\ signed:\ Only\ the\ upper\ bound\ can\ be\ exceeded\ for\ standard\ limits.}}
+\DoxyCodeLine{00271\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds>}
+\DoxyCodeLine{00272\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl}{DstRangeRelationToSrcRangeImpl}}<}
+\DoxyCodeLine{00273\ \ \ \ \ Dst,\ Src,\ Bounds,\ IntegerRepresentation::kSigned,}
+\DoxyCodeLine{00274\ \ \ \ \ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00275\ \ \ \ \ NumericRangeRepresentation::kNotContained>\ \{}
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ Check(Src\ value)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keyword}{using\ }DstLimits\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{NarrowingRange<Dst,\ Src,\ Bounds>}};}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =\ \textcolor{keyword}{decltype}(Src()\ +\ Dst());}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}(DstLimits::lowest()\ <=\ Dst\{0\}\ ||}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(value)\ >=}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(DstLimits::lowest()),}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(value)\ <=}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(DstLimits::max()));}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \};}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{comment}{//\ Signed\ to\ unsigned:\ The\ upper\ boundary\ may\ be\ exceeded\ for\ a\ narrower\ Dst,}}
+\DoxyCodeLine{00288\ \textcolor{comment}{//\ and\ any\ negative\ value\ exceeds\ the\ lower\ boundary\ for\ standard\ limits.}}
+\DoxyCodeLine{00289\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds>}
+\DoxyCodeLine{00290\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl}{DstRangeRelationToSrcRangeImpl}}<}
+\DoxyCodeLine{00291\ \ \ \ \ Dst,\ Src,\ Bounds,\ IntegerRepresentation::kUnsigned,}
+\DoxyCodeLine{00292\ \ \ \ \ IntegerRepresentation::kSigned,\ NumericRangeRepresentation::kNotContained>\ \{}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ Check(Src\ value)\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keyword}{using\ }SrcLimits\ =\ std::numeric\_limits<Src>;}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{using\ }DstLimits\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{NarrowingRange<Dst,\ Src,\ Bounds>}};}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =\ \textcolor{keyword}{decltype}(Src()\ +\ Dst());}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordtype}{bool}\ ge\_zero;}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{//\ Converting\ floating-\/point\ to\ integer\ will\ discard\ fractional\ part,\ so}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{comment}{//\ values\ in\ (-\/1.0,\ -\/0.0)\ will\ truncate\ to\ 0\ and\ fit\ in\ Dst.}}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_floating\_point\_v<Src>)\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ ge\_zero\ =\ value\ >\ Src\{-\/1\};}
+\DoxyCodeLine{00302\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ ge\_zero\ =\ value\ >=\ Src\{0\};}
+\DoxyCodeLine{00304\ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}(}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ ge\_zero\ \&\&\ (DstLimits::lowest()\ ==\ 0\ ||}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value)\ >=\ DstLimits::lowest()),}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(SrcLimits::max())\ <=}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(DstLimits::max())\ ||}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(value)\ <=}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(DstLimits::max()));}
+\DoxyCodeLine{00312\ \ \ \}}
+\DoxyCodeLine{00313\ \};}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00315\ \textcolor{comment}{//\ Simple\ wrapper\ for\ statically\ checking\ if\ a\ type's\ range\ is\ contained.}}
+\DoxyCodeLine{00316\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00317\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsTypeInRangeForNumericType\ =}
+\DoxyCodeLine{00318\ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ Src>\ ==}
+\DoxyCodeLine{00319\ \ \ \ \ NumericRangeRepresentation::kContained;}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Bounds\ =\ std::numeric\_limits,}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00323\ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<Src>\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ Bounds<Dst>::lowest()\ <\ Bounds<Dst>::max())}
+\DoxyCodeLine{00325\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ DstRangeRelationToSrcRange(Src\ value)\ \{}
+\DoxyCodeLine{00326\ \ \ \textcolor{keywordflow}{return}\ DstRangeRelationToSrcRangeImpl<Dst,\ Src,\ Bounds>::Check(value);}
+\DoxyCodeLine{00327\ \}}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \textcolor{comment}{//\ Integer\ promotion\ templates\ used\ by\ the\ portable\ checked\ integer\ arithmetic.}}
+\DoxyCodeLine{00330\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ Size,\ \textcolor{keywordtype}{bool}\ IsSigned>}
+\DoxyCodeLine{00331\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_integer_for_digits_and_sign_impl}{IntegerForDigitsAndSignImpl}};}
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#define\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(I)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00334\ \textcolor{preprocessor}{\ \ template\ <>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00335\ \textcolor{preprocessor}{\ \ struct\ IntegerForDigitsAndSignImpl<kIntegerBitsPlusSign<I>,\ \(\backslash\)}}
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<I>>\ \{\ \ \ \(\backslash\)}}
+\DoxyCodeLine{00337\ \textcolor{preprocessor}{\ \ \ \ using\ type\ =\ I;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00338\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(int8\_t);}
+\DoxyCodeLine{00341\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(uint8\_t);}
+\DoxyCodeLine{00342\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(int16\_t);}
+\DoxyCodeLine{00343\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(uint16\_t);}
+\DoxyCodeLine{00344\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(int32\_t);}
+\DoxyCodeLine{00345\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(uint32\_t);}
+\DoxyCodeLine{00346\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(int64\_t);}
+\DoxyCodeLine{00347\ INTEGER\_FOR\_DIGITS\_AND\_SIGN(uint64\_t);}
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\#undef\ INTEGER\_FOR\_DIGITS\_AND\_SIGN}}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ Size,\ \textcolor{keywordtype}{bool}\ IsSigned>}
+\DoxyCodeLine{00351\ \textcolor{keyword}{using\ }IntegerForDigitsAndSign\ =}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_integer_for_digits_and_sign_impl}{IntegerForDigitsAndSignImpl<Size,\ IsSigned>::type}};}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \textcolor{comment}{//\ WARNING:\ We\ have\ no\ IntegerForSizeAndSign<16,\ *>.\ If\ we\ ever\ add\ one\ to}}
+\DoxyCodeLine{00355\ \textcolor{comment}{//\ support\ 128-\/bit\ math,\ then\ the\ ArithmeticPromotion\ template\ below\ will\ need}}
+\DoxyCodeLine{00356\ \textcolor{comment}{//\ to\ be\ updated\ (or\ more\ likely\ replaced\ with\ a\ decltype\ expression).}}
+\DoxyCodeLine{00357\ \textcolor{keyword}{static\_assert}(kIntegerBitsPlusSign<intmax\_t>\ ==\ 64,}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Max\ integer\ size\ not\ supported\ for\ this\ toolchain."{}});}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Integer,\ \textcolor{keywordtype}{bool}\ IsSigned\ =\ std::is\_\textcolor{keywordtype}{signed}\_v<Integer>>}
+\DoxyCodeLine{00361\ \textcolor{keyword}{using\ }TwiceWiderInteger\ =}
+\DoxyCodeLine{00362\ \ \ \ \ IntegerForDigitsAndSign<kIntegerBitsPlusSign<Integer>\ *\ 2,\ IsSigned>;}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \textcolor{comment}{//\ Determines\ the\ type\ that\ can\ represent\ the\ largest\ positive\ value.}}
+\DoxyCodeLine{00365\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00366\ \textcolor{keyword}{using\ }MaxExponentPromotion\ =}
+\DoxyCodeLine{00367\ \ \ \ \ std::conditional\_t<(kMaxExponent<Lhs>\ >\ kMaxExponent<Rhs>),\ Lhs,\ Rhs>;}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \textcolor{comment}{//\ Determines\ the\ type\ that\ can\ represent\ the\ lowest\ arithmetic\ value.}}
+\DoxyCodeLine{00370\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00371\ \textcolor{keyword}{using\ }LowestValuePromotion\ =\ std::conditional\_t<}
+\DoxyCodeLine{00372\ \ \ \ \ std::is\_signed\_v<Lhs>}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ ?\ (!std::is\_signed\_v<Rhs>\ ||\ kMaxExponent<Lhs>\ >\ kMaxExponent<Rhs>)}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ :\ (!std::is\_signed\_v<Rhs>\ \&\&\ kMaxExponent<Lhs>\ <\ kMaxExponent<Rhs>),}
+\DoxyCodeLine{00375\ \ \ \ \ Lhs,\ Rhs>;}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \textcolor{comment}{//\ Determines\ the\ type\ that\ is\ best\ able\ to\ represent\ an\ arithmetic\ result.}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \textcolor{comment}{//\ Default\ case,\ used\ when\ the\ side\ with\ the\ max\ exponent\ is\ big\ enough.}}
+\DoxyCodeLine{00380\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs\ =\ Lhs,}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_intmax\_type\ =}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_integral\_v<MaxExponentPromotion<Lhs,\ Rhs>>\ \&\&}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kIntegerBitsPlusSign<MaxExponentPromotion<Lhs,\ Rhs>>\ ==}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kIntegerBitsPlusSign<intmax\_t>,}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_max\_exponent\ =\ kStaticDstRangeRelationToSrcRange<}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MaxExponentPromotion<Lhs,\ Rhs>,\ Lhs>\ ==}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NumericRangeRepresentation::kContained\ \&\&}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kStaticDstRangeRelationToSrcRange<}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MaxExponentPromotion<Lhs,\ Rhs>,\ Rhs>\ ==}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NumericRangeRepresentation::kContained>}
+\DoxyCodeLine{00391\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_big_enough_promotion_impl}{BigEnoughPromotionImpl}}\ \{}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{using\ }type\ =\ MaxExponentPromotion<Lhs,\ Rhs>;}
+\DoxyCodeLine{00393\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kContained\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00394\ \};}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \textcolor{comment}{//\ We\ can\ use\ a\ twice\ wider\ type\ to\ fit.}}
+\DoxyCodeLine{00397\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00398\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_big_enough_promotion_impl}{BigEnoughPromotionImpl}}<Lhs,\ Rhs,\ false,\ false>\ \{}
+\DoxyCodeLine{00399\ \ \ \textcolor{keyword}{using\ }type\ =}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ TwiceWiderInteger<MaxExponentPromotion<Lhs,\ Rhs>,}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Lhs>\ ||\ std::is\_signed\_v<Rhs>>;}
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kContained\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00403\ \};}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \textcolor{comment}{//\ No\ type\ is\ large\ enough.}}
+\DoxyCodeLine{00406\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00407\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_big_enough_promotion_impl}{BigEnoughPromotionImpl}}<Lhs,\ Rhs,\ true,\ false>\ \{}
+\DoxyCodeLine{00408\ \ \ \textcolor{keyword}{using\ }type\ =\ MaxExponentPromotion<Lhs,\ Rhs>;}
+\DoxyCodeLine{00409\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kContained\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00410\ \};}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00413\ \textcolor{keyword}{using\ }BigEnoughPromotion\ =\ \textcolor{keyword}{typename}\ BigEnoughPromotionImpl<Lhs,\ Rhs>::type;}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00416\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsBigEnoughPromotionContained\ =}
+\DoxyCodeLine{00417\ \ \ \ \ BigEnoughPromotionImpl<Lhs,\ Rhs>::kContained;}
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00419\ \textcolor{comment}{//\ We\ can\ statically\ check\ if\ operations\ on\ the\ provided\ types\ can\ wrap,\ so\ we}}
+\DoxyCodeLine{00420\ \textcolor{comment}{//\ can\ skip\ the\ checked\ operations\ if\ they're\ not\ needed.\ So,\ for\ an\ integer\ we}}
+\DoxyCodeLine{00421\ \textcolor{comment}{//\ care\ if\ the\ destination\ type\ preserves\ the\ sign\ and\ is\ twice\ the\ width\ of}}
+\DoxyCodeLine{00422\ \textcolor{comment}{//\ the\ source.}}
+\DoxyCodeLine{00423\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs\ =\ Lhs>}
+\DoxyCodeLine{00424\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsIntegerArithmeticSafe\ =}
+\DoxyCodeLine{00425\ \ \ \ \ !std::is\_floating\_point\_v<T>\ \&\&\ !std::is\_floating\_point\_v<Lhs>\ \&\&}
+\DoxyCodeLine{00426\ \ \ \ \ !std::is\_floating\_point\_v<Rhs>\ \&\&}
+\DoxyCodeLine{00427\ \ \ \ \ std::is\_signed\_v<T>\ >=\ std::is\_signed\_v<Lhs>\ \&\&}
+\DoxyCodeLine{00428\ \ \ \ \ kIntegerBitsPlusSign<T>\ >=\ (2\ *\ kIntegerBitsPlusSign<Lhs>)\ \&\&}
+\DoxyCodeLine{00429\ \ \ \ \ std::is\_signed\_v<T>\ >=\ std::is\_signed\_v<Rhs>\ \&\&}
+\DoxyCodeLine{00430\ \ \ \ \ kIntegerBitsPlusSign<T>\ >=\ (2\ *\ kIntegerBitsPlusSign<Rhs>);}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \textcolor{comment}{//\ Promotes\ to\ a\ type\ that\ can\ represent\ any\ possible\ result\ of\ a\ binary}}
+\DoxyCodeLine{00433\ \textcolor{comment}{//\ arithmetic\ operation\ with\ the\ source\ types.}}
+\DoxyCodeLine{00434\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00435\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl}{FastIntegerArithmeticPromotionImpl}}\ \{}
+\DoxyCodeLine{00436\ \ \ \textcolor{keyword}{using\ }type\ =\ BigEnoughPromotion<Lhs,\ Rhs>;}
+\DoxyCodeLine{00437\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kContained\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00438\ \};}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00441\ \ \ \textcolor{keyword}{requires}(kIsIntegerArithmeticSafe<}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ std::conditional\_t<std::is\_signed\_v<Lhs>\ ||\ std::is\_signed\_v<Rhs>,}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ intmax\_t,\ uintmax\_t>,}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ MaxExponentPromotion<Lhs,\ Rhs>>)}
+\DoxyCodeLine{00445\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl}{FastIntegerArithmeticPromotionImpl}}<Lhs,\ Rhs>\ \{}
+\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{using\ }type\ =}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ TwiceWiderInteger<MaxExponentPromotion<Lhs,\ Rhs>,}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_signed\_v<Lhs>\ ||\ std::is\_signed\_v<Rhs>>;}
+\DoxyCodeLine{00449\ \ \ \textcolor{keyword}{static\_assert}(kIsIntegerArithmeticSafe<type,\ Lhs,\ Rhs>);}
+\DoxyCodeLine{00450\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kContained\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00451\ \};}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00454\ \textcolor{keyword}{using\ }FastIntegerArithmeticPromotion\ =}
+\DoxyCodeLine{00455\ \ \ \ \ \textcolor{keyword}{typename}\ FastIntegerArithmeticPromotionImpl<Lhs,\ Rhs>::type;}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00458\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsFastIntegerArithmeticPromotionContained\ =}
+\DoxyCodeLine{00459\ \ \ \ \ FastIntegerArithmeticPromotionImpl<Lhs,\ Rhs>::kContained;}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00462\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_arithmetic_or_integral_constant}{ArithmeticOrIntegralConstant}}\ \{}
+\DoxyCodeLine{00463\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00464\ \};}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptkiwi_1_1_integral_constant_like}{IntegralConstantLike<T>}}}
+\DoxyCodeLine{00468\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_arithmetic_or_integral_constant}{ArithmeticOrIntegralConstant}}<T>\ \{}
+\DoxyCodeLine{00469\ \ \ \textcolor{keyword}{using\ }type\ =\ \textcolor{keyword}{typename}\ T::value\_type;}
+\DoxyCodeLine{00470\ \};}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \textcolor{comment}{//\ Extracts\ the\ underlying\ type\ from\ an\ enum.}}
+\DoxyCodeLine{00473\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00474\ \textcolor{keyword}{using\ }ArithmeticOrUnderlyingEnum\ =}
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keyword}{typename}\ std::conditional\_t<std::is\_enum\_v<T>,\ std::underlying\_type<T>,}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1internal_1_1_arithmetic_or_integral_constant}{ArithmeticOrIntegralConstant<T>}}>::type;}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \textcolor{comment}{//\ The\ following\ are\ helper\ templates\ used\ in\ the\ CheckedNumeric\ class.}}
+\DoxyCodeLine{00479\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00480\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
+\DoxyCodeLine{00481\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric}};}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00484\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
+\DoxyCodeLine{00485\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{ClampedNumeric}};}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00488\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
+\DoxyCodeLine{00489\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}};}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00491\ \textcolor{comment}{//\ Used\ to\ treat\ CheckedNumeric\ and\ arithmetic\ underlying\ types\ the\ same.}}
+\DoxyCodeLine{00492\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00493\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsCheckedNumeric\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00494\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00495\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsCheckedNumeric<CheckedNumeric<T>>\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00496\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00497\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_numeric}{IsCheckedNumeric}}\ =\ kIsCheckedNumeric<T>;}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00500\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsClampedNumeric\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00501\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00502\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsClampedNumeric<ClampedNumeric<T>>\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00503\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00504\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_numeric}{IsClampedNumeric}}\ =\ kIsClampedNumeric<T>;}
+\DoxyCodeLine{00505\ }
+\DoxyCodeLine{00506\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00507\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsStrictNumeric\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00508\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00509\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsStrictNumeric<StrictNumeric<T>>\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00510\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00511\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_numeric}{IsStrictNumeric}}\ =\ kIsStrictNumeric<T>;}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00514\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_underlying_type_impl}{UnderlyingTypeImpl}}\ \{}
+\DoxyCodeLine{00515\ \ \ \textcolor{keyword}{using\ }type\ =\ ArithmeticOrUnderlyingEnum<T>;}
+\DoxyCodeLine{00516\ \};}
+\DoxyCodeLine{00517\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00518\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_underlying_type_impl}{UnderlyingTypeImpl}}<\mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric}}<T>>\ \{}
+\DoxyCodeLine{00519\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00520\ \};}
+\DoxyCodeLine{00521\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00522\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_underlying_type_impl}{UnderlyingTypeImpl}}<\mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{ClampedNumeric}}<T>>\ \{}
+\DoxyCodeLine{00523\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00524\ \};}
+\DoxyCodeLine{00525\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00526\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_underlying_type_impl}{UnderlyingTypeImpl}}<\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}<T>>\ \{}
+\DoxyCodeLine{00527\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00528\ \};}
+\DoxyCodeLine{00529\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00530\ \textcolor{keyword}{using\ }UnderlyingType\ =\ \textcolor{keyword}{typename}\ UnderlyingTypeImpl<T>::type;}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00533\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsNumeric\ =\ std::is\_arithmetic\_v<UnderlyingType<T>>;}
+\DoxyCodeLine{00534\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00535\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_numeric}{IsCheckedNumeric<T>}}\ ||\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_numeric}{IsClampedNumeric<T>}}\ ||\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_numeric}{IsStrictNumeric<T>}})}
+\DoxyCodeLine{00536\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsNumeric<T>\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00537\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00538\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric}}\ =\ kIsNumeric<T>;}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00541\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_op}{IsCheckedOp}}\ =\ (\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_numeric}{IsCheckedNumeric<L>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<R>}})\ ||}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_numeric}{IsCheckedNumeric<R>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<L>}});}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00545\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_op}{IsClampedOp}}\ =}
+\DoxyCodeLine{00546\ \ \ \ \ !\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_op}{IsCheckedOp<L,\ R>}}\ \&\&\ ((\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_numeric}{IsClampedNumeric<L>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<R>}})\ ||}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_numeric}{IsClampedNumeric<R>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<L>}}));}
+\DoxyCodeLine{00548\ }
+\DoxyCodeLine{00549\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00550\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_op}{IsStrictOp}}\ =\ !\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_op}{IsCheckedOp<L,\ R>}}\ \&\&\ !\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_op}{IsClampedOp<L,\ R>}}\ \&\&}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ((\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_numeric}{IsStrictNumeric<L>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<R>}})\ ||}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_numeric}{IsStrictNumeric<R>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<L>}}));}
+\DoxyCodeLine{00553\ }
+\DoxyCodeLine{00554\ \textcolor{comment}{//\ as\_signed<>\ returns\ the\ supplied\ integral\ value\ (or\ integral\ castable}}
+\DoxyCodeLine{00555\ \textcolor{comment}{//\ Numeric\ template)\ cast\ as\ a\ signed\ integral\ of\ equivalent\ precision.}}
+\DoxyCodeLine{00556\ \textcolor{comment}{//\ I.e.\ it's\ mostly\ an\ alias\ for:\ static\_cast<std::make\_signed<T>::type>(t)}}
+\DoxyCodeLine{00557\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Dst\ =\ std::make\_\textcolor{keywordtype}{signed}\_t<UnderlyingType<Src>>>}
+\DoxyCodeLine{00558\ \ \ \textcolor{keyword}{requires}\ std::integral<Dst>}
+\DoxyCodeLine{00559\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_signed(Src\ value)\ \{}
+\DoxyCodeLine{00560\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00561\ \}}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \textcolor{comment}{//\ as\_unsigned<>\ returns\ the\ supplied\ integral\ value\ (or\ integral\ castable}}
+\DoxyCodeLine{00564\ \textcolor{comment}{//\ Numeric\ template)\ cast\ as\ an\ unsigned\ integral\ of\ equivalent\ precision.}}
+\DoxyCodeLine{00565\ \textcolor{comment}{//\ I.e.\ it's\ mostly\ an\ alias\ for:\ static\_cast<std::make\_unsigned<T>::type>(t)}}
+\DoxyCodeLine{00566\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src,}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Dst\ =\ std::make\_unsigned\_t<UnderlyingType<Src>>>}
+\DoxyCodeLine{00568\ \ \ \textcolor{keyword}{requires}\ std::integral<Dst>}
+\DoxyCodeLine{00569\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_unsigned(Src\ value)\ \{}
+\DoxyCodeLine{00570\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00571\ \}}
+\DoxyCodeLine{00572\ }
+\DoxyCodeLine{00573\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00574\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00575\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_less}{IsLess}}\ \{}
+\DoxyCodeLine{00576\ \ \ \textcolor{keyword}{using\ }SumT\ =\ \textcolor{keyword}{decltype}(std::declval<L>()\ +\ std::declval<R>());}
+\DoxyCodeLine{00577\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Test(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00578\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ l\_range\ =\ DstRangeRelationToSrcRange<R>(lhs);}
+\DoxyCodeLine{00579\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ r\_range\ =\ DstRangeRelationToSrcRange<L>(rhs);}
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{keywordflow}{return}\ l\_range.IsUnderflow()\ ||\ r\_range.IsOverflow()\ ||}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \ \ \ (l\_range\ ==\ r\_range\ \&\&}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(lhs)\ <\ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(rhs));}
+\DoxyCodeLine{00583\ \ \ \}}
+\DoxyCodeLine{00584\ \};}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00587\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00588\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_less_or_equal}{IsLessOrEqual}}\ \{}
+\DoxyCodeLine{00589\ \ \ \textcolor{keyword}{using\ }SumT\ =\ \textcolor{keyword}{decltype}(std::declval<L>()\ +\ std::declval<R>());}
+\DoxyCodeLine{00590\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Test(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ l\_range\ =\ DstRangeRelationToSrcRange<R>(lhs);}
+\DoxyCodeLine{00592\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ r\_range\ =\ DstRangeRelationToSrcRange<L>(rhs);}
+\DoxyCodeLine{00593\ \ \ \ \ \textcolor{keywordflow}{return}\ l\_range.IsUnderflow()\ ||\ r\_range.IsOverflow()\ ||}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \ \ \ \ \ (l\_range\ ==\ r\_range\ \&\&}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(lhs)\ <=\ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(rhs));}
+\DoxyCodeLine{00596\ \ \ \}}
+\DoxyCodeLine{00597\ \};}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00600\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00601\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_greater}{IsGreater}}\ \{}
+\DoxyCodeLine{00602\ \ \ \textcolor{keyword}{using\ }SumT\ =\ \textcolor{keyword}{decltype}(std::declval<L>()\ +\ std::declval<R>());}
+\DoxyCodeLine{00603\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Test(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00604\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ l\_range\ =\ DstRangeRelationToSrcRange<R>(lhs);}
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ r\_range\ =\ DstRangeRelationToSrcRange<L>(rhs);}
+\DoxyCodeLine{00606\ \ \ \ \ \textcolor{keywordflow}{return}\ l\_range.IsOverflow()\ ||\ r\_range.IsUnderflow()\ ||}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \ \ \ (l\_range\ ==\ r\_range\ \&\&}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(lhs)\ >\ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(rhs));}
+\DoxyCodeLine{00609\ \ \ \}}
+\DoxyCodeLine{00610\ \};}
+\DoxyCodeLine{00611\ }
+\DoxyCodeLine{00612\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00613\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00614\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_greater_or_equal}{IsGreaterOrEqual}}\ \{}
+\DoxyCodeLine{00615\ \ \ \textcolor{keyword}{using\ }SumT\ =\ \textcolor{keyword}{decltype}(std::declval<L>()\ +\ std::declval<R>());}
+\DoxyCodeLine{00616\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Test(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00617\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ l\_range\ =\ DstRangeRelationToSrcRange<R>(lhs);}
+\DoxyCodeLine{00618\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ r\_range\ =\ DstRangeRelationToSrcRange<L>(rhs);}
+\DoxyCodeLine{00619\ \ \ \ \ \textcolor{keywordflow}{return}\ l\_range.IsOverflow()\ ||\ r\_range.IsUnderflow()\ ||}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ (l\_range\ ==\ r\_range\ \&\&}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(lhs)\ >=\ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(rhs));}
+\DoxyCodeLine{00622\ \ \ \}}
+\DoxyCodeLine{00623\ \};}
+\DoxyCodeLine{00624\ }
+\DoxyCodeLine{00625\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00626\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00627\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_equal}{IsEqual}}\ \{}
+\DoxyCodeLine{00628\ \ \ \textcolor{keyword}{using\ }SumT\ =\ \textcolor{keyword}{decltype}(std::declval<L>()\ +\ std::declval<R>());}
+\DoxyCodeLine{00629\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Test(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00630\ \ \ \ \ \textcolor{keywordflow}{return}\ DstRangeRelationToSrcRange<R>(lhs)\ ==}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DstRangeRelationToSrcRange<L>(rhs)\ \&\&}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(lhs)\ ==\ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(rhs);}
+\DoxyCodeLine{00633\ \ \ \}}
+\DoxyCodeLine{00634\ \};}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00637\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00638\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_not_equal}{IsNotEqual}}\ \{}
+\DoxyCodeLine{00639\ \ \ \textcolor{keyword}{using\ }SumT\ =\ \textcolor{keyword}{decltype}(std::declval<L>()\ +\ std::declval<R>());}
+\DoxyCodeLine{00640\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Test(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00641\ \ \ \ \ \textcolor{keywordflow}{return}\ DstRangeRelationToSrcRange<R>(lhs)\ !=}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DstRangeRelationToSrcRange<L>(rhs)\ ||}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(lhs)\ !=\ \textcolor{keyword}{static\_cast<}SumT\textcolor{keyword}{>}(rhs);}
+\DoxyCodeLine{00644\ \ \ \}}
+\DoxyCodeLine{00645\ \};}
+\DoxyCodeLine{00646\ }
+\DoxyCodeLine{00647\ \textcolor{comment}{//\ These\ perform\ the\ actual\ math\ operations\ on\ the\ CheckedNumerics.}}
+\DoxyCodeLine{00648\ \textcolor{comment}{//\ Binary\ arithmetic\ operations.}}
+\DoxyCodeLine{00649\ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00650\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<L>\ \&\&\ std::is\_arithmetic\_v<R>}
+\DoxyCodeLine{00651\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ SafeCompare(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00652\ \ \ \textcolor{keyword}{using\ }BigType\ =\ BigEnoughPromotion<L,\ R>;}
+\DoxyCodeLine{00653\ \ \ \textcolor{keywordflow}{return}\ kIsBigEnoughPromotionContained<L,\ R>}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Force\ to\ a\ larger\ type\ for\ speed\ if\ both\ are\ contained.}}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ C<BigType,\ BigType>::Test(\textcolor{keyword}{static\_cast<}BigType\textcolor{keyword}{>}(lhs),}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}BigType\textcolor{keyword}{>}(rhs))}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Let\ the\ template\ functions\ figure\ it\ out\ for\ mixed\ types.}}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ C<L,\ R>::Test(lhs,\ rhs);}
+\DoxyCodeLine{00659\ \}}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00662\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsMaxInRangeForNumericType\ =}
+\DoxyCodeLine{00663\ \ \ \ \ IsGreaterOrEqual<Dst,\ Src>::Test(std::numeric\_limits<Dst>::max(),}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<Src>::max());}
+\DoxyCodeLine{00665\ }
+\DoxyCodeLine{00666\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00667\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsMinInRangeForNumericType\ =}
+\DoxyCodeLine{00668\ \ \ \ \ IsLessOrEqual<Dst,\ Src>::Test(std::numeric\_limits<Dst>::lowest(),}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<Src>::lowest());}
+\DoxyCodeLine{00670\ }
+\DoxyCodeLine{00671\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00672\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ Dst\ kCommonMax\ =}
+\DoxyCodeLine{00673\ \ \ \ \ kIsMaxInRangeForNumericType<Dst,\ Src>}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(std::numeric\_limits<Src>::max())}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ :\ std::numeric\_limits<Dst>::max();}
+\DoxyCodeLine{00676\ }
+\DoxyCodeLine{00677\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00678\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ Dst\ kCommonMin\ =}
+\DoxyCodeLine{00679\ \ \ \ \ kIsMinInRangeForNumericType<Dst,\ Src>}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(std::numeric\_limits<Src>::lowest())}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ :\ std::numeric\_limits<Dst>::lowest();}
+\DoxyCodeLine{00682\ }
+\DoxyCodeLine{00683\ \textcolor{comment}{//\ This\ is\ a\ wrapper\ to\ generate\ return\ the\ max\ or\ min\ for\ a\ supplied\ type.}}
+\DoxyCodeLine{00684\ \textcolor{comment}{//\ If\ the\ argument\ is\ false,\ the\ returned\ value\ is\ the\ maximum.\ If\ true\ the}}
+\DoxyCodeLine{00685\ \textcolor{comment}{//\ returned\ value\ is\ the\ minimum.}}
+\DoxyCodeLine{00686\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src\ =\ Dst>}
+\DoxyCodeLine{00687\ \textcolor{keyword}{constexpr}\ Dst\ CommonMaxOrMin(\textcolor{keywordtype}{bool}\ is\_min)\ \{}
+\DoxyCodeLine{00688\ \ \ \textcolor{keywordflow}{return}\ is\_min\ ?\ kCommonMin<Dst,\ Src>\ :\ kCommonMax<Dst,\ Src>;}
+\DoxyCodeLine{00689\ \}}
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00691\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+
+\end{DoxyCode}

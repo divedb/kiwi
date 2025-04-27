@@ -1,0 +1,11 @@
+\doxysection{kiwi\+::internal\+::Is\+Strict\+Op Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_is_strict_op}{}\label{conceptkiwi_1_1internal_1_1_is_strict_op}\index{kiwi::internal::IsStrictOp@{kiwi::internal::IsStrictOp}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_op}{kiwi::internal::IsStrictOp}}\ =\ \ !\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_op}{IsCheckedOp<L,\ R>}}\ \&\&\ !\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_op}{IsClampedOp<L,\ R>}}\ \&\&}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ((\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_numeric}{IsStrictNumeric<L>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<R>}})\ ||}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_strict_numeric}{IsStrictNumeric<R>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<L>}}))}
+
+\end{DoxyCode}

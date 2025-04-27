@@ -119,7 +119,7 @@ $(function(){initNavTree('adl_8hh_source.html',''); initResizable(true); });
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span>kiwi {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacekiwi.html">kiwi</a> {</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span>adl_detail {</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
@@ -175,42 +175,61 @@ $(function(){initNavTree('adl_8hh_source.html',''); initResizable(true); });
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}  <span class="comment">// namespace adl_detail</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RangeT&gt;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> adl_begin(RangeT&amp;&amp; range)</div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="namespacekiwi.html#a055382ad334b791b314de022c55db79c">   73</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacekiwi.html#a055382ad334b791b314de022c55db79c">adl_begin</a>(RangeT&amp;&amp; range)</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    -&gt; <span class="keyword">decltype</span>(adl_detail::begin_impl(std::forward&lt;RangeT&gt;(range))) {</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">return</span> adl_detail::begin_impl(std::forward&lt;RangeT&gt;(range));</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RangeT&gt;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> adl_end(RangeT&amp;&amp; range)</div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="namespacekiwi.html#adb4d7ae28529412704b567348f47af73">   81</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacekiwi.html#adb4d7ae28529412704b567348f47af73">adl_end</a>(RangeT&amp;&amp; range)</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    -&gt; <span class="keyword">decltype</span>(adl_detail::end_impl(std::forward&lt;RangeT&gt;(range))) {</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">return</span> adl_detail::end_impl(std::forward&lt;RangeT&gt;(range));</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
+</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RangeT&gt;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> adl_rbegin(RangeT&amp;&amp; range)</div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="namespacekiwi.html#aebf91c1e948542fd3ea3b03d3035257b">   89</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacekiwi.html#aebf91c1e948542fd3ea3b03d3035257b">adl_rbegin</a>(RangeT&amp;&amp; range)</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    -&gt; <span class="keyword">decltype</span>(adl_detail::rbegin_impl(std::forward&lt;RangeT&gt;(range))) {</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">return</span> adl_detail::rbegin_impl(std::forward&lt;RangeT&gt;(range));</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
+</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RangeT&gt;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> adl_rend(RangeT&amp;&amp; range)</div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespacekiwi.html#ac8e41ff39767480b3441b8e9e95a0e7a">   97</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacekiwi.html#ac8e41ff39767480b3441b8e9e95a0e7a">adl_rend</a>(RangeT&amp;&amp; range)</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    -&gt; <span class="keyword">decltype</span>(adl_detail::rend_impl(std::forward&lt;RangeT&gt;(range))) {</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> adl_detail::rend_impl(std::forward&lt;RangeT&gt;(range));</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword">constexpr</span> <span class="keywordtype">void</span> adl_swap(T&amp;&amp; lhs, T&amp;&amp; rhs) <span class="keyword">noexcept</span>(</div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="namespacekiwi.html#a62418bf6fb23b063e11692bcc5f107e4">  105</a></span><span class="keyword">constexpr</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacekiwi.html#a62418bf6fb23b063e11692bcc5f107e4">adl_swap</a>(T&amp;&amp; lhs, T&amp;&amp; rhs) <span class="keyword">noexcept</span>(</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">noexcept</span>(adl_detail::swap_impl(std::declval&lt;T&gt;(), std::declval&lt;T&gt;()))) {</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  adl_detail::swap_impl(std::forward&lt;T&gt;(lhs), std::forward&lt;T&gt;(rhs));</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
+</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span></div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RangeT&gt;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> adl_size(RangeT&amp;&amp; range)</div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespacekiwi.html#ab44651a5abd7052057a373071c81644e">  113</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacekiwi.html#ab44651a5abd7052057a373071c81644e">adl_size</a>(RangeT&amp;&amp; range)</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    -&gt; <span class="keyword">decltype</span>(adl_detail::size_impl(std::forward&lt;RangeT&gt;(range))) {</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">return</span> adl_detail::size_impl(std::forward&lt;RangeT&gt;(range));</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
+</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>}  <span class="comment">// namespace kiwi</span></div>
+<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> file.cc:23</div></div>
+<div class="ttc" id="anamespacekiwi_html_a055382ad334b791b314de022c55db79c"><div class="ttname"><a href="namespacekiwi.html#a055382ad334b791b314de022c55db79c">kiwi::adl_begin</a></div><div class="ttdeci">constexpr auto adl_begin(RangeT &amp;&amp;range) -&gt; decltype(adl_detail::begin_impl(std::forward&lt; RangeT &gt;(range)))</div><div class="ttdef"><b>Definition</b> adl.hh:73</div></div>
+<div class="ttc" id="anamespacekiwi_html_a62418bf6fb23b063e11692bcc5f107e4"><div class="ttname"><a href="namespacekiwi.html#a62418bf6fb23b063e11692bcc5f107e4">kiwi::adl_swap</a></div><div class="ttdeci">constexpr void adl_swap(T &amp;&amp;lhs, T &amp;&amp;rhs) noexcept(noexcept(adl_detail::swap_impl(std::declval&lt; T &gt;(), std::declval&lt; T &gt;())))</div><div class="ttdef"><b>Definition</b> adl.hh:105</div></div>
+<div class="ttc" id="anamespacekiwi_html_ab44651a5abd7052057a373071c81644e"><div class="ttname"><a href="namespacekiwi.html#ab44651a5abd7052057a373071c81644e">kiwi::adl_size</a></div><div class="ttdeci">constexpr auto adl_size(RangeT &amp;&amp;range) -&gt; decltype(adl_detail::size_impl(std::forward&lt; RangeT &gt;(range)))</div><div class="ttdef"><b>Definition</b> adl.hh:113</div></div>
+<div class="ttc" id="anamespacekiwi_html_ac8e41ff39767480b3441b8e9e95a0e7a"><div class="ttname"><a href="namespacekiwi.html#ac8e41ff39767480b3441b8e9e95a0e7a">kiwi::adl_rend</a></div><div class="ttdeci">constexpr auto adl_rend(RangeT &amp;&amp;range) -&gt; decltype(adl_detail::rend_impl(std::forward&lt; RangeT &gt;(range)))</div><div class="ttdef"><b>Definition</b> adl.hh:97</div></div>
+<div class="ttc" id="anamespacekiwi_html_adb4d7ae28529412704b567348f47af73"><div class="ttname"><a href="namespacekiwi.html#adb4d7ae28529412704b567348f47af73">kiwi::adl_end</a></div><div class="ttdeci">constexpr auto adl_end(RangeT &amp;&amp;range) -&gt; decltype(adl_detail::end_impl(std::forward&lt; RangeT &gt;(range)))</div><div class="ttdef"><b>Definition</b> adl.hh:81</div></div>
+<div class="ttc" id="anamespacekiwi_html_aebf91c1e948542fd3ea3b03d3035257b"><div class="ttname"><a href="namespacekiwi.html#aebf91c1e948542fd3ea3b03d3035257b">kiwi::adl_rbegin</a></div><div class="ttdeci">constexpr auto adl_rbegin(RangeT &amp;&amp;range) -&gt; decltype(adl_detail::rbegin_impl(std::forward&lt; RangeT &gt;(range)))</div><div class="ttdef"><b>Definition</b> adl.hh:89</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

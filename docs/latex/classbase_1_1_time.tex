@@ -1,0 +1,227 @@
+\doxysection{base\+::Time Class Reference}
+\hypertarget{classbase_1_1_time}{}\label{classbase_1_1_time}\index{base::Time@{base::Time}}
+Inheritance diagram for base\+::Time\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbase_1_1_time}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structbase_1_1_time_1_1_exploded}{Exploded}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_time_a2aa293e7f392dfff8f161278880858dc}\label{classbase_1_1_time_a2aa293e7f392dfff8f161278880858dc} 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries To\+Delta\+Since\+Windows\+Epoch} () const
+\item 
+\Hypertarget{classbase_1_1_time_acc714e77bf7d31331fb4be11be894b0a}\label{classbase_1_1_time_acc714e77bf7d31331fb4be11be894b0a} 
+constexpr time\+\_\+t {\bfseries To\+TimeT} () const
+\item 
+\Hypertarget{classbase_1_1_time_ad47a290aa53c2afedb1841f6413b23da}\label{classbase_1_1_time_ad47a290aa53c2afedb1841f6413b23da} 
+constexpr double {\bfseries In\+Seconds\+FSince\+Unix\+Epoch} () const
+\item 
+\Hypertarget{classbase_1_1_time_a76e0f61af22f629c0fa3298220dcaba6}\label{classbase_1_1_time_a76e0f61af22f629c0fa3298220dcaba6} 
+constexpr int64\+\_\+t {\bfseries In\+Milliseconds\+Since\+Unix\+Epoch} () const
+\item 
+\Hypertarget{classbase_1_1_time_aeaaf688a7d61ca44d43ec68f6e075313}\label{classbase_1_1_time_aeaaf688a7d61ca44d43ec68f6e075313} 
+constexpr double {\bfseries In\+Milliseconds\+FSince\+Unix\+Epoch} () const
+\item 
+\Hypertarget{classbase_1_1_time_aad4e48b2be3aedb72ac00e209377ce07}\label{classbase_1_1_time_aad4e48b2be3aedb72ac00e209377ce07} 
+constexpr double {\bfseries In\+Milliseconds\+FSince\+Unix\+Epoch\+Ignoring\+Null} () const
+\item 
+\Hypertarget{classbase_1_1_time_a6021c179807f9c4861ebe181e0a545d4}\label{classbase_1_1_time_a6021c179807f9c4861ebe181e0a545d4} 
+void {\bfseries UTCExplode} (\mbox{\hyperlink{structbase_1_1_time_1_1_exploded}{Exploded}} \texorpdfstring{$\ast$}{*}exploded) const
+\item 
+\Hypertarget{classbase_1_1_time_a18b5cdab483bef69a7f605e808c27f95}\label{classbase_1_1_time_a18b5cdab483bef69a7f605e808c27f95} 
+void {\bfseries Local\+Explode} (\mbox{\hyperlink{structbase_1_1_time_1_1_exploded}{Exploded}} \texorpdfstring{$\ast$}{*}exploded) const
+\item 
+\Hypertarget{classbase_1_1_time_a10fb139bda81c38ca1fd874d21a8ae5e}\label{classbase_1_1_time_a10fb139bda81c38ca1fd874d21a8ae5e} 
+\mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries UTCMidnight} () const
+\item 
+\Hypertarget{classbase_1_1_time_a05c287b264f540dd623a32b182c7eaf3}\label{classbase_1_1_time_a05c287b264f540dd623a32b182c7eaf3} 
+\mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries Local\+Midnight} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool {\bfseries is\+\_\+null} () const
+\item 
+constexpr bool {\bfseries is\+\_\+max} () const
+\item 
+constexpr bool {\bfseries is\+\_\+min} () const
+\item 
+constexpr bool {\bfseries is\+\_\+inf} () const
+\item 
+constexpr int64\+\_\+t {\bfseries To\+Internal\+Value} () const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries since\+\_\+origin} () const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries operator-\/} (const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}}$<$ \mbox{\hyperlink{classbase_1_1_time}{Time}} $>$ \&other) const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries operator-\/} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries operator+} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} \& {\bfseries operator+=} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} \& {\bfseries operator-\/=} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_time_a91de520427fb7255033df41312108f91}\label{classbase_1_1_time_a91de520427fb7255033df41312108f91} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries Unix\+Epoch} ()
+\item 
+\Hypertarget{classbase_1_1_time_a3992766dc5c29f992f2a1dd35eac6412}\label{classbase_1_1_time_a3992766dc5c29f992f2a1dd35eac6412} 
+static \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries Now} ()
+\item 
+\Hypertarget{classbase_1_1_time_abe50c7d16d262f90af0ebc1256cc9b57}\label{classbase_1_1_time_abe50c7d16d262f90af0ebc1256cc9b57} 
+static \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries Now\+From\+System\+Time} ()
+\item 
+\Hypertarget{classbase_1_1_time_a49116175a117d13fa4892aee661f894a}\label{classbase_1_1_time_a49116175a117d13fa4892aee661f894a} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+Delta\+Since\+Windows\+Epoch} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+\Hypertarget{classbase_1_1_time_ae7f706c9302b65f8526d5bb4cdca5ddf}\label{classbase_1_1_time_ae7f706c9302b65f8526d5bb4cdca5ddf} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+TimeT} (time\+\_\+t tt)
+\item 
+\Hypertarget{classbase_1_1_time_abba662c3fc740a7e20f9f3ac2350c3ff}\label{classbase_1_1_time_abba662c3fc740a7e20f9f3ac2350c3ff} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+Seconds\+Since\+Unix\+Epoch} (double dt)
+\item 
+\Hypertarget{classbase_1_1_time_a34c0f88cdf918a9528a869317ed38cf6}\label{classbase_1_1_time_a34c0f88cdf918a9528a869317ed38cf6} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+Milliseconds\+Since\+Unix\+Epoch} (int64\+\_\+t dt)
+\item 
+\Hypertarget{classbase_1_1_time_a6882e182c439c8ffeac0c6e5fd6f1927}\label{classbase_1_1_time_a6882e182c439c8ffeac0c6e5fd6f1927} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+Milliseconds\+Since\+Unix\+Epoch} (double dt)
+\item 
+\Hypertarget{classbase_1_1_time_a444594ef2184f14410124d076a0b15e7}\label{classbase_1_1_time_a444594ef2184f14410124d076a0b15e7} 
+{\footnotesize template$<$typename T$>$ \newline
+requires (std\+::integral$<$T$>$ \&\& !std\+::same\+\_\+as$<$T, int64\+\_\+t$>$ \&\& (sizeof(T) $<$ sizeof(int64\+\_\+t) \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} (sizeof(T) == sizeof(int64\+\_\+t) \&\& std\+::is\+\_\+signed\+\_\+v$<$T$>$)))}\\static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+Milliseconds\+Since\+Unix\+Epoch} (T ms\+\_\+since\+\_\+epoch)
+\item 
+\Hypertarget{classbase_1_1_time_ae6f43eda1c2e10db0152fd3ece9a3fdf}\label{classbase_1_1_time_ae6f43eda1c2e10db0152fd3ece9a3fdf} 
+static bool {\bfseries From\+UTCExploded} (const \mbox{\hyperlink{structbase_1_1_time_1_1_exploded}{Exploded}} \&exploded, \mbox{\hyperlink{classbase_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}time)
+\item 
+\Hypertarget{classbase_1_1_time_a14932b70251e136929ba976b3bbdf542}\label{classbase_1_1_time_a14932b70251e136929ba976b3bbdf542} 
+static bool {\bfseries From\+Local\+Exploded} (const \mbox{\hyperlink{structbase_1_1_time_1_1_exploded}{Exploded}} \&exploded, \mbox{\hyperlink{classbase_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}time)
+\item 
+\Hypertarget{classbase_1_1_time_a4e9a877c8c2c783691c2d6ef0d315ead}\label{classbase_1_1_time_a4e9a877c8c2c783691c2d6ef0d315ead} 
+static bool {\bfseries From\+String} (const char \texorpdfstring{$\ast$}{*}time\+\_\+string, \mbox{\hyperlink{classbase_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}parsed\+\_\+time)
+\item 
+\Hypertarget{classbase_1_1_time_addce164e2ee760a5d3fe02651d29e010}\label{classbase_1_1_time_addce164e2ee760a5d3fe02651d29e010} 
+static bool {\bfseries From\+UTCString} (const char \texorpdfstring{$\ast$}{*}time\+\_\+string, \mbox{\hyperlink{classbase_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}parsed\+\_\+time)
+\item 
+\Hypertarget{classbase_1_1_time_ae58359143ba789218533b58cfeb14f36}\label{classbase_1_1_time_ae58359143ba789218533b58cfeb14f36} 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries From\+Internal\+Value} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries Max} ()
+\item 
+static constexpr \mbox{\hyperlink{classbase_1_1_time}{Time}} {\bfseries Min} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1_time_aa973864884e0ace88c54b5a33c4dda20}{k\+Time\+TTo\+Microseconds\+Offset}}
+\item 
+static constexpr int \mbox{\hyperlink{classbase_1_1_time_a3249483b6c47a99759474fa1e682c6c6}{k\+Exploded\+Min\+Year}}
+\item 
+static constexpr int \mbox{\hyperlink{classbase_1_1_time_ad9cdf9fc1be2b5f8a505ad34aa0384c0}{k\+Exploded\+Max\+Year}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Hours\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Minutes\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Week}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Microsecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Second}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_time_aa19772ee401e5cf2a775205465b259d4}\label{classbase_1_1_time_aa19772ee401e5cf2a775205465b259d4} 
+class {\bfseries time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr {\bfseries Time\+Base} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Clamped\+Numeric$<$ int64\+\_\+t $>$ {\bfseries us\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classbase_1_1_time_ad9cdf9fc1be2b5f8a505ad34aa0384c0}\index{base::Time@{base::Time}!kExplodedMaxYear@{kExplodedMaxYear}}
+\index{kExplodedMaxYear@{kExplodedMaxYear}!base::Time@{base::Time}}
+\doxysubsubsection{\texorpdfstring{kExplodedMaxYear}{kExplodedMaxYear}}
+{\footnotesize\ttfamily \label{classbase_1_1_time_ad9cdf9fc1be2b5f8a505ad34aa0384c0} 
+int base\+::\+Time\+::k\+Exploded\+Max\+Year\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ (\textcolor{keyword}{sizeof}(time\_t)\ ==\ 4\ ?\ 2037\ :\ std::numeric\_limits<int>::max())}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1_time_a3249483b6c47a99759474fa1e682c6c6}\index{base::Time@{base::Time}!kExplodedMinYear@{kExplodedMinYear}}
+\index{kExplodedMinYear@{kExplodedMinYear}!base::Time@{base::Time}}
+\doxysubsubsection{\texorpdfstring{kExplodedMinYear}{kExplodedMinYear}}
+{\footnotesize\ttfamily \label{classbase_1_1_time_a3249483b6c47a99759474fa1e682c6c6} 
+int base\+::\+Time\+::k\+Exploded\+Min\+Year\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ (\textcolor{keyword}{sizeof}(time\_t)\ ==\ 4\ ?\ 1902\ :\ std::numeric\_limits<int>::min())}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1_time_aa973864884e0ace88c54b5a33c4dda20}\index{base::Time@{base::Time}!kTimeTToMicrosecondsOffset@{kTimeTToMicrosecondsOffset}}
+\index{kTimeTToMicrosecondsOffset@{kTimeTToMicrosecondsOffset}!base::Time@{base::Time}}
+\doxysubsubsection{\texorpdfstring{kTimeTToMicrosecondsOffset}{kTimeTToMicrosecondsOffset}}
+{\footnotesize\ttfamily \label{classbase_1_1_time_aa973864884e0ace88c54b5a33c4dda20} 
+int64\+\_\+t base\+::\+Time\+::k\+Time\+TTo\+Microseconds\+Offset\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ INT64\_C(11644473600000000)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/chrono/time.\+hh\end{DoxyCompactItemize}

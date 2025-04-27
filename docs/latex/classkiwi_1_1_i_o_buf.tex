@@ -1,0 +1,2740 @@
+\doxysection{kiwi\+::IOBuf Class Reference}
+\hypertarget{classkiwi_1_1_i_o_buf}{}\label{classkiwi_1_1_i_o_buf}\index{kiwi::IOBuf@{kiwi::IOBuf}}
+
+
+{\ttfamily \#include $<$iobuf.\+hh$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{Fill\+Iov\+Result}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_full_storage}{Heap\+Full\+Storage}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_prefix}{Heap\+Prefix}}
+\begin{DoxyCompactList}\small\item\em Use free for size \texorpdfstring{$>$}{>}= 4GB since we can store only 32 bits in the size var. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_storage}{Heap\+Storage}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a6ec828de9687ff9579cbb0b79acb608d}\label{classkiwi_1_1_i_o_buf_a6ec828de9687ff9579cbb0b79acb608d} 
+enum {\bfseries Create\+Op} \{ {\bfseries k\+Create}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a5b7b7ebfb81ae65c9121c1a381920d38}\label{classkiwi_1_1_i_o_buf_a5b7b7ebfb81ae65c9121c1a381920d38} 
+enum {\bfseries Wrap\+Buffer\+Op} \{ {\bfseries k\+Wrap\+Buffer}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a444b86d0ce32f7dfa5fce3e76125bed8}\label{classkiwi_1_1_i_o_buf_a444b86d0ce32f7dfa5fce3e76125bed8} 
+enum {\bfseries Take\+Ownership\+Op} \{ {\bfseries k\+Taske\+Ownership}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a2c7105edb5c10f0324f55026eca8afcc}\label{classkiwi_1_1_i_o_buf_a2c7105edb5c10f0324f55026eca8afcc} 
+enum {\bfseries Copy\+Buffer\+Op} \{ {\bfseries k\+Copy\+Buffer}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_acaba74f5d72831a14dcf1ad57c7327bd}\label{classkiwi_1_1_i_o_buf_acaba74f5d72831a14dcf1ad57c7327bd} 
+enum {\bfseries Sized\+Free} \{ {\bfseries k\+Sized\+Free}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a96949430f003951037c0a4bc6d648d82}\label{classkiwi_1_1_i_o_buf_a96949430f003951037c0a4bc6d648d82} 
+enum class {\bfseries Combined\+Option} \{ {\bfseries k\+Default}
+, {\bfseries k\+Combined}
+, {\bfseries k\+Separate}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_ad8ce2e3897a613bde85240ad67391a97}\label{classkiwi_1_1_i_o_buf_ad8ce2e3897a613bde85240ad67391a97} 
+using {\bfseries value\+\_\+type} = \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$uint8\+\_\+t$>$
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a8ef9867c24bf9ca1ff8be57f87fb3963}\label{classkiwi_1_1_i_o_buf_a8ef9867c24bf9ca1ff8be57f87fb3963} 
+using {\bfseries iterator} = \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a8a6aaffb93c7c2159f77f779192d1775}\label{classkiwi_1_1_i_o_buf_a8a6aaffb93c7c2159f77f779192d1775} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_ad078d626645936f6cc418fc5a15033f1}\label{classkiwi_1_1_i_o_buf_ad078d626645936f6cc418fc5a15033f1} 
+using {\bfseries Free\+Function} = void (\texorpdfstring{$\ast$}{*})(void\texorpdfstring{$\ast$}{*} buf, void\texorpdfstring{$\ast$}{*} user\+\_\+data)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a7f6071e9f9d7fd8f11da8755f5809705}{IOBuf}} (Create\+Op, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}})
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa056c927383e7c10899bbcffaf415983}{IOBuf}} (Take\+Ownership\+Op op, void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a90935fddc509ab6c1a2e32f0f91bf118}{IOBuf}} (Take\+Ownership\+Op op, void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a63cf877a1146cf593774187419da0e09}{IOBuf}} (Take\+Ownership\+Op, void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, std\+::size\+\_\+t offset, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a03dace6e2d4e7a61d0cefe0396556462}{IOBuf}} (Take\+Ownership\+Op, Sized\+Free, void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, std\+::size\+\_\+t offset, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}, bool free\+On\+Error=true)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac00383234824ff95f192e09d8d77b0c6}{IOBuf}} (Wrap\+Buffer\+Op op, Byte\+Range br) noexcept
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_af8145236efb0eb62fd99871e94e0d49d}{IOBuf}} (Wrap\+Buffer\+Op op, const void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}) noexcept
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1e814b71daa4f78e49cb3107df673a29}{IOBuf}} (Copy\+Buffer\+Op op, Byte\+Range br, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_af4ed886fda74ea9cdfbc382d60453871}{IOBuf}} (Copy\+Buffer\+Op op, const void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t size, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+\Hypertarget{classkiwi_1_1_i_o_buf_a28811956d6c0d8d198994a6da56d27ed}\label{classkiwi_1_1_i_o_buf_a28811956d6c0d8d198994a6da56d27ed} 
+{\bfseries IOBuf} (Copy\+Buffer\+Op op, String\+Piece buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_addcdd5cd5f46ee3a9e6904dd68209b29}{\texorpdfstring{$\sim$}{\string~}\+IOBuf}} ()
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afa66a4d02d63c3eee6a85ba4a726672b}{empty}} () const
+\item 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}} () const
+\item 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2b949842f11562927a401770ea86090d}{writable\+Data}} ()
+\item 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}} () const
+\item 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a87d8ebe5659dc5d9eae75afd890a8862}{writable\+Tail}} ()
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}} () const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}} () const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}} () const
+\item 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer}} () const
+\item 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af260b74cbff89444b43f9aa565adb5a2}{writable\+Buffer}} ()
+\item 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a52101c7e9f2f5124cbbb3198dc2db17c}{buffer\+End}} () const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}} ()
+\item 
+const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a27ca4397f2f95450e40410604e9da80c}{next}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1dc8d8e9ebdec00d38c56e49b9d4dba9}{prev}} ()
+\item 
+const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac7257bbb8cf1fb8af4cf0f55a0dcf24e}{prev}} () const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a05c7a1d0badf1067d6fdaab3e99c4ed1}{advance}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1c8ecea8c0344ba83f0fd858297a70b4}{retreat}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}{prepend}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a58f2ebcaac78afff44d08396db944369}{append}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a381d2d1b74123ec548a5701d2568684a}{trim\+Start}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aea86aa0e0a0d63df21b6076ea7acf8af}{trim\+End}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a65e1fb2d692aaca855d5e8c137395dd9}{trim\+Writable\+Tail}} (std\+::size\+\_\+t amount)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a840a75e5d2f1cc2fb467260fda98ea52}{clear}} ()
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e}{reserve}} (std\+::size\+\_\+t min\+Headroom, std\+::size\+\_\+t min\+Tailroom)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af270f22104c9e7f9a7c7f6fc8df346aa}{count\+Chain\+Elements}} () const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}{compute\+Chain\+Data\+Length}} () const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4f537f4c34f139e820ac66bd9d20c134}{compute\+Chain\+Capacity}} () const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}{append\+To\+Chain}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&iobuf)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7}{insert\+After\+This\+One}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&iobuf)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16464d617a3b81f64716508cfb203b6e}{prepend\+Chain}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&iobuf)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa8c7ab4ba6b1fa390d7399994cea6081}{append\+Chain}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&iobuf)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b}{unlink}} ()
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop}} ()
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2c51eb098792bb55b59cfc054d48f62b}{separate\+Chain}} (\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*}head, \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}})
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afd89244b5f410f262aa908464c5e8fa1}{is\+Shared}} () const
+\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac2257122c9144063b7c775fca0f93f37}{get\+User\+Data}} () const noexcept
+\item 
+Free\+Function \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af85710265218a2f770abedd96d97bd83}{get\+Free\+Fn}} () const noexcept
+\item 
+{\footnotesize template$<$typename Observer$>$ }\\bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa225ec9d716734af44e8f4d1b09cd683}{append\+Shared\+Info\+Observer}} (Observer \&\&observer)
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa22e9603db12c73badfc8e21d3f4adcc}{is\+Managed}} () const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}{is\+Managed\+One}} () const noexcept
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2b984c03c27ed2e7f09f6c27488e6610}{approximate\+Share\+Count\+One}} () const
+\item 
+bool \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{is\+Shared\+One}} () const noexcept
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare}} ()
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}{unshare\+One}} ()
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a67cb17dc776d58663520ddd45c8491dd}{mark\+Externally\+Shared}} ()
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a247fc1ca4456b087267fca6e5ffc7ca9}{mark\+Externally\+Shared\+One}} ()
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ada90ffb9e75a1954c0364bd465e0ca10}{make\+Managed}} ()
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3af33eb4f4099792d2194526af915940}{make\+Managed\+One}} ()
+\item 
+Byte\+Range \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce}} ()
+\item 
+Byte\+Range \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a31443235b88a34dc4b28e0e953e80359}{coalesce\+With\+Headroom\+Tailroom}} (std\+::size\+\_\+t new\+Headroom, std\+::size\+\_\+t new\+Tailroom)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_acdec438f2dbdfa2a791081323392f632}{gather}} (std\+::size\+\_\+t contiguous\+Length)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1743440b00acb1e11a08b1464ba8ee2b}{clone\+As\+Value}} () const
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a092fcaf694e85b84c2a662a4a4ac2f69}{clone\+One}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9bdaf35f65a5484200d7ccfc115382f8}{clone\+One\+As\+Value}} () const
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad0d0db87c8f2a3d09d6e388a33e308f1}{clone\+Coalesced}} () const
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c5f1d998e035cd522d2fc6629221a59}{clone\+Coalesced\+With\+Headroom\+Tailroom}} (std\+::size\+\_\+t new\+Headroom, std\+::size\+\_\+t new\+Tailroom) const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a81795a52f7ba854152aadd803a9fe286}{clone\+Coalesced\+As\+Value}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aaa9f06db109446014413e5e1407c63a1}{clone\+Coalesced\+As\+Value\+With\+Headroom\+Tailroom}} (std\+::size\+\_\+t new\+Headroom, std\+::size\+\_\+t new\+Tailroom) const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa1fe108b608377de28f97229955d5c31}{clone\+Into}} (\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&other) const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a60cc7b444a16f6973c0e4bfa5281724c}{clone\+One\+Into}} (\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&other) const
+\item 
+{\footnotesize template$<$class Container$>$ }\\void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae15bfb4c53c8aafe8ab1ec5196865f42}{append\+To}} (Container \&container) const
+\item 
+{\footnotesize template$<$class Container$>$ }\\Container \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a50b964c560f74a3f40ffb5e106954ee1}{to}} () const
+\item 
+folly\+::fbvector$<$ struct iovec $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4188f93073a10898be868c69fa50372c}{get\+Iov}} () const
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a21aa355ace5fa69101c6089df38702e8}{append\+To\+Iov}} (folly\+::fbvector$<$ struct iovec $>$ \texorpdfstring{$\ast$}{*}iov) const
+\item 
+\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{Fill\+Iov\+Result}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a03b4fdd6e783dc02272edc01fb33e569}{fill\+Iov}} (struct iovec \texorpdfstring{$\ast$}{*}iov, size\+\_\+t len) const
+\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aecfe95dfc5c8c960b180839fe6b0dd56}{operator new}} (size\+\_\+t size)
+\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5974de2f2b4d0e99a1dbdd1272097b21}{operator new}} (size\+\_\+t size, void \texorpdfstring{$\ast$}{*}ptr)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a829520f671679944efa49a7cc5e5825e}{operator delete}} (void \texorpdfstring{$\ast$}{*}ptr)
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5245be1b4fc1fa9382af992ad44d0467}{operator delete}} (void \texorpdfstring{$\ast$}{*}ptr, void \texorpdfstring{$\ast$}{*}placement)
+\item 
+fbstring \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adb4434c5e3cae2059ac76696ddb4e50f}{move\+To\+Fb\+String}} ()
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138}{cbegin}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42}{cend}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223}{begin}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}} () const
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2b84f84ca1454238aa2531223d420a78}{IOBuf}} () noexcept
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23324e396a3a95880e9897f9286c0731}{IOBuf}} (\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&\&other) noexcept
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \& \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3ebf9feefdc07aa06d61ca2c58f81fa4}{operator=}} (\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&\&other) noexcept
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a21ca1a066836e9b3b5d8f326851ba487}{IOBuf}} (const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&other)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \& \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae17f40ce23314a50600522d1fa78a485}{operator=}} (const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&other)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adf34bb99883797ca5833f83b088bf4}{Create}} (std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}})
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae82194b9a5e964b1dc08402514e5b4b5}{Create\+Combined}} (std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}})
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a377b22ca8a44bc7a56e96f2a03b4e416}{create\+Separate}} (std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}})
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad0d73e8bb4220ff0f467b74ccaec3318}{create\+Chain}} (size\+\_\+t total\+Capacity, std\+::size\+\_\+t max\+Buf\+Capacity)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer}} (const void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}})
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a73bd25f5c105b84ef5512ac4563b9dc7}{Wrap\+Buffer}} (Byte\+Range br)
+\item 
+static size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4a6b0d1bd7dab6349c45f82272ed9c0f}{good\+Size}} (size\+\_\+t min\+Capacity, Combined\+Option combined=Combined\+Option\+::\+DEFAULT)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac3e180cd2f9b38a1714e27128f0847af}{take\+Ownership}} (void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad81ff588cbe4381e7939c9cb731eb6be}{take\+Ownership}} (void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aac7ce83b5eb1452b99c476908eac0965}{take\+Ownership}} (void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, std\+::size\+\_\+t offset, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2d26a2465a52b3278a9e6074ea1208a1}{take\+Ownership}} (Sized\+Free, void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}, std\+::size\+\_\+t offset, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}, bool free\+On\+Error=true)
+\item 
+{\footnotesize template$<$class Unique\+Ptr$>$ }\\static std\+::enable\+\_\+if$<$ \mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{detail\+::\+Is\+Unique\+Ptr\+To\+SL}}$<$ Unique\+Ptr $>$\+::value, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ $>$\+::type \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a350e569eaaa654458c9a0a8f9ae32888}{take\+Ownership}} (Unique\+Ptr \&\&buf, size\+\_\+t count=1)
+\item 
+static \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4836fd6ecb59206fd76fb6c0fe9cbe31}{wrap\+Buffer\+As\+Value}} (const void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}) noexcept
+\item 
+static \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afa17b1b205405c86436c8ccf416cfd91}{wrap\+Buffer\+As\+Value}} (Byte\+Range br) noexcept
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{copy\+Buffer}} (Byte\+Range br, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adec85ae37f540e575916c22fa62e4172}{copy\+Buffer}} (const void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t size, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aed67476393bdc13afe54c919b23854b2}{copy\+Buffer}} (String\+Piece buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af20bf76b74c47e171686dc3f563709c5}{maybe\+Copy\+Buffer}} (String\+Piece buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}=0, std\+::size\+\_\+t min\+Tailroom=0)
+\item 
+static void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a60be51495b7dd12f238f4266bee48eb6}{destroy}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}})
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2e78659e9a32e430966727cff4d21e91}{wrap\+Iov}} (const iovec \texorpdfstring{$\ast$}{*}vec, size\+\_\+t count)
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a96e120025a5e886cba2334f71cf67358}{take\+Ownership\+Iov}} (const iovec \texorpdfstring{$\ast$}{*}vec, size\+\_\+t count, Free\+Function free\+Fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+Data=nullptr, bool free\+On\+Error=true)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} manages heap-\/allocated byte buffers.\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md0}{}\doxysubsubsection{\texorpdfstring{API Details}{API Details}}\label{classkiwi_1_1_i_o_buf_autotoc_md0}
+
+\begin{DoxyItemize}
+\item The buffer is not neccesarily full of meaningful bytes -\/ there may be uninitialized bytes before and after the central "{}valid"{} range of data.
+\item Buffers are refcounted, and can be shared by multiple \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects.
+\begin{DoxyItemize}
+\item If you ever write to an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, first use Unshare() to get a unique copy.
+\end{DoxyItemize}
+\item IOBufs can be "{}chained"{} in a circularly linked list.
+\begin{DoxyItemize}
+\item Use Coalesce() to turn an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+\end{DoxyItemize}
+\item IOBufs are not synchronized. The user is responsible for synchronization. Notes\+:
+\begin{DoxyItemize}
+\item Like a shared\+\_\+ptr, the refcounting is atomic.
+\item const \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} methods do not mutate any state, so can safely be called concurrently with each other, as expected.
+\end{DoxyItemize}
+\item IOBufs are typically stored on the heap, so that they can be used in chains.
+\end{DoxyItemize}\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md1}{}\doxysubsubsection{\texorpdfstring{Data Layout}{Data Layout}}\label{classkiwi_1_1_i_o_buf_autotoc_md1}
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects contains a pointer to the buffer and information about which segment of the buffer contains valid data. \begin{DoxyVerb} +-------+
+ | IOBuf |
+ +-------+
+  /
+ |            |----- Length() -----|
+ v
+ +------------+--------------------+-----------+
+ | headroom   |        data        |  tailroom |
+ +------------+--------------------+-----------+
+ ^            ^                    ^           ^
+ Buffer()   Data()               Tail()      BufferEnd()
+
+ |----------------- capacity() ----------------|
+\end{DoxyVerb}
+\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md2}{}\doxysubsubsection{\texorpdfstring{Buffer Sharing}{Buffer Sharing}}\label{classkiwi_1_1_i_o_buf_autotoc_md2}
+Each buffer is reference counted, and multiple \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects may point to the same buffer. Each \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} may point to a different section of valid data within the underlying buffer. For example, if multiple protocol requests are read from the network into a single buffer, a separate \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} may be created for each request, all sharing the same underlying buffer.
+
+In other words, when multiple IOBufs share the same underlying buffer, the Data() and Tail() methods on each \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} may point to a different segment of the data. However, the Buffer() and Buffer\+End() methods will point to the same location for all IOBufs sharing the same underlying buffer, unless the tail was trimmed with Trim\+Writable\+Tail().
+
+\begin{DoxyVerb}      +-----------+     +---------+
+      |  IOBuf 1  |     | IOBuf 2 |
+      +-----------+     +---------+
+       |         | _____/        |
+  data |    tail |/    data      | tail
+       v         v               v
+ +-------------------------------------+
+ |     |         |               |     |
+ +-------------------------------------+
+\end{DoxyVerb}
+
+
+If you only read data from an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, you don\textquotesingle{}t need to worry about other \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects possibly sharing the same underlying buffer. However, if you ever write to the buffer you need to first ensure that no other IOBufs point to the same buffer. The Unshare() method may be used to ensure that you have an unshared buffer.\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md3}{}\doxysubsubsection{\texorpdfstring{IOBuf Chains}{IOBuf Chains}}\label{classkiwi_1_1_i_o_buf_autotoc_md3}
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects also contain pointers to next and previous \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects. This can be used to represent a single logical piece of data that is stored in non-\/contiguous chunks in separate buffers. \begin{DoxyVerb}+---------------------------------------------------------------+
+|                                                               |
+|    +-----------+        +-----------+        +-----------+    |
++--> |  IOBuf 1  | -----> |  IOBuf 2  | -----> |  IOBuf 3  | ---+
+     +-----------+        +-----------+        +-----------+
+       |        | _________/     |           ___/        \__
+       |        |/               |          /               \
+       v        v                v         v                 v
+ +-------------------------------------+   +-----------------+
+ |     |        |                |     |   |                 |
+ +-------------------------------------+   +-----------------+
+\end{DoxyVerb}
+
+
+A single \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object can only belong to one chain at a time.
+
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chains are always circular. The "{}prev"{} pointer in the head of the chain points to the tail of the chain. However, it is up to the user to decide which \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is the head. Internally the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} code does not care which element is the head.
+
+The lifetime of all IOBufs in the chain are linked\+: when one element in the chain is deleted, all other chained elements are also deleted. Conceptually it is simplest to treat this as if the head of the chain owns all other IOBufs in the chain. When you delete the head of the chain, it will delete the other elements as well. For this reason, Append\+To\+Chain() and Insert\+After\+This\+One() take ownership of the new elements being added to this chain.
+
+When the Coalesce() method is used to coalesce an entire \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, all other IOBufs in the chain are eliminated and automatically deleted. The Unshare() method may coalesce the chain; if it does it will similarly delete all IOBufs eliminated from the chain.
+
+As discussed in the following section, it is up to the user to maintain a lock around the entire \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain if multiple threads need to access the chain. \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} does not provide any internal locking.\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md4}{}\doxysubsubsection{\texorpdfstring{Synchronization}{Synchronization}}\label{classkiwi_1_1_i_o_buf_autotoc_md4}
+When used in multithread programs, a single \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object should only be accessed mutably by a single thread at a time. All const member functions of \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} are safe to call concurrently with one another, but when a caller uses a single \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} across multiple threads and at least one thread calls a non-\/const member function, the caller is responsible for using an external lock to synchronize access to the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Two separate \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects may be accessed concurrently in separate threads without locking, even if they point to the same underlying buffer. The buffer reference count is always accessed atomically, and no other operations should affect other IOBufs that point to the same data segment. The caller is responsible for using Unshare() to ensure that the data buffer is not shared by other IOBufs before writing to it, and this ensures that the data itself is not modified in one thread while also being accessed from another thread.
+
+For \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chains, no two IOBufs in the same chain should be accessed simultaneously in separate threads, except where all simultaneous accesses are to const member functions. The caller must maintain a lock around the entire chain if the chain, or individual IOBufs in the chain, may be accessed by multiple threads with at least one of the threads needing to mutate.\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md5}{}\doxysubsubsection{\texorpdfstring{IOBuf Object Allocation}{IOBuf Object Allocation}}\label{classkiwi_1_1_i_o_buf_autotoc_md5}
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects themselves exist separately from the data buffer they point to. Therefore one must also consider how to allocate and manage the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects. Typically, IOBufs are allocated on the heap. \begin{DoxyVerb} +--------------+
+ |  unique_ptr  |
+ +--------------+
+   |
+   v
+ +---------+
+ |  IOBuf  |
+ +---------+
+   |
+   v
+ +----------+
+ |  buffer  |
+ +----------+
+\end{DoxyVerb}
+
+
+It is more common to allocate \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects on the heap, using the \doxylink{classkiwi_1_1_i_o_buf_a6adf34bb99883797ca5833f83b088bf4}{Create()}, Take\+Ownership(), or \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} factory functions. The Clone()/\+Clone\+One() functions also return new heap-\/allocated IOBufs. The \doxylink{classkiwi_1_1_i_o_buf_ae82194b9a5e964b1dc08402514e5b4b5}{Create\+Combined()} function allocates the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object and data storage space together, in a single memory allocation. This can improve performance, particularly if you know that the data buffer and the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} itself will have similar lifetimes.
+
+That said, it is also possible to allocate IOBufs on the stack or inline inside another object as well. This is useful for cases where the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is short-\/lived, or when the overhead of allocating the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} on the heap is undesirable.
+
+However, note that stack-\/allocated IOBufs may only be used as the head of a chain (or standalone as the only \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in a chain). All non-\/head members of an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain must be heap allocated. (All functions to add nodes to a chain require a std\+::unique\+\_\+ptr$<$\+IOBuf$>$, which enforces this requirement.)
+
+Copying IOBufs is only meaningful for the head of a chain. The entire chain is cloned; the IOBufs will become shared, and the old and new IOBufs will refer to the same underlying memory.\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md6}{}\doxysubsubsection{\texorpdfstring{IOBuf Sharing}{IOBuf Sharing}}\label{classkiwi_1_1_i_o_buf_autotoc_md6}
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} class manages sharing of the underlying buffer that it points to, maintaining a reference count if multiple IOBufs are pointing at the same buffer.
+
+However, it is the callers responsibility to manage sharing and ownership of \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects themselves. The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} structure does not provide room for an intrusive refcount on the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object itself, only the underlying data buffer is reference counted. If users want to share the same \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object between multiple parts of the code, they are responsible for managing this sharing on their own. (For example, by using a shared\+\_\+ptr. Alternatively, users always have the option of using \doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()} to create a second \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} that points to the same underlying buffer.)\hypertarget{classkiwi_1_1_i_o_buf_autotoc_md7}{}\doxysubsubsection{\texorpdfstring{Inspiration}{Inspiration}}\label{classkiwi_1_1_i_o_buf_autotoc_md7}
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects are intended to be used primarily for networking code, and are modelled somewhat after Free\+BSD\textquotesingle{}s mbuf data structure, and Linux\textquotesingle{}s sk\+\_\+buff structure.
+
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects facilitate zero-\/copy network programming, by allowing multiple \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects to point to the same underlying buffer of data, using a reference count to track when the buffer is no longer needed and can be freed. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_i_o_buf_a7f6071e9f9d7fd8f11da8755f5809705}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a7f6071e9f9d7fd8f11da8755f5809705} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Create\+Op}]{}{, }\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} with the requested capacity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em capacity} & The size of buffer to allocate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to the start of the buffer. 
+
+Length() == 0 
+
+Capacity() \texorpdfstring{$>$}{>}= capacity (
+\end{DoxyPostcond}
+\begin{DoxySeeAlso}{See also}
+Good\+Size for details on why \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} sometimes allocates a larger \doxylink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer} than requested)
+\end{DoxySeeAlso}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on malloc failure \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classkiwi_1_1_i_o_buf_aa056c927383e7c10899bbcffaf415983}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aa056c927383e7c10899bbcffaf415983} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Take\+Ownership\+Op}]{op}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366 
+\end{DoxyNote}
+\Hypertarget{classkiwi_1_1_i_o_buf_a90935fddc509ab6c1a2e32f0f91bf118}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a90935fddc509ab6c1a2e32f0f91bf118} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Take\+Ownership\+Op}]{op}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{std\+::size\+\_\+t}]{length}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\Hypertarget{classkiwi_1_1_i_o_buf_a63cf877a1146cf593774187419da0e09}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a63cf877a1146cf593774187419da0e09} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Take\+Ownership\+Op}]{}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{std\+::size\+\_\+t}]{offset}{, }\item[{std\+::size\+\_\+t}]{length}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\Hypertarget{classkiwi_1_1_i_o_buf_a03dace6e2d4e7a61d0cefe0396556462}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a03dace6e2d4e7a61d0cefe0396556462} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Take\+Ownership\+Op}]{}{, }\item[{Sized\+Free}]{}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{std\+::size\+\_\+t}]{offset}{, }\item[{std\+::size\+\_\+t}]{length}{, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\Hypertarget{classkiwi_1_1_i_o_buf_ac00383234824ff95f192e09d8d77b0c6}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ac00383234824ff95f192e09d8d77b0c6} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Wrap\+Buffer\+Op}]{op}{, }\item[{Byte\+Range}]{br}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to a buffer, without taking ownership.
+
+This should only be used when the caller knows the lifetime of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object ahead of time and can ensure that all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects that will point to this buffer will be destroyed before the buffer itself is destroyed. The buffer will not be freed automatically when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} referencing it is destroyed. It is the caller\textquotesingle{}s responsibility to free the buffer after the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has been destroyed.
+
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} created using \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} will always be reported as shared. Unshare() may be used to create a writable copy of the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em br} & Can pass a Byte\+Range instead of \{buf, capacity\}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to buf. 
+
+Length() == capacity. 
+\end{DoxyPostcond}
+\Hypertarget{classkiwi_1_1_i_o_buf_af8145236efb0eb62fd99871e94e0d49d}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af8145236efb0eb62fd99871e94e0d49d} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Wrap\+Buffer\+Op}]{op}{, }\item[{const void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to a buffer, without taking ownership.
+
+This should only be used when the caller knows the lifetime of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object ahead of time and can ensure that all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects that will point to this buffer will be destroyed before the buffer itself is destroyed. The buffer will not be freed automatically when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} referencing it is destroyed. It is the caller\textquotesingle{}s responsibility to free the buffer after the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has been destroyed.
+
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} created using \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} will always be reported as shared. Unshare() may be used to create a writable copy of the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em br} & Can pass a Byte\+Range instead of \{buf, capacity\}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to buf. 
+
+Length() == capacity.    
+\end{DoxyPostcond}
+\Hypertarget{classkiwi_1_1_i_o_buf_a1e814b71daa4f78e49cb3107df673a29}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a1e814b71daa4f78e49cb3107df673a29} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Copy\+Buffer\+Op}]{op}{, }\item[{Byte\+Range}]{br}{, }\item[{std\+::size\+\_\+t}]{headroom}{ = {\ttfamily 0}, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{ = {\ttfamily 0}}\end{DoxyParamCaption})}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and copy data into the buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a newly-\/allocated buffer. That buffer shall be populated with data from the argument buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The buffer from which to copy data \\
+\hline
+{\em size} & The size of the buffer from which to copy data \\
+\hline
+{\em br} & Can pass a Byte\+Range in lieu of \{buf, size\} \\
+\hline
+{\em headroom} & The amount of headroom to add to the destination buffer \\
+\hline
+{\em min\+Tailroom} & The amount of tailroom to add to the destination buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to a new buffer whose content is the same as buf 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == size 
+
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} == headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classkiwi_1_1_i_o_buf_af4ed886fda74ea9cdfbc382d60453871}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af4ed886fda74ea9cdfbc382d60453871} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{Copy\+Buffer\+Op}]{op}{, }\item[{const void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{size}{, }\item[{std\+::size\+\_\+t}]{headroom}{ = {\ttfamily 0}, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{ = {\ttfamily 0}}\end{DoxyParamCaption})}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and copy data into the buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a newly-\/allocated buffer. That buffer shall be populated with data from the argument buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The buffer from which to copy data \\
+\hline
+{\em size} & The size of the buffer from which to copy data \\
+\hline
+{\em br} & Can pass a Byte\+Range in lieu of \{buf, size\} \\
+\hline
+{\em headroom} & The amount of headroom to add to the destination buffer \\
+\hline
+{\em min\+Tailroom} & The amount of tailroom to add to the destination buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to a new buffer whose content is the same as buf 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == size 
+
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} == headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error    \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classkiwi_1_1_i_o_buf_addcdd5cd5f46ee3a9e6904dd68209b29}\index{kiwi::IOBuf@{kiwi::IOBuf}!````~IOBuf@{\texorpdfstring{$\sim$}{\string~}IOBuf}}
+\index{````~IOBuf@{\texorpdfstring{$\sim$}{\string~}IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}IOBuf()}{\string~IOBuf()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_addcdd5cd5f46ee3a9e6904dd68209b29} 
+kiwi\+::\+IOBuf\+::\texorpdfstring{$\sim$}{\string~}\+IOBuf (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Destroy this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Deleting an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will automatically destroy all IOBufs in the chain. (All subsequent IOBufs in the chain are considered to be owned by the head of the chain. Users should only explicitly delete the head of a chain.)
+
+When each individual \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is destroyed, it will release its reference count on the underlying buffer. If it was the last user of the buffer, the buffer will be freed. \Hypertarget{classkiwi_1_1_i_o_buf_a2b84f84ca1454238aa2531223d420a78}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2b84f84ca1454238aa2531223d420a78} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}, {\ttfamily [noexcept]}}
+
+Create a new null buffer.
+
+This can be used to allocate an empty \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} on the stack. It will have no space allocated for it. This is generally useful only to later use move assignment to fill out the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. \Hypertarget{classkiwi_1_1_i_o_buf_a23324e396a3a95880e9897f9286c0731}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a23324e396a3a95880e9897f9286c0731} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&\&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Move constructor.
+
+In general, you should only ever move the head of an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain. Internal nodes in an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain are owned by the head of the chain, and should not be moved from. (Technically, nothing prevents you from moving a non-\/head node, but the moved-\/to node will replace the moved-\/from node in the chain. This has implications for ownership, since non-\/head nodes are owned by the chain head. You are then responsible for relinquishing ownership of the moved-\/to node, and manually deleting the moved-\/from node.) \Hypertarget{classkiwi_1_1_i_o_buf_a21ca1a066836e9b3b5d8f326851ba487}\index{kiwi::IOBuf@{kiwi::IOBuf}!IOBuf@{IOBuf}}
+\index{IOBuf@{IOBuf}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{IOBuf()}{IOBuf()}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a21ca1a066836e9b3b5d8f326851ba487} 
+kiwi\+::\+IOBuf\+::\+IOBuf (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&}]{other}{}\end{DoxyParamCaption})}
+
+Copy constructor.
+
+\begin{DoxySeeAlso}{See also}
+\doxylink{classkiwi_1_1_i_o_buf_a1743440b00acb1e11a08b1464ba8ee2b}{clone\+As\+Value()} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_i_o_buf_a05c7a1d0badf1067d6fdaab3e99c4ed1}\index{kiwi::IOBuf@{kiwi::IOBuf}!advance@{advance}}
+\index{advance@{advance}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{advance()}{advance()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a05c7a1d0badf1067d6fdaab3e99c4ed1} 
+void kiwi\+::\+IOBuf\+::advance (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Shift the data forwards in the buffer.
+
+This shifts the data pointer forwards in the buffer to increase the headroom. This is commonly used to increase the headroom in a newly allocated buffer.
+
+The caller is responsible for ensuring that there is sufficient tailroom in the buffer before calling \doxylink{classkiwi_1_1_i_o_buf_a05c7a1d0badf1067d6fdaab3e99c4ed1}{advance()}.
+
+If there is a non-\/zero data length, \doxylink{classkiwi_1_1_i_o_buf_a05c7a1d0badf1067d6fdaab3e99c4ed1}{advance()} will use memmove() to shift the data forwards in the buffer. In this case, the caller is responsible for making sure the buffer is unshared, so it will not affect other IOBufs that may be sharing the same underlying buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift all data forward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is unchanged
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_a58f2ebcaac78afff44d08396db944369}\index{kiwi::IOBuf@{kiwi::IOBuf}!append@{append}}
+\index{append@{append}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{append()}{append()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a58f2ebcaac78afff44d08396db944369} 
+void kiwi\+::\+IOBuf\+::append (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adjust the tail pointer to include more valid data at the end.
+
+This moves the tail pointer forwards to include more of the available buffer. The caller is responsible for ensuring that there is sufficient tailroom for the new data. The caller is also responsible for populating this section with valid data.
+
+This does not modify any actual data in the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift the \doxylink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail()} pointer forward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is increased by amount
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_aa8c7ab4ba6b1fa390d7399994cea6081}\index{kiwi::IOBuf@{kiwi::IOBuf}!appendChain@{appendChain}}
+\index{appendChain@{appendChain}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{appendChain()}{appendChain()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aa8c7ab4ba6b1fa390d7399994cea6081} 
+void kiwi\+::\+IOBuf\+::append\+Chain (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&}]{iobuf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Deprecated name for \doxylink{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7}{insert\+After\+This\+One()}
+
+Beware\+: \doxylink{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}{append\+To\+Chain()} and \doxylink{classkiwi_1_1_i_o_buf_aa8c7ab4ba6b1fa390d7399994cea6081}{append\+Chain()} are two different methods, and you probably want \doxylink{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}{append\+To\+Chain()} instead of this one.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_aa225ec9d716734af44e8f4d1b09cd683}\index{kiwi::IOBuf@{kiwi::IOBuf}!appendSharedInfoObserver@{appendSharedInfoObserver}}
+\index{appendSharedInfoObserver@{appendSharedInfoObserver}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{appendSharedInfoObserver()}{appendSharedInfoObserver()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aa225ec9d716734af44e8f4d1b09cd683} 
+template$<$typename Observer$>$ \\
+bool kiwi\+::\+IOBuf\+::append\+Shared\+Info\+Observer (\begin{DoxyParamCaption}\item[{Observer \&\&}]{observer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Add an Observer to the refcount block (Shared\+Info).
+
+
+\begin{DoxyParams}{Parameters}
+{\em observer} & The observer to add to Shared\+Info \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff the observer was added (if there is no Shared\+Info, there\textquotesingle{}s nothing to observe)
+\end{DoxyReturn}
+@methodset Misc \Hypertarget{classkiwi_1_1_i_o_buf_ae15bfb4c53c8aafe8ab1ec5196865f42}\index{kiwi::IOBuf@{kiwi::IOBuf}!appendTo@{appendTo}}
+\index{appendTo@{appendTo}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{appendTo()}{appendTo()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ae15bfb4c53c8aafe8ab1ec5196865f42} 
+template$<$class Container$>$ \\
+void kiwi\+::\+IOBuf\+::append\+To (\begin{DoxyParamCaption}\item[{Container \&}]{container}{}\end{DoxyParamCaption}) const}
+
+Append the chain data into the provided container.
+
+This is meant to be used with containers such as std\+::string or std\+::vector$<$char$>$, but any container which supports \doxylink{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e}{reserve()}, insert(), and has char or unsigned char value type is supported.
+
+@methodset Conversions \Hypertarget{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}\index{kiwi::IOBuf@{kiwi::IOBuf}!appendToChain@{appendToChain}}
+\index{appendToChain@{appendToChain}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{appendToChain()}{appendToChain()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492} 
+void kiwi\+::\+IOBuf\+::append\+To\+Chain (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&}]{iobuf}{}\end{DoxyParamCaption})}
+
+Append another \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain to the end of this chain.
+
+For example, if there are two \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chains (A, B, C) and (D, E, F), and A-\/\texorpdfstring{$>$}{>}append\+To\+Chain(\+D) is called, the (D, E, F) chain will be subsumed and become part of the chain starting at A, which will now look like (A, B, C, D, E, F).
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a21aa355ace5fa69101c6089df38702e8}\index{kiwi::IOBuf@{kiwi::IOBuf}!appendToIov@{appendToIov}}
+\index{appendToIov@{appendToIov}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{appendToIov()}{appendToIov()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a21aa355ace5fa69101c6089df38702e8} 
+void kiwi\+::\+IOBuf\+::append\+To\+Iov (\begin{DoxyParamCaption}\item[{folly\+::fbvector$<$ struct iovec $>$ \texorpdfstring{$\ast$}{*}}]{iov}{}\end{DoxyParamCaption}) const}
+
+Update an existing iovec array with the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} data.
+
+New iovecs will be appended to the existing vector; anything already present in the vector will be left unchanged.
+
+Naturally, the returned iovec data will be invalid if you modify the buffer chain.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em iov} & The iovector to append to\\
+\hline
+\end{DoxyParams}
+@methodset IOV \Hypertarget{classkiwi_1_1_i_o_buf_a2b984c03c27ed2e7f09f6c27488e6610}\index{kiwi::IOBuf@{kiwi::IOBuf}!approximateShareCountOne@{approximateShareCountOne}}
+\index{approximateShareCountOne@{approximateShareCountOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{approximateShareCountOne()}{approximateShareCountOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2b984c03c27ed2e7f09f6c27488e6610} 
+uint32\+\_\+t kiwi\+::\+IOBuf\+::approximate\+Share\+Count\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Inconsistently get the reference count.
+
+For most of the use-\/cases where it seems like a good idea to call this function, what you really want is \doxylink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{is\+Shared\+One()}.
+
+If this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is managed by the usual refcounting mechanism (ie \doxylink{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}{is\+Managed\+One()} returns true) then this returns the reference count as it was when recently observed by this thread.
+
+If this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is {\itshape not} managed by the usual refcounting mechanism then the result of this function is not defined.
+
+This only checks the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, and not other IOBufs in the chain.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223}\index{kiwi::IOBuf@{kiwi::IOBuf}!begin@{begin}}
+\index{begin@{begin}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf\+::\+Iterator}} kiwi\+::\+IOBuf\+::begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Iterate over the IOBufs in this chain.
+
+The iterators dereference to a Byte\+Range.
+
+@methodset Iterators    \Hypertarget{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}\index{kiwi::IOBuf@{kiwi::IOBuf}!buffer@{buffer}}
+\index{buffer@{buffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{buffer()}{buffer()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47} 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::buffer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the pointer to the start of the buffer.
+
+Note that this is the pointer to the very beginning of the usable buffer, not the start of valid data within the buffer. Use the \doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} method to get a pointer to the start of the data within the buffer.
+
+@methodset Access \Hypertarget{classkiwi_1_1_i_o_buf_a52101c7e9f2f5124cbbb3198dc2db17c}\index{kiwi::IOBuf@{kiwi::IOBuf}!bufferEnd@{bufferEnd}}
+\index{bufferEnd@{bufferEnd}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{bufferEnd()}{bufferEnd()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a52101c7e9f2f5124cbbb3198dc2db17c} 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::buffer\+End (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the pointer to the end of the buffer.
+
+Note that this is the pointer to the very end of the usable buffer, not the end of valid data within the buffer. Use the \doxylink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail()} method to get a pointer to the end of the data within the buffer.
+
+@methodset Access \Hypertarget{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}\index{kiwi::IOBuf@{kiwi::IOBuf}!capacity@{capacity}}
+\index{capacity@{capacity}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{capacity()}{capacity()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966} 
+std\+::size\+\_\+t kiwi\+::\+IOBuf\+::capacity (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the total size of the buffer.
+
+This returns the total usable length of the buffer. Use the \doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} method to get the length of the actual valid data in this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+@methodset Buffer Capacity \Hypertarget{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138}\index{kiwi::IOBuf@{kiwi::IOBuf}!cbegin@{cbegin}}
+\index{cbegin@{cbegin}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cbegin()}{cbegin()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf\+::\+Iterator}} kiwi\+::\+IOBuf\+::cbegin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Iterate over the IOBufs in this chain.
+
+The iterators dereference to a Byte\+Range.
+
+@methodset Iterators \Hypertarget{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42}\index{kiwi::IOBuf@{kiwi::IOBuf}!cend@{cend}}
+\index{cend@{cend}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cend()}{cend()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf\+::\+Iterator}} kiwi\+::\+IOBuf\+::cend (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+
+
+Iterate over the IOBufs in this chain.
+
+The iterators dereference to a Byte\+Range.
+
+@methodset Iterators    \Hypertarget{classkiwi_1_1_i_o_buf_a840a75e5d2f1cc2fb467260fda98ea52}\index{kiwi::IOBuf@{kiwi::IOBuf}!clear@{clear}}
+\index{clear@{clear}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a840a75e5d2f1cc2fb467260fda98ea52} 
+void kiwi\+::\+IOBuf\+::clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Clear the buffer.
+
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} == \doxylink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer()} 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == 0 
+\end{DoxyPostcond}
+\Hypertarget{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}\index{kiwi::IOBuf@{kiwi::IOBuf}!clone@{clone}}
+\index{clone@{clone}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{clone()}{clone()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::clone (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain.
+
+This is a shallow buffer copy; the source buffers will be shared.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will normally point to the same underlying data buffers as the original chain. (The one exception to this is if some of the IOBufs in this chain contain small internal data buffers which cannot be shared.)
+
+@methodset Makers \Hypertarget{classkiwi_1_1_i_o_buf_a1743440b00acb1e11a08b1464ba8ee2b}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneAsValue@{cloneAsValue}}
+\index{cloneAsValue@{cloneAsValue}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneAsValue()}{cloneAsValue()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a1743440b00acb1e11a08b1464ba8ee2b} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} kiwi\+::\+IOBuf\+::clone\+As\+Value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain.
+
+This is a shallow buffer copy; the source buffers will be shared.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will normally point to the same underlying data buffers as the original chain. (The one exception to this is if some of the IOBufs in this chain contain small internal data buffers which cannot be shared.)
+
+@methodset Makers   
+
+Similar to \doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}, but returns by value rather than heap-\/allocating. \Hypertarget{classkiwi_1_1_i_o_buf_ad0d0db87c8f2a3d09d6e388a33e308f1}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneCoalesced@{cloneCoalesced}}
+\index{cloneCoalesced@{cloneCoalesced}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneCoalesced()}{cloneCoalesced()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ad0d0db87c8f2a3d09d6e388a33e308f1} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::clone\+Coalesced (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single buffer.
+
+Semantically similar to .\doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}.\doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}, but without the intermediate allocations.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+\begin{DoxyReturn}{Returns}
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} for which \doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} == false, and whose data is the same as \doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error.\\
+\hline
+\end{DoxyExceptions}
+@methodset Makers \Hypertarget{classkiwi_1_1_i_o_buf_a81795a52f7ba854152aadd803a9fe286}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneCoalescedAsValue@{cloneCoalescedAsValue}}
+\index{cloneCoalescedAsValue@{cloneCoalescedAsValue}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneCoalescedAsValue()}{cloneCoalescedAsValue()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a81795a52f7ba854152aadd803a9fe286} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} kiwi\+::\+IOBuf\+::clone\+Coalesced\+As\+Value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single buffer.
+
+Semantically similar to .\doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}.\doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}, but without the intermediate allocations.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+\begin{DoxyReturn}{Returns}
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} for which \doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} == false, and whose data is the same as \doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error.\\
+\hline
+\end{DoxyExceptions}
+@methodset Makers   
+
+Similar to \doxylink{classkiwi_1_1_i_o_buf_ad0d0db87c8f2a3d09d6e388a33e308f1}{clone\+Coalesced()}, but returns by value rather than heap-\/allocating. \Hypertarget{classkiwi_1_1_i_o_buf_aaa9f06db109446014413e5e1407c63a1}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneCoalescedAsValueWithHeadroomTailroom@{cloneCoalescedAsValueWithHeadroomTailroom}}
+\index{cloneCoalescedAsValueWithHeadroomTailroom@{cloneCoalescedAsValueWithHeadroomTailroom}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneCoalescedAsValueWithHeadroomTailroom()}{cloneCoalescedAsValueWithHeadroomTailroom()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aaa9f06db109446014413e5e1407c63a1} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} kiwi\+::\+IOBuf\+::clone\+Coalesced\+As\+Value\+With\+Headroom\+Tailroom (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{new\+Headroom}{, }\item[{std\+::size\+\_\+t}]{new\+Tailroom}{}\end{DoxyParamCaption}) const}
+
+
+
+
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single buffer.
+
+Semantically similar to .\doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}.\doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}, but without the intermediate allocations.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+\begin{DoxyReturn}{Returns}
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} for which \doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} == false, and whose data is the same as \doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error.\\
+\hline
+\end{DoxyExceptions}
+@methodset Makers   
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Headroom} & How much headroom the new coalesced chain should have, instead of mimicking the original headroom \\
+\hline
+{\em new\+Tailroom} & How much tailroom the new coalesced chain should have, instead of mimicking the original tailroom   \\
+\hline
+\end{DoxyParams}
+Similar to \doxylink{classkiwi_1_1_i_o_buf_a3c5f1d998e035cd522d2fc6629221a59}{clone\+Coalesced\+With\+Headroom\+Tailroom()}, but returns by value rather than heap-\/allocating. \Hypertarget{classkiwi_1_1_i_o_buf_a3c5f1d998e035cd522d2fc6629221a59}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneCoalescedWithHeadroomTailroom@{cloneCoalescedWithHeadroomTailroom}}
+\index{cloneCoalescedWithHeadroomTailroom@{cloneCoalescedWithHeadroomTailroom}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneCoalescedWithHeadroomTailroom()}{cloneCoalescedWithHeadroomTailroom()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a3c5f1d998e035cd522d2fc6629221a59} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::clone\+Coalesced\+With\+Headroom\+Tailroom (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{new\+Headroom}{, }\item[{std\+::size\+\_\+t}]{new\+Tailroom}{}\end{DoxyParamCaption}) const}
+
+
+
+
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single buffer.
+
+Semantically similar to .\doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}.\doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}, but without the intermediate allocations.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+\begin{DoxyReturn}{Returns}
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} for which \doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} == false, and whose data is the same as \doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()}
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error.\\
+\hline
+\end{DoxyExceptions}
+@methodset Makers   
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Headroom} & How much headroom the new coalesced chain should have, instead of mimicking the original headroom \\
+\hline
+{\em new\+Tailroom} & How much tailroom the new coalesced chain should have, instead of mimicking the original tailroom \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_i_o_buf_aa1fe108b608377de28f97229955d5c31}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneInto@{cloneInto}}
+\index{cloneInto@{cloneInto}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneInto()}{cloneInto()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aa1fe108b608377de28f97229955d5c31} 
+void kiwi\+::\+IOBuf\+::clone\+Into (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Copy an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain.
+
+This is a shallow buffer copy; the source buffers will be shared.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will normally point to the same underlying data buffers as the original chain. (The one exception to this is if some of the IOBufs in this chain contain small internal data buffers which cannot be shared.)
+
+@methodset Makers   
+
+Similar to \doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}, but returns by argument. The argument will become the clone\textquotesingle{}s head. Other nodes in the chain (if any) will be allocated on the heap as usual.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em other} & An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to assign the clone to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_i_o_buf_a092fcaf694e85b84c2a662a4a4ac2f69}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneOne@{cloneOne}}
+\index{cloneOne@{cloneOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneOne()}{cloneOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a092fcaf694e85b84c2a662a4a4ac2f69} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::clone\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Copy an individual \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Only clone the buffer of the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}; ignore chained IOBufs.
+
+@methodset Makers \Hypertarget{classkiwi_1_1_i_o_buf_a9bdaf35f65a5484200d7ccfc115382f8}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneOneAsValue@{cloneOneAsValue}}
+\index{cloneOneAsValue@{cloneOneAsValue}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneOneAsValue()}{cloneOneAsValue()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a9bdaf35f65a5484200d7ccfc115382f8} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} kiwi\+::\+IOBuf\+::clone\+One\+As\+Value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+
+
+Copy an individual \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Only clone the buffer of the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}; ignore chained IOBufs.
+
+@methodset Makers   
+
+Similar to \doxylink{classkiwi_1_1_i_o_buf_a092fcaf694e85b84c2a662a4a4ac2f69}{clone\+One()}, but returns by value rather than heap-\/allocating. \Hypertarget{classkiwi_1_1_i_o_buf_a60cc7b444a16f6973c0e4bfa5281724c}\index{kiwi::IOBuf@{kiwi::IOBuf}!cloneOneInto@{cloneOneInto}}
+\index{cloneOneInto@{cloneOneInto}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{cloneOneInto()}{cloneOneInto()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a60cc7b444a16f6973c0e4bfa5281724c} 
+void kiwi\+::\+IOBuf\+::clone\+One\+Into (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Copy an individual \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Only clone the buffer of the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}; ignore chained IOBufs.
+
+@methodset Makers   
+
+Similar to \doxylink{classkiwi_1_1_i_o_buf_a092fcaf694e85b84c2a662a4a4ac2f69}{clone\+One()}, but returns by argument. The argument will become the clone.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em other} & An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to assign the clone to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}\index{kiwi::IOBuf@{kiwi::IOBuf}!coalesce@{coalesce}}
+\index{coalesce@{coalesce}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{coalesce()}{coalesce()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a} 
+Byte\+Range kiwi\+::\+IOBuf\+::coalesce (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Coalesce this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single buffer.
+
+This method moves all of the data in this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single contiguous buffer, if it is not already in one buffer. After \doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()} returns, this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will be a chain of length one. Other IOBufs in the chain will be automatically deleted.
+
+After coalescing, the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} == false
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error. On error the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will be unmodified.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A Byte\+Range that points to the now-\/contiguous buffer \doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()}
+\end{DoxyReturn}
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a31443235b88a34dc4b28e0e953e80359}\index{kiwi::IOBuf@{kiwi::IOBuf}!coalesceWithHeadroomTailroom@{coalesceWithHeadroomTailroom}}
+\index{coalesceWithHeadroomTailroom@{coalesceWithHeadroomTailroom}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{coalesceWithHeadroomTailroom()}{coalesceWithHeadroomTailroom()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a31443235b88a34dc4b28e0e953e80359} 
+Byte\+Range kiwi\+::\+IOBuf\+::coalesce\+With\+Headroom\+Tailroom (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{new\+Headroom}{, }\item[{std\+::size\+\_\+t}]{new\+Tailroom}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Coalesce this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single buffer.
+
+This method moves all of the data in this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain into a single contiguous buffer, if it is not already in one buffer. After \doxylink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce()} returns, this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will be a chain of length one. Other IOBufs in the chain will be automatically deleted.
+
+After coalescing, the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} == false
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error. On error the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will be unmodified.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A Byte\+Range that points to the now-\/contiguous buffer \doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()}
+\end{DoxyReturn}
+@methodset Chaining   
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Headroom} & How much headroom the new coalesced chain should have, instead of mimicking the original headroom \\
+\hline
+{\em new\+Tailroom} & How much tailroom the new coalesced chain should have, instead of mimicking the original tailroom \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_i_o_buf_a4f537f4c34f139e820ac66bd9d20c134}\index{kiwi::IOBuf@{kiwi::IOBuf}!computeChainCapacity@{computeChainCapacity}}
+\index{computeChainCapacity@{computeChainCapacity}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{computeChainCapacity()}{computeChainCapacity()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a4f537f4c34f139e820ac66bd9d20c134} 
+std\+::size\+\_\+t kiwi\+::\+IOBuf\+::compute\+Chain\+Capacity (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Get the capacity all IOBufs in the chain.
+
+Beware that this method has to walk the entire chain.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}\index{kiwi::IOBuf@{kiwi::IOBuf}!computeChainDataLength@{computeChainDataLength}}
+\index{computeChainDataLength@{computeChainDataLength}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{computeChainDataLength()}{computeChainDataLength()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9} 
+std\+::size\+\_\+t kiwi\+::\+IOBuf\+::compute\+Chain\+Data\+Length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Get the length of all the data in this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain.
+
+Beware that this method has to walk the entire chain.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}\index{kiwi::IOBuf@{kiwi::IOBuf}!copyBuffer@{copyBuffer}}
+\index{copyBuffer@{copyBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{copyBuffer()}{copyBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::copy\+Buffer (\begin{DoxyParamCaption}\item[{Byte\+Range}]{br}{, }\item[{std\+::size\+\_\+t}]{headroom}{ = {\ttfamily 0}, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{ = {\ttfamily 0}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and copy data into the buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a newly-\/allocated buffer. That buffer shall be populated with data from the argument buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The buffer from which to copy data \\
+\hline
+{\em size} & The size of the buffer from which to copy data \\
+\hline
+{\em br} & Can pass a Byte\+Range in lieu of \{buf, size\} \\
+\hline
+{\em headroom} & The amount of headroom to add to the destination buffer \\
+\hline
+{\em min\+Tailroom} & The amount of tailroom to add to the destination buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to a new buffer whose content is the same as buf 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == size 
+
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} == headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error    \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_adec85ae37f540e575916c22fa62e4172}\index{kiwi::IOBuf@{kiwi::IOBuf}!copyBuffer@{copyBuffer}}
+\index{copyBuffer@{copyBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{copyBuffer()}{copyBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_adec85ae37f540e575916c22fa62e4172} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::copy\+Buffer (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{size}{, }\item[{std\+::size\+\_\+t}]{headroom}{ = {\ttfamily 0}, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{ = {\ttfamily 0}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and copy data into the buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a newly-\/allocated buffer. That buffer shall be populated with data from the argument buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The buffer from which to copy data \\
+\hline
+{\em size} & The size of the buffer from which to copy data \\
+\hline
+{\em br} & Can pass a Byte\+Range in lieu of \{buf, size\} \\
+\hline
+{\em headroom} & The amount of headroom to add to the destination buffer \\
+\hline
+{\em min\+Tailroom} & The amount of tailroom to add to the destination buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to a new buffer whose content is the same as buf 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == size 
+
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} == headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error    \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers    
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_aed67476393bdc13afe54c919b23854b2}\index{kiwi::IOBuf@{kiwi::IOBuf}!copyBuffer@{copyBuffer}}
+\index{copyBuffer@{copyBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{copyBuffer()}{copyBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aed67476393bdc13afe54c919b23854b2} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::copy\+Buffer (\begin{DoxyParamCaption}\item[{String\+Piece}]{buf}{, }\item[{std\+::size\+\_\+t}]{headroom}{ = {\ttfamily 0}, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{ = {\ttfamily 0}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and copy data into the buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a newly-\/allocated buffer. That buffer shall be populated with data from the argument buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The buffer from which to copy data \\
+\hline
+{\em size} & The size of the buffer from which to copy data \\
+\hline
+{\em br} & Can pass a Byte\+Range in lieu of \{buf, size\} \\
+\hline
+{\em headroom} & The amount of headroom to add to the destination buffer \\
+\hline
+{\em min\+Tailroom} & The amount of tailroom to add to the destination buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to a new buffer whose content is the same as buf 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == size 
+
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} == headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error   \\
+\hline
+\end{DoxyExceptions}
+Beware when attempting to invoke this function with a constant string literal and a headroom argument\+: you will likely end up invoking copy\+Buffer(void\texorpdfstring{$\ast$}{*} buf, size\+\_\+t size). \Hypertarget{classkiwi_1_1_i_o_buf_af270f22104c9e7f9a7c7f6fc8df346aa}\index{kiwi::IOBuf@{kiwi::IOBuf}!countChainElements@{countChainElements}}
+\index{countChainElements@{countChainElements}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{countChainElements()}{countChainElements()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af270f22104c9e7f9a7c7f6fc8df346aa} 
+size\+\_\+t kiwi\+::\+IOBuf\+::count\+Chain\+Elements (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Get the number of IOBufs in this chain.
+
+Beware that this method has to walk the entire chain. Use \doxylink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{is\+Chained()} if you just want to check if this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is part of a chain or not.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a6adf34bb99883797ca5833f83b088bf4}\index{kiwi::IOBuf@{kiwi::IOBuf}!Create@{Create}}
+\index{Create@{Create}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{Create()}{Create()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a6adf34bb99883797ca5833f83b088bf4} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Create (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} with the requested capacity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em capacity} & The size of buffer to allocate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to the start of the buffer. 
+
+Length() == 0 
+
+Capacity() \texorpdfstring{$>$}{>}= capacity (
+\end{DoxyPostcond}
+\begin{DoxySeeAlso}{See also}
+Good\+Size for details on why \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} sometimes allocates a larger \doxylink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer} than requested)
+\end{DoxySeeAlso}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on malloc failure    \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. \textbackslash{}methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_ad0d73e8bb4220ff0f467b74ccaec3318}\index{kiwi::IOBuf@{kiwi::IOBuf}!createChain@{createChain}}
+\index{createChain@{createChain}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{createChain()}{createChain()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ad0d73e8bb4220ff0f467b74ccaec3318} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::create\+Chain (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{total\+Capacity}{, }\item[{std\+::size\+\_\+t}]{max\+Buf\+Capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain.
+
+
+\begin{DoxyParams}{Parameters}
+{\em total\+Capacity} & The total buffer size of all IOBufs in the chain \\
+\hline
+{\em max\+Buf\+Capacity} & The maximum buffer size of each \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a4f537f4c34f139e820ac66bd9d20c134}{compute\+Chain\+Capacity()} \texorpdfstring{$>$}{>}= total\+Capacity
+\end{DoxyPostcond}
+Note\+: Some malloc implementations will internally round up an allocation size to a convenient amount (e.\+g. jemalloc(31) will actually give you a slab of size 32). Your buffer size could actually be rounded up to {\ttfamily good\+Malloc\+Size(max\+Buf\+Capacity)}.
+
+@methodset Makers \Hypertarget{classkiwi_1_1_i_o_buf_ae82194b9a5e964b1dc08402514e5b4b5}\index{kiwi::IOBuf@{kiwi::IOBuf}!CreateCombined@{CreateCombined}}
+\index{CreateCombined@{CreateCombined}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{CreateCombined()}{CreateCombined()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ae82194b9a5e964b1dc08402514e5b4b5} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Create\+Combined (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, allocated alongside its buffer.
+
+This method uses a single memory allocation to allocate space for both the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object and the data storage space. This saves one memory allocation.
+
+This can be wasteful if the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and the buffer have different lifetimes. The memory will not be reclaimed until both objects are destroyed. This can happen, for example, if the buffer is grown using \doxylink{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e}{reserve()}.
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} with the requested capacity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em capacity} & The size of buffer to allocate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to the start of the buffer. 
+
+Length() == 0 
+
+Capacity() \texorpdfstring{$>$}{>}= capacity (
+\end{DoxyPostcond}
+\begin{DoxySeeAlso}{See also}
+Good\+Size for details on why \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} sometimes allocates a larger \doxylink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer} than requested)
+\end{DoxySeeAlso}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on malloc failure    \textbackslash{}methodset Makers \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classkiwi_1_1_i_o_buf_a377b22ca8a44bc7a56e96f2a03b4e416}\index{kiwi::IOBuf@{kiwi::IOBuf}!createSeparate@{createSeparate}}
+\index{createSeparate@{createSeparate}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{createSeparate()}{createSeparate()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a377b22ca8a44bc7a56e96f2a03b4e416} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::create\+Separate (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, allocated separately from its buffer.
+
+IOBuf\+::create() doesn\textquotesingle{}t necessarily perform separate allocations if the buffer is small. This function forces the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and its buffer to be allocated separately. This can save space if you know that the buffer will be reallocated.
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} with the requested capacity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em capacity} & The size of buffer to allocate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to the start of the buffer. 
+
+Length() == 0 
+
+Capacity() \texorpdfstring{$>$}{>}= capacity (
+\end{DoxyPostcond}
+\begin{DoxySeeAlso}{See also}
+Good\+Size for details on why \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} sometimes allocates a larger \doxylink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer} than requested)
+\end{DoxySeeAlso}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on malloc failure    @methodset Makers \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}\index{kiwi::IOBuf@{kiwi::IOBuf}!data@{data}}
+\index{data@{data}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{data()}{data()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938} 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the pointer to the start of the data.
+
+@methodset Access \Hypertarget{classkiwi_1_1_i_o_buf_a60be51495b7dd12f238f4266bee48eb6}\index{kiwi::IOBuf@{kiwi::IOBuf}!destroy@{destroy}}
+\index{destroy@{destroy}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a60be51495b7dd12f238f4266bee48eb6} 
+static void kiwi\+::\+IOBuf\+::destroy (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&}]{data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Free an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Note\+: as with all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} destruction, this will also destroy all other IOBufs in the same chain.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to be destroyed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+data will be nullptr
+\end{DoxyPostcond}
+@methodset Memory \Hypertarget{classkiwi_1_1_i_o_buf_afa66a4d02d63c3eee6a85ba4a726672b}\index{kiwi::IOBuf@{kiwi::IOBuf}!empty@{empty}}
+\index{empty@{empty}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_afa66a4d02d63c3eee6a85ba4a726672b} 
+bool kiwi\+::\+IOBuf\+::empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Check whether the chain is empty.
+
+This method is semantically equivalent to i-\/\texorpdfstring{$>$}{>}\doxylink{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}{compute\+Chain\+Data\+Length()}==0 but may run faster because it can short-\/circuit as soon as it encounters a buffer with \doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()}!=0
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}\index{kiwi::IOBuf@{kiwi::IOBuf}!end@{end}}
+\index{end@{end}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf\+::\+Iterator}} kiwi\+::\+IOBuf\+::end (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Iterate over the IOBufs in this chain.
+
+The iterators dereference to a Byte\+Range.
+
+@methodset Iterators    \Hypertarget{classkiwi_1_1_i_o_buf_a03b4fdd6e783dc02272edc01fb33e569}\index{kiwi::IOBuf@{kiwi::IOBuf}!fillIov@{fillIov}}
+\index{fillIov@{fillIov}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{fillIov()}{fillIov()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a03b4fdd6e783dc02272edc01fb33e569} 
+\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{IOBuf\+::\+Fill\+Iov\+Result}} kiwi\+::\+IOBuf\+::fill\+Iov (\begin{DoxyParamCaption}\item[{struct iovec \texorpdfstring{$\ast$}{*}}]{iov}{, }\item[{size\+\_\+t}]{len}{}\end{DoxyParamCaption}) const}
+
+Fill an iovec array with the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} data.
+
+Returns a struct with two fields\+: the number of iovec filled, and total size of the iovecs filled. If there are more buffer than iovec, returns 0 in both fields. This version is suitable to use with stack iovec arrays.
+
+Naturally, the filled iovec data will be invalid if you modify the buffer chain.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em iov} & The iovector to append to \\
+\hline
+ & {\em len} & The size of the iov array\\
+\hline
+\end{DoxyParams}
+@methodset IOV \Hypertarget{classkiwi_1_1_i_o_buf_acdec438f2dbdfa2a791081323392f632}\index{kiwi::IOBuf@{kiwi::IOBuf}!gather@{gather}}
+\index{gather@{gather}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{gather()}{gather()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_acdec438f2dbdfa2a791081323392f632} 
+void kiwi\+::\+IOBuf\+::gather (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{contiguous\+Length}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Ensure that this chain has at least contiguous\+Length bytes available as a contiguous memory range.
+
+This method coalesces whole buffers in the chain into this buffer as necessary until this buffer\textquotesingle{}s \doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is at least contiguous\+Length.
+
+After coalescing, the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have at least as much headroom as the first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain, and at least as much tailroom as the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} that was coalesced.
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & or std\+::overflow\+\_\+error on error. On error the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will be unmodified. \\
+\hline
+{\em std\+::overflow\+\_\+error} & if contiguous\+Length is longer than the total chain length.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} \texorpdfstring{$>$}{>}= contiguous\+Length
+\end{DoxyPostcond}
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_af85710265218a2f770abedd96d97bd83}\index{kiwi::IOBuf@{kiwi::IOBuf}!getFreeFn@{getFreeFn}}
+\index{getFreeFn@{getFreeFn}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{getFreeFn()}{getFreeFn()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af85710265218a2f770abedd96d97bd83} 
+Free\+Function kiwi\+::\+IOBuf\+::get\+Free\+Fn (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Get the Free\+Function.
+
+free\+Fn is the optional constructor argument which shall be called when the buffer is to be destroyed.
+
+\begin{DoxyReturn}{Returns}
+A non-\/owning pointer to free\+Fn if set, else nullptr
+\end{DoxyReturn}
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a4188f93073a10898be868c69fa50372c}\index{kiwi::IOBuf@{kiwi::IOBuf}!getIov@{getIov}}
+\index{getIov@{getIov}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{getIov()}{getIov()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a4188f93073a10898be868c69fa50372c} 
+folly\+::fbvector$<$ struct iovec $>$ kiwi\+::\+IOBuf\+::get\+Iov (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Get an iovector suitable for e.\+g. writev()
+
+auto iov = buf-\/\texorpdfstring{$>$}{>}\doxylink{classkiwi_1_1_i_o_buf_a4188f93073a10898be868c69fa50372c}{get\+Iov()}; auto xfer = writev(fd, iov.\+data(), iov.\+size());
+
+Naturally, the returned iovector is invalid if you modify the buffer chain.
+
+@methodset IOV \Hypertarget{classkiwi_1_1_i_o_buf_ac2257122c9144063b7c775fca0f93f37}\index{kiwi::IOBuf@{kiwi::IOBuf}!getUserData@{getUserData}}
+\index{getUserData@{getUserData}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{getUserData()}{getUserData()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ac2257122c9144063b7c775fca0f93f37} 
+void \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::get\+User\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Get user\+Data.
+
+user\+Data is the optional constructor argument which will be passed to the Free\+Function.
+
+\begin{DoxyReturn}{Returns}
+A non-\/owning pointer to user\+Data if set, else nullptr
+\end{DoxyReturn}
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a4a6b0d1bd7dab6349c45f82272ed9c0f}\index{kiwi::IOBuf@{kiwi::IOBuf}!goodSize@{goodSize}}
+\index{goodSize@{goodSize}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{goodSize()}{goodSize()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a4a6b0d1bd7dab6349c45f82272ed9c0f} 
+size\+\_\+t kiwi\+::\+IOBuf\+::good\+Size (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{min\+Capacity}{, }\item[{Combined\+Option}]{combined}{ = {\ttfamily CombinedOption\+:\+:DEFAULT}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Get a good malloc size.
+
+Some malloc implementations will internally round up an allocation size to a convenient amount. For example, jemalloc(31) will actually return a buffer of size 32. Instead of wasting such tailroom, use it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em min\+Capacity} & The malloc size to round up \\
+\hline
+{\em combined} & Here be dragons. T154812262. The default value of DEFAULT is (a) hard to explain, and (b) probably not what you want. Refer to the code to see why.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A value at least as large as min\+Capacity. The overage, if any, depends on the allocator.
+\end{DoxyReturn}
+Note that IOBufs do this up-\/sizing for you\+: they will round up to the full allocation size and make that capacity available to you without your using this function. This just lets you introspect into that process, so you can for example figure out whether a given \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} can be usefully compacted.
+
+@methodset Memory \Hypertarget{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}\index{kiwi::IOBuf@{kiwi::IOBuf}!headroom@{headroom}}
+\index{headroom@{headroom}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{headroom()}{headroom()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449} 
+std\+::size\+\_\+t kiwi\+::\+IOBuf\+::headroom (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the amount of head room.
+
+\begin{DoxyReturn}{Returns}
+The number of bytes in the buffer before the start of the data
+\end{DoxyReturn}
+@methodset Buffer Capacity \Hypertarget{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7}\index{kiwi::IOBuf@{kiwi::IOBuf}!insertAfterThisOne@{insertAfterThisOne}}
+\index{insertAfterThisOne@{insertAfterThisOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{insertAfterThisOne()}{insertAfterThisOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7} 
+void kiwi\+::\+IOBuf\+::insert\+After\+This\+One (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&}]{iobuf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Insert an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain immediately after this chain element.
+
+For example, if there are two \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chains (A, B, C) and (D, E, F), and B-\/\texorpdfstring{$>$}{>}insert\+After\+This\+One(\+D) is called, the (D, E, F) chain will be subsumed and become part of the chain starting at A, which will now look like (A, B, D, E, F, C)
+
+Note if X is an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain with just a single element, X-\/\texorpdfstring{$>$}{>}\doxylink{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}{append\+To\+Chain()} and X-\/\texorpdfstring{$>$}{>}\doxylink{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7}{insert\+After\+This\+One()} behave identically.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}\index{kiwi::IOBuf@{kiwi::IOBuf}!isChained@{isChained}}
+\index{isChained@{isChained}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{isChained()}{isChained()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01} 
+bool kiwi\+::\+IOBuf\+::is\+Chained (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Is this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} part of a chain.
+
+Technically, all IOBufs are part of a chain, possibly of length 1. This functin checks if the chain is non-\/trivial, i.\+e. the chain has more than just one \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in it.
+
+\begin{DoxyReturn}{Returns}
+true iff the the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}\textquotesingle{}s chain has more than 1 \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in it
+\end{DoxyReturn}
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_aa22e9603db12c73badfc8e21d3f4adcc}\index{kiwi::IOBuf@{kiwi::IOBuf}!isManaged@{isManaged}}
+\index{isManaged@{isManaged}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{isManaged()}{isManaged()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aa22e9603db12c73badfc8e21d3f4adcc} 
+bool kiwi\+::\+IOBuf\+::is\+Managed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if all IOBufs in this chain use the standard refcounting mechanism.
+
+If so, then the lifetime of the underlying memory can be extended by \doxylink{classkiwi_1_1_i_o_buf_a49f2e0b39ea9008f41a9eab1f6a6a845}{clone()}.
+
+\begin{DoxyReturn}{Returns}
+true iff all IOBufs in this chain are \doxylink{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}{is\+Managed\+One()}
+\end{DoxyReturn}
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}\index{kiwi::IOBuf@{kiwi::IOBuf}!isManagedOne@{isManagedOne}}
+\index{isManagedOne@{isManagedOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{isManagedOne()}{isManagedOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05} 
+bool kiwi\+::\+IOBuf\+::is\+Managed\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Check if this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} uses the standard refcounting mechanism.
+
+If so, then the lifetime of the underlying memory can be extended by \doxylink{classkiwi_1_1_i_o_buf_a092fcaf694e85b84c2a662a4a4ac2f69}{clone\+One()}.
+
+\begin{DoxyReturn}{Returns}
+true iff the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} was allocated normally (without the user specifying special memory semantics, such as with a user-\/owned buffer)
+\end{DoxyReturn}
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_afd89244b5f410f262aa908464c5e8fa1}\index{kiwi::IOBuf@{kiwi::IOBuf}!isShared@{isShared}}
+\index{isShared@{isShared}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{isShared()}{isShared()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_afd89244b5f410f262aa908464c5e8fa1} 
+bool kiwi\+::\+IOBuf\+::is\+Shared (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if any chain buffers are shared.
+
+Return true if at least one of the IOBufs in this chain are shared, or false if all of the IOBufs point to unique buffers.
+
+Use \doxylink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{is\+Shared\+One()} to only check this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} rather than the entire chain.
+
+If \doxylink{classkiwi_1_1_i_o_buf_afd89244b5f410f262aa908464c5e8fa1}{is\+Shared()} returns false, then you are probably the sole owner of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain and can write to it without needing to call \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()}. This is not a guarantee, since it is possible for another thread to concurrently acquire shared ownership.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}\index{kiwi::IOBuf@{kiwi::IOBuf}!isSharedOne@{isSharedOne}}
+\index{isSharedOne@{isSharedOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{isSharedOne()}{isSharedOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48} 
+bool kiwi\+::\+IOBuf\+::is\+Shared\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Check if the buffer is shared.
+
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} buffers can be shared (using refcounting). Check if any other IOBufs are pointing to this same buffer.
+
+If this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} points at a buffer owned by another (non-\/\+IOBuf) part of the code (i.\+e., if the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} was created using wrap\+Buffer(), or was cloned from such an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}), it is always considered shared.
+
+This only checks the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, and not other IOBufs in the chain.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}\index{kiwi::IOBuf@{kiwi::IOBuf}!length@{length}}
+\index{length@{length}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{length()}{length()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b} 
+std\+::size\+\_\+t kiwi\+::\+IOBuf\+::length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the size of the data for this individual \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain.
+
+Use \doxylink{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}{compute\+Chain\+Data\+Length()} for the sum of data length for the full chain.
+
+@methodset Buffer Capacity \Hypertarget{classkiwi_1_1_i_o_buf_ada90ffb9e75a1954c0364bd465e0ca10}\index{kiwi::IOBuf@{kiwi::IOBuf}!makeManaged@{makeManaged}}
+\index{makeManaged@{makeManaged}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{makeManaged()}{makeManaged()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ada90ffb9e75a1954c0364bd465e0ca10} 
+void kiwi\+::\+IOBuf\+::make\+Managed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Ensure that the buffers are owned by the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain.
+
+It is possible for an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to be constructed with a user-\/owned buffer. In such circumstances, the user is responsible for ensuring that the buffer outlives the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. \doxylink{classkiwi_1_1_i_o_buf_ada90ffb9e75a1954c0364bd465e0ca10}{make\+Managed()} lets the user subsequently reallocate the buffer to be owned by the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} directly.
+
+If the buffers are already owned by \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, then this function doesn\textquotesingle{}t need to do anything.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a3af33eb4f4099792d2194526af915940}\index{kiwi::IOBuf@{kiwi::IOBuf}!makeManagedOne@{makeManagedOne}}
+\index{makeManagedOne@{makeManagedOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{makeManagedOne()}{makeManagedOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a3af33eb4f4099792d2194526af915940} 
+void kiwi\+::\+IOBuf\+::make\+Managed\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Ensure that the buffer is owned by the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+It is possible for an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to be constructed with a user-\/owned buffer. In such circumstances, the user is responsible for ensuring that the buffer outlives the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. \doxylink{classkiwi_1_1_i_o_buf_ada90ffb9e75a1954c0364bd465e0ca10}{make\+Managed()} lets the user subsequently reallocate the buffer to be owned by the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} directly.
+
+If the buffer is already owned by \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, then this function doesn\textquotesingle{}t need to do anything.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a67cb17dc776d58663520ddd45c8491dd}\index{kiwi::IOBuf@{kiwi::IOBuf}!markExternallyShared@{markExternallyShared}}
+\index{markExternallyShared@{markExternallyShared}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{markExternallyShared()}{markExternallyShared()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a67cb17dc776d58663520ddd45c8491dd} 
+void kiwi\+::\+IOBuf\+::mark\+Externally\+Shared (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Mark the underlying buffers in this chain as shared.
+
+Assume that the underlying buffers are also owned by an external memory management mechanism. This will make \doxylink{classkiwi_1_1_i_o_buf_afd89244b5f410f262aa908464c5e8fa1}{is\+Shared()} always returns true.
+
+This function is not thread-\/safe, and only safe to call immediately after creating an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, before it has been shared with other threads.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a247fc1ca4456b087267fca6e5ffc7ca9}\index{kiwi::IOBuf@{kiwi::IOBuf}!markExternallySharedOne@{markExternallySharedOne}}
+\index{markExternallySharedOne@{markExternallySharedOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{markExternallySharedOne()}{markExternallySharedOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a247fc1ca4456b087267fca6e5ffc7ca9} 
+void kiwi\+::\+IOBuf\+::mark\+Externally\+Shared\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Mark the underlying buffer as shared.
+
+Assume that the underlying buffer is also owned by an external memory management mechanism. This will make \doxylink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{is\+Shared\+One()} always returns true.
+
+This function is not thread-\/safe, and only safe to call immediately after creating an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}, before it has been shared with other threads.
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_af20bf76b74c47e171686dc3f563709c5}\index{kiwi::IOBuf@{kiwi::IOBuf}!maybeCopyBuffer@{maybeCopyBuffer}}
+\index{maybeCopyBuffer@{maybeCopyBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{maybeCopyBuffer()}{maybeCopyBuffer()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af20bf76b74c47e171686dc3f563709c5} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::maybe\+Copy\+Buffer (\begin{DoxyParamCaption}\item[{String\+Piece}]{buf}{, }\item[{std\+::size\+\_\+t}]{headroom}{ = {\ttfamily 0}, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{ = {\ttfamily 0}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} and copy data into the buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a newly-\/allocated buffer. That buffer shall be populated with data from the argument buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The buffer from which to copy data \\
+\hline
+{\em size} & The size of the buffer from which to copy data \\
+\hline
+{\em br} & Can pass a Byte\+Range in lieu of \{buf, size\} \\
+\hline
+{\em headroom} & The amount of headroom to add to the destination buffer \\
+\hline
+{\em min\+Tailroom} & The amount of tailroom to add to the destination buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to a new buffer whose content is the same as buf 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == size 
+
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} == headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error   \\
+\hline
+\end{DoxyExceptions}
+This "{}maybe"{} version of copy\+Buffer returns null if the input is empty.
+
+@methodset Makers \Hypertarget{classkiwi_1_1_i_o_buf_adb4434c5e3cae2059ac76696ddb4e50f}\index{kiwi::IOBuf@{kiwi::IOBuf}!moveToFbString@{moveToFbString}}
+\index{moveToFbString@{moveToFbString}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{moveToFbString()}{moveToFbString()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_adb4434c5e3cae2059ac76696ddb4e50f} 
+fbstring kiwi\+::\+IOBuf\+::move\+To\+Fb\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Destructively convert to an fbstring.
+
+Destructively convert this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to a fbstring efficiently. We rely on fbstring\textquotesingle{}s \doxylink{namespacekiwi_a7df83edab5560ff28ed4ebc60cebed70}{Acquire\+Mallocated\+String} constructor to transfer memory.
+
+@methodset Conversions \Hypertarget{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}\index{kiwi::IOBuf@{kiwi::IOBuf}!next@{next}}
+\index{next@{next}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{next()}{next()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::next (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a pointer to the next \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in this chain.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a27ca4397f2f95450e40410604e9da80c}\index{kiwi::IOBuf@{kiwi::IOBuf}!next@{next}}
+\index{next@{next}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{next()}{next()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a27ca4397f2f95450e40410604e9da80c} 
+const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::next (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Get a pointer to the next \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in this chain.
+
+@methodset Chaining    \Hypertarget{classkiwi_1_1_i_o_buf_a829520f671679944efa49a7cc5e5825e}\index{kiwi::IOBuf@{kiwi::IOBuf}!operator delete@{operator delete}}
+\index{operator delete@{operator delete}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{operator delete()}{operator delete()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a829520f671679944efa49a7cc5e5825e} 
+void kiwi\+::\+IOBuf\+::operator delete (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ptr}{}\end{DoxyParamCaption})}
+
+Overridden operator delete. @methodset Memory \Hypertarget{classkiwi_1_1_i_o_buf_a5245be1b4fc1fa9382af992ad44d0467}\index{kiwi::IOBuf@{kiwi::IOBuf}!operator delete@{operator delete}}
+\index{operator delete@{operator delete}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{operator delete()}{operator delete()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a5245be1b4fc1fa9382af992ad44d0467} 
+void kiwi\+::\+IOBuf\+::operator delete (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ptr}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{placement}{}\end{DoxyParamCaption})}
+
+Overridden operator delete. @methodset Memory \Hypertarget{classkiwi_1_1_i_o_buf_aecfe95dfc5c8c960b180839fe6b0dd56}\index{kiwi::IOBuf@{kiwi::IOBuf}!operator new@{operator new}}
+\index{operator new@{operator new}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{operator new()}{operator new()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aecfe95dfc5c8c960b180839fe6b0dd56} 
+void \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::operator new (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{}\end{DoxyParamCaption})}
+
+Overridden operator new and delete.
+
+These perform specialized memory management to help support create\+Combined(), which allocates \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects together with the buffer data.
+
+@methodset Memory \Hypertarget{classkiwi_1_1_i_o_buf_a5974de2f2b4d0e99a1dbdd1272097b21}\index{kiwi::IOBuf@{kiwi::IOBuf}!operator new@{operator new}}
+\index{operator new@{operator new}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{operator new()}{operator new()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a5974de2f2b4d0e99a1dbdd1272097b21} 
+void \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::operator new (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{ptr}{}\end{DoxyParamCaption})}
+
+Overridden operator new. @methodset Memory \Hypertarget{classkiwi_1_1_i_o_buf_ae17f40ce23314a50600522d1fa78a485}\index{kiwi::IOBuf@{kiwi::IOBuf}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ae17f40ce23314a50600522d1fa78a485} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \& kiwi\+::\+IOBuf\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&}]{other}{}\end{DoxyParamCaption})}
+
+Copy assignment operator.
+
+Move assignment operator.
+
+With the assignment operator, the destination should be the head of an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain or a solitary \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} not part of a chain. If the destination is part of a chain, all other IOBufs in the chain will be deleted.    \begin{DoxySeeAlso}{See also}
+\doxylink{classkiwi_1_1_i_o_buf_a1743440b00acb1e11a08b1464ba8ee2b}{clone\+As\+Value()} 
+\end{DoxySeeAlso}
+\Hypertarget{classkiwi_1_1_i_o_buf_a3ebf9feefdc07aa06d61ca2c58f81fa4}\index{kiwi::IOBuf@{kiwi::IOBuf}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a3ebf9feefdc07aa06d61ca2c58f81fa4} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \& kiwi\+::\+IOBuf\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \&\&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+Move assignment operator.
+
+With the assignment operator, the destination should be the head of an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain or a solitary \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} not part of a chain. If the destination is part of a chain, all other IOBufs in the chain will be deleted. \Hypertarget{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}\index{kiwi::IOBuf@{kiwi::IOBuf}!pop@{pop}}
+\index{pop@{pop}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::pop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Remove the rest of the chain from this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+Ownership of all elements an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain is normally maintained by the head of the chain. \doxylink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop()} transfers ownership of the rest of the chain to the caller.
+
+Since \doxylink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop()} transfers ownership of the rest to the caller, be careful not to call \doxylink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop()} except on the head of a chain.
+
+\begin{DoxyReturn}{Returns}
+A new unique\+\_\+ptr pointing to the rest of the chain; nullptr if this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} was the only chain element @methodset Chaining 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}\index{kiwi::IOBuf@{kiwi::IOBuf}!prepend@{prepend}}
+\index{prepend@{prepend}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{prepend()}{prepend()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405} 
+void kiwi\+::\+IOBuf\+::prepend (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adjust the data pointer to include more valid data at the beginning.
+
+This moves the data pointer backwards to include more of the available buffer. The caller is responsible for ensuring that there is sufficient headroom for the new data. The caller is also responsible for populating this section with valid data.
+
+This does not modify any actual data in the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift the \doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} pointer backward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is increased by amount
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_a16464d617a3b81f64716508cfb203b6e}\index{kiwi::IOBuf@{kiwi::IOBuf}!prependChain@{prependChain}}
+\index{prependChain@{prependChain}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{prependChain()}{prependChain()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a16464d617a3b81f64716508cfb203b6e} 
+void kiwi\+::\+IOBuf\+::prepend\+Chain (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \&\&}]{iobuf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Deprecated name for \doxylink{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}{append\+To\+Chain()}
+
+\doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chains are circular, so appending to the end of the chain is logically equivalent to prepending to the current head (but keeping the chain head pointing to the same element). That was the reason this method was originally called \doxylink{classkiwi_1_1_i_o_buf_a16464d617a3b81f64716508cfb203b6e}{prepend\+Chain()}. However, almost every time this method is called the intent is to append to the end of a chain, so the {\ttfamily \doxylink{classkiwi_1_1_i_o_buf_a16464d617a3b81f64716508cfb203b6e}{prepend\+Chain()}} name is very confusing to most callers.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a1dc8d8e9ebdec00d38c56e49b9d4dba9}\index{kiwi::IOBuf@{kiwi::IOBuf}!prev@{prev}}
+\index{prev@{prev}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{prev()}{prev()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a1dc8d8e9ebdec00d38c56e49b9d4dba9} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::prev (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a pointer to the previous \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in this chain.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_ac7257bbb8cf1fb8af4cf0f55a0dcf24e}\index{kiwi::IOBuf@{kiwi::IOBuf}!prev@{prev}}
+\index{prev@{prev}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{prev()}{prev()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ac7257bbb8cf1fb8af4cf0f55a0dcf24e} 
+const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::prev (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+
+Get a pointer to the previous \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in this chain.
+
+@methodset Chaining    \Hypertarget{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e}\index{kiwi::IOBuf@{kiwi::IOBuf}!reserve@{reserve}}
+\index{reserve@{reserve}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{reserve()}{reserve()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e} 
+void kiwi\+::\+IOBuf\+::reserve (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{min\+Headroom}{, }\item[{std\+::size\+\_\+t}]{min\+Tailroom}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Ensure that the buffer has enough free space.
+
+Ensure that this buffer has at least min\+Headroom headroom bytes and at least min\+Tailroom tailroom bytes. The buffer must be writable (you must call \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} before this, if necessary).
+
+This might involve a reallocation of the underlying buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em min\+Headroom} & The requested amount of headroom \\
+\hline
+{\em min\+Tailroom} & The requested amount of tailroom\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom()} \texorpdfstring{$>$}{>}= min\+Headroom 
+
+\doxylink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom()} \texorpdfstring{$>$}{>}= min\+Tailroom 
+
+The contents between \doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} and \doxylink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail()} are preseved
+\end{DoxyPostcond}
+@methodset Buffer Capacity \Hypertarget{classkiwi_1_1_i_o_buf_a1c8ecea8c0344ba83f0fd858297a70b4}\index{kiwi::IOBuf@{kiwi::IOBuf}!retreat@{retreat}}
+\index{retreat@{retreat}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{retreat()}{retreat()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a1c8ecea8c0344ba83f0fd858297a70b4} 
+void kiwi\+::\+IOBuf\+::retreat (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Shift the data backwards in the buffer.
+
+This shifts the data pointer backwards in the buffer, decreasing the headroom.
+
+The caller is responsible for ensuring that there is sufficient headroom in the buffer before calling \doxylink{classkiwi_1_1_i_o_buf_a1c8ecea8c0344ba83f0fd858297a70b4}{retreat()}.
+
+If there is a non-\/zero data length, \doxylink{classkiwi_1_1_i_o_buf_a1c8ecea8c0344ba83f0fd858297a70b4}{retreat()} will use memmove() to shift the data backwards in the buffer. In this case, the caller is responsible for making sure the buffer is unshared, so it will not affect other IOBufs that may be sharing the same underlying buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift all data backward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is unchanged
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_a2c51eb098792bb55b59cfc054d48f62b}\index{kiwi::IOBuf@{kiwi::IOBuf}!separateChain@{separateChain}}
+\index{separateChain@{separateChain}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{separateChain()}{separateChain()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2c51eb098792bb55b59cfc054d48f62b} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::separate\+Chain (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*}}]{head}{, }\item[{\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \texorpdfstring{$\ast$}{*}}]{tail}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Remove a subchain from this chain.
+
+Remove the subchain starting at head and ending at tail from this chain. This is inclusive of tail.
+
+If you have a chain (A, B, C, D, E, F), and you call A-\/\texorpdfstring{$>$}{>}separate\+Chain(\+B, \+D), then you will be returned the chain (B, C, D) and the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will change to (A, E, F).
+
+Returns a unique\+\_\+ptr pointing to the new head. (In other words, ownership of the head of the subchain is transferred to the caller.) If the caller ignores the return value and lets the unique\+\_\+ptr be destroyed, the subchain will be immediately destroyed.
+
+head may equal tail. In this case, the subchain of length 1 is removed.
+
+\begin{DoxyPrecond}{Precondition}
+head and tail are part of the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain 
+
+head and tail are not equal to the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em head} & The first \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain element to remove \\
+\hline
+{\em tail} & The last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain element to remove (inclusive)\\
+\hline
+\end{DoxyParams}
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}\index{kiwi::IOBuf@{kiwi::IOBuf}!tail@{tail}}
+\index{tail@{tail}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{tail()}{tail()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5} 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::tail (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the pointer to the end of the data.
+
+@methodset Access \Hypertarget{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}\index{kiwi::IOBuf@{kiwi::IOBuf}!tailroom@{tailroom}}
+\index{tailroom@{tailroom}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{tailroom()}{tailroom()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e} 
+std\+::size\+\_\+t kiwi\+::\+IOBuf\+::tailroom (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the amount of tail room.
+
+\begin{DoxyReturn}{Returns}
+The number of bytes in the buffer after the end of the data
+\end{DoxyReturn}
+@methodset Buffer Capacity \Hypertarget{classkiwi_1_1_i_o_buf_a2d26a2465a52b3278a9e6074ea1208a1}\index{kiwi::IOBuf@{kiwi::IOBuf}!takeOwnership@{takeOwnership}}
+\index{takeOwnership@{takeOwnership}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{takeOwnership()}{takeOwnership()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2d26a2465a52b3278a9e6074ea1208a1} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::take\+Ownership (\begin{DoxyParamCaption}\item[{Sized\+Free}]{}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{std\+::size\+\_\+t}]{offset}{, }\item[{std\+::size\+\_\+t}]{length}{, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_a350e569eaaa654458c9a0a8f9ae32888}\index{kiwi::IOBuf@{kiwi::IOBuf}!takeOwnership@{takeOwnership}}
+\index{takeOwnership@{takeOwnership}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{takeOwnership()}{takeOwnership()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a350e569eaaa654458c9a0a8f9ae32888} 
+template$<$class Unique\+Ptr$>$ \\
+std\+::enable\+\_\+if$<$ \mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{detail\+::\+Is\+Unique\+Ptr\+To\+SL}}$<$ Unique\+Ptr $>$\+::value, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ $>$\+::type kiwi\+::\+IOBuf\+::take\+Ownership (\begin{DoxyParamCaption}\item[{Unique\+Ptr \&\&}]{buf}{, }\item[{size\+\_\+t}]{count}{ = {\ttfamily 1}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} with a reinterpreted buffer.
+
+Create a new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to an existing data buffer made up of count objects of a given standard-\/layout type.
+
+This is dangerous -- it is essentially equivalent to doing reinterpret\+\_\+cast$<$unsigned char\texorpdfstring{$\ast$}{*}$>$ on your data -- but it\textquotesingle{}s often useful for serialization / deserialization.
+
+The new \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it appropriately (by calling the Unique\+Ptr\textquotesingle{}s custom deleter, or by calling delete or delete\mbox{[}\mbox{]} appropriately if there is no custom deleter) when the buffer is destroyed. The custom deleter, if any, must never throw exceptions.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} data pointer will initially point to the start of the buffer, and the length will be the full capacity of the buffer (count \texorpdfstring{$\ast$}{*} sizeof(\+T)).
+
+On error, std\+::bad\+\_\+alloc will be thrown, and the buffer will be freed before throwing the error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The unique\+\_\+ptr to the buffer \\
+\hline
+{\em count} & The number of elements in the buffer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers
+\end{DoxyReturn}
+TODO T154818309 \Hypertarget{classkiwi_1_1_i_o_buf_ac3e180cd2f9b38a1714e27128f0847af}\index{kiwi::IOBuf@{kiwi::IOBuf}!takeOwnership@{takeOwnership}}
+\index{takeOwnership@{takeOwnership}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{takeOwnership()}{takeOwnership()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ac3e180cd2f9b38a1714e27128f0847af} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::take\+Ownership (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_ad81ff588cbe4381e7939c9cb731eb6be}\index{kiwi::IOBuf@{kiwi::IOBuf}!takeOwnership@{takeOwnership}}
+\index{takeOwnership@{takeOwnership}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{takeOwnership()}{takeOwnership()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ad81ff588cbe4381e7939c9cb731eb6be} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::take\+Ownership (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{std\+::size\+\_\+t}]{length}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_aac7ce83b5eb1452b99c476908eac0965}\index{kiwi::IOBuf@{kiwi::IOBuf}!takeOwnership@{takeOwnership}}
+\index{takeOwnership@{takeOwnership}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{takeOwnership()}{takeOwnership()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aac7ce83b5eb1452b99c476908eac0965} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::take\+Ownership (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{, }\item[{std\+::size\+\_\+t}]{offset}{, }\item[{std\+::size\+\_\+t}]{length}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} by taking ownership of an existing buffer.
+
+The \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will assume ownership of the buffer, and free it by calling the specified Free\+Function when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to this buffer is destroyed.
+\begin{DoxyItemize}
+\item The Free\+Function will be called like free\+Fn(buf, user\+Data)
+\item free\+Fn must not throw an exception
+\item If no free\+Fn is specified, then the buffer will be freed using free(). Note that this is UB if the buffer was allocated using {\ttfamily new}.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em offset} & The position within the buffer at which the data begins; for overloads without this parameter, it defaults to 0 \\
+\hline
+{\em length} & The amount of data already in buf; for overloads without this parameter, it defaults to capacity \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception \\
+\hline
+{\em Sized\+Free} & For overloads specified by this enum type, use io\+\_\+buf\+\_\+free\+\_\+cn(buf, capacity) as the free\+Fn\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf+offset (in overloads without offset, offset defaults to 0) 
+
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} == length (in overloads without length, length defaults to capacity)
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+If length is unspecified, it defaults to capacity, as opposed to empty. 
+
+free\+On\+Error is not properly handled in all cases. T154815366    
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_a96e120025a5e886cba2334f71cf67358}\index{kiwi::IOBuf@{kiwi::IOBuf}!takeOwnershipIov@{takeOwnershipIov}}
+\index{takeOwnershipIov@{takeOwnershipIov}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{takeOwnershipIov()}{takeOwnershipIov()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a96e120025a5e886cba2334f71cf67358} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::take\+Ownership\+Iov (\begin{DoxyParamCaption}\item[{const iovec \texorpdfstring{$\ast$}{*}}]{vec}{, }\item[{size\+\_\+t}]{count}{, }\item[{Free\+Function}]{free\+Fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+Data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+On\+Error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Take ownership of an iovec, turning it into an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+A helper that takes ownerships a number of iovecs into an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain. If count == 0, then a zero length buf is returned. This function never returns nullptr.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vec} & The iovec array to convert to an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain \\
+\hline
+{\em count} & The size of the iovec array \\
+\hline
+{\em free\+Fn} & The function to call when buf is to be freed \\
+\hline
+{\em user\+Data} & An additional arbitrary void\texorpdfstring{$\ast$}{*} argument to supply to free\+Fn \\
+\hline
+{\em free\+On\+Error} & Whether the buffer should be freed if this function throws an exception\\
+\hline
+\end{DoxyParams}
+@methodset IOV \Hypertarget{classkiwi_1_1_i_o_buf_a50b964c560f74a3f40ffb5e106954ee1}\index{kiwi::IOBuf@{kiwi::IOBuf}!to@{to}}
+\index{to@{to}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{to()}{to()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a50b964c560f74a3f40ffb5e106954ee1} 
+template$<$class Container$>$ \\
+Container kiwi\+::\+IOBuf\+::to (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+Dump the chain data into a container.
+
+Append the chain data into the provided container.
+
+This is meant to be used with containers such as std\+::string or std\+::vector$<$char$>$, but any container which supports \doxylink{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e}{reserve()}, insert(), and has char or unsigned char value type is supported.
+
+@methodset Conversions   
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Container} & The type of container to return.\\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+A Container whose data equals the coalseced data of this chain 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_aea86aa0e0a0d63df21b6076ea7acf8af}\index{kiwi::IOBuf@{kiwi::IOBuf}!trimEnd@{trimEnd}}
+\index{trimEnd@{trimEnd}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{trimEnd()}{trimEnd()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aea86aa0e0a0d63df21b6076ea7acf8af} 
+void kiwi\+::\+IOBuf\+::trim\+End (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adjust the tail pointer backwards to include less valid data.
+
+This moves the tail pointer backwards so that the last amount bytes are no longer considered valid data. The caller is responsible for ensuring that amount is less than or equal to the actual data length.
+
+This does not modify any actual data in the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift the \doxylink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail()} pointer backward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is decreased by amount
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_a381d2d1b74123ec548a5701d2568684a}\index{kiwi::IOBuf@{kiwi::IOBuf}!trimStart@{trimStart}}
+\index{trimStart@{trimStart}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{trimStart()}{trimStart()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a381d2d1b74123ec548a5701d2568684a} 
+void kiwi\+::\+IOBuf\+::trim\+Start (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adjust the data pointer to include less valid data.
+
+This moves the data pointer forwards so that the first amount bytes are no longer considered valid data. The caller is responsible for ensuring that amount is less than or equal to the actual data length.
+
+This does not modify any actual data in the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift the \doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} pointer forward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length()} is decreased by amount
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_a65e1fb2d692aaca855d5e8c137395dd9}\index{kiwi::IOBuf@{kiwi::IOBuf}!trimWritableTail@{trimWritableTail}}
+\index{trimWritableTail@{trimWritableTail}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{trimWritableTail()}{trimWritableTail()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a65e1fb2d692aaca855d5e8c137395dd9} 
+void kiwi\+::\+IOBuf\+::trim\+Writable\+Tail (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adjust the buffer end pointer to reduce the buffer capacity.
+
+This can be used to pass the ownership of the writable tail to another \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount by which to shift the \doxylink{classkiwi_1_1_i_o_buf_a52101c7e9f2f5124cbbb3198dc2db17c}{buffer\+End()} pointer backward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity()} is decreased by amount
+\end{DoxyPostcond}
+@methodset Shifting \Hypertarget{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b}\index{kiwi::IOBuf@{kiwi::IOBuf}!unlink@{unlink}}
+\index{unlink@{unlink}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{unlink()}{unlink()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::unlink (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Remove this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} from its current chain.
+
+Ownership of all elements an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain is normally maintained by the head of the chain. \doxylink{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b}{unlink()} transfers ownership of this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} from the chain and gives it to the caller. A new unique\+\_\+ptr to the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} is returned to the caller. The caller must store the returned unique\+\_\+ptr (or call release() on it) to take ownership, otherwise the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will be immediately destroyed.
+
+Since \doxylink{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b}{unlink()} transfers ownership of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} to the caller, be careful not to call \doxylink{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b}{unlink()} on the head of a chain if you already maintain ownership on the head of the chain via other means. The \doxylink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop()} method is a better choice for that situation.
+
+@methodset Chaining \Hypertarget{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}\index{kiwi::IOBuf@{kiwi::IOBuf}!unshare@{unshare}}
+\index{unshare@{unshare}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{unshare()}{unshare()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a} 
+void kiwi\+::\+IOBuf\+::unshare (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Ensure that this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain has unique, unshared buffers.
+
+Multiple IOBufs can point to the same buffer. This means that an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}\textquotesingle{}s buffer is not necessarily writeable, since another \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} might be using the same underlying data. If you want to write to an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}\textquotesingle{}s buffer, it is your responsibility to make sure that you aren\textquotesingle{}t trampling the data used by another \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. This can be accomplished by calling \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()}.
+
+\doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} ensures that the underlying buffer of each \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} in the chain is not shared with another \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+\begin{DoxyNote}{Note}
+If the current chain has any shared buffers, then \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} might coalesce the chain during unsharing. 
+
+Buffers owned by other (non-\/\+IOBuf) users are automatically considered to be shared.
+\end{DoxyNote}
+\begin{DoxyPostcond}{Postcondition}
+The buffers in this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain are all writeable, since they are uniquely owned by the current \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error. On error the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain will be unmodified.\\
+\hline
+\end{DoxyExceptions}
+Currently unshare may also throw std\+::overflow\+\_\+error if it tries to coalesce. (TODO\+: In the future it would be nice if \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} were smart enough not to coalesce the entire buffer if the data is too large. However, in practice this seems unlikely to become an issue.)
+
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}\index{kiwi::IOBuf@{kiwi::IOBuf}!unshareOne@{unshareOne}}
+\index{unshareOne@{unshareOne}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{unshareOne()}{unshareOne()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77} 
+void kiwi\+::\+IOBuf\+::unshare\+One (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Ensure that this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has a unique, unshared buffer.
+
+\doxylink{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}{unshare\+One()} operates on a single \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object. This \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will have a unique buffer after \doxylink{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}{unshare\+One()} returns, but other IOBufs in the chain may still be shared after \doxylink{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}{unshare\+One()} returns.
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error. On error the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} will be unmodified.\\
+\hline
+\end{DoxyExceptions}
+@methodset Buffer Management \Hypertarget{classkiwi_1_1_i_o_buf_a73bd25f5c105b84ef5512ac4563b9dc7}\index{kiwi::IOBuf@{kiwi::IOBuf}!WrapBuffer@{WrapBuffer}}
+\index{WrapBuffer@{WrapBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{WrapBuffer()}{WrapBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a73bd25f5c105b84ef5512ac4563b9dc7} 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Wrap\+Buffer (\begin{DoxyParamCaption}\item[{Byte\+Range}]{br}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+
+
+\Hypertarget{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}\index{kiwi::IOBuf@{kiwi::IOBuf}!WrapBuffer@{WrapBuffer}}
+\index{WrapBuffer@{WrapBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{WrapBuffer()}{WrapBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Wrap\+Buffer (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to a buffer, without taking ownership.
+
+This should only be used when the caller knows the lifetime of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object ahead of time and can ensure that all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects that will point to this buffer will be destroyed before the buffer itself is destroyed. The buffer will not be freed automatically when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} referencing it is destroyed. It is the caller\textquotesingle{}s responsibility to free the buffer after the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has been destroyed.
+
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} created using \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} will always be reported as shared. Unshare() may be used to create a writable copy of the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em br} & Can pass a Byte\+Range instead of \{buf, capacity\}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to buf. 
+
+Length() == capacity.    
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error (the allocation of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} may throw). \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_afa17b1b205405c86436c8ccf416cfd91}\index{kiwi::IOBuf@{kiwi::IOBuf}!wrapBufferAsValue@{wrapBufferAsValue}}
+\index{wrapBufferAsValue@{wrapBufferAsValue}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{wrapBufferAsValue()}{wrapBufferAsValue()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_afa17b1b205405c86436c8ccf416cfd91} 
+static \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} kiwi\+::\+IOBuf\+::wrap\+Buffer\+As\+Value (\begin{DoxyParamCaption}\item[{Byte\+Range}]{br}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to a buffer, without taking ownership.
+
+This should only be used when the caller knows the lifetime of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object ahead of time and can ensure that all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects that will point to this buffer will be destroyed before the buffer itself is destroyed. The buffer will not be freed automatically when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} referencing it is destroyed. It is the caller\textquotesingle{}s responsibility to free the buffer after the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has been destroyed.
+
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} created using \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} will always be reported as shared. Unshare() may be used to create a writable copy of the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em br} & Can pass a Byte\+Range instead of \{buf, capacity\}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to buf. 
+
+Length() == capacity.   
+\end{DoxyPostcond}
+This static function behaves exactly like the Wrap\+Buffer\+Op constructor. It exists for syntactic parity with the unique\+\_\+ptr-\/returning variants.
+
+\begin{DoxyReturn}{Returns}
+A stack-\/allocated \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers    
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_a4836fd6ecb59206fd76fb6c0fe9cbe31}\index{kiwi::IOBuf@{kiwi::IOBuf}!wrapBufferAsValue@{wrapBufferAsValue}}
+\index{wrapBufferAsValue@{wrapBufferAsValue}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{wrapBufferAsValue()}{wrapBufferAsValue()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a4836fd6ecb59206fd76fb6c0fe9cbe31} 
+\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} kiwi\+::\+IOBuf\+::wrap\+Buffer\+As\+Value (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{std\+::size\+\_\+t}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+
+
+
+
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to a buffer, without taking ownership.
+
+This should only be used when the caller knows the lifetime of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object ahead of time and can ensure that all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects that will point to this buffer will be destroyed before the buffer itself is destroyed. The buffer will not be freed automatically when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} referencing it is destroyed. It is the caller\textquotesingle{}s responsibility to free the buffer after the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has been destroyed.
+
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} created using \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} will always be reported as shared. Unshare() may be used to create a writable copy of the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em br} & Can pass a Byte\+Range instead of \{buf, capacity\}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+Data() points to buf. 
+
+Length() == capacity.   
+\end{DoxyPostcond}
+This static function behaves exactly like the Wrap\+Buffer\+Op constructor. It exists for syntactic parity with the unique\+\_\+ptr-\/returning variants.
+
+\begin{DoxyReturn}{Returns}
+A stack-\/allocated \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} @methodset Makers 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_i_o_buf_a2e78659e9a32e430966727cff4d21e91}\index{kiwi::IOBuf@{kiwi::IOBuf}!wrapIov@{wrapIov}}
+\index{wrapIov@{wrapIov}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{wrapIov()}{wrapIov()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2e78659e9a32e430966727cff4d21e91} 
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::wrap\+Iov (\begin{DoxyParamCaption}\item[{const iovec \texorpdfstring{$\ast$}{*}}]{vec}{, }\item[{size\+\_\+t}]{count}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert an iovec array into an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
+
+A helper that wraps a number of iovecs into an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain. If count == 0, then a zero length buf is returned. This function never returns nullptr.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vec} & The iovec array to convert to an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chain \\
+\hline
+{\em count} & The size of the iovec array\\
+\hline
+\end{DoxyParams}
+@methodset IOV \Hypertarget{classkiwi_1_1_i_o_buf_af260b74cbff89444b43f9aa565adb5a2}\index{kiwi::IOBuf@{kiwi::IOBuf}!writableBuffer@{writableBuffer}}
+\index{writableBuffer@{writableBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{writableBuffer()}{writableBuffer()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_af260b74cbff89444b43f9aa565adb5a2} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::writable\+Buffer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a writable pointer to the start of the buffer.
+
+The caller is responsible for calling \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} first to ensure that it is actually safe to write to the buffer.
+
+@methodset Access \Hypertarget{classkiwi_1_1_i_o_buf_a2b949842f11562927a401770ea86090d}\index{kiwi::IOBuf@{kiwi::IOBuf}!writableData@{writableData}}
+\index{writableData@{writableData}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{writableData()}{writableData()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a2b949842f11562927a401770ea86090d} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::writable\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a writable pointer to the start of the data.
+
+The caller is responsible for calling \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} first to ensure that it is actually safe to write to the buffer.
+
+@methodset Access \Hypertarget{classkiwi_1_1_i_o_buf_a87d8ebe5659dc5d9eae75afd890a8862}\index{kiwi::IOBuf@{kiwi::IOBuf}!writableTail@{writableTail}}
+\index{writableTail@{writableTail}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{writableTail()}{writableTail()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a87d8ebe5659dc5d9eae75afd890a8862} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} kiwi\+::\+IOBuf\+::writable\+Tail (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a writable pointer to the end of the data.
+
+The caller is responsible for calling \doxylink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare()} first to ensure that it is actually safe to write to the buffer.
+
+@methodset Access 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/io/iobuf.\+hh\item 
+src/io/iobuf.\+cc\end{DoxyCompactItemize}

@@ -1,0 +1,52 @@
+\doxysection{kiwi\+::internal\+::Narrowing\+Range\texorpdfstring{$<$}{<} Dst, Src, Bounds \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1internal_1_1_narrowing_range}{}\label{structkiwi_1_1internal_1_1_narrowing_range}\index{kiwi::internal::NarrowingRange$<$ Dst, Src, Bounds $>$@{kiwi::internal::NarrowingRange$<$ Dst, Src, Bounds $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_narrowing_range_ad978ea695528290d8a36435e2ffc1f3a}\label{structkiwi_1_1internal_1_1_narrowing_range_ad978ea695528290d8a36435e2ffc1f3a} 
+using {\bfseries Src\+Limits} = std\+::numeric\+\_\+limits$<$Src$>$
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_narrowing_range_a97355c862b52c97c964b5b60e752e209}\label{structkiwi_1_1internal_1_1_narrowing_range_a97355c862b52c97c964b5b60e752e209} 
+using {\bfseries Dst\+Limits} = std\+::numeric\+\_\+limits$<$Dst$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_narrowing_range_ad204fb1fe9a9b5cd7771eaa02295d2f2}\label{structkiwi_1_1internal_1_1_narrowing_range_ad204fb1fe9a9b5cd7771eaa02295d2f2} 
+{\footnotesize template$<$typename T$>$ \newline
+requires (std\+::same\+\_\+as$<$T, Dst$>$ \&\& ((std\+::integral$<$T$>$ \&\& k\+Shift $<$ Dst\+Limits\+::digits) \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} (std\+::floating\+\_\+point$<$T$>$ \&\& k\+Shift == 0)))}\\static constexpr T {\bfseries Adjust} (T value)
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_narrowing_range_a09c83fc4de95ed7550fd103808f059f5}\label{structkiwi_1_1internal_1_1_narrowing_range_a09c83fc4de95ed7550fd103808f059f5} 
+static constexpr Dst {\bfseries max} ()
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_narrowing_range_a790cd8b422ed0dce7f5941ee8124d30c}\label{structkiwi_1_1internal_1_1_narrowing_range_a790cd8b422ed0dce7f5941ee8124d30c} 
+static constexpr Dst {\bfseries lowest} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range_a684e1e9c7690c716885c17a41e5adaf7}{k\+Shift}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1internal_1_1_narrowing_range_a684e1e9c7690c716885c17a41e5adaf7}\index{kiwi::internal::NarrowingRange$<$ Dst, Src, Bounds $>$@{kiwi::internal::NarrowingRange$<$ Dst, Src, Bounds $>$}!kShift@{kShift}}
+\index{kShift@{kShift}!kiwi::internal::NarrowingRange$<$ Dst, Src, Bounds $>$@{kiwi::internal::NarrowingRange$<$ Dst, Src, Bounds $>$}}
+\doxysubsubsection{\texorpdfstring{kShift}{kShift}}
+{\footnotesize\ttfamily \label{structkiwi_1_1internal_1_1_narrowing_range_a684e1e9c7690c716885c17a41e5adaf7} 
+template$<$typename Dst, typename Src, template$<$ typename $>$ class Bounds$>$ \\
+int \mbox{\hyperlink{structkiwi_1_1internal_1_1_narrowing_range}{kiwi\+::internal\+::\+Narrowing\+Range}}$<$ Dst, Src, Bounds $>$\+::k\+Shift\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ (kMaxExponent<Src>\ >\ kMaxExponent<Dst>\ \&\&}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SrcLimits::digits\ <\ DstLimits::digits)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (DstLimits::digits\ -\/\ SrcLimits::digits)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ 0}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/numerics/safe\+\_\+conversions\+\_\+impl.\+hh\end{DoxyCompactItemize}

@@ -26,7 +26,7 @@
 \DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{dense__map__info_8hh}{kiwi/adt/dense\_map\_info.hh}}"{}}}
 \DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{epoch__tracker_8hh}{kiwi/util/epoch\_tracker.hh}}"{}}}
 \DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }detail\ \{}
 \DoxyCodeLine{00031\ }
 \DoxyCodeLine{00034\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT>}
@@ -664,7 +664,7 @@
 \DoxyCodeLine{00707\ }
 \DoxyCodeLine{00714\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
 \DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
-\DoxyCodeLine{00716\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{dense__map_8hh_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(}
+\DoxyCodeLine{00716\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(}
 \DoxyCodeLine{00717\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ LHS,}
 \DoxyCodeLine{00718\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ RHS)\ \{}
 \DoxyCodeLine{00719\ \ \ \textcolor{keywordflow}{if}\ (LHS.size()\ !=\ RHS.size())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
@@ -679,7 +679,7 @@
 \DoxyCodeLine{00728\ }
 \DoxyCodeLine{00732\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
 \DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
-\DoxyCodeLine{00734\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{dense__map_8hh_a008449c6439d3cbc96cc662630b49736}{operator!=}}(}
+\DoxyCodeLine{00734\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}}(}
 \DoxyCodeLine{00735\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ LHS,}
 \DoxyCodeLine{00736\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ RHS)\ \{}
 \DoxyCodeLine{00737\ \ \ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);}
@@ -862,7 +862,7 @@
 \DoxyCodeLine{00916\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ NumBuckets;}
 \DoxyCodeLine{00917\ \ \ \};}
 \DoxyCodeLine{00918\ }
-\DoxyCodeLine{00921\ \ \ AlignedCharArrayUnion<BucketT[InlineBuckets],\ LargeRep>\ storage;}
+\DoxyCodeLine{00921\ \ \ \mbox{\hyperlink{structkiwi_1_1_aligned_char_array_union}{AlignedCharArrayUnion<BucketT[InlineBuckets],\ LargeRep>}}\ storage;}
 \DoxyCodeLine{00922\ }
 \DoxyCodeLine{00923\ \ \textcolor{keyword}{public}:}
 \DoxyCodeLine{00924\ \ \ \textcolor{keyword}{explicit}\ SmallDenseMap(\textcolor{keywordtype}{unsigned}\ NumInitBuckets\ =\ 0)\ \{}
@@ -1008,7 +1008,7 @@
 \DoxyCodeLine{01064\ }
 \DoxyCodeLine{01065\ \ \ \ \ \textcolor{keywordflow}{if}\ (Small)\ \{}
 \DoxyCodeLine{01066\ \ \ \ \ \ \ \textcolor{comment}{//\ First\ move\ the\ inline\ buckets\ into\ a\ temporary\ storage.}}
-\DoxyCodeLine{01067\ \ \ \ \ \ \ AlignedCharArrayUnion<BucketT[InlineBuckets]>\ TmpStorage;}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1_aligned_char_array_union}{AlignedCharArrayUnion<BucketT[InlineBuckets]>}}\ TmpStorage;}
 \DoxyCodeLine{01068\ \ \ \ \ \ \ BucketT*\ TmpBegin\ =\ \textcolor{keyword}{reinterpret\_cast<}BucketT*\textcolor{keyword}{>}(\&TmpStorage);}
 \DoxyCodeLine{01069\ \ \ \ \ \ \ BucketT*\ TmpEnd\ =\ TmpBegin;}
 \DoxyCodeLine{01070\ }

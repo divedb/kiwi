@@ -1,0 +1,102 @@
+\doxysection{chibicpp\+::Error\+Or\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classchibicpp_1_1_error_or}{}\label{classchibicpp_1_1_error_or}\index{chibicpp::ErrorOr$<$ T $>$@{chibicpp::ErrorOr$<$ T $>$}}
+
+
+{\ttfamily \#include $<$error\+\_\+or.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_ad864110e22322121cae86ee2f5c72451}\label{classchibicpp_1_1_error_or_ad864110e22322121cae86ee2f5c72451} 
+using {\bfseries storage\+\_\+type} = std\+::conditional\+\_\+t$<$std\+::is\+\_\+reference\+\_\+v$<$T$>$, wrap, T$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a033d91060d2079620d2d6803816d28d5}\label{classchibicpp_1_1_error_or_a033d91060d2079620d2d6803816d28d5} 
+{\footnotesize template$<$typename E$>$ }\\{\bfseries Error\+Or} (E err\+\_\+code, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+error\+\_\+code\+\_\+enum$<$ E $>$\+::value\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}std\+::is\+\_\+error\+\_\+condition\+\_\+enum$<$ E $>$\+::value, void \texorpdfstring{$\ast$}{*} $>$=nullptr)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a07804e55d373a9e935b1df55a4d0d16d}\label{classchibicpp_1_1_error_or_a07804e55d373a9e935b1df55a4d0d16d} 
+{\bfseries Error\+Or} (std\+::error\+\_\+code ec)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_aa472fe1051591d38bac230fcf55af216}\label{classchibicpp_1_1_error_or_aa472fe1051591d38bac230fcf55af216} 
+{\footnotesize template$<$typename OtherT$>$ }\\{\bfseries Error\+Or} (OtherT \&\&val, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+convertible\+\_\+v$<$ OtherT, T $>$ $>$ \texorpdfstring{$\ast$}{*}=nullptr)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_ab599e401898d5d969be1f8be7df4b220}\label{classchibicpp_1_1_error_or_ab599e401898d5d969be1f8be7df4b220} 
+{\bfseries Error\+Or} (const \mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}} \&other)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a308ca51e83cdc3d885098c848dad4468}\label{classchibicpp_1_1_error_or_a308ca51e83cdc3d885098c848dad4468} 
+{\footnotesize template$<$typename OtherT$>$ }\\{\bfseries Error\+Or} (const \mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}}$<$ OtherT $>$ \&other, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+convertible\+\_\+v$<$ OtherT, T $>$ $>$ \texorpdfstring{$\ast$}{*}=nullptr)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a31e407a9c84c155f6e409db0801fc8bc}\label{classchibicpp_1_1_error_or_a31e407a9c84c155f6e409db0801fc8bc} 
+{\footnotesize template$<$typename OtherT$>$ }\\{\bfseries Error\+Or} (const \mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}}$<$ OtherT $>$ \&other, std\+::enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+convertible\+\_\+v$<$ OtherT, const T \& $>$ $>$ \texorpdfstring{$\ast$}{*}=nullptr)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a164aee27fa3f59103ccd1008cb599e7f}\label{classchibicpp_1_1_error_or_a164aee27fa3f59103ccd1008cb599e7f} 
+{\bfseries Error\+Or} (\mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}} \&\&other)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a2db0f6724e8c60e98d3891c0c4ca8193}\label{classchibicpp_1_1_error_or_a2db0f6724e8c60e98d3891c0c4ca8193} 
+{\footnotesize template$<$typename OtherT$>$ }\\{\bfseries Error\+Or} (\mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}}$<$ OtherT $>$ \&\&other, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+convertible\+\_\+v$<$ OtherT, T $>$ $>$ \texorpdfstring{$\ast$}{*}=nullptr)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a2c311cb000d0c2fbb872c727e7a913a7}\label{classchibicpp_1_1_error_or_a2c311cb000d0c2fbb872c727e7a913a7} 
+{\footnotesize template$<$typename OtherT$>$ }\\{\bfseries Error\+Or} (\mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}}$<$ OtherT $>$ \&\&other, std\+::enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+convertible\+\_\+v$<$ OtherT, T $>$ $>$ \texorpdfstring{$\ast$}{*}=nullptr)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a6c0e009dd37c95ffd89ed923b17f5152}\label{classchibicpp_1_1_error_or_a6c0e009dd37c95ffd89ed923b17f5152} 
+\mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}} \& {\bfseries operator=} (const \mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}} \&other)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_adb98d4a18892e6981fb4ae13d405e552}\label{classchibicpp_1_1_error_or_adb98d4a18892e6981fb4ae13d405e552} 
+\mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}} \& {\bfseries operator=} (\mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}} \&\&other)
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_ae44a4eb7cacc264a6f545cb785f278fa}\label{classchibicpp_1_1_error_or_ae44a4eb7cacc264a6f545cb785f278fa} 
+{\bfseries operator bool} () const
+\begin{DoxyCompactList}\small\item\em Return false if there is an error. \end{DoxyCompactList}\item 
+\Hypertarget{classchibicpp_1_1_error_or_a31fd8f13ee4ce0ce94a60da9429466c1}\label{classchibicpp_1_1_error_or_a31fd8f13ee4ce0ce94a60da9429466c1} 
+reference {\bfseries Get} ()
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_aef5e8684a7451c7e239b163a6110ec05}\label{classchibicpp_1_1_error_or_aef5e8684a7451c7e239b163a6110ec05} 
+const\+\_\+reference {\bfseries Get} () const
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_aa80f9829aca515381b3fbed89ac8c6b0}\label{classchibicpp_1_1_error_or_aa80f9829aca515381b3fbed89ac8c6b0} 
+std\+::error\+\_\+code {\bfseries Get\+Error} () const
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_aee869fbc96bb9e2eb9cb677da7bf727e}\label{classchibicpp_1_1_error_or_aee869fbc96bb9e2eb9cb677da7bf727e} 
+pointer {\bfseries operator-\/$>$} ()
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_aac55910e86ab4d4c13faa2fd43ffcb4f}\label{classchibicpp_1_1_error_or_aac55910e86ab4d4c13faa2fd43ffcb4f} 
+const\+\_\+pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a4bdcf89cb583baccd13122448a983998}\label{classchibicpp_1_1_error_or_a4bdcf89cb583baccd13122448a983998} 
+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} ()
+\item 
+\Hypertarget{classchibicpp_1_1_error_or_a03605f628ec637d5fcee8b3da46f1279}\label{classchibicpp_1_1_error_or_a03605f628ec637d5fcee8b3da46f1279} 
+const\+\_\+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class chibicpp\+::\+Error\+Or$<$ T $>$}
+Represents either an error or a value T.
+
+Error\+Or$<$\+T$>$ is a pointer-\/like class that represents the result of an operation. The result is either an error, or a value of type T. This is designed to emulate the usage of returning a pointer where nullptr indicates failure. However instead of just knowing that the operation failed, we also have an error\+\_\+code and optional user data that describes why it failed.
+
+It is used like the following. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ErrorOr<Buffer>\ getBuffer();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{auto}\ buffer\ =\ getBuffer();}
+\DoxyCodeLine{\textcolor{keywordflow}{if}\ (error\_code\ ec\ =\ buffer.getError())}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ ec;}
+\DoxyCodeLine{buffer-\/>write(\textcolor{stringliteral}{"{}adena"{}});}
+
+\end{DoxyCode}
+
+
+Implicit conversion to bool returns true if there is a usable value. The unary \texorpdfstring{$\ast$}{*} and -\/\texorpdfstring{$>$}{>} operators provide pointer like access to the value. Accessing the value when there is an error has undefined behavior.
+
+When T is a reference type the behavior is slightly different. The reference is held in a std\+::reference\+\_\+wrapper\texorpdfstring{$<$}{<}std\+::remove\+\_\+reference$<$\+T$>$\+::type\texorpdfstring{$>$}{>}, and there is special handling to make operator -\/\texorpdfstring{$>$}{>} work as if T was not a reference.
+
+T cannot be a rvalue reference. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/support/\mbox{\hyperlink{error__or_8hh}{error\+\_\+or.\+hh}}\end{DoxyCompactItemize}

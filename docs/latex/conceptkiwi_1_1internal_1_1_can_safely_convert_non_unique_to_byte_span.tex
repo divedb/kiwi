@@ -1,0 +1,15 @@
+\doxysection{kiwi\+::internal\+::Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{}\label{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}\index{kiwi::internal::CanSafelyConvertNonUniqueToByteSpan@{kiwi::internal::CanSafelyConvertNonUniqueToByteSpan}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{kiwi::internal::CanSafelyConvertNonUniqueToByteSpan}}\ =\ }
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ std::is\_trivially\_copyable\_v<T>\ \&\&}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ !std::has\_unique\_object\_representations\_v<T>}
+
+\end{DoxyCode}

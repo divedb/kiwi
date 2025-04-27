@@ -1,0 +1,100 @@
+\doxysection{utf\+\_\+string\+\_\+conversions.\+hh}
+\hypertarget{utf__string__conversions_8hh_source}{}\label{utf__string__conversions_8hh_source}\index{include/kiwi/strings/utf\_string\_conversions.hh@{include/kiwi/strings/utf\_string\_conversions.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2011\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/types/always\_false.hh"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ These\ convert\ between\ UTF-\/8,\ -\/16,\ and\ -\/32\ strings.\ They\ are\ potentially\ slow,}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ so\ avoid\ unnecessary\ conversions.\ The\ low-\/level\ versions\ return\ a\ boolean}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ indicating\ whether\ the\ conversion\ was\ 100\%\ valid.\ In\ this\ case,\ it\ will\ still}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ do\ the\ best\ it\ can\ and\ put\ the\ result\ in\ the\ output\ buffer.\ The\ versions\ that}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ return\ strings\ ignore\ this\ error\ and\ just\ return\ the\ best\ conversion}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ possible.}}
+\DoxyCodeLine{00024\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ WideToUTF8(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00026\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ WideToUTF8(std::wstring\_view\ wide);}
+\DoxyCodeLine{00027\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ UTF8ToWide(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::wstring*\ output);}
+\DoxyCodeLine{00029\ [[nodiscard]]\ BASE\_EXPORT\ std::wstring\ UTF8ToWide(std::string\_view\ utf8);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ WideToUTF16(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00033\ [[nodiscard]]\ BASE\_EXPORT\ std::u16string\ WideToUTF16(std::wstring\_view\ wide);}
+\DoxyCodeLine{00034\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ UTF16ToWide(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::wstring*\ output);}
+\DoxyCodeLine{00036\ [[nodiscard]]\ BASE\_EXPORT\ std::wstring\ UTF16ToWide(std::u16string\_view\ utf16);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ UTF8ToUTF16(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00040\ [[nodiscard]]\ BASE\_EXPORT\ std::u16string\ UTF8ToUTF16(std::string\_view\ utf8);}
+\DoxyCodeLine{00041\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ UTF16ToUTF8(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00043\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ UTF16ToUTF8(std::u16string\_view\ utf16);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ This\ converts\ an\ ASCII\ string,\ typically\ a\ hardcoded\ constant,\ to\ a\ UTF16}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ string.}}
+\DoxyCodeLine{00047\ [[nodiscard]]\ BASE\_EXPORT\ std::u16string\ ASCIIToUTF16(std::string\_view\ ascii);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ Converts\ to\ 7-\/bit\ ASCII\ by\ truncating.\ The\ result\ must\ be\ known\ to\ be\ ASCII}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ beforehand.}}
+\DoxyCodeLine{00051\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ UTF16ToASCII(std::u16string\_view\ utf16);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#if\ defined(WCHAR\_T\_IS\_16\_BIT)}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ This\ converts\ an\ ASCII\ string,\ typically\ a\ hardcoded\ constant,\ to\ a\ wide}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ string.}}
+\DoxyCodeLine{00056\ [[nodiscard]]\ BASE\_EXPORT\ std::wstring\ ASCIIToWide(std::string\_view\ ascii);}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ Converts\ to\ 7-\/bit\ ASCII\ by\ truncating.\ The\ result\ must\ be\ known\ to\ be\ ASCII}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ beforehand.}}
+\DoxyCodeLine{00060\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ WideToASCII(std::wstring\_view\ wide);}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(WCHAR\_T\_IS\_16\_BIT)}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ The\ conversion\ functions\ in\ this\ file\ should\ not\ be\ used\ to\ convert\ string}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ literals.\ Instead,\ the\ corresponding\ prefixes\ (e.g.\ u"{}"{}\ for\ UTF16\ or\ L"{}"{}\ for}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ Wide)\ should\ be\ used.\ Catch\ those\ cases\ with\ overloads\ that\ assert\ at\ compile}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ time.}}
+\DoxyCodeLine{00067\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00068\ [[noreturn]]\ std::u16string\ WideToUTF16(}
+\DoxyCodeLine{00069\ \ \ \ \ [[maybe\_unused]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}\ (\&str)[N])\ \{}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static\_assert}(AlwaysFalse<\textcolor{keyword}{decltype}(N)>,}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Error:\ Use\ u\(\backslash\)"{}...\(\backslash\)"{}\ to\ create\ a\ std::u16string\ literal."{}});}
+\DoxyCodeLine{00072\ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00075\ [[noreturn]]\ std::u16string\ UTF8ToUTF16([[maybe\_unused]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ (\&str)[N])\ \{}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static\_assert}(AlwaysFalse<\textcolor{keyword}{decltype}(N)>,}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Error:\ Use\ u\(\backslash\)"{}...\(\backslash\)"{}\ to\ create\ a\ std::u16string\ literal."{}});}
+\DoxyCodeLine{00078\ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00081\ [[noreturn]]\ std::u16string\ ASCIIToUTF16(}
+\DoxyCodeLine{00082\ \ \ \ \ [[maybe\_unused]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ (\&str)[N])\ \{}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static\_assert}(AlwaysFalse<\textcolor{keyword}{decltype}(N)>,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Error:\ Use\ u\(\backslash\)"{}...\(\backslash\)"{}\ to\ create\ a\ std::u16string\ literal."{}});}
+\DoxyCodeLine{00085\ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ Mutable\ character\ arrays\ are\ usually\ only\ populated\ during\ runtime.\ Continue}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ to\ allow\ this\ conversion.}}
+\DoxyCodeLine{00089\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00090\ std::u16string\ ASCIIToUTF16(\textcolor{keywordtype}{char}\ (\&str)[N])\ \{}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordflow}{return}\ ASCIIToUTF16(std::string\_view(str));}
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

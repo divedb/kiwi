@@ -1,0 +1,146 @@
+\doxysection{no\+\_\+destructor.\+hh}
+\hypertarget{no__destructor_8hh_source}{}\label{no__destructor_8hh_source}\index{include/kiwi/util/no\_destructor.hh@{include/kiwi/util/no\_destructor.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2018\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <new>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ Helper\ type\ to\ create\ a\ function-\/local\ static\ variable\ of\ type\ \`{}T`\ when\ \`{}T`}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ has\ a\ non-\/trivial\ destructor.\ Storing\ a\ \`{}T`\ in\ a\ \`{}base::NoDestructor<T>`\ will}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ prevent\ \`{}\string~T()`\ from\ running,\ even\ when\ the\ variable\ goes\ out\ of\ scope.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ Useful\ when\ a\ variable\ has\ static\ storage\ duration\ but\ its\ type\ has\ a}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ non-\/trivial\ destructor.\ Chromium\ bans\ global\ constructors\ and\ destructors:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ using\ a\ function-\/local\ static\ variable\ prevents\ the\ former,\ while\ using}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \`{}base::NoDestructor<T>`\ prevents\ the\ latter.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \#\#\ Caveats}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ -\/\ Must\ not\ be\ used\ for\ locals\ or\ fields;\ by\ definition,\ this\ does\ not\ run}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ \ destructors,\ and\ this\ will\ likely\ lead\ to\ memory\ leaks\ and\ other}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ \ surprising\ and\ undesirable\ behaviour.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ -\/\ If\ \`{}T`\ is\ not\ constexpr\ constructible,\ must\ be\ a\ function-\/local\ static}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ \ variable,\ since\ a\ global\ \`{}NoDestructor<T>`\ will\ still\ generate\ a\ static}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ \ initializer.}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ -\/\ If\ \`{}T`\ is\ constinit\ constructible,\ may\ be\ used\ as\ a\ global,\ but\ mark\ the}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ \ global\ \`{}constinit`.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ -\/\ If\ the\ data\ is\ rarely\ used,\ consider\ creating\ it\ on\ demand\ rather\ than}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ \ caching\ it\ for\ the\ lifetime\ of\ the\ program.\ Though\ \`{}base::NoDestructor<T>`}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ \ does\ not\ heap\ allocate,\ the\ compiler\ still\ reserves\ space\ in\ bss\ for}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ \ storing\ \`{}T`,\ which\ costs\ memory\ at\ runtime.}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ -\/\ If\ \`{}T`\ is\ trivially\ destructible,\ do\ not\ use\ \`{}base::NoDestructor<T>`:}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ \ \ const\ uint64\_t\ GetUnstableSessionSeed()\ \{}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ \ \ \ \ //\ No\ need\ to\ use\ \`{}base::NoDestructor<T>`\ as\ \`{}uint64\_t`\ is\ trivially}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ \ \ \ \ //\ destructible\ and\ does\ not\ require\ a\ global\ destructor.}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ \ \ static\ const\ uint64\_t\ kSessionSeed\ =\ base::RandUint64();}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ \ \ \ \ return\ kSessionSeed;}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ \ \ \}}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \#\#\ Example\ Usage}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ const\ std::string\&\ GetDefaultText()\ \{}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ \ \ //\ Required\ since\ \`{}static\ const\ std::string`\ requires\ a\ global\ destructor.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ static\ const\ base::NoDestructor<std::string>\ s("{}Hello\ world!"{});}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ \ \ return\ *s;}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ More\ complex\ initialization\ using\ a\ lambda:}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ const\ std::string\&\ GetRandomNonce()\ \{}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ \ \ //\ \`{}nonce`\ is\ initialized\ with\ random\ data\ the\ first\ time\ this\ function\ is}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ \ \ //\ called,\ but\ its\ value\ is\ fixed\ thereafter.}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ \ static\ const\ base::NoDestructor<std::string>\ nonce([]\ \{}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ \ \ \ \ std::string\ s(16);}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ \ \ \ \ crypto::RandString(s.data(),\ s.size());}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ \ \ \ \ return\ s;}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ \ \ \}());}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ \ \ return\ *nonce;}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ \#\#\ Thread\ safety}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ Initialisation\ of\ function-\/local\ static\ variables\ is\ thread-\/safe\ since\ C++11.}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ The\ standard\ guarantees\ that:}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ -\/\ function-\/local\ static\ variables\ will\ be\ initialised\ the\ first\ time}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ \ \ execution\ passes\ through\ the\ declaration.}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ -\/\ if\ another\ thread's\ execution\ concurrently\ passes\ through\ the\ declaration}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ \ \ in\ the\ middle\ of\ initialisation,\ that\ thread\ will\ wait\ for\ the\ in-\/progress}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ \ \ initialisation\ to\ complete.}}
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00082\ \textcolor{keyword}{class\ }NoDestructor\ \{}
+\DoxyCodeLine{00083\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static\_assert}(!(std::is\_trivially\_constructible\_v<T>\ \&\&}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_trivially\_destructible\_v<T>),}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}T\ is\ trivially\ constructible\ and\ destructible;\ please\ use\ a\ "{}}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}constinit\ object\ of\ type\ T\ directly\ instead"{}});}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static\_assert}(}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ !std::is\_trivially\_destructible\_v<T>,}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}T\ is\ trivially\ destructible;\ please\ use\ a\ function-\/local\ static\ "{}}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}of\ type\ T\ directly\ instead"{}});}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ Not\ constexpr;\ just\ write\ static\ constexpr\ T\ x\ =\ ...;\ if\ the\ value\ should}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ be\ a\ constexpr.}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{explicit}\ NoDestructor(Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{new}\ (storage\_)\ T(std::forward<Args>(args)...);}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ Allows\ copy\ and\ move\ construction\ of\ the\ contained\ type,\ to\ allow}}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ construction\ from\ an\ initializer\ list,\ e.g.\ for\ std::vector.}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{explicit}\ NoDestructor(\textcolor{keyword}{const}\ T\&\ x)\ \{\ \textcolor{keyword}{new}\ (storage\_)\ T(x);\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{explicit}\ NoDestructor(T\&\&\ x)\ \{\ \textcolor{keyword}{new}\ (storage\_)\ T(std::move(x));\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ NoDestructor(\textcolor{keyword}{const}\ NoDestructor\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00107\ \ \ NoDestructor\&\ operator=(\textcolor{keyword}{const}\ NoDestructor\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \string~NoDestructor()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{const}\ T\&\ operator*()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *get();\ \}}
+\DoxyCodeLine{00112\ \ \ T\&\ operator*()\ \{\ \textcolor{keywordflow}{return}\ *get();\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{const}\ T*\ operator-\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ get();\ \}}
+\DoxyCodeLine{00115\ \ \ T*\ operator-\/>()\ \{\ \textcolor{keywordflow}{return}\ get();\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{const}\ T*\ get()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }T*\textcolor{keyword}{>}(storage\_);\ \}}
+\DoxyCodeLine{00118\ \ \ T*\ get()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(storage\_);\ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{alignas}(T)\ \textcolor{keywordtype}{char}\ storage\_[\textcolor{keyword}{sizeof}(T)];}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#if\ defined(LEAK\_SANITIZER)}}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{//\ TODO(crbug.com/40562930):\ This\ is\ a\ hack\ to\ work\ around\ the\ fact}}
+\DoxyCodeLine{00125\ \ \ \textcolor{comment}{//\ that\ LSan\ doesn't\ seem\ to\ treat\ NoDestructor\ as\ a\ root\ for\ reachability}}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//\ analysis.\ This\ means\ that\ code\ like\ this:}}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ \ \ static\ base::NoDestructor<std::vector<int>>\ v(\{1,\ 2,\ 3\});}}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ is\ considered\ a\ leak.\ Using\ the\ standard\ leak\ sanitizer\ annotations\ to}}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//\ suppress\ leaks\ doesn't\ work:\ std::vector\ is\ implicitly\ constructed\ before}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{//\ calling\ the\ base::NoDestructor\ constructor.}}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ Unfortunately,\ I\ haven't\ been\ able\ to\ demonstrate\ this\ issue\ in\ simpler}}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ reproductions:\ until\ that's\ resolved,\ hold\ an\ explicit\ pointer\ to\ the}}
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{//\ placement-\/new'd\ object\ in\ leak\ sanitizer\ mode\ to\ help\ LSan\ realize\ that}}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//\ objects\ allocated\ by\ the\ contained\ type\ are\ still\ reachable.}}
+\DoxyCodeLine{00136\ \ \ T*\ storage\_ptr\_\ =\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(storage\_);}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ defined(LEAK\_SANITIZER)}}
+\DoxyCodeLine{00138\ \};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>kiwi: include/kiwi/config/compiler_specific.hh Source File</title>
+<title>kiwi: include/kiwi/portability/compiler_specific.hh Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,7 +111,7 @@ $(function(){initNavTree('compiler__specific_8hh_source.html',''); initResizable
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;kiwi/config/build_config.hh&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;kiwi/portability/build_config.hh&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#if defined(COMPILER_MSVC) &amp;&amp; !defined(__clang__)</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#error &quot;Only clang-cl is supported on Windows, see https://crbug.com/988071&quot;</span></div>
@@ -1143,87 +1143,137 @@ $(function(){initNavTree('compiler__specific_8hh_source.html',''); initResizable
 <div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span><span class="comment">// Disabling `clang-format` allows each `_Pragma` to be on its own line, as</span></div>
 <div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span><span class="comment">// recommended by https://gcc.gnu.org/onlinedocs/cpp/Pragmas.html.</span></div>
 <div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span><span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span><span class="preprocessor">#define UNSAFE_BUFFERS(...)                  \</span></div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span><span class="preprocessor">  _Pragma(&quot;clang unsafe_buffer_usage begin&quot;) \</span></div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span><span class="preprocessor">  __VA_ARGS__                                \</span></div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span><span class="preprocessor">  _Pragma(&quot;clang unsafe_buffer_usage end&quot;)</span></div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span><span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span><span class="comment">// #define UNSAFE_BUFFERS(...)                  \</span></div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span><span class="comment">//   _Pragma(&quot;clang unsafe_buffer_usage begin&quot;) \</span></div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span><span class="comment">//   __VA_ARGS__                                \</span></div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span><span class="comment">//   _Pragma(&quot;clang unsafe_buffer_usage end&quot;)</span></div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span> </div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span><span class="comment">// TODO(gc): unknown pragma, modify later.</span></div>
 <div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span><span class="preprocessor">#define UNSAFE_BUFFERS(...) __VA_ARGS__</span></div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span> </div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span><span class="comment">// Annotates code indicating that it should be temporarily exempted from</span></div>
-<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span><span class="comment">// `-Wunsafe-buffer-usage`. While this is functionally the same as</span></div>
-<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span><span class="comment">// `UNSAFE_BUFFERS()`, semantically it indicates that this is for migration</span></div>
-<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span><span class="comment">// purposes, and should be cleaned up as soon as possible.</span></div>
-<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span><span class="comment">//</span></div>
-<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span><span class="comment">// Usage:</span></div>
-<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span><span class="comment">// ```</span></div>
-<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span><span class="comment">//   // The following call will not trigger a compiler warning even if `Func()`</span></div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span><span class="comment">//   // is annotated `UNSAFE_BUFFER_USAGE`.</span></div>
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span><span class="comment">//   return UNSAFE_TODO(Func(input, end));</span></div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span><span class="comment">// ```</span></div>
-<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span><span class="preprocessor">#define UNSAFE_TODO(...) UNSAFE_BUFFERS(__VA_ARGS__)</span></div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span> </div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span><span class="comment">// Annotates a function restricting its availability based on compile-time</span></div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span><span class="comment">// information in the evaluated context. Useful to convert runtime errors to</span></div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span><span class="comment">// compile-time errors if functions&#39; arguments are always known at compile time.</span></div>
-<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span><span class="comment">//</span></div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span><span class="comment">// SFINAE and `requires` clauses can restrict function availability based on the</span></div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span><span class="comment">// unevaluated context (type information and syntactic correctness). This</span></div>
-<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span><span class="comment">// provides a similar capability based on the evaluated context (variable</span></div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span><span class="comment">// values). If the condition fails, or cannot be determined at compile time, the</span></div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span><span class="comment">// function is excluded from the overload set.</span></div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span><span class="comment">//</span></div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span><span class="comment">// Some use cases could be satisfied without this by marking the function</span></div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span><span class="comment">// `consteval` and breaking compile when the condition fails (e.g. via</span></div>
-<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span><span class="comment">// `CHECK()`/`assert()`). However, `ENABLE_IF_ATTR()` is generally superior:</span></div>
-<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span><span class="comment">//   - Not all desired functions can be made `consteval`; e.g. most</span></div>
-<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span><span class="comment">//     constructors.</span></div>
-<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span><span class="comment">//   - The error message in the macro case is clearer and more actionable.</span></div>
-<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span><span class="comment">//   - `ENABLE_IF_ATTR()` interacts better with template metaprogramming.</span></div>
-<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span><span class="comment">//</span></div>
-<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span><span class="comment">// See also:</span></div>
-<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span><span class="comment">//   https://clang.llvm.org/docs/AttributeReference.html#enable-if</span></div>
-<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span><span class="comment">//   https://github.com/chromium/subspace/issues/266</span></div>
-<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span><span class="comment">//</span></div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span><span class="comment">// Usage:</span></div>
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span><span class="comment">// ```</span></div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span><span class="comment">//   void NotConsteval(int a) {</span></div>
-<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span><span class="comment">//     assert(a &gt; 0);</span></div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span><span class="comment">//   }</span></div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span><span class="comment">//   consteval void WithoutEnableIf(int a) {</span></div>
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span><span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span><span class="preprocessor">#define UNSAFE_BUFFERS(...) __VA_ARGS__</span></div>
+<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span> </div>
+<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span><span class="comment">// Annotates code indicating that it should be temporarily exempted from</span></div>
+<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span><span class="comment">// `-Wunsafe-buffer-usage`. While this is functionally the same as</span></div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span><span class="comment">// `UNSAFE_BUFFERS()`, semantically it indicates that this is for migration</span></div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span><span class="comment">// purposes, and should be cleaned up as soon as possible.</span></div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span><span class="comment">//</span></div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span><span class="comment">// Usage:</span></div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span><span class="comment">// ```</span></div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span><span class="comment">//   // The following call will not trigger a compiler warning even if `Func()`</span></div>
+<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span><span class="comment">//   // is annotated `UNSAFE_BUFFER_USAGE`.</span></div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span><span class="comment">//   return UNSAFE_TODO(Func(input, end));</span></div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span><span class="comment">// ```</span></div>
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span><span class="preprocessor">#define UNSAFE_TODO(...) UNSAFE_BUFFERS(__VA_ARGS__)</span></div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span> </div>
+<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span><span class="comment">// Annotates a function restricting its availability based on compile-time</span></div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span><span class="comment">// information in the evaluated context. Useful to convert runtime errors to</span></div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span><span class="comment">// compile-time errors if functions&#39; arguments are always known at compile time.</span></div>
+<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span><span class="comment">//</span></div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span><span class="comment">// SFINAE and `requires` clauses can restrict function availability based on the</span></div>
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span><span class="comment">// unevaluated context (type information and syntactic correctness). This</span></div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span><span class="comment">// provides a similar capability based on the evaluated context (variable</span></div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span><span class="comment">// values). If the condition fails, or cannot be determined at compile time, the</span></div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span><span class="comment">// function is excluded from the overload set.</span></div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span><span class="comment">//</span></div>
+<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span><span class="comment">// Some use cases could be satisfied without this by marking the function</span></div>
+<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span><span class="comment">// `consteval` and breaking compile when the condition fails (e.g. via</span></div>
+<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span><span class="comment">// `CHECK()`/`assert()`). However, `ENABLE_IF_ATTR()` is generally superior:</span></div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span><span class="comment">//   - Not all desired functions can be made `consteval`; e.g. most</span></div>
+<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span><span class="comment">//     constructors.</span></div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span><span class="comment">//   - The error message in the macro case is clearer and more actionable.</span></div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span><span class="comment">//   - `ENABLE_IF_ATTR()` interacts better with template metaprogramming.</span></div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span><span class="comment">//</span></div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span><span class="comment">// See also:</span></div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span><span class="comment">//   https://clang.llvm.org/docs/AttributeReference.html#enable-if</span></div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span><span class="comment">//   https://github.com/chromium/subspace/issues/266</span></div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span><span class="comment">//</span></div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span><span class="comment">// Usage:</span></div>
+<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span><span class="comment">// ```</span></div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span><span class="comment">//   void NotConsteval(int a) {</span></div>
 <div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span><span class="comment">//     assert(a &gt; 0);</span></div>
 <div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span><span class="comment">//   }</span></div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span><span class="comment">//   void WithEnableIf(int a) ENABLE_IF_ATTR(a &gt; 0, &quot;arg must be positive&quot;) {}</span></div>
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span><span class="comment">//   void Func(int i) {</span></div>
-<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span><span class="comment">//     // Compiles; assertion fails at runtime.</span></div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span><span class="comment">//     NotConsteval(-1);</span></div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span><span class="comment">//</span></div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span><span class="comment">//     // Will not compile; diagnosed as not a constant expression.</span></div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span><span class="comment">//     WithoutEnableIf(-1);</span></div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span><span class="comment">//   consteval void WithoutEnableIf(int a) {</span></div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span><span class="comment">//     assert(a &gt; 0);</span></div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span><span class="comment">//   }</span></div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span><span class="comment">//   void WithEnableIf(int a) ENABLE_IF_ATTR(a &gt; 0, &quot;arg must be positive&quot;) {}</span></div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span><span class="comment">//   void Func(int i) {</span></div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span><span class="comment">//     // Compiles; assertion fails at runtime.</span></div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span><span class="comment">//     NotConsteval(-1);</span></div>
 <div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span><span class="comment">//</span></div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span><span class="comment">//     // Will not compile; diagnosed as no matching function call with</span></div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span><span class="comment">//     // &quot;note: candidate disabled: arg must be positive&quot;.</span></div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span><span class="comment">//     WithEnableIf(-1);</span></div>
-<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span><span class="comment">//</span></div>
-<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span><span class="comment">//     // Will not compile (same reason). Marking `Func()` as</span></div>
-<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span><span class="comment">//     // `ENABLE_IF_ATTR(i &gt; 0, ...)` will not help; the compiler&#39;s analysis is</span></div>
-<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span><span class="comment">//     // not sufficiently sophisticated to propagate this constraint.</span></div>
-<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span><span class="comment">//     WithEnableIf(i);</span></div>
-<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span><span class="comment">//   }</span></div>
-<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span><span class="comment">// ```</span></div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span><span class="preprocessor">#if HAS_ATTRIBUTE(enable_if)</span></div>
-<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span><span class="preprocessor">#define ENABLE_IF_ATTR(cond, msg) __attribute__((enable_if(cond, msg)))</span></div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span><span class="preprocessor">#define ENABLE_IF_ATTR(cond, msg)</span></div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span><span class="comment">//     // Will not compile; diagnosed as not a constant expression.</span></div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span><span class="comment">//     WithoutEnableIf(-1);</span></div>
+<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span><span class="comment">//</span></div>
+<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span><span class="comment">//     // Will not compile; diagnosed as no matching function call with</span></div>
+<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span><span class="comment">//     // &quot;note: candidate disabled: arg must be positive&quot;.</span></div>
+<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span><span class="comment">//     WithEnableIf(-1);</span></div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span><span class="comment">//</span></div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span><span class="comment">//     // Will not compile (same reason). Marking `Func()` as</span></div>
+<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span><span class="comment">//     // `ENABLE_IF_ATTR(i &gt; 0, ...)` will not help; the compiler&#39;s analysis is</span></div>
+<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span><span class="comment">//     // not sufficiently sophisticated to propagate this constraint.</span></div>
+<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span><span class="comment">//     WithEnableIf(i);</span></div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span><span class="comment">//   }</span></div>
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span><span class="comment">// ```</span></div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span><span class="preprocessor">#if HAS_ATTRIBUTE(enable_if)</span></div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span><span class="preprocessor">#define ENABLE_IF_ATTR(cond, msg) __attribute__((enable_if(cond, msg)))</span></div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span><span class="preprocessor">#define ENABLE_IF_ATTR(cond, msg)</span></div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span> </div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span><span class="preprocessor">#if defined(_MSC_VER)</span></div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span><span class="preprocessor">#define UNREACHABLE() __assume(0)</span></div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span><span class="preprocessor">#elif defined(__GNUC__) || defined(__clang__)</span></div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span><span class="preprocessor">#define UNREACHABLE() __builtin_unreachable()</span></div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span><span class="preprocessor">#define UNREACHABLE() \</span></div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span><span class="preprocessor">  do {                \</span></div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span><span class="preprocessor">  } while (0)</span></div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span> </div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span><span class="comment">// Generalize warning push/pop.</span></div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span><span class="preprocessor">#if defined(__GNUC__) || defined(__clang__)</span></div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span><span class="comment">// Clang &amp; GCC</span></div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span><span class="preprocessor">#define KIWI_PUSH_WARNING _Pragma(&quot;GCC diagnostic push&quot;)</span></div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span><span class="preprocessor">#define KIWI_POP_WARNING _Pragma(&quot;GCC diagnostic pop&quot;)</span></div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span><span class="preprocessor">#define KIWI_GNU_DISABLE_WARNING_INTERNAL2(warning_name) #warning_name</span></div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span><span class="preprocessor">#define KIWI_GNU_DISABLE_WARNING(warning_name) \</span></div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span><span class="preprocessor">  _Pragma(                                     \</span></div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span><span class="preprocessor">      KIWI_GNU_DISABLE_WARNING_INTERNAL2(GCC diagnostic ignored warning_name))</span></div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span><span class="preprocessor">#ifdef __clang__</span></div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span><span class="preprocessor">#define KIWI_CLANG_DISABLE_WARNING(warning_name) \</span></div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span><span class="preprocessor">  KIWI_GNU_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span><span class="preprocessor">#define KIWI_GCC_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span><span class="preprocessor">#define KIWI_CLANG_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span><span class="preprocessor">#define KIWI_GCC_DISABLE_WARNING(warning_name) \</span></div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span><span class="preprocessor">  KIWI_GNU_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span><span class="preprocessor">#define KIWI_MSVC_DISABLE_WARNING(warning_number)</span></div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span><span class="preprocessor">#elif defined(_MSC_VER)</span></div>
+<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span><span class="preprocessor">#define KIWI_PUSH_WARNING __pragma(warning(push))</span></div>
+<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span><span class="preprocessor">#define KIWI_POP_WARNING __pragma(warning(pop))</span></div>
+<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span><span class="comment">// Disable the GCC warnings.</span></div>
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span><span class="preprocessor">#define KIWI_GNU_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span><span class="preprocessor">#define KIWI_GCC_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span><span class="preprocessor">#define KIWI_CLANG_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span><span class="preprocessor">#define KIWI_MSVC_DISABLE_WARNING(warning_number) \</span></div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span><span class="preprocessor">  __pragma(warning(disable : warning_number))</span></div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span><span class="preprocessor">#define KIWI_PUSH_WARNING</span></div>
+<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span><span class="preprocessor">#define KIWI_POP_WARNING</span></div>
+<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span><span class="preprocessor">#define KIWI_GNU_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span><span class="preprocessor">#define KIWI_GCC_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span><span class="preprocessor">#define KIWI_CLANG_DISABLE_WARNING(warning_name)</span></div>
+<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span><span class="preprocessor">#define KIWI_MSVC_DISABLE_WARNING(warning_number)</span></div>
+<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_602883e5d098af516ca12f13d12399cf.html">kiwi</a></li><li class="navelem"><a class="el" href="dir_b442540fddf6467eaa40d5eb812f76f5.html">config</a></li><li class="navelem"><b>compiler_specific.hh</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_602883e5d098af516ca12f13d12399cf.html">kiwi</a></li><li class="navelem"><a class="el" href="dir_f43015259359cfa893dd446e2e457ab2.html">portability</a></li><li class="navelem"><b>compiler_specific.hh</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

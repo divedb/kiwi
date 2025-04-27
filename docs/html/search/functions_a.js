@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['operator_21_3d_0',['operator!=',['../dense__map_8hh.html#a008449c6439d3cbc96cc662630b49736',1,'kiwi']]],
-  ['operator_2b_2b_1',['operator++',['../classkiwi_1_1_not_null.html#a4f7e3debb41e401bc7be5892457ab2dc',1,'kiwi::NotNull::operator++()'],['../classkiwi_1_1_strict_not_null.html#a5ebff0ebc8e520c9a339f609c11a04a1',1,'kiwi::StrictNotNull::operator++()']]],
-  ['operator_3c_3d_3e_2',['operator&lt;=&gt;',['../classkiwi_1_1_file_path.html#a0521858e6819bd9bf6374d0d08cb7830',1,'kiwi::FilePath']]],
-  ['operator_3d_3',['operator=',['../classkiwi_1_1_file_path.html#abdf7f6cc8034af130e606ed05f43fc87',1,'kiwi::FilePath::operator=(const FilePath &amp;that)'],['../classkiwi_1_1_file_path.html#a6f73d30fad8ae281c8b79d5c236349e8',1,'kiwi::FilePath::operator=(FilePath &amp;&amp;that) noexcept'],['../classkiwi_1_1_string_ref.html#ac6ece4fee89a52742f085812446d09a1',1,'kiwi::StringRef::operator=()']]],
-  ['operator_3d_3d_4',['operator==',['../classkiwi_1_1_file_path.html#ab436d196545762fb3b6588d1bc172547',1,'kiwi::FilePath::operator==()'],['../classkiwi_1_1_safe_base_name.html#a6f7b783641055cd976e7421a1d9cbcbe',1,'kiwi::SafeBaseName::operator==()'],['../dense__map_8hh.html#a0d27e9ac9b943e14361fe2ba7ec21a46',1,'kiwi::operator==()']]]
+  ['makemanaged_0',['makeManaged',['../classkiwi_1_1_i_o_buf.html#ada90ffb9e75a1954c0364bd465e0ca10',1,'kiwi::IOBuf']]],
+  ['makemanagedone_1',['makeManagedOne',['../classkiwi_1_1_i_o_buf.html#a3af33eb4f4099792d2194526af915940',1,'kiwi::IOBuf']]],
+  ['markexternallyshared_2',['markExternallyShared',['../classkiwi_1_1_i_o_buf.html#a67cb17dc776d58663520ddd45c8491dd',1,'kiwi::IOBuf']]],
+  ['markexternallysharedone_3',['markExternallySharedOne',['../classkiwi_1_1_i_o_buf.html#a247fc1ca4456b087267fca6e5ffc7ca9',1,'kiwi::IOBuf']]],
+  ['matchesextension_4',['MatchesExtension',['../classkiwi_1_1_file_path.html#a067e29a6f46ee53cdec80f4ea724cfed',1,'kiwi::FilePath']]],
+  ['matchesfinalextension_5',['MatchesFinalExtension',['../classkiwi_1_1_file_path.html#ad33b64ab7904db705168ee8b98cfc50c',1,'kiwi::FilePath']]],
+  ['maybeasascii_6',['MaybeAsASCII',['../classkiwi_1_1_file_path.html#a87a69d60c2d0ec0286e8e83ef683da6b',1,'kiwi::FilePath']]],
+  ['maybecopybuffer_7',['maybeCopyBuffer',['../classkiwi_1_1_i_o_buf.html#af20bf76b74c47e171686dc3f563709c5',1,'kiwi::IOBuf']]],
+  ['movetofbstring_8',['moveToFbString',['../classkiwi_1_1_i_o_buf.html#adb4434c5e3cae2059ac76696ddb4e50f',1,'kiwi::IOBuf']]]
 ];

@@ -1,5 +1,5 @@
 \doxysection{build\+\_\+config.\+hh}
-\hypertarget{build__config_8hh_source}{}\label{build__config_8hh_source}\index{include/kiwi/config/build\_config.hh@{include/kiwi/config/build\_config.hh}}
+\hypertarget{build__config_8hh_source}{}\label{build__config_8hh_source}\index{include/kiwi/portability/build\_config.hh@{include/kiwi/portability/build\_config.hh}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
@@ -55,7 +55,7 @@
 \DoxyCodeLine{00051\ }
 \DoxyCodeLine{00052\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}kiwi/config/build\_flag.hh"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_flag.hh"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
 \DoxyCodeLine{00055\ }
 \DoxyCodeLine{00056\ \textcolor{comment}{//\ Clangd\ does\ not\ detect\ BUILDFLAG\_INTERNAL\_*\ indirect\ usage,\ so\ mark\ the}}
 \DoxyCodeLine{00057\ \textcolor{comment}{//\ header\ as\ "{}always\_keep"{}\ to\ avoid\ "{}unused\ include"{}\ warning.}}
@@ -122,7 +122,7 @@
 \DoxyCodeLine{00118\ \textcolor{preprocessor}{\#elif\ defined(\_\_MVS\_\_)}}
 \DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ OS\_ZOS\ 1}}
 \DoxyCodeLine{00120\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ platform\ in\ build/build\_config.h}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ platform\ in\ build/build\_config.hh}}
 \DoxyCodeLine{00122\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00123\ \textcolor{comment}{//\ NOTE:\ Adding\ a\ new\ port?\ Please\ follow}}
 \DoxyCodeLine{00124\ \textcolor{comment}{//\ https://chromium.googlesource.com/chromium/src/+/main/docs/new\_port\_policy.md}}
@@ -409,23 +409,22 @@
 \DoxyCodeLine{00405\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00406\ }
 \DoxyCodeLine{00407\ \textcolor{comment}{//\ Architecture-\/specific\ feature\ detection.}}
-\DoxyCodeLine{00408\ }
-\DoxyCodeLine{00409\ \textcolor{preprocessor}{\#if\ !defined(CPU\_ARM\_NEON)}}
-\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_ARM\_FAMILY)\ \&\&\ \(\backslash\)}}
-\DoxyCodeLine{00411\ \textcolor{preprocessor}{\ \ \ \ (defined(\_\_ARM\_NEON\_\_)\ ||\ defined(\_\_ARM\_NEON))}}
-\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#define\ CPU\_ARM\_NEON\ 1}}
-\DoxyCodeLine{00413\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00414\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !defined(CPU\_ARM\_NEON)}}
-\DoxyCodeLine{00415\ }
-\DoxyCodeLine{00416\ \textcolor{comment}{//\ Sanity\ check.}}
-\DoxyCodeLine{00417\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_ARM64)\ \&\&\ !defined(CPU\_ARM\_NEON)}}
-\DoxyCodeLine{00418\ \textcolor{preprocessor}{\#error\ "{}AArch64\ mandates\ NEON,\ should\ be\ detected"{}}}
-\DoxyCodeLine{00419\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00420\ }
-\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#if\ !defined(HAVE\_MIPS\_MSA\_INTRINSICS)}}
-\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#if\ defined(\_\_mips\_msa)\ \&\&\ defined(\_\_mips\_isa\_rev)\ \&\&\ (\_\_mips\_isa\_rev\ >=\ 5)}}
-\DoxyCodeLine{00423\ \textcolor{preprocessor}{\#define\ HAVE\_MIPS\_MSA\_INTRINSICS\ 1}}
+\DoxyCodeLine{00408\ \textcolor{preprocessor}{\#if\ !defined(CPU\_ARM\_NEON)}}
+\DoxyCodeLine{00409\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_ARM\_FAMILY)\ \&\&\ \(\backslash\)}}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\ \ \ \ (defined(\_\_ARM\_NEON\_\_)\ ||\ defined(\_\_ARM\_NEON))}}
+\DoxyCodeLine{00411\ \textcolor{preprocessor}{\#define\ CPU\_ARM\_NEON\ 1}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00413\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !defined(CPU\_ARM\_NEON)}}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \textcolor{comment}{//\ Sanity\ check.}}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_ARM64)\ \&\&\ !defined(CPU\_ARM\_NEON)}}
+\DoxyCodeLine{00417\ \textcolor{preprocessor}{\#error\ "{}AArch64\ mandates\ NEON,\ should\ be\ detected"{}}}
+\DoxyCodeLine{00418\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \textcolor{preprocessor}{\#if\ !defined(HAVE\_MIPS\_MSA\_INTRINSICS)}}
+\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#if\ defined(\_\_mips\_msa)\ \&\&\ defined(\_\_mips\_isa\_rev)\ \&\&\ (\_\_mips\_isa\_rev\ >=\ 5)}}
+\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#define\ HAVE\_MIPS\_MSA\_INTRINSICS\ 1}}
+\DoxyCodeLine{00423\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00424\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00425\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

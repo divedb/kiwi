@@ -1,0 +1,28 @@
+\doxysection{kiwi\+::Integral\+Constant\+Like Concept Reference}
+\hypertarget{conceptkiwi_1_1_integral_constant_like}{}\label{conceptkiwi_1_1_integral_constant_like}\index{kiwi::IntegralConstantLike@{kiwi::IntegralConstantLike}}
+
+
+Exposition-\/only concept from \mbox{[}span.\+syn\mbox{]}.  
+
+
+
+
+{\ttfamily \#include $<$integral\+\_\+constant\+\_\+like.\+hh$>$}
+
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1_integral_constant_like}{kiwi::IntegralConstantLike}}\ =\ }
+\DoxyCodeLine{\ \ \ \ std::is\_integral\_v<\textcolor{keyword}{decltype}(T::value)>\ \&\&}
+\DoxyCodeLine{\ \ \ \ !std::is\_same\_v<\textcolor{keywordtype}{bool},\ std::remove\_const\_t<\textcolor{keyword}{decltype}(T::value)>>\ \&\&}
+\DoxyCodeLine{\ \ \ \ std::convertible\_to<T,\ \textcolor{keyword}{decltype}(T::value)>\ \&\&}
+\DoxyCodeLine{\ \ \ \ std::equality\_comparable\_with<T,\ \textcolor{keyword}{decltype}(T::value)>\ \&\&}
+\DoxyCodeLine{\ \ \ \ std::bool\_constant<T()\ ==\ T::value>::value\ \&\&}
+\DoxyCodeLine{\ \ \ \ std::bool\_constant<static\_cast<decltype(T::value)>(T())\ ==\ T::value>::value}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Detailed Description}
+Exposition-\/only concept from \mbox{[}span.\+syn\mbox{]}. 

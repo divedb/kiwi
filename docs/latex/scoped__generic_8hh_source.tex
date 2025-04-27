@@ -1,0 +1,247 @@
+\doxysection{scoped\+\_\+generic.\+hh}
+\hypertarget{scoped__generic_8hh_source}{}\label{scoped__generic_8hh_source}\index{include/kiwi/common/scoped\_generic.hh@{include/kiwi/common/scoped\_generic.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2014\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \#include\ "{}base/check.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \#include\ "{}base/memory/raw\_ptr.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00087\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_scoped_generic_ownership_tracking}{ScopedGenericOwnershipTracking}}\ \{\};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ Traits>}
+\DoxyCodeLine{00090\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}\ \{}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{struct\ }Data\ :\ \textcolor{keyword}{public}\ Traits\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{explicit}\ Data(\textcolor{keyword}{const}\ T\&\ in)\ :\ \textcolor{keyword}{generic}(in)\ \{\}}
+\DoxyCodeLine{00099\ \ \ \ \ Data(\textcolor{keyword}{const}\ T\&\ in,\ \textcolor{keyword}{const}\ Traits\&\ other)\ :\ Traits(other),\ \textcolor{keyword}{generic}(in)\ \{\}}
+\DoxyCodeLine{00100\ \ \ \ \ T\ \textcolor{keyword}{generic};}
+\DoxyCodeLine{00101\ \ \ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{using\ }element\_type\ =\ T;}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{using\ }traits\_type\ =\ Traits;}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00108\ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}()\ :\ data\_(traits\_type::InvalidValue())\ \{\}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_ab0af4d0592bd5e04e26b77b7b1421790}{ScopedGeneric}}(\textcolor{keyword}{const}\ element\_type\&\ value)\ :\ data\_(value)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ TrackAcquire(data\_.generic);}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00122\ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a196904e0719262616712ccf336e9759a}{ScopedGeneric}}(\textcolor{keyword}{const}\ element\_type\&\ value,\ \textcolor{keyword}{const}\ traits\_type\&\ traits)}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ :\ data\_(value,\ traits)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ TrackAcquire(data\_.generic);}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00130\ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a4a08a761fd1fa75ee99ac6e901c42d70}{ScopedGeneric}}(\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric<T,\ Traits>}}\&\&\ rvalue)}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ :\ data\_(rvalue.Release(),\ rvalue.get\_traits())\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ TrackAcquire(data\_.generic);}
+\DoxyCodeLine{00133\ \ \ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00136\ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a6b63edeb0c531e98e9d3b0a7a3ab0bbf}{\string~ScopedGeneric}}()\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//\ CHECK(!receiving\_);\ \ //\ ScopedGeneric\ destroyed\ with\ active\ receiver.}}
+\DoxyCodeLine{00141\ \ \ \ \ FreeIfNecessary();}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00148\ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}\&\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_ae0b7bd0251f6b850caf247e25ca05882}{operator=}}(\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric<T,\ Traits>}}\&\&\ rvalue)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ Reset(rvalue.Release());}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//\ Frees\ the\ currently\ owned\ object,\ if\ any.\ Then\ takes\ ownership\ of\ a\ new}}
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ object,\ if\ given.\ Self-\/resets\ are\ not\ allowed\ as\ on\ unique\_ptr.\ See}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ http://crbug.com/162971}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ Reset(\textcolor{keyword}{const}\ element\_type\&\ value\ =\ traits\_type::InvalidValue())\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\_.generic\ !=\ traits\_type::InvalidValue()\ \&\&}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ data\_.generic\ ==\ value)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ abort();}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ FreeIfNecessary();}
+\DoxyCodeLine{00163\ \ \ \ \ data\_.generic\ =\ value;}
+\DoxyCodeLine{00164\ \ \ \ \ TrackAcquire(value);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ Release\ the\ object.\ The\ return\ value\ is\ the\ current\ object\ held\ by\ this}}
+\DoxyCodeLine{00168\ \ \ \textcolor{comment}{//\ object.\ After\ this\ operation,\ this\ object\ will\ hold\ a\ null\ value,\ and}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ will\ not\ own\ the\ object\ any\ more.}}
+\DoxyCodeLine{00170\ \ \ [[nodiscard]]\ element\_type\ Release()\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ element\_type\ old\_generic\ =}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ std::exchange(data\_.generic,\ traits\_type::InvalidValue());}
+\DoxyCodeLine{00173\ \ \ \ \ TrackRelease(old\_generic);}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{return}\ old\_generic;}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ A\ helper\ class\ that\ provides\ a\ T*\ that\ can\ be\ used\ to\ take\ ownership\ of}}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//\ a\ value\ returned\ from\ a\ function\ via\ out-\/parameter.\ When\ the\ Receiver\ is}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ destructed\ (which\ should\ usually\ be\ at\ the\ end\ of\ the\ statement\ in\ which}}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//\ receive\ is\ called),\ ScopedGeneric::reset()\ will\ be\ called\ with\ the}}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ Receiver's\ value.}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//\ In\ the\ simple\ case\ of\ a\ function\ that\ assigns\ the\ value\ before\ it\ returns,}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ C++'s\ lifetime\ extension\ can\ be\ used\ as\ follows:}}
+\DoxyCodeLine{00185\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00186\ \ \ \textcolor{comment}{//\ \ \ \ ScopedFoo\ foo;}}
+\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//\ \ \ \ bool\ result\ =\ GetFoo(ScopedFoo::Receiver(foo).get());}}
+\DoxyCodeLine{00188\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00189\ \ \ \textcolor{comment}{//\ Note\ that\ the\ lifetime\ of\ the\ Receiver\ is\ extended\ until\ the\ semicolon,}}
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ and\ ScopedGeneric\ is\ assigned\ the\ value\ upon\ destruction\ of\ the\ Receiver,}}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ so\ the\ following\ code\ would\ not\ work:}}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ \ \ \ //\ BROKEN!}}
+\DoxyCodeLine{00194\ \ \ \textcolor{comment}{//\ \ \ \ ScopedFoo\ foo;}}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{//\ \ \ \ UseFoo(\&foo,\ GetFoo(ScopedFoo::Receiver(foo).get()));}}
+\DoxyCodeLine{00196\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//\ In\ more\ complicated\ scenarios,\ you\ may\ need\ to\ provide\ an\ explicit\ scope}}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ for\ the\ Receiver,\ as\ in\ the\ following:}}
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ \ \ \ std::vector<ScopedFoo>\ foos(64);}}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00202\ \ \ \textcolor{comment}{//\ \ \ \ \{}}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{//\ \ \ \ \ \ std::vector<ScopedFoo::Receiver>\ foo\_receivers;}}
+\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ \ \ \ \ \ for\ (auto\ foo\ :\ foos)\ \{}}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ foo\_receivers\_.emplace\_back(foo);}}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ \ \ \ \ \ for\ (auto\ receiver\ :\ foo\_receivers)\ \{}}
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ SubmitGetFooRequest(receiver.get());}}
+\DoxyCodeLine{00209\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00210\ \ \ \textcolor{comment}{//\ \ \ \ \ \ WaitForFooRequests();}}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//\ \ \ \ UseFoos(foos);}}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{class\ }Receiver\ \{}
+\DoxyCodeLine{00214\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{explicit}\ Receiver(\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}\&\ parent)\ :\ scoped\_generic\_(\&parent)\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ we\ attempted\ to\ construct\ a\ Receiver\ for\ ScopedGeneric\ with\ an}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \textcolor{comment}{//\ existing\ Receiver.}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \textcolor{comment}{//\ CHECK(!scoped\_generic\_-\/>receiving\_);}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ scoped\_generic\_-\/>receiving\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ Receiver(\textcolor{keyword}{const}\ Receiver\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00222\ \ \ \ \ Receiver\&\ operator=(\textcolor{keyword}{const}\ Receiver\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00223\ \ \ \ \ Receiver(Receiver\&\&\ move)\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{comment}{//\ CHECK(!used\_);\ \ \ \ \ \ \ //\ Moving\ into\ already-\/used\ Receiver.}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{comment}{//\ CHECK(!move.used\_);\ \ //\ Moving\ from\ already-\/used\ Receiver.}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ scoped\_generic\_\ =\ move.scoped\_generic\_;}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ move.scoped\_generic\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ Receiver\&\ operator=(Receiver\&\&\ move)\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{comment}{//\ CHECK(!used\_);\ \ \ \ \ \ \ //\ Moving\ into\ already-\/used\ Receiver.}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{comment}{//\ CHECK(!move.used\_);\ \ //\ Moving\ from\ already-\/used\ Receiver.}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ scoped\_generic\_\ =\ move.scoped\_generic\_;}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ move.scoped\_generic\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \string~Receiver()\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (scoped\_generic\_)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CHECK(scoped\_generic\_-\/>receiving\_);}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ scoped\_generic\_-\/>Reset(value\_);}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ scoped\_generic\_-\/>receiving\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{//\ We\ hand\ out\ a\ pointer\ to\ a\ field\ in\ Receiver\ instead\ of\ directly\ to}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{comment}{//\ ScopedGeneric's\ internal\ storage\ in\ order\ to\ make\ it\ so\ that\ users\ can't}}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{comment}{//\ accidentally\ silently\ break\ ScopedGeneric's\ invariants.\ This\ way,\ an}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{comment}{//\ incorrect\ use-\/after-\/scope-\/exit\ is\ more\ detectable\ by\ ASan\ or\ static}}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ analysis\ tools,\ as\ the\ pointer\ is\ only\ valid\ for\ the\ lifetime\ of\ the}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{comment}{//\ Receiver,\ not\ the\ ScopedGeneric.}}
+\DoxyCodeLine{00249\ \ \ \ \ T*\ get()\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ used\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&value\_;}
+\DoxyCodeLine{00252\ \ \ \ \ \}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00255\ \ \ \ \ T\ value\_\ =\ Traits::InvalidValue();}
+\DoxyCodeLine{00256\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric<T,\ Traits>}}*\ scoped\_generic\_;}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{comment}{//\ raw\_ptr<ScopedGeneric<T,\ Traits>>\ scoped\_generic\_;}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordtype}{bool}\ used\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00260\ \ \ \};}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{const}\ element\_type\&\ get()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_.generic;\ \}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ this\ object\ doesn't\ hold\ the\ special\ null\ value\ for\ the}}
+\DoxyCodeLine{00265\ \ \ \textcolor{comment}{//\ associated\ data\ type.}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{bool}\ is\_valid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_.generic\ !=\ traits\_type::InvalidValue();\ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ element\_type\&\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_.generic\ ==\ value;}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ element\_type\&\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_.generic\ !=\ value;}
+\DoxyCodeLine{00273\ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ Traits\&\ get\_traits()\ LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{const}\ Traits\&\ get\_traits()\ const\ LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{void}\ FreeIfNecessary()\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\_.generic\ !=\ traits\_type::InvalidValue())\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ TrackRelease(data\_.generic);}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ data\_.Free(data\_.generic);}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ data\_.generic\ =\ traits\_type::InvalidValue();}
+\DoxyCodeLine{00284\ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \textcolor{keywordtype}{void}\ TrackAcquire(\textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::derived\_from<Traits,\ ScopedGenericOwnershipTracking>)\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ !=\ traits\_type::InvalidValue())\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ data\_.Acquire(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}),\ value);}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \textcolor{keywordtype}{void}\ TrackRelease(\textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::derived\_from<Traits,\ ScopedGenericOwnershipTracking>)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ !=\ traits\_type::InvalidValue())\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ data\_.Release(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }\mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric}}\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}),\ value);}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ Forbid\ comparison.\ If\ U\ !=\ T,\ it\ totally\ doesn't\ make\ sense,\ and\ if\ U\ ==}}
+\DoxyCodeLine{00304\ \ \ \textcolor{comment}{//\ T,\ it\ still\ doesn't\ make\ sense\ because\ you\ should\ never\ have\ the\ same}}
+\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ object\ owned\ by\ two\ different\ ScopedGenerics.}}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T2,\ \textcolor{keyword}{typename}\ Traits2>}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric<T2,\ Traits2>}}\&\ p2)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00308\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T2,\ \textcolor{keyword}{typename}\ Traits2>}
+\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a01765b79e9a41354d1750d1a678d1f68}{ScopedGeneric<T2,\ Traits2>}}\&\ p2)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \ \ Data\ data\_;}
+\DoxyCodeLine{00312\ \ \ \textcolor{keywordtype}{bool}\ receiving\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00313\ \};}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00315\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Traits>}
+\DoxyCodeLine{00316\ \textcolor{keywordtype}{void}\ swap(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric<T,\ Traits>}}\&\ a,}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric<T,\ Traits>}}\&\ b)\ \{}
+\DoxyCodeLine{00318\ \ \ a.swap(b);}
+\DoxyCodeLine{00319\ \}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Traits>}
+\DoxyCodeLine{00322\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(\textcolor{keyword}{const}\ T\&\ value,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric<T,\ Traits>}}\&\ scoped)\ \{}
+\DoxyCodeLine{00323\ \ \ \textcolor{keywordflow}{return}\ value\ ==\ scoped.get();}
+\DoxyCodeLine{00324\ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Traits>}
+\DoxyCodeLine{00327\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}}(\textcolor{keyword}{const}\ T\&\ value,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{ScopedGeneric<T,\ Traits>}}\&\ scoped)\ \{}
+\DoxyCodeLine{00328\ \ \ \textcolor{keywordflow}{return}\ value\ !=\ scoped.get();}
+\DoxyCodeLine{00329\ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

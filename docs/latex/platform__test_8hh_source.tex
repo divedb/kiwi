@@ -1,0 +1,35 @@
+\doxysection{platform\+\_\+test.\+hh}
+\hypertarget{platform__test_8hh_source}{}\label{platform__test_8hh_source}\index{include/kiwi/testing/platform\_test.hh@{include/kiwi/testing/platform\_test.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2006-\/2008\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <gtest/gtest.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#if\ defined(GTEST\_OS\_MAC)}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ The\ purpose\ of\ this\ class\ us\ to\ provide\ a\ hook\ for\ platform-\/specific}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ operations\ across\ unit\ tests.\ \ For\ example,\ on\ the\ Mac,\ it\ creates\ and}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ releases\ an\ autorelease\ pool\ for\ each\ test\ case.\ \ For\ now,\ it's\ only}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ implemented\ on\ the\ Mac.\ \ To\ enable\ this\ for\ another\ platform,\ just\ adjust}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ the\ \#ifdefs\ and\ add\ a\ platform\_test\_<platform>.cc\ implementation\ file.}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }PlatformTest\ :\ \textcolor{keyword}{public}\ testing::Test\ \{}
+\DoxyCodeLine{00016\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \string~PlatformTest()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00020\ \ \ PlatformTest();}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}*\ autorelease\_pool\_;}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{using\ }PlatformTest\ =\ testing::Test;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ GTEST\_OS\_MAC}}
+
+\end{DoxyCode}

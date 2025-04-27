@@ -1,0 +1,43 @@
+\doxysection{platform\+\_\+file.\+hh}
+\hypertarget{platform__file_8hh_source}{}\label{platform__file_8hh_source}\index{include/kiwi/io/platform\_file.hh@{include/kiwi/io/platform\_file.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ BASE\_FILES\_PLATFORM\_FILE\_H\_}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ BASE\_FILES\_PLATFORM\_FILE\_H\_}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/scoped\_file.hh"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}base/win/scoped\_handle.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}base/win/windows\_types.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{using\ }PlatformFile\ =\ HANDLE;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{using\ }ScopedPlatformFile\ =\ ::kiwi::win::ScopedHandle;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{const}\ PlatformFile\ kInvalidPlatformFile\ =\ INVALID\_HANDLE\_VALUE;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{using\ }PlatformFile\ =\ int;}
+\DoxyCodeLine{00035\ \textcolor{keyword}{using\ }ScopedPlatformFile\ =\ ::kiwi::ScopedFD;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ PlatformFile\ kInvalidPlatformFile\ =\ -\/1;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_FILES\_PLATFORM\_FILE\_H\_}}
+
+\end{DoxyCode}

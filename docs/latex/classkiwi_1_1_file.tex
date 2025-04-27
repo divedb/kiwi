@@ -1,0 +1,231 @@
+\doxysection{kiwi\+::File Class Reference}
+\hypertarget{classkiwi_1_1_file}{}\label{classkiwi_1_1_file}\index{kiwi::File@{kiwi::File}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619} 
+enum {\bfseries Flags} \+: uint32\+\_\+t \{ \newline
+{\bfseries FLAG\+\_\+\+OPEN} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
+, {\bfseries FLAG\+\_\+\+CREATE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, {\bfseries FLAG\+\_\+\+OPEN\+\_\+\+ALWAYS} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, {\bfseries FLAG\+\_\+\+CREATE\+\_\+\+ALWAYS} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
+, \newline
+{\bfseries FLAG\+\_\+\+OPEN\+\_\+\+TRUNCATED} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
+, {\bfseries FLAG\+\_\+\+READ} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 5
+, {\bfseries FLAG\+\_\+\+WRITE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 6
+, {\bfseries FLAG\+\_\+\+APPEND} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 7
+, \newline
+{\bfseries FLAG\+\_\+\+WIN\+\_\+\+EXCLUSIVE\+\_\+\+READ} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+EXCLUSIVE\+\_\+\+WRITE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 9
+, {\bfseries FLAG\+\_\+\+ASYNC} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 10
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+TEMPORARY} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 11
+, \newline
+{\bfseries FLAG\+\_\+\+WIN\+\_\+\+HIDDEN} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 12
+, {\bfseries FLAG\+\_\+\+DELETE\+\_\+\+ON\+\_\+\+CLOSE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 13
+, {\bfseries FLAG\+\_\+\+WRITE\+\_\+\+ATTRIBUTES} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 14
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+SHARE\+\_\+\+DELETE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 15
+, \newline
+{\bfseries FLAG\+\_\+\+TERMINAL\+\_\+\+DEVICE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 16
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+BACKUP\+\_\+\+SEMANTICS} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 17
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+EXECUTE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 18
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+SEQUENTIAL\+\_\+\+SCAN} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 19
+, \newline
+{\bfseries FLAG\+\_\+\+CAN\+\_\+\+DELETE\+\_\+\+ON\+\_\+\+CLOSE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 20
+, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+NO\+\_\+\+EXECUTE}
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}\label{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609} 
+enum {\bfseries Error} \{ \newline
+{\bfseries FILE\+\_\+\+OK} = 0
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+FAILED} = -\/1
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+IN\+\_\+\+USE} = -\/2
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+EXISTS} = -\/3
+, \newline
+{\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+FOUND} = -\/4
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+ACCESS\+\_\+\+DENIED} = -\/5
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+TOO\+\_\+\+MANY\+\_\+\+OPENED} = -\/6
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NO\+\_\+\+MEMORY} = -\/7
+, \newline
+{\bfseries FILE\+\_\+\+ERROR\+\_\+\+NO\+\_\+\+SPACE} = -\/8
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+A\+\_\+\+DIRECTORY} = -\/9
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+INVALID\+\_\+\+OPERATION} = -\/10
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+SECURITY} = -\/11
+, \newline
+{\bfseries FILE\+\_\+\+ERROR\+\_\+\+ABORT} = -\/12
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+A\+\_\+\+FILE} = -\/13
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+EMPTY} = -\/14
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+INVALID\+\_\+\+URL} = -\/15
+, \newline
+{\bfseries FILE\+\_\+\+ERROR\+\_\+\+IO} = -\/16
+, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+MAX} = -\/17
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}\label{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572} 
+enum {\bfseries Whence} \{ {\bfseries FROM\+\_\+\+BEGIN} = 0
+, {\bfseries FROM\+\_\+\+CURRENT} = 1
+, {\bfseries FROM\+\_\+\+END} = 2
+ \}
+\item 
+\Hypertarget{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482}\label{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482} 
+enum class {\bfseries Lock\+Mode} \{ {\bfseries k\+Shared}
+, {\bfseries k\+Exclusive}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}\label{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387} 
+{\bfseries File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
+\item 
+\Hypertarget{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}\label{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0} 
+{\bfseries File} (Scoped\+Platform\+File platform\+\_\+file)
+\item 
+\Hypertarget{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899}\label{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899} 
+{\bfseries File} (Platform\+File platform\+\_\+file)
+\item 
+\Hypertarget{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}\label{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03} 
+{\bfseries File} (Scoped\+Platform\+File platform\+\_\+file, bool async)
+\item 
+\Hypertarget{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f}\label{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f} 
+{\bfseries File} (Platform\+File platform\+\_\+file, bool async)
+\item 
+\Hypertarget{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049}\label{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049} 
+{\bfseries File} (Error error\+\_\+details)
+\item 
+\Hypertarget{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4}\label{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4} 
+{\bfseries File} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
+\item 
+\Hypertarget{classkiwi_1_1_file_a8f6e8789b320c737acda0ba394ae6ecc}\label{classkiwi_1_1_file_a8f6e8789b320c737acda0ba394ae6ecc} 
+{\bfseries File} (const \mbox{\hyperlink{classkiwi_1_1_file}{File}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1_file_a4ba891743e59b7c6807bbcdb9288087a}\label{classkiwi_1_1_file_a4ba891743e59b7c6807bbcdb9288087a} 
+\mbox{\hyperlink{classkiwi_1_1_file}{File}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_file}{File}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1_file_a7c2ae7d574cb16e26a59407554428ec8}\label{classkiwi_1_1_file_a7c2ae7d574cb16e26a59407554428ec8} 
+\mbox{\hyperlink{classkiwi_1_1_file}{File}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
+\item 
+\Hypertarget{classkiwi_1_1_file_a277a950e2310f6868d23d8e49ba2384e}\label{classkiwi_1_1_file_a277a950e2310f6868d23d8e49ba2384e} 
+void {\bfseries Initialize} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
+\item 
+\Hypertarget{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}\label{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940} 
+bool {\bfseries Is\+Valid} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_aba4b8779d5377d5b06d97e8e14dc2fc4}\label{classkiwi_1_1_file_aba4b8779d5377d5b06d97e8e14dc2fc4} 
+bool {\bfseries created} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_aacb3338d0a736a736d3ca83053bfeb65}\label{classkiwi_1_1_file_aacb3338d0a736a736d3ca83053bfeb65} 
+Error {\bfseries error\+\_\+details} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_a424ce3170ab9b04ed3a03d85935c16d1}\label{classkiwi_1_1_file_a424ce3170ab9b04ed3a03d85935c16d1} 
+Platform\+File {\bfseries Get\+Platform\+File} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_aa40189ee3bc513c9e9a340053ba46de8}\label{classkiwi_1_1_file_aa40189ee3bc513c9e9a340053ba46de8} 
+Platform\+File {\bfseries Take\+Platform\+File} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_a5632f8ac891e6c3a2353aab99fb19791}\label{classkiwi_1_1_file_a5632f8ac891e6c3a2353aab99fb19791} 
+void {\bfseries Close} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4}\label{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4} 
+int64\+\_\+t {\bfseries Seek} (Whence whence, int64\+\_\+t offset)
+\item 
+\Hypertarget{classkiwi_1_1_file_af5fa1f9f3506b2e02aea1aa8f0e2d5e0}\label{classkiwi_1_1_file_af5fa1f9f3506b2e02aea1aa8f0e2d5e0} 
+bool {\bfseries Read\+And\+Check} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a0a40335083f996f7e64ba9d5f6ae0fec}\label{classkiwi_1_1_file_a0a40335083f996f7e64ba9d5f6ae0fec} 
+bool {\bfseries Read\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_afe8653746eba5a524b14c8692adf7bdb}\label{classkiwi_1_1_file_afe8653746eba5a524b14c8692adf7bdb} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_a5240f205ddd91d6b7f59d0b960a282d5}\label{classkiwi_1_1_file_a5240f205ddd91d6b7f59d0b960a282d5} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a6eaf56053758a88e12e89d9c248fa563}\label{classkiwi_1_1_file_a6eaf56053758a88e12e89d9c248fa563} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+At\+Current\+Pos} (char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_a6145138e263aadb88303a921ee7e262f}\label{classkiwi_1_1_file_a6145138e263aadb88303a921ee7e262f} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+At\+Current\+Pos} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a8a7ffbb6090101f8296aa2b61d9f08f9}\label{classkiwi_1_1_file_a8a7ffbb6090101f8296aa2b61d9f08f9} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+No\+Best\+Effort} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_a472be55b66f6891c066143e0aa4491c9}\label{classkiwi_1_1_file_a472be55b66f6891c066143e0aa4491c9} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+No\+Best\+Effort} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_abeb16639e3a3486914a5f96933c995ad}\label{classkiwi_1_1_file_abeb16639e3a3486914a5f96933c995ad} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+At\+Current\+Pos\+No\+Best\+Effort} (char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_acb20fbb8d9357641363478587996eee3}\label{classkiwi_1_1_file_acb20fbb8d9357641363478587996eee3} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+At\+Current\+Pos\+No\+Best\+Effort} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e}\label{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e} 
+bool {\bfseries Write\+And\+Check} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a4f07a8790ebdf12c0da72d7fb7ee6bf1}\label{classkiwi_1_1_file_a4f07a8790ebdf12c0da72d7fb7ee6bf1} 
+bool {\bfseries Write\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_afad48310e64920383c6d6e3d0ef8eec6}\label{classkiwi_1_1_file_afad48310e64920383c6d6e3d0ef8eec6} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write} (int64\+\_\+t offset, const char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_a6ca850368f70477f71e8a2b2f02efacd}\label{classkiwi_1_1_file_a6ca850368f70477f71e8a2b2f02efacd} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a98500ccbe3bb72cddb2a2cc5c2660781}\label{classkiwi_1_1_file_a98500ccbe3bb72cddb2a2cc5c2660781} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write\+At\+Current\+Pos} (const char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_afae6ec38532e1c29a237a2890b925772}\label{classkiwi_1_1_file_afae6ec38532e1c29a237a2890b925772} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write\+At\+Current\+Pos} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_a9e79090eca58b68f6fe0854c25c42d7d}\label{classkiwi_1_1_file_a9e79090eca58b68f6fe0854c25c42d7d} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write\+At\+Current\+Pos\+No\+Best\+Effort} (const char \texorpdfstring{$\ast$}{*}data, int size)
+\item 
+\Hypertarget{classkiwi_1_1_file_a813d31de9d083a53ee8e4b500a4f3486}\label{classkiwi_1_1_file_a813d31de9d083a53ee8e4b500a4f3486} 
+std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write\+At\+Current\+Pos\+No\+Best\+Effort} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
+\item 
+\Hypertarget{classkiwi_1_1_file_abd19c022f7bb41f90cdc1e23d82297ab}\label{classkiwi_1_1_file_abd19c022f7bb41f90cdc1e23d82297ab} 
+int64\+\_\+t {\bfseries Get\+Length} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_a9a73ffd32434c4ee55f22e6793dfe511}\label{classkiwi_1_1_file_a9a73ffd32434c4ee55f22e6793dfe511} 
+bool {\bfseries Set\+Length} (int64\+\_\+t length)
+\item 
+\Hypertarget{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}\label{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3} 
+bool {\bfseries Flush} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_a11ac8cb486c052c627b4fdefaabb18bf}\label{classkiwi_1_1_file_a11ac8cb486c052c627b4fdefaabb18bf} 
+bool {\bfseries Get\+Info} (\mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}} \texorpdfstring{$\ast$}{*}info) const
+\item 
+\Hypertarget{classkiwi_1_1_file_a008513b2f5917d686632c19044c5eeeb}\label{classkiwi_1_1_file_a008513b2f5917d686632c19044c5eeeb} 
+Error {\bfseries Lock} (Lock\+Mode mode)
+\item 
+\Hypertarget{classkiwi_1_1_file_a9b1f9909e952819d2a5ee5ac349deca3}\label{classkiwi_1_1_file_a9b1f9909e952819d2a5ee5ac349deca3} 
+Error {\bfseries Unlock} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_af84dfd24529df2f4f029b9ebb911edbb}\label{classkiwi_1_1_file_af84dfd24529df2f4f029b9ebb911edbb} 
+\mbox{\hyperlink{classkiwi_1_1_file}{File}} {\bfseries Duplicate} () const
+\item 
+\Hypertarget{classkiwi_1_1_file_a9f7fd2c79ebce1de2d1d4b81a3331a85}\label{classkiwi_1_1_file_a9f7fd2c79ebce1de2d1d4b81a3331a85} 
+bool {\bfseries async} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_file_ae9664bd051841a1bb115196e8c795a1b}\label{classkiwi_1_1_file_ae9664bd051841a1bb115196e8c795a1b} 
+static Error {\bfseries Get\+Last\+File\+Error} ()
+\item 
+\Hypertarget{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae}\label{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae} 
+static std\+::string {\bfseries Error\+To\+String} (Error error)
+\item 
+\Hypertarget{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8}\label{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8} 
+static constexpr uint32\+\_\+t {\bfseries Add\+Flags\+For\+Passing\+To\+Untrusted\+Process} (uint32\+\_\+t flags)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/io/file.\+hh\item 
+src/io/file.\+cc\end{DoxyCompactItemize}

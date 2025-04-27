@@ -1,0 +1,51 @@
+\doxysection{always\+\_\+false.\+hh}
+\hypertarget{always__false_8hh_source}{}\label{always__false_8hh_source}\index{include/kiwi/types/always\_false.hh@{include/kiwi/types/always\_false.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2022\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ A\ helper\ that\ can\ be\ used\ with\ a\ static\_assert()\ that\ must\ always\ fail\ (e.g.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ for\ an\ undesirable\ template\ instantiation).\ Such\ a\ static\_assert()\ cannot}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ simply\ be\ written\ as\ static\_assert(false,\ ...)\ because\ that\ would\ always\ fail}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ to\ compile,\ even\ if\ the\ template\ was\ never\ instantiated.\ Instead,\ a\ common}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ idiom\ is\ to\ force\ the\ static\_assert()\ to\ depend\ on\ a\ template\ parameter\ so}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ that\ it\ is\ only\ evaluated\ when\ the\ template\ is\ instantiated:}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ template\ <typename\ U\ =\ T>}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ void\ SomeDangerousMethodThatShouldNeverCompile()\ \{}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ static\_assert(base::AlwaysFalse<U>,\ "{}explanatory\ message\ here"{});}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ The\ issue\ of\ not\ being\ able\ to\ use\ static\_assert(false,\ ...)\ in\ a}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ non-\/instantiated\ template\ was\ fixed\ in\ C++23.\ When\ Chromium\ switches\ to}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ building\ with\ C++23,\ remove\ this\ file\ and\ use\ false\ directly,\ and\ search}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ across\ the\ Chromium\ codebase\ for\ "{}AlwaysFalse"{},\ as\ there\ are\ other}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ implementations\ in\ places\ that\ cannot\ depend\ on\ this\ file.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ References:}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ -\/\ https://www.open-\/std.org/jtc1/sc22/wg21/docs/papers/2022/p2593r0.html}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ -\/\ https://github.com/cplusplus/papers/issues/1251}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00035\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_always_false_helper}{AlwaysFalseHelper}}\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kValue\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00042\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ AlwaysFalse\ =}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1internal_1_1_always_false_helper}{internal::AlwaysFalseHelper}}<Args...>::kValue;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

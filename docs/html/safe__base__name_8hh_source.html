@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>kiwi: include/kiwi/files/safe_base_name.hh Source File</title>
+<title>kiwi: include/kiwi/io/safe_base_name.hh Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -113,11 +113,11 @@ $(function(){initNavTree('safe__base__name_8hh_source.html',''); initResizable(t
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;kiwi/config/base_export.hh&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;kiwi/config/compiler_specific.hh&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;kiwi/files/file_path.hh&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;kiwi/io/file_path.hh&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;kiwi/portability/base_export.hh&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;kiwi/portability/compiler_specific.hh&quot;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span>kiwi {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacekiwi.html">kiwi</a> {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span></div>
 <div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classkiwi_1_1_safe_base_name.html">   26</a></span><span class="keyword">class </span>BASE_EXPORT SafeBaseName {</div>
@@ -149,7 +149,7 @@ $(function(){initNavTree('safe__base__name_8hh_source.html',''); initResizable(t
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
 </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="dense__map_8hh.html#a008449c6439d3cbc96cc662630b49736">operator!=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a>&amp; that)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacekiwi.html#a008449c6439d3cbc96cc662630b49736">operator!=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_safe_base_name.html">SafeBaseName</a>&amp; that)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == that);</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
@@ -168,13 +168,14 @@ $(function(){initNavTree('safe__base__name_8hh_source.html',''); initResizable(t
 <div class="ttc" id="aclasskiwi_1_1_safe_base_name_html_a9cd6fda74d2d6a602a3e2cfc739c4d9c"><div class="ttname"><a href="classkiwi_1_1_safe_base_name.html#a9cd6fda74d2d6a602a3e2cfc739c4d9c">kiwi::SafeBaseName::value</a></div><div class="ttdeci">const FilePath::StringType &amp; value() const LIFETIME_BOUND</div><div class="ttdef"><b>Definition</b> safe_base_name.hh:60</div></div>
 <div class="ttc" id="aclasskiwi_1_1_safe_base_name_html_ad4d5eaeb3de0e3fab3983c5f24933d96"><div class="ttname"><a href="classkiwi_1_1_safe_base_name.html#ad4d5eaeb3de0e3fab3983c5f24933d96">kiwi::SafeBaseName::AsUTF8Unsafe</a></div><div class="ttdeci">const std::string AsUTF8Unsafe() const</div><div class="ttdef"><b>Definition</b> safe_base_name.hh:57</div></div>
 <div class="ttc" id="aclasskiwi_1_1_safe_base_name_html_af986a9df8652b1522ef04f3c4ab5fa71"><div class="ttname"><a href="classkiwi_1_1_safe_base_name.html#af986a9df8652b1522ef04f3c4ab5fa71">kiwi::SafeBaseName::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition</b> safe_base_name.hh:65</div></div>
-<div class="ttc" id="adense__map_8hh_html_a008449c6439d3cbc96cc662630b49736"><div class="ttname"><a href="dense__map_8hh.html#a008449c6439d3cbc96cc662630b49736">kiwi::operator!=</a></div><div class="ttdeci">bool operator!=(const DenseMapBase&lt; DerivedT, KeyT, ValueT, KeyInfoT, BucketT &gt; &amp;LHS, const DenseMapBase&lt; DerivedT, KeyT, ValueT, KeyInfoT, BucketT &gt; &amp;RHS)</div><div class="ttdef"><b>Definition</b> dense_map.hh:734</div></div>
+<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> file.cc:23</div></div>
+<div class="ttc" id="anamespacekiwi_html_a008449c6439d3cbc96cc662630b49736"><div class="ttname"><a href="namespacekiwi.html#a008449c6439d3cbc96cc662630b49736">kiwi::operator!=</a></div><div class="ttdeci">bool operator!=(const DenseMapBase&lt; DerivedT, KeyT, ValueT, KeyInfoT, BucketT &gt; &amp;LHS, const DenseMapBase&lt; DerivedT, KeyT, ValueT, KeyInfoT, BucketT &gt; &amp;RHS)</div><div class="ttdef"><b>Definition</b> dense_map.hh:734</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_602883e5d098af516ca12f13d12399cf.html">kiwi</a></li><li class="navelem"><a class="el" href="dir_d05212bb1f120a6ed368b7d8fdd30a57.html">files</a></li><li class="navelem"><b>safe_base_name.hh</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_602883e5d098af516ca12f13d12399cf.html">kiwi</a></li><li class="navelem"><a class="el" href="dir_d7fcfa69ffe280f061c1039c1c6ee065.html">io</a></li><li class="navelem"><b>safe_base_name.hh</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

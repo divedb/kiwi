@@ -1,0 +1,11 @@
+\doxysection{kiwi\+::internal\+::Span\+Converts\+To\+String\+View Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_span_converts_to_string_view}{}\label{conceptkiwi_1_1internal_1_1_span_converts_to_string_view}\index{kiwi::internal::SpanConvertsToStringView@{kiwi::internal::SpanConvertsToStringView}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_converts_to_string_view}{kiwi::internal::SpanConvertsToStringView}}\ =\ \ \textcolor{keyword}{requires}\ \{}
+\DoxyCodeLine{\ \ \{\ as\_string\_view(\mbox{\hyperlink{classkiwi_1_1span}{span<T>}}())\ \};}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

@@ -1,0 +1,20 @@
+\doxysection{kiwi\+::internal\+::Supports\+Ostream\+Operator Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_supports_ostream_operator}{}\label{conceptkiwi_1_1internal_1_1_supports_ostream_operator}\index{kiwi::internal::SupportsOstreamOperator@{kiwi::internal::SupportsOstreamOperator}}
+
+
+{\ttfamily \#include $<$supports\+\_\+ostream\+\_\+operator.\+hh$>$}
+
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_supports_ostream_operator}{kiwi::internal::SupportsOstreamOperator}}\ =\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{requires}(\textcolor{keyword}{const}\ T\&\ t,\ std::ostream\&\ os)\ \{\ os\ <<\ t;\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Detailed Description}
+Detects whether using operator\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} would work.
+
+Note that the above \#include of $<$ostream$>$ is necessary to guarantee consistent results here for basic types. 

@@ -1,0 +1,22 @@
+\doxysection{include/kiwi/support/error\+\_\+or.hh File Reference}
+\hypertarget{error__or_8hh}{}\label{error__or_8hh}\index{include/kiwi/support/error\_or.hh@{include/kiwi/support/error\_or.hh}}
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$system\+\_\+error$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include "{}kiwi/support/align\+\_\+of.\+hh"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classchibicpp_1_1_error_or}{chibicpp\+::\+Error\+Or$<$ T $>$}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{error__or_8hh_abab2c8a0af9dab7e913d68c92fe5a903}\label{error__or_8hh_abab2c8a0af9dab7e913d68c92fe5a903} 
+{\footnotesize template$<$typename T, typename E$>$ }\\std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+error\+\_\+code\+\_\+enum$<$ E $>$\+::value\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}std\+::is\+\_\+error\+\_\+condition\+\_\+enum$<$ E $>$\+::value, bool $>$ {\bfseries chibicpp\+::operator==} (const \mbox{\hyperlink{classchibicpp_1_1_error_or}{Error\+Or}}$<$ T $>$ \&err, E code)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides Error\+Or$<$\+T$>$ smart pointer. 

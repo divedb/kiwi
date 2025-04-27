@@ -1,0 +1,10 @@
+\doxysection{kiwi\+::internal\+::Will\+Be\+Incorrectly\+Streamed\+As\+Bool Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_will_be_incorrectly_streamed_as_bool}{}\label{conceptkiwi_1_1internal_1_1_will_be_incorrectly_streamed_as_bool}\index{kiwi::internal::WillBeIncorrectlyStreamedAsBool@{kiwi::internal::WillBeIncorrectlyStreamedAsBool}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_will_be_incorrectly_streamed_as_bool}{kiwi::internal::WillBeIncorrectlyStreamedAsBool}}\ =\ }
+\DoxyCodeLine{\ \ \ \ std::is\_function\_v<std::remove\_pointer\_t<T>>}
+
+\end{DoxyCode}

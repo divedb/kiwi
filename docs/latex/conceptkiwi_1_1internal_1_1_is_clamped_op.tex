@@ -1,0 +1,11 @@
+\doxysection{kiwi\+::internal\+::Is\+Clamped\+Op Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_is_clamped_op}{}\label{conceptkiwi_1_1internal_1_1_is_clamped_op}\index{kiwi::internal::IsClampedOp@{kiwi::internal::IsClampedOp}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_op}{kiwi::internal::IsClampedOp}}\ =\ }
+\DoxyCodeLine{\ \ \ \ !\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_checked_op}{IsCheckedOp<L,\ R>}}\ \&\&\ ((\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_numeric}{IsClampedNumeric<L>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<R>}})\ ||}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_clamped_numeric}{IsClampedNumeric<R>}}\ \&\&\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<L>}}))}
+
+\end{DoxyCode}

@@ -1,0 +1,101 @@
+\doxysection{kiwi\+::Checked\+Contiguous\+Iterator\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_checked_contiguous_iterator}{}\label{classkiwi_1_1_checked_contiguous_iterator}\index{kiwi::CheckedContiguousIterator$<$ T $>$@{kiwi::CheckedContiguousIterator$<$ T $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a5b991f11d1ebf3a702246c119f037f2f}\label{classkiwi_1_1_checked_contiguous_iterator_a5b991f11d1ebf3a702246c119f037f2f} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a19867c96fd508713a94de5906173f0b5}\label{classkiwi_1_1_checked_contiguous_iterator_a19867c96fd508713a94de5906173f0b5} 
+using {\bfseries value\+\_\+type} = std\+::remove\+\_\+cv\+\_\+t$<$T$>$
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a48b7efda15864e1bbf76d32d7b708ba8}\label{classkiwi_1_1_checked_contiguous_iterator_a48b7efda15864e1bbf76d32d7b708ba8} 
+using {\bfseries pointer} = T\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a6fc3621ae180858e5aad3b57d9aa681b}\label{classkiwi_1_1_checked_contiguous_iterator_a6fc3621ae180858e5aad3b57d9aa681b} 
+using {\bfseries reference} = T\&
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_aa820cbf88e8d9f2c0ea6197a2a4ae93a}\label{classkiwi_1_1_checked_contiguous_iterator_aa820cbf88e8d9f2c0ea6197a2a4ae93a} 
+using {\bfseries iterator\+\_\+category} = std\+::contiguous\+\_\+iterator\+\_\+tag
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a5147728f2c8665866d0d1ab1ef4f0ed6}\label{classkiwi_1_1_checked_contiguous_iterator_a5147728f2c8665866d0d1ab1ef4f0ed6} 
+using {\bfseries iterator\+\_\+concept} = std\+::contiguous\+\_\+iterator\+\_\+tag
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a816380bcda39b29ef0e50e93171c6198}\label{classkiwi_1_1_checked_contiguous_iterator_a816380bcda39b29ef0e50e93171c6198} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries Checked\+Contiguous\+Iterator} (T \texorpdfstring{$\ast$}{*}start, const T \texorpdfstring{$\ast$}{*}end)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a764ade36bff80bf223b5cb65e3ec200b}\label{classkiwi_1_1_checked_contiguous_iterator_a764ade36bff80bf223b5cb65e3ec200b} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries Checked\+Contiguous\+Iterator} (const T \texorpdfstring{$\ast$}{*}start, T \texorpdfstring{$\ast$}{*}current, const T \texorpdfstring{$\ast$}{*}end)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a23c49994cb4061789060eebaccd64b2a}\label{classkiwi_1_1_checked_contiguous_iterator_a23c49994cb4061789060eebaccd64b2a} 
+constexpr {\bfseries Checked\+Contiguous\+Iterator} (const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&other)=default
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a65cf0a60e26efcd1e6f44607faf301df}\label{classkiwi_1_1_checked_contiguous_iterator_a65cf0a60e26efcd1e6f44607faf301df} 
+{\footnotesize template$<$typename U$>$ \newline
+requires (std\+::convertible\+\_\+to$<$U (\texorpdfstring{$\ast$}{*})\mbox{[}$\,$\mbox{]}, T (\texorpdfstring{$\ast$}{*})\mbox{[}$\,$\mbox{]}$>$)}\\constexpr {\bfseries Checked\+Contiguous\+Iterator} (const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}}$<$ U $>$ \&other)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_af8f1830522d90f91bf07d3e98e25e7c3}\label{classkiwi_1_1_checked_contiguous_iterator_af8f1830522d90f91bf07d3e98e25e7c3} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&other)=default
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a63f1173c9f6fadcb6b7420f3b6e38831}\label{classkiwi_1_1_checked_contiguous_iterator_a63f1173c9f6fadcb6b7420f3b6e38831} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \& {\bfseries operator++} ()
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_af5afc6dd51c24e1d3a0280d51f7ad407}\label{classkiwi_1_1_checked_contiguous_iterator_af5afc6dd51c24e1d3a0280d51f7ad407} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} {\bfseries operator++} (int)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a0658a36ea2a8d237b6fd5c1e9b2de1df}\label{classkiwi_1_1_checked_contiguous_iterator_a0658a36ea2a8d237b6fd5c1e9b2de1df} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \& {\bfseries operator-\/-\/} ()
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a16ec1c8edff9e852f6c16f603b1229d7}\label{classkiwi_1_1_checked_contiguous_iterator_a16ec1c8edff9e852f6c16f603b1229d7} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} {\bfseries operator-\/-\/} (int)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a5c7c1b20008e5856fb5950f3b0cfd416}\label{classkiwi_1_1_checked_contiguous_iterator_a5c7c1b20008e5856fb5950f3b0cfd416} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \& {\bfseries operator+=} (difference\+\_\+type rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a567b83d9b3b0802bd80bb9bb70939684}\label{classkiwi_1_1_checked_contiguous_iterator_a567b83d9b3b0802bd80bb9bb70939684} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} {\bfseries operator+} (difference\+\_\+type rhs) const
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a050ee64ff201c891fd5abcd1acc63f7a}\label{classkiwi_1_1_checked_contiguous_iterator_a050ee64ff201c891fd5abcd1acc63f7a} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \& {\bfseries operator-\/=} (difference\+\_\+type rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a0a1da4e1495a03bc6178b778fa170c5e}\label{classkiwi_1_1_checked_contiguous_iterator_a0a1da4e1495a03bc6178b778fa170c5e} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} {\bfseries operator-\/} (difference\+\_\+type rhs) const
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a1ed6075332394f9957d94de24f0d0f22}\label{classkiwi_1_1_checked_contiguous_iterator_a1ed6075332394f9957d94de24f0d0f22} 
+constexpr reference {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a49203e0f4e09f66a959c03ab8cfb5fb8}\label{classkiwi_1_1_checked_contiguous_iterator_a49203e0f4e09f66a959c03ab8cfb5fb8} 
+constexpr pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_ab6ed9567274eedc64525231744d3163b}\label{classkiwi_1_1_checked_contiguous_iterator_ab6ed9567274eedc64525231744d3163b} 
+constexpr reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (difference\+\_\+type rhs) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_ac731749f3c2d6094b50afa511c262d0f}\label{classkiwi_1_1_checked_contiguous_iterator_ac731749f3c2d6094b50afa511c262d0f} 
+{\footnotesize template$<$typename Ptr$>$ }\\struct {\bfseries std\+::pointer\+\_\+traits}
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a4f7a906bf15d4720d55ac1466ef1cb9e}\label{classkiwi_1_1_checked_contiguous_iterator_a4f7a906bf15d4720d55ac1466ef1cb9e} 
+{\footnotesize template$<$typename, size\+\_\+t, typename$>$ }\\class {\bfseries span}
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_a181e916a45e9b87619d7ec9427703206}\label{classkiwi_1_1_checked_contiguous_iterator_a181e916a45e9b87619d7ec9427703206} 
+constexpr bool {\bfseries operator==} (const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&lhs, const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_ae8ad05576065c62e8576d0cabd2f6a5c}\label{classkiwi_1_1_checked_contiguous_iterator_ae8ad05576065c62e8576d0cabd2f6a5c} 
+constexpr auto {\bfseries operator$<$=$>$} (const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&lhs, const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_aa5c98dc3fadaef64c025029e90d26709}\label{classkiwi_1_1_checked_contiguous_iterator_aa5c98dc3fadaef64c025029e90d26709} 
+constexpr friend \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} {\bfseries operator+} (difference\+\_\+type lhs, const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_contiguous_iterator_aebd6a3095f9c4267ff3012dd67958d23}\label{classkiwi_1_1_checked_contiguous_iterator_aebd6a3095f9c4267ff3012dd67958d23} 
+constexpr friend difference\+\_\+type {\bfseries operator-\/} (const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&lhs, const \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}} \&rhs)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/containers/checked\+\_\+iterators.\+hh\end{DoxyCompactItemize}

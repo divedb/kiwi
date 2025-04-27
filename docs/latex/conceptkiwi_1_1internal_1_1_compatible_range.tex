@@ -1,0 +1,17 @@
+\doxysection{kiwi\+::internal\+::Compatible\+Range Concept Reference}
+\hypertarget{conceptkiwi_1_1internal_1_1_compatible_range}{}\label{conceptkiwi_1_1internal_1_1_compatible_range}\index{kiwi::internal::CompatibleRange@{kiwi::internal::CompatibleRange}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{kiwi::internal::CompatibleRange}}\ =\ }
+\DoxyCodeLine{\ \ \ \ std::ranges::contiguous\_range<R>\ \&\&\ std::ranges::sized\_range<R>\ \&\&}
+\DoxyCodeLine{\ \ \ \ (std::ranges::borrowed\_range<R>\ ||\ (std::is\_const\_v<T>))\ \&\&}
+\DoxyCodeLine{\ \ \ \ }
+\DoxyCodeLine{\ \ \ \ (!kIsSpan<std::remove\_cvref\_t<R>>\ \&\&}
+\DoxyCodeLine{\ \ \ \ \ }
+\DoxyCodeLine{\ \ \ \ \ (!std::is\_array\_v<std::remove\_cvref\_t<R>>))\ \&\&}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion}}<}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ std::remove\_reference\_t<std::ranges::range\_reference\_t<R>>,\ T>}
+
+\end{DoxyCode}

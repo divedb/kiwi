@@ -1,0 +1,69 @@
+\doxysection{kiwi\+::Scoped\+Generic\+Ownership\+Tracking Struct Reference}
+\hypertarget{structkiwi_1_1_scoped_generic_ownership_tracking}{}\label{structkiwi_1_1_scoped_generic_ownership_tracking}\index{kiwi::ScopedGenericOwnershipTracking@{kiwi::ScopedGenericOwnershipTracking}}
+
+
+{\ttfamily \#include $<$scoped\+\_\+generic.\+hh$>$}
+
+
+
+\doxysubsection{Detailed Description}
+This class acts like {\ttfamily unique\+\_\+ptr} with a custom deleter (although is slightly less fancy in some of the more escoteric respects) except that it keeps a copy of the object rather than a pointer, and we require that the contained object has some kind of "{}invalid"{} value.
+
+Defining a scoper based on this class allows you to get a scoper for non-\/pointer types without having to write custom code for set, reset, and move, etc. and get almost identical semantics that people are used to from {\ttfamily unique\+\_\+ptr}.
+
+It is intended that you will typedef this class with an appropriate deleter to implement clean up tasks for objects that act like pointers from a resource management standpoint but aren\textquotesingle{}t, such as file descriptors and various types of operating system handles. Using {\ttfamily unique\+\_\+ptr} for these things requires that you keep a pointer to the handle valid for the lifetime of the scoper (which is easy to mess up).
+
+For an object to be able to be put into a \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}, it must support standard copyable semantics and have a specific "{}invalid"{} value. The traits must define a free function and also the invalid value to assign for default-\/constructed and released objects.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{struct\ }FooScopedTraits\ \{}
+\DoxyCodeLine{\ \ \textcolor{comment}{//\ It's\ assumed\ that\ this\ is\ a\ fast\ inline\ function\ with\ little-\/to-\/no}}
+\DoxyCodeLine{\ \ \textcolor{comment}{//\ penalty\ for\ duplicate\ calls.\ This\ must\ be\ a\ static\ function\ even}}
+\DoxyCodeLine{\ \ \textcolor{comment}{//\ for\ stateful\ traits.}}
+\DoxyCodeLine{\ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ InvalidValue()\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \textcolor{comment}{//\ This\ free\ function\ will\ not\ be\ called\ if\ f\ ==\ InvalidValue()!}}
+\DoxyCodeLine{\ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Free(\textcolor{keywordtype}{int}\ f)\ \{}
+\DoxyCodeLine{\ \ \ \ ::FreeFoo(f);}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \textcolor{keyword}{using\ }ScopedFoo\ =\ ScopedGeneric<int,\ FooScopedTraits>;}
+
+\end{DoxyCode}
+
+
+A Traits type may choose to track ownership of objects in parallel with \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}. To do so, it must implement the Acquire and Release methods, which will be called by \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} during ownership transfers and extend the \doxylink{structkiwi_1_1_scoped_generic_ownership_tracking}{Scoped\+Generic\+Ownership\+Tracking} tag type.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{struct\ }BarScopedTraits\ :\ \textcolor{keyword}{public}\ ScopedGenericOwnershipTracking\ \{}
+\DoxyCodeLine{\ \ \textcolor{keyword}{using\ }ScopedGenericType\ =\ ScopedGeneric<int,\ BarScopedTraits>;}
+\DoxyCodeLine{\ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ InvalidValue()\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Free(\textcolor{keywordtype}{int}\ b)\ \{}
+\DoxyCodeLine{\ \ \ \ ::FreeBar(b);}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Acquire(\textcolor{keyword}{const}\ ScopedGenericType\&\ owner,\ \textcolor{keywordtype}{int}\ b)\ \{}
+\DoxyCodeLine{\ \ \ \ ::TrackAcquisition(b,\ owner);}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Release(\textcolor{keyword}{const}\ ScopedGenericType\&\ owner,\ \textcolor{keywordtype}{int}\ b)\ \{}
+\DoxyCodeLine{\ \ \ \ ::TrackRelease(b,\ owner);}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using\ }ScopedBar\ =\ ScopedGeneric<int,\ BarScopedTraits>;}
+
+\end{DoxyCode}
+ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/scoped\+\_\+generic.\+hh\end{DoxyCompactItemize}

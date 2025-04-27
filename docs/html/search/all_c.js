@@ -1,8 +1,14 @@
 var searchData=
 [
-  ['operator_21_3d_0',['operator!=',['../dense__map_8hh.html#a008449c6439d3cbc96cc662630b49736',1,'kiwi']]],
-  ['operator_2b_2b_1',['operator++',['../classkiwi_1_1_not_null.html#a4f7e3debb41e401bc7be5892457ab2dc',1,'kiwi::NotNull::operator++()'],['../classkiwi_1_1_strict_not_null.html#a5ebff0ebc8e520c9a339f609c11a04a1',1,'kiwi::StrictNotNull::operator++()']]],
-  ['operator_3c_3d_3e_2',['operator&lt;=&gt;',['../classkiwi_1_1_file_path.html#a0521858e6819bd9bf6374d0d08cb7830',1,'kiwi::FilePath']]],
-  ['operator_3d_3',['operator=',['../classkiwi_1_1_file_path.html#abdf7f6cc8034af130e606ed05f43fc87',1,'kiwi::FilePath::operator=(const FilePath &amp;that)'],['../classkiwi_1_1_file_path.html#a6f73d30fad8ae281c8b79d5c236349e8',1,'kiwi::FilePath::operator=(FilePath &amp;&amp;that) noexcept'],['../classkiwi_1_1_string_ref.html#ac6ece4fee89a52742f085812446d09a1',1,'kiwi::StringRef::operator=()']]],
-  ['operator_3d_3d_4',['operator==',['../classkiwi_1_1_file_path.html#ab436d196545762fb3b6588d1bc172547',1,'kiwi::FilePath::operator==()'],['../classkiwi_1_1_safe_base_name.html#a6f7b783641055cd976e7421a1d9cbcbe',1,'kiwi::SafeBaseName::operator==()'],['../dense__map_8hh.html#a0d27e9ac9b943e14361fe2ba7ec21a46',1,'kiwi::operator==()']]]
+  ['narrowingrange_0',['NarrowingRange',['../structkiwi_1_1internal_1_1_narrowing_range.html',1,'kiwi::internal']]],
+  ['next_1',['next',['../classkiwi_1_1_i_o_buf.html#a16b90f8a80e3b68fba9421fac467be20',1,'kiwi::IOBuf::next()'],['../classkiwi_1_1_i_o_buf.html#a27ca4397f2f95450e40410604e9da80c',1,'kiwi::IOBuf::next() const']]],
+  ['next_5fpower_5fof_5f2_2',['next_power_of_2',['../namespacekiwi.html#a4dc5f5939c0201509e3946b90aaa09f4',1,'kiwi']]],
+  ['nodestructor_3',['NoDestructor',['../classkiwi_1_1_no_destructor.html',1,'kiwi']]],
+  ['normalizepathseparators_4',['NormalizePathSeparators',['../classkiwi_1_1_file_path.html#a8e291f8ed2a6a4e2abea993dde14322b',1,'kiwi::FilePath']]],
+  ['normalizepathseparatorsto_5',['NormalizePathSeparatorsTo',['../classkiwi_1_1_file_path.html#af93a0d975168c89d5e123d3a43248660',1,'kiwi::FilePath']]],
+  ['notnull_6',['NotNull',['../classkiwi_1_1_not_null.html',1,'kiwi::NotNull&lt; T &gt;'],['../classkiwi_1_1_not_null.html#a9bc72b51cd400fb7efbc2eb962fab7ff',1,'kiwi::NotNull::NotNull()']]],
+  ['notnullhash_7',['NotNullHash',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20kiwi_3a_3anotnull_3c_20t_20_3e_20_3e_8',['NotNullHash&lt; kiwi::NotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20kiwi_3a_3astrictnotnull_3c_20t_20_3e_20_3e_9',['NotNullHash&lt; kiwi::StrictNotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20t_2c_20u_2c_20false_20_3e_10',['NotNullHash&lt; T, U, false &gt;',['../structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4.html',1,'kiwi']]]
 ];

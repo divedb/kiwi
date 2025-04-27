@@ -1,0 +1,23 @@
+\doxysection{supports\+\_\+ostream\+\_\+operator.\+hh}
+\hypertarget{supports__ostream__operator_8hh_source}{}\label{supports__ostream__operator_8hh_source}\index{include/kiwi/types/supports\_ostream\_operator.hh@{include/kiwi/types/supports\_ostream\_operator.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2023\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <ostream>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_supports_ostream_operator}{SupportsOstreamOperator}}\ =}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{requires}(\textcolor{keyword}{const}\ T\&\ t,\ std::ostream\&\ os)\ \{\ os\ <<\ t;\ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+
+\end{DoxyCode}

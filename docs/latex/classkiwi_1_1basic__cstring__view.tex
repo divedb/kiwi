@@ -1,0 +1,218 @@
+\doxysection{kiwi\+::basic\+\_\+cstring\+\_\+view\texorpdfstring{$<$}{<} Char \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1basic__cstring__view}{}\label{classkiwi_1_1basic__cstring__view}\index{kiwi::basic\_cstring\_view$<$ Char $>$@{kiwi::basic\_cstring\_view$<$ Char $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a7bf1d85b6b1aff37b30fa81404fbc0ee}\label{classkiwi_1_1basic__cstring__view_a7bf1d85b6b1aff37b30fa81404fbc0ee} 
+using {\bfseries value\+\_\+type} = Char
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a56b8d53240ef9ad06522d8032d693b9b}\label{classkiwi_1_1basic__cstring__view_a56b8d53240ef9ad06522d8032d693b9b} 
+using {\bfseries pointer} = Char\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ab5676b2300a688666803b84acabae33e}\label{classkiwi_1_1basic__cstring__view_ab5676b2300a688666803b84acabae33e} 
+using {\bfseries const\+\_\+pointer} = const Char\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a16cf2cf2665878ed809a11bb6bb72300}\label{classkiwi_1_1basic__cstring__view_a16cf2cf2665878ed809a11bb6bb72300} 
+using {\bfseries reference} = Char\&
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ac9ace230a88870d974969b6bc7d4c908}\label{classkiwi_1_1basic__cstring__view_ac9ace230a88870d974969b6bc7d4c908} 
+using {\bfseries const\+\_\+reference} = const Char\&
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a0858fba34347045a370f868d8d1903dd}\label{classkiwi_1_1basic__cstring__view_a0858fba34347045a370f868d8d1903dd} 
+using {\bfseries iterator} = \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}}$<$const Char$>$
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a1cd4a72402d5dee11914eb8a3059cefc}\label{classkiwi_1_1basic__cstring__view_a1cd4a72402d5dee11914eb8a3059cefc} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}}$<$const Char$>$
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a47e47e153b96bb71474928e68758b8eb}\label{classkiwi_1_1basic__cstring__view_a47e47e153b96bb71474928e68758b8eb} 
+using {\bfseries reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}}$>$
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a908829f01c31b70f5402fc47f3d1d4f8}\label{classkiwi_1_1basic__cstring__view_a908829f01c31b70f5402fc47f3d1d4f8} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}}$>$
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a4370567fc28782dc2777f5fbd2a691ec}\label{classkiwi_1_1basic__cstring__view_a4370567fc28782dc2777f5fbd2a691ec} 
+using {\bfseries size\+\_\+type} = size\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ae7845a0e838dbfd44ae9e7dc74a52b45}\label{classkiwi_1_1basic__cstring__view_ae7845a0e838dbfd44ae9e7dc74a52b45} 
+using {\bfseries difference\+\_\+type} = ptrdiff\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a1cdd3f0badce8ecc1448cb546cc4e865}\label{classkiwi_1_1basic__cstring__view_a1cdd3f0badce8ecc1448cb546cc4e865} 
+{\footnotesize template$<$int \& ..., size\+\_\+t M$>$ }\\constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const Char(\&lit LIFETIME\+\_\+\+BOUND)\mbox{[}M\mbox{]}) noexcept ENABLE\+\_\+\+IF\+\_\+\+ATTR(lit\mbox{[}M -\/ 1u\mbox{]}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_adf90e5faf43ebc6ab844ef361052959a}\label{classkiwi_1_1basic__cstring__view_adf90e5faf43ebc6ab844ef361052959a} 
+constexpr literal as {\bfseries len\+\_\+} (std\+::char\+\_\+traits$<$ Char $>$\+::length(lit))
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a7230de2177f305d6dbd5aa23f7bd2766}\label{classkiwi_1_1basic__cstring__view_a7230de2177f305d6dbd5aa23f7bd2766} 
+{\footnotesize template$<$std\+::same\+\_\+as$<$ std\+::basic\+\_\+string$<$ Char $>$ $>$ String$>$ }\\constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const String \&s LIFETIME\+\_\+\+BOUND) noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a3824948ab2fba9a715d1b43b1b830d6d}\label{classkiwi_1_1basic__cstring__view_a3824948ab2fba9a715d1b43b1b830d6d} 
+{\footnotesize template$<$class String$>$ \newline
+requires (std\+::same\+\_\+as$<$std\+::remove\+\_\+cvref\+\_\+t$<$String$>$, Char\texorpdfstring{$\ast$}{*}$>$ \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} std\+::same\+\_\+as$<$std\+::remove\+\_\+cvref\+\_\+t$<$String$>$, const Char\texorpdfstring{$\ast$}{*}$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (String \&\&ptr LIFETIME\+\_\+\+BOUND) noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_aa48ae3b669919c5ab64941cc0e71d8f7}\label{classkiwi_1_1basic__cstring__view_aa48ae3b669919c5ab64941cc0e71d8f7} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const Char \texorpdfstring{$\ast$}{*}ptr LIFETIME\+\_\+\+BOUND, size\+\_\+t len)
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ab0bcf768456ba84c54fc403b422298b4}\label{classkiwi_1_1basic__cstring__view_ab0bcf768456ba84c54fc403b422298b4} 
+PURE\+\_\+\+FUNCTION constexpr const Char \texorpdfstring{$\ast$}{*} {\bfseries c\+\_\+str} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a155e6c5b73b4d9446bd6da954488ca44}\label{classkiwi_1_1basic__cstring__view_a155e6c5b73b4d9446bd6da954488ca44} 
+PURE\+\_\+\+FUNCTION constexpr const Char \texorpdfstring{$\ast$}{*} {\bfseries data} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a6da5f2547c239a8ba01c3963f4986f94}\label{classkiwi_1_1basic__cstring__view_a6da5f2547c239a8ba01c3963f4986f94} 
+PURE\+\_\+\+FUNCTION constexpr size\+\_\+t {\bfseries size} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ae52f29aa54321fd131f2138acdb0d7fe}\label{classkiwi_1_1basic__cstring__view_ae52f29aa54321fd131f2138acdb0d7fe} 
+PURE\+\_\+\+FUNCTION constexpr size\+\_\+t {\bfseries length} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ab4873812d7f3cead051fb28dec3e1226}\label{classkiwi_1_1basic__cstring__view_ab4873812d7f3cead051fb28dec3e1226} 
+PURE\+\_\+\+FUNCTION constexpr bool {\bfseries empty} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a43086296a16a3dc4d410bf46ea7ebd9b}\label{classkiwi_1_1basic__cstring__view_a43086296a16a3dc4d410bf46ea7ebd9b} 
+PURE\+\_\+\+FUNCTION constexpr size\+\_\+t {\bfseries max\+\_\+size} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a74cdecb74f6a029b4c5b8b5258703649}\label{classkiwi_1_1basic__cstring__view_a74cdecb74f6a029b4c5b8b5258703649} 
+PURE\+\_\+\+FUNCTION constexpr size\+\_\+t {\bfseries size\+\_\+bytes} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_aa7e01d01d856ecc2d0f77541157129d0}\label{classkiwi_1_1basic__cstring__view_aa7e01d01d856ecc2d0f77541157129d0} 
+PURE\+\_\+\+FUNCTION constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries begin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ace9eee8b7690a4822076f682e7946a6a}\label{classkiwi_1_1basic__cstring__view_ace9eee8b7690a4822076f682e7946a6a} 
+PURE\+\_\+\+FUNCTION constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries end} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a9f2bc19944eafa072e3d888358a9936f}\label{classkiwi_1_1basic__cstring__view_a9f2bc19944eafa072e3d888358a9936f} 
+PURE\+\_\+\+FUNCTION constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries cbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a881f10a38538775d605cb466053e158a}\label{classkiwi_1_1basic__cstring__view_a881f10a38538775d605cb466053e158a} 
+PURE\+\_\+\+FUNCTION constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries cend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a3b831bb2758c2488a6968739d2ec6a5e}\label{classkiwi_1_1basic__cstring__view_a3b831bb2758c2488a6968739d2ec6a5e} 
+PURE\+\_\+\+FUNCTION constexpr reverse\+\_\+iterator {\bfseries rbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a9404941d0c06c805fc0c3e1f9dd6cf02}\label{classkiwi_1_1basic__cstring__view_a9404941d0c06c805fc0c3e1f9dd6cf02} 
+PURE\+\_\+\+FUNCTION constexpr reverse\+\_\+iterator {\bfseries rend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ac224311eb58e9bb1d8352d2deb97eec0}\label{classkiwi_1_1basic__cstring__view_ac224311eb58e9bb1d8352d2deb97eec0} 
+PURE\+\_\+\+FUNCTION constexpr const\+\_\+reverse\+\_\+iterator {\bfseries rcbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a2cc6105f144b9f2e81a234f071d8a759}\label{classkiwi_1_1basic__cstring__view_a2cc6105f144b9f2e81a234f071d8a759} 
+PURE\+\_\+\+FUNCTION constexpr const\+\_\+reverse\+\_\+iterator {\bfseries rcend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a3e0b45b0b271ab069af09d6bafce5fa6}\label{classkiwi_1_1basic__cstring__view_a3e0b45b0b271ab069af09d6bafce5fa6} 
+PURE\+\_\+\+FUNCTION constexpr const Char \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t idx) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ae467910686e11e3c08d98194f1df72b0}\label{classkiwi_1_1basic__cstring__view_ae467910686e11e3c08d98194f1df72b0} 
+PURE\+\_\+\+FUNCTION constexpr const Char \& {\bfseries at} (size\+\_\+t idx) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a421ef807bddf604c440f7a503f635e98}\label{classkiwi_1_1basic__cstring__view_a421ef807bddf604c440f7a503f635e98} 
+PURE\+\_\+\+FUNCTION constexpr const Char \& {\bfseries front} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a175994a865472a2c4fbea8b1db68a48b}\label{classkiwi_1_1basic__cstring__view_a175994a865472a2c4fbea8b1db68a48b} 
+PURE\+\_\+\+FUNCTION constexpr const Char \& {\bfseries back} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a59d74097890dc6f0a3d27bf1f32a55ee}\label{classkiwi_1_1basic__cstring__view_a59d74097890dc6f0a3d27bf1f32a55ee} 
+constexpr void {\bfseries remove\+\_\+prefix} (size\+\_\+t n) noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_abcd5612218bb8f51e8ce7ad23ecc3bba}\label{classkiwi_1_1basic__cstring__view_abcd5612218bb8f51e8ce7ad23ecc3bba} 
+void {\bfseries remove\+\_\+suffix} (size\+\_\+t n)=delete
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a526c72ceaafe75810406e3eebf2f105a}\label{classkiwi_1_1basic__cstring__view_a526c72ceaafe75810406e3eebf2f105a} 
+constexpr void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} \&other) noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ac23a55dd2915deff34826e6c607dca50}\label{classkiwi_1_1basic__cstring__view_ac23a55dd2915deff34826e6c607dca50} 
+PURE\+\_\+\+FUNCTION constexpr std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ {\bfseries substr} (size\+\_\+t pos, size\+\_\+t count=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a5744831851b28fbc312ce189e537959b}\label{classkiwi_1_1basic__cstring__view_a5744831851b28fbc312ce189e537959b} 
+constexpr bool {\bfseries starts\+\_\+with} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ prefix) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_aa366c2e2450c25741f01b162d3ebb904}\label{classkiwi_1_1basic__cstring__view_aa366c2e2450c25741f01b162d3ebb904} 
+constexpr bool {\bfseries starts\+\_\+with} (Char character) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_afaf60e0385b6ccba7e1d67004fd0bad7}\label{classkiwi_1_1basic__cstring__view_afaf60e0385b6ccba7e1d67004fd0bad7} 
+constexpr bool {\bfseries ends\+\_\+with} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ suffix) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_afc410e4380c2f0887f9d8fdf68eb42dc}\label{classkiwi_1_1basic__cstring__view_afc410e4380c2f0887f9d8fdf68eb42dc} 
+constexpr bool {\bfseries ends\+\_\+with} (Char character) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a57a94cae93e50a380e2a0ab7b8d344ea}\label{classkiwi_1_1basic__cstring__view_a57a94cae93e50a380e2a0ab7b8d344ea} 
+constexpr size\+\_\+t {\bfseries find} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ search, size\+\_\+t pos=0u) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a20575c6e932d338f4efb8122144854d9}\label{classkiwi_1_1basic__cstring__view_a20575c6e932d338f4efb8122144854d9} 
+constexpr size\+\_\+t {\bfseries find} (Char search, size\+\_\+t pos=0u) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_aaa9a447185711111ba021206a5e4f1a5}\label{classkiwi_1_1basic__cstring__view_aaa9a447185711111ba021206a5e4f1a5} 
+constexpr size\+\_\+t {\bfseries rfind} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ search, size\+\_\+t pos=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a3128cb36f63ecf735b994e91a97b903f}\label{classkiwi_1_1basic__cstring__view_a3128cb36f63ecf735b994e91a97b903f} 
+constexpr size\+\_\+t {\bfseries rfind} (Char search, size\+\_\+t pos=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ab32714b576f36b21db0decc0c27d4b61}\label{classkiwi_1_1basic__cstring__view_ab32714b576f36b21db0decc0c27d4b61} 
+constexpr size\+\_\+t {\bfseries find\+\_\+first\+\_\+of} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ search, size\+\_\+t pos=0u) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a5e1bc8ada2781bbba7729c924304e202}\label{classkiwi_1_1basic__cstring__view_a5e1bc8ada2781bbba7729c924304e202} 
+constexpr size\+\_\+t {\bfseries find\+\_\+first\+\_\+of} (Char search, size\+\_\+t pos=0u) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a00ad183efe7c3f7e95abf1e96e17216e}\label{classkiwi_1_1basic__cstring__view_a00ad183efe7c3f7e95abf1e96e17216e} 
+constexpr size\+\_\+t {\bfseries find\+\_\+last\+\_\+of} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ search, size\+\_\+t pos=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ad16823baa9ee07a1cbb4cdbbda089df3}\label{classkiwi_1_1basic__cstring__view_ad16823baa9ee07a1cbb4cdbbda089df3} 
+constexpr size\+\_\+t {\bfseries find\+\_\+last\+\_\+of} (Char search, size\+\_\+t pos=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a7ecc27a136a5ae4a87132e4cce4374b8}\label{classkiwi_1_1basic__cstring__view_a7ecc27a136a5ae4a87132e4cce4374b8} 
+constexpr size\+\_\+t {\bfseries find\+\_\+first\+\_\+not\+\_\+of} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ search, size\+\_\+t pos=0u) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ab77b86bb2c47474f242435d7bda21535}\label{classkiwi_1_1basic__cstring__view_ab77b86bb2c47474f242435d7bda21535} 
+constexpr size\+\_\+t {\bfseries find\+\_\+first\+\_\+not\+\_\+of} (Char search, size\+\_\+t pos=0u) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a23f74bd6726923a17fb612c3f5e75f8d}\label{classkiwi_1_1basic__cstring__view_a23f74bd6726923a17fb612c3f5e75f8d} 
+constexpr size\+\_\+t {\bfseries find\+\_\+last\+\_\+not\+\_\+of} (std\+::basic\+\_\+string\+\_\+view$<$ Char $>$ search, size\+\_\+t pos=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a19bee9dc4ff916a45df5c8c29c75deef}\label{classkiwi_1_1basic__cstring__view_a19bee9dc4ff916a45df5c8c29c75deef} 
+constexpr size\+\_\+t {\bfseries find\+\_\+last\+\_\+not\+\_\+of} (Char search, size\+\_\+t pos=npos) const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ae6059f2008285a78feb94a78f01c9795}\label{classkiwi_1_1basic__cstring__view_ae6059f2008285a78feb94a78f01c9795} 
+constexpr {\bfseries operator std\+::basic\+\_\+string\+\_\+view$<$ Char $>$} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a342e6f71fc40642f724b33a80f9ee244}\label{classkiwi_1_1basic__cstring__view_a342e6f71fc40642f724b33a80f9ee244} 
+constexpr {\bfseries operator std\+::basic\+\_\+string$<$ Char $>$} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_aae38fa63dea219c556a1698608db17cd}\label{classkiwi_1_1basic__cstring__view_aae38fa63dea219c556a1698608db17cd} 
+constexpr literal as {\bfseries input}\+: ptr\+\_\+(lit)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a5fd43280e17b4018d7552129505bfa8d}\label{classkiwi_1_1basic__cstring__view_a5fd43280e17b4018d7552129505bfa8d} 
+static constexpr auto {\bfseries npos} = static\+\_\+cast$<$size\+\_\+t$>$(-\/1)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_afb864545aa775ef1f4d1e347659c8dbe}\label{classkiwi_1_1basic__cstring__view_afb864545aa775ef1f4d1e347659c8dbe} 
+constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} l, \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} r)
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a8e8c6a9da4aa7d57f5eb2b3900258a7a}\label{classkiwi_1_1basic__cstring__view_a8e8c6a9da4aa7d57f5eb2b3900258a7a} 
+constexpr std\+::weak\+\_\+ordering {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} l, \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} r)
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_abc462b7737112980242ae75d9b3d9f49}\label{classkiwi_1_1basic__cstring__view_abc462b7737112980242ae75d9b3d9f49} 
+{\footnotesize template$<$class Traits, class Alloc$>$ }\\constexpr std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ {\bfseries operator+} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} lhs, const std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a7ae819f86fd1ebd81bfd10cceeddb328}\label{classkiwi_1_1basic__cstring__view_a7ae819f86fd1ebd81bfd10cceeddb328} 
+{\footnotesize template$<$class Traits, class Alloc$>$ }\\constexpr std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ {\bfseries operator+} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} lhs, std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ \&\&rhs)
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a21248c8f29df2d93b74107c7aa4f04be}\label{classkiwi_1_1basic__cstring__view_a21248c8f29df2d93b74107c7aa4f04be} 
+{\footnotesize template$<$class Traits, class Alloc$>$ }\\constexpr std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ {\bfseries operator+} (const std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ \&lhs, \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} rhs)
+\item 
+\Hypertarget{classkiwi_1_1basic__cstring__view_a5bee9892c0a3f8929e1562c84b440713}\label{classkiwi_1_1basic__cstring__view_a5bee9892c0a3f8929e1562c84b440713} 
+{\footnotesize template$<$class Traits, class Alloc$>$ }\\constexpr std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ {\bfseries operator+} (std\+::basic\+\_\+string$<$ Char, Traits, Alloc $>$ \&\&lhs, \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}} rhs)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/strings/cstring\+\_\+view.\+hh\end{DoxyCompactItemize}

@@ -1,0 +1,220 @@
+\doxysection{base\+::time\+\_\+internal\+::Time\+Base\texorpdfstring{$<$}{<} Time\+Class \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classbase_1_1time__internal_1_1_time_base}{}\label{classbase_1_1time__internal_1_1_time_base}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a349560b7460699bf1a07fa16a9574bed}\label{classbase_1_1time__internal_1_1_time_base_a349560b7460699bf1a07fa16a9574bed} 
+constexpr bool {\bfseries is\+\_\+null} () const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a93fd935ea27d05fe64cf93bc36cd1467}\label{classbase_1_1time__internal_1_1_time_base_a93fd935ea27d05fe64cf93bc36cd1467} 
+constexpr bool {\bfseries is\+\_\+max} () const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_ad39d284634fd15b379cc14dd314b0c0f}\label{classbase_1_1time__internal_1_1_time_base_ad39d284634fd15b379cc14dd314b0c0f} 
+constexpr bool {\bfseries is\+\_\+min} () const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_aa3c0b3b7b7448ebed025707e097619f1}\label{classbase_1_1time__internal_1_1_time_base_aa3c0b3b7b7448ebed025707e097619f1} 
+constexpr bool {\bfseries is\+\_\+inf} () const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a223bf9a2721353f1985a9673d34b49df}\label{classbase_1_1time__internal_1_1_time_base_a223bf9a2721353f1985a9673d34b49df} 
+constexpr int64\+\_\+t {\bfseries To\+Internal\+Value} () const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_af1b057bb3b4f9f04e7eccd38ca2f9501}\label{classbase_1_1time__internal_1_1_time_base_af1b057bb3b4f9f04e7eccd38ca2f9501} 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries since\+\_\+origin} () const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a6379601be4a9bd0d913856e022c04fdc}\label{classbase_1_1time__internal_1_1_time_base_a6379601be4a9bd0d913856e022c04fdc} 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries operator-\/} (const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}}$<$ Time\+Class $>$ \&other) const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a03f31647dcca4495ab3ba95c6dee7557}\label{classbase_1_1time__internal_1_1_time_base_a03f31647dcca4495ab3ba95c6dee7557} 
+constexpr Time\+Class {\bfseries operator+} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a4db95e49d18b0f1a413cec5c2cf56022}\label{classbase_1_1time__internal_1_1_time_base_a4db95e49d18b0f1a413cec5c2cf56022} 
+constexpr Time\+Class {\bfseries operator-\/} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a464c5e7de11902c49b0a171ca80977a2}\label{classbase_1_1time__internal_1_1_time_base_a464c5e7de11902c49b0a171ca80977a2} 
+constexpr Time\+Class \& {\bfseries operator+=} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_abd655b046d00c490e5f7544cb4dfd40a}\label{classbase_1_1time__internal_1_1_time_base_abd655b046d00c490e5f7544cb4dfd40a} 
+constexpr Time\+Class \& {\bfseries operator-\/=} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a0af548c158b653adf313f3cd5700a98f}\label{classbase_1_1time__internal_1_1_time_base_a0af548c158b653adf313f3cd5700a98f} 
+static constexpr Time\+Class {\bfseries Max} ()
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a77c4091d80128d500b704c103b4937c7}\label{classbase_1_1time__internal_1_1_time_base_a77c4091d80128d500b704c103b4937c7} 
+static constexpr Time\+Class {\bfseries Min} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a2829b007814019d72f4b7ff67003f6df}\label{classbase_1_1time__internal_1_1_time_base_a2829b007814019d72f4b7ff67003f6df} 
+static constexpr int64\+\_\+t {\bfseries k\+Hours\+Per\+Day} = 24
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a5a331935ec11ac6dd1692f5143a3673c}\label{classbase_1_1time__internal_1_1_time_base_a5a331935ec11ac6dd1692f5143a3673c} 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Minute} = 60
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a86fc011a451d34d0237d04b8c982e1d0}\label{classbase_1_1time__internal_1_1_time_base_a86fc011a451d34d0237d04b8c982e1d0} 
+static constexpr int64\+\_\+t {\bfseries k\+Minutes\+Per\+Hour} = 60
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_aff631910f8077874769222c56940fc1c}{k\+Seconds\+Per\+Hour}}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a101a9a889cde851fbdfd2553437ac827}\label{classbase_1_1time__internal_1_1_time_base_a101a9a889cde851fbdfd2553437ac827} 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Second} = 1000
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_a2f0c02a6cacce88257ddaa5b14a632ca}{k\+Milliseconds\+Per\+Day}}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a8dd6c0cc9eb0515d1ebc81ffb0074733}\label{classbase_1_1time__internal_1_1_time_base_a8dd6c0cc9eb0515d1ebc81ffb0074733} 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Millisecond} = 1000
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_a1c97e59cf6977c696165357aa0c76b9e}{k\+Microseconds\+Per\+Second}}
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_a8f66a91638cc820965e2feac267a337c}{k\+Microseconds\+Per\+Minute}}
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_acc641299efe01c14e05d5f643907821f}{k\+Microseconds\+Per\+Hour}}
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_a620060f447e3d7c1c3a7f05ec4364303}{k\+Microseconds\+Per\+Day}}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_acfe51c7436d24d41013ed2465a3ca760}\label{classbase_1_1time__internal_1_1_time_base_acfe51c7436d24d41013ed2465a3ca760} 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Week} = k\+Microseconds\+Per\+Day \texorpdfstring{$\ast$}{*} 7
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_ae63e54ea638d8a4cac0382da3b9b0966}\label{classbase_1_1time__internal_1_1_time_base_ae63e54ea638d8a4cac0382da3b9b0966} 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Microsecond} = 1000
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_a675538af955b42bddb003f8fc88db203}{k\+Nanoseconds\+Per\+Millisecond}}
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base_aa80c5229332626fbd0efffc880422151}{k\+Nanoseconds\+Per\+Second}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_aec19984c8fcd47fa28df64d46a1bbc87}\label{classbase_1_1time__internal_1_1_time_base_aec19984c8fcd47fa28df64d46a1bbc87} 
+constexpr {\bfseries Time\+Base} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a93e3b4576e21e1db457b97507c1516ef}\label{classbase_1_1time__internal_1_1_time_base_a93e3b4576e21e1db457b97507c1516ef} 
+Clamped\+Numeric$<$ int64\+\_\+t $>$ {\bfseries us\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_ad8e24a8e427dee911110a20c76566af3}\label{classbase_1_1time__internal_1_1_time_base_ad8e24a8e427dee911110a20c76566af3} 
+constexpr bool {\bfseries operator==} (const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}} \&, const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}} \&)=default
+\item 
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a2140a48c23e2b049a4bd04dcd69b6b4c}\label{classbase_1_1time__internal_1_1_time_base_a2140a48c23e2b049a4bd04dcd69b6b4c} 
+constexpr std\+::strong\+\_\+ordering {\bfseries operator$<$=$>$} (const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}} \&, const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}} \&)=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a620060f447e3d7c1c3a7f05ec4364303}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kMicrosecondsPerDay@{kMicrosecondsPerDay}}
+\index{kMicrosecondsPerDay@{kMicrosecondsPerDay}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kMicrosecondsPerDay}{kMicrosecondsPerDay}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_a620060f447e3d7c1c3a7f05ec4364303} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Microseconds\+Per\+Day\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kMicrosecondsPerHour\ *\ kHoursPerDay}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_acc641299efe01c14e05d5f643907821f}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kMicrosecondsPerHour@{kMicrosecondsPerHour}}
+\index{kMicrosecondsPerHour@{kMicrosecondsPerHour}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kMicrosecondsPerHour}{kMicrosecondsPerHour}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_acc641299efe01c14e05d5f643907821f} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Microseconds\+Per\+Hour\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kMicrosecondsPerMinute\ *\ kMinutesPerHour}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a8f66a91638cc820965e2feac267a337c}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kMicrosecondsPerMinute@{kMicrosecondsPerMinute}}
+\index{kMicrosecondsPerMinute@{kMicrosecondsPerMinute}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kMicrosecondsPerMinute}{kMicrosecondsPerMinute}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_a8f66a91638cc820965e2feac267a337c} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Microseconds\+Per\+Minute\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kMicrosecondsPerSecond\ *\ kSecondsPerMinute}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a1c97e59cf6977c696165357aa0c76b9e}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kMicrosecondsPerSecond@{kMicrosecondsPerSecond}}
+\index{kMicrosecondsPerSecond@{kMicrosecondsPerSecond}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kMicrosecondsPerSecond}{kMicrosecondsPerSecond}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_a1c97e59cf6977c696165357aa0c76b9e} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Microseconds\+Per\+Second\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kMicrosecondsPerMillisecond\ *\ kMillisecondsPerSecond}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a2f0c02a6cacce88257ddaa5b14a632ca}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kMillisecondsPerDay@{kMillisecondsPerDay}}
+\index{kMillisecondsPerDay@{kMillisecondsPerDay}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kMillisecondsPerDay}{kMillisecondsPerDay}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_a2f0c02a6cacce88257ddaa5b14a632ca} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Milliseconds\+Per\+Day\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kMillisecondsPerSecond\ *\ kSecondsPerHour\ *\ kHoursPerDay}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_a675538af955b42bddb003f8fc88db203}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kNanosecondsPerMillisecond@{kNanosecondsPerMillisecond}}
+\index{kNanosecondsPerMillisecond@{kNanosecondsPerMillisecond}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kNanosecondsPerMillisecond}{kNanosecondsPerMillisecond}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_a675538af955b42bddb003f8fc88db203} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Nanoseconds\+Per\+Millisecond\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kNanosecondsPerMicrosecond\ *\ kMicrosecondsPerMillisecond}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_aa80c5229332626fbd0efffc880422151}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kNanosecondsPerSecond@{kNanosecondsPerSecond}}
+\index{kNanosecondsPerSecond@{kNanosecondsPerSecond}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kNanosecondsPerSecond}{kNanosecondsPerSecond}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_aa80c5229332626fbd0efffc880422151} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Nanoseconds\+Per\+Second\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kNanosecondsPerMicrosecond\ *\ kMicrosecondsPerSecond}
+
+\end{DoxyCode}
+\Hypertarget{classbase_1_1time__internal_1_1_time_base_aff631910f8077874769222c56940fc1c}\index{base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}!kSecondsPerHour@{kSecondsPerHour}}
+\index{kSecondsPerHour@{kSecondsPerHour}!base::time\_internal::TimeBase$<$ TimeClass $>$@{base::time\_internal::TimeBase$<$ TimeClass $>$}}
+\doxysubsubsection{\texorpdfstring{kSecondsPerHour}{kSecondsPerHour}}
+{\footnotesize\ttfamily \label{classbase_1_1time__internal_1_1_time_base_aff631910f8077874769222c56940fc1c} 
+template$<$class Time\+Class$>$ \\
+int64\+\_\+t \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base}}$<$ Time\+Class $>$\+::k\+Seconds\+Per\+Hour\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ kSecondsPerMinute\ *\ kMinutesPerHour}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/chrono/time.\+hh\end{DoxyCompactItemize}

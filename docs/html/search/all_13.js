@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['_7edebugepochbase_0',['~DebugEpochBase',['../classkiwi_1_1_debug_epoch_base.html#a00ed2dad740bd7fb852dcb13409be0e6',1,'kiwi::DebugEpochBase']]],
-  ['_7efilepath_1',['~FilePath',['../classkiwi_1_1_file_path.html#a1b7642f944077c476e1139071729dd6d',1,'kiwi::FilePath']]]
+  ['value_0',['value',['../classkiwi_1_1_file_path.html#a80e3085d1bdc7d4f549f78bd508a1700',1,'kiwi::FilePath::value()'],['../classkiwi_1_1_safe_base_name.html#a9cd6fda74d2d6a602a3e2cfc739c4d9c',1,'kiwi::SafeBaseName::value()']]],
+  ['valueinittag_1',['ValueInitTag',['../structkiwi_1_1_value_init_tag.html',1,'kiwi']]]
 ];

@@ -1,0 +1,18 @@
+\doxysection{supports\+\_\+to\+\_\+string.\+hh}
+\hypertarget{supports__to__string_8hh_source}{}\label{supports__to__string_8hh_source}\index{include/kiwi/types/supports\_to\_string.hh@{include/kiwi/types/supports\_to\_string.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2025\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00010\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_supports_to_string}{SupportsToString}}\ =\ \textcolor{keyword}{requires}(\textcolor{keyword}{const}\ T\&\ t)\ \{\ t.ToString();\ \};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+
+\end{DoxyCode}

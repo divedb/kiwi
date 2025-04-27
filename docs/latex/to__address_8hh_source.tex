@@ -1,0 +1,43 @@
+\doxysection{to\+\_\+address.\+hh}
+\hypertarget{to__address_8hh_source}{}\label{to__address_8hh_source}\index{include/kiwi/types/to\_address.hh@{include/kiwi/types/to\_address.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2024\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ SFINAE-\/compatible\ wrapper\ for\ \`{}std::to\_address()`.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ The\ standard\ does\ not\ require\ \`{}std::to\_address()`\ to\ be\ SFINAE-\/compatible}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ when\ code\ attempts\ instantiation\ with\ non-\/pointer-\/like\ types,\ and\ libstdc++'s}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ implementation\ hard\ errors.\ For\ the\ sake\ of\ templated\ code\ that\ wants\ simple,}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ unified\ handling,\ Chromium\ instead\ uses\ this\ wrapper,\ which\ provides\ that}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ guarantee.\ This\ allows\ code\ to\ use\ "{}`to\_address()`\ would\ be\ valid\ here"{}\ as\ a}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ constraint\ to\ detect\ pointer-\/like\ types.}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ Note\ that\ calling\ \`{}std::to\_address()`\ with\ a\ function\ pointer\ renders\ the}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ program\ ill-\/formed.}}
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{requires}(!std::is\_function\_v<T>)}
+\DoxyCodeLine{00024\ \textcolor{keyword}{constexpr}\ T*\ to\_address(T*\ p)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{return}\ p;}
+\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ These\ constraints\ cover\ the\ cases\ where\ \`{}std::to\_address()`'s\ fancy\ pointer}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ overload\ is\ well-\/specified.}}
+\DoxyCodeLine{00030\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ P>}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{requires}\ \textcolor{keyword}{requires}(\textcolor{keyword}{const}\ P\&\ p)\ \{\ std::pointer\_traits<P>::to\_address(p);\ \}\ ||}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{requires}(\textcolor{keyword}{const}\ P\&\ p)\ \{\ p.operator-\/>();\ \}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ to\_address(\textcolor{keyword}{const}\ P\&\ p)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{return}\ std::to\_address(p);}
+\DoxyCodeLine{00035\ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

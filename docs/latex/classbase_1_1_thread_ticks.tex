@@ -1,0 +1,110 @@
+\doxysection{base\+::Thread\+Ticks Class Reference}
+\hypertarget{classbase_1_1_thread_ticks}{}\label{classbase_1_1_thread_ticks}\index{base::ThreadTicks@{base::ThreadTicks}}
+Inheritance diagram for base\+::Thread\+Ticks\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbase_1_1_thread_ticks}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_thread_ticks_a8103aacdf3e05f58c8712ced9b6a06c2}\label{classbase_1_1_thread_ticks_a8103aacdf3e05f58c8712ced9b6a06c2} 
+static bool {\bfseries Is\+Supported} ()
+\item 
+\Hypertarget{classbase_1_1_thread_ticks_a68179f945d6d8f12b4c835f5cf7d2051}\label{classbase_1_1_thread_ticks_a68179f945d6d8f12b4c835f5cf7d2051} 
+static void {\bfseries Wait\+Until\+Initialized} ()
+\item 
+\Hypertarget{classbase_1_1_thread_ticks_a58276b70c7e39f8325f95846238ee4e8}\label{classbase_1_1_thread_ticks_a58276b70c7e39f8325f95846238ee4e8} 
+static \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries Now} ()
+\item 
+\Hypertarget{classbase_1_1_thread_ticks_a4aade392e62f0d52f65ec719bd489ad1}\label{classbase_1_1_thread_ticks_a4aade392e62f0d52f65ec719bd489ad1} 
+static constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries From\+Internal\+Value} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries Max} ()
+\item 
+static constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries Min} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classbase_1_1_thread_ticks_a9eeeb6fc42d5276b80227378c73717b2}\label{classbase_1_1_thread_ticks_a9eeeb6fc42d5276b80227378c73717b2} 
+class {\bfseries time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool {\bfseries is\+\_\+null} () const
+\item 
+constexpr bool {\bfseries is\+\_\+max} () const
+\item 
+constexpr bool {\bfseries is\+\_\+min} () const
+\item 
+constexpr bool {\bfseries is\+\_\+inf} () const
+\item 
+constexpr int64\+\_\+t {\bfseries To\+Internal\+Value} () const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries since\+\_\+origin} () const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} {\bfseries operator-\/} (const \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{Time\+Base}}$<$ \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} $>$ \&other) const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries operator-\/} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries operator+} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} \& {\bfseries operator+=} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+constexpr \mbox{\hyperlink{classbase_1_1_thread_ticks}{Thread\+Ticks}} \& {\bfseries operator-\/=} (\mbox{\hyperlink{classbase_1_1_time_delta}{Time\+Delta}} delta)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Hours\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Minutes\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Week}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Microsecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Second}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr {\bfseries Time\+Base} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classbase_1_1time__internal_1_1_time_base}{base\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Clamped\+Numeric$<$ int64\+\_\+t $>$ {\bfseries us\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/chrono/time.\+hh\end{DoxyCompactItemize}

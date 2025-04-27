@@ -63,7 +63,7 @@
 \DoxyCodeLine{00059\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/internal/resize\_uninitialized.hh"{}}}
 \DoxyCodeLine{00060\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/pointers.hh"{}}}
 \DoxyCodeLine{00061\ }
-\DoxyCodeLine{00062\ \textcolor{keyword}{namespace\ }kiwi\ \{}
+\DoxyCodeLine{00062\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00063\ }
 \DoxyCodeLine{00064\ \textcolor{keyword}{namespace\ }ascii\_internal\ \{}
 \DoxyCodeLine{00065\ }
@@ -81,51 +81,51 @@
 \DoxyCodeLine{00080\ }
 \DoxyCodeLine{00081\ \}\ \ \textcolor{comment}{//\ namespace\ ascii\_internal}}
 \DoxyCodeLine{00082\ }
-\DoxyCodeLine{00084\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isalpha(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00084\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_aafd2344a5cb4e995b1be3bb5d28eb116}{ascii\_isalpha}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00085\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x01)\ !=\ 0;}
 \DoxyCodeLine{00086\ \}}
 \DoxyCodeLine{00087\ }
-\DoxyCodeLine{00089\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isalnum(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00089\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_aa9be266e7c37e4d377b3b3a3f5976762}{ascii\_isalnum}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00090\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x04)\ !=\ 0;}
 \DoxyCodeLine{00091\ \}}
 \DoxyCodeLine{00092\ }
-\DoxyCodeLine{00095\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isspace(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00095\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_ace5d0341ccfef3d4127b0285a4fde14d}{ascii\_isspace}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00096\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x08)\ !=\ 0;}
 \DoxyCodeLine{00097\ \}}
 \DoxyCodeLine{00098\ }
-\DoxyCodeLine{00100\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_ispunct(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00100\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a0d60091e0ebd003498238b6540b51e8f}{ascii\_ispunct}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00101\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x10)\ !=\ 0;}
 \DoxyCodeLine{00102\ \}}
 \DoxyCodeLine{00103\ }
-\DoxyCodeLine{00105\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isblank(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00105\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_aa0f209ec66123f4815c3a20af3d82230}{ascii\_isblank}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00106\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x20)\ !=\ 0;}
 \DoxyCodeLine{00107\ \}}
 \DoxyCodeLine{00108\ }
-\DoxyCodeLine{00110\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_iscntrl(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00110\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a2535caa16a687bc8137712fe5e0167a0}{ascii\_iscntrl}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x40)\ !=\ 0;}
 \DoxyCodeLine{00112\ \}}
 \DoxyCodeLine{00113\ }
-\DoxyCodeLine{00116\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isxdigit(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00116\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a51c29d6df47117be95dd9a60b2e52edd}{ascii\_isxdigit}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00117\ \ \ \textcolor{keywordflow}{return}\ (ascii\_internal::kPropertyBits[c]\ \&\ 0x80)\ !=\ 0;}
 \DoxyCodeLine{00118\ \}}
 \DoxyCodeLine{00119\ }
-\DoxyCodeLine{00122\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isdigit(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'9'};\ \}}
+\DoxyCodeLine{00122\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_ae2fc9f234585b1d5a585c18f60a3e587}{ascii\_isdigit}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'9'};\ \}}
 \DoxyCodeLine{00123\ }
-\DoxyCodeLine{00125\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isprint(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ 32\ \&\&\ c\ <\ 127;\ \}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_ae7c522da8d72201f56627478bc945507}{ascii\_isprint}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ 32\ \&\&\ c\ <\ 127;\ \}}
 \DoxyCodeLine{00126\ }
-\DoxyCodeLine{00128\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isgraph(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >\ 32\ \&\&\ c\ <\ 127;\ \}}
+\DoxyCodeLine{00128\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a156614ccdb44f0a0ac053b4775bd8445}{ascii\_isgraph}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >\ 32\ \&\&\ c\ <\ 127;\ \}}
 \DoxyCodeLine{00129\ }
-\DoxyCodeLine{00131\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isupper(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'};\ \}}
+\DoxyCodeLine{00131\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a2c4aaffc0df70541b29589d6d8242d87}{ascii\_isupper}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'};\ \}}
 \DoxyCodeLine{00132\ }
-\DoxyCodeLine{00134\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_islower(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'};\ \}}
+\DoxyCodeLine{00134\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_ac58030625bcc2205d27be074a3df4c2a}{ascii\_islower}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'};\ \}}
 \DoxyCodeLine{00135\ }
-\DoxyCodeLine{00137\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ ascii\_isascii(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ <\ 128;\ \}}
+\DoxyCodeLine{00137\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a9b54cc1829f1c3eabd1acbe9798d6809}{ascii\_isascii}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{\ \textcolor{keywordflow}{return}\ c\ <\ 128;\ \}}
 \DoxyCodeLine{00138\ }
-\DoxyCodeLine{00141\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ ascii\_tolower(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00141\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{namespacekiwi_ac6229268aa0e6de0a6dd72220d48998d}{ascii\_tolower}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00142\ \ \ \textcolor{keywordflow}{return}\ ascii\_internal::kToLower[c];}
 \DoxyCodeLine{00143\ \}}
 \DoxyCodeLine{00144\ }
-\DoxyCodeLine{00146\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_lower(kiwi::NotNull<std::string*>\ s);}
+\DoxyCodeLine{00146\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_lower(\mbox{\hyperlink{classkiwi_1_1_not_null}{kiwi::NotNull<std::string*>}}\ s);}
 \DoxyCodeLine{00147\ }
 \DoxyCodeLine{00149\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_lower(std::string\_view\ s)\ \{}
 \DoxyCodeLine{00150\ \ \ std::string\ result;}
@@ -143,13 +143,13 @@
 \DoxyCodeLine{00165\ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00166\ \}}
 \DoxyCodeLine{00167\ }
-\DoxyCodeLine{00170\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ ascii\_toupper(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{00170\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{namespacekiwi_a5a3b3437014200485ed150114bed1374}{ascii\_toupper}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ c)\ \{}
 \DoxyCodeLine{00171\ \ \ \textcolor{keywordflow}{return}\ ascii\_internal::kToUpper[c];}
 \DoxyCodeLine{00172\ \}}
 \DoxyCodeLine{00173\ }
-\DoxyCodeLine{00175\ \textcolor{keywordtype}{void}\ ascii\_str\_to\_upper(kiwi::NotNull<std::string*>\ s);}
+\DoxyCodeLine{00175\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_a1493772dac64d1bc4a1a64142fdde59e}{ascii\_str\_to\_upper}}(\mbox{\hyperlink{classkiwi_1_1_not_null}{kiwi::NotNull<std::string*>}}\ s);}
 \DoxyCodeLine{00176\ }
-\DoxyCodeLine{00178\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_upper(std::string\_view\ s)\ \{}
+\DoxyCodeLine{00178\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ \mbox{\hyperlink{namespacekiwi_a1493772dac64d1bc4a1a64142fdde59e}{ascii\_str\_to\_upper}}(std::string\_view\ s)\ \{}
 \DoxyCodeLine{00179\ \ \ std::string\ result;}
 \DoxyCodeLine{00180\ \ \ strings\_internal::STLStringResizeUninitialized(\&result,\ s.size());}
 \DoxyCodeLine{00181\ \ \ ascii\_internal::ascii\_str\_to\_upper(\&result[0],\ s.data(),\ s.size());}
@@ -158,48 +158,48 @@
 \DoxyCodeLine{00184\ \}}
 \DoxyCodeLine{00185\ }
 \DoxyCodeLine{00189\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ DoNotSpecify>}
-\DoxyCodeLine{00190\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ ascii\_str\_to\_upper(std::string\&\&\ s)\ \{}
+\DoxyCodeLine{00190\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\ \mbox{\hyperlink{namespacekiwi_a1493772dac64d1bc4a1a64142fdde59e}{ascii\_str\_to\_upper}}(std::string\&\&\ s)\ \{}
 \DoxyCodeLine{00191\ \ \ std::string\ result\ =\ std::move(s);}
-\DoxyCodeLine{00192\ \ \ kiwi::ascii\_str\_to\_upper(\&result);}
+\DoxyCodeLine{00192\ \ \ \mbox{\hyperlink{namespacekiwi_a1493772dac64d1bc4a1a64142fdde59e}{kiwi::ascii\_str\_to\_upper}}(\&result);}
 \DoxyCodeLine{00193\ }
 \DoxyCodeLine{00194\ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00195\ \}}
 \DoxyCodeLine{00196\ }
-\DoxyCodeLine{00199\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ strip\_leading\_ascii\_whitespace(}
+\DoxyCodeLine{00199\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ \mbox{\hyperlink{namespacekiwi_a3f765e4aae06b4f5a49452de79f7e998}{strip\_leading\_ascii\_whitespace}}(}
 \DoxyCodeLine{00200\ \ \ \ \ std::string\_view\ str)\ \{}
-\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str.begin(),\ str.end(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str.begin(),\ str.end(),\ \mbox{\hyperlink{namespacekiwi_ace5d0341ccfef3d4127b0285a4fde14d}{kiwi::ascii\_isspace}});}
 \DoxyCodeLine{00202\ }
 \DoxyCodeLine{00203\ \ \ \textcolor{keywordflow}{return}\ str.substr(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(it\ -\/\ str.begin()));}
 \DoxyCodeLine{00204\ \}}
 \DoxyCodeLine{00205\ }
-\DoxyCodeLine{00207\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ strip\_leading\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str)\ \{}
-\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str-\/>begin(),\ str-\/>end(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00207\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_a3f765e4aae06b4f5a49452de79f7e998}{strip\_leading\_ascii\_whitespace}}(\mbox{\hyperlink{classkiwi_1_1_not_null}{kiwi::NotNull<std::string*>}}\ str)\ \{}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str-\/>begin(),\ str-\/>end(),\ \mbox{\hyperlink{namespacekiwi_ace5d0341ccfef3d4127b0285a4fde14d}{kiwi::ascii\_isspace}});}
 \DoxyCodeLine{00209\ \ \ str-\/>erase(str-\/>begin(),\ it);}
 \DoxyCodeLine{00210\ \}}
 \DoxyCodeLine{00211\ }
-\DoxyCodeLine{00214\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ strip\_trailing\_ascii\_whitespace(}
+\DoxyCodeLine{00214\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ \mbox{\hyperlink{namespacekiwi_af5cbd2bb4f38765346d22c0c384c808c}{strip\_trailing\_ascii\_whitespace}}(}
 \DoxyCodeLine{00215\ \ \ \ \ std::string\_view\ str)\ \{}
-\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str.rbegin(),\ str.rend(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str.rbegin(),\ str.rend(),\ \mbox{\hyperlink{namespacekiwi_ace5d0341ccfef3d4127b0285a4fde14d}{kiwi::ascii\_isspace}});}
 \DoxyCodeLine{00217\ }
 \DoxyCodeLine{00218\ \ \ \textcolor{keywordflow}{return}\ str.substr(0,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(str.rend()\ -\/\ it));}
 \DoxyCodeLine{00219\ \}}
 \DoxyCodeLine{00220\ }
-\DoxyCodeLine{00222\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ strip\_trailing\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str)\ \{}
-\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str-\/>rbegin(),\ str-\/>rend(),\ kiwi::ascii\_isspace);}
+\DoxyCodeLine{00222\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_af5cbd2bb4f38765346d22c0c384c808c}{strip\_trailing\_ascii\_whitespace}}(\mbox{\hyperlink{classkiwi_1_1_not_null}{kiwi::NotNull<std::string*>}}\ str)\ \{}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find\_if\_not(str-\/>rbegin(),\ str-\/>rend(),\ \mbox{\hyperlink{namespacekiwi_ace5d0341ccfef3d4127b0285a4fde14d}{kiwi::ascii\_isspace}});}
 \DoxyCodeLine{00224\ \ \ str-\/>erase(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(str-\/>rend()\ -\/\ it));}
 \DoxyCodeLine{00225\ \}}
 \DoxyCodeLine{00226\ }
-\DoxyCodeLine{00229\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ strip\_ascii\_whitespace(}
+\DoxyCodeLine{00229\ [[nodiscard]]\ \textcolor{keyword}{inline}\ std::string\_view\ \mbox{\hyperlink{namespacekiwi_a9825413f55ac9daa706ba13abb7ad6b8}{strip\_ascii\_whitespace}}(}
 \DoxyCodeLine{00230\ \ \ \ \ std::string\_view\ str)\ \{}
-\DoxyCodeLine{00231\ \ \ \textcolor{keywordflow}{return}\ strip\_trailing\_ascii\_whitespace(strip\_leading\_ascii\_whitespace(str));}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacekiwi_af5cbd2bb4f38765346d22c0c384c808c}{strip\_trailing\_ascii\_whitespace}}(\mbox{\hyperlink{namespacekiwi_a3f765e4aae06b4f5a49452de79f7e998}{strip\_leading\_ascii\_whitespace}}(str));}
 \DoxyCodeLine{00232\ \}}
 \DoxyCodeLine{00233\ }
-\DoxyCodeLine{00235\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ strip\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str)\ \{}
-\DoxyCodeLine{00236\ \ \ strip\_trailing\_ascii\_whitespace(str);}
-\DoxyCodeLine{00237\ \ \ strip\_leading\_ascii\_whitespace(str);}
+\DoxyCodeLine{00235\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_a9825413f55ac9daa706ba13abb7ad6b8}{strip\_ascii\_whitespace}}(\mbox{\hyperlink{classkiwi_1_1_not_null}{kiwi::NotNull<std::string*>}}\ str)\ \{}
+\DoxyCodeLine{00236\ \ \ \mbox{\hyperlink{namespacekiwi_af5cbd2bb4f38765346d22c0c384c808c}{strip\_trailing\_ascii\_whitespace}}(str);}
+\DoxyCodeLine{00237\ \ \ \mbox{\hyperlink{namespacekiwi_a3f765e4aae06b4f5a49452de79f7e998}{strip\_leading\_ascii\_whitespace}}(str);}
 \DoxyCodeLine{00238\ \}}
 \DoxyCodeLine{00239\ }
-\DoxyCodeLine{00241\ \textcolor{keywordtype}{void}\ remove\_extra\_ascii\_whitespace(kiwi::NotNull<std::string*>\ str);}
+\DoxyCodeLine{00241\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_a79e67e5a6b4cbc0c74bb5485bc89ac6a}{remove\_extra\_ascii\_whitespace}}(\mbox{\hyperlink{classkiwi_1_1_not_null}{kiwi::NotNull<std::string*>}}\ str);}
 \DoxyCodeLine{00242\ }
 \DoxyCodeLine{00243\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 

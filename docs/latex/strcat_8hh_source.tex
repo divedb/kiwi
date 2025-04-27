@@ -1,0 +1,115 @@
+\doxysection{strcat.\+hh}
+\hypertarget{strcat_8hh_source}{}\label{strcat_8hh_source}\index{include/kiwi/strings/strcat.hh@{include/kiwi/strings/strcat.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <initializer\_list>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Guard\ against\ conflict\ with\ Win32\ API\ StrCat\ macro:}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ check\ StrCat\ wasn't\ and\ will\ not\ be\ redefined.}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ StrCat\ StrCat}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ StrCat\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ StrCat\ is\ a\ function\ to\ perform\ concatenation\ on\ a\ sequence\ of\ strings.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ It\ is\ preferrable\ to\ a\ sequence\ of\ "{}a\ +\ b\ +\ c"{}\ because\ it\ is\ both\ faster\ and}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ generates\ less\ code.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ \ std::string\ result\ =\ base::StrCat(\{"{}foo\ "{},\ result,\ "{}\(\backslash\)nfoo\ "{},\ bar\});}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ To\ join\ an\ array\ of\ strings\ with\ a\ separator,\ see\ base::JoinString\ in}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ base/strings/string\_util.h.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ MORE\ INFO}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ StrCat\ can\ see\ all\ arguments\ at\ once,\ so\ it\ can\ allocate\ one\ return\ buffer}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ of\ exactly\ the\ right\ size\ and\ copy\ once,\ as\ opposed\ to\ a\ sequence\ of}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ operator+\ which\ generates\ a\ series\ of\ temporary\ strings,\ copying\ as\ it\ goes.}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ And\ by\ using\ std::string\_view\ arguments,\ StrCat\ can\ avoid\ creating\ temporary}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ string\ objects\ for\ char*\ constants.}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ ALTERNATIVES}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ Internal\ Google\ /\ Abseil\ has\ a\ similar\ StrCat\ function.\ That\ version\ takes}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ an\ overloaded\ number\ of\ arguments\ instead\ of\ initializer\ list\ (overflowing}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ to\ initializer\ list\ for\ many\ arguments).\ We\ don't\ have\ any\ legacy}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ requirements\ and\ using\ only\ initializer\_list\ is\ simpler\ and\ generates}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ roughly\ the\ same\ amount\ of\ code\ at\ the\ call\ sites.}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ Abseil's\ StrCat\ also\ allows\ numbers\ by\ using\ an\ intermediate\ class\ that\ can}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ be\ implicitly\ constructed\ from\ either\ a\ string\ or\ various\ number\ types.\ This}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ class\ formats\ the\ numbers\ into\ a\ static\ buffer\ for\ increased\ performance,}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ and\ the\ call\ sites\ look\ nice.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ As-\/written\ Abseil's\ helper\ class\ for\ numbers\ generates\ slightly\ more\ code}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ than\ the\ raw\ std::string\_view\ version.\ We\ can\ de-\/inline\ the\ helper\ class'}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ constructors\ which\ will\ cause\ the\ std::string\_view\ constructors\ to\ be}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ de-\/inlined\ for\ this\ call\ and\ generate\ slightly\ less\ code.\ This\ is\ something}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ we\ can\ explore\ more\ in\ the\ future.}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ StrCat(}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::string\_view>}}\ pieces);}
+\DoxyCodeLine{00062\ [[nodiscard]]\ BASE\_EXPORT\ std::u16string\ StrCat(}
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::u16string\_view>}}\ pieces);}
+\DoxyCodeLine{00064\ [[nodiscard]]\ BASE\_EXPORT\ std::string\ StrCat(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::string>}}\ pieces);}
+\DoxyCodeLine{00065\ [[nodiscard]]\ BASE\_EXPORT\ std::u16string\ StrCat(}
+\DoxyCodeLine{00066\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::u16string>}}\ pieces);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ Initializer\ list\ forwards\ to\ the\ array\ version.}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{inline}\ std::string\ StrCat(std::initializer\_list<std::string\_view>\ pieces)\ \{}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordflow}{return}\ StrCat(\mbox{\hyperlink{classkiwi_1_1span}{span}}(pieces));}
+\DoxyCodeLine{00071\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{inline}\ std::u16string\ StrCat(}
+\DoxyCodeLine{00074\ \ \ \ \ std::initializer\_list<std::u16string\_view>\ pieces)\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{return}\ StrCat(\mbox{\hyperlink{classkiwi_1_1span}{span}}(pieces));}
+\DoxyCodeLine{00076\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ StrAppend\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ Appends\ a\ sequence\ of\ strings\ to\ a\ destination.\ Prefer:}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ \ \ StrAppend(\&foo,\ ...);}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ over:}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ \ \ foo\ +=\ StrCat(...);}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ because\ it\ avoids\ a\ temporary\ string\ allocation\ and\ copy.}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ StrAppend(std::string*\ dest,}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::string\_view>}}\ pieces);}
+\DoxyCodeLine{00088\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ StrAppend(std::u16string*\ dest,}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::u16string\_view>}}\ pieces);}
+\DoxyCodeLine{00090\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ StrAppend(std::string*\ dest,\ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::string>}}\ pieces);}
+\DoxyCodeLine{00091\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ StrAppend(std::u16string*\ dest,}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::u16string>}}\ pieces);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ Initializer\ list\ forwards\ to\ the\ array\ version.}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ StrAppend(std::string*\ dest,}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::initializer\_list<std::string\_view>\ pieces)\ \{}
+\DoxyCodeLine{00097\ \ \ StrAppend(dest,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(pieces));}
+\DoxyCodeLine{00098\ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ StrAppend(std::u16string*\ dest,}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::initializer\_list<std::u16string\_view>\ pieces)\ \{}
+\DoxyCodeLine{00102\ \ \ StrAppend(dest,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(pieces));}
+\DoxyCodeLine{00103\ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#include\ "{}base/strings/strcat\_win.h"{}}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

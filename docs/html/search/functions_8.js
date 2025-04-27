@@ -1,5 +1,23 @@
 var searchData=
 [
-  ['lookup_0',['lookup',['../classkiwi_1_1_dense_map_base.html#a118aa132b8e5caeb336228ac547d17b1',1,'kiwi::DenseMapBase']]],
-  ['ltrim_1',['ltrim',['../classkiwi_1_1_string_ref.html#a7ed5a8d4213802fb7bcbb769316935c4',1,'kiwi::StringRef::ltrim(char Char) const'],['../classkiwi_1_1_string_ref.html#ac4ef859b88acdefc97bd41351dd4edbb',1,'kiwi::StringRef::ltrim(StringRef Chars=&quot; \t\n\v\f\r&quot;) const']]]
+  ['increment_5fepoch_0',['increment_epoch',['../classkiwi_1_1_debug_epoch_base.html#a1f762b109605ac47be9daa63ce326625',1,'kiwi::DebugEpochBase']]],
+  ['initializefeatures_1',['InitializeFeatures',['../classkiwi_1_1_file_path.html#a7b8e6b71786d3f2b9af0a13633ff8025',1,'kiwi::FilePath']]],
+  ['insert_2',['insert',['../classkiwi_1_1_dense_map_base.html#ae9a3aefa3581a80180a0c5693ae91efe',1,'kiwi::DenseMapBase']]],
+  ['insert_5fas_3',['insert_as',['../classkiwi_1_1_dense_map_base.html#ae48502816f7f3685789435b28ac2c501',1,'kiwi::DenseMapBase']]],
+  ['insertafterthisone_4',['insertAfterThisOne',['../classkiwi_1_1_i_o_buf.html#adbd9d04ab1f41919cae8d099e1bbcad7',1,'kiwi::IOBuf']]],
+  ['insertbeforeextension_5',['InsertBeforeExtension',['../classkiwi_1_1_file_path.html#ad8eefdf84c5a4310c715df59dc4d6b90',1,'kiwi::FilePath']]],
+  ['insertbeforeextensionascii_6',['InsertBeforeExtensionASCII',['../classkiwi_1_1_file_path.html#ac5a39aca08f026da6012aebaae25e2c7',1,'kiwi::FilePath']]],
+  ['insertbeforeextensionutf8_7',['InsertBeforeExtensionUTF8',['../classkiwi_1_1_file_path.html#a352aa1d031ce91ed7de539d26325fabd',1,'kiwi::FilePath']]],
+  ['iobuf_8',['IOBuf',['../classkiwi_1_1_i_o_buf.html#a7f6071e9f9d7fd8f11da8755f5809705',1,'kiwi::IOBuf::IOBuf(CreateOp, std::size_t capacity)'],['../classkiwi_1_1_i_o_buf.html#aa056c927383e7c10899bbcffaf415983',1,'kiwi::IOBuf::IOBuf(TakeOwnershipOp op, void *buf, std::size_t capacity, FreeFunction freeFn=nullptr, void *userData=nullptr, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#a90935fddc509ab6c1a2e32f0f91bf118',1,'kiwi::IOBuf::IOBuf(TakeOwnershipOp op, void *buf, std::size_t capacity, std::size_t length, FreeFunction freeFn=nullptr, void *userData=nullptr, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#a63cf877a1146cf593774187419da0e09',1,'kiwi::IOBuf::IOBuf(TakeOwnershipOp, void *buf, std::size_t capacity, std::size_t offset, std::size_t length, FreeFunction freeFn=nullptr, void *userData=nullptr, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#a03dace6e2d4e7a61d0cefe0396556462',1,'kiwi::IOBuf::IOBuf(TakeOwnershipOp, SizedFree, void *buf, std::size_t capacity, std::size_t offset, std::size_t length, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#ac00383234824ff95f192e09d8d77b0c6',1,'kiwi::IOBuf::IOBuf(WrapBufferOp op, ByteRange br) noexcept'],['../classkiwi_1_1_i_o_buf.html#af8145236efb0eb62fd99871e94e0d49d',1,'kiwi::IOBuf::IOBuf(WrapBufferOp op, const void *buf, std::size_t capacity) noexcept'],['../classkiwi_1_1_i_o_buf.html#a1e814b71daa4f78e49cb3107df673a29',1,'kiwi::IOBuf::IOBuf(CopyBufferOp op, ByteRange br, std::size_t headroom=0, std::size_t minTailroom=0)'],['../classkiwi_1_1_i_o_buf.html#af4ed886fda74ea9cdfbc382d60453871',1,'kiwi::IOBuf::IOBuf(CopyBufferOp op, const void *buf, std::size_t size, std::size_t headroom=0, std::size_t minTailroom=0)'],['../classkiwi_1_1_i_o_buf.html#a2b84f84ca1454238aa2531223d420a78',1,'kiwi::IOBuf::IOBuf() noexcept'],['../classkiwi_1_1_i_o_buf.html#a23324e396a3a95880e9897f9286c0731',1,'kiwi::IOBuf::IOBuf(IOBuf &amp;&amp;other) noexcept'],['../classkiwi_1_1_i_o_buf.html#a21ca1a066836e9b3b5d8f326851ba487',1,'kiwi::IOBuf::IOBuf(const IOBuf &amp;other)']]],
+  ['is_5fhandle_5fin_5fsync_9',['is_handle_in_sync',['../classkiwi_1_1_debug_epoch_base_1_1_handle_base.html#a9c3bb8788ab6c9ef7c64e1f18f8a3bdb',1,'kiwi::DebugEpochBase::HandleBase']]],
+  ['isabsolute_10',['IsAbsolute',['../classkiwi_1_1_file_path.html#a7aed5b475f7e4becff592c31bc2302e4',1,'kiwi::FilePath']]],
+  ['ischained_11',['isChained',['../classkiwi_1_1_i_o_buf.html#a3c1716d549a392455b8ff73320d75b01',1,'kiwi::IOBuf']]],
+  ['ismanaged_12',['isManaged',['../classkiwi_1_1_i_o_buf.html#aa22e9603db12c73badfc8e21d3f4adcc',1,'kiwi::IOBuf']]],
+  ['ismanagedone_13',['isManagedOne',['../classkiwi_1_1_i_o_buf.html#a38c51004d1388e27a296985cdc108c05',1,'kiwi::IOBuf']]],
+  ['isnetwork_14',['IsNetwork',['../classkiwi_1_1_file_path.html#aef1eb2735f8c909f574b2cc919371867',1,'kiwi::FilePath']]],
+  ['isparent_15',['IsParent',['../classkiwi_1_1_file_path.html#a25f55ca71cc6e81df492195471714201',1,'kiwi::FilePath']]],
+  ['ispointerintobucketsarray_16',['isPointerIntoBucketsArray',['../classkiwi_1_1_dense_map_base.html#a48c686ef33cb6bac5526c3fd5b3bb195',1,'kiwi::DenseMapBase']]],
+  ['isseparator_17',['IsSeparator',['../classkiwi_1_1_file_path.html#ac755d247bb7b978df0a4a2f91ec8d794',1,'kiwi::FilePath']]],
+  ['isshared_18',['isShared',['../classkiwi_1_1_i_o_buf.html#afd89244b5f410f262aa908464c5e8fa1',1,'kiwi::IOBuf']]],
+  ['issharedone_19',['isSharedOne',['../classkiwi_1_1_i_o_buf.html#a0c97fe228756f08adc44cf2c341f9c48',1,'kiwi::IOBuf']]]
 ];

@@ -1,0 +1,649 @@
+\doxysection{string\+\_\+util\+\_\+impl\+\_\+helpers.\+hh}
+\hypertarget{string__util__impl__helpers_8hh_source}{}\label{string__util__impl__helpers_8hh_source}\index{include/kiwi/strings/string\_util\_impl\_helpers.hh@{include/kiwi/strings/string\_util\_impl\_helpers.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2020\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <numeric>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \#include\ "{}base/check.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \#include\ "{}base/check\_op.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \#include\ "{}base/logging.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \#include\ "{}base/notreached.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/icu/icu\_utf.hh"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ Used\ by\ ReplaceStringPlaceholders\ to\ track\ the\ position\ in\ the\ string\ of}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ replaced\ parameters.}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{struct\ }ReplacementOffset\ \{}
+\DoxyCodeLine{00027\ \ \ ReplacementOffset(uintptr\_t\ parameter,\ \textcolor{keywordtype}{size\_t}\ offset)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ :\ parameter(parameter),\ offset(offset)\ \{\}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ Index\ of\ the\ parameter.}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{size\_t}\ parameter;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ Starting\ position\ in\ the\ string.}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{size\_t}\ offset;}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CompareParameter(\textcolor{keyword}{const}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_replacement_offset}{ReplacementOffset}}\&\ elem1,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_replacement_offset}{ReplacementOffset}}\&\ elem2)\ \{}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordflow}{return}\ elem1.parameter\ <\ elem2.parameter;}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Assuming\ that\ a\ pointer\ is\ the\ size\ of\ a\ "{}machine\ word"{},\ then}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ uintptr\_t\ is\ an\ integer\ type\ that\ is\ also\ a\ machine\ word.}}
+\DoxyCodeLine{00044\ \textcolor{keyword}{using\ }MachineWord\ =\ uintptr\_t;}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsMachineWordAligned(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ pointer)\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordflow}{return}\ !(\textcolor{keyword}{reinterpret\_cast<}MachineWord\textcolor{keyword}{>}(pointer)\ \&\ (\textcolor{keyword}{sizeof}(MachineWord)\ -\/\ 1));}
+\DoxyCodeLine{00048\ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00051\ std::basic\_string<CharT>\ ToLowerASCIIImpl(T\ str)\ \{}
+\DoxyCodeLine{00052\ \ \ std::basic\_string<CharT>\ ret;}
+\DoxyCodeLine{00053\ \ \ ret.reserve(str.size());}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ str.size();\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ ret.push\_back(ToLowerASCII(str[i]));}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00058\ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00061\ std::basic\_string<CharT>\ ToUpperASCIIImpl(T\ str)\ \{}
+\DoxyCodeLine{00062\ \ \ std::basic\_string<CharT>\ ret;}
+\DoxyCodeLine{00063\ \ \ ret.reserve(str.size());}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ str.size();\ i++)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ ret.push\_back(ToUpperASCII(str[i]));}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00068\ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00071\ TrimPositions\ TrimStringT(T\ input,\ T\ trim\_chars,\ TrimPositions\ positions,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::basic\_string<CharT>*\ output)\ \{}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ Find\ the\ edges\ of\ leading/trailing\ whitespace\ as\ desired.\ Need\ to\ use}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ a\ std::string\_view\ version\ of\ input\ to\ be\ able\ to\ call\ find*\ on\ it\ with\ the}}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ std::string\_view\ version\ of\ trim\_chars\ (normally\ the\ trim\_chars\ will\ be\ a}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ constant\ so\ avoid\ making\ a\ copy).}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ last\_char\ =\ input.length()\ -\/\ 1;}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ first\_good\_char\ =}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ (positions\ \&\ TRIM\_LEADING)\ ?\ input.find\_first\_not\_of(trim\_chars)\ :\ 0;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ last\_good\_char\ =\ (positions\ \&\ TRIM\_TRAILING)}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ input.find\_last\_not\_of(trim\_chars)}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ last\_char;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//\ When\ the\ string\ was\ all\ trimmed,\ report\ that\ we\ stripped\ off\ characters}}
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//\ from\ whichever\ position\ the\ caller\ was\ interested\ in.\ For\ empty\ input,\ we}}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ stripped\ no\ characters,\ but\ we\ still\ need\ to\ clear\ |output|.}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{if}\ (input.empty()\ ||\ first\_good\_char\ ==\ std::basic\_string<CharT>::npos\ ||}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ last\_good\_char\ ==\ std::basic\_string<CharT>::npos)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{bool}\ input\_was\_empty\ =\ input.empty();\ \ \textcolor{comment}{//\ in\ case\ output\ ==\ \&input}}
+\DoxyCodeLine{00090\ \ \ \ \ output-\/>clear();}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ input\_was\_empty\ ?\ TRIM\_NONE\ :\ positions;}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ Trim.}}
+\DoxyCodeLine{00095\ \ \ output-\/>assign(UNSAFE\_TODO(input.data()\ +\ first\_good\_char),}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ last\_good\_char\ -\/\ first\_good\_char\ +\ 1);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ Return\ where\ we\ trimmed\ from.}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}TrimPositions\textcolor{keyword}{>}(}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ (first\_good\_char\ ==\ 0\ ?\ TRIM\_NONE\ :\ TRIM\_LEADING)\ |}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ (last\_good\_char\ ==\ last\_char\ ?\ TRIM\_NONE\ :\ TRIM\_TRAILING));}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00105\ T\ TrimStringPieceT(T\ input,\ T\ trim\_chars,\ TrimPositions\ positions)\ \{}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{size\_t}\ begin\ =}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ (positions\ \&\ TRIM\_LEADING)\ ?\ input.find\_first\_not\_of(trim\_chars)\ :\ 0;}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{size\_t}\ end\ =\ (positions\ \&\ TRIM\_TRAILING)}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ input.find\_last\_not\_of(trim\_chars)\ +\ 1}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ input.size();}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{return}\ input.substr(std::min(begin,\ input.size()),\ end\ -\/\ begin);}
+\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00115\ std::basic\_string<CharT>\ CollapseWhitespaceT(}
+\DoxyCodeLine{00116\ \ \ \ \ T\ text,\ \textcolor{keywordtype}{bool}\ trim\_sequences\_with\_line\_breaks)\ \{}
+\DoxyCodeLine{00117\ \ \ std::basic\_string<CharT>\ result;}
+\DoxyCodeLine{00118\ \ \ result.resize(text.size());}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{//\ Set\ flags\ to\ pretend\ we're\ already\ in\ a\ trimmed\ whitespace\ sequence,\ so\ we}}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{//\ will\ trim\ any\ leading\ whitespace.}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{bool}\ in\_whitespace\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{bool}\ already\_trimmed\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{size\_t}\ chars\_written\ =\ 0;}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ c\ :\ text)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsWhitespace(c))\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!in\_whitespace)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Reduce\ all\ whitespace\ sequences\ to\ a\ single\ space.}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ in\_whitespace\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ result[chars\_written++]\ =\ L\textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (trim\_sequences\_with\_line\_breaks\ \&\&\ !already\_trimmed\ \&\&}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ ((c\ ==\ \textcolor{charliteral}{'\(\backslash\)n'})\ ||\ (c\ ==\ \textcolor{charliteral}{'\(\backslash\)r'})))\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Whitespace\ sequences\ containing\ CR\ or\ LF\ are\ eliminated\ entirely.}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ already\_trimmed\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ -\/-\/chars\_written;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{comment}{//\ Non-\/whitespace\ characters\ are\ copied\ straight\ across.}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ in\_whitespace\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ already\_trimmed\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ result[chars\_written++]\ =\ c;}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordflow}{if}\ (in\_whitespace\ \&\&\ !already\_trimmed)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ Any\ trailing\ whitespace\ is\ eliminated.}}
+\DoxyCodeLine{00149\ \ \ \ \ -\/-\/chars\_written;}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ result.resize(chars\_written);}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00154\ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
+\DoxyCodeLine{00157\ \textcolor{keywordtype}{bool}\ DoIsStringASCII(\textcolor{keyword}{const}\ Char*\ characters,\ \textcolor{keywordtype}{size\_t}\ length)\ \{}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ Bitmasks\ to\ detect\ non\ ASCII\ characters\ for\ character\ sizes\ of\ 8,\ 16\ and\ 32}}
+\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//\ bits.}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ NonASCIIMasks\ =\ std::to\_array<MachineWord>(\{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ 0,}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ MachineWord(0x8080808080808080ULL),}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ MachineWord(0xFF80FF80FF80FF80ULL),}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ 0,}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ MachineWord(0xFFFFFF80FFFFFF80ULL),}
+\DoxyCodeLine{00166\ \ \ \});}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordflow}{if}\ (!length)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{constexpr}\ MachineWord\ non\_ascii\_bit\_mask\ =\ NonASCIIMasks[\textcolor{keyword}{sizeof}(Char)];}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{static\_assert}(non\_ascii\_bit\_mask,\ \textcolor{stringliteral}{"{}Error:\ Invalid\ Mask"{}});}
+\DoxyCodeLine{00173\ \ \ MachineWord\ all\_char\_bits\ =\ 0;}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{const}\ Char*\ end\ =\ UNSAFE\_TODO(characters\ +\ length);}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{//\ Prologue:\ align\ the\ input.}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordflow}{while}\ (!IsMachineWordAligned(characters)\ \&\&\ characters\ <\ end)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ all\_char\_bits\ |=\ UNSAFE\_TODO(\textcolor{keyword}{static\_cast<}MachineWord\textcolor{keyword}{>}(*characters++));}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordflow}{if}\ (all\_char\_bits\ \&\ non\_ascii\_bit\_mask)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ Compare\ the\ values\ of\ CPU\ word\ size.}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ chars\_per\_word\ =\ \textcolor{keyword}{sizeof}(MachineWord)\ /\ \textcolor{keyword}{sizeof}(Char);}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ batch\_count\ =\ 16;}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordflow}{while}\ (characters\ <=\ UNSAFE\_TODO(end\ -\/\ batch\_count\ *\ chars\_per\_word))\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ all\_char\_bits\ =\ 0;}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ batch\_count;\ ++i)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ all\_char\_bits\ |=\ *(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }MachineWord*\textcolor{keyword}{>}(characters));}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ UNSAFE\_TODO(characters\ +=\ chars\_per\_word);}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{if}\ (all\_char\_bits\ \&\ non\_ascii\_bit\_mask)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ Process\ the\ remaining\ words.}}
+\DoxyCodeLine{00199\ \ \ all\_char\_bits\ =\ 0;}
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordflow}{while}\ (characters\ <=\ UNSAFE\_TODO(end\ -\/\ chars\_per\_word))\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ all\_char\_bits\ |=\ *(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }MachineWord*\textcolor{keyword}{>}(characters));}
+\DoxyCodeLine{00202\ \ \ \ \ UNSAFE\_TODO(characters\ +=\ chars\_per\_word);}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ Process\ the\ remaining\ bytes.}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordflow}{while}\ (characters\ <\ end)\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ all\_char\_bits\ |=\ UNSAFE\_TODO(\textcolor{keyword}{static\_cast<}MachineWord\textcolor{keyword}{>}(*characters++));}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordflow}{return}\ !(all\_char\_bits\ \&\ non\_ascii\_bit\_mask);}
+\DoxyCodeLine{00211\ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{bool}\ (*Val\textcolor{keywordtype}{id}ator)(base\_icu::UChar32)>}
+\DoxyCodeLine{00214\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ DoIsStringUTF8(std::string\_view\ str)\ \{}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ src\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }uint8\_t*\textcolor{keyword}{>}(str.data());}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordtype}{size\_t}\ src\_len\ =\ str.length();}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{size\_t}\ char\_index\ =\ 0;}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordflow}{while}\ (char\_index\ <\ src\_len)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ base\_icu::UChar32\ code\_point;}
+\DoxyCodeLine{00221\ \ \ \ \ UNSAFE\_TODO(CBU8\_NEXT(src,\ char\_index,\ src\_len,\ code\_point));}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Validator(code\_point))\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00227\ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \textcolor{comment}{//\ Lookup\ table\ for\ fast\ ASCII\ case-\/insensitive\ comparison.}}
+\DoxyCodeLine{00230\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::array<unsigned\ char,\ 256>\ kToLower\ =\ []()\ \{}
+\DoxyCodeLine{00231\ \ \ std::array<unsigned\ char,\ 256>\ table;}
+\DoxyCodeLine{00232\ \ \ std::iota(table.begin(),\ table.end(),\ 0);}
+\DoxyCodeLine{00233\ \ \ std::iota(table.begin()\ +\ \textcolor{keywordtype}{size\_t}\{\textcolor{stringliteral}{'A'}\},\ table.begin()\ +\ \textcolor{keywordtype}{size\_t}\{\textcolor{stringliteral}{'Z'}\}\ +\ 1,\ \textcolor{charliteral}{'a'});}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordflow}{return}\ table;}
+\DoxyCodeLine{00235\ \}();}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ lower\ =\ [](\textcolor{keyword}{auto}\ c)\ \textcolor{keyword}{constexpr}\ \{}
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordflow}{return}\ kToLower[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\textcolor{keyword}{>}(c)];}
+\DoxyCodeLine{00239\ \};}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00242\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ StartsWithT(T\ str,\ T\ search\_for,\ CompareCase\ case\_sensitivity)\ \{}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordflow}{return}\ case\_sensitivity\ ==\ CompareCase::SENSITIVE}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ str.starts\_with(search\_for)}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ std::ranges::equal(str.substr(0,\ search\_for.size()),\ search\_for,}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\},\ lower,\ lower);}
+\DoxyCodeLine{00247\ \}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00250\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ EndsWithT(T\ str,\ T\ search\_for,\ CompareCase\ case\_sensitivity)\ \{}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordflow}{return}\ case\_sensitivity\ ==\ CompareCase::SENSITIVE}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ str.ends\_with(search\_for)}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (search\_for.size()\ <=\ str.size()\ \&\&}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ranges::equal(str.substr(str.size()\ -\/\ search\_for.size()),}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ search\_for,\ \{\},\ lower,\ lower));}
+\DoxyCodeLine{00256\ \}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ A\ Matcher\ for\ DoReplaceMatchesAfterOffset()\ that\ matches\ substrings.}}
+\DoxyCodeLine{00259\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ CharT>}
+\DoxyCodeLine{00260\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_substring_matcher}{SubstringMatcher}}\ \{}
+\DoxyCodeLine{00261\ \ \ std::basic\_string\_view<CharT>\ find\_this;}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordtype}{size\_t}\ Find(\textcolor{keyword}{const}\ std::basic\_string<CharT>\&\ input,\ \textcolor{keywordtype}{size\_t}\ pos)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{return}\ input.find(find\_this.data(),\ pos,\ find\_this.length());}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{size\_t}\ MatchSize()\ \{\ \textcolor{keywordflow}{return}\ find\_this.length();\ \}}
+\DoxyCodeLine{00267\ \};}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \textcolor{comment}{//\ Type\ deduction\ helper\ for\ SubstringMatcher.}}
+\DoxyCodeLine{00270\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00271\ \textcolor{keyword}{auto}\ MakeSubstringMatcher(T\ find\_this)\ \{}
+\DoxyCodeLine{00272\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_substring_matcher}{SubstringMatcher<CharT>}}\{find\_this\};}
+\DoxyCodeLine{00273\ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \textcolor{comment}{//\ A\ Matcher\ for\ DoReplaceMatchesAfterOffset()\ that\ matches\ single\ characters.}}
+\DoxyCodeLine{00276\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ CharT>}
+\DoxyCodeLine{00277\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_character_matcher}{CharacterMatcher}}\ \{}
+\DoxyCodeLine{00278\ \ \ std::basic\_string\_view<CharT>\ find\_any\_of\_these;}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \textcolor{keywordtype}{size\_t}\ Find(\textcolor{keyword}{const}\ std::basic\_string<CharT>\&\ input,\ \textcolor{keywordtype}{size\_t}\ pos)\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordflow}{return}\ input.find\_first\_of(find\_any\_of\_these.data(),\ pos,}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ find\_any\_of\_these.length());}
+\DoxyCodeLine{00283\ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ MatchSize()\ \{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00285\ \};}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{comment}{//\ Type\ deduction\ helper\ for\ CharacterMatcher.}}
+\DoxyCodeLine{00288\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00289\ \textcolor{keyword}{auto}\ MakeCharacterMatcher(T\ find\_any\_of\_these)\ \{}
+\DoxyCodeLine{00290\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_character_matcher}{CharacterMatcher<CharT>}}\{find\_any\_of\_these\};}
+\DoxyCodeLine{00291\ \}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \textcolor{keyword}{enum\ class}\ ReplaceType\ \{\ REPLACE\_ALL,\ REPLACE\_FIRST\ \};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{comment}{//\ Runs\ in\ O(n)\ time\ in\ the\ length\ of\ |str|,\ and\ transforms\ the\ string\ without}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ reallocating\ when\ possible.\ Returns\ |true|\ if\ any\ matches\ were\ found.}}
+\DoxyCodeLine{00297\ \textcolor{comment}{//}}
+\DoxyCodeLine{00298\ \textcolor{comment}{//\ This\ is\ parameterized\ on\ a\ |Matcher|\ traits\ type,\ so\ that\ it\ can\ be\ the}}
+\DoxyCodeLine{00299\ \textcolor{comment}{//\ implementation\ for\ both\ ReplaceChars()\ and\ ReplaceSubstringsAfterOffset().}}
+\DoxyCodeLine{00300\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Matcher,\ \textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00301\ \textcolor{keywordtype}{bool}\ DoReplaceMatchesAfterOffset(std::basic\_string<CharT>*\ str,}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ initial\_offset,\ Matcher\ matcher,}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\ replace\_with,\ ReplaceType\ replace\_type)\ \{}
+\DoxyCodeLine{00304\ \ \ \textcolor{keyword}{using\ }CharTraits\ =\ std::char\_traits<CharT>;}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ find\_length\ =\ matcher.MatchSize();}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordflow}{if}\ (!find\_length)\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00309\ \ \ \}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \ \ \textcolor{comment}{//\ If\ the\ find\ string\ doesn't\ appear,\ there's\ nothing\ to\ do.}}
+\DoxyCodeLine{00312\ \ \ \textcolor{keywordtype}{size\_t}\ first\_match\ =\ matcher.Find(*str,\ initial\_offset);}
+\DoxyCodeLine{00313\ \ \ \textcolor{keywordflow}{if}\ (first\_match\ ==\ std::basic\_string<CharT>::npos)\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{comment}{//\ If\ we're\ only\ replacing\ one\ instance,\ there's\ no\ need\ to\ do\ anything}}
+\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//\ complicated.}}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ replace\_length\ =\ replace\_with.length();}
+\DoxyCodeLine{00320\ \ \ \textcolor{keywordflow}{if}\ (replace\_type\ ==\ ReplaceType::REPLACE\_FIRST)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ str-\/>replace(first\_match,\ find\_length,\ replace\_with.data(),\ replace\_length);}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00323\ \ \ \}}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \ \ \textcolor{comment}{//\ If\ the\ find\ and\ replace\ strings\ are\ the\ same\ length,\ we\ can\ simply\ use}}
+\DoxyCodeLine{00326\ \ \ \textcolor{comment}{//\ replace()\ on\ each\ instance,\ and\ finish\ the\ entire\ operation\ in\ O(n)\ time.}}
+\DoxyCodeLine{00327\ \ \ \textcolor{keywordflow}{if}\ (find\_length\ ==\ replace\_length)\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{auto}*\ buffer\ =\ \&((*str)[0]);}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ offset\ =\ first\_match;\ offset\ !=\ std::basic\_string<CharT>::npos;}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ offset\ =\ matcher.Find(*str,\ offset\ +\ replace\_length))\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ CharTraits::copy(UNSAFE\_TODO(buffer\ +\ offset),\ replace\_with.data(),}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ replace\_length);}
+\DoxyCodeLine{00333\ \ \ \ \ \}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00335\ \ \ \}}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \ \ \textcolor{comment}{//\ Since\ the\ find\ and\ replace\ strings\ aren't\ the\ same\ length,\ a\ loop\ like\ the}}
+\DoxyCodeLine{00338\ \ \ \textcolor{comment}{//\ one\ above\ would\ be\ O(n\string^2)\ in\ the\ worst\ case,\ as\ replace()\ will\ shift\ the}}
+\DoxyCodeLine{00339\ \ \ \textcolor{comment}{//\ entire\ remaining\ string\ each\ time.\ We\ need\ to\ be\ more\ clever\ to\ keep\ things}}
+\DoxyCodeLine{00340\ \ \ \textcolor{comment}{//\ O(n).}}
+\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ When\ the\ string\ is\ being\ shortened,\ it's\ possible\ to\ just\ shift\ the\ matches}}
+\DoxyCodeLine{00343\ \ \ \textcolor{comment}{//\ down\ in\ one\ pass\ while\ finding,\ and\ truncate\ the\ length\ at\ the\ end\ of\ the}}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//\ search.}}
+\DoxyCodeLine{00345\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00346\ \ \ \textcolor{comment}{//\ If\ the\ string\ is\ being\ lengthened,\ more\ work\ is\ required.\ The\ strategy\ used}}
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//\ here\ is\ to\ make\ two\ find()\ passes\ through\ the\ string.\ The\ first\ pass\ counts}}
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ the\ number\ of\ matches\ to\ determine\ the\ new\ size.\ The\ second\ pass\ will}}
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//\ either\ construct\ the\ new\ string\ into\ a\ new\ buffer\ (if\ the\ existing\ buffer}}
+\DoxyCodeLine{00350\ \ \ \textcolor{comment}{//\ lacked\ capacity),\ or\ else\ -\/-\/\ if\ there\ is\ room\ -\/-\/\ create\ a\ region\ of\ scratch}}
+\DoxyCodeLine{00351\ \ \ \textcolor{comment}{//\ space\ after\ |first\_match|\ by\ shifting\ the\ tail\ of\ the\ string\ to\ a\ higher}}
+\DoxyCodeLine{00352\ \ \ \textcolor{comment}{//\ index,\ and\ doing\ in-\/place\ moves\ from\ the\ tail\ to\ lower\ indices\ thereafter.}}
+\DoxyCodeLine{00353\ \ \ \textcolor{keywordtype}{size\_t}\ str\_length\ =\ str-\/>length();}
+\DoxyCodeLine{00354\ \ \ \textcolor{keywordtype}{size\_t}\ expansion\ =\ 0;}
+\DoxyCodeLine{00355\ \ \ \textcolor{keywordflow}{if}\ (replace\_length\ >\ find\_length)\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{comment}{//\ This\ operation\ lengthens\ the\ string;\ determine\ the\ new\ length\ by\ counting}}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{comment}{//\ matches.}}
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ expansion\_per\_match\ =\ (replace\_length\ -\/\ find\_length);}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ num\_matches\ =\ 0;}
+\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ match\ =\ first\_match;\ match\ !=\ std::basic\_string<CharT>::npos;}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ match\ =\ matcher.Find(*str,\ match\ +\ find\_length))\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ expansion\ +=\ expansion\_per\_match;}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ ++num\_matches;}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ final\_length\ =\ str\_length\ +\ expansion;}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keywordflow}{if}\ (str-\/>capacity()\ <\ final\_length)\ \{}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ we'd\ have\ to\ allocate\ a\ new\ buffer\ to\ grow\ the\ string,\ build\ the}}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \textcolor{comment}{//\ result\ directly\ into\ the\ new\ allocation\ via\ append().}}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ std::basic\_string<CharT>\ src(str-\/>get\_allocator());}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ str-\/>swap(src);}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ str-\/>reserve(final\_length);}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0;}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ match\ =\ first\_match;;\ match\ =\ matcher.Find(src,\ pos))\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ str-\/>append(src,\ pos,\ match\ -\/\ pos);}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ str-\/>append(replace\_with.data(),\ replace\_length);}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ pos\ =\ match\ +\ find\_length;}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ A\ mid-\/loop\ test/break\ enables\ skipping\ the\ final\ Find()\ call;\ the}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ number\ of\ matches\ is\ known,\ so\ don't\ search\ past\ the\ last\ one.}}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!-\/-\/num\_matches)\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{comment}{//\ Handle\ substring\ after\ the\ final\ match.}}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ str-\/>append(src,\ pos,\ str\_length\ -\/\ pos);}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00390\ \ \ \ \ \}}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{comment}{//\ Prepare\ for\ the\ copy/move\ loop\ below\ -\/-\/\ expand\ the\ string\ to\ its\ final}}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{comment}{//\ size\ by\ shifting\ the\ data\ after\ the\ first\ match\ to\ the\ end\ of\ the\ resized}}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{comment}{//\ string.}}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ shift\_src\ =\ first\_match\ +\ find\_length;}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ shift\_dst\ =\ shift\_src\ +\ expansion;}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{comment}{//\ Big\ |expansion|\ factors\ (relative\ to\ |str\_length|)\ require\ padding\ up\ to}}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{comment}{//\ |shift\_dst|.}}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keywordflow}{if}\ (shift\_dst\ >\ str\_length)\ \{}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ str-\/>resize(shift\_dst);}
+\DoxyCodeLine{00402\ \ \ \ \ \}}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \ \ str-\/>replace(shift\_dst,\ str\_length\ -\/\ shift\_src,\ *str,\ shift\_src,}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ str\_length\ -\/\ shift\_src);}
+\DoxyCodeLine{00406\ \ \ \ \ str\_length\ =\ final\_length;}
+\DoxyCodeLine{00407\ \ \ \}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \ \ \textcolor{comment}{//\ We\ can\ alternate\ replacement\ and\ move\ operations.\ This\ won't\ overwrite\ the}}
+\DoxyCodeLine{00410\ \ \ \textcolor{comment}{//\ unsearched\ region\ of\ the\ string\ so\ long\ as\ |write\_offset|\ <=\ |read\_offset|;}}
+\DoxyCodeLine{00411\ \ \ \textcolor{comment}{//\ that\ condition\ is\ always\ satisfied\ because:}}
+\DoxyCodeLine{00412\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00413\ \ \ \textcolor{comment}{//\ \ \ (a)\ If\ the\ string\ is\ being\ shortened,\ |expansion|\ is\ zero\ and}}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ |write\_offset|\ grows\ slower\ than\ |read\_offset|.}}
+\DoxyCodeLine{00415\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00416\ \ \ \textcolor{comment}{//\ \ \ (b)\ If\ the\ string\ is\ being\ lengthened,\ |write\_offset|\ grows\ faster\ than}}
+\DoxyCodeLine{00417\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ |read\_offset|,\ but\ |expansion|\ is\ big\ enough\ so\ that\ |write\_offset|}}
+\DoxyCodeLine{00418\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ will\ only\ catch\ up\ to\ |read\_offset|\ at\ the\ point\ of\ the\ last\ match.}}
+\DoxyCodeLine{00419\ \ \ \textcolor{keyword}{auto}*\ buffer\ =\ \&((*str)[0]);}
+\DoxyCodeLine{00420\ \ \ \textcolor{keywordtype}{size\_t}\ write\_offset\ =\ first\_match;}
+\DoxyCodeLine{00421\ \ \ \textcolor{keywordtype}{size\_t}\ read\_offset\ =\ first\_match\ +\ expansion;}
+\DoxyCodeLine{00422\ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ \textcolor{keywordflow}{if}\ (replace\_length)\ \{}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ CharTraits::copy(UNSAFE\_TODO(buffer\ +\ write\_offset),\ replace\_with.data(),}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ replace\_length);}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ write\_offset\ +=\ replace\_length;}
+\DoxyCodeLine{00427\ \ \ \ \ \}}
+\DoxyCodeLine{00428\ \ \ \ \ read\_offset\ +=\ find\_length;}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \ \ \ \ \textcolor{comment}{//\ min()\ clamps\ std::basic\_string<CharT>::npos\ (the\ largest\ unsigned\ value)}}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{comment}{//\ to\ str\_length.}}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ match\ =\ std::min(matcher.Find(*str,\ read\_offset),\ str\_length);}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ length\ =\ match\ -\/\ read\_offset;}
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keywordflow}{if}\ (length)\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ CharTraits::move(UNSAFE\_TODO(buffer\ +\ write\_offset),}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ UNSAFE\_TODO(buffer\ +\ read\_offset),\ length);}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ write\_offset\ +=\ length;}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ read\_offset\ +=\ length;}
+\DoxyCodeLine{00440\ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \}\ \textcolor{keywordflow}{while}\ (read\_offset\ <\ str\_length);}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \ \ \textcolor{comment}{//\ If\ we're\ shortening\ the\ string,\ truncate\ it\ now.}}
+\DoxyCodeLine{00444\ \ \ str-\/>resize(write\_offset);}
+\DoxyCodeLine{00445\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00446\ \}}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00448\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00449\ \textcolor{keywordtype}{bool}\ ReplaceCharsT(T\ input,\ T\ find\_any\_of\_these,\ T\ replace\_with,}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::basic\_string<CharT>*\ output)\ \{}
+\DoxyCodeLine{00451\ \ \ \textcolor{comment}{//\ Commonly,\ this\ is\ called\ with\ output\ and\ input\ being\ the\ same\ string;\ in}}
+\DoxyCodeLine{00452\ \ \ \textcolor{comment}{//\ that\ case,\ skip\ the\ copy.}}
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordflow}{if}\ (input.data()\ !=\ output-\/>data()\ ||\ input.size()\ !=\ output-\/>size())\ \{}
+\DoxyCodeLine{00454\ \ \ \ \ output-\/>assign(input.data(),\ input.size());}
+\DoxyCodeLine{00455\ \ \ \}}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \ \ \textcolor{keywordflow}{return}\ DoReplaceMatchesAfterOffset(output,\ 0,}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MakeCharacterMatcher(find\_any\_of\_these),}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ replace\_with,\ ReplaceType::REPLACE\_ALL);}
+\DoxyCodeLine{00460\ \}}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00462\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ \textcolor{keywordtype}{string}\_type>}
+\DoxyCodeLine{00463\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ string\_type::value\_type*\ WriteIntoT(string\_type*\ str,}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ length\_with\_null)\ \{}
+\DoxyCodeLine{00465\ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00466\ \ \ \textcolor{comment}{//\ DCHECK\_GE(length\_with\_null,\ 1u);}}
+\DoxyCodeLine{00467\ \ \ str-\/>reserve(length\_with\_null);}
+\DoxyCodeLine{00468\ \ \ str-\/>resize(length\_with\_null\ -\/\ 1);}
+\DoxyCodeLine{00469\ \ \ \textcolor{keywordflow}{return}\ str-\/>data();}
+\DoxyCodeLine{00470\ \}}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \textcolor{comment}{//\ Generic\ version\ for\ all\ JoinString\ overloads.\ |list\_type|\ must\ be\ a\ sequence}}
+\DoxyCodeLine{00473\ \textcolor{comment}{//\ (base::span\ or\ std::initializer\_list)\ of\ strings/StringPieces\ (std::string,}}
+\DoxyCodeLine{00474\ \textcolor{comment}{//\ std::u16string,\ std::string\_view\ or\ std::u16string\_view).\ |CharT|\ is\ either}}
+\DoxyCodeLine{00475\ \textcolor{comment}{//\ char\ or\ char16\_t.}}
+\DoxyCodeLine{00476\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ list\_type,\ \textcolor{keyword}{typename}\ T,}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00478\ \textcolor{keyword}{static}\ std::basic\_string<CharT>\ JoinStringT(list\_type\ parts,\ T\ sep)\ \{}
+\DoxyCodeLine{00479\ \ \ \textcolor{keywordflow}{if}\ (std::empty(parts))\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string<CharT>();}
+\DoxyCodeLine{00481\ \ \ \}}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \textcolor{comment}{//\ Pre-\/allocate\ the\ eventual\ size\ of\ the\ string.\ Start\ with\ the\ size\ of\ all\ of}}
+\DoxyCodeLine{00484\ \ \ \textcolor{comment}{//\ the\ separators\ (note\ that\ this\ *assumes*\ parts.size()\ >\ 0).}}
+\DoxyCodeLine{00485\ \ \ \textcolor{keywordtype}{size\_t}\ total\_size\ =\ (parts.size()\ -\/\ 1)\ *\ sep.size();}
+\DoxyCodeLine{00486\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ part\ :\ parts)\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ total\_size\ +=\ part.size();}
+\DoxyCodeLine{00488\ \ \ \}}
+\DoxyCodeLine{00489\ \ \ std::basic\_string<CharT>\ result;}
+\DoxyCodeLine{00490\ \ \ result.reserve(total\_size);}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \ \ \textcolor{keyword}{auto}\ iter\ =\ parts.begin();}
+\DoxyCodeLine{00493\ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00494\ \ \ \textcolor{comment}{//\ CHECK(iter\ !=\ parts.end(),\ base::NotFatalUntil::M125);}}
+\DoxyCodeLine{00495\ \ \ result.append(*iter);}
+\DoxyCodeLine{00496\ \ \ UNSAFE\_TODO(++iter);}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00498\ \ \ \textcolor{keywordflow}{for}\ (;\ iter\ !=\ parts.end();\ UNSAFE\_TODO(++iter))\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ result.append(sep);}
+\DoxyCodeLine{00500\ \ \ \ \ result.append(*iter);}
+\DoxyCodeLine{00501\ \ \ \}}
+\DoxyCodeLine{00502\ }
+\DoxyCodeLine{00503\ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00504\ \ \ \textcolor{comment}{//\ Sanity-\/check\ that\ we\ pre-\/allocated\ correctly.}}
+\DoxyCodeLine{00505\ \ \ \textcolor{comment}{//\ DCHECK\_EQ(total\_size,\ result.size());}}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00508\ \}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \textcolor{comment}{//\ StringViewLike\ will\ match\ both\ std::basic\_string\_view<Char>\ and}}
+\DoxyCodeLine{00511\ \textcolor{comment}{//\ std::basic\_string<Char>.\ It\ ensures\ that\ the\ type\ satisfies\ the\ requirements}}
+\DoxyCodeLine{00512\ \textcolor{comment}{//\ to\ be\ passed\ to\ std::basic\_string::append().}}
+\DoxyCodeLine{00513\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ CharT,\ \textcolor{keyword}{typename}\ TBaseT\ =\ std::remove\_cvref\_t<T>>}
+\DoxyCodeLine{00514\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_string_or_string_view}{StringOrStringView}}\ =}
+\DoxyCodeLine{00515\ \ \ \ \ std::same\_as<TBaseT,\ std::basic\_string<CharT>>\ ||}
+\DoxyCodeLine{00516\ \ \ \ \ std::same\_as<TBaseT,\ std::basic\_string\_view<CharT>>;}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \textcolor{comment}{//\ Replaces\ placeholders\ in\ \`{}format\_string`\ with\ values\ from\ \`{}subst`.}}
+\DoxyCodeLine{00519\ \textcolor{comment}{//\ *\ \`{}placeholder\_prefix`:\ Allows\ using\ a\ specific\ character\ as\ the\ placeholder}}
+\DoxyCodeLine{00520\ \textcolor{comment}{//\ prefix.\ \`{}base::ReplaceStringPlaceholders`\ uses\ '\$'.}}
+\DoxyCodeLine{00521\ \textcolor{comment}{//\ *\ \`{}should\_escape\_multiple\_placeholder\_prefixes`:}}
+\DoxyCodeLine{00522\ \textcolor{comment}{//\ \ \ *\ If\ this\ parameter\ is\ \`{}true`,\ which\ is\ the\ case\ with}}
+\DoxyCodeLine{00523\ \textcolor{comment}{//\ \ \ \`{}base::ReplaceStringPlaceholders`,\ \`{}placeholder\_prefix`\ characters\ are}}
+\DoxyCodeLine{00524\ \textcolor{comment}{//\ \ \ replaced\ by\ that\ number\ less\ one.\ Eg\ \$\$-\/>\$,\ \$\$\$-\/>\$\$,\ etc.}}
+\DoxyCodeLine{00525\ \textcolor{comment}{//\ \ \ *\ If\ this\ parameter\ is\ \`{}false`,\ each\ literal\ \`{}placeholder\_prefix`\ character}}
+\DoxyCodeLine{00526\ \textcolor{comment}{//\ \ \ in\ \`{}format\_string`\ is\ escaped\ with\ another\ \`{}placeholder\_prefix`.\ For}}
+\DoxyCodeLine{00527\ \textcolor{comment}{//\ \ \ instance,\ with\ \`{}\%`\ as\ the\ \`{}placeholder\_prefix`:\ \%\%-\/>\%,\ \%\%\%\%-\/>\%\%,\ etc.}}
+\DoxyCodeLine{00528\ \textcolor{comment}{//\ *\ \`{}is\_strict\_mode`:}}
+\DoxyCodeLine{00529\ \textcolor{comment}{//\ \ \ *\ If\ this\ parameter\ is\ \`{}true`,\ error\ handling\ is\ stricter.\ The\ function}}
+\DoxyCodeLine{00530\ \textcolor{comment}{//\ \ \ returns\ \`{}std::nullopt`\ if:}}
+\DoxyCodeLine{00531\ \textcolor{comment}{//\ \ \ \ \ *\ a\ placeholder\ \%N\ is\ encountered\ where\ N\ >\ substitutions.size().}}
+\DoxyCodeLine{00532\ \textcolor{comment}{//\ \ \ \ \ *\ a\ literal\ \`{}\%`\ is\ not\ escaped\ with\ a\ \`{}\%`.}}
+\DoxyCodeLine{00533\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ Range,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00534\ \ \ \textcolor{keyword}{requires}(std::ranges::random\_access\_range<Range>\ \&\&}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \ std::ranges::sized\_range<Range>\ \&\&}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{requires}(Range\&\&\ range,\ \textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ range.at(index)\ \}\ -\/>\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_string_or_string_view}{StringOrStringView<CharT>}};}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \ \ \ \})}
+\DoxyCodeLine{00539\ std::optional<std::basic\_string<CharT>>\ DoReplaceStringPlaceholders(}
+\DoxyCodeLine{00540\ \ \ \ \ T\ format\_string,\ Range\&\&\ subst,\ \textcolor{keyword}{const}\ CharT\ placeholder\_prefix,}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ should\_escape\_multiple\_placeholder\_prefixes,}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_strict\_mode,\ std::vector<size\_t>*\ offsets)\ \{}
+\DoxyCodeLine{00543\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ substitutions\ =\ subst.size();}
+\DoxyCodeLine{00544\ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00545\ \ \ \textcolor{comment}{//\ DCHECK\_LT(substitutions,\ 10U);}}
+\DoxyCodeLine{00546\ }
+\DoxyCodeLine{00547\ \ \ \textcolor{keywordtype}{size\_t}\ sub\_length\ =\ 0;}
+\DoxyCodeLine{00548\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ cur\ :\ subst)\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ sub\_length\ +=\ cur.size();}
+\DoxyCodeLine{00550\ \ \ \}}
+\DoxyCodeLine{00551\ }
+\DoxyCodeLine{00552\ \ \ std::basic\_string<CharT>\ formatted;}
+\DoxyCodeLine{00553\ \ \ formatted.reserve(format\_string.length()\ +\ sub\_length);}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \ \ std::vector<ReplacementOffset>\ r\_offsets;}
+\DoxyCodeLine{00556\ \ \ \textcolor{keywordflow}{if}\ (offsets)\ \{}
+\DoxyCodeLine{00557\ \ \ \ \ r\_offsets.reserve(substitutions);}
+\DoxyCodeLine{00558\ \ \ \}}
+\DoxyCodeLine{00559\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ i\ =\ format\_string.begin();\ i\ !=\ format\_string.end();\ ++i)\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordflow}{if}\ (placeholder\_prefix\ ==\ *i)\ \{}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ +\ 1\ !=\ format\_string.end())\ \{}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ ++i;}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (placeholder\_prefix\ ==\ *i)\ \{}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ formatted.push\_back(placeholder\_prefix);}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \ \ \ \ ++i;}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (should\_escape\_multiple\_placeholder\_prefixes\ \&\&}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\ !=\ format\_string.end()\ \&\&\ placeholder\_prefix\ ==\ *i);}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ -\/-\/i;}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (*i\ <\ \textcolor{charliteral}{'1'}\ ||\ *i\ >\ \textcolor{charliteral}{'9'})\ \{}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_strict\_mode)\ \{}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00575\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ DLOG(ERROR)\ <<\ "{}Invalid\ placeholder\ after\ placeholder\ prefix:\ "{}}}
+\DoxyCodeLine{00576\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::basic\_string<CharT>(1,\ placeholder\_prefix)}}
+\DoxyCodeLine{00577\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::basic\_string<CharT>(1,\ *i);}}
+\DoxyCodeLine{00578\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(*i\ -\/\ \textcolor{charliteral}{'1'});}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (offsets)\ \{}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1internal_1_1_replacement_offset}{ReplacementOffset}}\ r\_offset(index,\ formatted.size());}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \ \ \ \ r\_offsets.insert(std::ranges::upper\_bound(r\_offsets,\ r\_offset,}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&CompareParameter),}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\_offset);}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ <\ substitutions)\ \{}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \ \ \ \ formatted.append(subst.at(index));}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (is\_strict\_mode)\ \{}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00596\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ DLOG(ERROR)\ <<\ "{}index\ out\ of\ range:\ "{}\ <<\ index\ <<\ "{}:\ "{}}}
+\DoxyCodeLine{00597\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ substitutions;}}
+\DoxyCodeLine{00598\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00600\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (is\_strict\_mode)\ \{}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ DLOG(ERROR)\ <<\ "{}unexpected\ placeholder\ prefix\ at\ end\ of\ string"{};}}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00607\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ formatted.push\_back(*i);}
+\DoxyCodeLine{00609\ \ \ \ \ \}}
+\DoxyCodeLine{00610\ \ \ \}}
+\DoxyCodeLine{00611\ \ \ \textcolor{keywordflow}{if}\ (offsets)\ \{}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ cur\ :\ r\_offsets)\ \{}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ offsets-\/>push\_back(cur.offset);}
+\DoxyCodeLine{00614\ \ \ \ \ \}}
+\DoxyCodeLine{00615\ \ \ \}}
+\DoxyCodeLine{00616\ \ \ \textcolor{keywordflow}{return}\ formatted;}
+\DoxyCodeLine{00617\ \}}
+\DoxyCodeLine{00618\ }
+\DoxyCodeLine{00619\ \textcolor{comment}{//\ The\ following\ code\ is\ compatible\ with\ the\ OpenBSD\ lcpy\ interface.\ \ See:}}
+\DoxyCodeLine{00620\ \textcolor{comment}{//\ \ \ http://www.gratisoft.us/todd/papers/strlcpy.html}}
+\DoxyCodeLine{00621\ \textcolor{comment}{//\ \ \ ftp://ftp.openbsd.org/pub/OpenBSD/src/lib/libc/string/\{wcs,str\}lcpy.c}}
+\DoxyCodeLine{00622\ }
+\DoxyCodeLine{00623\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CHAR>}
+\DoxyCodeLine{00624\ \textcolor{keywordtype}{size\_t}\ lcpyT(span<CHAR>\ dst,\ std::basic\_string\_view<CHAR>\ src)\ \{}
+\DoxyCodeLine{00625\ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ dst\_size\ =\ dst.size();}
+\DoxyCodeLine{00628\ \ \ \textcolor{keywordflow}{for}\ (;\ i\ +\ 1u\ <\ dst\_size;\ ++i)\ \{}
+\DoxyCodeLine{00629\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ src.size())\ \{}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00631\ \ \ \ \ \}}
+\DoxyCodeLine{00632\ \ \ \ \ dst[i]\ =\ src[i];}
+\DoxyCodeLine{00633\ \ \ \}}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00635\ \ \ \textcolor{comment}{//\ Write\ the\ terminating\ NUL.}}
+\DoxyCodeLine{00636\ \ \ \textcolor{keywordflow}{if}\ (!dst.empty())\ \{}
+\DoxyCodeLine{00637\ \ \ \ \ dst[i]\ =\ 0;}
+\DoxyCodeLine{00638\ \ \ \}}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ \textcolor{keywordflow}{return}\ src.size();}
+\DoxyCodeLine{00641\ \}}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+
+\end{DoxyCode}

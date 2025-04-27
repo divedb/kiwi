@@ -1,0 +1,416 @@
+\doxysection{kiwi\+::span\texorpdfstring{$<$}{<} Element\+Type, dynamic\+\_\+extent, Internal\+Ptr\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4}{}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4}\index{kiwi::span$<$ ElementType, dynamic\_extent, InternalPtrType $>$@{kiwi::span$<$ ElementType, dynamic\_extent, InternalPtrType $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a3c25b69e332bfcadbf935e7f25e870be}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a3c25b69e332bfcadbf935e7f25e870be} 
+using {\bfseries element\+\_\+type} = Element\+Type
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a1667b5cc680eeb31465c5e15a825aad5}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a1667b5cc680eeb31465c5e15a825aad5} 
+using {\bfseries value\+\_\+type} = std\+::remove\+\_\+cv\+\_\+t$<$element\+\_\+type$>$
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a11ab27d59d04b5e059d115ba8eed161c}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a11ab27d59d04b5e059d115ba8eed161c} 
+using {\bfseries size\+\_\+type} = size\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_af9f4f9b1f813dfe220c9573af0ae1b0a}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_af9f4f9b1f813dfe220c9573af0ae1b0a} 
+using {\bfseries difference\+\_\+type} = ptrdiff\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aeb47d1bbec2d3549ed40242a0170bfdd}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aeb47d1bbec2d3549ed40242a0170bfdd} 
+using {\bfseries pointer} = element\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a7870d981b2c3eabed4248cc779b37209}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a7870d981b2c3eabed4248cc779b37209} 
+using {\bfseries const\+\_\+pointer} = const element\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a24e84e6b5b1967e9aaf4943d920f01f0}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a24e84e6b5b1967e9aaf4943d920f01f0} 
+using {\bfseries reference} = element\+\_\+type\&
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aead7038a529e5b24a9faefab6cc95f3d}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aead7038a529e5b24a9faefab6cc95f3d} 
+using {\bfseries const\+\_\+reference} = const element\+\_\+type\&
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a7d0b6cdfdf81a4ab1dffbbe7a76990c1}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a7d0b6cdfdf81a4ab1dffbbe7a76990c1} 
+using {\bfseries iterator} = \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}}$<$element\+\_\+type$>$
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a0cecfe546fcb9f6de287e72412c73235}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a0cecfe546fcb9f6de287e72412c73235} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Const\+Iterator}}$<$element\+\_\+type$>$
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a3b15eecc6447dde38a075ec5eaff6140}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a3b15eecc6447dde38a075ec5eaff6140} 
+using {\bfseries reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}}$>$
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_abdeb87b5783ed69326f56b4b875c2420}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_abdeb87b5783ed69326f56b4b875c2420} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}}$>$
+\item 
+\Hypertarget{classkiwi_1_1span_ac2d2c29be63d8f40f43c6596b58e421e}\label{classkiwi_1_1span_ac2d2c29be63d8f40f43c6596b58e421e} 
+using {\bfseries element\+\_\+type}
+\item 
+\Hypertarget{classkiwi_1_1span_a2c7e55d47d6943021bb13399dd822d8e}\label{classkiwi_1_1span_a2c7e55d47d6943021bb13399dd822d8e} 
+using {\bfseries value\+\_\+type}
+\item 
+\Hypertarget{classkiwi_1_1span_a39d717882fd4ef4e5e06d6d7f80f029d}\label{classkiwi_1_1span_a39d717882fd4ef4e5e06d6d7f80f029d} 
+using {\bfseries size\+\_\+type}
+\item 
+\Hypertarget{classkiwi_1_1span_a8f9b7371568563c10f814c1b3d941d00}\label{classkiwi_1_1span_a8f9b7371568563c10f814c1b3d941d00} 
+using {\bfseries difference\+\_\+type}
+\item 
+\Hypertarget{classkiwi_1_1span_ae6c25e9052a7c793cf1fbb92083d7a43}\label{classkiwi_1_1span_ae6c25e9052a7c793cf1fbb92083d7a43} 
+using {\bfseries pointer}
+\item 
+\Hypertarget{classkiwi_1_1span_a1b10b7786f5dcc8617a2c42fba9f52dd}\label{classkiwi_1_1span_a1b10b7786f5dcc8617a2c42fba9f52dd} 
+using {\bfseries const\+\_\+pointer}
+\item 
+\Hypertarget{classkiwi_1_1span_a59bf28fc0efcf3c65ded020c2c4e09ba}\label{classkiwi_1_1span_a59bf28fc0efcf3c65ded020c2c4e09ba} 
+using {\bfseries reference}
+\item 
+\Hypertarget{classkiwi_1_1span_a98d66d9e10ba577a599e6e4922c9cf8b}\label{classkiwi_1_1span_a98d66d9e10ba577a599e6e4922c9cf8b} 
+using {\bfseries const\+\_\+reference}
+\item 
+\Hypertarget{classkiwi_1_1span_a1b6d04c8df2a8f26501ff4c664eb3d51}\label{classkiwi_1_1span_a1b6d04c8df2a8f26501ff4c664eb3d51} 
+using {\bfseries iterator}
+\item 
+\Hypertarget{classkiwi_1_1span_a4fd42594e4f3b6a0ae71dd6cf2330d44}\label{classkiwi_1_1span_a4fd42594e4f3b6a0ae71dd6cf2330d44} 
+using {\bfseries const\+\_\+iterator}
+\item 
+\Hypertarget{classkiwi_1_1span_a142c211f5662b99e69e3d0936beb9e96}\label{classkiwi_1_1span_a142c211f5662b99e69e3d0936beb9e96} 
+using {\bfseries reverse\+\_\+iterator}
+\item 
+\Hypertarget{classkiwi_1_1span_a85ccf29bb055fe40a8eb7db7e79037ba}\label{classkiwi_1_1span_a85ccf29bb055fe40a8eb7db7e79037ba} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a840f1af0f8c41bb65fcb1e865afa71ca}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a840f1af0f8c41bb65fcb1e865afa71ca} 
+{\footnotesize template$<$typename It$>$ \newline
+requires (internal\+::\+Compatible\+Iter$<$element\+\_\+type, It$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab24ecf4cdddce69d18c32ac321946212}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab24ecf4cdddce69d18c32ac321946212} 
+{\footnotesize template$<$typename It, typename End$>$ \newline
+requires (internal\+::\+Compatible\+Iter$<$element\+\_\+type, It$>$ \&\& std\+::sized\+\_\+sentinel\+\_\+for$<$End, It$>$ \&\& !std\+::is\+\_\+convertible\+\_\+v$<$End, size\+\_\+t$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, End last)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae21324445f4e4630e724092c518bd782}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae21324445f4e4630e724092c518bd782} 
+{\footnotesize template$<$size\+\_\+t N$>$ }\\constexpr {\bfseries span} (std\+::type\+\_\+identity\+\_\+t$<$ element\+\_\+type $>$(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}N\mbox{]}) noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a881c43a6e3d642977aab75a297fbf363}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a881c43a6e3d642977aab75a297fbf363} 
+{\footnotesize template$<$typename R$>$ \newline
+requires (internal\+::\+Compatible\+Range$<$element\+\_\+type, R$>$)}\\constexpr {\bfseries span} (R \&\&range LIFETIME\+\_\+\+BOUND)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a37fb4d3f7589cdb6fa359139edcc4900}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a37fb4d3f7589cdb6fa359139edcc4900} 
+{\footnotesize template$<$typename R$>$ \newline
+requires (internal\+::\+Compatible\+Range$<$element\+\_\+type, R$>$ \&\& std\+::ranges\+::borrowed\+\_\+range$<$R$>$)}\\constexpr {\bfseries span} (R \&\&range)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae1e19182c124e0d3667043d3159e0615}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae1e19182c124e0d3667043d3159e0615} 
+constexpr {\bfseries span} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ il LIFETIME\+\_\+\+BOUND)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a54efcf4f2b0e8285803782560540a7f9}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a54efcf4f2b0e8285803782560540a7f9} 
+constexpr {\bfseries span} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a9b18bc4356b79a9d924ddbe7ac8f6707}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a9b18bc4356b79a9d924ddbe7ac8f6707} 
+{\footnotesize template$<$typename Other\+Element\+Type, size\+\_\+t Other\+Extent, typename Other\+Internal\+Ptr\+Type$>$ \newline
+requires (internal\+::\+Legal\+Data\+Conversion$<$Other\+Element\+Type, element\+\_\+type$>$)}\\constexpr {\bfseries span} (const \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type, Other\+Extent, Other\+Internal\+Ptr\+Type $>$ \&other) noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a55450eefae482a606d1e4844c538b2bb}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a55450eefae482a606d1e4844c538b2bb} 
+constexpr {\bfseries span} (\mbox{\hyperlink{classkiwi_1_1span}{span}} \&\&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a362caff7e1b714c07a192a3459847d6f}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a362caff7e1b714c07a192a3459847d6f} 
+constexpr \mbox{\hyperlink{classkiwi_1_1span}{span}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_adc1f0e92a0c1c55214c9d1bdc50d7b6e}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_adc1f0e92a0c1c55214c9d1bdc50d7b6e} 
+constexpr \mbox{\hyperlink{classkiwi_1_1span}{span}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1span}{span}} \&\&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a68ba19f06b467ef2ae2270d162052e9c}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a68ba19f06b467ef2ae2270d162052e9c} 
+constexpr void {\bfseries copy\+\_\+from} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a947caf4e5ba8bd0bbe7b056dfd5e86aa}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a947caf4e5ba8bd0bbe7b056dfd5e86aa} 
+constexpr void {\bfseries copy\+\_\+from\+\_\+nonoverlapping} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ad6ffb7aa5948ecc1fe82a831cbd2f6f9}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ad6ffb7aa5948ecc1fe82a831cbd2f6f9} 
+constexpr void {\bfseries copy\+\_\+prefix\+\_\+from} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a8ceb9d018a24505824599e9ae447af94}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a8ceb9d018a24505824599e9ae447af94} 
+{\footnotesize template$<$size\+\_\+t Count$>$ }\\constexpr auto {\bfseries first} () const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a759285d1e6cb9b37880422c55bac782b}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a759285d1e6cb9b37880422c55bac782b} 
+constexpr auto {\bfseries first} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+t $>$ count) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4135418ef70a425202310e6b91e95d14}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4135418ef70a425202310e6b91e95d14} 
+{\footnotesize template$<$size\+\_\+t Count$>$ }\\constexpr auto {\bfseries last} () const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a020eb1a1cd4372e3b0b4d9b933f057f6}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a020eb1a1cd4372e3b0b4d9b933f057f6} 
+constexpr auto {\bfseries last} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aee768007e96efef1a8de718d5f290aa8}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aee768007e96efef1a8de718d5f290aa8} 
+{\footnotesize template$<$size\+\_\+t Offset, size\+\_\+t Count = dynamic\+\_\+extent$>$ }\\constexpr auto {\bfseries subspan} () const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aaf1bd77a8352a559aaa9d8ea206ad4b3}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aaf1bd77a8352a559aaa9d8ea206ad4b3} 
+constexpr auto {\bfseries subspan} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab7bbd303f333e474302b60197d42d69c}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab7bbd303f333e474302b60197d42d69c} 
+constexpr auto {\bfseries subspan} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset, \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aa018774f471ff05607f5289ac54b56fc}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aa018774f471ff05607f5289ac54b56fc} 
+{\footnotesize template$<$size\+\_\+t Offset$>$ }\\constexpr auto {\bfseries split\+\_\+at} () const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a73fd119b9ec18fa79fb52defde5a9737}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a73fd119b9ec18fa79fb52defde5a9737} 
+constexpr auto {\bfseries split\+\_\+at} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4205697477038bb6394df258db5beb56}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4205697477038bb6394df258db5beb56} 
+{\footnotesize template$<$size\+\_\+t Offset$>$ }\\constexpr auto {\bfseries take\+\_\+first} ()
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a8a8183f4af287b44bfd1128c77f93719}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a8a8183f4af287b44bfd1128c77f93719} 
+constexpr auto {\bfseries take\+\_\+first} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a32a4dc02310de6c166f5175405869c84}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a32a4dc02310de6c166f5175405869c84} 
+constexpr auto {\bfseries take\+\_\+first\+\_\+elem} ()
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae367e20a6f073ca2be6c557e48d9b1b2}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae367e20a6f073ca2be6c557e48d9b1b2} 
+constexpr size\+\_\+type {\bfseries size} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a62a453485b58b17f7452503ba4773843}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a62a453485b58b17f7452503ba4773843} 
+constexpr size\+\_\+type {\bfseries size\+\_\+bytes} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a424f35c36af7985d02471ff6c94fc4e0}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a424f35c36af7985d02471ff6c94fc4e0} 
+constexpr bool {\bfseries empty} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a21aa63d2335afc68e099ad488648e78b}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a21aa63d2335afc68e099ad488648e78b} 
+constexpr reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+type idx) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a928a57af4281cf281c1402c9815970e5}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a928a57af4281cf281c1402c9815970e5} 
+constexpr reference {\bfseries at} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ idx) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab96616760ef50dfbd4dc58a927a34035}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab96616760ef50dfbd4dc58a927a34035} 
+constexpr pointer {\bfseries get\+\_\+at} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ idx) const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4d0eb689e13abdf1a1b78166274639e4}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4d0eb689e13abdf1a1b78166274639e4} 
+constexpr reference {\bfseries front} () const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ad66a85168474891b94b4d26ffd8ef6f7}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ad66a85168474891b94b4d26ffd8ef6f7} 
+constexpr reference {\bfseries back} () const
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a16b422bc43feef67aa2c88b2e7b18449}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a16b422bc43feef67aa2c88b2e7b18449} 
+constexpr pointer {\bfseries data} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae5df8dfbc6f7810a36e71205535ce4c5}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae5df8dfbc6f7810a36e71205535ce4c5} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries begin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ac8d22d09cd171bca8e74539d3fccbf8e}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ac8d22d09cd171bca8e74539d3fccbf8e} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries cbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a174305dac6f2600e08556edd2f9e4b84}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a174305dac6f2600e08556edd2f9e4b84} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries end} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab7a56d80c2c61d4d7c5992c37462e51b}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab7a56d80c2c61d4d7c5992c37462e51b} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries cend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a5cf978a6d62e9a648843eefe0da3acc6}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a5cf978a6d62e9a648843eefe0da3acc6} 
+constexpr reverse\+\_\+iterator {\bfseries rbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aa50150a4bd97eea005d20b9008e7a7e2}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aa50150a4bd97eea005d20b9008e7a7e2} 
+constexpr const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a0a308693143e84d22fc4e682cef9082b}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a0a308693143e84d22fc4e682cef9082b} 
+constexpr reverse\+\_\+iterator {\bfseries rend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae35c0d04efa1154386ce5311925721f6}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae35c0d04efa1154386ce5311925721f6} 
+constexpr const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a21019163b4f9a8d5fd44d3e909ada577}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a21019163b4f9a8d5fd44d3e909ada577} 
+{\footnotesize template$<$size\+\_\+t Extent$>$ }\\constexpr std\+::optional$<$ \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ element\+\_\+type, Extent $>$ $>$ {\bfseries to\+\_\+fixed\+\_\+extent} () const
+\item 
+\Hypertarget{classkiwi_1_1span_a06f8a74cde9e3e155e9e0b12e31f44b9}\label{classkiwi_1_1span_a06f8a74cde9e3e155e9e0b12e31f44b9} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count)
+\item 
+\Hypertarget{classkiwi_1_1span_a13560651a49ccc75c1e366f239237bb1}\label{classkiwi_1_1span_a13560651a49ccc75c1e366f239237bb1} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, End last)
+\item 
+\Hypertarget{classkiwi_1_1span_aa95d5b37114a6050833160b8e7b68f32}\label{classkiwi_1_1span_aa95d5b37114a6050833160b8e7b68f32} 
+constexpr {\bfseries span} (std\+::type\+\_\+identity\+\_\+t$<$ element\+\_\+type $>$(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}extent\mbox{]}) noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a0a30f9eab825e56c147be904ad0557b3}\label{classkiwi_1_1span_a0a30f9eab825e56c147be904ad0557b3} 
+constexpr {\bfseries span} (R \&\&range)
+\item 
+\Hypertarget{classkiwi_1_1span_a2071735c1eb795b611a81d24b6410283}\label{classkiwi_1_1span_a2071735c1eb795b611a81d24b6410283} 
+constexpr {\bfseries span} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ il LIFETIME\+\_\+\+BOUND)
+\item 
+\Hypertarget{classkiwi_1_1span_af0c0388cba3be4e199007bf165a661e5}\label{classkiwi_1_1span_af0c0388cba3be4e199007bf165a661e5} 
+constexpr {\bfseries span} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_ac0a533d2423ba0f55d4257fad812128b}\label{classkiwi_1_1span_ac0a533d2423ba0f55d4257fad812128b} 
+constexpr {\bfseries span} (\mbox{\hyperlink{classkiwi_1_1span}{span}} \&\&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_a9014f60ba26d079b73ad93318ab0f96e}\label{classkiwi_1_1span_a9014f60ba26d079b73ad93318ab0f96e} 
+constexpr {\bfseries explicit} (N !=extent) \mbox{\hyperlink{classkiwi_1_1span}{span}}(R \&\&range LIFETIME\+\_\+\+BOUND)
+\item 
+\Hypertarget{classkiwi_1_1span_a03103144d79eba071f1cb26ec9dc1012}\label{classkiwi_1_1span_a03103144d79eba071f1cb26ec9dc1012} 
+constexpr {\bfseries explicit} (Other\+Extent==dynamic\+\_\+extent) \mbox{\hyperlink{classkiwi_1_1span}{span}}(const \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type
+\item 
+\Hypertarget{classkiwi_1_1span_a3bbcdba3df9cb75e0dd8378d8226ee81}\label{classkiwi_1_1span_a3bbcdba3df9cb75e0dd8378d8226ee81} 
+constexpr Other\+Internal\+Ptr\+Type \&other other {\bfseries size} ()))
+\item 
+\Hypertarget{classkiwi_1_1span_adc0e4ea84a7b02d384c2d0e68c3a0143}\label{classkiwi_1_1span_adc0e4ea84a7b02d384c2d0e68c3a0143} 
+constexpr size\+\_\+type {\bfseries size} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a6a7cf3f847058de00dd24502d52c2f23}\label{classkiwi_1_1span_a6a7cf3f847058de00dd24502d52c2f23} 
+constexpr \mbox{\hyperlink{classkiwi_1_1span}{span}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_ab98711b6da10bb799c0ccc148655eaf0}\label{classkiwi_1_1span_ab98711b6da10bb799c0ccc148655eaf0} 
+constexpr \mbox{\hyperlink{classkiwi_1_1span}{span}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1span}{span}} \&\&other) noexcept=default
+\item 
+\Hypertarget{classkiwi_1_1span_a06ec62720dfba86193b9dab49eaf51db}\label{classkiwi_1_1span_a06ec62720dfba86193b9dab49eaf51db} 
+constexpr void {\bfseries copy\+\_\+from} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type, extent $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1span_a4f6d7504a23f364b2d6360705c282be9}\label{classkiwi_1_1span_a4f6d7504a23f364b2d6360705c282be9} 
+constexpr void {\bfseries copy\+\_\+from} (R \&\&other)
+\item 
+\Hypertarget{classkiwi_1_1span_a1995411aea954921d5848925f3837b60}\label{classkiwi_1_1span_a1995411aea954921d5848925f3837b60} 
+constexpr void {\bfseries copy\+\_\+from\+\_\+nonoverlapping} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type, extent $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1span_abf81ea8a1247580c59a672835d4a3805}\label{classkiwi_1_1span_abf81ea8a1247580c59a672835d4a3805} 
+constexpr void {\bfseries copy\+\_\+from\+\_\+nonoverlapping} (R \&\&other)
+\item 
+\Hypertarget{classkiwi_1_1span_a2a2ebee7ac3753697f70f2f335157126}\label{classkiwi_1_1span_a2a2ebee7ac3753697f70f2f335157126} 
+constexpr void {\bfseries copy\+\_\+prefix\+\_\+from} (R \&\&other)
+\item 
+\Hypertarget{classkiwi_1_1span_a3de32a8c9e559a9ca3793baec7918aa6}\label{classkiwi_1_1span_a3de32a8c9e559a9ca3793baec7918aa6} 
+{\bfseries operator std\+::span$<$ element\+\_\+type, extent $>$} () const
+\item 
+\Hypertarget{classkiwi_1_1span_ae0de70451cc50bc000e6e533c0747063}\label{classkiwi_1_1span_ae0de70451cc50bc000e6e533c0747063} 
+{\bfseries operator std\+::span$<$ const element\+\_\+type, extent $>$} () const
+\item 
+\Hypertarget{classkiwi_1_1span_a2a538d08fa6ea830fce2bbf96326b269}\label{classkiwi_1_1span_a2a538d08fa6ea830fce2bbf96326b269} 
+constexpr auto {\bfseries first} () const
+\item 
+\Hypertarget{classkiwi_1_1span_a2ed8253091a04435ecf09acd12c56a92}\label{classkiwi_1_1span_a2ed8253091a04435ecf09acd12c56a92} 
+constexpr auto {\bfseries first} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count) const
+\item 
+\Hypertarget{classkiwi_1_1span_ae5c67a05bcb8e3501b6e2b3e3feb4d77}\label{classkiwi_1_1span_ae5c67a05bcb8e3501b6e2b3e3feb4d77} 
+constexpr auto {\bfseries last} () const
+\item 
+\Hypertarget{classkiwi_1_1span_ad45a9c6c0dd476d3da9a32b016986e1e}\label{classkiwi_1_1span_ad45a9c6c0dd476d3da9a32b016986e1e} 
+constexpr auto {\bfseries last} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count) const
+\item 
+\Hypertarget{classkiwi_1_1span_a2fad0961791d4a0789ccece64d547c2e}\label{classkiwi_1_1span_a2fad0961791d4a0789ccece64d547c2e} 
+constexpr auto {\bfseries subspan} () const
+\item 
+\Hypertarget{classkiwi_1_1span_ac372ca431614bcb9c405f8decd08c9a1}\label{classkiwi_1_1span_ac372ca431614bcb9c405f8decd08c9a1} 
+constexpr auto {\bfseries subspan} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset) const
+\item 
+\Hypertarget{classkiwi_1_1span_a5c01ee19df9e6372e7d527a3073f3b35}\label{classkiwi_1_1span_a5c01ee19df9e6372e7d527a3073f3b35} 
+constexpr auto {\bfseries subspan} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset, \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ count) const
+\item 
+\Hypertarget{classkiwi_1_1span_ade88644ada7fe9accc91d1464e706df2}\label{classkiwi_1_1span_ade88644ada7fe9accc91d1464e706df2} 
+constexpr auto {\bfseries split\+\_\+at} () const
+\item 
+\Hypertarget{classkiwi_1_1span_a9b8b4c1a2fb6f62d9eefcb26696afc62}\label{classkiwi_1_1span_a9b8b4c1a2fb6f62d9eefcb26696afc62} 
+constexpr auto {\bfseries split\+\_\+at} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ offset) const
+\item 
+\Hypertarget{classkiwi_1_1span_ab2ede9fd30434acf83e7ac15ca61b4b1}\label{classkiwi_1_1span_ab2ede9fd30434acf83e7ac15ca61b4b1} 
+constexpr size\+\_\+type {\bfseries size\+\_\+bytes} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_ac7d6e64f46e75c77a13002f0d701dd34}\label{classkiwi_1_1span_ac7d6e64f46e75c77a13002f0d701dd34} 
+constexpr bool {\bfseries empty} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_ac0fa2fcaa0317a22371300021a090b05}\label{classkiwi_1_1span_ac0fa2fcaa0317a22371300021a090b05} 
+constexpr reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+type idx) const
+\item 
+\Hypertarget{classkiwi_1_1span_ac0ab359300ff1933cb6aedd4aafd42fa}\label{classkiwi_1_1span_ac0ab359300ff1933cb6aedd4aafd42fa} 
+constexpr reference {\bfseries at} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ idx) const
+\item 
+\Hypertarget{classkiwi_1_1span_a5ee5dd2666efb946cd07214e1a9976f2}\label{classkiwi_1_1span_a5ee5dd2666efb946cd07214e1a9976f2} 
+constexpr pointer {\bfseries get\+\_\+at} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ size\+\_\+type $>$ idx) const
+\item 
+\Hypertarget{classkiwi_1_1span_abb1085a7d4219ce3c3c95c00e10bba70}\label{classkiwi_1_1span_abb1085a7d4219ce3c3c95c00e10bba70} 
+constexpr reference {\bfseries front} () const
+\item 
+\Hypertarget{classkiwi_1_1span_a82a2bbfe65c887808cdd9efb8f6273c5}\label{classkiwi_1_1span_a82a2bbfe65c887808cdd9efb8f6273c5} 
+constexpr reference {\bfseries back} () const
+\item 
+\Hypertarget{classkiwi_1_1span_a38d944241e699596ced2f23f1cb9bdc9}\label{classkiwi_1_1span_a38d944241e699596ced2f23f1cb9bdc9} 
+constexpr pointer {\bfseries data} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a64937599cefc4be21f12e266a9fc47a8}\label{classkiwi_1_1span_a64937599cefc4be21f12e266a9fc47a8} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries begin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_aeb48e7e7a0fbc844e403fc23897ffaf8}\label{classkiwi_1_1span_aeb48e7e7a0fbc844e403fc23897ffaf8} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries cbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a62bcde4ff989c883786a0555b67a2d8f}\label{classkiwi_1_1span_a62bcde4ff989c883786a0555b67a2d8f} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries end} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a0a044fdf52397211048c9a834954b920}\label{classkiwi_1_1span_a0a044fdf52397211048c9a834954b920} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries cend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_acefeb8e8d564f6fae1ae78fe98704588}\label{classkiwi_1_1span_acefeb8e8d564f6fae1ae78fe98704588} 
+constexpr reverse\+\_\+iterator {\bfseries rbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a75eb008533ba698f14c6665f8fcfd522}\label{classkiwi_1_1span_a75eb008533ba698f14c6665f8fcfd522} 
+constexpr const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_a6328382e0463f9f573c18923303287b1}\label{classkiwi_1_1span_a6328382e0463f9f573c18923303287b1} 
+constexpr reverse\+\_\+iterator {\bfseries rend} () const noexcept
+\item 
+\Hypertarget{classkiwi_1_1span_abf65a6de56320e70a8111e081d3e8107}\label{classkiwi_1_1span_abf65a6de56320e70a8111e081d3e8107} 
+constexpr const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1span_a2b8607390b502ffeb2f3ea3081edcb1d}\label{classkiwi_1_1span_a2b8607390b502ffeb2f3ea3081edcb1d} 
+constexpr {\bfseries Other\+Extent}
+\item 
+\Hypertarget{classkiwi_1_1span_a3569acfa13ac4acb242aa9ae534f49fe}\label{classkiwi_1_1span_a3569acfa13ac4acb242aa9ae534f49fe} 
+constexpr Other\+Internal\+Ptr\+Type \&other {\bfseries noexcept}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_af50a48125f522214faab74536e6a8580}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_af50a48125f522214faab74536e6a8580} 
+static constexpr size\+\_\+type {\bfseries extent} = dynamic\+\_\+extent
+\item 
+\Hypertarget{classkiwi_1_1span_af7b7ede7f88e303602ab1f538581c397}\label{classkiwi_1_1span_af7b7ede7f88e303602ab1f538581c397} 
+static constexpr size\+\_\+type {\bfseries extent}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a315e365d7960c16afde3701c5a7a2d4e}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a315e365d7960c16afde3701c5a7a2d4e} 
+constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}} rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ad88ff298ebd775aa81703bd850228033}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ad88ff298ebd775aa81703bd850228033} 
+constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type, extent $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aa29c7a493023999e913e16c475ab6414}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_aa29c7a493023999e913e16c475ab6414} 
+{\footnotesize template$<$typename Other\+Element\+Type, size\+\_\+t Other\+Extent, typename Other\+Internal\+Ptr\+Type$>$ \newline
+requires (std\+::equality\+\_\+comparable\+\_\+with$<$const element\+\_\+type, const Other\+Element\+Type$>$)}\\constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type, Other\+Extent, Other\+Internal\+Ptr\+Type $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a95577a3a3ab98232bf819de7d8a969f2}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a95577a3a3ab98232bf819de7d8a969f2} 
+constexpr auto {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}} rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4e251a3b5ad9422cae19c92902fc1026}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4e251a3b5ad9422cae19c92902fc1026} 
+constexpr auto {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type, extent $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab0554b761dce416173bd1b2ef9b2ed6b}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ab0554b761dce416173bd1b2ef9b2ed6b} 
+{\footnotesize template$<$typename Other\+Element\+Type, size\+\_\+t Other\+Extent, typename Other\+Internal\+Ptr\+Type$>$ \newline
+requires (std\+::three\+\_\+way\+\_\+comparable\+\_\+with$<$const element\+\_\+type, const Other\+Element\+Type$>$)}\\constexpr auto {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type, Other\+Extent, Other\+Internal\+Ptr\+Type $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_a315e365d7960c16afde3701c5a7a2d4e}\label{classkiwi_1_1span_a315e365d7960c16afde3701c5a7a2d4e} 
+constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}} rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_ad88ff298ebd775aa81703bd850228033}\label{classkiwi_1_1span_ad88ff298ebd775aa81703bd850228033} 
+constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type, extent $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_a90a4afd4daff02f3044e193434d6adf7}\label{classkiwi_1_1span_a90a4afd4daff02f3044e193434d6adf7} 
+constexpr bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type, Other\+Extent, Other\+Internal\+Ptr\+Type $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_a95577a3a3ab98232bf819de7d8a969f2}\label{classkiwi_1_1span_a95577a3a3ab98232bf819de7d8a969f2} 
+constexpr auto {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}} rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_a4e251a3b5ad9422cae19c92902fc1026}\label{classkiwi_1_1span_a4e251a3b5ad9422cae19c92902fc1026} 
+constexpr auto {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const element\+\_\+type, extent $>$ rhs)
+\item 
+\Hypertarget{classkiwi_1_1span_a231a32bfd8be4359b34920652fe86a9e}\label{classkiwi_1_1span_a231a32bfd8be4359b34920652fe86a9e} 
+constexpr auto {\bfseries operator$<$=$>$} (\mbox{\hyperlink{classkiwi_1_1span}{span}} lhs, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type, Other\+Extent, Other\+Internal\+Ptr\+Type $>$ rhs)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/containers/span.\+hh\end{DoxyCompactItemize}

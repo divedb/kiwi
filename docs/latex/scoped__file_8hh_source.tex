@@ -1,0 +1,118 @@
+\doxysection{scoped\+\_\+file.\+hh}
+\hypertarget{scoped__file_8hh_source}{}\label{scoped__file_8hh_source}\index{include/kiwi/io/scoped\_file.hh@{include/kiwi/io/scoped\_file.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2014\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/scoped\_generic.hh"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)\ ||\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{struct\ }BASE\_EXPORT\ ScopedFDCloseTraits\ :\ \textcolor{keyword}{public}\ ScopedGenericOwnershipTracking\ \{}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ InvalidValue()\ \{\ \textcolor{keywordflow}{return}\ -\/1;\ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Free(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Acquire(\textcolor{keyword}{const}\ ScopedGeneric<int,\ ScopedFDCloseTraits>\&\ owner,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Release(\textcolor{keyword}{const}\ ScopedGeneric<int,\ ScopedFDCloseTraits>\&\ owner,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00033\ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{struct\ }BASE\_EXPORT\ ScopedFDCloseTraits\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ InvalidValue()\ \{\ \textcolor{keywordflow}{return}\ -\/1;\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Free(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ Functor\ for\ \`{}ScopedFILE`\ (below).}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_scoped_f_i_l_e_closer}{ScopedFILECloser}}\ \{}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator()(FILE*\ x)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (x)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ fclose(x);}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00056\ \textcolor{keyword}{namespace\ }subtle\ \{}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#if\ !defined(COMPONENT\_BUILD)}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ Enables\ or\ disables\ enforcement\ of\ FD\ ownership\ as\ tracked\ by\ ScopedFD}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ objects.\ Enforcement\ is\ disabled\ by\ default\ since\ it\ proves\ unwieldy\ in\ some}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ test\ environments,\ but\ tracking\ is\ always\ done.\ It's\ best\ to\ enable\ this\ as}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ early\ as\ possible\ in\ a\ process's\ lifetime.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ This\ function\ is\ not\ available\ in\ component\ builds,\ as\ the\ close()}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ interceptor\ used\ by\ the\ implementation\ is\ unreliable\ when\ compiled\ into}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ a\ shared\ library\ (b/342530259).\ If\ FD\ ownership\ needs\ to\ be\ tested\ or}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ enforced,\ it\ should\ be\ done\ on\ a\ non-\/component\ build\ instead.}}
+\DoxyCodeLine{00068\ \textcolor{keywordtype}{void}\ BASE\_EXPORT\ EnableFDOwnershipEnforcement(\textcolor{keywordtype}{bool}\ enabled);}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !defined(COMPONENT\_BUILD)}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ Resets\ ownership\ state\ of\ all\ FDs.\ The\ only\ permissible\ use\ of\ this\ API\ is}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ in\ a\ forked\ child\ process\ between\ the\ fork()\ and\ a\ subsequent\ exec()\ call.}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ For\ one\ issue,\ it\ is\ common\ to\ mass-\/close\ most\ open\ FDs\ before\ calling}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ exec(),\ to\ avoid\ leaking\ FDs\ into\ the\ new\ executable's\ environment.\ For}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ processes\ which\ have\ enabled\ FD\ ownership\ enforcement,\ this\ reset\ operation}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ is\ necessary\ before\ performing\ such\ closures.}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ Furthermore,\ fork()+exec()\ may\ be\ used\ in\ a\ multithreaded\ context,\ and}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ because\ fork()\ is\ not\ atomic,\ the\ FD\ ownership\ state\ in\ the\ child\ process\ may}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ be\ inconsistent\ with\ the\ actual\ set\ of\ opened\ file\ descriptors\ once\ fork()}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ returns\ in\ the\ child\ process.}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ It\ is\ therefore\ especially\ important\ to\ call\ this\ ASAP\ after\ fork()\ in\ the}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ child\ process\ if\ any\ FD\ manipulation\ will\ be\ done\ prior\ to\ the\ subsequent}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ exec\ call.}}
+\DoxyCodeLine{00087\ \textcolor{keywordtype}{void}\ BASE\_EXPORT\ ResetFDOwnership();}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \}\ \ \textcolor{comment}{//\ namespace\ subtle}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ A\ low-\/level\ Posix\ file\ descriptor\ closer\ class.\ Use\ this\ when\ writing}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ platform-\/specific\ code,\ especially\ that\ does\ non-\/file-\/like\ things\ with\ the}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ FD\ (like\ sockets).}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ If\ you're\ writing\ low-\/level\ Windows\ code,\ see\ base/win/scoped\_handle.h}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ which\ provides\ some\ additional\ functionality.}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ If\ you're\ writing\ cross-\/platform\ code\ that\ deals\ with\ actual\ files,\ you}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ should\ generally\ use\ base::File\ instead\ which\ can\ be\ constructed\ with\ a}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ handle,\ and\ in\ addition\ to\ handling\ ownership,\ has\ convenient\ cross-\/platform}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ file\ manipulation\ functions\ on\ it.}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{using\ }ScopedFD\ =\ ScopedGeneric<int,\ internal::ScopedFDCloseTraits>;}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ Automatically\ closes\ \`{}FILE*`s.}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{using\ }ScopedFILE\ =\ std::unique\_ptr<FILE,\ internal::ScopedFILECloser>;}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ Queries\ the\ ownership\ status\ of\ an\ FD,\ i.e.\ whether\ it\ is\ currently\ owned\ by}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//\ a\ ScopedFD\ in\ the\ calling\ process.}}
+\DoxyCodeLine{00115\ \textcolor{keywordtype}{bool}\ BASE\_EXPORT\ IsFDOwned(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

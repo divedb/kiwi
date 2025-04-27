@@ -1,7 +1,14 @@
 var searchData=
 [
-  ['is_5fcomparable_5fto_5fnullptr_0',['is_comparable_to_nullptr',['../structkiwi_1_1detail_1_1is__comparable__to__nullptr.html',1,'kiwi::detail']]],
-  ['is_5fcomparable_5fto_5fnullptr_3c_20t_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5fconvertible_3c_20decltype_28std_3a_3adeclval_3c_20t_20_3e_28_29_20_21_3dnullptr_29_2c_20bool_20_3e_3a_3avalue_20_3e_20_3e_1',['is_comparable_to_nullptr&lt; T, std::enable_if_t&lt; std::is_convertible&lt; decltype(std::declval&lt; T &gt;() !=nullptr), bool &gt;::value &gt; &gt;',['../structkiwi_1_1detail_1_1is__comparable__to__nullptr_3_01_t_00_01std_1_1enable__if__t_3_01std_1_148c1e83e8fb5b34a745631a606e7a54f.html',1,'kiwi::detail']]],
-  ['ispointerlike_2',['IsPointerLike',['../structkiwi_1_1detail_1_1_is_pointer_like.html',1,'kiwi::detail']]],
-  ['ispointerlike_3c_20t_20_2a_20_3e_3',['IsPointerLike&lt; T * &gt;',['../structkiwi_1_1detail_1_1_is_pointer_like_3_01_t_01_5_01_4.html',1,'kiwi::detail']]]
+  ['fastintegerarithmeticpromotionimpl_0',['FastIntegerArithmeticPromotionImpl',['../structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl.html',1,'kiwi::internal']]],
+  ['fastintegerarithmeticpromotionimpl_3c_20lhs_2c_20rhs_20_3e_1',['FastIntegerArithmeticPromotionImpl&lt; Lhs, Rhs &gt;',['../structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl_3_01_lhs_00_01_rhs_01_4.html',1,'kiwi::internal']]],
+  ['fbstring_5fcore_2',['fbstring_core',['../classkiwi_1_1fbstring__core.html',1,'kiwi']]],
+  ['file_3',['File',['../classkiwi_1_1_file.html',1,'kiwi']]],
+  ['filepath_4',['FilePath',['../classkiwi_1_1_file_path.html',1,'kiwi']]],
+  ['filetracing_5',['FileTracing',['../classkiwi_1_1_file_tracing.html',1,'kiwi']]],
+  ['filliovresult_6',['FillIovResult',['../structkiwi_1_1_i_o_buf_1_1_fill_iov_result.html',1,'kiwi::IOBuf']]],
+  ['function_5fref_7',['function_ref',['../classkiwi_1_1function__ref.html',1,'kiwi']]],
+  ['function_5fref_3c_20ret_28params_2e_2e_2e_29_3e_8',['function_ref&lt; Ret(Params...)&gt;',['../classkiwi_1_1function__ref_3_01_ret_07_params_8_8_8_08_4.html',1,'kiwi']]],
+  ['functionpointerliketypetraits_9',['FunctionPointerLikeTypeTraits',['../structkiwi_1_1_function_pointer_like_type_traits.html',1,'kiwi']]],
+  ['functionpointerliketypetraits_3c_204_2c_20returnt_28_2a_29_28paramts_2e_2e_2e_29_3e_10',['FunctionPointerLikeTypeTraits&lt; 4, ReturnT(*)(ParamTs...)&gt;',['../structkiwi_1_1_function_pointer_like_type_traits.html',1,'kiwi']]]
 ];

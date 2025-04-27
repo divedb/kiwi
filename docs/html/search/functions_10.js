@@ -1,4 +1,19 @@
 var searchData=
 [
-  ['value_0',['value',['../classkiwi_1_1_file_path.html#a80e3085d1bdc7d4f549f78bd508a1700',1,'kiwi::FilePath::value()'],['../classkiwi_1_1_safe_base_name.html#a9cd6fda74d2d6a602a3e2cfc739c4d9c',1,'kiwi::SafeBaseName::value()']]]
+  ['tail_0',['tail',['../classkiwi_1_1_i_o_buf.html#a1df4cbfbaada02b973c62ef4a83356d5',1,'kiwi::IOBuf']]],
+  ['tailroom_1',['tailroom',['../classkiwi_1_1_i_o_buf.html#a25a949b6543aac3a26928b486900863e',1,'kiwi::IOBuf']]],
+  ['take_5fback_2',['take_back',['../classkiwi_1_1_string_ref.html#a3a06f00ae194f00af9184c2e2bfa1484',1,'kiwi::StringRef']]],
+  ['take_5ffront_3',['take_front',['../classkiwi_1_1_string_ref.html#ace04425f92126cb4d09d7c6f46a593e2',1,'kiwi::StringRef']]],
+  ['take_5funtil_4',['take_until',['../classkiwi_1_1_string_ref.html#a3f0f4106a3cb8ebaae059555c7d349e3',1,'kiwi::StringRef']]],
+  ['take_5fwhile_5',['take_while',['../classkiwi_1_1_string_ref.html#a817f88db73fc820718155d3ccd50d8e1',1,'kiwi::StringRef']]],
+  ['takeownership_6',['takeOwnership',['../classkiwi_1_1_i_o_buf.html#ac3e180cd2f9b38a1714e27128f0847af',1,'kiwi::IOBuf::takeOwnership(void *buf, std::size_t capacity, FreeFunction freeFn=nullptr, void *userData=nullptr, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#ad81ff588cbe4381e7939c9cb731eb6be',1,'kiwi::IOBuf::takeOwnership(void *buf, std::size_t capacity, std::size_t length, FreeFunction freeFn=nullptr, void *userData=nullptr, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#aac7ce83b5eb1452b99c476908eac0965',1,'kiwi::IOBuf::takeOwnership(void *buf, std::size_t capacity, std::size_t offset, std::size_t length, FreeFunction freeFn=nullptr, void *userData=nullptr, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#a2d26a2465a52b3278a9e6074ea1208a1',1,'kiwi::IOBuf::takeOwnership(SizedFree, void *buf, std::size_t capacity, std::size_t offset, std::size_t length, bool freeOnError=true)'],['../classkiwi_1_1_i_o_buf.html#a350e569eaaa654458c9a0a8f9ae32888',1,'kiwi::IOBuf::takeOwnership(UniquePtr &amp;&amp;buf, size_t count=1)']]],
+  ['takeownershipiov_7',['takeOwnershipIov',['../classkiwi_1_1_i_o_buf.html#a96e120025a5e886cba2334f71cf67358',1,'kiwi::IOBuf']]],
+  ['to_8',['to',['../classkiwi_1_1_i_o_buf.html#a50b964c560f74a3f40ffb5e106954ee1',1,'kiwi::IOBuf']]],
+  ['trim_9',['trim',['../classkiwi_1_1_string_ref.html#ae767fc3879ab3464fd022788abd8d33f',1,'kiwi::StringRef::trim(char Char) const'],['../classkiwi_1_1_string_ref.html#a8c4846eecd7b654b416a7d07258ee0bd',1,'kiwi::StringRef::trim(StringRef Chars=&quot; \t\n\v\f\r&quot;) const']]],
+  ['trimend_10',['trimEnd',['../classkiwi_1_1_i_o_buf.html#aea86aa0e0a0d63df21b6076ea7acf8af',1,'kiwi::IOBuf']]],
+  ['trimstart_11',['trimStart',['../classkiwi_1_1_i_o_buf.html#a381d2d1b74123ec548a5701d2568684a',1,'kiwi::IOBuf']]],
+  ['trimwritabletail_12',['trimWritableTail',['../classkiwi_1_1_i_o_buf.html#a65e1fb2d692aaca855d5e8c137395dd9',1,'kiwi::IOBuf']]],
+  ['trylock_13',['TryLock',['../class_r_w_spin_lock.html#a8b4f68a941f78e50d27ed4f04dc4b9c3',1,'RWSpinLock']]],
+  ['trylockshared_14',['TryLockShared',['../class_r_w_spin_lock.html#a0750904761e909d73647b5fe678f434d',1,'RWSpinLock']]],
+  ['trylockupgrade_15',['TryLockUpgrade',['../class_r_w_spin_lock.html#a066be65125c7c85186ec6c5ad45ce905',1,'RWSpinLock']]]
 ];

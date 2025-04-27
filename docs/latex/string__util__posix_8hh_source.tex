@@ -1,0 +1,47 @@
+\doxysection{string\+\_\+util\+\_\+posix.\+hh}
+\hypertarget{string__util__posix_8hh_source}{}\label{string__util__posix_8hh_source}\index{include/kiwi/strings/string\_util\_posix.hh@{include/kiwi/strings/string\_util\_posix.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2013\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#ifdef\ UNSAFE\_BUFFERS\_BUILD}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ TODO(crbug.com/390223051):\ Remove\ C-\/library\ calls\ to\ fix\ the\ errors.}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#pragma\ allow\_unsafe\_libc\_calls}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ BASE\_STRINGS\_STRING\_UTIL\_POSIX\_H\_}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ BASE\_STRINGS\_STRING\_UTIL\_POSIX\_H\_}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <wchar.h>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ \#include\ "{}base/check.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ Chromium\ code\ style\ is\ to\ not\ use\ malloc'd\ strings;\ this\ is\ only\ for\ use}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ for\ interaction\ with\ APIs\ that\ require\ it.}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}*\ strdup(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str)\ \{\ return\ ::strdup(str);\ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ vsnprintf(\textcolor{keywordtype}{char}*\ buffer,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ va\_list\ arguments)\ \{}
+\DoxyCodeLine{00029\ \ \ return\ ::vsnprintf(buffer,\ size,\ format,\ arguments);}
+\DoxyCodeLine{00030\ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ vswprintf(\textcolor{keywordtype}{wchar\_t}*\ buffer,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ format,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ va\_list\ arguments)\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ DCHECK(IsWprintfFormatPortable(format));}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ return\ ::vswprintf(buffer,\ size,\ format,\ arguments);}
+\DoxyCodeLine{00037\ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_STRINGS\_STRING\_UTIL\_POSIX\_H\_}}
+
+\end{DoxyCode}

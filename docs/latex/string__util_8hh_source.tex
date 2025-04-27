@@ -1,0 +1,680 @@
+\doxysection{string\+\_\+util.\+hh}
+\hypertarget{string__util_8hh_source}{}\label{string__util_8hh_source}\index{include/kiwi/strings/string\_util.hh@{include/kiwi/strings/string\_util.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2013\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ This\ file\ defines\ utility\ functions\ for\ working\ with\ strings.}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifdef\ UNSAFE\_BUFFERS\_BUILD}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ TODO(crbug.com/390223051):\ Remove\ C-\/library\ calls\ to\ fix\ the\ errors.}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ allow\_unsafe\_libc\_calls}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ BASE\_STRINGS\_STRING\_UTIL\_H\_}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ BASE\_STRINGS\_STRING\_UTIL\_H\_}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <stdarg.h>}\ \ \textcolor{comment}{//\ va\_list}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <initializer\_list>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \#include\ "{}base/check\_op.h"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ For\ implicit\ conversions.}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/string\_util\_internal.hh"{}}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}kiwi/types/to\_address.hh"{}}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ C\ standard-\/library\ functions\ that\ aren't\ cross-\/platform\ are\ provided\ as}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ "{}base::..."{},\ and\ their\ prototypes\ are\ listed\ below.\ These\ functions\ are}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ then\ implemented\ as\ inline\ calls\ to\ the\ platform-\/specific\ equivalents\ in\ the}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ platform-\/specific\ headers.}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ Wrapper\ for\ vsnprintf\ that\ always\ null-\/terminates\ and\ always\ returns\ the}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ number\ of\ characters\ that\ would\ be\ in\ an\ untruncated\ formatted}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ string,\ even\ when\ truncation\ occurs.}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ TODO(tsepez):\ should\ be\ UNSAFE\_BUFFER\_USAGE.}}
+\DoxyCodeLine{00047\ PRINTF\_FORMAT(3,\ 0)}
+\DoxyCodeLine{00048\ int\ vsnprintf(\textcolor{keywordtype}{char}*\ buffer,\ \textcolor{keywordtype}{size\_t}\ size,\ const\ \textcolor{keywordtype}{char}*\ format,\ va\_list\ arguments);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Some\ of\ these\ implementations\ need\ to\ be\ inlined.}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ We\ separate\ the\ declaration\ from\ the\ implementation\ of\ this\ inline}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ function\ just\ so\ the\ PRINTF\_FORMAT\ works.}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ TODO(tsepez):\ should\ be\ UNSAFE\_BUFFER\_USAGE.}}
+\DoxyCodeLine{00055\ PRINTF\_FORMAT(3,\ 4)}
+\DoxyCodeLine{00056\ inline\ \textcolor{keywordtype}{int}\ snprintf(\textcolor{keywordtype}{char}*\ buffer,\ \textcolor{keywordtype}{size\_t}\ size,\ const\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00057\ inline\ \textcolor{keywordtype}{int}\ snprintf(\textcolor{keywordtype}{char}*\ buffer,\ \textcolor{keywordtype}{size\_t}\ size,\ const\ \textcolor{keywordtype}{char}*\ format,\ ...)\ \{}
+\DoxyCodeLine{00058\ \ \ va\_list\ arguments;}
+\DoxyCodeLine{00059\ \ \ va\_start(arguments,\ format);}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{int}\ result\ =\ vsnprintf(buffer,\ size,\ format,\ arguments);}
+\DoxyCodeLine{00061\ \ \ va\_end(arguments);}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00063\ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ BSD-\/style\ safe\ and\ consistent\ string\ copy\ functions.}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ Copies\ \`{}src`\ to\ \`{}dst`,\ truncating\ \`{}dst`\ if\ it\ does\ not\ fit,\ and\ ensuring\ that}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \`{}dst`\ is\ NUL-\/terminated\ if\ it's\ not\ an\ empty\ span.\ Returns\ the\ length\ of}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ \`{}src`\ in\ characters.\ If\ the\ return\ value\ is\ \`{}>=\ dst.size()`,\ then\ the\ output}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ was\ truncated.\ NOTE:\ All\ sizes\ are\ in\ number\ of\ characters,\ NOT\ in\ bytes.}}
+\DoxyCodeLine{00071\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ strlcpy(\mbox{\hyperlink{classkiwi_1_1span}{span<char>}}\ dst,\ std::string\_view\ src);}
+\DoxyCodeLine{00072\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ u16cstrlcpy(\mbox{\hyperlink{classkiwi_1_1span}{span<char16\_t>}}\ dst,\ std::u16string\_view\ src);}
+\DoxyCodeLine{00073\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ wcslcpy(\mbox{\hyperlink{classkiwi_1_1span}{span<wchar\_t>}}\ dst,\ std::wstring\_view\ src);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ Copies\ |src|\ to\ |dst|,\ where\ |dst\_size|\ is\ the\ total\ allocated\ size\ of\ |dst|.}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ Copies\ at\ most\ |dst\_size|-\/1\ characters,\ and\ always\ NULL\ terminates\ |dst|,\ as}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ long\ as\ |dst\_size|\ is\ not\ 0.\ \ Returns\ the\ length\ of\ |src|\ in\ characters.}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ If\ the\ return\ value\ is\ >=\ dst\_size,\ then\ the\ output\ was\ truncated.}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ NOTE:\ All\ sizes\ are\ in\ number\ of\ characters,\ NOT\ in\ bytes.}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ TODO:\ crbug.com/40284755\ -\/\ Make\ these\ UNSAFE\_BUFFER\_USAGE.}}
+\DoxyCodeLine{00082\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ strlcpy(\textcolor{keywordtype}{char}*\ dst,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ dst\_size);}
+\DoxyCodeLine{00083\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ u16cstrlcpy(\textcolor{keywordtype}{char16\_t}*\ dst,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}*\ src,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ dst\_size);}
+\DoxyCodeLine{00085\ BASE\_EXPORT\ \textcolor{keywordtype}{size\_t}\ wcslcpy(\textcolor{keywordtype}{wchar\_t}*\ dst,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ dst\_size);}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ Scan\ a\ wprintf\ format\ string\ to\ determine\ whether\ it's\ portable\ across\ a}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ variety\ of\ systems.\ \ This\ function\ only\ checks\ that\ the\ conversion}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ specifiers\ used\ by\ the\ format\ string\ are\ supported\ and\ have\ the\ same\ meaning}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ on\ a\ variety\ of\ systems.\ \ It\ doesn't\ check\ for\ other\ errors\ that\ might\ occur}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ within\ a\ format\ string.}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ Nonportable\ conversion\ specifiers\ for\ wprintf\ are:}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ -\/\ 's'\ and\ 'c'\ without\ an\ 'l'\ length\ modifier.\ \ \%s\ and\ \%c\ operate\ on\ char}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ \ \ \ data\ on\ all\ systems\ except\ Windows,\ which\ treat\ them\ as\ wchar\_t\ data.}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \ \ \ \ Use\ \%ls\ and\ \%lc\ for\ wchar\_t\ data\ instead.}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ -\/\ 'S'\ and\ 'C',\ which\ operate\ on\ wchar\_t\ data\ on\ all\ systems\ except\ Windows,}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ \ \ which\ treat\ them\ as\ char\ data.\ \ Use\ \%ls\ and\ \%lc\ for\ wchar\_t\ data}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ \ \ \ \ instead.}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ -\/\ 'F',\ which\ is\ not\ identified\ by\ Windows\ wprintf\ documentation.}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ \ -\/\ 'D',\ 'O',\ and\ 'U',\ which\ are\ deprecated\ and\ not\ available\ on\ all\ systems.}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ \ \ \ \ Use\ \%ld,\ \%lo,\ and\ \%lu\ instead.}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ Note\ that\ there\ is\ no\ portable\ conversion\ specifier\ for\ char\ data\ when}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ working\ with\ wprintf.}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ This\ function\ is\ intended\ to\ be\ called\ from\ base::vswprintf.}}
+\DoxyCodeLine{00108\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsWprintfFormatPortable(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ format);}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ Simplified\ implementation\ of\ C++20's\ std::basic\_string\_view(It,\ End).}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ Reference:\ https://wg21.link/string.view.cons}}
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keyword}{typename}\ Iter>}
+\DoxyCodeLine{00113\ \textcolor{keyword}{constexpr}\ std::basic\_string\_view<CharT>\ MakeBasicStringPiece(Iter\ begin,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Iter\ end)\ \{}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ DCHECK\_GE(end\ -\/\ begin,\ 0);}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordflow}{return}\ \{kiwi::to\_address(begin),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(end\ -\/\ begin)\};}
+\DoxyCodeLine{00118\ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{comment}{//\ Explicit\ instantiations\ of\ MakeBasicStringPiece.}}
+\DoxyCodeLine{00121\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Iter>}
+\DoxyCodeLine{00122\ \textcolor{keyword}{constexpr}\ std::string\_view\ MakeStringPiece(Iter\ begin,\ Iter\ end)\ \{}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordflow}{return}\ MakeBasicStringPiece<char>(begin,\ end);}
+\DoxyCodeLine{00124\ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Iter>}
+\DoxyCodeLine{00127\ \textcolor{keyword}{constexpr}\ std::u16string\_view\ MakeStringPiece16(Iter\ begin,\ Iter\ end)\ \{}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordflow}{return}\ MakeBasicStringPiece<char16\_t>(begin,\ end);}
+\DoxyCodeLine{00129\ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Iter>}
+\DoxyCodeLine{00132\ \textcolor{keyword}{constexpr}\ std::wstring\_view\ MakeWStringView(Iter\ begin,\ Iter\ end)\ \{}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordflow}{return}\ MakeBasicStringPiece<wchar\_t>(begin,\ end);}
+\DoxyCodeLine{00134\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{comment}{//\ ASCII-\/specific\ tolower.\ \ The\ standard\ library's\ tolower\ is\ locale\ sensitive,}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\ so\ we\ don't\ want\ to\ use\ it\ here.}}
+\DoxyCodeLine{00138\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{requires}(std::integral<CharT>)}
+\DoxyCodeLine{00140\ \textcolor{keyword}{constexpr}\ CharT\ ToLowerASCII(CharT\ c)\ \{}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordflow}{return}\ internal::ToLowerASCII(c);}
+\DoxyCodeLine{00142\ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{comment}{//\ ASCII-\/specific\ toupper.\ \ The\ standard\ library's\ toupper\ is\ locale\ sensitive,}}
+\DoxyCodeLine{00145\ \textcolor{comment}{//\ so\ we\ don't\ want\ to\ use\ it\ here.}}
+\DoxyCodeLine{00146\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{requires}(std::integral<CharT>)}
+\DoxyCodeLine{00148\ CharT\ ToUpperASCII(CharT\ c)\ \{}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordflow}{return}\ (c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'})\ ?\ \textcolor{keyword}{static\_cast<}CharT\textcolor{keyword}{>}(c\ +\ \textcolor{charliteral}{'A'}\ -\/\ \textcolor{charliteral}{'a'})\ :\ c;}
+\DoxyCodeLine{00150\ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \textcolor{comment}{//\ Converts\ the\ given\ string\ to\ its\ ASCII-\/lowercase\ equivalent.\ Non-\/ASCII}}
+\DoxyCodeLine{00153\ \textcolor{comment}{//\ bytes\ (or\ UTF-\/16\ code\ units\ in\ \`{}std::u16string\_view`)\ are\ permitted\ but\ will}}
+\DoxyCodeLine{00154\ \textcolor{comment}{//\ be\ unmodified.}}
+\DoxyCodeLine{00155\ BASE\_EXPORT\ std::string\ ToLowerASCII(std::string\_view\ str);}
+\DoxyCodeLine{00156\ BASE\_EXPORT\ std::u16string\ ToLowerASCII(std::u16string\_view\ str);}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ Converts\ the\ given\ string\ to\ its\ ASCII-\/uppercase\ equivalent.\ Non-\/ASCII}}
+\DoxyCodeLine{00159\ \textcolor{comment}{//\ bytes\ (or\ UTF-\/16\ code\ units\ in\ \`{}std::u16string\_view`)\ are\ permitted\ but\ will}}
+\DoxyCodeLine{00160\ \textcolor{comment}{//\ be\ unmodified.}}
+\DoxyCodeLine{00161\ BASE\_EXPORT\ std::string\ ToUpperASCII(std::string\_view\ str);}
+\DoxyCodeLine{00162\ BASE\_EXPORT\ std::u16string\ ToUpperASCII(std::u16string\_view\ str);}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ Functor\ for\ ASCII\ case-\/insensitive\ comparisons\ for\ STL\ algorithms\ like}}
+\DoxyCodeLine{00165\ \textcolor{comment}{//\ std::search.\ Non-\/ASCII\ bytes\ (or\ UTF-\/16\ code\ units\ in\ \`{}std::u16string\_view`)}}
+\DoxyCodeLine{00166\ \textcolor{comment}{//\ are\ permitted\ but\ will\ be\ compared\ as-\/is.}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//\ Note\ that\ a\ full\ Unicode\ version\ of\ this\ functor\ is\ not\ possible\ to\ write}}
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ because\ case\ mappings\ might\ change\ the\ number\ of\ characters,\ depend\ on}}
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ context\ (combining\ accents),\ and\ require\ handling\ UTF-\/16.\ If\ you\ need}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//\ proper\ Unicode\ support,\ use\ base::i18n::ToLower/FoldCase\ and\ then\ just}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ use\ a\ normal\ operator==\ on\ the\ result.}}
+\DoxyCodeLine{00173\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00175\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1_case_insensitive_compare_a_s_c_i_i}{CaseInsensitiveCompareASCII}}\ \{}
+\DoxyCodeLine{00176\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{bool}\ operator()(Char\ x,\ Char\ y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{return}\ ToLowerASCII(x)\ ==\ ToLowerASCII(y);}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ \};}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \textcolor{comment}{//\ Like\ strcasecmp\ for\ ASCII\ case-\/insensitive\ comparisons\ only.\ Returns:}}
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ \ \ -\/1\ \ (a\ <\ b)}}
+\DoxyCodeLine{00184\ \textcolor{comment}{//\ \ \ \ 0\ \ (a\ ==\ b)}}
+\DoxyCodeLine{00185\ \textcolor{comment}{//\ \ \ \ 1\ \ (a\ >\ b)}}
+\DoxyCodeLine{00186\ \textcolor{comment}{//\ (unlike\ strcasecmp\ which\ can\ return\ values\ greater\ or\ less\ than\ 1/-\/1).\ To}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//\ compare\ all\ Unicode\ code\ points\ case-\/insensitively,\ use\ base::i18n::ToLower}}
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ or\ base::i18n::FoldCase\ and\ then\ just\ call\ the\ normal\ string\ operators\ on\ the}}
+\DoxyCodeLine{00189\ \textcolor{comment}{//\ result.}}
+\DoxyCodeLine{00190\ \textcolor{comment}{//}}
+\DoxyCodeLine{00191\ \textcolor{comment}{//\ Non-\/ASCII\ bytes\ (or\ UTF-\/16\ code\ units\ in\ \`{}std::u16string\_view`)\ are\ permitted}}
+\DoxyCodeLine{00192\ \textcolor{comment}{//\ but\ will\ be\ compared\ unmodified.}}
+\DoxyCodeLine{00193\ BASE\_EXPORT\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ CompareCaseInsensitiveASCII(std::string\_view\ a,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ b)\ \{}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordflow}{return}\ internal::CompareCaseInsensitiveASCIIT(a,\ b);}
+\DoxyCodeLine{00196\ \}}
+\DoxyCodeLine{00197\ BASE\_EXPORT\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ CompareCaseInsensitiveASCII(std::u16string\_view\ a,}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ b)\ \{}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordflow}{return}\ internal::CompareCaseInsensitiveASCIIT(a,\ b);}
+\DoxyCodeLine{00200\ \}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{comment}{//\ Equality\ for\ ASCII\ case-\/insensitive\ comparisons.\ Non-\/ASCII\ bytes\ (or\ UTF-\/16}}
+\DoxyCodeLine{00203\ \textcolor{comment}{//\ code\ units\ in\ \`{}std::u16string\_view`)\ are\ permitted\ but\ will\ be\ compared}}
+\DoxyCodeLine{00204\ \textcolor{comment}{//\ unmodified.\ To\ compare\ all\ Unicode\ code\ points\ case-\/insensitively,\ use}}
+\DoxyCodeLine{00205\ \textcolor{comment}{//\ base::i18n::ToLower\ or\ base::i18n::FoldCase\ and\ then\ compare\ with\ either\ ==}}
+\DoxyCodeLine{00206\ \textcolor{comment}{//\ or\ !=.}}
+\DoxyCodeLine{00207\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ EqualsCaseInsensitiveASCII(std::string\_view\ a,\ std::string\_view\ b)\ \{}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordflow}{return}\ internal::EqualsCaseInsensitiveASCIIT(a,\ b);}
+\DoxyCodeLine{00209\ \}}
+\DoxyCodeLine{00210\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ EqualsCaseInsensitiveASCII(std::u16string\_view\ a,}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ b)\ \{}
+\DoxyCodeLine{00212\ \ \ \textcolor{keywordflow}{return}\ internal::EqualsCaseInsensitiveASCIIT(a,\ b);}
+\DoxyCodeLine{00213\ \}}
+\DoxyCodeLine{00214\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ EqualsCaseInsensitiveASCII(std::u16string\_view\ a,}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ b)\ \{}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordflow}{return}\ internal::EqualsCaseInsensitiveASCIIT(a,\ b);}
+\DoxyCodeLine{00217\ \}}
+\DoxyCodeLine{00218\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ EqualsCaseInsensitiveASCII(std::string\_view\ a,}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ b)\ \{}
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordflow}{return}\ internal::EqualsCaseInsensitiveASCIIT(a,\ b);}
+\DoxyCodeLine{00221\ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{comment}{//\ These\ threadsafe\ functions\ return\ references\ to\ globally\ unique\ empty}}
+\DoxyCodeLine{00224\ \textcolor{comment}{//\ strings.}}
+\DoxyCodeLine{00225\ \textcolor{comment}{//}}
+\DoxyCodeLine{00226\ \textcolor{comment}{//\ It\ is\ likely\ faster\ to\ construct\ a\ new\ empty\ string\ object\ (just\ a\ few}}
+\DoxyCodeLine{00227\ \textcolor{comment}{//\ instructions\ to\ set\ the\ length\ to\ 0)\ than\ to\ get\ the\ empty\ string\ instance}}
+\DoxyCodeLine{00228\ \textcolor{comment}{//\ returned\ by\ these\ functions\ (which\ requires\ threadsafe\ static\ access).}}
+\DoxyCodeLine{00229\ \textcolor{comment}{//}}
+\DoxyCodeLine{00230\ \textcolor{comment}{//\ Therefore,\ DO\ NOT\ USE\ THESE\ AS\ A\ GENERAL-\/PURPOSE\ SUBSTITUTE\ FOR\ DEFAULT}}
+\DoxyCodeLine{00231\ \textcolor{comment}{//\ CONSTRUCTORS.\ There\ is\ only\ one\ case\ where\ you\ should\ use\ these:\ functions}}
+\DoxyCodeLine{00232\ \textcolor{comment}{//\ which\ need\ to\ return\ a\ string\ by\ reference\ (e.g.\ as\ a\ class\ member}}
+\DoxyCodeLine{00233\ \textcolor{comment}{//\ accessor),\ and\ don't\ have\ an\ empty\ string\ to\ use\ (e.g.\ in\ an\ error\ case).}}
+\DoxyCodeLine{00234\ \textcolor{comment}{//\ These\ should\ not\ be\ used\ as\ initializers,\ function\ arguments,\ or\ return}}
+\DoxyCodeLine{00235\ \textcolor{comment}{//\ values\ for\ functions\ which\ return\ by\ value\ or\ outparam.}}
+\DoxyCodeLine{00236\ BASE\_EXPORT\ \textcolor{keyword}{const}\ std::string\&\ EmptyString();}
+\DoxyCodeLine{00237\ BASE\_EXPORT\ \textcolor{keyword}{const}\ std::u16string\&\ EmptyString16();}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \textcolor{comment}{//\ Contains\ the\ set\ of\ characters\ representing\ whitespace\ in\ the\ corresponding}}
+\DoxyCodeLine{00240\ \textcolor{comment}{//\ encoding.\ Null-\/terminated.\ The\ ASCII\ versions\ are\ the\ whitespaces\ as\ defined}}
+\DoxyCodeLine{00241\ \textcolor{comment}{//\ by\ HTML5,\ and\ don't\ include\ control\ characters.}}
+\DoxyCodeLine{00242\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}\ kWhitespaceWide[];\ \ \ \ \textcolor{comment}{//\ Includes\ Unicode.}}
+\DoxyCodeLine{00243\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}\ kWhitespaceUTF16[];\ \ \textcolor{comment}{//\ Includes\ Unicode.}}
+\DoxyCodeLine{00244\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}}
+\DoxyCodeLine{00245\ \ \ \ \ kWhitespaceNoCrLfUTF16[];\ \ \textcolor{comment}{//\ Unicode\ w/o\ CR/LF.}}
+\DoxyCodeLine{00246\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ kWhitespaceASCII[];}
+\DoxyCodeLine{00247\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char16\_t}\ kWhitespaceASCIIAs16[];\ \ \textcolor{comment}{//\ No\ unicode.}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{comment}{//\ https://infra.spec.whatwg.org/\#ascii-\/whitespace}}
+\DoxyCodeLine{00250\ \textcolor{comment}{//\ Note\ that\ this\ array\ is\ not\ null-\/terminated.}}
+\DoxyCodeLine{00251\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char}\ kInfraAsciiWhitespace[]\ =\ \{0x09,\ 0x0A,\ 0x0C,\ 0x0D,\ 0x20\};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{comment}{//\ Null-\/terminated\ string\ representing\ the\ UTF-\/8\ byte\ order\ mark.}}
+\DoxyCodeLine{00254\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ kUtf8ByteOrderMark[];}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{comment}{//\ Removes\ characters\ in\ |remove\_chars|\ from\ anywhere\ in\ |input|.\ \ Returns\ true}}
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ if\ any\ characters\ were\ removed.\ \ |remove\_chars|\ must\ be\ null-\/terminated.}}
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ NOTE:\ Safe\ to\ use\ the\ same\ variable\ for\ both\ |input|\ and\ |output|.}}
+\DoxyCodeLine{00259\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ RemoveChars(std::u16string\_view\ input,}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ remove\_chars,}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00262\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ RemoveChars(std::string\_view\ input,}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ remove\_chars,}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \textcolor{comment}{//\ Replaces\ characters\ in\ |replace\_chars|\ from\ anywhere\ in\ |input|\ with}}
+\DoxyCodeLine{00267\ \textcolor{comment}{//\ |replace\_with|.\ \ Each\ character\ in\ |replace\_chars|\ will\ be\ replaced\ with}}
+\DoxyCodeLine{00268\ \textcolor{comment}{//\ the\ |replace\_with|\ string.\ \ Returns\ true\ if\ any\ characters\ were\ replaced.}}
+\DoxyCodeLine{00269\ \textcolor{comment}{//\ |replace\_chars|\ must\ be\ null-\/terminated.}}
+\DoxyCodeLine{00270\ \textcolor{comment}{//\ NOTE:\ Safe\ to\ use\ the\ same\ variable\ for\ both\ |input|\ and\ |output|.}}
+\DoxyCodeLine{00271\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReplaceChars(std::u16string\_view\ input,}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ replace\_chars,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ replace\_with,}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00275\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReplaceChars(std::string\_view\ input,}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ replace\_chars,}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ replace\_with,}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{keyword}{enum}\ TrimPositions\ \{}
+\DoxyCodeLine{00281\ \ \ TRIM\_NONE\ =\ 0,}
+\DoxyCodeLine{00282\ \ \ TRIM\_LEADING\ =\ 1\ <<\ 0,}
+\DoxyCodeLine{00283\ \ \ TRIM\_TRAILING\ =\ 1\ <<\ 1,}
+\DoxyCodeLine{00284\ \ \ TRIM\_ALL\ =\ TRIM\_LEADING\ |\ TRIM\_TRAILING,}
+\DoxyCodeLine{00285\ \};}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{comment}{//\ Removes\ characters\ in\ |trim\_chars|\ from\ the\ beginning\ and\ end\ of\ |input|.}}
+\DoxyCodeLine{00288\ \textcolor{comment}{//\ The\ 8-\/bit\ version\ only\ works\ on\ 8-\/bit\ characters,\ not\ UTF-\/8.\ Returns\ true\ if}}
+\DoxyCodeLine{00289\ \textcolor{comment}{//\ any\ characters\ were\ removed.}}
+\DoxyCodeLine{00290\ \textcolor{comment}{//}}
+\DoxyCodeLine{00291\ \textcolor{comment}{//\ It\ is\ safe\ to\ use\ the\ same\ variable\ for\ both\ |input|\ and\ |output|\ (this\ is}}
+\DoxyCodeLine{00292\ \textcolor{comment}{//\ the\ normal\ usage\ to\ trim\ in-\/place).}}
+\DoxyCodeLine{00293\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ TrimString(std::u16string\_view\ input,}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ trim\_chars,}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00296\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ TrimString(std::string\_view\ input,\ std::string\_view\ trim\_chars,}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \textcolor{comment}{//\ std::string\_view\ versions\ of\ the\ above.\ The\ returned\ pieces\ refer\ to\ the}}
+\DoxyCodeLine{00300\ \textcolor{comment}{//\ original\ buffer.}}
+\DoxyCodeLine{00301\ BASE\_EXPORT\ std::u16string\_view\ TrimString(std::u16string\_view\ input,}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ trim\_chars,}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrimPositions\ positions);}
+\DoxyCodeLine{00304\ BASE\_EXPORT\ std::string\_view\ TrimString(std::string\_view\ input,}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ trim\_chars,}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrimPositions\ positions);}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \textcolor{comment}{//\ Truncates\ a\ string\ to\ the\ nearest\ UTF-\/8\ character\ that\ will\ leave}}
+\DoxyCodeLine{00309\ \textcolor{comment}{//\ the\ string\ less\ than\ or\ equal\ to\ the\ specified\ byte\ size.}}
+\DoxyCodeLine{00310\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ TruncateUTF8ToByteSize(std::string\_view\ input,}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ byte\_size,}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00313\ BASE\_EXPORT\ std::string\_view\ TruncateUTF8ToByteSize(std::string\_view\ input,}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ byte\_size);}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \textcolor{comment}{//\ Trims\ any\ whitespace\ from\ either\ end\ of\ the\ input\ string.}}
+\DoxyCodeLine{00317\ \textcolor{comment}{//}}
+\DoxyCodeLine{00318\ \textcolor{comment}{//\ The\ std::string\_view\ versions\ return\ a\ substring\ referencing\ the\ input}}
+\DoxyCodeLine{00319\ \textcolor{comment}{//\ buffer.\ The\ ASCII\ versions\ look\ only\ for\ ASCII\ whitespace.}}
+\DoxyCodeLine{00320\ \textcolor{comment}{//}}
+\DoxyCodeLine{00321\ \textcolor{comment}{//\ The\ std::string\ versions\ return\ where\ whitespace\ was\ found.}}
+\DoxyCodeLine{00322\ \textcolor{comment}{//\ NOTE:\ Safe\ to\ use\ the\ same\ variable\ for\ both\ input\ and\ output.}}
+\DoxyCodeLine{00323\ BASE\_EXPORT\ TrimPositions\ TrimWhitespace(std::u16string\_view\ input,}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrimPositions\ positions,}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string*\ output);}
+\DoxyCodeLine{00326\ BASE\_EXPORT\ std::u16string\_view\ TrimWhitespace(std::u16string\_view\ input,}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrimPositions\ positions);}
+\DoxyCodeLine{00328\ BASE\_EXPORT\ TrimPositions\ TrimWhitespaceASCII(std::string\_view\ input,}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrimPositions\ positions,}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ output);}
+\DoxyCodeLine{00331\ BASE\_EXPORT\ std::string\_view\ TrimWhitespaceASCII(std::string\_view\ input,}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrimPositions\ positions);}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \textcolor{comment}{//\ Searches\ for\ CR\ or\ LF\ characters.\ \ Removes\ all\ contiguous\ whitespace}}
+\DoxyCodeLine{00335\ \textcolor{comment}{//\ strings\ that\ contain\ them.\ \ This\ is\ useful\ when\ trying\ to\ deal\ with\ text}}
+\DoxyCodeLine{00336\ \textcolor{comment}{//\ copied\ from\ terminals.}}
+\DoxyCodeLine{00337\ \textcolor{comment}{//\ Returns\ |text|,\ with\ the\ following\ three\ transformations:}}
+\DoxyCodeLine{00338\ \textcolor{comment}{//\ (1)\ Leading\ and\ trailing\ whitespace\ is\ trimmed.}}
+\DoxyCodeLine{00339\ \textcolor{comment}{//\ (2)\ If\ |trim\_sequences\_with\_line\_breaks|\ is\ true,\ any\ other\ whitespace}}
+\DoxyCodeLine{00340\ \textcolor{comment}{//\ \ \ \ \ sequences\ containing\ a\ CR\ or\ LF\ are\ trimmed.}}
+\DoxyCodeLine{00341\ \textcolor{comment}{//\ (3)\ All\ other\ whitespace\ sequences\ are\ converted\ to\ single\ spaces.}}
+\DoxyCodeLine{00342\ BASE\_EXPORT\ std::u16string\ CollapseWhitespace(}
+\DoxyCodeLine{00343\ \ \ \ \ std::u16string\_view\ text,\ \textcolor{keywordtype}{bool}\ trim\_sequences\_with\_line\_breaks);}
+\DoxyCodeLine{00344\ BASE\_EXPORT\ std::string\ CollapseWhitespaceASCII(}
+\DoxyCodeLine{00345\ \ \ \ \ std::string\_view\ text,\ \textcolor{keywordtype}{bool}\ trim\_sequences\_with\_line\_breaks);}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \textcolor{comment}{//\ Returns\ true\ if\ |input|\ is\ empty\ or\ contains\ only\ characters\ found\ in}}
+\DoxyCodeLine{00348\ \textcolor{comment}{//\ |characters|.}}
+\DoxyCodeLine{00349\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ContainsOnlyChars(std::string\_view\ input,}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ characters);}
+\DoxyCodeLine{00351\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ContainsOnlyChars(std::u16string\_view\ input,}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ characters);}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \textcolor{comment}{//\ Returns\ true\ if\ |str|\ is\ structurally\ valid\ UTF-\/8\ and\ also\ doesn't}}
+\DoxyCodeLine{00355\ \textcolor{comment}{//\ contain\ any\ non-\/character\ code\ point\ (e.g.\ U+10FFFE).\ Prohibiting}}
+\DoxyCodeLine{00356\ \textcolor{comment}{//\ non-\/characters\ increases\ the\ likelihood\ of\ detecting\ non-\/UTF-\/8\ in}}
+\DoxyCodeLine{00357\ \textcolor{comment}{//\ real-\/world\ text,\ for\ callers\ which\ do\ not\ need\ to\ accept}}
+\DoxyCodeLine{00358\ \textcolor{comment}{//\ non-\/characters\ in\ strings.}}
+\DoxyCodeLine{00359\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsStringUTF8(std::string\_view\ str);}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \textcolor{comment}{//\ Returns\ true\ if\ |str|\ contains\ valid\ UTF-\/8,\ allowing\ non-\/character}}
+\DoxyCodeLine{00362\ \textcolor{comment}{//\ code\ points.}}
+\DoxyCodeLine{00363\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsStringUTF8AllowingNoncharacters(std::string\_view\ str);}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \textcolor{comment}{//\ Returns\ true\ if\ |str|\ contains\ only\ valid\ ASCII\ character\ values.}}
+\DoxyCodeLine{00366\ \textcolor{comment}{//\ Note\ 1:\ IsStringASCII\ executes\ in\ time\ determined\ solely\ by\ the}}
+\DoxyCodeLine{00367\ \textcolor{comment}{//\ length\ of\ the\ string,\ not\ by\ its\ contents,\ so\ it\ is\ robust\ against}}
+\DoxyCodeLine{00368\ \textcolor{comment}{//\ timing\ attacks\ for\ all\ strings\ of\ equal\ length.}}
+\DoxyCodeLine{00369\ \textcolor{comment}{//\ Note\ 2:\ IsStringASCII\ assumes\ the\ input\ is\ likely\ all\ ASCII,\ and}}
+\DoxyCodeLine{00370\ \textcolor{comment}{//\ does\ not\ leave\ early\ if\ it\ is\ not\ the\ case.}}
+\DoxyCodeLine{00371\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsStringASCII(std::string\_view\ str);}
+\DoxyCodeLine{00372\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsStringASCII(std::u16string\_view\ str);}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \textcolor{preprocessor}{\#if\ defined(WCHAR\_T\_IS\_32\_BIT)}}
+\DoxyCodeLine{00375\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsStringASCII(std::wstring\_view\ str);}
+\DoxyCodeLine{00376\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ \textcolor{comment}{//\ Performs\ a\ case-\/sensitive\ string\ compare\ of\ the\ given\ 16-\/bit\ string\ against}}
+\DoxyCodeLine{00379\ \textcolor{comment}{//\ the\ given\ 8-\/bit\ ASCII\ string\ (typically\ a\ constant).\ The\ behavior\ is}}
+\DoxyCodeLine{00380\ \textcolor{comment}{//\ undefined\ if\ the\ |ascii|\ string\ is\ not\ ASCII.}}
+\DoxyCodeLine{00381\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ EqualsASCII(std::u16string\_view\ str,\ std::string\_view\ ascii);}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \textcolor{comment}{//\ Indicates\ case\ sensitivity\ of\ comparisons.\ Only\ ASCII\ case\ insensitivity}}
+\DoxyCodeLine{00384\ \textcolor{comment}{//\ is\ supported.\ Full\ Unicode\ case-\/insensitive\ conversions\ would\ need\ to\ go\ in}}
+\DoxyCodeLine{00385\ \textcolor{comment}{//\ base/i18n\ so\ it\ can\ use\ ICU.}}
+\DoxyCodeLine{00386\ \textcolor{comment}{//}}
+\DoxyCodeLine{00387\ \textcolor{comment}{//\ If\ you\ need\ to\ do\ Unicode-\/aware\ case-\/insensitive\ StartsWith/EndsWith,\ it's}}
+\DoxyCodeLine{00388\ \textcolor{comment}{//\ best\ to\ call\ base::i18n::ToLower()\ or\ base::i18n::FoldCase()\ (see}}
+\DoxyCodeLine{00389\ \textcolor{comment}{//\ base/i18n/case\_conversion.h\ for\ usage\ advice)\ on\ the\ arguments,\ and\ then\ use}}
+\DoxyCodeLine{00390\ \textcolor{comment}{//\ the\ results\ to\ a\ case-\/sensitive\ comparison.}}
+\DoxyCodeLine{00391\ \textcolor{keyword}{enum\ class}\ CompareCase\ \{}
+\DoxyCodeLine{00392\ \ \ SENSITIVE,}
+\DoxyCodeLine{00393\ \ \ INSENSITIVE\_ASCII,}
+\DoxyCodeLine{00394\ \};}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StartsWith(}
+\DoxyCodeLine{00397\ \ \ \ \ std::string\_view\ str,\ std::string\_view\ search\_for,}
+\DoxyCodeLine{00398\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00399\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StartsWith(}
+\DoxyCodeLine{00400\ \ \ \ \ std::u16string\_view\ str,\ std::u16string\_view\ search\_for,}
+\DoxyCodeLine{00401\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00402\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ EndsWith(}
+\DoxyCodeLine{00403\ \ \ \ \ std::string\_view\ str,\ std::string\_view\ search\_for,}
+\DoxyCodeLine{00404\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00405\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ EndsWith(}
+\DoxyCodeLine{00406\ \ \ \ \ std::u16string\_view\ str,\ std::u16string\_view\ search\_for,}
+\DoxyCodeLine{00407\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \textcolor{comment}{//\ If\ \`{}string`\ begins\ with\ \`{}prefix`,\ return\ a\ view\ into\ the\ portion}}
+\DoxyCodeLine{00410\ \textcolor{comment}{//\ of\ \`{}string`\ following\ \`{}prefix`.\ Otherwise,\ return\ nullopt.\ The}}
+\DoxyCodeLine{00411\ \textcolor{comment}{//\ \`{}case\_sensitivity`\ argument\ is\ the\ same\ as\ would\ be\ passed\ to}}
+\DoxyCodeLine{00412\ \textcolor{comment}{//\ StartsWith()\ above.}}
+\DoxyCodeLine{00413\ BASE\_EXPORT\ std::optional<std::string\_view>\ RemovePrefix(}
+\DoxyCodeLine{00414\ \ \ \ \ std::string\_view\ \textcolor{keywordtype}{string},\ std::string\_view\ prefix,}
+\DoxyCodeLine{00415\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00416\ BASE\_EXPORT\ std::optional<std::u16string\_view>\ RemovePrefix(}
+\DoxyCodeLine{00417\ \ \ \ \ std::u16string\_view\ \textcolor{keywordtype}{string},\ std::u16string\_view\ prefix,}
+\DoxyCodeLine{00418\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \textcolor{comment}{//\ If\ \`{}string`\ ends\ with\ \`{}suffix`,\ return\ a\ view\ into\ the\ portion}}
+\DoxyCodeLine{00421\ \textcolor{comment}{//\ of\ \`{}string`\ preceding\ \`{}suffix`.\ Otherwise,\ return\ nullopt.\ The}}
+\DoxyCodeLine{00422\ \textcolor{comment}{//\ \`{}case\_sensitivity`\ argument\ is\ the\ same\ as\ would\ be\ passed\ to}}
+\DoxyCodeLine{00423\ \textcolor{comment}{//\ EndsWith()\ above.}}
+\DoxyCodeLine{00424\ BASE\_EXPORT\ std::optional<std::string\_view>\ RemoveSuffix(}
+\DoxyCodeLine{00425\ \ \ \ \ std::string\_view\ \textcolor{keywordtype}{string},\ std::string\_view\ suffix,}
+\DoxyCodeLine{00426\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00427\ BASE\_EXPORT\ std::optional<std::u16string\_view>\ RemoveSuffix(}
+\DoxyCodeLine{00428\ \ \ \ \ std::u16string\_view\ \textcolor{keywordtype}{string},\ std::u16string\_view\ suffix,}
+\DoxyCodeLine{00429\ \ \ \ \ CompareCase\ case\_sensitivity\ =\ CompareCase::SENSITIVE);}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \textcolor{comment}{//\ Determines\ the\ type\ of\ ASCII\ character,\ independent\ of\ locale\ (the\ C}}
+\DoxyCodeLine{00432\ \textcolor{comment}{//\ library\ versions\ will\ change\ based\ on\ locale).}}
+\DoxyCodeLine{00433\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00434\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00435\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiWhitespace(Char\ c)\ \{}
+\DoxyCodeLine{00436\ \ \ \textcolor{comment}{//\ SAFETY:\ kWhitespaceASCII\ is\ a\ NUL-\/terminated\ string.}}
+\DoxyCodeLine{00437\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ cur\ =\ kWhitespaceASCII;\ *cur;\ UNSAFE\_BUFFERS(++cur))\ \{}
+\DoxyCodeLine{00438\ \ \ \ \ \textcolor{keywordflow}{if}\ (*cur\ ==\ c)\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00440\ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00443\ \}}
+\DoxyCodeLine{00444\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00445\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00446\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiAlpha(Char\ c)\ \{}
+\DoxyCodeLine{00447\ \ \ \textcolor{keywordflow}{return}\ (c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'})\ ||\ (c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'});}
+\DoxyCodeLine{00448\ \}}
+\DoxyCodeLine{00449\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00450\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00451\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiUpper(Char\ c)\ \{}
+\DoxyCodeLine{00452\ \ \ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'};}
+\DoxyCodeLine{00453\ \}}
+\DoxyCodeLine{00454\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00455\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00456\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiLower(Char\ c)\ \{}
+\DoxyCodeLine{00457\ \ \ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'};}
+\DoxyCodeLine{00458\ \}}
+\DoxyCodeLine{00459\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00460\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00461\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiDigit(Char\ c)\ \{}
+\DoxyCodeLine{00462\ \ \ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'9'};}
+\DoxyCodeLine{00463\ \}}
+\DoxyCodeLine{00464\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00466\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiAlphaNumeric(Char\ c)\ \{}
+\DoxyCodeLine{00467\ \ \ \textcolor{keywordflow}{return}\ IsAsciiAlpha(c)\ ||\ IsAsciiDigit(c);}
+\DoxyCodeLine{00468\ \}}
+\DoxyCodeLine{00469\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00471\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiPrintable(Char\ c)\ \{}
+\DoxyCodeLine{00472\ \ \ \textcolor{keywordflow}{return}\ c\ >=\ \textcolor{charliteral}{'\ '}\ \&\&\ c\ <=\ \textcolor{charliteral}{'\string~'};}
+\DoxyCodeLine{00473\ \}}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00476\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00477\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiControl(Char\ c)\ \{}
+\DoxyCodeLine{00478\ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_signed\_v<Char>)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ <\ 0)\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00481\ \ \ \ \ \}}
+\DoxyCodeLine{00482\ \ \ \}}
+\DoxyCodeLine{00483\ \ \ \textcolor{keywordflow}{return}\ c\ <=\ 0x1f\ ||\ c\ ==\ 0x7f;}
+\DoxyCodeLine{00484\ \}}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00486\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00487\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00488\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsUnicodeControl(Char\ c)\ \{}
+\DoxyCodeLine{00489\ \ \ \textcolor{keywordflow}{return}\ IsAsciiControl(c)\ ||}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ C1\ control\ characters:\ http://unicode.org/charts/PDF/U0080.pdf}}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ (c\ >=\ 0x80\ \&\&\ c\ <=\ 0x9F);}
+\DoxyCodeLine{00492\ \}}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00495\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00496\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsAsciiPunctuation(Char\ c)\ \{}
+\DoxyCodeLine{00497\ \ \ \textcolor{keywordflow}{return}\ c\ >\ 0x20\ \&\&\ c\ <\ 0x7f\ \&\&\ !IsAsciiAlphaNumeric(c);}
+\DoxyCodeLine{00498\ \}}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00500\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00501\ \ \ \textcolor{keyword}{requires}(std::integral<Char>)}
+\DoxyCodeLine{00502\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsHexDigit(Char\ c)\ \{}
+\DoxyCodeLine{00503\ \ \ \textcolor{keywordflow}{return}\ (c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'9'})\ ||\ (c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'F'})\ ||}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ (c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'f'});}
+\DoxyCodeLine{00505\ \}}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \textcolor{comment}{//\ Returns\ the\ integer\ corresponding\ to\ the\ given\ hex\ character.\ For\ example:}}
+\DoxyCodeLine{00508\ \textcolor{comment}{//\ \ \ \ '4'\ -\/>\ 4}}
+\DoxyCodeLine{00509\ \textcolor{comment}{//\ \ \ \ 'a'\ -\/>\ 10}}
+\DoxyCodeLine{00510\ \textcolor{comment}{//\ \ \ \ 'B'\ -\/>\ 11}}
+\DoxyCodeLine{00511\ \textcolor{comment}{//\ Assumes\ the\ input\ is\ a\ valid\ hex\ character.}}
+\DoxyCodeLine{00512\ BASE\_EXPORT\ \textcolor{keywordtype}{char}\ HexDigitToInt(\textcolor{keywordtype}{char}\ c);}
+\DoxyCodeLine{00513\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ HexDigitToInt(\textcolor{keywordtype}{char16\_t}\ c)\ \{}
+\DoxyCodeLine{00514\ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00515\ \ \ \textcolor{comment}{//\ DCHECK(IsHexDigit(c));}}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00517\ \ \ \textcolor{keywordflow}{return}\ HexDigitToInt(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\textcolor{keyword}{>}(c));}
+\DoxyCodeLine{00518\ \}}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \textcolor{comment}{//\ Returns\ whether\ \`{}c`\ is\ a\ Unicode\ whitespace\ character.}}
+\DoxyCodeLine{00521\ \textcolor{comment}{//\ This\ cannot\ be\ used\ on\ eight-\/bit\ characters,\ since\ if\ they\ are\ ASCII\ you}}
+\DoxyCodeLine{00522\ \textcolor{comment}{//\ should\ call\ IsAsciiWhitespace(),\ and\ if\ they\ are\ from\ a\ UTF-\/8\ string\ they\ may}}
+\DoxyCodeLine{00523\ \textcolor{comment}{//\ be\ individual\ units\ of\ a\ multi-\/unit\ code\ point.\ \ Convert\ to\ 16-\/\ or\ 32-\/bit}}
+\DoxyCodeLine{00524\ \textcolor{comment}{//\ values\ known\ to\ hold\ the\ full\ code\ point\ before\ calling\ this.}}
+\DoxyCodeLine{00525\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00526\ \ \ \textcolor{keyword}{requires}(\textcolor{keyword}{sizeof}(Char)\ >\ 1)}
+\DoxyCodeLine{00527\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsUnicodeWhitespace(Char\ c)\ \{}
+\DoxyCodeLine{00528\ \ \ \textcolor{comment}{//\ SAFETY:\ kWhitespaceWide\ is\ a\ NUL-\/terminated\ string.}}
+\DoxyCodeLine{00529\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ cur\ =\ kWhitespaceWide;\ *cur;\ UNSAFE\_BUFFERS(++cur))\ \{}
+\DoxyCodeLine{00530\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{static\_cast<}typename\ std::make\_unsigned\_t<wchar\_t>\textcolor{keyword}{>}(*cur)\ ==}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}typename\ std::make\_unsigned\_t<Char>\textcolor{keyword}{>}(c))\ \{}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00533\ \ \ \ \ \}}
+\DoxyCodeLine{00534\ \ \ \}}
+\DoxyCodeLine{00535\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00536\ \}}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \textcolor{comment}{//\ DANGEROUS:\ Assumes\ ASCII\ or\ not\ based\ on\ the\ size\ of\ \`{}Char`.\ \ You\ should}}
+\DoxyCodeLine{00539\ \textcolor{comment}{//\ probably\ be\ explicitly\ calling\ IsUnicodeWhitespace()\ or\ IsAsciiWhitespace()}}
+\DoxyCodeLine{00540\ \textcolor{comment}{//\ instead!}}
+\DoxyCodeLine{00541\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00542\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsWhitespace(Char\ c)\ \{}
+\DoxyCodeLine{00543\ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\textcolor{keyword}{sizeof}(Char)\ >\ 1)\ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keywordflow}{return}\ IsUnicodeWhitespace(c);}
+\DoxyCodeLine{00545\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00546\ \ \ \ \ \textcolor{keywordflow}{return}\ IsAsciiWhitespace(c);}
+\DoxyCodeLine{00547\ \ \ \}}
+\DoxyCodeLine{00548\ \}}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00550\ \textcolor{comment}{//\ Return\ a\ byte\ string\ in\ human-\/readable\ format\ with\ a\ unit\ suffix.\ Not}}
+\DoxyCodeLine{00551\ \textcolor{comment}{//\ appropriate\ for\ use\ in\ any\ UI;\ use\ of\ FormatBytes\ and\ friends\ in\ ui/base\ is}}
+\DoxyCodeLine{00552\ \textcolor{comment}{//\ highly\ recommended\ instead.\ TODO(avi):\ Figure\ out\ how\ to\ get\ callers\ to\ use}}
+\DoxyCodeLine{00553\ \textcolor{comment}{//\ FormatBytes\ instead;\ remove\ this.}}
+\DoxyCodeLine{00554\ BASE\_EXPORT\ std::u16string\ FormatBytesUnlocalized(int64\_t\ bytes);}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ \textcolor{comment}{//\ Starting\ at\ |start\_offset|\ (usually\ 0),\ replace\ the\ first\ instance\ of}}
+\DoxyCodeLine{00557\ \textcolor{comment}{//\ |find\_this|\ with\ |replace\_with|.}}
+\DoxyCodeLine{00558\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ ReplaceFirstSubstringAfterOffset(}
+\DoxyCodeLine{00559\ \ \ \ \ std::u16string*\ str,\ \textcolor{keywordtype}{size\_t}\ start\_offset,\ std::u16string\_view\ find\_this,}
+\DoxyCodeLine{00560\ \ \ \ \ std::u16string\_view\ replace\_with);}
+\DoxyCodeLine{00561\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ ReplaceFirstSubstringAfterOffset(}
+\DoxyCodeLine{00562\ \ \ \ \ std::string*\ str,\ \textcolor{keywordtype}{size\_t}\ start\_offset,\ std::string\_view\ find\_this,}
+\DoxyCodeLine{00563\ \ \ \ \ std::string\_view\ replace\_with);}
+\DoxyCodeLine{00564\ }
+\DoxyCodeLine{00565\ \textcolor{comment}{//\ Starting\ at\ |start\_offset|\ (usually\ 0),\ look\ through\ |str|\ and\ replace\ all}}
+\DoxyCodeLine{00566\ \textcolor{comment}{//\ instances\ of\ |find\_this|\ with\ |replace\_with|.}}
+\DoxyCodeLine{00567\ \textcolor{comment}{//}}
+\DoxyCodeLine{00568\ \textcolor{comment}{//\ This\ does\ entire\ substrings;\ use\ std::replace\ in\ <algorithm>\ for\ single}}
+\DoxyCodeLine{00569\ \textcolor{comment}{//\ characters,\ for\ example:}}
+\DoxyCodeLine{00570\ \textcolor{comment}{//\ \ \ std::replace(str.begin(),\ str.end(),\ 'a',\ 'b');}}
+\DoxyCodeLine{00571\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ ReplaceSubstringsAfterOffset(std::u16string*\ str,}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\_offset,}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ find\_this,}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ replace\_with);}
+\DoxyCodeLine{00575\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ ReplaceSubstringsAfterOffset(std::string*\ str,}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\_offset,}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ find\_this,}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ replace\_with);}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \textcolor{comment}{//\ Reserves\ enough\ memory\ in\ |str|\ to\ accommodate\ |length\_with\_null|\ characters,}}
+\DoxyCodeLine{00581\ \textcolor{comment}{//\ sets\ the\ size\ of\ |str|\ to\ |length\_with\_null\ -\/\ 1|\ characters,\ and\ returns\ a}}
+\DoxyCodeLine{00582\ \textcolor{comment}{//\ pointer\ to\ the\ underlying\ contiguous\ array\ of\ characters.\ \ This\ is\ typically}}
+\DoxyCodeLine{00583\ \textcolor{comment}{//\ used\ when\ calling\ a\ function\ that\ writes\ results\ into\ a\ character\ array,\ but}}
+\DoxyCodeLine{00584\ \textcolor{comment}{//\ the\ caller\ wants\ the\ data\ to\ be\ managed\ by\ a\ string-\/like\ object.\ \ It\ is}}
+\DoxyCodeLine{00585\ \textcolor{comment}{//\ convenient\ in\ that\ is\ can\ be\ used\ inline\ in\ the\ call,\ and\ fast\ in\ that\ it}}
+\DoxyCodeLine{00586\ \textcolor{comment}{//\ avoids\ copying\ the\ results\ of\ the\ call\ from\ a\ char*\ into\ a\ string.}}
+\DoxyCodeLine{00587\ \textcolor{comment}{//}}
+\DoxyCodeLine{00588\ \textcolor{comment}{//\ Internally,\ this\ takes\ linear\ time\ because\ the\ resize()\ call\ 0-\/fills\ the}}
+\DoxyCodeLine{00589\ \textcolor{comment}{//\ underlying\ array\ for\ potentially\ all}}
+\DoxyCodeLine{00590\ \textcolor{comment}{//\ (|length\_with\_null\ -\/\ 1|\ *\ sizeof(string\_type::value\_type))\ bytes.\ \ Ideally\ we}}
+\DoxyCodeLine{00591\ \textcolor{comment}{//\ could\ avoid\ this\ aspect\ of\ the\ resize()\ call,\ as\ we\ expect\ the\ caller\ to}}
+\DoxyCodeLine{00592\ \textcolor{comment}{//\ immediately\ write\ over\ this\ memory,\ but\ there\ is\ no\ other\ way\ to\ set\ the\ size}}
+\DoxyCodeLine{00593\ \textcolor{comment}{//\ of\ the\ string,\ and\ not\ doing\ that\ will\ mean\ people\ who\ access\ |str|\ rather}}
+\DoxyCodeLine{00594\ \textcolor{comment}{//\ than\ str.c\_str()\ will\ get\ back\ a\ string\ of\ whatever\ size\ |str|\ had\ on\ entry}}
+\DoxyCodeLine{00595\ \textcolor{comment}{//\ to\ this\ function\ (probably\ 0).}}
+\DoxyCodeLine{00596\ BASE\_EXPORT\ \textcolor{keywordtype}{char}*\ WriteInto(std::string*\ str,\ \textcolor{keywordtype}{size\_t}\ length\_with\_null);}
+\DoxyCodeLine{00597\ BASE\_EXPORT\ \textcolor{keywordtype}{char16\_t}*\ WriteInto(std::u16string*\ str,\ \textcolor{keywordtype}{size\_t}\ length\_with\_null);}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \textcolor{comment}{//\ Joins\ a\ list\ of\ strings\ into\ a\ single\ string,\ inserting\ |separator|\ (which}}
+\DoxyCodeLine{00600\ \textcolor{comment}{//\ may\ be\ empty)\ in\ between\ all\ elements.}}
+\DoxyCodeLine{00601\ \textcolor{comment}{//}}
+\DoxyCodeLine{00602\ \textcolor{comment}{//\ Note\ this\ is\ inverse\ of\ SplitString()/SplitStringPiece()\ defined\ in}}
+\DoxyCodeLine{00603\ \textcolor{comment}{//\ string\_split.h.}}
+\DoxyCodeLine{00604\ \textcolor{comment}{//}}
+\DoxyCodeLine{00605\ \textcolor{comment}{//\ If\ possible,\ callers\ should\ build\ a\ vector\ of\ StringPieces\ and\ use\ the}}
+\DoxyCodeLine{00606\ \textcolor{comment}{//\ std::string\_view\ variant,\ so\ that\ they\ do\ not\ create\ unnecessary\ copies\ of}}
+\DoxyCodeLine{00607\ \textcolor{comment}{//\ strings.\ For\ example,\ instead\ of\ using\ SplitString,\ modifying\ the\ vector,}}
+\DoxyCodeLine{00608\ \textcolor{comment}{//\ then\ using\ JoinString,\ use\ SplitStringPiece\ followed\ by\ JoinString\ so\ that\ no}}
+\DoxyCodeLine{00609\ \textcolor{comment}{//\ copies\ of\ those\ strings\ are\ created\ until\ the\ final\ join\ operation.}}
+\DoxyCodeLine{00610\ \textcolor{comment}{//}}
+\DoxyCodeLine{00611\ \textcolor{comment}{//\ Use\ StrCat\ (in\ base/strings/strcat.h)\ if\ you\ don't\ need\ a\ separator.}}
+\DoxyCodeLine{00612\ BASE\_EXPORT\ std::string\ JoinString(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::string>}}\ parts,}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ separator);}
+\DoxyCodeLine{00614\ BASE\_EXPORT\ std::u16string\ JoinString(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::u16string>}}\ parts,}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ separator);}
+\DoxyCodeLine{00616\ BASE\_EXPORT\ std::string\ JoinString(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::string\_view>}}\ parts,}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ separator);}
+\DoxyCodeLine{00618\ BASE\_EXPORT\ std::u16string\ JoinString(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ std::u16string\_view>}}\ parts,}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ separator);}
+\DoxyCodeLine{00620\ \textcolor{comment}{//\ Explicit\ initializer\_list\ overloads\ are\ required\ to\ break\ ambiguity\ when\ used}}
+\DoxyCodeLine{00621\ \textcolor{comment}{//\ with\ a\ literal\ initializer\ list\ (otherwise\ the\ compiler\ would\ not\ be\ able\ to}}
+\DoxyCodeLine{00622\ \textcolor{comment}{//\ decide\ between\ the\ string\ and\ std::string\_view\ overloads).}}
+\DoxyCodeLine{00623\ BASE\_EXPORT\ std::string\ JoinString(}
+\DoxyCodeLine{00624\ \ \ \ \ std::initializer\_list<std::string\_view>\ parts,\ std::string\_view\ separator);}
+\DoxyCodeLine{00625\ BASE\_EXPORT\ std::u16string\ JoinString(}
+\DoxyCodeLine{00626\ \ \ \ \ std::initializer\_list<std::u16string\_view>\ parts,}
+\DoxyCodeLine{00627\ \ \ \ \ std::u16string\_view\ separator);}
+\DoxyCodeLine{00628\ }
+\DoxyCodeLine{00629\ \textcolor{comment}{//\ Replace\ \$1-\/\$2-\/\$3..\$9\ in\ the\ format\ string\ with\ values\ from\ |subst|.}}
+\DoxyCodeLine{00630\ \textcolor{comment}{//\ Additionally,\ any\ number\ of\ consecutive\ '\$'\ characters\ is\ replaced\ by\ that}}
+\DoxyCodeLine{00631\ \textcolor{comment}{//\ number\ less\ one.\ Eg\ \$\$-\/>\$,\ \$\$\$-\/>\$\$,\ etc.\ The\ offsets\ parameter\ here\ can\ be}}
+\DoxyCodeLine{00632\ \textcolor{comment}{//\ NULL.\ This\ only\ allows\ you\ to\ use\ up\ to\ nine\ replacements.}}
+\DoxyCodeLine{00633\ \textcolor{comment}{//}}
+\DoxyCodeLine{00634\ \textcolor{comment}{//\ Calling\ ReplaceStringPlaceholders(u"{}\$1"{},\ \{ReturnU16string()\},\ nullptr)\ will}}
+\DoxyCodeLine{00635\ \textcolor{comment}{//\ unexpectedly\ give\ you\ the\ single-\/u16string\ overload\ below,\ the\ same\ as\ if\ you}}
+\DoxyCodeLine{00636\ \textcolor{comment}{//\ had\ written\ ReplaceStringPlaceholders(u"{}\$1"{},\ ReturnU16String(),\ nullptr).}}
+\DoxyCodeLine{00637\ \textcolor{comment}{//\ This\ is\ surprising\ but\ mostly\ harmless.\ Call\ the\ base::span\ constructor}}
+\DoxyCodeLine{00638\ \textcolor{comment}{//\ explicitly\ if\ you\ need\ to\ force\ this\ overload,\ ie.}}
+\DoxyCodeLine{00639\ \textcolor{comment}{//\ ReplaceStringPlaceholders(}}
+\DoxyCodeLine{00640\ \textcolor{comment}{//\ \ \ \ \ u"{}\$1"{},\ base::span<const\ std::u16string>(\{ReturnU16string()\}),\ nullptr).}}
+\DoxyCodeLine{00641\ BASE\_EXPORT\ std::u16string\ ReplaceStringPlaceholders(}
+\DoxyCodeLine{00642\ \ \ \ \ std::u16string\_view\ format\_string,\ kiwi::span<const\ std::u16string>\ subst,}
+\DoxyCodeLine{00643\ \ \ \ \ std::vector<size\_t>*\ offsets);}
+\DoxyCodeLine{00644\ }
+\DoxyCodeLine{00645\ BASE\_EXPORT\ std::string\ ReplaceStringPlaceholders(}
+\DoxyCodeLine{00646\ \ \ \ \ std::string\_view\ format\_string,\ kiwi::span<const\ std::string>\ subst,}
+\DoxyCodeLine{00647\ \ \ \ \ std::vector<size\_t>*\ offsets);}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \textcolor{comment}{//\ Single-\/string\ shortcut\ for\ ReplaceStringHolders.\ |offset|\ may\ be\ NULL.}}
+\DoxyCodeLine{00650\ BASE\_EXPORT\ std::u16string\ ReplaceStringPlaceholders(}
+\DoxyCodeLine{00651\ \ \ \ \ std::u16string\_view\ format\_string,\ std::u16string\_view\ subst,}
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ offset);}
+\DoxyCodeLine{00653\ }
+\DoxyCodeLine{00654\ \textcolor{comment}{//\ Helper\ function\ for\ creating\ a\ std::string\_view\ from\ a\ string\ literal\ that}}
+\DoxyCodeLine{00655\ \textcolor{comment}{//\ preserves\ internal\ NUL\ characters.}}
+\DoxyCodeLine{00656\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ CharT,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00657\ std::basic\_string\_view<CharT>\ MakeStringViewWithNulChars(}
+\DoxyCodeLine{00658\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&lit\ LIFETIME\_BOUND)[N])}
+\DoxyCodeLine{00659\ \ \ \ \ ENABLE\_IF\_ATTR(lit[N\ -\/\ 1u]\ ==\ CharT\{0\},}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
+\DoxyCodeLine{00661\ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<CharT>(lit,\ N\ -\/\ 1u);}
+\DoxyCodeLine{00662\ \}}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00664\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00665\ }
+\DoxyCodeLine{00666\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00667\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/string\_util\_win.h"{}}}
+\DoxyCodeLine{00668\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00669\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/string\_util\_posix.hh"{}}}
+\DoxyCodeLine{00670\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00671\ \textcolor{preprocessor}{\#error\ Define\ string\ operations\ appropriately\ for\ your\ platform}}
+\DoxyCodeLine{00672\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00673\ }
+\DoxyCodeLine{00674\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_STRINGS\_STRING\_UTIL\_H\_}}
+
+\end{DoxyCode}
