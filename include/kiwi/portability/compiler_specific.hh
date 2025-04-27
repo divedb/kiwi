@@ -1124,3 +1124,40 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
   do {                \
   } while (0)
 #endif
+
+// Generalize warning push/pop.
+#if defined(__GNUC__) || defined(__clang__)
+// Clang & GCC
+#define KIWI_PUSH_WARNING _Pragma("GCC diagnostic push")
+#define KIWI_POP_WARNING _Pragma("GCC diagnostic pop")
+#define KIWI_GNU_DISABLE_WARNING_INTERNAL2(warning_name) #warning_name
+#define KIWI_GNU_DISABLE_WARNING(warning_name) \
+  _Pragma(                                     \
+      KIWI_GNU_DISABLE_WARNING_INTERNAL2(GCC diagnostic ignored warning_name))
+#ifdef __clang__
+#define KIWI_CLANG_DISABLE_WARNING(warning_name) \
+  KIWI_GNU_DISABLE_WARNING(warning_name)
+#define KIWI_GCC_DISABLE_WARNING(warning_name)
+#else
+#define KIWI_CLANG_DISABLE_WARNING(warning_name)
+#define KIWI_GCC_DISABLE_WARNING(warning_name) \
+  KIWI_GNU_DISABLE_WARNING(warning_name)
+#endif
+#define KIWI_MSVC_DISABLE_WARNING(warning_number)
+#elif defined(_MSC_VER)
+#define KIWI_PUSH_WARNING __pragma(warning(push))
+#define KIWI_POP_WARNING __pragma(warning(pop))
+// Disable the GCC warnings.
+#define KIWI_GNU_DISABLE_WARNING(warning_name)
+#define KIWI_GCC_DISABLE_WARNING(warning_name)
+#define KIWI_CLANG_DISABLE_WARNING(warning_name)
+#define KIWI_MSVC_DISABLE_WARNING(warning_number) \
+  __pragma(warning(disable : warning_number))
+#else
+#define KIWI_PUSH_WARNING
+#define KIWI_POP_WARNING
+#define KIWI_GNU_DISABLE_WARNING(warning_name)
+#define KIWI_GCC_DISABLE_WARNING(warning_name)
+#define KIWI_CLANG_DISABLE_WARNING(warning_name)
+#define KIWI_MSVC_DISABLE_WARNING(warning_number)
+#endif
