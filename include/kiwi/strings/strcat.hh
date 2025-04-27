@@ -2,15 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef BASE_STRINGS_STRCAT_H_
-#define BASE_STRINGS_STRCAT_H_
+#pragma once
 
 #include <initializer_list>
 #include <string_view>
 
 #include "kiwi/containers/span.hh"
-#include "kiwi/support/base_export.hh"
-#include "kiwi/support/build_config.hh"
+#include "kiwi/portability/base_export.hh"
+#include "kiwi/portability/build_config.hh"
 
 #if BUILDFLAG(IS_WIN)
 // Guard against conflict with Win32 API StrCat macro:
@@ -108,5 +107,3 @@ inline void StrAppend(std::u16string* dest,
 #if BUILDFLAG(IS_WIN)
 #include "base/strings/strcat_win.h"
 #endif
-
-#endif  // BASE_STRINGS_STRCAT_H_

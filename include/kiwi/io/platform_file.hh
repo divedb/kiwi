@@ -6,8 +6,8 @@
 #ifndef BASE_FILES_PLATFORM_FILE_H_
 #define BASE_FILES_PLATFORM_FILE_H_
 
-#include "kiwi/files/scoped_file.hh"
-#include "kiwi/support/build_config.hh"
+#include "kiwi/io/scoped_file.hh"
+#include "kiwi/portability/build_config.hh"
 
 #if BUILDFLAG(IS_WIN)
 #include "base/win/scoped_handle.h"

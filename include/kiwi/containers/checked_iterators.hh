@@ -16,9 +16,9 @@
 
 // #include "base/check.h"
 #include "kiwi/containers/span_forward_internal.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/portability/compiler_specific.hh"
 // #include "base/memory/raw_ptr_exclusion.h"
-#include "kiwi/support/build_config.hh"
+#include "kiwi/portability/build_config.hh"
 
 namespace kiwi {
 

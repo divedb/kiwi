@@ -35,9 +35,9 @@
 #include "kiwi/containers/span_forward_internal.hh"
 #include "kiwi/numerics/integral_constant_like.hh"
 #include "kiwi/numerics/safe_conversions.hh"
+#include "kiwi/portability/compiler_specific.hh"
 #include "kiwi/strings/cstring_view.hh"
 #include "kiwi/strings/to_string.hh"
-#include "kiwi/support/compiler_specific.hh"
 #include "kiwi/types/to_address.hh"
 
 // A span is a view of contiguous elements that can be accessed like an array,

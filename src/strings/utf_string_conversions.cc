@@ -18,10 +18,10 @@
 #include <type_traits>
 
 #include "kiwi/icu/icu_utf.hh"
+#include "kiwi/portability/build_config.hh"
 #include "kiwi/strings/string_util.hh"
 #include "kiwi/strings/utf_ostream_operators.hh"
 #include "kiwi/strings/utf_string_conversion_utils.hh"
-#include "kiwi/support/build_config.hh"
 
 namespace kiwi {
 

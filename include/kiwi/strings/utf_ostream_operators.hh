@@ -8,7 +8,7 @@
 #include <string>
 #include <string_view>
 
-#include "kiwi/support/base_export.hh"
+#include "kiwi/portability/base_export.hh"
 
 // Note that "The behavior of a C++ program is undefined if it adds declarations
 // or definitions to namespace std or to a namespace within namespace std unless

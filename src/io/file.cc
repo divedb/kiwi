@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "kiwi/files/file.hh"
+#include "kiwi/io/file.hh"
 
 #include <utility>
 
 // #include "base/check_op.h"
-#include "kiwi/files/file_path.hh"
-#include "kiwi/files/file_tracing.hh"
+#include "kiwi/io/file_path.hh"
+#include "kiwi/io/file_tracing.hh"
 // #include "base/metrics/histogram.h"
 // #include "base/notreached.h"
 #include "kiwi/numerics/safe_conversions.hh"
 // #include "base/timer/elapsed_timer.h"
 // #include "base/trace_event/base_tracing.h"
-#include "kiwi/support/build_config.hh"
+#include "kiwi/portability/build_config.hh"
 
 #if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
 #include <errno.h>

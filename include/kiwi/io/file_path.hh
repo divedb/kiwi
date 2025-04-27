@@ -107,9 +107,9 @@
 #include <string_view>
 #include <vector>
 
-#include "kiwi/support/base_export.hh"
-#include "kiwi/support/build_config.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/portability/base_export.hh"
+#include "kiwi/portability/build_config.hh"
+#include "kiwi/portability/compiler_specific.hh"
 
 // Windows-style drive letter support and pathname separator characters can be
 // enabled and disabled independently, to aid testing.  These #defines are

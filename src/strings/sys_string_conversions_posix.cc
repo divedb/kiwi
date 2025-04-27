@@ -8,10 +8,10 @@
 
 #include <string_view>
 
+#include "kiwi/portability/build_config.hh"
+#include "kiwi/portability/compiler_specific.hh"
 #include "kiwi/strings/sys_string_conversions.hh"
 #include "kiwi/strings/utf_string_conversions.hh"
-#include "kiwi/support/build_config.hh"
-#include "kiwi/support/compiler_specific.hh"
 
 namespace kiwi {
 

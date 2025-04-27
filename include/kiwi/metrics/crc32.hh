@@ -10,7 +10,7 @@
 #include <array>
 
 #include "kiwi/containers/span.hh"
-#include "kiwi/support/base_export.hh"
+#include "kiwi/portability/base_export.hh"
 
 namespace kiwi {
 

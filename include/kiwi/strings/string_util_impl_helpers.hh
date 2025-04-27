@@ -17,7 +17,7 @@
 // #include "base/logging.h"
 // #include "base/notreached.h"
 #include "kiwi/icu/icu_utf.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/portability/compiler_specific.hh"
 
 namespace kiwi::internal {
 

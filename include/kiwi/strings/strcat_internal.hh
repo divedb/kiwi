@@ -8,7 +8,7 @@
 #include <string>
 
 #include "kiwi/containers/span.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/portability/compiler_specific.hh"
 
 namespace kiwi {
 

@@ -24,13 +24,13 @@
 #include <string_view>
 #include <vector>
 
-#include "kiwi/support/base_export.hh"
+#include "kiwi/portability/base_export.hh"
 // #include "base/check_op.h"
 #include "kiwi/containers/span.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/portability/compiler_specific.hh"
 // For implicit conversions.
+#include "kiwi/portability/build_config.hh"
 #include "kiwi/strings/string_util_internal.hh"
-#include "kiwi/support/build_config.hh"
 #include "kiwi/types/to_address.hh"
 
 namespace kiwi {

@@ -13,14 +13,14 @@
 // TODO(gc):
 // #include "base/time/time.h"
 #include "kiwi/containers/span.hh"
-#include "kiwi/files/file_path.hh"
-#include "kiwi/files/file_tracing.hh"
-#include "kiwi/files/platform_file.hh"
-#include "kiwi/support/base_export.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/io/file_path.hh"
+#include "kiwi/io/file_tracing.hh"
+#include "kiwi/io/platform_file.hh"
+#include "kiwi/portability/base_export.hh"
+#include "kiwi/portability/compiler_specific.hh"
 // TODO(gc):
 // #include "base/trace_event/base_tracing_forward.h"
-#include "kiwi/support/build_config.hh"
+#include "kiwi/portability/build_config.hh"
 
 struct stat;
 

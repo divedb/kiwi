@@ -51,7 +51,7 @@
 
 #pragma once
 
-#include "kiwi/support/build_flag.hh"  // IWYU pragma: export
+#include "kiwi/portability/build_flag.hh"  // IWYU pragma: export
 
 // Clangd does not detect BUILDFLAG_INTERNAL_* indirect usage, so mark the
 // header as "always_keep" to avoid "unused include" warning.
@@ -118,7 +118,7 @@
 #elif defined(__MVS__)
 #define OS_ZOS 1
 #else
-#error Please add support for your platform in build/build_config.h
+#error Please add support for your platform in build/build_config.hh
 #endif
 // NOTE: Adding a new port? Please follow
 // https://chromium.googlesource.com/chromium/src/+/main/docs/new_port_policy.md
@@ -405,7 +405,6 @@
 #endif
 
 // Architecture-specific feature detection.
-
 #if !defined(CPU_ARM_NEON)
 #if defined(ARCH_CPU_ARM_FAMILY) && \
     (defined(__ARM_NEON__) || defined(__ARM_NEON))

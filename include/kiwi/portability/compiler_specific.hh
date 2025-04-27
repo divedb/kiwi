@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "kiwi/support/build_config.hh"
+#include "kiwi/portability/build_config.hh"
 
 #if defined(COMPILER_MSVC) && !defined(__clang__)
 #error "Only clang-cl is supported on Windows, see https://crbug.com/988071"

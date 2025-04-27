@@ -7,7 +7,7 @@
 #pragma allow_unsafe_buffers
 #endif
 
-#include "kiwi/files/file_path.hh"
+#include "kiwi/io/file_path.hh"
 
 #include <stddef.h>
 
@@ -17,15 +17,15 @@
 
 // TODO(gc):
 // #include "base/features.h"
-#include "kiwi/files/safe_base_name.hh"
+#include "kiwi/io/safe_base_name.hh"
 #include "kiwi/strings/utf_ostream_operators.hh"
 #include "kiwi/strings/utf_string_conversions.hh"
 // #include "base/test/scoped_feature_list.h"
 
 #include <gtest/gtest.h>
 
-#include "kiwi/support/build_config.hh"
-#include "kiwi/support/build_flag.hh"
+#include "kiwi/portability/build_config.hh"
+#include "kiwi/portability/build_flag.hh"
 // #include "kiwi/testing/platform_test.hh"
 
 using PlatformTest = testing::Test;

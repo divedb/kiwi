@@ -15,7 +15,7 @@
 
 // #include "base/check_op.h"
 // #include "base/features.h"
-#include "kiwi/files/safe_base_name.hh"
+#include "kiwi/io/safe_base_name.hh"
 #include "kiwi/numerics/safe_conversions.hh"
 // #include "base/pickle.h"
 #include "kiwi/strings/strcat.hh"
@@ -24,7 +24,7 @@
 #include "kiwi/strings/utf_ostream_operators.hh"
 #include "kiwi/strings/utf_string_conversions.hh"
 // #include "base/trace_event/base_tracing.h"
-#include "kiwi/files/file_path.hh"
+#include "kiwi/io/file_path.hh"
 
 #if BUILDFLAG(IS_APPLE)
 // TODO(gc):

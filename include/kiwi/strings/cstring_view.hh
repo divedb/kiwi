@@ -16,8 +16,8 @@
 #include "kiwi/containers/checked_iterators.hh"
 // #include "base/memory/raw_ptr_exclusion.h"
 #include "kiwi/numerics/safe_conversions.hh"
-#include "kiwi/support/build_config.hh"
-#include "kiwi/support/compiler_specific.hh"
+#include "kiwi/portability/build_config.hh"
+#include "kiwi/portability/compiler_specific.hh"
 
 namespace kiwi {
 
