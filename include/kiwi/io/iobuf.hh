@@ -895,7 +895,7 @@ class IOBuf {
   /// encounters a buffer with Length() != 0
   ///
   /// \methodset Chaining
-  bool IsEmpty() const;
+  bool empty() const;
 
   /// Get the pointer to the start of the data.
   ///
