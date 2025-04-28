@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include <folly/detail/Iterators.h>
 #include <folly/synchronization/MicroSpinLock.h>
 #include <glog/logging.h>
 
@@ -37,6 +36,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "kiwi/common/iterators.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/portability/compiler_specific.hh"
 #include "kiwi/sys/uio.hh"
@@ -2046,6 +2046,17 @@ Container IOBuf::To() const {
 class IOBuf::Iterator
     : public detail::IteratorFacade<IOBuf::Iterator, ByteRange const,
                                     std::forward_iterator_tag> {
+  void SetVal() { val_ = ByteRange(pos_->data(), pos_->Tail()); }
+
+  void AdjustForEnd() {
+    if (pos_ == end_) {
+      pos_ = end_ = nullptr;
+      val_ = ByteRange();
+    } else {
+      SetVal();
+    }
+  }
+
  public:
   // Note that IOBufs are stored as a circular list without a guard node,
   // so pos == end is ambiguous (it may mean "begin" or "end").  To solve
@@ -2055,49 +2066,37 @@ class IOBuf::Iterator
   explicit Iterator(const IOBuf* pos, const IOBuf* end) : pos_(pos), end_(end) {
     // Sadly, we must return by const reference, not by value.
     if (pos_) {
-      setVal();
+      SetVal();
     }
   }
 
-  Iterator() {}
-
+  Iterator() = default;
   Iterator(Iterator const& rhs) : Iterator(rhs.pos_, rhs.end_) {}
-
   Iterator& operator=(Iterator const& rhs) {
     pos_ = rhs.pos_;
     end_ = rhs.end_;
+
     if (pos_) {
-      setVal();
+      SetVal();
     }
+
     return *this;
   }
 
-  const ByteRange& dereference() const { return val_; }
-
-  bool equal(const Iterator& other) const {
+  const ByteRange& Dereference() const { return val_; }
+  bool IsEqual(const Iterator& other) const {
     // We must compare end_ in addition to pos_, because forward traversal
     // requires that if two iterators are equal (a == b) and dereferenceable,
     // then ++a == ++b.
     return pos_ == other.pos_ && end_ == other.end_;
   }
 
-  void increment() {
-    pos_ = pos_->next();
-    adjustForEnd();
+  void Increment() {
+    pos_ = pos_->Next();
+    AdjustForEnd();
   }
 
  private:
-  void setVal() { val_ = ByteRange(pos_->data(), pos_->tail()); }
-
-  void adjustForEnd() {
-    if (pos_ == end_) {
-      pos_ = end_ = nullptr;
-      val_ = ByteRange();
-    } else {
-      setVal();
-    }
-  }
-
   const IOBuf* pos_{nullptr};
   const IOBuf* end_{nullptr};
   ByteRange val_;

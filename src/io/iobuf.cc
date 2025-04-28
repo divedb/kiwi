@@ -21,23 +21,19 @@
 #include "kiwi/io/iobuf.hh"
 
 #include <folly/Conv.h>
-#include <folly/Likely.h>
-#include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/hash/SpookyHashV2.h>
 #include <folly/io/Cursor.h>
 #include <folly/lang/Align.h>
-#include <folly/lang/CheckedMath.h>
 #include <folly/lang/Exception.h>
 #include <folly/memory/Malloc.h>
 #include <folly/memory/SanitizeAddress.h>
 
-#include <cassert>
 #include <cstdint>
 #include <cstdlib>
-#include <limits>
 #include <stdexcept>
-#include <type_traits>
+
+#include "kiwi/common/malloc.hh"
 
 // Callbacks that will be invoked when IOBuf allocates or frees memory.
 // Note that io_buf_alloc_cb() will also be invoked when IOBuf takes ownership
@@ -272,43 +268,45 @@ IOBuf::IOBuf(CreateOp, std::size_t capacity)
       prev_(this),
       flags_and_shared_info_(0) {
   SharedInfo* info;
-  allocExtBuffer(capacity, &buf_, &info, &capacity_);
-  setSharedInfo(info);
+  AllocExtBuffer(capacity, &buf_, &info, &capacity_);
+  SetSharedInfo(info);
   data_ = buf_;
 }
 
 IOBuf::IOBuf(CopyBufferOp /* op */, const void* buf, std::size_t size,
-             std::size_t headroom, std::size_t minTailroom)
+             std::size_t head_room, std::size_t min_tail_room)
     : length_(0),
       data_(nullptr),
       next_(this),
       prev_(this),
-
-      flagsAndSharedInfo_(0) {
+      flags_and_shared_info_(0) {
   std::size_t capacity = 0;
-  if (!checked_add(&capacity, size, headroom, minTailroom) ||
+
+  if (!checked_add(&capacity, size, head_room, min_tail_room) ||
       capacity > kMaxIOBufSize) {
     throw_exception<std::bad_alloc>();
   }
 
   SharedInfo* info;
-  allocExtBuffer(capacity, &buf_, &info, &capacity_);
-  setSharedInfo(info);
+  AllocExtBuffer(capacity, &buf_, &info, &capacity_);
+  SetSharedInfo(info);
   data_ = buf_;
 
-  advance(headroom);
+  Advance(head_room);
+
   if (size > 0) {
     assert(buf != nullptr);
-    memcpy(writableData(), buf, size);
-    append(size);
+
+    memcpy(WritableData(), buf, size);
+    Append(size);
   }
 }
 
-IOBuf::IOBuf(CopyBufferOp op, ByteRange br, std::size_t headroom,
-             std::size_t minTailroom)
-    : IOBuf(op, br.data(), br.size(), headroom, minTailroom) {}
+IOBuf::IOBuf(CopyBufferOp op, ByteRange br, std::size_t head_room,
+             std::size_t min_tail_room)
+    : IOBuf(op, br.data(), br.size(), head_room, min_tail_room) {}
 
-unique_ptr<IOBuf> IOBuf::create(std::size_t capacity) {
+unique_ptr<IOBuf> IOBuf::Create(std::size_t capacity) {
   if (capacity > kMaxIOBufSize) {
     throw_exception<std::bad_alloc>();
   }
@@ -319,93 +317,84 @@ unique_ptr<IOBuf> IOBuf::create(std::size_t capacity) {
   // We don't do this for larger buffers since it can be wasteful if the user
   // needs to reallocate the buffer but keeps using the same IOBuf object.
   // In this case we can't free the data space until the IOBuf is also
-  // destroyed.  Callers can explicitly call createCombined() or
-  // createSeparate() if they know their use case better, and know if they are
+  // destroyed.  Callers can explicitly call CreateCombined() or
+  // CreateSeparate() if they know their use case better, and know if they are
   // likely to reallocate the buffer later.
   if (capacity <= kDefaultCombinedBufSize) {
-    return createCombined(capacity);
+    return CreateCombined(capacity);
   }
 
-  // if we have nallocx, we want to allocate the capacity and the overhead in
-  // a single allocation only if we do not cross into the next allocation class
-  // for some buffer sizes, this can use about 25% extra memory
-  if (canNallocx()) {
-    auto mallocSize = goodMallocSize(capacity);
-    // round capacity to a multiple of 8
-    size_t minSize = ((capacity + 7) & ~7) + sizeof(SharedInfo);
-    // if we do not have space for the overhead, allocate the mem separateley
-    if (mallocSize < minSize) {
-      auto* buf = checkedMalloc(mallocSize);
-      return takeOwnership(SIZED_FREE, buf, mallocSize, 0, 0);
-    }
-  }
-
-  return createSeparate(capacity);
+  return CreateSeparate(capacity);
 }
 
-unique_ptr<IOBuf> IOBuf::createCombined(std::size_t capacity) {
+unique_ptr<IOBuf> IOBuf::CreateCombined(std::size_t capacity) {
   if (capacity > kMaxIOBufSize) {
     throw_exception<std::bad_alloc>();
   }
 
   // To save a memory allocation, allocate space for the IOBuf object, the
   // SharedInfo struct, and the data itself all with a single call to malloc().
-  size_t requiredStorage = sizeof(HeapFullStorage) + capacity;
-  size_t mallocSize = goodMallocSize(requiredStorage);
-  auto storage = static_cast<HeapFullStorage*>(checkedMalloc(mallocSize));
+  size_t required_storage = sizeof(HeapFullStorage) + capacity;
+  size_t malloc_size = good_malloc_size(required_storage);
+  auto storage = static_cast<HeapFullStorage*>(checked_malloc(malloc_size));
 
-  new (&storage->hs.prefix) HeapPrefix(kIOBufInUse | kDataInUse, mallocSize);
-  new (&storage->shared) SharedInfo(freeInternalBuf, storage);
+  new (&storage->hs.prefix) HeapPrefix(kIOBufInUse | kDataInUse, malloc_size);
+  new (&storage->shared) SharedInfo(FreeInternalBuf, storage);
 
   if (io_buf_alloc_cb) {
-    io_buf_alloc_cb(storage, mallocSize);
+    io_buf_alloc_cb(storage, malloc_size);
   }
 
-  auto bufAddr = reinterpret_cast<uint8_t*>(storage) + sizeof(HeapFullStorage);
-  uint8_t* storageEnd = reinterpret_cast<uint8_t*>(storage) + mallocSize;
-  auto actualCapacity = size_t(storageEnd - bufAddr);
+  auto buf_addr = reinterpret_cast<uint8_t*>(storage) + sizeof(HeapFullStorage);
+  uint8_t* storage_end = reinterpret_cast<uint8_t*>(storage) + malloc_size;
+  auto actual_capacity = size_t(storage_end - buf_addr);
   unique_ptr<IOBuf> ret(new (&storage->hs.buf) IOBuf(
-      InternalConstructor(), packFlagsAndSharedInfo(0, &storage->shared),
-      bufAddr, actualCapacity, bufAddr, 0));
+      InternalConstructor(), PackFlagsAndSharedInfo(0, &storage->shared),
+      buf_addr, actual_capacity, buf_addr, 0));
+
   return ret;
 }
 
-unique_ptr<IOBuf> IOBuf::createSeparate(std::size_t capacity) {
-  return std::make_unique<IOBuf>(CREATE, capacity);
+unique_ptr<IOBuf> IOBuf::CreateSeparate(std::size_t capacity) {
+  return std::make_unique<IOBuf>(kCreate, capacity);
 }
 
-unique_ptr<IOBuf> IOBuf::createChain(size_t totalCapacity,
-                                     std::size_t maxBufCapacity) {
+unique_ptr<IOBuf> IOBuf::CreateChain(size_t total_capacity,
+                                     std::size_t max_buf_capacity) {
   unique_ptr<IOBuf> out =
-      create(std::min(totalCapacity, size_t(maxBufCapacity)));
-  size_t allocatedCapacity = out->capacity();
+      Create(std::min(total_capacity, size_t(max_buf_capacity)));
+  size_t allocated_capacity = out->capacity();
 
-  while (allocatedCapacity < totalCapacity) {
-    unique_ptr<IOBuf> newBuf = create(
-        std::min(totalCapacity - allocatedCapacity, size_t(maxBufCapacity)));
-    allocatedCapacity += newBuf->capacity();
-    out->appendToChain(std::move(newBuf));
+  while (allocated_capacity < totalCapacity) {
+    unique_ptr<IOBuf> new_buf = Create(std::min(
+        total_capacity - allocated_capacity, size_t(max_buf_capacity)));
+    allocated_capacity += new_buf->capacity();
+    out->AppendToChain(std::move(newBuf));
   }
 
   return out;
 }
 
-size_t IOBuf::goodSize(size_t minCapacity, CombinedOption combined) {
-  if (combined == CombinedOption::DEFAULT) {
-    combined = minCapacity <= kDefaultCombinedBufSize
-                   ? CombinedOption::COMBINED
-                   : CombinedOption::SEPARATE;
+size_t IOBuf::GoodSize(size_t min_capacity, CombinedOption combined) {
+  if (combined == CombinedOption::kDefault) {
+    combined = min_capacity <= kDefaultCombinedBufSize
+                   ? CombinedOption::kCombined
+                   : CombinedOption::kSeparate;
   }
+
   size_t overhead;
-  if (combined == CombinedOption::COMBINED) {
+
+  if (combined == CombinedOption::kCombined) {
     overhead = sizeof(HeapFullStorage);
   } else {
     // Pad minCapacity to a multiple of 8
-    minCapacity = (minCapacity + 7) & ~7;
+    min_capacity = (min_capacity + 7) & ~7;
     overhead = sizeof(SharedInfo);
   }
-  size_t goodSize = folly::goodMallocSize(minCapacity + overhead);
-  return goodSize - overhead;
+
+  size_t good_size = kiwi::good_malloc_size(min_capacity + overhead);
+
+  return good_size - overhead;
 }
 
 IOBuf::IOBuf(TakeOwnershipOp, void* buf, std::size_t capacity,
@@ -1152,29 +1141,32 @@ void IOBuf::freeExtBuffer() noexcept {
   }
 }
 
-void IOBuf::allocExtBuffer(std::size_t minCapacity, uint8_t** bufReturn,
+void IOBuf::AllocExtBuffer(std::size_t min_capacity, uint8_t** out_buf,
                            SharedInfo** infoReturn,
                            std::size_t* capacityReturn) {
   if (minCapacity > kMaxIOBufSize) {
-    throw_exception<std::bad_alloc>();
+    // TODO(gc):
+    // throw_exception<std::bad_alloc>();
+    throw std::bad_alloc();
   }
 
-  size_t mallocSize = goodExtBufferSize(minCapacity);
-  auto buf = static_cast<uint8_t*>(checkedMalloc(mallocSize));
-  initExtBuffer(buf, mallocSize, infoReturn, capacityReturn);
+  size_t malloc_size = GoodExtBufferSize(min_capacity);
+  auto buf = static_cast<uint8_t*>(checkedMalloc(malloc_size));
+  initExtBuffer(buf, malloc_size, infoReturn, capacityReturn);
 
   // the userData and the freeFn are nullptr here
-  // just store the mallocSize in userData
-  (*infoReturn)->userData = reinterpret_cast<void*>(mallocSize);
+  // just store the malloc_size in userData
+  (*infoReturn)->userData = reinterpret_cast<void*>(malloc_size);
+
   if (io_buf_alloc_cb) {
-    io_buf_alloc_cb(buf, mallocSize);
+    io_buf_alloc_cb(buf, malloc_size);
   }
 
-  *bufReturn = buf;
+  *out_buf = buf;
 }
 
-size_t IOBuf::goodExtBufferSize(std::size_t minCapacity) {
-  if (minCapacity > kMaxIOBufSize) {
+size_t IOBuf::GoodExtBufferSize(std::size_t min_capacity) {
+  if (min_capacity > kMaxIOBufSize) {
     throw_exception<std::bad_alloc>();
   }
 
@@ -1182,15 +1174,15 @@ size_t IOBuf::goodExtBufferSize(std::size_t minCapacity) {
   // for the external buffer just after the buffer itself.  (We store it just
   // after the buffer rather than just before so that the code can still just
   // use free(buf_) to free the buffer.)
-  size_t minSize = static_cast<size_t>(minCapacity) + sizeof(SharedInfo);
+  size_t min_size = static_cast<size_t>(min_capacity) + sizeof(SharedInfo);
   // Add room for padding so that the SharedInfo will be aligned on an 8-byte
   // boundary.
-  minSize = (minSize + 7) & ~7;
+  min_size = (min_size + 7) & ~7;
 
-  // Use goodMallocSize() to bump up the capacity to a decent size to request
+  // Use GoodMallocSize() to bump up the capacity to a decent size to request
   // from malloc, so we can use all of the space that malloc will probably give
   // us anyway.
-  return goodMallocSize(minSize);
+  return min_size;
 }
 
 void IOBuf::initExtBuffer(uint8_t* buf, size_t mallocSize,
