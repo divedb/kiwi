@@ -25,7 +25,6 @@
 #include <folly/detail/Iterators.h>
 #include <folly/lang/CheckedMath.h>
 #include <folly/lang/Ordering.h>
-#include <folly/portability/SysUio.h>
 #include <folly/synchronization/MicroSpinLock.h>
 #include <glog/logging.h>
 
@@ -38,9 +37,11 @@
 #include <limits>
 #include <memory>
 #include <type_traits>
+#include <vector>
 
 #include "kiwi/containers/span.hh"
 #include "kiwi/portability/compiler_specific.hh"
+#include "kiwi/sys/uio.hh"
 
 KIWI_PUSH_WARNING
 // Ignore shadowing warnings within this file, so includers can use -Wshadow.
@@ -598,6 +599,38 @@ class IOBuf {
                                  std::unique_ptr<IOBuf>>::type
   TakeOwnership(UniquePtr&& buf, size_t count = 1);
 
+  /// Convert an iovec array into an IOBuf.
+  ///
+  /// A helper that wraps a number of iovecs into an IOBuf chain.  If count ==
+  /// 0, then a zero length buf is returned.  This function never returns
+  /// nullptr.
+  ///
+  /// \param vec The iovec array to convert to an IOBuf chain.
+  /// \param count The size of the iovec array.
+  ///
+  /// \methodset IOV
+  static std::unique_ptr<IOBuf> WrapIov(const iovec* vec, size_t count);
+
+  /// Take ownership of an iovec, turning it into an IOBuf.
+  ///
+  /// A helper that takes ownerships a number of iovecs into an IOBuf chain.  If
+  /// count == 0, then a zero length buf is returned.  This function never
+  /// returns nullptr.
+  ///
+  /// \param vec The iovec array to convert to an IOBuf chain.
+  /// \param count The size of the iovec array.
+  /// \param free_fn The function to call when buf is to be freed.
+  /// \param user_data An additional arbitrary void* argument to supply to
+  ///                  free_fn.
+  /// \param free_on_error Whether the buffer should be freed if this function
+  ///                      throws an exception.
+  ///
+  /// \methodset IOV
+  static std::unique_ptr<IOBuf> takeOwnershipIov(const iovec* vec, size_t count,
+                                                 FreeFunction free_fn = nullptr,
+                                                 void* user_data = nullptr,
+                                                 bool free_on_error = true);
+
   /// \copydoc IOBuf(WrapBufferOp, ByteRange)
   ///
   /// This static function behaves exactly like the WrapBufferOp constructor.
@@ -1070,231 +1103,212 @@ class IOBuf {
   ///
   /// \methodset Shifting
   void TrimWritableTail(std::size_t amount) {
-    DCHECK_LE(amount, tailroom());
+    DCHECK_LE(amount, TailRoom());
+
     capacity_ -= amount;
   }
 
-  /**
-   * Clear the buffer.
-   *
-   * @post  data() == buffer()
-   * @post  length() == 0
-   */
+  /// Clear the buffer.
+  ///
+  /// \post data() == Buffer().
+  /// \post Length() == 0.
   void clear() {
     data_ = WritableBuffer();
     length_ = 0;
   }
 
-  /**
-   * Ensure that the buffer has enough free space.
-   *
-   * Ensure that this buffer has at least minHeadroom headroom bytes and at
-   * least minTailroom tailroom bytes.  The buffer must be writable
-   * (you must call unshare() before this, if necessary).
-   *
-   * This might involve a reallocation of the underlying buffer.
-   *
-   * @param minHeadroom  The requested amount of headroom
-   * @param minTailroom  The requested amount of tailroom
-   *
-   * @post  headroom() >= minHeadroom
-   * @post  tailroom() >= minTailroom
-   * @post  The contents between data() and tail() are preseved
-   *
-   * @methodset Buffer Capacity
-   */
-  void reserve(std::size_t minHeadroom, std::size_t minTailroom) {
+  /// Ensure that the buffer has enough free space.
+  ///
+  /// Ensure that this buffer has at least minHeadroom headroom bytes and at
+  /// least minTailroom tailroom bytes.  The buffer must be writable
+  /// (you must call unshare() before this, if necessary).
+  ///
+  /// This might involve a reallocation of the underlying buffer.
+  ///
+  /// \param min_head_room The requested amount of headroom.
+  /// \param min_tail_room The requested amount of tailroom.
+  ///
+  /// \post HeadRoom() >= min_head_room.
+  /// \post TailRoom() >= min_tail_room.
+  /// \post The contents between data() and tail() are preseved.
+  ///
+  /// \methodset Buffer Capacity
+  void reserve(std::size_t min_head_room, std::size_t min_tail_room) {
     // Maybe we don't need to do anything.
-    if (headroom() >= minHeadroom && tailroom() >= minTailroom) {
+    if (HeadRoom() >= min_head_room && TailRoom() >= min_tail_room) {
       return;
     }
+
     // If the buffer is empty but we have enough total room (head + tail),
     // move the data_ pointer around.
-    if (length() == 0 && headroom() + tailroom() >= minHeadroom + minTailroom) {
-      data_ = writableBuffer() + minHeadroom;
+    if (Length() == 0 &&
+        HeadRoom() + TailRoom() >= min_head_room + min_tail_room) {
+      data_ = WritableBuffer() + min_head_room;
+
       return;
     }
+
     // Bah, we have to do actual work.
-    reserveSlow(minHeadroom, minTailroom);
+    ReserveSlow(min_head_room, min_tail_room);
   }
 
-  /**
-   * Is this IOBuf part of a chain.
-   *
-   * Technically, all IOBufs are part of a chain, possibly of length 1. This
-   * functin checks if the chain is non-trivial, i.e. the chain has more than
-   * just one IOBuf in it.
-   *
-   * @returns  true iff the the IOBuf's chain has more than 1 IOBuf in it
-   *
-   * @methodset Chaining
-   */
-  bool isChained() const {
+  /// Is this IOBuf part of a chain.
+  ///
+  /// Technically, all IOBufs are part of a chain, possibly of length 1. This
+  /// functin checks if the chain is non-trivial, i.e. the chain has more than
+  /// just one IOBuf in it.
+  ///
+  /// \returns  true iff the the IOBuf's chain has more than 1 IOBuf in it
+  ///
+  /// \methodset Chaining
+  bool IsChained() const {
     assert((next_ == this) == (prev_ == this));
+
     return next_ != this;
   }
 
-  /**
-   * Get the number of IOBufs in this chain.
-   *
-   * Beware that this method has to walk the entire chain.
-   * Use isChained() if you just want to check if this IOBuf is part of a chain
-   * or not.
-   *
-   * @methodset Chaining
-   */
-  size_t countChainElements() const;
+  /// Get the number of IOBufs in this chain.
+  ///
+  /// Beware that this method has to walk the entire chain.
+  /// Use isChained() if you just want to check if this IOBuf is part of a chain
+  /// or not.
+  ///
+  /// \methodset Chaining
+  size_t CountChainElements() const;
 
-  /**
-   * Get the length of all the data in this IOBuf chain.
-   *
-   * Beware that this method has to walk the entire chain.
-   *
-   * @methodset Chaining
-   */
-  std::size_t computeChainDataLength() const;
+  /// Get the length of all the data in this IOBuf chain.
+  ///
+  /// Beware that this method has to walk the entire chain.
+  ///
+  /// \methodset Chaining
+  std::size_t ComputeChainDataLength() const;
 
-  /**
-   * Get the capacity all IOBufs in the chain.
-   *
-   * Beware that this method has to walk the entire chain.
-   *
-   * @methodset Chaining
-   */
-  std::size_t computeChainCapacity() const;
+  /// Get the capacity all IOBufs in the chain.
+  ///
+  /// Beware that this method has to walk the entire chain.
+  ///
+  /// \methodset Chaining
+  std::size_t ComputeChainCapacity() const;
 
-  /**
-   * Append another IOBuf chain to the end of this chain.
-   *
-   * For example, if there are two IOBuf chains (A, B, C) and (D, E, F),
-   * and A->appendToChain(D) is called, the (D, E, F) chain will be subsumed
-   * and become part of the chain starting at A, which will now look like
-   * (A, B, C, D, E, F).
-   *
-   * @methodset Chaining
-   */
-  void appendToChain(std::unique_ptr<IOBuf>&& iobuf);
+  /// Append another IOBuf chain to the end of this chain.
+  ///
+  /// For example, if there are two IOBuf chains (A, B, C) and (D, E, F),
+  /// and A->appendToChain(D) is called, the (D, E, F) chain will be subsumed
+  /// and become part of the chain starting at A, which will now look like
+  /// (A, B, C, D, E, F).
+  ///
+  /// \methodset Chaining
+  void AppendToChain(std::unique_ptr<IOBuf>&& iobuf);
 
-  /**
-   * Insert an IOBuf chain immediately after this chain element.
-   *
-   * For example, if there are two IOBuf chains (A, B, C) and (D, E, F),
-   * and B->insertAfterThisOne(D) is called, the (D, E, F) chain will be
-   * subsumed and become part of the chain starting at A, which will now look
-   * like (A, B, D, E, F, C)
-   *
-   * Note if X is an IOBuf chain with just a single element, X->appendToChain()
-   * and X->insertAfterThisOne() behave identically.
-   *
-   * @methodset Chaining
-   */
-  void insertAfterThisOne(std::unique_ptr<IOBuf>&& iobuf) {
+  /// Insert an IOBuf chain immediately after this chain element.
+  ///
+  /// For example, if there are two IOBuf chains (A, B, C) and (D, E, F),
+  /// and B->insertAfterThisOne(D) is called, the (D, E, F) chain will be
+  /// subsumed and become part of the chain starting at A, which will now look
+  /// like (A, B, D, E, F, C)
+  ///
+  /// Note if X is an IOBuf chain with just a single element, X->appendToChain()
+  /// and X->insertAfterThisOne() behave identically.
+  ///
+  /// \methodset Chaining
+  void InsertAfterThisOne(std::unique_ptr<IOBuf>&& iobuf) {
     // Just use appendToChain() on the next element in our chain
-    next_->appendToChain(std::move(iobuf));
+    next_->AppendToChain(std::move(iobuf));
   }
 
-  /**
-   * Deprecated name for appendToChain()
-   *
-   * IOBuf chains are circular, so appending to the end of the chain is
-   * logically equivalent to prepending to the current head (but keeping the
-   * chain head pointing to the same element).  That was the reason this method
-   * was originally called prependChain().  However, almost every time this
-   * method is called the intent is to append to the end of a chain, so the
-   * `prependChain()` name is very confusing to most callers.
-   *
-   * @methodset Chaining
-   */
-  void prependChain(std::unique_ptr<IOBuf>&& iobuf) {
-    appendToChain(std::move(iobuf));
+  /// Deprecated name for appendToChain()
+  ///
+  /// IOBuf chains are circular, so appending to the end of the chain is
+  /// logically equivalent to prepending to the current head (but keeping the
+  /// chain head pointing to the same element).  That was the reason this method
+  /// was originally called prependChain().  However, almost every time this
+  /// method is called the intent is to append to the end of a chain, so the
+  /// `PrependChain()` name is very confusing to most callers.
+  ///
+  /// \methodset Chaining
+  void PrependChain(std::unique_ptr<IOBuf>&& iobuf) {
+    AppendToChain(std::move(iobuf));
   }
 
-  /**
-   * Deprecated name for insertAfterThisOne()
-   *
-   * Beware: appendToChain() and appendChain() are two different methods,
-   * and you probably want appendToChain() instead of this one.
-   *
-   * @methodset Chaining
-   */
-  void appendChain(std::unique_ptr<IOBuf>&& iobuf) {
-    insertAfterThisOne(std::move(iobuf));
+  /// Deprecated name for insertAfterThisOne()
+  ///
+  /// Beware: appendToChain() and appendChain() are two different methods,
+  /// and you probably want appendToChain() instead of this one.
+  ///
+  /// \methodset Chaining
+  void AppendChain(std::unique_ptr<IOBuf>&& iobuf) {
+    InsertAfterThisOne(std::move(iobuf));
   }
 
-  /**
-   * Remove this IOBuf from its current chain.
-   *
-   * Ownership of all elements an IOBuf chain is normally maintained by
-   * the head of the chain. unlink() transfers ownership of this IOBuf from the
-   * chain and gives it to the caller.  A new unique_ptr to the IOBuf is
-   * returned to the caller.  The caller must store the returned unique_ptr (or
-   * call release() on it) to take ownership, otherwise the IOBuf will be
-   * immediately destroyed.
-   *
-   * Since unlink() transfers ownership of the IOBuf to the caller, be careful
-   * not to call unlink() on the head of a chain if you already maintain
-   * ownership on the head of the chain via other means.  The pop() method
-   * is a better choice for that situation.
-   *
-   * @methodset Chaining
-   */
-  std::unique_ptr<IOBuf> unlink() {
+  /// Remove this IOBuf from its current chain.
+  ///
+  /// Ownership of all elements an IOBuf chain is normally maintained by
+  /// the head of the chain. Unlink() transfers ownership of this IOBuf from the
+  /// chain and gives it to the caller.  A new unique_ptr to the IOBuf is
+  /// returned to the caller.  The caller must store the returned unique_ptr (or
+  /// call release() on it) to take ownership, otherwise the IOBuf will be
+  /// immediately destroyed.
+  ///
+  /// Since Unlink() transfers ownership of the IOBuf to the caller, be careful
+  /// not to call Unlink() on the head of a chain if you already maintain
+  /// ownership on the head of the chain via other means.  The pop() method
+  /// is a better choice for that situation.
+  ///
+  /// \methodset Chaining
+  std::unique_ptr<IOBuf> Unlink() {
     next_->prev_ = prev_;
     prev_->next_ = next_;
     prev_ = this;
     next_ = this;
+
     return std::unique_ptr<IOBuf>(this);
   }
 
-  /**
-   * Remove the rest of the chain from this IOBuf.
-   *
-   * Ownership of all elements an IOBuf chain is normally maintained by
-   * the head of the chain. pop() transfers ownership of the rest of the chain
-   * to the caller.
-   *
-   * Since pop() transfers ownership of the rest to the caller, be careful
-   * not to call pop() except on the head of a chain.
-   *
-   * @returns  A new unique_ptr pointing to the rest of the chain; nullptr if
-   *           this IOBuf was the only chain element
-   * @methodset Chaining
-   */
+  /// Remove the rest of the chain from this IOBuf.
+  ///
+  /// Ownership of all elements an IOBuf chain is normally maintained by
+  /// the head of the chain. pop() transfers ownership of the rest of the chain
+  /// to the caller.
+  ///
+  /// Since pop() transfers ownership of the rest to the caller, be careful
+  /// not to call pop() except on the head of a chain.
+  ///
+  /// @returns A new unique_ptr pointing to the rest of the chain; nullptr if
+  ///          this IOBuf was the only chain element.
   std::unique_ptr<IOBuf> pop() {
     IOBuf* next = next_;
     next_->prev_ = prev_;
     prev_->next_ = next_;
     prev_ = this;
     next_ = this;
+
     return std::unique_ptr<IOBuf>((next == this) ? nullptr : next);
   }
 
-  /**
-   * Remove a subchain from this chain.
-   *
-   * Remove the subchain starting at head and ending at tail from this chain.
-   * This is inclusive of tail.
-   *
-   * If you have a chain (A, B, C, D, E, F), and you call A->separateChain(B,
-   * D), then you will be returned the chain (B, C, D) and the current IOBuf
-   * chain will change to (A, E, F).
-   *
-   * Returns a unique_ptr pointing to the new head.  (In other words, ownership
-   * of the head of the subchain is transferred to the caller.)  If the caller
-   * ignores the return value and lets the unique_ptr be destroyed, the subchain
-   * will be immediately destroyed.
-   *
-   * head may equal tail. In this case, the subchain of length 1 is removed.
-   *
-   * @pre  head and tail are part of the current IOBuf chain
-   * @pre  head and tail are not equal to the current IOBuf
-   *
-   * @param head  The first IOBuf chain element to remove
-   * @param tail  The last IOBuf chain element to remove (inclusive)
-   *
-   * @methodset Chaining
-   */
-  std::unique_ptr<IOBuf> separateChain(IOBuf* head, IOBuf* tail) {
+  /// Remove a subchain from this chain.
+  ///
+  /// Remove the subchain starting at head and ending at tail from this chain.
+  /// This is inclusive of tail.
+  ///
+  /// If you have a chain (A, B, C, D, E, F), and you call A->separateChain(B,
+  /// D), then you will be returned the chain (B, C, D) and the current IOBuf
+  /// chain will change to (A, E, F).
+  ///
+  /// Returns a unique_ptr pointing to the new head.  (In other words, ownership
+  /// of the head of the subchain is transferred to the caller.)  If the caller
+  /// ignores the return value and lets the unique_ptr be destroyed, the
+  /// subchain will be immediately destroyed.
+  ///
+  /// head may equal tail. In this case, the subchain of length 1 is removed.
+  ///
+  /// \pre head and tail are part of the current IOBuf chain.
+  /// \pre head and tail are not equal to the current IOBuf.
+  ///
+  /// \param head The first IOBuf chain element to remove.
+  /// \param tail The last IOBuf chain element to remove (inclusive).
+  ///
+  /// \methodset Chaining
+  std::unique_ptr<IOBuf> SeparateChain(IOBuf* head, IOBuf* tail) {
     assert(head != this);
     assert(tail != this);
 
@@ -1307,595 +1321,517 @@ class IOBuf {
     return std::unique_ptr<IOBuf>(head);
   }
 
-  /**
-   * Check if any chain buffers are shared.
-   *
-   * Return true if at least one of the IOBufs in this chain are shared,
-   * or false if all of the IOBufs point to unique buffers.
-   *
-   * Use isSharedOne() to only check this IOBuf rather than the entire chain.
-   *
-   * If isShared() returns false, then you are probably the sole owner of the
-   * IOBuf chain and can write to it without needing to call unshare(). This is
-   * not a guarantee, since it is possible for another thread to concurrently
-   * acquire shared ownership.
-   *
-   * @methodset Buffer Management
-   */
-  bool isShared() const {
+  /// Check if any chain buffers are shared.
+  ///
+  /// Return true if at least one of the IOBufs in this chain are shared,
+  /// or false if all of the IOBufs point to unique buffers.
+  ///
+  /// Use isSharedOne() to only check this IOBuf rather than the entire chain.
+  ///
+  /// If isShared() returns false, then you are probably the sole owner of the
+  /// IOBuf chain and can write to it without needing to call unshare(). This is
+  /// not a guarantee, since it is possible for another thread to concurrently
+  /// acquire shared ownership.
+  ///
+  /// \methodset Buffer Management
+  bool IsShared() const {
     const IOBuf* current = this;
+
     while (true) {
-      if (current->isSharedOne()) {
+      if (current->IsSharedOne()) {
         return true;
       }
+
       current = current->next_;
+
       if (current == this) {
         return false;
       }
     }
   }
 
-  /**
-   * Get userData.
-   *
-   * userData is the optional constructor argument which will be passed to the
-   * FreeFunction.
-   *
-   * @returns  A non-owning pointer to userData if set, else nullptr
-   *
-   * @methodset Buffer Management
-   */
-  void* getUserData() const noexcept {
-    SharedInfo* info = sharedInfo();
-    return info ? info->userData : nullptr;
+  /// Get userData.
+  ///
+  /// userData is the optional constructor argument which will be passed to the
+  /// FreeFunction.
+  ///
+  /// \returns A non-owning pointer to userData if set, else nullptr
+  ///
+  /// \methodset Buffer Management
+  void* GetUserData() const noexcept {
+    auto info = SharedInfo();
+
+    return info ? info->user_data : nullptr;
   }
 
-  /**
-   * Get the FreeFunction.
-   *
-   * freeFn is the optional constructor argument which shall be called when the
-   * buffer is to be destroyed.
-   *
-   * @returns  A non-owning pointer to freeFn if set, else nullptr
-   *
-   * @methodset Buffer Management
-   */
-  FreeFunction getFreeFn() const noexcept {
-    SharedInfo* info = sharedInfo();
-    return info ? info->freeFn : nullptr;
+  /// Get the FreeFunction.
+  ///
+  /// freeFn is the optional constructor argument which shall be called when the
+  /// buffer is to be destroyed.
+  ///
+  /// \returns A non-owning pointer to freeFn if set, else nullptr.
+  ///
+  /// \methodset Buffer Management
+  FreeFunction GetFreeFn() const noexcept {
+    auto info = SharedInfo();
+
+    return info ? info->free_fn : nullptr;
   }
 
-  /**
-   * Add an Observer to the refcount block (SharedInfo).
-   *
-   * @param observer  The observer to add to SharedInfo
-   * @returns  true iff the observer was added (if there is no SharedInfo,
-   *           there's nothing to observe)
-   *
-   * @methodset Misc
-   */
+  /// Add an Observer to the refcount block (SharedInfo).
+  ///
+  /// \param observer The observer to add to SharedInfo
+  /// \returns true iff the observer was added (if there is no SharedInfo,
+  ///          there's nothing to observe)
+  ///
+  /// \methodset Misc
   template <typename Observer>
-  bool appendSharedInfoObserver(Observer&& observer) {
-    SharedInfo* info = sharedInfo();
+  bool AppendSharedInfoObserver(Observer&& observer) {
+    auto info = SharedInfo();
+
     if (!info) {
       return false;
     }
 
     auto* entry =
         new SharedInfoObserverEntry<Observer>(std::forward<Observer>(observer));
-    std::lock_guard<MicroSpinLock> guard(info->observerListLock);
-    if (!info->observerListHead) {
-      info->observerListHead = entry;
+    std::lock_guard<MicroSpinLock> guard(info->observer_list_lock);
+
+    if (!info->observer_list_head) {
+      info->observer_list_head = entry;
     } else {
       // prepend
-      entry->next = info->observerListHead;
-      entry->prev = info->observerListHead->prev;
-      info->observerListHead->prev->next = entry;
-      info->observerListHead->prev = entry;
+      entry->next = info->observer_list_head;
+      entry->prev = info->observer_list_head->prev;
+      info->observer_list_head->prev->next = entry;
+      info->observer_list_head->prev = entry;
     }
 
     return true;
   }
 
-  /**
-   * Check if all IOBufs in this chain use the standard refcounting mechanism.
-   *
-   * If so, then the lifetime of the underlying memory can be extended by
-   * clone().
-   *
-   * @returns  true iff all IOBufs in this chain are isManagedOne()
-   *
-   * @methodset Buffer Management
-   */
-  bool isManaged() const {
+  /// Check if all IOBufs in this chain use the standard refcounting mechanism.
+  ///
+  /// If so, then the lifetime of the underlying memory can be extended by
+  /// Clone().
+  ///
+  /// \returns true iff all IOBufs in this chain are IsManagedOne().
+  ///
+  /// \methodset Buffer Management
+  bool IsManaged() const {
     const IOBuf* current = this;
+
     while (true) {
-      if (!current->isManagedOne()) {
+      if (!current->IsManagedOne()) {
         return false;
       }
+
       current = current->next_;
+
       if (current == this) {
         return true;
       }
     }
   }
 
-  /**
-   * Check if this IOBuf uses the standard refcounting mechanism.
-   *
-   * If so, then the lifetime of the underlying memory can be extended by
-   * cloneOne().
-   *
-   * @returns  true iff the current IOBuf was allocated normally (without the
-   *           user specifying special memory semantics, such as with a
-   *           user-owned buffer)
-   *
-   * @methodset Buffer Management
-   */
-  bool isManagedOne() const noexcept { return sharedInfo(); }
+  /// Check if this IOBuf uses the standard refcounting mechanism.
+  ///
+  /// If so, then the lifetime of the underlying memory can be extended by
+  /// CloneOne().
+  ///
+  /// \returns true iff the current IOBuf was allocated normally (without the
+  ///          user specifying special memory semantics, such as with a
+  ///          user-owned buffer)
+  ///
+  /// \methodset Buffer Management
+  bool IsManagedOne() const noexcept { return SharedInfo(); }
 
-  /**
-   * Inconsistently get the reference count.
-   *
-   * For most of the use-cases where it seems like a good idea to call this
-   * function, what you really want is isSharedOne().
-   *
-   * If this IOBuf is managed by the usual refcounting mechanism (ie
-   * isManagedOne() returns true) then this returns the reference count as it
-   * was when recently observed by this thread.
-   *
-   * If this IOBuf is *not* managed by the usual refcounting mechanism then the
-   * result of this function is not defined.
-   *
-   * This only checks the current IOBuf, and not other IOBufs in the chain.
-   *
-   * @methodset Buffer Management
-   */
-  uint32_t approximateShareCountOne() const;
+  /// Inconsistently get the reference count.
+  ///
+  /// For most of the use-cases where it seems like a good idea to call this
+  /// function, what you really want is isSharedOne().
+  ///
+  /// If this IOBuf is managed by the usual refcounting mechanism (ie
+  /// isManagedOne() returns true) then this returns the reference count as it
+  /// was when recently observed by this thread.
+  ///
+  /// If this IOBuf is *not* managed by the usual refcounting mechanism then the
+  /// result of this function is not defined.
+  ///
+  /// This only checks the current IOBuf, and not other IOBufs in the chain.
+  ///
+  /// \methodset Buffer Management
+  uint32_t ApproximateShareCountOne() const;
 
-  /**
-   * Check if the buffer is shared.
-   *
-   * IOBuf buffers can be shared (using refcounting). Check if any other IOBufs
-   * are pointing to this same buffer.
-   *
-   * If this IOBuf points at a buffer owned by another (non-IOBuf) part of the
-   * code (i.e., if the IOBuf was created using wrapBuffer(), or was cloned
-   * from such an IOBuf), it is always considered shared.
-   *
-   * This only checks the current IOBuf, and not other IOBufs in the chain.
-   *
-   * @methodset Buffer Management
-   */
-  bool isSharedOne() const noexcept {
-    // If this is a user-owned buffer, it is always considered shared
-    if (FOLLY_UNLIKELY(!sharedInfo())) {
+  /// Check if the buffer is shared.
+  ///
+  /// IOBuf buffers can be shared (using refcounting). Check if any other IOBufs
+  /// are pointing to this same buffer.
+  ///
+  /// If this IOBuf points at a buffer owned by another (non-IOBuf) part of the
+  /// code (i.e., if the IOBuf was created using wrapBuffer(), or was cloned
+  /// from such an IOBuf), it is always considered shared.
+  ///
+  /// This only checks the current IOBuf, and not other IOBufs in the chain.
+  ///
+  /// \methodset Buffer Management
+  bool IsSharedOne() const noexcept {
+    auto info = SharedInfo();
+
+    // If this is a user-owned buffer, it is always considered shared.
+    if (!info) [[unlikely]] {
       return true;
     }
 
-    if (FOLLY_UNLIKELY(sharedInfo()->externallyShared)) {
+    if (info->externally_shared) [[unlikely]] {
       return true;
     }
 
-    return sharedInfo()->refcount.load(std::memory_order_acquire) > 1;
+    return info->refcount.load(std::memory_order_acquire) > 1;
   }
 
-  /**
-   * Ensure that this IOBuf chain has unique, unshared buffers.
-   *
-   * Multiple IOBufs can point to the same buffer. This means that an IOBuf's
-   * buffer is not necessarily writeable, since another IOBuf might be using the
-   * same underlying data. If you want to write to an IOBuf's buffer, it is your
-   * responsibility to make sure that you aren't trampling the data used by
-   * another IOBuf. This can be accomplished by calling unshare().
-   *
-   * unshare() ensures that the underlying buffer of each IOBuf in the chain is
-   * not shared with another IOBuf.
-   *
-   * @note If the current chain has any shared buffers, then unshare() might
-   *       coalesce the chain during unsharing.
-   * @note Buffers owned by other (non-IOBuf) users are automatically considered
-   *       to be shared.
-   *
-   * @post  The buffers in this IOBuf chain are all writeable, since they are
-   *        uniquely owned by the current IOBuf.
-   *
-   * @throws std::bad_alloc on error.  On error the IOBuf chain will be
-   * unmodified.
-   *
-   * Currently unshare may also throw std::overflow_error if it tries to
-   * coalesce.  (TODO: In the future it would be nice if unshare() were smart
-   * enough not to coalesce the entire buffer if the data is too large.
-   * However, in practice this seems unlikely to become an issue.)
-   *
-   * @methodset Buffer Management
-   */
-  void unshare() {
-    if (isChained()) {
-      unshareChained();
+  /// Ensure that this IOBuf chain has unique, unshared buffers.
+  ///
+  /// Multiple IOBufs can point to the same buffer. This means that an IOBuf's
+  /// buffer is not necessarily writeable, since another IOBuf might be using
+  /// the same underlying data. If you want to write to an IOBuf's buffer, it is
+  /// your responsibility to make sure that you aren't trampling the data used
+  /// by another IOBuf. This can be accomplished by calling Unshare().
+  ///
+  /// Unshare() ensures that the underlying buffer of each IOBuf in the chain is
+  /// not shared with another IOBuf.
+  ///
+  /// \note If the current chain has any shared buffers, then Unshare() might
+  ///       coalesce the chain during unsharing.
+  /// \note Buffers owned by other (non-IOBuf) users are automatically
+  ///       considered to be shared.
+  ///
+  /// \post  The buffers in this IOBuf chain are all writeable, since they are
+  ///        uniquely owned by the current IOBuf.
+  ///
+  /// \throws std::bad_alloc on error.  On error the IOBuf chain will be
+  ///         unmodified.
+  ///
+  /// Currently unshare may also throw std::overflow_error if it tries to
+  /// coalesce.  (TODO: In the future it would be nice if Unshare() were smart
+  /// enough not to coalesce the entire buffer if the data is too large.
+  /// However, in practice this seems unlikely to become an issue.)
+  ///
+  /// \methodset Buffer Management
+  void Unshare() {
+    if (IsChained()) {
+      UnshareChained();
     } else {
-      unshareOne();
+      UnshareOne();
     }
   }
 
-  /**
-   * Ensure that this IOBuf has a unique, unshared buffer.
-   *
-   * unshareOne() operates on a single IOBuf object.  This IOBuf will have a
-   * unique buffer after unshareOne() returns, but other IOBufs in the chain
-   * may still be shared after unshareOne() returns.
-   *
-   * @throws std::bad_alloc on error.  On error the IOBuf will be unmodified.
-   *
-   * @methodset Buffer Management
-   */
-  void unshareOne() {
-    if (isSharedOne()) {
-      unshareOneSlow();
+  /// Ensure that this IOBuf has a unique, unshared buffer.
+  ///
+  /// UnshareOne() operates on a single IOBuf object.  This IOBuf will have a
+  /// unique buffer after UnshareOne() returns, but other IOBufs in the chain
+  /// may still be shared after UnshareOne() returns.
+  ///
+  /// \throws std::bad_alloc on error.  On error the IOBuf will be unmodified.
+  ///
+  /// \methodset Buffer Management
+  void UnshareOne() {
+    if (IsSharedOne()) {
+      UnshareOneSlow();
     }
   }
 
-  /**
-   * Mark the underlying buffers in this chain as shared.
-   *
-   * Assume that the underlying buffers are also owned by an external memory
-   * management mechanism. This will make isShared() always returns true.
-   *
-   * This function is not thread-safe, and only safe to call immediately after
-   * creating an IOBuf, before it has been shared with other threads.
-   *
-   * @methodset Buffer Management
-   */
-  void markExternallyShared();
+  /// Mark the underlying buffers in this chain as shared.
+  ///
+  /// Assume that the underlying buffers are also owned by an external memory
+  /// management mechanism. This will make IsShared() always returns true.
+  ///
+  /// This function is not thread-safe, and only safe to call immediately after
+  /// creating an IOBuf, before it has been shared with other threads.
+  ///
+  /// \methodset Buffer Management
+  void MarkExternallyShared();
 
-  /**
-   * Mark the underlying buffer as shared.
-   *
-   * Assume that the underlying buffer is also owned by an external memory
-   * management mechanism. This will make isSharedOne() always returns true.
-   *
-   * This function is not thread-safe, and only safe to call immediately after
-   * creating an IOBuf, before it has been shared with other threads.
-   *
-   * @methodset Buffer Management
-   */
-  void markExternallySharedOne() {
-    SharedInfo* info = sharedInfo();
+  /// Mark the underlying buffer as shared.
+  ///
+  /// Assume that the underlying buffer is also owned by an external memory
+  /// management mechanism. This will make isSharedOne() always returns true.
+  ///
+  /// This function is not thread-safe, and only safe to call immediately after
+  /// creating an IOBuf, before it has been shared with other threads.
+  ///
+  /// \methodset Buffer Management
+  void MarkExternallySharedOne() {
+    auto info = SharedInfo();
+
     if (info) {
-      info->externallyShared = true;
+      info->externally_shared = true;
     }
   }
 
-  /**
-   * Ensure that the buffers are owned by the IOBuf chain.
-   *
-   * It is possible for an IOBuf to be constructed with a user-owned buffer. In
-   * such circumstances, the user is responsible for ensuring that the buffer
-   * outlives the IOBuf. makeManaged() lets the user subsequently reallocate the
-   * buffer to be owned by the IOBuf directly.
-   *
-   * If the buffers are already owned by IOBuf, then this function doesn't need
-   * to do anything.
-   *
-   * @methodset Buffer Management
-   */
-  void makeManaged() {
-    if (isChained()) {
-      makeManagedChained();
+  /// Ensure that the buffers are owned by the IOBuf chain.
+  ///
+  /// It is possible for an IOBuf to be constructed with a user-owned buffer. In
+  /// such circumstances, the user is responsible for ensuring that the buffer
+  /// outlives the IOBuf. MakeManaged() lets the user subsequently reallocate
+  /// the buffer to be owned by the IOBuf directly.
+  ///
+  /// If the buffers are already owned by IOBuf, then this function doesn't need
+  /// to do anything.
+  ///
+  /// \methodset Buffer Management
+  void MakeManaged() {
+    if (IsChained()) {
+      MakeManagedChained();
     } else {
-      makeManagedOne();
+      MakeManagedOne();
     }
   }
 
-  /**
-   * Ensure that the buffer is owned by the IOBuf.
-   *
-   * It is possible for an IOBuf to be constructed with a user-owned buffer. In
-   * such circumstances, the user is responsible for ensuring that the buffer
-   * outlives the IOBuf. makeManaged() lets the user subsequently reallocate the
-   * buffer to be owned by the IOBuf directly.
-   *
-   * If the buffer is already owned by IOBuf, then this function doesn't need to
-   * do anything.
-   *
-   * @methodset Buffer Management
-   */
-  void makeManagedOne() {
-    if (!isManagedOne()) {
+  /// Ensure that the buffer is owned by the IOBuf.
+  ///
+  /// It is possible for an IOBuf to be constructed with a user-owned buffer. In
+  /// such circumstances, the user is responsible for ensuring that the buffer
+  /// outlives the IOBuf. MakeManaged() lets the user subsequently reallocate
+  /// the buffer to be owned by the IOBuf directly.
+  ///
+  /// If the buffer is already owned by IOBuf, then this function doesn't need
+  /// to do anything.
+  ///
+  /// \methodset Buffer Management
+  void MakeManagedOne() {
+    if (!IsManagedOne()) {
       // We can call the internal function directly; unmanaged implies shared.
-      unshareOneSlow();
+      UnshareOneSlow();
     }
   }
 
-  /**
-   * Coalesce this IOBuf chain into a single buffer.
-   *
-   * This method moves all of the data in this IOBuf chain into a single
-   * contiguous buffer, if it is not already in one buffer.  After coalesce()
-   * returns, this IOBuf will be a chain of length one.  Other IOBufs in the
-   * chain will be automatically deleted.
-   *
-   * After coalescing, the IOBuf will have at least as much headroom as the
-   * first IOBuf in the chain, and at least as much tailroom as the last IOBuf
-   * in the chain.
-   *
-   * @post  isChained() == false
-   *
-   * @throws std::bad_alloc on error.  On error the IOBuf chain will be
-   * unmodified.
-   *
-   * @returns  A ByteRange that points to the now-contiguous buffer data()
-   *
-   * @methodset Chaining
-   */
-  ByteRange coalesce() {
-    if (isChained()) {
-      const std::size_t newHeadroom = headroom();
-      const std::size_t newTailroom = prev()->tailroom();
-      coalesceAndReallocate(newHeadroom, computeChainDataLength(), this,
-                            newTailroom);
+  /// Coalesce this IOBuf chain into a single buffer.
+  ///
+  /// This method moves all of the data in this IOBuf chain into a single
+  /// contiguous buffer, if it is not already in one buffer.  After Coalesce()
+  /// returns, this IOBuf will be a chain of length one.  Other IOBufs in the
+  /// chain will be automatically deleted.
+  ///
+  /// After coalescing, the IOBuf will have at least as much headroom as the
+  /// first IOBuf in the chain, and at least as much tailroom as the last IOBuf
+  /// in the chain.
+  ///
+  /// \post IsChained() == false
+  ///
+  /// \throws std::bad_alloc on error.  On error the IOBuf chain will be
+  ///         unmodified.
+  ///
+  /// \returns A ByteRange that points to the now-contiguous buffer data()
+  ///
+  /// \methodset Chaining
+  ByteRange Coalesce() {
+    if (IsChained()) {
+      const std::size_t new_head_room = HeadRoom();
+      const std::size_t new_tail_room = Prev()->TailRoom();
+
+      CoalesceAndReallocate(new_head_room, ComputeChainDataLength(), this,
+                            new_tail_room);
     }
+
     return ByteRange(data_, length_);
   }
 
-  /**
-   * @copydoc coalesce()
-   *
-   * @param newHeadroom  How much headroom the new coalesced chain should have,
-   *                     instead of mimicking the original headroom
-   * @param newTailroom  How much tailroom the new coalesced chain should have,
-   *                     instead of mimicking the original tailroom
-   */
-  ByteRange coalesceWithHeadroomTailroom(std::size_t newHeadroom,
-                                         std::size_t newTailroom) {
-    if (isChained()) {
-      coalesceAndReallocate(newHeadroom, computeChainDataLength(), this,
-                            newTailroom);
+  /// \copydoc Coalesce()
+  ///
+  /// \param new_head_room How much headroom the new coalesced chain should
+  ///                      have, instead of mimicking the original headroom.
+  /// \param new_tail_room How much tailroom the new coalesced chain should
+  ///                      have, instead of mimicking the original tailroom.
+  ByteRange CoalesceWithHeadroomTailroom(std::size_t new_head_room,
+                                         std::size_t new_tail_room) {
+    if (IsChained()) {
+      CoalesceAndReallocate(new_head_room, ComputeChainDataLength(), this,
+                            new_tail_room);
     }
+
     return ByteRange(data_, length_);
   }
 
-  /**
-   * Ensure that this chain has at least contiguousLength bytes available as a
-   * contiguous memory range.
-   *
-   * This method coalesces whole buffers in the chain into this buffer as
-   * necessary until this buffer's length() is at least contiguousLength.
-   *
-   * After coalescing, the IOBuf will have at least as much headroom as the
-   * first IOBuf in the chain, and at least as much tailroom as the last IOBuf
-   * that was coalesced.
-   *
-   * @throws std::bad_alloc or std::overflow_error on error.  On error the IOBuf
-   * chain will be unmodified.
-   * @throws std::overflow_error if contiguousLength is longer than the total
-   * chain length.
-   *
-   * @post  length() >= contiguousLength
-   *
-   * @methodset Chaining
-   */
-  void gather(std::size_t contiguousLength) {
-    if (!isChained() || length_ >= contiguousLength) {
+  /// Ensure that this chain has at least contiguousLength bytes available as a
+  /// contiguous memory range.
+  ///
+  /// This method coalesces whole buffers in the chain into this buffer as
+  /// necessary until this buffer's length() is at least contiguousLength.
+  ///
+  /// After coalescing, the IOBuf will have at least as much headroom as the
+  /// first IOBuf in the chain, and at least as much tailroom as the last IOBuf
+  /// that was coalesced.
+  ///
+  /// \throws std::bad_alloc or std::overflow_error on error.  On error the
+  ///         IOBuf chain will be unmodified.
+  /// \throws std::overflow_error if contiguousLength is longer than the total
+  ///         chain length.
+  ///
+  /// \post Length() >= contiguousLength
+  ///
+  /// \methodset Chaining
+  void Gather(std::size_t contiguous_length) {
+    if (!IsChained() || length_ >= contiguous_length) {
       return;
     }
-    coalesceSlow(contiguousLength);
+
+    CoalesceSlow(contiguous_length);
   }
 
-  /**
-   * Copy an IOBuf chain.
-   *
-   * This is a shallow buffer copy; the source buffers will be shared.
-   *
-   * The new IOBuf chain will normally point to the same underlying data
-   * buffers as the original chain.  (The one exception to this is if some of
-   * the IOBufs in this chain contain small internal data buffers which cannot
-   * be shared.)
-   *
-   * @methodset Makers
-   */
-  std::unique_ptr<IOBuf> clone() const;
+  /// Copy an IOBuf chain.
+  ///
+  /// This is a shallow buffer copy; the source buffers will be shared.
+  ///
+  /// The new IOBuf chain will normally point to the same underlying data
+  /// buffers as the original chain.  (The one exception to this is if some of
+  /// the IOBufs in this chain contain small internal data buffers which cannot
+  /// be shared.)
+  ///
+  /// \methodset Makers
+  std::unique_ptr<IOBuf> Clone() const;
 
-  /**
-   * @copydoc clone()
-   *
-   * Similar to clone(), but returns by value rather than heap-allocating.
-   */
-  IOBuf cloneAsValue() const;
+  /// \copydoc Clone()
+  ///
+  /// Similar to Clone(), but returns by value rather than heap-allocating.
+  IOBuf CloneAsValue() const;
 
-  /**
-   * Copy an individual IOBuf.
-   *
-   * Only clone the buffer of the current IOBuf; ignore chained IOBufs.
-   *
-   * @methodset Makers
-   */
-  std::unique_ptr<IOBuf> cloneOne() const;
+  /// Copy an individual IOBuf.
+  ///
+  /// Only clone the buffer of the current IOBuf; ignore chained IOBufs.
+  ///
+  /// \methodset Makers
+  std::unique_ptr<IOBuf> CloneOne() const;
 
-  /**
-   * @copydoc cloneOne()
-   *
-   * Similar to cloneOne(), but returns by value rather than heap-allocating.
-   */
-  IOBuf cloneOneAsValue() const;
+  /// \copydoc CloneOne()
+  ///
+  /// Similar to CloneOne(), but returns by value rather than heap-allocating.
+  IOBuf CloneOneAsValue() const;
 
-  /**
-   * Copy an IOBuf chain into a single buffer.
-   *
-   * Semantically similar to .clone().coalesce(), but without the intermediate
-   * allocations.
-   *
-   * The new IOBuf will have at least as much headroom as the first IOBuf in the
-   * chain, and at least as much tailroom as the last IOBuf in the chain.
-   *
-   * @return  An IOBuf for which isChained() == false, and whose data is the
-   *          same as coalesce()
-   *
-   * @throws std::bad_alloc on error.
-   *
-   * @methodset Makers
-   */
-  std::unique_ptr<IOBuf> cloneCoalesced() const;
+  /// Copy an IOBuf chain into a single buffer.
+  ///
+  /// Semantically similar to .Clone().Coalesce(), but without the intermediate
+  /// allocations.
+  ///
+  /// The new IOBuf will have at least as much headroom as the first IOBuf in
+  /// the chain, and at least as much tailroom as the last IOBuf in the chain.
+  ///
+  /// \return  An IOBuf for which IsChained() == false, and whose data is the
+  ///          same as Coalesce().
+  ///
+  /// \throws std::bad_alloc on error.
+  ///
+  /// \methodset Makers
+  std::unique_ptr<IOBuf> CloneCoalesced() const;
 
-  /**
-   * @copydoc cloneCoalesced()
-   *
-   * @param newHeadroom  How much headroom the new coalesced chain should have,
-   *                     instead of mimicking the original headroom
-   * @param newTailroom  How much tailroom the new coalesced chain should have,
-   *                     instead of mimicking the original tailroom
-   */
-  std::unique_ptr<IOBuf> cloneCoalescedWithHeadroomTailroom(
-      std::size_t newHeadroom, std::size_t newTailroom) const;
+  /// \copydoc CloneCoalesced()
+  ///
+  /// \param new_head_room How much headroom the new coalesced chain should
+  ///                      have, instead of mimicking the original headroom.
+  /// \param new_tail_room How much tailroom the new coalesced chain should
+  ///                      have, instead of mimicking the original tailroom.
+  std::unique_ptr<IOBuf> CloneCoalescedWithHeadroomTailroom(
+      std::size_t new_head_room, std::size_t new_tail_room) const;
 
-  /**
-   * @copydoc cloneCoalesced()
-   *
-   * Similar to cloneCoalesced(), but returns by value rather than
-   * heap-allocating.
-   */
-  IOBuf cloneCoalescedAsValue() const;
+  /// \copydoc CloneCoalesced()
+  ///
+  /// Similar to cloneCoalesced(), but returns by value rather than
+  /// heap-allocating.
+  IOBuf CloneCoalescedAsValue() const;
 
-  /**
-   * @copydoc cloneCoalescedWithHeadroomTailroom(std::size_t, std::size_t) const
-   *
-   * Similar to cloneCoalescedWithHeadroomTailroom(), but returns by value
-   * rather than heap-allocating.
-   */
-  IOBuf cloneCoalescedAsValueWithHeadroomTailroom(
-      std::size_t newHeadroom, std::size_t newTailroom) const;
+  /// \copydoc
+  /// cloneCoalescedWithHeadroomTailroom(std::size_t, std::size_t) const
+  ///
+  /// Similar to CloneCoalescedWithHeadroomTailroom(), but returns by value
+  /// rather than heap-allocating.
+  IOBuf CloneCoalescedAsValueWithHeadroomTailroom(
+      std::size_t new_head_room, std::size_t new_tail_room) const;
 
-  /**
-   * @copydoc clone()
-   *
-   * Similar to clone(), but returns by argument. The argument will become the
-   * clone's head. Other nodes in the chain (if any) will be allocated on the
-   * heap as usual.
-   *
-   * @param[out] other  An IOBuf to assign the clone to
-   */
-  void cloneInto(IOBuf& other) const { other = cloneAsValue(); }
+  /// \copydoc Clone()
+  ///
+  /// Similar to Clone(), but returns by argument. The argument will become the
+  /// clone's head. Other nodes in the chain (if any) will be allocated on the
+  /// heap as usual.
+  ///
+  /// \param[out] other An IOBuf to assign the clone to.
+  void CloneInto(IOBuf& other) const { other = CloneAsValue(); }
 
-  /**
-   * @copydoc cloneOne()
-   *
-   * Similar to cloneOne(), but returns by argument. The argument will become
-   * the clone.
-   *
-   * @param[out] other  An IOBuf to assign the clone to
-   */
-  void cloneOneInto(IOBuf& other) const { other = cloneOneAsValue(); }
+  /// \copydoc CloneOne()
+  ///
+  /// Similar to CloneOne(), but returns by argument. The argument will become
+  /// the clone.
+  ///
+  /// @param[out] other An IOBuf to assign the clone to.
+  void CloneOneInto(IOBuf& other) const { other = CloneOneAsValue(); }
 
-  /**
-   * Append the chain data into the provided container.
-   *
-   * This is meant to be used with containers such as std::string or
-   * std::vector<char>, but any container which supports reserve(), insert(),
-   * and has char or unsigned char value type is supported.
-   *
-   * @methodset Conversions
-   */
-  template <class Container>
-  void appendTo(Container& container) const;
+  /// Append the chain data into the provided container.
+  ///
+  /// This is meant to be used with containers such as std::string or
+  /// std::vector<char>, but any container which supports reserve(), insert(),
+  /// and has char or unsigned char value type is supported.
+  ///
+  /// \methodset Conversions
+  template <typename Container>
+  void AppendTo(Container& container) const;
 
-  /**
-   * Dump the chain data into a container.
-   *
-   * @copydetails appendTo(Container&) const
-   *
-   * @tparam Container  The type of container to return.
-   *
-   * @returns  A Container whose data equals the coalseced data of this chain
-   */
-  template <class Container>
-  Container to() const;
+  /// Dump the chain data into a container.
+  ///
+  /// \copydetails AppendTo(Container&) const
+  ///
+  /// \tparam Container The type of container to return.
+  ///
+  /// \returns A Container whose data equals the coalseced data of this chain.
+  template <typename Container>
+  Container To() const;
 
-  /**
-   * Get an iovector suitable for e.g. writev()
-   *
-   *   auto iov = buf->getIov();
-   *   auto xfer = writev(fd, iov.data(), iov.size());
-   *
-   * Naturally, the returned iovector is invalid if you modify the buffer
-   * chain.
-   *
-   * @methodset IOV
-   */
-  folly::fbvector<struct iovec> getIov() const;
+  /// Get an iovector suitable for e.g. writev().
+  ///
+  /// \code
+  ///   auto iov = buf->GetIov();
+  ///   auto xfer = writev(fd, iov.data(), iov.size());
+  /// \endcode
+  ///
+  /// Naturally, the returned iovector is invalid if you modify the buffer
+  /// chain.
+  ///
+  /// \methodset IOV
+  std::vector<struct iovec> GetIov() const;
 
-  /**
-   * Update an existing iovec array with the IOBuf data.
-   *
-   * New iovecs will be appended to the existing vector; anything already
-   * present in the vector will be left unchanged.
-   *
-   * Naturally, the returned iovec data will be invalid if you modify the
-   * buffer chain.
-   *
-   * @param[out] iov  The iovector to append to
-   *
-   * @methodset IOV
-   */
-  void appendToIov(folly::fbvector<struct iovec>* iov) const;
+  /// Update an existing iovec array with the IOBuf data.
+  ///
+  /// New iovecs will be appended to the existing vector; anything already
+  /// present in the vector will be left unchanged.
+  ///
+  /// Naturally, the returned iovec data will be invalid if you modify the
+  /// buffer chain.
+  ///
+  /// \param[out] iov The iovector to append to.
+  ///
+  /// \methodset IOV
+  void AppendToIov(std::vector<struct iovec>* iov) const;
 
   struct FillIovResult {
-    // How many iovecs were filled (or 0 on error).
-    size_t numIovecs;
-    // The total length of filled iovecs (or 0 on error).
-    size_t totalLength;
+    /// How many iovecs were filled (or 0 on error).
+    size_t num_iovecs;
+    /// The total length of filled iovecs (or 0 on error).
+    size_t total_length;
   };
 
-  /**
-   * Fill an iovec array with the IOBuf data.
-   *
-   * Returns a struct with two fields: the number of iovec filled, and total
-   * size of the iovecs filled. If there are more buffer than iovec, returns 0
-   * in both fields.
-   * This version is suitable to use with stack iovec arrays.
-   *
-   * Naturally, the filled iovec data will be invalid if you modify the
-   * buffer chain.
-   *
-   * @param[out] iov  The iovector to append to
-   * @param len  The size of the iov array
-   *
-   * @methodset IOV
-   */
-  FillIovResult fillIov(struct iovec* iov, size_t len) const;
-
-  /**
-   * Convert an iovec array into an IOBuf.
-   *
-   * A helper that wraps a number of iovecs into an IOBuf chain.  If count == 0,
-   * then a zero length buf is returned.  This function never returns nullptr.
-   *
-   * @param vec  The iovec array to convert to an IOBuf chain
-   * @param count  The size of the iovec array
-   *
-   * @methodset IOV
-   */
-  static std::unique_ptr<IOBuf> wrapIov(const iovec* vec, size_t count);
-
-  /**
-   * Take ownership of an iovec, turning it into an IOBuf.
-   *
-   * A helper that takes ownerships a number of iovecs into an IOBuf chain.  If
-   * count == 0, then a zero length buf is returned.  This function never
-   * returns nullptr.
-   *
-   * @param vec  The iovec array to convert to an IOBuf chain
-   * @param count  The size of the iovec array
-   * @param freeFn  The function to call when buf is to be freed
-   * @param userData  An additional arbitrary void* argument to supply to freeFn
-   * @param freeOnError  Whether the buffer should be freed if this function
-   *                     throws an exception
-   *
-   * @methodset IOV
-   */
-  static std::unique_ptr<IOBuf> takeOwnershipIov(const iovec* vec, size_t count,
-                                                 FreeFunction freeFn = nullptr,
-                                                 void* userData = nullptr,
-                                                 bool freeOnError = true);
+  /// Fill an iovec array with the IOBuf data.
+  ///
+  /// Returns a struct with two fields: the number of iovec filled, and total
+  /// size of the iovecs filled. If there are more buffer than iovec, returns 0
+  /// in both fields.
+  /// This version is suitable to use with stack iovec arrays.
+  ///
+  /// Naturally, the filled iovec data will be invalid if you modify the
+  /// buffer chain.
+  ///
+  /// \param[out] iov The iovector to append to
+  /// \param len The size of the iov array
+  ///
+  /// \methodset IOV
+  FillIovResult FillIov(struct iovec* iov, size_t len) const;
 
   /**
    * Overridden operator new and delete.
