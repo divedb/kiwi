@@ -20,28 +20,27 @@
 
 #pragma once
 
-#include <folly/Function.h>
-#include <folly/Portability.h>
 #include <folly/detail/Iterators.h>
-#include <folly/lang/CheckedMath.h>
-#include <folly/lang/Ordering.h>
 #include <folly/synchronization/MicroSpinLock.h>
 #include <glog/logging.h>
 
 #include <atomic>
 #include <cassert>
 #include <cinttypes>
+#include <compare>
 #include <cstddef>
 #include <cstring>
 #include <iterator>
 #include <limits>
 #include <memory>
+#include <string>
 #include <type_traits>
 #include <vector>
 
 #include "kiwi/containers/span.hh"
 #include "kiwi/portability/compiler_specific.hh"
 #include "kiwi/sys/uio.hh"
+#include "kiwi/util/checked_math.hh"
 
 KIWI_PUSH_WARNING
 // Ignore shadowing warnings within this file, so includers can use -Wshadow.
@@ -667,7 +666,7 @@ class IOBuf {
   /// Beware when attempting to invoke this function with a constant string
   /// literal and a headroom argument: you will likely end up invoking
   /// CopyBuffer(void* buf, size_t size).
-  static std::unique_ptr<IOBuf> CopyBuffer(StringPiece buf,
+  static std::unique_ptr<IOBuf> CopyBuffer(std::string_view buf,
                                            std::size_t head_room = 0,
                                            std::size_t min_tail_room = 0);
 
@@ -676,7 +675,7 @@ class IOBuf {
   /// This "maybe" version of copyBuffer returns null if the input is empty.
   ///
   /// \methodset Makers
-  static std::unique_ptr<IOBuf> MaybeCopyBuffer(StringPiece buf,
+  static std::unique_ptr<IOBuf> MaybeCopyBuffer(std::string_view buf,
                                                 std::size_t head_room = 0,
                                                 std::size_t min_tail_room = 0);
 
@@ -788,6 +787,43 @@ class IOBuf {
   IOBuf(TakeOwnershipOp, SizedFree, void* buf, std::size_t capacity,
         std::size_t offset, std::size_t length, bool free_on_error = true);
 
+  /// Create a new null buffer.
+  ///
+  /// This can be used to allocate an empty IOBuf on the stack.  It will have no
+  /// space allocated for it.  This is generally useful only to later use move
+  /// assignment to fill out the IOBuf.
+  IOBuf() noexcept;
+
+  /// Copy constructor.
+  ///
+  /// \see CloneAsValue()
+  IOBuf(const IOBuf& other);
+
+  /// Move constructor.
+  ///
+  /// In general, you should only ever move the head of an IOBuf chain.
+  /// Internal nodes in an IOBuf chain are owned by the head of the chain, and
+  /// should not be moved from.  (Technically, nothing prevents you from moving
+  /// a non-head node, but the moved-to node will replace the moved-from node in
+  /// the chain.  This has implications for ownership, since non-head nodes are
+  /// owned by the chain head.  You are then responsible for relinquishing
+  /// ownership of the moved-to node, and manually deleting the moved-from
+  /// node.)
+  IOBuf(IOBuf&& other) noexcept;
+
+  /// Move assignment operator.
+  ///
+  /// With the assignment operator, the destination should be the head of an
+  /// IOBuf chain or a solitary IOBuf not part of a chain.  If the destination
+  /// is part of a chain, all other IOBufs in the chain will be deleted.
+  IOBuf& operator=(IOBuf&& other) noexcept;
+
+  /// Copy assignment operator.
+  ///
+  /// @copydetails operator=(IOBuf&&)
+  /// \see cloneAsValue()
+  IOBuf& operator=(const IOBuf& other);
+
   /// Create an IOBuf pointing to a buffer, without taking ownership.
   ///
   /// This should only be used when the caller knows the lifetime of the IOBuf
@@ -836,7 +872,7 @@ class IOBuf {
   IOBuf(CopyBufferOp op, const void* buf, std::size_t size,
         std::size_t head_room = 0, std::size_t min_tail_room = 0);
 
-  IOBuf(CopyBufferOp op, StringPiece buf, std::size_t headroom = 0,
+  IOBuf(CopyBufferOp op, std::string_view buf, std::size_t headroom = 0,
         std::size_t minTailroom = 0)
       : IOBuf(op, buf.data(), buf.size(), headroom, minTailroom) {}
 
@@ -1833,110 +1869,51 @@ class IOBuf {
   /// \methodset IOV
   FillIovResult FillIov(struct iovec* iov, size_t len) const;
 
-  /**
-   * Overridden operator new and delete.
-   *
-   * These perform specialized memory management to help support
-   * createCombined(), which allocates IOBuf objects together with the buffer
-   * data.
-   *
-   * @methodset Memory
-   */
+  /// Overridden operator new and delete.
+  ///
+  /// These perform specialized memory management to help support
+  /// CreateCombined(), which allocates IOBuf objects together with the buffer
+  /// data.
+  ///
+  /// \methodset Memory
   void* operator new(size_t size);
 
-  /**
-   * Overridden operator new.
-   * @methodset Memory
-   */
+  /// Overridden operator new.
+  /// \methodset Memory
   void* operator new(size_t size, void* ptr);
 
-  /**
-   * Overridden operator delete.
-   * @methodset Memory
-   */
+  /// Overridden operator delete.
+  /// \methodset Memory
   void operator delete(void* ptr);
 
-  /**
-   * Overridden operator delete.
-   * @methodset Memory
-   */
+  /// Overridden operator delete.
+  /// \methodset Memory
   void operator delete(void* ptr, void* placement);
 
-  /**
-   * Destructively convert to an fbstring.
-   *
-   * Destructively convert this IOBuf to a fbstring efficiently.
-   * We rely on fbstring's AcquireMallocatedString constructor to
-   * transfer memory.
-   *
-   * @methodset Conversions
-   */
-  fbstring moveToFbString();
+  /// Destructively convert to an string.
+  ///
+  /// Destructively convert this IOBuf to a string efficiently.
+  /// We rely on fbstring's AcquireMallocatedString constructor to
+  /// transfer memory.
+  ///
+  /// \methodset Conversions
+  std::string MoveToFbString();
 
-  /**
-   * Iterate over the IOBufs in this chain.
-   *
-   * The iterators dereference to a ByteRange.
-   *
-   * @methodset Iterators
-   */
+  /// Iterate over the IOBufs in this chain.
+  ///
+  /// The iterators dereference to a ByteRange.
+  ///
+  /// \methodset Iterators
   Iterator cbegin() const;
 
-  /// @copydoc cbegin()
+  /// \copydoc cbegin()
   Iterator cend() const;
 
-  /// @copydoc cbegin()
+  /// \copydoc cbegin()
   Iterator begin() const;
 
-  /// @copydoc cbegin()
+  /// \copydoc cbegin()
   Iterator end() const;
-
-  /**
-   * Create a new null buffer.
-   *
-   * This can be used to allocate an empty IOBuf on the stack.  It will have no
-   * space allocated for it.  This is generally useful only to later use move
-   * assignment to fill out the IOBuf.
-   */
-  IOBuf() noexcept;
-
-  /**
-   * Move constructor.
-   *
-   * In general, you should only ever move the head of an IOBuf chain.
-   * Internal nodes in an IOBuf chain are owned by the head of the chain, and
-   * should not be moved from.  (Technically, nothing prevents you from moving
-   * a non-head node, but the moved-to node will replace the moved-from node in
-   * the chain.  This has implications for ownership, since non-head nodes are
-   * owned by the chain head.  You are then responsible for relinquishing
-   * ownership of the moved-to node, and manually deleting the moved-from
-   * node.)
-   */
-  IOBuf(IOBuf&& other) noexcept;
-
-  /**
-   * Move assignment operator.
-   *
-   * With the assignment operator, the destination should be the head of an
-   * IOBuf chain or a solitary IOBuf not part of a chain.  If the destination is
-   * part of a chain, all other IOBufs in the chain will be deleted.
-   */
-  IOBuf& operator=(IOBuf&& other) noexcept;
-
-  /**
-   * Copy constructor.
-   *
-   * @see cloneAsValue()
-   */
-  IOBuf(const IOBuf& other);
-
-  /**
-   * Copy assignment operator.
-   *
-   * @copydetails operator=(IOBuf&&)
-   * @see cloneAsValue()
-   */
-  IOBuf& operator=(const IOBuf& other);
 
  private:
   /// A pointer to the start of the data referenced by this IOBuf and the length
@@ -1948,23 +1925,19 @@ class IOBuf {
   std::size_t capacity_{0};
   uint8_t* buf_{nullptr};
 
-  /*
-   * Links to the next and the previous IOBuf in this chain.
-   *
-   * The chain is circularly linked (the last element in the chain points back
-   * at the head), and next_ and prev_ can never be null.  If this IOBuf is the
-   * only element in the chain, next_ and prev_ will both point to this.
-   */
+  /// Links to the next and the previous IOBuf in this chain.
+  ///
+  /// The chain is circularly linked (the last element in the chain points back
+  /// at the head), and next_ and prev_ can never be null.  If this IOBuf is the
+  /// only element in the chain, next_ and prev_ will both point to this.
   IOBuf* next_{this};
   IOBuf* prev_{this};
 
-  // Pack flags in least significant 2 bits, sharedInfo in the rest.
+  /// Pack flags in least significant 2 bits, sharedInfo in the rest.
   uintptr_t flags_and_shared_info_{0};
 };
 
-/**
- * Hasher for IOBuf objects. Hashes the entire chain using SpookyHashV2.
- */
+/// Hasher for IOBuf objects. Hashes the entire chain using SpookyHashV2.
 struct IOBufHash {
   size_t operator()(const IOBuf& buf) const noexcept;
   size_t operator()(const std::unique_ptr<IOBuf>& buf) const noexcept {
@@ -1975,101 +1948,99 @@ struct IOBufHash {
   }
 };
 
-/**
- * Ordering for IOBuf objects. Compares data in the entire chain.
- */
+/// Ordering for IOBuf objects. Compares data in the entire chain.
 struct IOBufCompare {
-  ordering operator()(const IOBuf& a, const IOBuf& b) const {
-    return &a == &b ? ordering::eq : impl(a, b);
+  std::strong_ordering operator()(const IOBuf& a, const IOBuf& b) const {
+    return &a == &b ? std::strong_ordering::equal : impl(a, b);
   }
-  ordering operator()(const std::unique_ptr<IOBuf>& a,
-                      const std::unique_ptr<IOBuf>& b) const {
+
+  std::strong_ordering operator()(const std::unique_ptr<IOBuf>& a,
+                                  const std::unique_ptr<IOBuf>& b) const {
     return operator()(a.get(), b.get());
   }
-  ordering operator()(const IOBuf* a, const IOBuf* b) const {
+
+  std::strong_ordering operator()(const IOBuf* a, const IOBuf* b) const {
     // clang-format off
     return
-        !a && !b ? ordering::eq :
-        !a && b ? ordering::lt :
-        a && !b ? ordering::gt :
+        !a && !b ? std::strong_ordering::equal :
+        !a && b ?  std::strong_ordering::less :
+        a && !b ?  std::strong_ordering::greater :
         operator()(*a, *b);
     // clang-format on
   }
 
  private:
-  ordering impl(IOBuf const& a, IOBuf const& b) const noexcept;
+  std::strong_ordering impl(IOBuf const& a, IOBuf const& b) const noexcept;
 };
 
-/**
- * Equality predicate for IOBuf objects. Compares data in the entire chain.
- */
-struct IOBufEqualTo : compare_equal_to<IOBufCompare> {};
-
-/**
- * Inequality predicate for IOBuf objects. Compares data in the entire chain.
- */
-struct IOBufNotEqualTo : compare_not_equal_to<IOBufCompare> {};
-
-/**
- * Less predicate for IOBuf objects. Compares data in the entire chain.
- */
-struct IOBufLess : compare_less<IOBufCompare> {};
-
-/**
- * At-most predicate for IOBuf objects. Compares data in the entire chain.
- */
-struct IOBufLessEqual : compare_less_equal<IOBufCompare> {};
-
-/**
- * Greater predicate for IOBuf objects. Compares data in the entire chain.
- */
-struct IOBufGreater : compare_greater<IOBufCompare> {};
-
-/**
- * At-least predicate for IOBuf objects. Compares data in the entire chain.
- */
-struct IOBufGreaterEqual : compare_greater_equal<IOBufCompare> {};
-
-template <class UniquePtr>
+template <typename UniquePtr>
 typename std::enable_if<detail::IsUniquePtrToSL<UniquePtr>::value,
                         std::unique_ptr<IOBuf>>::type
-IOBuf::takeOwnership(UniquePtr&& buf, size_t count) {
+IOBuf::TakeOwnership(UniquePtr&& buf, size_t count) {
   size_t size = count * sizeof(typename UniquePtr::element_type);
   auto deleter = new UniquePtrDeleter<UniquePtr>(buf.get_deleter());
-  return takeOwnership(buf.release(), size, &IOBuf::freeUniquePtrBuffer,
+
+  return TakeOwnership(buf.release(), size, &IOBuf::FreeUniquePtrBuffer,
                        deleter);
 }
 
-inline std::unique_ptr<IOBuf> IOBuf::copyBuffer(const void* data,
+inline std::unique_ptr<IOBuf> IOBuf::CopyBuffer(const void* data,
                                                 std::size_t size,
-                                                std::size_t headroom,
-                                                std::size_t minTailroom) {
+                                                std::size_t head_room,
+                                                std::size_t min_tail_room) {
   std::size_t capacity;
-  if (!folly::checked_add(&capacity, size, headroom, minTailroom)) {
-    throw_exception(std::length_error(""));
+
+  if (!kiwi::checked_add(&capacity, size, head_room, min_tail_room)) {
+    std::throw std::length_error("");
   }
-  std::unique_ptr<IOBuf> buf = create(capacity);
-  buf->advance(headroom);
+
+  std::unique_ptr<IOBuf> buf = Create(capacity);
+  buf->Advance(head_room);
+
   if (size != 0) {
-    memcpy(buf->writableData(), data, size);
+    memcpy(buf->WritableData(), data, size);
   }
-  buf->append(size);
+
+  buf->Append(size);
+
   return buf;
 }
 
-inline std::unique_ptr<IOBuf> IOBuf::copyBuffer(StringPiece buf,
-                                                std::size_t headroom,
-                                                std::size_t minTailroom) {
-  return copyBuffer(buf.data(), buf.size(), headroom, minTailroom);
+inline std::unique_ptr<IOBuf> IOBuf::CopyBuffer(Sstd::string_view buf,
+                                                std::size_t head_room,
+                                                std::size_t min_tail_room) {
+  return CopyBuffer(buf.data(), buf.size(), head_room, min_tail_room);
 }
 
-inline std::unique_ptr<IOBuf> IOBuf::maybeCopyBuffer(StringPiece buf,
-                                                     std::size_t headroom,
-                                                     std::size_t minTailroom) {
+inline std::unique_ptr<IOBuf> IOBuf::MaybeCopyBuffer(
+    std::string_view buf, std::size_t head_room, std::size_t min_tail_room) {
   if (buf.empty()) {
     return nullptr;
   }
-  return copyBuffer(buf.data(), buf.size(), headroom, minTailroom);
+
+  return CopyBuffer(buf.data(), buf.size(), head_room, min_tail_room);
+}
+
+template <class Container>
+void IOBuf::AppendTo(Container& container) const {
+  static_assert(
+      (std::is_same<typename Container::value_type, char>::value ||
+       std::is_same<typename Container::value_type, unsigned char>::value),
+      "Unsupported value type");
+
+  container.reserve(container.size() + ComputeChainDataLength());
+
+  for (auto data : *this) {
+    container.insert(container.end(), data.begin(), data.end());
+  }
+}
+
+template <typename Container>
+Container IOBuf::To() const {
+  Container result;
+  AppendTo(result);
+
+  return result;
 }
 
 class IOBuf::Iterator
@@ -2134,25 +2105,6 @@ class IOBuf::Iterator
 
 inline IOBuf::Iterator IOBuf::begin() const { return cbegin(); }
 inline IOBuf::Iterator IOBuf::end() const { return cend(); }
-
-template <class Container>
-void IOBuf::appendTo(Container& container) const {
-  static_assert(
-      (std::is_same<typename Container::value_type, char>::value ||
-       std::is_same<typename Container::value_type, unsigned char>::value),
-      "Unsupported value type");
-  container.reserve(container.size() + computeChainDataLength());
-  for (auto data : *this) {
-    container.insert(container.end(), data.begin(), data.end());
-  }
-}
-
-template <class Container>
-Container IOBuf::to() const {
-  Container result;
-  appendTo(result);
-  return result;
-}
 
 }  // namespace kiwi
 
