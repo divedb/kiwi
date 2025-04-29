@@ -18,12 +18,12 @@
 // See also:
 //   https://clang.llvm.org/docs/LanguageExtensions.html#has-attribute
 #if defined(__has_attribute)
-#define HAS_ATTRIBUTE(x) __has_attribute(x)
+#define KIWI_HAS_ATTRIBUTE(x) __has_attribute(x)
 #else
-#define HAS_ATTRIBUTE(x) 0
+#define KIWI_HAS_ATTRIBUTE(x) 0
 #endif
 
-// A wrapper around `__has_builtin`, similar to `HAS_ATTRIBUTE()`.
+// A wrapper around `__has_builtin`, similar to `KIWI_HAS_ATTRIBUTE()`.
 //
 // See also:
 //   https://clang.llvm.org/docs/LanguageExtensions.html#has-builtin
@@ -33,14 +33,14 @@
 #define HAS_BUILTIN(x) 0
 #endif
 
-// A wrapper around `__has_feature`, similar to `HAS_ATTRIBUTE()`.
+// A wrapper around `__has_feature`, similar to `KIWI_HAS_ATTRIBUTE()`.
 //
 // See also:
 //   https://clang.llvm.org/docs/LanguageExtensions.html#has-feature-and-has-extension
 #if defined(__has_feature)
-#define HAS_FEATURE(FEATURE) __has_feature(FEATURE)
+#define KIWI_HAS_FEATURE(FEATURE) __has_feature(FEATURE)
 #else
-#define HAS_FEATURE(FEATURE) 0
+#define KIWI_HAS_FEATURE(FEATURE) 0
 #endif
 
 // Annotates a function indicating it should not be inlined.
@@ -54,18 +54,18 @@
 //
 // Usage:
 // ```
-//   NOINLINE void Func() {
+//   KIWI_NOINLINE void Func() {
 //     // This body will not be inlined into callers.
 //   }
 // ```
 #if __has_cpp_attribute(clang::noinline)
-#define NOINLINE [[clang::noinline]]
+#define KIWI_NOINLINE [[clang::noinline]]
 #elif __has_cpp_attribute(gnu::noinline)
-#define NOINLINE [[gnu::noinline]]
+#define KIWI_NOINLINE [[gnu::noinline]]
 #elif __has_cpp_attribute(msvc::noinline)
-#define NOINLINE [[msvc::noinline]]
+#define KIWI_NOINLINE [[msvc::noinline]]
 #else
-#define NOINLINE
+#define KIWI_NOINLINE
 #endif
 
 // Annotates a call site indicating that the callee should not be inlined.
@@ -113,25 +113,41 @@
 //
 // Usage:
 // ```
-//   ALWAYS_INLINE void Func() {
+//   KIWI_ALWAYS_INLINE void Func() {
 //     // This body will be inlined into callers whenever possible.
 //   }
 // ```
 //
-// Since `ALWAYS_INLINE` is performance-oriented but can hamper debugging,
+// Since `KIWI_ALWAYS_INLINE` is performance-oriented but can hamper debugging,
 // ignore it in debug mode.
 #if defined(NDEBUG)
 #if __has_cpp_attribute(clang::always_inline)
-#define ALWAYS_INLINE [[clang::always_inline]] inline
+#define KIWI_ALWAYS_INLINE [[clang::always_inline]] inline
 #elif __has_cpp_attribute(gnu::always_inline)
-#define ALWAYS_INLINE [[gnu::always_inline]] inline
+#define KIWI_ALWAYS_INLINE [[gnu::always_inline]] inline
 #elif defined(COMPILER_MSVC)
-#define ALWAYS_INLINE __forceinline
+#define KIWI_ALWAYS_INLINE __forceinline
 #endif
 #endif
-#if !defined(ALWAYS_INLINE)
-#define ALWAYS_INLINE inline
+#if !defined(KIWI_ALWAYS_INLINE)
+#define KIWI_ALWAYS_INLINE inline
 #endif
+
+// Attribute hidden.
+#if defined(_MSC_VER)
+#define KIWI_ATTR_VISIBILITY_HIDDEN
+#elif defined(__GNUC__)
+#define KIWI_ATTR_VISIBILITY_HIDDEN __attribute__((__visibility__("hidden")))
+#else
+#define KIWI_ATTR_VISIBILITY_HIDDEN
+#endif
+
+// A conceptual attribute/syntax combo for erasing a function from the build
+// artifacts and forcing all call-sites to inline the callee, at least as far
+// as each compiler supports.
+//
+// Semantically includes the inline specifier.
+#define KIWI_ERASE KIWI_ALWAYS_INLINE KIWI_ATTR_VISIBILITY_HIDDEN
 
 // Annotates a call site indicating the calee should always be inlined.
 //
@@ -491,7 +507,7 @@
 // ```
 #if defined(__clang_analyzer__)
 inline constexpr bool AnalyzerNoReturn()
-#if HAS_ATTRIBUTE(analyzer_noreturn)
+#if KIWI_HAS_ATTRIBUTE(analyzer_noreturn)
     __attribute__((analyzer_noreturn))
 #endif
 {
@@ -734,6 +750,16 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 #define PRESERVE_MOST
 #endif
 
+// "Cold" indicates to the compiler that a function is only expected to be
+// called from unlikely code paths. It can affect decisions made by the
+// optimizer both when processing the function body and when analyzing
+// call-sites.
+#if __has_cpp_attribute(gnu::cold)
+#define KIWI_ATTR_GNU_COLD gnu::cold
+#else
+#define KIWI_ATTR_GNU_COLD
+#endif
+
 // Annotates a pointer or reference parameter or return value for a member
 // function as having lifetime intertwined with the instance on which the
 // function is called. For parameters, the function is assumed to store the
@@ -749,8 +775,8 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 // Usage:
 // ```
 //   struct S {
-//      S(int* p LIFETIME_BOUND);
-//      int* Get() LIFETIME_BOUND;
+//      S(int* p KIWI_LIFETIME_BOUND);
+//      int* Get() KIWI_LIFETIME_BOUND;
 //   };
 //   S Func1() {
 //     int i = 0;
@@ -765,9 +791,9 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 //   }
 // ```
 #if __has_cpp_attribute(clang::lifetimebound)
-#define LIFETIME_BOUND [[clang::lifetimebound]]
+#define KIWI_LIFETIME_BOUND [[clang::lifetimebound]]
 #else
-#define LIFETIME_BOUND
+#define KIWI_LIFETIME_BOUND
 #endif
 
 // Annotates a function or variable to indicate that it should have weak
@@ -1109,7 +1135,7 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 //     WithEnableIf(i);
 //   }
 // ```
-#if HAS_ATTRIBUTE(enable_if)
+#if KIWI_HAS_ATTRIBUTE(enable_if)
 #define ENABLE_IF_ATTR(cond, msg) __attribute__((enable_if(cond, msg)))
 #else
 #define ENABLE_IF_ATTR(cond, msg)
@@ -1160,4 +1186,24 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 #define KIWI_GCC_DISABLE_WARNING(warning_name)
 #define KIWI_CLANG_DISABLE_WARNING(warning_name)
 #define KIWI_MSVC_DISABLE_WARNING(warning_number)
+#endif
+
+// Define KIWI_HAS_EXCEPTIONS
+#if (defined(__cpp_exceptions) && __cpp_exceptions >= 199711) || \
+    KIWI_HAS_FEATURE(cxx_exceptions)
+#define KIWI_HAS_EXCEPTIONS 1
+#elif __GNUC__
+#if defined(__EXCEPTIONS) && __EXCEPTIONS
+#define KIWI_HAS_EXCEPTIONS 1
+#else  // __EXCEPTIONS
+#define KIWI_HAS_EXCEPTIONS 0
+#endif  // __EXCEPTIONS
+#elif FOLLY_MICROSOFT_ABI_VER
+#if _CPPUNWIND
+#define KIWI_HAS_EXCEPTIONS 1
+#else  // _CPPUNWIND
+#define KIWI_HAS_EXCEPTIONS 0
+#endif  // _CPPUNWIND
+#else
+#define KIWI_HAS_EXCEPTIONS 1  // default assumption for unknown platforms
 #endif

@@ -20,15 +20,6 @@
 
 #include "kiwi/io/iobuf.hh"
 
-#include <folly/Conv.h>
-#include <folly/ScopeGuard.h>
-#include <folly/hash/SpookyHashV2.h>
-#include <folly/io/Cursor.h>
-#include <folly/lang/Align.h>
-#include <folly/lang/Exception.h>
-#include <folly/memory/Malloc.h>
-#include <folly/memory/SanitizeAddress.h>
-
 #include <cstdint>
 #include <cstdlib>
 #include <stdexcept>
@@ -144,25 +135,26 @@ struct alignas(std::max_align_t) IOBuf::HeapFullStorage {
 };
 
 IOBuf::SharedInfo::SharedInfo()
-    : freeFn(nullptr), userData(nullptr), useHeapFullStorage(false) {
+    : free_fn(nullptr), user_data(nullptr), use_heap_full_storage(false) {
   // Use relaxed memory ordering here.  Since we are creating a new SharedInfo,
   // no other threads should be referring to it yet.
   refcount.store(1, std::memory_order_relaxed);
 }
 
 IOBuf::SharedInfo::SharedInfo(FreeFunction fn, void* arg, bool hfs)
-    : freeFn(fn), userData(arg), useHeapFullStorage(hfs) {
+    : free_fn(fn), user_data(arg), use_heap_full_storage(hfs) {
   // Use relaxed memory ordering here.  Since we are creating a new SharedInfo,
   // no other threads should be referring to it yet.
   refcount.store(1, std::memory_order_relaxed);
 }
 
-void IOBuf::SharedInfo::invokeAndDeleteEachObserver(
-    SharedInfoObserverEntryBase* observerListHead, ObserverCb cb) noexcept {
-  if (observerListHead && cb) {
-    // break the chain
-    observerListHead->prev->next = nullptr;
-    auto entry = observerListHead;
+void IOBuf::SharedInfo::InvokeAndDeleteEachObserver(
+    SharedInfoObserverEntryBase* observer_list_head, ObserverCb cb) noexcept {
+  if (observer_list_head && cb) {
+    // Break the chain.
+    observer_list_head->prev->next = nullptr;
+    auto entry = observer_list_head;
+
     while (entry) {
       auto tmp = entry->next;
       cb(*entry);
@@ -172,13 +164,13 @@ void IOBuf::SharedInfo::invokeAndDeleteEachObserver(
   }
 }
 
-void IOBuf::SharedInfo::releaseStorage(SharedInfo* info) noexcept {
-  if (info->useHeapFullStorage) {
-    auto storageAddr =
+void IOBuf::SharedInfo::ReleaseStorage(SharedInfo* info) noexcept {
+  if (info->use_heap_full_storage) {
+    auto storage_addr =
         reinterpret_cast<uint8_t*>(info) - offsetof(HeapFullStorage, shared);
-    auto storage = reinterpret_cast<HeapFullStorage*>(storageAddr);
+    auto storage = reinterpret_cast<HeapFullStorage*>(storage_addr);
     info->~SharedInfo();
-    IOBuf::releaseStorage(&storage->hs, kSharedInfoInUse);
+    IOBuf::ReleaseStorage(&storage->hs, kSharedInfoInUse);
   }
 }
 
@@ -186,13 +178,13 @@ void* IOBuf::operator new(size_t size) {
   if (size > kMaxIOBufSize) {
     throw_exception<std::bad_alloc>();
   }
-  size_t fullSize = offsetof(HeapStorage, buf) + size;
-  auto storage = static_cast<HeapStorage*>(checkedMalloc(fullSize));
 
-  new (&storage->prefix) HeapPrefix(kIOBufInUse, fullSize);
+  size_t full_size = offsetof(HeapStorage, buf) + size;
+  auto storage = static_cast<HeapStorage*>(checked_malloc(full_size));
+  new (&storage->prefix) HeapPrefix(kIOBufInUse, full_size);
 
   if (io_buf_alloc_cb) {
-    io_buf_alloc_cb(storage, fullSize);
+    io_buf_alloc_cb(storage, full_size);
   }
 
   return &(storage->buf);
@@ -201,9 +193,10 @@ void* IOBuf::operator new(size_t size) {
 void* IOBuf::operator new(size_t /* size */, void* ptr) { return ptr; }
 
 void IOBuf::operator delete(void* ptr) {
-  auto storageAddr = static_cast<uint8_t*>(ptr) - offsetof(HeapStorage, buf);
-  auto storage = reinterpret_cast<HeapStorage*>(storageAddr);
-  releaseStorage(storage, kIOBufInUse);
+  auto storage_addr = static_cast<uint8_t*>(ptr) - offsetof(HeapStorage, buf);
+  auto storage = reinterpret_cast<HeapStorage*>(storage_addr);
+
+  ReleaseStorage(storage, kIOBufInUse);
 }
 
 void IOBuf::operator delete(void* /* ptr */, void* /* placement */) {
@@ -212,7 +205,7 @@ void IOBuf::operator delete(void* /* ptr */, void* /* placement */) {
   // constructor.
 }
 
-void IOBuf::releaseStorage(HeapStorage* storage, uint16_t freeFlags) noexcept {
+void IOBuf::ReleaseStorage(HeapStorage* storage, uint16_t free_flags) noexcept {
   CHECK_EQ(storage->prefix.magic, static_cast<uint16_t>(kHeapMagic));
 
   // This function is effectively used as a memory barrier.  Logically, we can
@@ -225,20 +218,22 @@ void IOBuf::releaseStorage(HeapStorage* storage, uint16_t freeFlags) noexcept {
   DCHECK_EQ((flags & freeFlags), freeFlags);
 
   while (true) {
-    auto newFlags = uint16_t(flags & ~freeFlags);
-    if (newFlags == 0) {
-      // save the size
+    auto new_flags = uint16_t(flags & ~free_flags);
+
+    if (new_flags == 0) {
+      // Save the size.
       size_t size = storage->prefix.size;
       // The storage space is now unused.  Free it.
       storage->prefix.HeapPrefix::~HeapPrefix();
-      if (FOLLY_LIKELY(size)) {
+
+      if (size) [[likely]] {
         if (io_buf_free_cb) {
           io_buf_free_cb(storage, size);
         }
-        sizedFree(storage, size);
-      } else {
-        free(storage);
       }
+
+      free(storage);
+
       return;
     }
 
@@ -246,6 +241,7 @@ void IOBuf::releaseStorage(HeapStorage* storage, uint16_t freeFlags) noexcept {
     // Just clear the flags specified in freeFlags for now.
     auto ret = storage->prefix.flags.compare_exchange_weak(
         flags, newFlags, std::memory_order_acq_rel);
+
     if (ret) {
       // We successfully updated the flags.
       return;
@@ -257,9 +253,10 @@ void IOBuf::releaseStorage(HeapStorage* storage, uint16_t freeFlags) noexcept {
   }
 }
 
-void IOBuf::freeInternalBuf(void* /* buf */, void* userData) noexcept {
-  auto storage = static_cast<HeapStorage*>(userData);
-  releaseStorage(storage, kDataInUse);
+void IOBuf::FreeInternalBuf(void* /* buf */, void* user_data) noexcept {
+  auto storage = static_cast<HeapStorage*>(user_data);
+
+  ReleaseStorage(storage, kDataInUse);
 }
 
 IOBuf::IOBuf(CreateOp, std::size_t capacity)

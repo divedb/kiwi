@@ -272,8 +272,8 @@ class ScopedGeneric {
     return data_.generic != value;
   }
 
-  Traits& get_traits() LIFETIME_BOUND { return data_; }
-  const Traits& get_traits() const LIFETIME_BOUND { return data_; }
+  Traits& get_traits() KIWI_LIFETIME_BOUND { return data_; }
+  const Traits& get_traits() const KIWI_LIFETIME_BOUND { return data_; }
 
  private:
   void FreeIfNecessary() {

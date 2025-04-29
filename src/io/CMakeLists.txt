@@ -6,6 +6,7 @@ HDRS
 SRCS
     "file.cc"
     "file_path.cc"
+    "iobuf.cc"
     "safe_base_name.cc"
 COPTS
     ${KIWI_LIB_COPTS}

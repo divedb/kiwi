@@ -499,8 +499,8 @@ class GSL_POINTER span {
 
   // Array of size `extent`.
   // NOLINTNEXTLINE(google-explicit-constructor)
-  constexpr span(
-      std::type_identity_t<element_type> (&arr LIFETIME_BOUND)[extent]) noexcept
+  constexpr span(std::type_identity_t<element_type> (
+      &arr KIWI_LIFETIME_BOUND)[extent]) noexcept
       // SAFETY: The type signature guarantees `arr` contains `extent` elements.
       : UNSAFE_BUFFERS(span(arr, extent)) {}
 
@@ -509,7 +509,7 @@ class GSL_POINTER span {
     requires(internal::CompatibleRange<element_type, R> &&
              internal::FixedExtentConstructibleFromExtent<extent, N>)
   // NOLINTNEXTLINE(google-explicit-constructor)
-  constexpr explicit(N != extent) span(R&& range LIFETIME_BOUND)
+  constexpr explicit(N != extent) span(R&& range KIWI_LIFETIME_BOUND)
       // SAFETY: `std::ranges::size()` returns the number of elements
       // `std::ranges::data()` will point to, so accessing those elements will
       // be safe.
@@ -529,7 +529,8 @@ class GSL_POINTER span {
 
   // Initializer list.
   // NOLINTNEXTLINE(google-explicit-constructor)
-  constexpr explicit span(std::initializer_list<value_type> il LIFETIME_BOUND)
+  constexpr explicit span(
+      std::initializer_list<value_type> il KIWI_LIFETIME_BOUND)
     requires(std::is_const_v<element_type>)
       // SAFETY: `size()` is exactly the number of elements in the initializer
       // list, so accessing that many will be safe.
@@ -990,7 +991,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   template <size_t N>
   // NOLINTNEXTLINE(google-explicit-constructor)
   constexpr span(
-      std::type_identity_t<element_type> (&arr LIFETIME_BOUND)[N]) noexcept
+      std::type_identity_t<element_type> (&arr KIWI_LIFETIME_BOUND)[N]) noexcept
       // SAFETY: The type signature guarantees `arr` contains `N` elements.
       : UNSAFE_BUFFERS(span(arr, N)) {}
 
@@ -998,7 +999,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
   template <typename R>
     requires(internal::CompatibleRange<element_type, R>)
   // NOLINTNEXTLINE(google-explicit-constructor)
-  constexpr span(R&& range LIFETIME_BOUND)
+  constexpr span(R&& range KIWI_LIFETIME_BOUND)
       // SAFETY: `std::ranges::size()` returns the number of elements
       // `std::ranges::data()` will point to, so accessing those elements will
       // be safe.
@@ -1016,7 +1017,7 @@ class GSL_POINTER span<ElementType, dynamic_extent, InternalPtrType> {
             span(std::ranges::data(range), std::ranges::size(range))) {}
 
   // Initializer list.
-  constexpr span(std::initializer_list<value_type> il LIFETIME_BOUND)
+  constexpr span(std::initializer_list<value_type> il KIWI_LIFETIME_BOUND)
     requires(std::is_const_v<element_type>)
       // SAFETY: `size()` is exactly the number of elements in the initializer
       // list, so accessing that many will be safe.
@@ -1550,13 +1551,13 @@ constexpr void PrintTo(span<ElementType, Extent, InternalPtrType> s,
 //
 // (Not in `std::`; inspired by Rust's `slice::from_ref()`.)
 template <typename T>
-constexpr auto span_from_ref(const T& t LIFETIME_BOUND) {
+constexpr auto span_from_ref(const T& t KIWI_LIFETIME_BOUND) {
   // SAFETY: It's safe to read the memory at `t`'s address as long as the
   // provided reference is valid.
   return UNSAFE_BUFFERS(span<const T, 1>(std::addressof(t), 1u));
 }
 template <typename T>
-constexpr auto span_from_ref(T& t LIFETIME_BOUND) {
+constexpr auto span_from_ref(T& t KIWI_LIFETIME_BOUND) {
   // SAFETY: It's safe to read the memory at `t`'s address as long as the
   // provided reference is valid.
   return UNSAFE_BUFFERS(span<T, 1>(std::addressof(t), 1u));
@@ -1567,23 +1568,24 @@ constexpr auto span_from_ref(T& t LIFETIME_BOUND) {
 // (Not in `std::`.)
 template <typename T>
   requires(internal::CanSafelyConvertToByteSpan<T>)
-constexpr auto byte_span_from_ref(const T& t LIFETIME_BOUND) {
+constexpr auto byte_span_from_ref(const T& t KIWI_LIFETIME_BOUND) {
   return as_bytes(span_from_ref(t));
 }
 template <typename T>
   requires(internal::CanSafelyConvertNonUniqueToByteSpan<T>)
 constexpr auto byte_span_from_ref(allow_nonunique_obj_t,
-                                  const T& t LIFETIME_BOUND) {
+                                  const T& t KIWI_LIFETIME_BOUND) {
   return as_bytes(allow_nonunique_obj, span_from_ref(t));
 }
 template <typename T>
   requires(internal::CanSafelyConvertToByteSpan<T>)
-constexpr auto byte_span_from_ref(T& t LIFETIME_BOUND) {
+constexpr auto byte_span_from_ref(T& t KIWI_LIFETIME_BOUND) {
   return as_writable_bytes(span_from_ref(t));
 }
 template <typename T>
   requires(internal::CanSafelyConvertNonUniqueToByteSpan<T>)
-constexpr auto byte_span_from_ref(allow_nonunique_obj_t, T& t LIFETIME_BOUND) {
+constexpr auto byte_span_from_ref(allow_nonunique_obj_t,
+                                  T& t KIWI_LIFETIME_BOUND) {
   return as_writable_bytes(allow_nonunique_obj, span_from_ref(t));
 }
 
@@ -1596,7 +1598,7 @@ constexpr auto byte_span_from_ref(allow_nonunique_obj_t, T& t LIFETIME_BOUND) {
 // (Not in `std::`; useful when reading and writing character subsequences in
 // larger files.)
 template <typename CharT, size_t Extent>
-constexpr auto span_from_cstring(const CharT (&str LIFETIME_BOUND)[Extent])
+constexpr auto span_from_cstring(const CharT (&str KIWI_LIFETIME_BOUND)[Extent])
     ENABLE_IF_ATTR(str[Extent - 1u] == CharT{0},
                    "requires string literal as input") {
   return span(str).template first<Extent - 1>();
@@ -1608,7 +1610,7 @@ constexpr auto span_from_cstring(const CharT (&str LIFETIME_BOUND)[Extent])
 // (Not in `std::`; identical to constructor behavior, but more explicit.)
 template <typename CharT, size_t Extent>
 constexpr auto span_with_nul_from_cstring(
-    const CharT (&str LIFETIME_BOUND)[Extent])
+    const CharT (&str KIWI_LIFETIME_BOUND)[Extent])
     ENABLE_IF_ATTR(str[Extent - 1u] == CharT{0},
                    "requires string literal as input") {
   return span(str);
@@ -1629,7 +1631,8 @@ constexpr auto span_with_nul_from_cstring_view(basic_cstring_view<CharT> str) {
 //
 // (Not in `std::`.)
 template <typename CharT, size_t Extent>
-constexpr auto byte_span_from_cstring(const CharT (&str LIFETIME_BOUND)[Extent])
+constexpr auto byte_span_from_cstring(
+    const CharT (&str KIWI_LIFETIME_BOUND)[Extent])
     ENABLE_IF_ATTR(str[Extent - 1u] == CharT{0},
                    "requires string literal as input") {
   // Cannot call `span_from_cstring()` here, since the array contents do not
@@ -1643,7 +1646,7 @@ constexpr auto byte_span_from_cstring(const CharT (&str LIFETIME_BOUND)[Extent])
 // (Not in `std::`.)
 template <typename CharT, size_t Extent>
 constexpr auto byte_span_with_nul_from_cstring(
-    const CharT (&str LIFETIME_BOUND)[Extent])
+    const CharT (&str KIWI_LIFETIME_BOUND)[Extent])
     ENABLE_IF_ATTR(str[Extent - 1u] == CharT{0},
                    "requires string literal as input") {
   // Cannot call `span_with_nul_from_cstring()` here, since the array contents
@@ -1667,12 +1670,13 @@ constexpr auto byte_span_with_nul_from_cstring_view(
 // (Not in `std::`.)
 template <int&... ExplicitArgumentBarrier, typename T>
   requires(internal::ByteSpanConstructibleFrom<const T&>)
-constexpr auto as_byte_span(const T& t LIFETIME_BOUND) {
+constexpr auto as_byte_span(const T& t KIWI_LIFETIME_BOUND) {
   return as_bytes(span(t));
 }
 template <int&... ExplicitArgumentBarrier, typename T>
   requires(internal::ByteSpanConstructibleFromNonUnique<const T&>)
-constexpr auto as_byte_span(allow_nonunique_obj_t, const T& t LIFETIME_BOUND) {
+constexpr auto as_byte_span(allow_nonunique_obj_t,
+                            const T& t KIWI_LIFETIME_BOUND) {
   return as_bytes(allow_nonunique_obj, span(t));
 }
 template <int&... ExplicitArgumentBarrier, typename T>
@@ -1692,13 +1696,15 @@ constexpr auto as_byte_span(allow_nonunique_obj_t, const T& t) {
 // parameter.
 template <int&... ExplicitArgumentBarrier, typename ElementType, size_t Extent>
   requires(internal::CanSafelyConvertToByteSpan<ElementType>)
-constexpr auto as_byte_span(const ElementType (&arr LIFETIME_BOUND)[Extent]) {
+constexpr auto as_byte_span(
+    const ElementType (&arr KIWI_LIFETIME_BOUND)[Extent]) {
   return as_bytes(span<const ElementType, Extent>(arr));
 }
 template <int&... ExplicitArgumentBarrier, typename ElementType, size_t Extent>
   requires(internal::CanSafelyConvertNonUniqueToByteSpan<ElementType>)
-constexpr auto as_byte_span(allow_nonunique_obj_t,
-                            const ElementType (&arr LIFETIME_BOUND)[Extent]) {
+constexpr auto as_byte_span(
+    allow_nonunique_obj_t,
+    const ElementType (&arr KIWI_LIFETIME_BOUND)[Extent]) {
   return as_bytes(allow_nonunique_obj, span<const ElementType, Extent>(arr));
 }
 template <int&... ExplicitArgumentBarrier, typename T>
@@ -1720,14 +1726,14 @@ template <int&... ExplicitArgumentBarrier, typename ElementType, size_t Extent>
   requires(internal::CanSafelyConvertToByteSpan<ElementType> &&
            !std::is_const_v<ElementType>)
 constexpr auto as_writable_byte_span(
-    ElementType (&arr LIFETIME_BOUND)[Extent]) {
+    ElementType (&arr KIWI_LIFETIME_BOUND)[Extent]) {
   return as_writable_bytes(span<ElementType, Extent>(arr));
 }
 template <int&... ExplicitArgumentBarrier, typename ElementType, size_t Extent>
   requires(internal::CanSafelyConvertNonUniqueToByteSpan<ElementType> &&
            !std::is_const_v<ElementType>)
 constexpr auto as_writable_byte_span(
-    allow_nonunique_obj_t, ElementType (&arr LIFETIME_BOUND)[Extent]) {
+    allow_nonunique_obj_t, ElementType (&arr KIWI_LIFETIME_BOUND)[Extent]) {
   return as_writable_bytes(allow_nonunique_obj, span<ElementType, Extent>(arr));
 }
 

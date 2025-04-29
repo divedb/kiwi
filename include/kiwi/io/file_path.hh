@@ -331,7 +331,7 @@ class BASE_EXPORT FilePath {
   auto operator<=>(const FilePath& that) const = default;
 
   /// \return A const reference to the underlying path string.
-  const StringType& value() const LIFETIME_BOUND { return path_; }
+  const StringType& value() const KIWI_LIFETIME_BOUND { return path_; }
 
   /// \return True if the path string is empty, otherwise false.
   [[nodiscard]] bool empty() const { return path_.empty(); }

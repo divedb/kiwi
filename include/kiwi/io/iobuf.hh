@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include <folly/synchronization/MicroSpinLock.h>
 #include <glog/logging.h>
 
 #include <atomic>
@@ -32,10 +31,13 @@
 #include <iterator>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <type_traits>
 #include <vector>
 
+#include "kiwi/common/exception.hh"
+#include "kiwi/common/function_ref.hh"
 #include "kiwi/common/iterators.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/portability/compiler_specific.hh"
@@ -400,7 +402,7 @@ class IOBuf {
   };
 
   struct SharedInfo {
-    using ObserverCb = folly::FunctionRef<void(SharedInfoObserverEntryBase&)>;
+    using ObserverCb = function_ref<void(SharedInfoObserverEntryBase&)>;
 
     static void ReleaseStorage(SharedInfo* info) noexcept;
     static void InvokeAndDeleteEachObserver(
@@ -418,7 +420,7 @@ class IOBuf {
     std::atomic<uint32_t> refcount;
     bool externally_shared{false};
     bool use_heap_full_storage{false};
-    MicroSpinLock observer_list_lock{0};
+    std::mutex observer_list_lock{0};
   };
 
   /// Helper structs for use by operator new and delete.
@@ -1431,7 +1433,7 @@ class IOBuf {
 
     auto* entry =
         new SharedInfoObserverEntry<Observer>(std::forward<Observer>(observer));
-    std::lock_guard<MicroSpinLock> guard(info->observer_list_lock);
+    std::lock_guard<std::mutex> guard(info->observer_list_lock);
 
     if (!info->observer_list_head) {
       info->observer_list_head = entry;
@@ -1991,7 +1993,7 @@ inline std::unique_ptr<IOBuf> IOBuf::CopyBuffer(const void* data,
   std::size_t capacity;
 
   if (!kiwi::checked_add(&capacity, size, head_room, min_tail_room)) {
-    std::throw std::length_error("");
+    throw_exception(std::length_error(""));
   }
 
   std::unique_ptr<IOBuf> buf = Create(capacity);
@@ -2107,4 +2109,4 @@ inline IOBuf::Iterator IOBuf::end() const { return cend(); }
 
 }  // namespace kiwi
 
-FOLLY_POP_WARNING
+KIWI_POP_WARNING

@@ -655,7 +655,7 @@ BASE_EXPORT std::u16string ReplaceStringPlaceholders(
 // preserves internal NUL characters.
 template <class CharT, size_t N>
 std::basic_string_view<CharT> MakeStringViewWithNulChars(
-    const CharT (&lit LIFETIME_BOUND)[N])
+    const CharT (&lit KIWI_LIFETIME_BOUND)[N])
     ENABLE_IF_ATTR(lit[N - 1u] == CharT{0},
                    "requires string literal as input") {
   return std::basic_string_view<CharT>(lit, N - 1u);

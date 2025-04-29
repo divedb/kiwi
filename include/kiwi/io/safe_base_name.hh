@@ -57,7 +57,7 @@ class BASE_EXPORT SafeBaseName {
   const std::string AsUTF8Unsafe() const { return path_.AsUTF8Unsafe(); }
 
   /// \return A const reference to the internal platform-native string value.
-  const FilePath::StringType& value() const LIFETIME_BOUND {
+  const FilePath::StringType& value() const KIWI_LIFETIME_BOUND {
     return path_.value();
   }
 

@@ -79,7 +79,8 @@ class basic_cstring_view final {
   // ```
   template <int&..., size_t M>
   // NOLINTNEXTLINE(google-explicit-constructor)
-  constexpr basic_cstring_view(const Char (&lit LIFETIME_BOUND)[M]) noexcept
+  constexpr basic_cstring_view(
+      const Char (&lit KIWI_LIFETIME_BOUND)[M]) noexcept
       ENABLE_IF_ATTR(lit[M - 1u] == Char{0}, "requires string literal as input")
       : ptr_(lit), len_(std::char_traits<Char>::length(lit)) {
     // For non-clang compilers. On clang, the function is not even callable
@@ -116,7 +117,7 @@ class basic_cstring_view final {
   // deleted overload receiving `std::string`.
   template <std::same_as<std::basic_string<Char>> String>
   // NOLINTNEXTLINE(google-explicit-constructor)
-  constexpr basic_cstring_view(const String& s LIFETIME_BOUND) noexcept
+  constexpr basic_cstring_view(const String& s KIWI_LIFETIME_BOUND) noexcept
       : ptr_(s.c_str()), len_(s.size()) {}
 
   // Unsafe construction from a NUL-terminated cstring, primarily for use with C
@@ -135,7 +136,7 @@ class basic_cstring_view final {
     requires(std::same_as<std::remove_cvref_t<String>, Char*> ||
              std::same_as<std::remove_cvref_t<String>, const Char*>)
   UNSAFE_BUFFER_USAGE explicit constexpr basic_cstring_view(
-      String&& ptr LIFETIME_BOUND) noexcept
+      String&& ptr KIWI_LIFETIME_BOUND) noexcept
       : ptr_(ptr), len_(std::char_traits<Char>::length(ptr)) {}
 
   // Unsafe construction from a NUL-terminated pointer and length. This allows
@@ -148,7 +149,7 @@ class basic_cstring_view final {
   // * The `len` must be valid such that `ptr + len` gives a pointer to the
   //   terminating NUL and is in the same allocation as `ptr`.
   UNSAFE_BUFFER_USAGE explicit constexpr basic_cstring_view(
-      const Char* ptr LIFETIME_BOUND, size_t len)
+      const Char* ptr KIWI_LIFETIME_BOUND, size_t len)
       : ptr_(ptr), len_(len) {
     // This method is marked UNSAFE_BUFFER_USAGE so we are trusting the caller
     // to do things right, and expecting strong scrutiny at the call site, but
