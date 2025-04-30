@@ -1062,12 +1062,10 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 // Disabling `clang-format` allows each `_Pragma` to be on its own line, as
 // recommended by https://gcc.gnu.org/onlinedocs/cpp/Pragmas.html.
 // clang-format off
-// #define UNSAFE_BUFFERS(...)                  \
-//   _Pragma("clang unsafe_buffer_usage begin") \
-//   __VA_ARGS__                                \
-//   _Pragma("clang unsafe_buffer_usage end")
-
-// TODO(gc): unknown pragma, modify later.
+#define UNSAFE_BUFFERS(...)                  \
+  #pragma clang unsafe_buffer_usage begin    \
+  __VA_ARGS__                                \
+  #pragma clang unsafe_buffer_usage end
 #define UNSAFE_BUFFERS(...) __VA_ARGS__
 // clang-format on
 #else

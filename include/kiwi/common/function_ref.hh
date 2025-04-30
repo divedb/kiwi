@@ -47,7 +47,7 @@ class function_ref<Ret(Params...)> {
   function_ref(
       Callable&& callable KIWI_LIFETIME_BOUND,
       // This is not the copy-constructor.
-      std::enable_if_t<!std::is_same<remove_cvref_t<Callable>,
+      std::enable_if_t<!std::is_same<std::remove_cvref_t<Callable>,
                                      function_ref>::value>* = nullptr,
       // Functor must be callable and return a suitable type.
       std::enable_if_t<std::is_void<Ret>::value ||

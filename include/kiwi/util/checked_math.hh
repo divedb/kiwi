@@ -106,7 +106,7 @@ std::enable_if_t<sizeof(T) == sizeof(uint64_t), bool> generic_checked_mul(
 
   uint64_t mid_bits1 = lhs_low * rhs_high;
 
-  if (mid_bits1 >> halfBits != 0) [[unlikely]] {
+  if (mid_bits1 >> half_bits != 0) [[unlikely]] {
     *result = {};
 
     return false;
@@ -114,7 +114,7 @@ std::enable_if_t<sizeof(T) == sizeof(uint64_t), bool> generic_checked_mul(
 
   uint64_t mid_bits2 = lhs_high * rhs_low;
 
-  if (mid_bits2 >> halfBits != 0) [[unlikely]] {
+  if (mid_bits2 >> half_bits != 0) [[unlikely]] {
     *result = {};
 
     return false;
@@ -122,7 +122,7 @@ std::enable_if_t<sizeof(T) == sizeof(uint64_t), bool> generic_checked_mul(
 
   uint64_t mid_bits = mid_bits1 + mid_bits2;
 
-  if (mid_bits >> halfBits != 0) [[unlikely]] {
+  if (mid_bits >> half_bits != 0) [[unlikely]] {
     *result = {};
 
     return false;
@@ -299,4 +299,5 @@ bool checked_add(T* result, T a, T2 b) {
 
   return ret;
 }
+
 }  // namespace kiwi

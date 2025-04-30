@@ -40,7 +40,7 @@ struct throw_exception_arg_array_ {
 
 struct throw_exception_arg_trivial_ {
   template <typename R>
-  using apply = remove_cvref_t<R>;
+  using apply = std::remove_cvref_t<R>;
 };
 
 struct throw_exception_arg_base_ {
@@ -53,7 +53,7 @@ using throw_exception_arg_ =  //
     std::conditional_t<
         std::is_array<std::remove_reference_t<R>>::value,
         throw_exception_arg_array_,
-        std::conditional_t<std::is_trivially_copyable_v<remove_cvref_t<R>>,
+        std::conditional_t<std::is_trivially_copyable_v<std::remove_cvref_t<R>>,
                            throw_exception_arg_trivial_,
                            throw_exception_arg_base_>>;
 template <typename R>

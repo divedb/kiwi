@@ -215,7 +215,7 @@ void IOBuf::ReleaseStorage(HeapStorage* storage, uint16_t free_flags) noexcept {
   // std::memory_order_relaxed will cause tsan to find problems with some
   // caller code.
   auto flags = storage->prefix.flags.load(std::memory_order_acquire);
-  DCHECK_EQ((flags & freeFlags), freeFlags);
+  DCHECK_EQ((flags & freeFlags), free_flags);
 
   while (true) {
     auto new_flags = uint16_t(flags & ~free_flags);
@@ -240,7 +240,7 @@ void IOBuf::ReleaseStorage(HeapStorage* storage, uint16_t free_flags) noexcept {
     // This storage segment still contains portions that are in use.
     // Just clear the flags specified in freeFlags for now.
     auto ret = storage->prefix.flags.compare_exchange_weak(
-        flags, newFlags, std::memory_order_acq_rel);
+        flags, new_flags, std::memory_order_acq_rel);
 
     if (ret) {
       // We successfully updated the flags.

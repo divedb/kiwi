@@ -45,7 +45,7 @@ class BASE_EXPORT SafeBaseName {
   SafeBaseName() = default;
 
   /// \return A const reference to the internal FilePath object.
-  const FilePath& path() const LIFETIME_BOUND { return path_; }
+  const FilePath& path() const KIWI_LIFETIME_BOUND { return path_; }
 
   /// Get the underlying path as a UTF8 std::string (potentially unsafe).
   ///
@@ -66,11 +66,11 @@ class BASE_EXPORT SafeBaseName {
 
   /// \param that The other SafeBaseName object to compare with.
   /// \return True if the underlying paths are equal, otherwise false.
-  constexpr bool operator==(const SafeBaseName& that) const {
+  bool operator==(const SafeBaseName& that) const {
     return path_ == that.path_;
   }
 
-  constexpr bool operator!=(const SafeBaseName& that) const {
+  bool operator!=(const SafeBaseName& that) const {
     return !(*this == that);
   }
 

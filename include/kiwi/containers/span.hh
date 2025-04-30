@@ -7,8 +7,7 @@
 // optimize reasonably, even in non-official release builds. Please do not
 // change the `CHECK()` calls back to `CHECK_op()` calls.
 
-#ifndef BASE_CONTAINERS_SPAN_H_
-#define BASE_CONTAINERS_SPAN_H_
+#pragma once
 
 #include <stddef.h>
 #include <stdint.h>
@@ -1738,5 +1737,3 @@ constexpr auto as_writable_byte_span(
 }
 
 }  // namespace kiwi
-
-#endif  // BASE_CONTAINERS_SPAN_H_

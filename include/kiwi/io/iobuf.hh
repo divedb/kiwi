@@ -289,6 +289,23 @@ struct IsUniquePtrToSL<std::unique_ptr<T, D>> : std::is_standard_layout<T> {};
 /// reference count to track when the buffer is no longer needed and can be
 /// freed.
 class IOBuf {
+public:
+  class Iterator;
+
+  enum CreateOp { kCreate };
+  enum WrapBufferOp { kWrapBuffer };
+  enum TakeOwnershipOp { kTaskeOwnership };
+  enum CopyBufferOp { kCopyBuffer };
+  enum SizedFree { kSizedFree };
+  enum class CombinedOption { kDefault, kCombined, kSeparate };
+
+  using value_type = uint8_t;
+  using iterator = Iterator;
+  using const_iterator = Iterator;
+  using ByteRange = kiwi::span<uint8_t>;
+  using FreeFunction = void (*)(void* buf, void* user_data);
+
+private:
   class DeleterBase {
    public:
     virtual ~DeleterBase() {}
@@ -311,60 +328,6 @@ class IOBuf {
    private:
     Deleter deleter_;
   };
-
-  static void FreeUniquePtrBuffer(void* ptr, void* user_data) noexcept {
-    static_cast<DeleterBase*>(user_data)->Dispose(ptr);
-  }
-
-  static inline uintptr_t PackFlagsAndSharedInfo(uintptr_t flags,
-                                                 SharedInfo* info) noexcept {
-    uintptr_t uinfo = reinterpret_cast<uintptr_t>(info);
-
-    DCHECK_EQ(flags & ~kFlagMask, 0u);
-    DCHECK_EQ(uinfo & kFlagMask, 0u);
-
-    return flags | uinfo;
-  }
-
-  inline SharedInfo* SharedInfo() const noexcept {
-    return reinterpret_cast<SharedInfo*>(flags_and_shared_info_ & ~kFlagMask);
-  }
-
-  inline void SetSharedInfo(SharedInfo* info) noexcept {
-    uintptr_t uinfo = reinterpret_cast<uintptr_t>(info);
-
-    DCHECK_EQ(uinfo & kFlagMask, 0u);
-
-    flags_and_shared_info_ = (flags_and_shared_info_ & kFlagMask) | uinfo;
-  }
-
-  inline uintptr_t Flags() const noexcept {
-    return flags_and_shared_info_ & kFlagMask;
-  }
-
-  inline void SetFlags(uintptr_t flags) noexcept {
-    DCHECK_EQ(flags & ~kFlagMask, 0u);
-
-    flags_and_shared_info_ |= flags;
-  }
-
-  inline void ClearFlags(uintptr_t flags) noexcept {
-    DCHECK_EQ(flags & ~kFlagMask, 0u);
-
-    flags_and_shared_info_ &= ~flags;
-  }
-
-  inline void SetFlagsAndSharedInfo(uintptr_t flags,
-                                    SharedInfo* info) noexcept {
-    flags_and_shared_info_ = PackFlagsAndSharedInfo(flags, info);
-  }
-
-  enum class TakeOwnershipOption { kDefault, kStoreSize };
-
-  static std::unique_ptr<IOBuf> TakeOwnership(
-      void* buf, std::size_t capacity, std::size_t offset, std::size_t length,
-      FreeFunction free_fn, void* user_data, bool free_on_error,
-      TakeOwnershipOption option);
 
   enum FlagsEnum : uintptr_t {
     // Adding any more flags would not work on 32-bit architectures,
@@ -428,14 +391,68 @@ class IOBuf {
   struct HeapStorage;
   struct HeapFullStorage;
 
-  /**
-   * Create a new IOBuf pointing to an external buffer.
-   *
-   * The caller is responsible for holding a reference count for this new
-   * IOBuf.  The IOBuf constructor does not automatically increment the
-   * reference count.
-   */
+  /// Create a new IOBuf pointing to an external buffer.
+  ///
+  /// The caller is responsible for holding a reference count for this new
+  /// IOBuf.  The IOBuf constructor does not automatically increment the
+  /// reference count.
   struct InternalConstructor {};  // avoid conflicts
+
+  static void FreeUniquePtrBuffer(void* ptr, void* user_data) noexcept {
+    static_cast<DeleterBase*>(user_data)->Dispose(ptr);
+  }
+
+  static inline uintptr_t PackFlagsAndSharedInfo(uintptr_t flags,
+                                                 SharedInfo* info) noexcept {
+    uintptr_t uinfo = reinterpret_cast<uintptr_t>(info);
+
+    DCHECK_EQ(flags & ~kFlagMask, 0u);
+    DCHECK_EQ(uinfo & kFlagMask, 0u);
+
+    return flags | uinfo;
+  }
+
+  inline SharedInfo* SharedInfo() const noexcept {
+    return reinterpret_cast<SharedInfo*>(flags_and_shared_info_ & ~kFlagMask);
+  }
+
+  inline void SetSharedInfo(SharedInfo* info) noexcept {
+    uintptr_t uinfo = reinterpret_cast<uintptr_t>(info);
+
+    DCHECK_EQ(uinfo & kFlagMask, 0u);
+
+    flags_and_shared_info_ = (flags_and_shared_info_ & kFlagMask) | uinfo;
+  }
+
+  inline uintptr_t Flags() const noexcept {
+    return flags_and_shared_info_ & kFlagMask;
+  }
+
+  inline void SetFlags(uintptr_t flags) noexcept {
+    DCHECK_EQ(flags & ~kFlagMask, 0u);
+
+    flags_and_shared_info_ |= flags;
+  }
+
+  inline void ClearFlags(uintptr_t flags) noexcept {
+    DCHECK_EQ(flags & ~kFlagMask, 0u);
+
+    flags_and_shared_info_ &= ~flags;
+  }
+
+  inline void SetFlagsAndSharedInfo(uintptr_t flags,
+                                    SharedInfo* info) noexcept {
+    flags_and_shared_info_ = PackFlagsAndSharedInfo(flags, info);
+  }
+
+  enum class TakeOwnershipOption { kDefault, kStoreSize };
+
+  static std::unique_ptr<IOBuf> TakeOwnership(
+      void* buf, std::size_t capacity, std::size_t offset, std::size_t length,
+      FreeFunction free_fn, void* user_data, bool free_on_error,
+      TakeOwnershipOption option);
+
+
   IOBuf(InternalConstructor, uintptr_t flagsAndSharedInfo, uint8_t* buf,
         std::size_t capacity, uint8_t* data, std::size_t length) noexcept;
 
@@ -468,20 +485,6 @@ class IOBuf {
   static void FreeInternalBuf(void* buf, void* user_data) noexcept;
 
  public:
-  class Iterator;
-
-  enum CreateOp { kCreate };
-  enum WrapBufferOp { kWrapBuffer };
-  enum TakeOwnershipOp { kTaskeOwnership };
-  enum CopyBufferOp { kCopyBuffer };
-  enum SizedFree { kSizedFree };
-  enum class CombinedOption { kDefault, kCombined, kSeparate };
-
-  using value_type = span<uint8_t>;
-  using iterator = Iterator;
-  using const_iterator = Iterator;
-  using FreeFunction = void (*)(void* buf, void* user_data);
-
   /// \copydoc IOBuf(CreateOp, std::size_t).
   /// \returns A unique_ptr to a newly-constructed IOBuf.
   /// \methodset Makers
@@ -652,10 +655,10 @@ class IOBuf {
    * @returns  A unique_ptr to a newly-constructed IOBuf
    * @methodset Makers
    */
-  static std::unique_ptr<IOBuf> copyBuffer(ByteRange br,
-                                           std::size_t headroom = 0,
-                                           std::size_t minTailroom = 0) {
-    return copyBuffer(br.data(), br.size(), headroom, minTailroom);
+  static std::unique_ptr<IOBuf> CopyBuffer(ByteRange br,
+                                           std::size_t head_room = 0,
+                                           std::size_t min_tail_room = 0) {
+    return CopyBuffer(br.data(), br.size(), head_room, min_tail_room);
   }
 
   /// \copydoc CopyBuffer(ByteRange, std::size_t, std::size_t)
@@ -2023,12 +2026,11 @@ inline std::unique_ptr<IOBuf> IOBuf::MaybeCopyBuffer(
   return CopyBuffer(buf.data(), buf.size(), head_room, min_tail_room);
 }
 
-template <class Container>
+template <typename Container>
 void IOBuf::AppendTo(Container& container) const {
   static_assert(
-      (std::is_same<typename Container::value_type, char>::value ||
-       std::is_same<typename Container::value_type, unsigned char>::value),
-      "Unsupported value type");
+    std::is_same_v<typename Container::value_type, uint8_t>, "Unsupported value type"
+  );
 
   container.reserve(container.size() + ComputeChainDataLength());
 

@@ -40,13 +40,13 @@ extern "C" ssize_t writev(int fd, const iovec* iov, int count);
 namespace kiwi {
 
 #if !KIWI_HAVE_PREADV
-ssize_t preadv(int fd, const iovec* iov, int count, off_t offset);
+ssize_t preadv(int fd, const struct iovec* iov, int count, off_t offset);
 #else
 using ::preadv;
 #endif
 
 #if !KIWI_HAVE_PWRITEV
-ssize_t pwritev(int fd, const iovec* iov, int count, off_t offset);
+ssize_t pwritev(int fd, const struct iovec* iov, int count, off_t offset);
 #else
 using ::pwritev;
 #endif
