@@ -289,7 +289,7 @@ struct IsUniquePtrToSL<std::unique_ptr<T, D>> : std::is_standard_layout<T> {};
 /// reference count to track when the buffer is no longer needed and can be
 /// freed.
 class IOBuf {
-public:
+ public:
   class Iterator;
 
   enum CreateOp { kCreate };
@@ -305,7 +305,7 @@ public:
   using ByteRange = kiwi::span<uint8_t>;
   using FreeFunction = void (*)(void* buf, void* user_data);
 
-private:
+ private:
   class DeleterBase {
    public:
     virtual ~DeleterBase() {}
@@ -364,7 +364,8 @@ private:
     }
   };
 
-  struct SharedInfo {
+  class SharedInfo {
+   public:
     using ObserverCb = function_ref<void(SharedInfoObserverEntryBase&)>;
 
     static void ReleaseStorage(SharedInfo* info) noexcept;
@@ -383,7 +384,7 @@ private:
     std::atomic<uint32_t> refcount;
     bool externally_shared{false};
     bool use_heap_full_storage{false};
-    std::mutex observer_list_lock{0};
+    std::mutex observer_list_lock;
   };
 
   /// Helper structs for use by operator new and delete.
@@ -412,7 +413,7 @@ private:
     return flags | uinfo;
   }
 
-  inline SharedInfo* SharedInfo() const noexcept {
+  inline SharedInfo* GetSharedInfo() const noexcept {
     return reinterpret_cast<SharedInfo*>(flags_and_shared_info_ & ~kFlagMask);
   }
 
@@ -451,7 +452,6 @@ private:
       void* buf, std::size_t capacity, std::size_t offset, std::size_t length,
       FreeFunction free_fn, void* user_data, bool free_on_error,
       TakeOwnershipOption option);
-
 
   IOBuf(InternalConstructor, uintptr_t flagsAndSharedInfo, uint8_t* buf,
         std::size_t capacity, uint8_t* data, std::size_t length) noexcept;
@@ -630,7 +630,7 @@ private:
   ///                      throws an exception.
   ///
   /// \methodset IOV
-  static std::unique_ptr<IOBuf> takeOwnershipIov(const iovec* vec, size_t count,
+  static std::unique_ptr<IOBuf> TakeOwnershipIov(const iovec* vec, size_t count,
                                                  FreeFunction free_fn = nullptr,
                                                  void* user_data = nullptr,
                                                  bool free_on_error = true);
@@ -1400,7 +1400,7 @@ private:
   ///
   /// \methodset Buffer Management
   void* GetUserData() const noexcept {
-    auto info = SharedInfo();
+    auto info = GetSharedInfo();
 
     return info ? info->user_data : nullptr;
   }
@@ -1414,7 +1414,7 @@ private:
   ///
   /// \methodset Buffer Management
   FreeFunction GetFreeFn() const noexcept {
-    auto info = SharedInfo();
+    auto info = GetSharedInfo();
 
     return info ? info->free_fn : nullptr;
   }
@@ -1428,7 +1428,7 @@ private:
   /// \methodset Misc
   template <typename Observer>
   bool AppendSharedInfoObserver(Observer&& observer) {
-    auto info = SharedInfo();
+    auto info = GetSharedInfo();
 
     if (!info) {
       return false;
@@ -1485,7 +1485,7 @@ private:
   ///          user-owned buffer)
   ///
   /// \methodset Buffer Management
-  bool IsManagedOne() const noexcept { return SharedInfo(); }
+  bool IsManagedOne() const noexcept { return GetSharedInfo(); }
 
   /// Inconsistently get the reference count.
   ///
@@ -1517,7 +1517,7 @@ private:
   ///
   /// \methodset Buffer Management
   bool IsSharedOne() const noexcept {
-    auto info = SharedInfo();
+    auto info = GetSharedInfo();
 
     // If this is a user-owned buffer, it is always considered shared.
     if (!info) [[unlikely]] {
@@ -1603,7 +1603,7 @@ private:
   ///
   /// \methodset Buffer Management
   void MarkExternallySharedOne() {
-    auto info = SharedInfo();
+    auto info = GetSharedInfo();
 
     if (info) {
       info->externally_shared = true;
@@ -2011,7 +2011,7 @@ inline std::unique_ptr<IOBuf> IOBuf::CopyBuffer(const void* data,
   return buf;
 }
 
-inline std::unique_ptr<IOBuf> IOBuf::CopyBuffer(Sstd::string_view buf,
+inline std::unique_ptr<IOBuf> IOBuf::CopyBuffer(std::string_view buf,
                                                 std::size_t head_room,
                                                 std::size_t min_tail_room) {
   return CopyBuffer(buf.data(), buf.size(), head_room, min_tail_room);
@@ -2026,31 +2026,14 @@ inline std::unique_ptr<IOBuf> IOBuf::MaybeCopyBuffer(
   return CopyBuffer(buf.data(), buf.size(), head_room, min_tail_room);
 }
 
-template <typename Container>
-void IOBuf::AppendTo(Container& container) const {
-  static_assert(
-    std::is_same_v<typename Container::value_type, uint8_t>, "Unsupported value type"
-  );
-
-  container.reserve(container.size() + ComputeChainDataLength());
-
-  for (auto data : *this) {
-    container.insert(container.end(), data.begin(), data.end());
-  }
-}
-
-template <typename Container>
-Container IOBuf::To() const {
-  Container result;
-  AppendTo(result);
-
-  return result;
-}
-
 class IOBuf::Iterator
     : public detail::IteratorFacade<IOBuf::Iterator, ByteRange const,
                                     std::forward_iterator_tag> {
-  void SetVal() { val_ = ByteRange(pos_->data(), pos_->Tail()); }
+  void SetVal() {
+    auto tmp = const_cast<IOBuf*>(pos_);
+
+    val_ = ByteRange(tmp->WritableData(), tmp->WritableTail());
+  }
 
   void AdjustForEnd() {
     if (pos_ == end_) {
@@ -2108,6 +2091,26 @@ class IOBuf::Iterator
 
 inline IOBuf::Iterator IOBuf::begin() const { return cbegin(); }
 inline IOBuf::Iterator IOBuf::end() const { return cend(); }
+
+template <typename Container>
+void IOBuf::AppendTo(Container& container) const {
+  static_assert(std::is_same_v<typename Container::value_type, uint8_t>,
+                "Unsupported value type");
+
+  container.reserve(container.size() + ComputeChainDataLength());
+
+  for (auto data : *this) {
+    container.insert(container.end(), data.begin(), data.end());
+  }
+}
+
+template <typename Container>
+Container IOBuf::To() const {
+  Container result;
+  AppendTo(result);
+
+  return result;
+}
 
 }  // namespace kiwi
 

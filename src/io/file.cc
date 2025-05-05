@@ -8,7 +8,7 @@
 
 // #include "base/check_op.h"
 #include "kiwi/io/file_path.hh"
-#include "kiwi/io/file_tracing.hh"
+// #include "kiwi/io/file_tracing.hh"
 // #include "base/metrics/histogram.h"
 // #include "base/notreached.h"
 #include "kiwi/numerics/safe_conversions.hh"
@@ -90,14 +90,7 @@ void File::Initialize(const FilePath& path, uint32_t flags) {
     error_details_ = FILE_ERROR_ACCESS_DENIED;
     return;
   }
-  if (FileTracing::IsCategoryEnabled()
-#if BUILDFLAG(IS_ANDROID)
-      || path.IsContentUri()
-#endif
-  ) {
-    path_ = path;
-  }
-  SCOPED_FILE_TRACE("Initialize");
+
   DoInitialize(path, flags);
 }
 #endif

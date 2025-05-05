@@ -70,9 +70,7 @@ class BASE_EXPORT SafeBaseName {
     return path_ == that.path_;
   }
 
-  bool operator!=(const SafeBaseName& that) const {
-    return !(*this == that);
-  }
+  bool operator!=(const SafeBaseName& that) const { return !(*this == that); }
 
  private:
   FilePath path_;

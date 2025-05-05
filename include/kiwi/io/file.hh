@@ -10,17 +10,14 @@
 #include <optional>
 #include <string>
 
-// TODO(gc):
-// #include "base/time/time.h"
+#include "kiwi/chrono/time.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/io/file_path.hh"
 #include "kiwi/io/file_tracing.hh"
 #include "kiwi/io/platform_file.hh"
 #include "kiwi/portability/base_export.hh"
-#include "kiwi/portability/compiler_specific.hh"
-// TODO(gc):
-// #include "base/trace_event/base_tracing_forward.h"
 #include "kiwi/portability/build_config.hh"
+#include "kiwi/portability/compiler_specific.hh"
 
 struct stat;
 
@@ -28,96 +25,103 @@ namespace kiwi {
 
 using stat_wrapper_t = struct stat;
 
-// Thin wrapper around an OS-level file.
-// Note that this class does not provide any support for asynchronous IO, other
-// than the ability to create asynchronous handles on Windows.
-//
-// Note about const: this class does not attempt to determine if the underlying
-// file system object is affected by a particular method in order to consider
-// that method const or not. Only methods that deal with member variables in an
-// obvious non-modifying way are marked as const. Any method that forward calls
-// to the OS is not considered const, even if there is no apparent change to
-// member variables.
-//
-// On POSIX, if the given file is a symbolic link, most of the methods apply to
-// the file that the symbolic link resolves to.
+/// Thin wrapper around an OS-level file.
+/// Note that this class does not provide any support for asynchronous IO, other
+/// than the ability to create asynchronous handles on Windows.
+///
+/// Note about const: this class does not attempt to determine if the underlying
+/// file system object is affected by a particular method in order to consider
+/// that method const or not. Only methods that deal with member variables in an
+/// obvious non-modifying way are marked as const. Any method that forward calls
+/// to the OS is not considered const, even if there is no apparent change to
+/// member variables.
+///
+/// On POSIX, if the given file is a symbolic link, most of the methods apply to
+/// the file that the symbolic link resolves to.
 class BASE_EXPORT File {
  public:
-  // FLAG_(OPEN|CREATE).* are mutually exclusive. You should specify exactly one
-  // of the five (possibly combining with other flags) when opening or creating
-  // a file.
-  // FLAG_(WRITE|APPEND) are mutually exclusive. This is so that APPEND behavior
-  // will be consistent with O_APPEND on POSIX.
+  /// kFlag(Open|Create).* are mutually exclusive. You should specify exactly
+  /// one of the five (possibly combining with other flags) when opening or
+  /// creating a file. kFlag(Write|Append) are mutually exclusive. This is so
+  /// that APPEND behavior will be consistent with O_APPEND on POSIX.
   enum Flags : uint32_t {
-    FLAG_OPEN = 1 << 0,            // Opens a file, only if it exists.
-    FLAG_CREATE = 1 << 1,          // Creates a new file, only if it does not
-                                   // already exist.
-    FLAG_OPEN_ALWAYS = 1 << 2,     // May create a new file.
-    FLAG_CREATE_ALWAYS = 1 << 3,   // May overwrite an old file.
-    FLAG_OPEN_TRUNCATED = 1 << 4,  // Opens a file and truncates it, only if it
-                                   // exists.
-    FLAG_READ = 1 << 5,
-    FLAG_WRITE = 1 << 6,
-    FLAG_APPEND = 1 << 7,
-    FLAG_WIN_EXCLUSIVE_READ = 1 << 8,   // Windows only. Opposite of SHARE.
-    FLAG_WIN_EXCLUSIVE_WRITE = 1 << 9,  // Windows only. Opposite of SHARE.
-    FLAG_ASYNC = 1 << 10,
-    FLAG_WIN_TEMPORARY = 1 << 11,  // Windows only.
-    FLAG_WIN_HIDDEN = 1 << 12,     // Windows only.
-    FLAG_DELETE_ON_CLOSE = 1 << 13,
-    FLAG_WRITE_ATTRIBUTES = 1 << 14,  // File opened in a mode allowing writing
-                                      // attributes, such as with SetTimes().
-    FLAG_WIN_SHARE_DELETE = 1 << 15,  // Windows only.
-    FLAG_TERMINAL_DEVICE = 1 << 16,   // Serial port flags.
-    FLAG_WIN_BACKUP_SEMANTICS = 1 << 17,  // Windows only.
-    FLAG_WIN_EXECUTE = 1 << 18,           // Windows only.
-    FLAG_WIN_SEQUENTIAL_SCAN = 1 << 19,   // Windows only.
-    FLAG_CAN_DELETE_ON_CLOSE = 1 << 20,  // Requests permission to delete a file
-                                         // via DeleteOnClose() (Windows only).
-                                         // See DeleteOnClose() for details.
-    FLAG_WIN_NO_EXECUTE =
-        1 << 21,  // Windows only. Marks the file with a deny ACE that prevents
-                  // opening the file with EXECUTE access. Cannot be used with
-                  // FILE_WIN_EXECUTE flag. See also PreventExecuteMapping.
+    /// Opens a file, only if it exists.
+    kFlagOpen = 1 << 0,
+    /// Creates a new file, only if it does not already exist.
+    kFlagCreate = 1 << 1,
+    /// May create a new file.
+    kFlagOpenAlways = 1 << 2,
+    /// May overwrite an old file.
+    kFlagCreateAlways = 1 << 3,
+    /// Opens a file and truncates it, only if it exists.
+    kFlagOpenTruncated = 1 << 4,
+    kFlagRead = 1 << 5,
+    kFlagWrite = 1 << 6,
+    kFlagAppend = 1 << 7,
+    /// Windows only. Opposite of SHARE.
+    kFlagWinExclusiveRead = 1 << 8,
+    /// Windows only. Opposite of SHARE.
+    kFlagWinExclusiveWrite = 1 << 9,
+    kFlagAsync = 1 << 10,
+    /// Windows only.
+    kFlagWinTemporary = 1 << 11,
+    /// Windows only.
+    kFlagWinHidden = 1 << 12,
+    kFlagDeleteOnClose = 1 << 13,
+    /// Allows writing attributes, e.g., SetTimes().
+    kFlagWriteAttributes = 1 << 14,
+    /// Windows only.
+    kFlagWinShareDelete = 1 << 15,
+    /// Serial port flags.
+    kFlagTerminalDevice = 1 << 16,
+    /// Windows only.
+    kFlagWinBackupSemantics = 1 << 17,
+    /// Windows only.
+    kFlagWinExecute = 1 << 18,
+    /// Windows only.
+    kFlagWinSequentialScan = 1 << 19,
+    /// Requests permission to delete via DeleteOnClose().
+    kFlagCanDeleteOnClose = 1 << 20,
+    /// Windows only. Prevents EXECUTE access.
+    kFlagWinNoExecute = 1 << 21,
   };
 
-  // This enum has been recorded in multiple histograms using PlatformFileError
-  // enum. If the order of the fields needs to change, please ensure that those
-  // histograms are obsolete or have been moved to a different enum.
-  //
-  // FILE_ERROR_ACCESS_DENIED is returned when a call fails because of a
-  // filesystem restriction. FILE_ERROR_SECURITY is returned when a browser
-  // policy doesn't allow the operation to be executed.
+  /// This enum has been recorded in multiple histograms using PlatformFileError
+  /// enum. If the order of the fields needs to change, please ensure that those
+  /// histograms are obsolete or have been moved to a different enum.
+  ///
+  /// kFileErrorAccessDenied is returned when a call fails because of a
+  /// filesystem restriction. FILE_ERROR_SECURITY is returned when a browser
+  /// policy doesn't allow the operation to be executed.
   enum Error {
-    FILE_OK = 0,
-    FILE_ERROR_FAILED = -1,
-    FILE_ERROR_IN_USE = -2,
-    FILE_ERROR_EXISTS = -3,
-    FILE_ERROR_NOT_FOUND = -4,
-    FILE_ERROR_ACCESS_DENIED = -5,
-    FILE_ERROR_TOO_MANY_OPENED = -6,
-    FILE_ERROR_NO_MEMORY = -7,
-    FILE_ERROR_NO_SPACE = -8,
-    FILE_ERROR_NOT_A_DIRECTORY = -9,
-    FILE_ERROR_INVALID_OPERATION = -10,
-    FILE_ERROR_SECURITY = -11,
-    FILE_ERROR_ABORT = -12,
-    FILE_ERROR_NOT_A_FILE = -13,
-    FILE_ERROR_NOT_EMPTY = -14,
-    FILE_ERROR_INVALID_URL = -15,
-    FILE_ERROR_IO = -16,
-    // Put new entries here and increment FILE_ERROR_MAX.
-    FILE_ERROR_MAX = -17
+    kFileOk = 0,
+    kFileErrorFailed = -1,
+    kFileErrorInUse = -2,
+    kFileErrorExists = -3,
+    kFileErrorNotFound = -4,
+    kFileErrorAccessDenied = -5,
+    kFileErrorTooManyOpened = -6,
+    kFileErrorNoMemory = -7,
+    kFileErrorNoSpace = -8,
+    kFileErrorNotADirectory = -9,
+    kFileErrorInvalidOperation = -10,
+    kFileErrorSecurity = -11,
+    kFileErrorAbort = -12,
+    kFileErrorNotAFile = -13,
+    kFileErrorNotEmpty = -14,
+    kFileErrorInvalidUrl = -15,
+    kFileErrorIo = -16,
+    /// Put new entries here and increment kFileErrorMax.
+    kFileErrorMax = -17
   };
 
-  // This explicit mapping matches both FILE_ on Windows and SEEK_ on Linux.
-  enum Whence { FROM_BEGIN = 0, FROM_CURRENT = 1, FROM_END = 2 };
+  /// This explicit mapping matches both FILE_ on Windows and SEEK_ on Linux.
+  enum Whence { kFromBegin = 0, kFromCurrent = 1, kFromEnd = 2 };
 
-  // Used to hold information about a given file.
-  // If you add more fields to this structure (platform-specific fields are OK),
-  // make sure to update all functions that use it in file_util_{win|posix}.cc,
-  // too, and the ParamTraits<base::File::Info> implementation in
-  // ipc/ipc_message_utils.cc.
+  /// Used to hold information about a given file.
+  /// If you add more fields to this structure (platform-specific fields are
+  /// OK), make sure to update all functions that use it in
+  /// file_util_{win|posix}.cc, too.
   struct BASE_EXPORT Info {
     Info();
     ~Info();
@@ -126,24 +130,24 @@ class BASE_EXPORT File {
     void FromStat(const stat_wrapper_t& stat_info);
 #endif
 
-    // The size of the file in bytes.  Undefined when is_directory is true.
+    /// The size of the file in bytes.  Undefined when is_directory is true.
     int64_t size = 0;
 
-    // True if the file corresponds to a directory.
+    /// True if the file corresponds to a directory.
     bool is_directory = false;
 
-    // True if the file corresponds to a symbolic link.  For Windows currently
-    // not supported and thus always false.
+    /// True if the file corresponds to a symbolic link.  For Windows currently
+    /// not supported and thus always false.
     bool is_symbolic_link = false;
 
-    // The last modified time of a file.
-    // Time last_modified;
+    /// The last modified time of a file.
+    Time last_modified;
 
-    // The last accessed time of a file.
-    // Time last_accessed;
+    /// The last accessed time of a file.
+    Time last_accessed;
 
-    // The creation time of a file.
-    // Time creation_time;
+    /// The creation time of a file.
+    Time creation_time;
   };
 
   File();

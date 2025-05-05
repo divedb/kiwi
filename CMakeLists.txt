@@ -8,7 +8,9 @@ set(KIWI_LIB_COPTS  -std=c++20 -Wall -Wextra)
 set(KIWI_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-# include(FindGTest)
+
+add_subdirectory(third_party/glog)
+
 enable_testing()
 find_package(GTest REQUIRED)
 link_directories(/usr/local/lib)

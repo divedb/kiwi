@@ -2,65 +2,66 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// `Time` represents an absolute point in coordinated universal time (UTC),
-// internally represented as microseconds (s/1,000,000) since the Windows epoch
-// (1601-01-01 00:00:00 UTC). System-dependent clock interface routines are
-// defined in time_PLATFORM.cc. Note that values for `Time` may skew and jump
-// around as the operating system makes adjustments to synchronize (e.g., with
-// NTP servers). Thus, client code that uses the `Time` class must account for
-// this.
-//
-// `TimeDelta` represents a duration of time, internally represented in
-// microseconds.
-//
-// `TimeTicks` and `ThreadTicks` represent an abstract time that is most of the
-// time incrementing, for use in measuring time durations. Internally, they are
-// represented in microseconds. They cannot be converted to a human-readable
-// time, but are guaranteed not to decrease (unlike the `Time` class). Note
-// that `TimeTicks` may "stand still" (e.g., if the computer is suspended), and
-// `ThreadTicks` will "stand still" whenever the thread has been de-scheduled
-// by the operating system.
-//
-// All time classes are copyable, assignable, and occupy 64 bits per instance.
-// Prefer to pass them by value, e.g.:
-//
-//   void MyFunction(TimeDelta arg);
-//
-// All time classes support `operator<<` with logging streams, e.g. `LOG(INFO)`.
-// For human-readable formatting, use //base/i18n/time_formatting.h.
-//
-// Example use cases for different time classes:
-//
-//   Time:        Interpreting the wall-clock time provided by a remote system.
-//                Detecting whether cached resources have expired. Providing the
-//                user with a display of the current date and time. Determining
-//                the amount of time between events across re-boots of the
-//                machine.
-//
-//   TimeTicks:   Tracking the amount of time a task runs. Executing delayed
-//                tasks at the right time. Computing presentation timestamps.
-//                Synchronizing audio and video using TimeTicks as a common
-//                reference clock (lip-sync). Measuring network round-trip
-//                latency.
-//
-//   ThreadTicks: Benchmarking how long the current thread has been doing actual
-//                work.
-//
-// Serialization:
-//
-// Use the helpers in //base/json/values_util.h when serializing `Time`
-// or `TimeDelta` to/from `base::Value`.
-//
-// Otherwise:
-//
-// - Time: use `FromDeltaSinceWindowsEpoch()`/`ToDeltaSinceWindowsEpoch()`.
-// - TimeDelta: use `base::Microseconds()`/`InMicroseconds()`.
-//
-// `TimeTicks` and `ThreadTicks` do not have a stable origin; serialization for
-// the purpose of persistence is not supported.
+/// `Time` represents an absolute point in coordinated universal time (UTC),
+/// internally represented as microseconds (s/1,000,000) since the Windows epoch
+/// (1601-01-01 00:00:00 UTC). System-dependent clock interface routines are
+/// defined in time_PLATFORM.cc. Note that values for `Time` may skew and jump
+/// around as the operating system makes adjustments to synchronize (e.g., with
+/// NTP servers). Thus, client code that uses the `Time` class must account for
+/// this.
+///
+/// `TimeDelta` represents a duration of time, internally represented in
+/// microseconds.
+///
+/// `TimeTicks` and `ThreadTicks` represent an abstract time that is most of the
+/// time incrementing, for use in measuring time durations. Internally, they are
+/// represented in microseconds. They cannot be converted to a human-readable
+/// time, but are guaranteed not to decrease (unlike the `Time` class). Note
+/// that `TimeTicks` may "stand still" (e.g., if the computer is suspended), and
+/// `ThreadTicks` will "stand still" whenever the thread has been de-scheduled
+/// by the operating system.
+///
+/// All time classes are copyable, assignable, and occupy 64 bits per instance.
+/// Prefer to pass them by value, e.g.:
+///
+///   void MyFunction(TimeDelta arg);
+///
+/// All time classes support `operator<<` with logging streams, e.g.
+/// `LOG(INFO)`. For human-readable formatting, use
+/// //base/i18n/time_formatting.h.
+///
+/// Example use cases for different time classes:
+///
+///   Time:        Interpreting the wall-clock time provided by a remote system.
+///                Detecting whether cached resources have expired. Providing
+///                the user with a display of the current date and time.
+///                Determining the amount of time between events across re-boots
+///                of the machine.
+///
+///   TimeTicks:   Tracking the amount of time a task runs. Executing delayed
+///                tasks at the right time. Computing presentation timestamps.
+///                Synchronizing audio and video using TimeTicks as a common
+///                reference clock (lip-sync). Measuring network round-trip
+///                latency.
+///
+///   ThreadTicks: Benchmarking how long the current thread has been doing
+///   actual
+///                work.
+///
+/// Serialization:
+///
+/// Use the helpers in //base/json/values_util.h when serializing `Time`
+/// or `TimeDelta` to/from `base::Value`.
+///
+/// Otherwise:
+///
+/// - Time: use `FromDeltaSinceWindowsEpoch()`/`ToDeltaSinceWindowsEpoch()`.
+/// - TimeDelta: use `base::Microseconds()`/`InMicroseconds()`.
+///
+/// `TimeTicks` and `ThreadTicks` do not have a stable origin; serialization for
+/// the purpose of persistence is not supported.
 
-#ifndef BASE_TIME_TIME_H_
-#define BASE_TIME_TIME_H_
+#pragma once
 
 #include <stdint.h>
 #include <time.h>
@@ -72,15 +73,10 @@
 #include <ostream>
 #include <type_traits>
 
-#include "kiwi/support/base_export.hh"
-// #include "base/check.h"
-// #include "base/check_op.h"
 #include "kiwi/numerics/clamped_math.hh"
-#include "kiwi/support/build_config.hh"
-#include "kiwi/support/compiler_specific.hh"
-// TODO(crbug.com/354842935): Remove this include once other modules don't
-// accidentally (transitively) depend on it anymore.
-// #include "build/chromeos_buildflags.h"
+#include "kiwi/portability/base_export.hh"
+#include "kiwi/portability/build_config.hh"
+#include "kiwi/portability/compiler_specific.hh"
 
 #if BUILDFLAG(IS_FUCHSIA)
 #include <zircon/types.h>
@@ -93,10 +89,6 @@
 #undef TYPE_BOOL
 #endif
 
-#if BUILDFLAG(IS_ANDROID)
-#include <jni.h>
-#endif
-
 #if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
 #include <sys/time.h>
 #include <unistd.h>
@@ -106,17 +98,17 @@
 #include "base/gtest_prod_util.h"
 #include "base/win/windows_types.h"
 
-namespace ABI {
-namespace Windows {
-namespace Foundation {
+namespace abi {
+namespace windows {
+namespace foundation {
 struct DateTime;
 struct TimeSpan;
-}  // namespace Foundation
-}  // namespace Windows
-}  // namespace ABI
+}  // namespace foundation
+}  // namespace windows
+}  // namespace abi
 #endif
 
-namespace base {
+namespace kiwi {
 
 #if BUILDFLAG(IS_WIN)
 class PlatformThreadHandle;
@@ -263,6 +255,7 @@ class BASE_EXPORT TimeDelta {
     if (!is_inf()) {
       return TimeDelta(-delta_);
     }
+
     return (delta_ < 0) ? Max() : Min();
   }
 
@@ -271,14 +264,17 @@ class BASE_EXPORT TimeDelta {
   constexpr TimeDelta operator*(T a) const {
     return TimeDelta(int64_t{delta_ * a});
   }
+
   template <typename T>
   constexpr TimeDelta operator/(T a) const {
     return TimeDelta(int64_t{delta_ / a});
   }
+
   template <typename T>
   constexpr TimeDelta& operator*=(T a) {
     return *this = (*this * a);
   }
+
   template <typename T>
   constexpr TimeDelta& operator/=(T a) {
     return *this = (*this / a);
@@ -293,11 +289,12 @@ class BASE_EXPORT TimeDelta {
     // (they are almost certainly not intentional, and result in NaN, which
     // turns into 0 if clamped to an integer; this makes introducing subtle bugs
     // too easy).
-    CHECK(!is_zero() || !a.is_zero());
-    CHECK(!is_inf() || !a.is_inf());
+    assert(!is_zero() || !a.is_zero());
+    assert(!is_inf() || !a.is_inf());
 
     return ToDouble() / a.ToDouble();
   }
+
   constexpr int64_t IntDiv(TimeDelta a) const {
     if (!is_inf() && !a.is_zero()) {
       return int64_t{delta_ / a.delta_};
@@ -305,8 +302,9 @@ class BASE_EXPORT TimeDelta {
 
     // For consistency, use the same edge case CHECKs and behavior as the code
     // above.
-    CHECK(!is_zero() || !a.is_zero());
-    CHECK(!is_inf() || !a.is_inf());
+    assert(!is_zero() || !a.is_zero());
+    assert(!is_inf() || !a.is_inf());
+
     return ((delta_ < 0) == (a.delta_ < 0))
                ? std::numeric_limits<int64_t>::max()
                : std::numeric_limits<int64_t>::min();
@@ -316,6 +314,7 @@ class BASE_EXPORT TimeDelta {
     return TimeDelta(
         (is_inf() || a.is_zero() || a.is_inf()) ? delta_ : (delta_ % a.delta_));
   }
+
   constexpr TimeDelta& operator%=(TimeDelta other) {
     return *this = (*this % other);
   }
@@ -345,11 +344,12 @@ class BASE_EXPORT TimeDelta {
     if (!is_inf()) {
       return static_cast<double>(delta_);
     }
+
     return (delta_ < 0) ? -std::numeric_limits<double>::infinity()
                         : std::numeric_limits<double>::infinity();
   }
 
-  // Delta in microseconds.
+  /// Delta in microseconds.
   ClampedNumeric<int64_t> delta_ = 0;
 };
 
@@ -359,7 +359,8 @@ constexpr TimeDelta TimeDelta::operator+(TimeDelta other) const {
   }
 
   // Additions involving two infinities are only valid if signs match.
-  CHECK(!is_inf() || (delta_ == other.delta_));
+  assert(!is_inf() || (delta_ == other.delta_));
+
   return other;
 }
 
@@ -1240,28 +1241,6 @@ class BASE_EXPORT TimeTicks : public time_internal::TimeBase<TimeTicks> {
 
 #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS)
 
-#if BUILDFLAG(IS_ANDROID)
-  // Converts to TimeTicks the value obtained from System.nanoTime(). This
-  // conversion will be monotonic in relation to previously obtained
-  // TimeTicks::Now() values as the clocks are based on the same posix monotonic
-  // clock, with nanoTime() potentially providing higher resolution.
-  static TimeTicks FromJavaNanoTime(int64_t nano_time_value);
-
-  // Truncates the TimeTicks value to the precision of SystemClock#uptimeMillis.
-  // Note that the clocks already share the same monotonic clock source.
-  jlong ToUptimeMillis() const;
-
-  // Returns the TimeTicks value as microseconds in the timebase of
-  // SystemClock#uptimeMillis.
-  // Note that the clocks already share the same monotonic clock source.
-  //
-  // System.nanoTime() may be used to get sub-millisecond precision in Java code
-  // and may be compared against this value as the two share the same clock
-  // source (though be sure to convert nanos to micros).
-  jlong ToUptimeMicros() const;
-
-#endif  // BUILDFLAG(IS_ANDROID)
-
   // Get an estimate of the TimeTick value at the time of the UnixEpoch. Because
   // Time and TimeTicks respond differently to user-set time and NTP
   // adjustments, this number is only an estimate. Nevertheless, this can be
@@ -1430,6 +1409,4 @@ class BASE_EXPORT ThreadTicks : public time_internal::TimeBase<ThreadTicks> {
 // For logging use only.
 BASE_EXPORT std::ostream& operator<<(std::ostream& os, ThreadTicks time_ticks);
 
-}  // namespace base
-
-#endif  // BASE_TIME_TIME_H_
+}  // namespace kiwi

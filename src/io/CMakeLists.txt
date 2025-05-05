@@ -3,14 +3,18 @@ NAME
     files
 HDRS
     ${KIWI_INCLUDE_DIR}
+    ${glog_SOURCE_DIR}/src
 SRCS
     "file.cc"
     "file_path.cc"
+    "file_tracing.cc"
     "iobuf.cc"
     "safe_base_name.cc"
 COPTS
     ${KIWI_LIB_COPTS}
 DEPS
+    glog::glog
+    kiwi::strings
 ALIAS
     kiwi::files
 )

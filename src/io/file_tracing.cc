@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "kiwi/files/file_tracing.hh"
+#include "kiwi/io/file_tracing.hh"
 
 #include <atomic>
 
 // TODO(gc):
 // #include "base/trace_event/base_tracing.h"
-#include "kiwi/files/file.hh"
+#include "kiwi/io/file.hh"
 
 namespace kiwi {
 
@@ -56,9 +56,10 @@ FileTracing::ScopedTrace::~ScopedTrace() {
 
 void FileTracing::ScopedTrace::Initialize(const char* name, const File* file,
                                           int64_t size) {
-  id_ = &file->trace_enabler_;
-  name_ = name;
-  GetProvider()->FileTracingEventBegin(name_, id_, file->path_, size);
+  // TODO(gc): Add this.
+  // id_ = &file->trace_enabler_;
+  // name_ = name;
+  // GetProvider()->FileTracingEventBegin(name_, id_, file->path_, size);
 }
 
 }  // namespace kiwi

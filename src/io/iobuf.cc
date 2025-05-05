@@ -215,7 +215,7 @@ void IOBuf::ReleaseStorage(HeapStorage* storage, uint16_t free_flags) noexcept {
   // std::memory_order_relaxed will cause tsan to find problems with some
   // caller code.
   auto flags = storage->prefix.flags.load(std::memory_order_acquire);
-  DCHECK_EQ((flags & freeFlags), free_flags);
+  DCHECK_EQ((flags & free_flags), free_flags);
 
   while (true) {
     auto new_flags = uint16_t(flags & ~free_flags);
@@ -363,11 +363,11 @@ unique_ptr<IOBuf> IOBuf::CreateChain(size_t total_capacity,
       Create(std::min(total_capacity, size_t(max_buf_capacity)));
   size_t allocated_capacity = out->capacity();
 
-  while (allocated_capacity < totalCapacity) {
+  while (allocated_capacity < total_capacity) {
     unique_ptr<IOBuf> new_buf = Create(std::min(
         total_capacity - allocated_capacity, size_t(max_buf_capacity)));
     allocated_capacity += new_buf->capacity();
-    out->AppendToChain(std::move(newBuf));
+    out->AppendToChain(std::move(new_buf));
   }
 
   return out;
@@ -411,8 +411,8 @@ IOBuf::IOBuf(TakeOwnershipOp, void* buf, std::size_t capacity,
   DCHECK(!user_data || (user_data && free_fn));
 
   auto rollback = make_scope_exit(
-      [&] { TakeOwnershipError(free_on_error, buf, free_fn, user_data); });
-  setSharedInfo(new SharedInfo(free_fn, user_data));
+      [&] { take_ownership_error(free_on_error, buf, free_fn, user_data); });
+  SetSharedInfo(new SharedInfo(free_fn, user_data));
   rollback.Dismiss();
 }
 
@@ -427,7 +427,7 @@ IOBuf::IOBuf(TakeOwnershipOp, SizedFree, void* buf, std::size_t capacity,
       flags_and_shared_info_(
           PackFlagsAndSharedInfo(kFlagFreeSharedInfo, nullptr)) {
   auto rollback = make_scope_exit(
-      [&] { TakeOwnershipError(free_on_error, buf, nullptr, nullptr); });
+      [&] { take_ownership_error(free_on_error, buf, nullptr, nullptr); });
   SetSharedInfo(new SharedInfo(nullptr, reinterpret_cast<void*>(capacity)));
   rollback.Dismiss();
 
@@ -454,7 +454,7 @@ unique_ptr<IOBuf> IOBuf::TakeOwnership(void* buf, std::size_t capacity,
       free(storage);
     }
 
-    TakeOwnershipError(free_on_error, buf, free_fn, user_data);
+    take_ownership_error(free_on_error, buf, free_fn, user_data);
   });
 
   if (capacity > kMaxIOBufSize) {
@@ -703,7 +703,7 @@ unique_ptr<IOBuf> IOBuf::Clone() const {
 }
 
 unique_ptr<IOBuf> IOBuf::CloneOne() const {
-  if (SharedInfo* info = SharedInfo()) {
+  if (SharedInfo* info = GetSharedInfo()) {
     info->refcount.fetch_add(1, std::memory_order_acq_rel);
   }
 
@@ -733,7 +733,7 @@ IOBuf IOBuf::CloneAsValue() const {
 }
 
 IOBuf IOBuf::CloneOneAsValue() const {
-  if (SharedInfo* info = SharedInfo()) {
+  if (SharedInfo* info = GetSharedInfo()) {
     info->refcount.fetch_add(1, std::memory_order_acq_rel);
   }
 
@@ -743,7 +743,7 @@ IOBuf IOBuf::CloneOneAsValue() const {
 
 IOBuf IOBuf::CloneCoalescedAsValue() const {
   const std::size_t new_head_room = HeadRoom();
-  const std::size_t new_tail_room = prev()->TailRoom();
+  const std::size_t new_tail_room = Prev()->TailRoom();
 
   return CloneCoalescedAsValueWithHeadroomTailroom(new_head_room,
                                                    new_tail_room);
@@ -905,7 +905,7 @@ void IOBuf::CoalesceSlow(size_t max_length) {
     new_length += end->length_;
     end = end->next_;
 
-    if (new_length >= maxLength) {
+    if (new_length >= max_length) {
       break;
     }
 
@@ -919,7 +919,7 @@ void IOBuf::CoalesceSlow(size_t max_length) {
   CoalesceAndReallocate(new_length, end);
 
   // We should have the requested length now
-  DCHECK_GE(length_, maxLength);
+  DCHECK_GE(length_, max_length);
 }
 
 void IOBuf::CoalesceAndReallocate(size_t new_head_room, size_t new_length,
@@ -932,7 +932,7 @@ void IOBuf::CoalesceAndReallocate(size_t new_head_room, size_t new_length,
   uint8_t* new_buf;
   SharedInfo* new_info;
   std::size_t actual_capacity;
-  allocExtBuffer(new_capacity, &new_buf, &new_info, &actual_capacity);
+  AllocExtBuffer(new_capacity, &new_buf, &new_info, &actual_capacity);
 
   // Copy the data into the new buffer
   uint8_t* new_data = new_buf + new_head_room;
@@ -979,7 +979,7 @@ void IOBuf::CoalesceAndReallocate(size_t new_head_room, size_t new_length,
 void IOBuf::DecrementRefcount() noexcept {
   // Externally owned buffers don't have a SharedInfo object and aren't managed
   // by the reference count
-  SharedInfo* info = SharedInfo();
+  SharedInfo* info = GetSharedInfo();
 
   if (!info) {
     return;
@@ -1070,7 +1070,7 @@ void IOBuf::ReserveSlow(std::size_t min_head_room, std::size_t min_tail_room) {
 
   // If we have a buffer allocated with malloc and we just need more tailroom,
   // try to use realloc()/xallocx() to grow the buffer in place.
-  SharedInfo* info = SharedInfo();
+  SharedInfo* info = GetSharedInfo();
   bool use_heap_full_storage = info && info->use_heap_full_storage;
 
   if (info && (info->free_fn == nullptr) && length_ != 0 &&
@@ -1103,7 +1103,7 @@ void IOBuf::ReserveSlow(std::size_t min_head_room, std::size_t min_tail_room) {
       memcpy(new_buffer + min_head_room, data_, length_);
     }
 
-    if (SharedInfo()) {
+    if (GetSharedInfo()) {
       FreeExtBuffer();
     }
 
@@ -1114,10 +1114,10 @@ void IOBuf::ReserveSlow(std::size_t min_head_room, std::size_t min_tail_room) {
   InitExtBuffer(new_buffer, new_allocated_capacity, &info, &cap);
 
   if (Flags() & kFlagFreeSharedInfo) {
-    delete SharedInfo();
+    delete GetSharedInfo();
   } else {
     if (use_heap_full_storage) {
-      SharedInfo::ReleaseStorage(SharedInfo());
+      SharedInfo::ReleaseStorage(GetSharedInfo());
     }
   }
 
@@ -1132,7 +1132,7 @@ void IOBuf::ReserveSlow(std::size_t min_head_room, std::size_t min_tail_room) {
 // the IOBuf destructor. Other code paths like coalesce() also assume that
 // decrementRefcount() cannot throw.
 void IOBuf::FreeExtBuffer() noexcept {
-  SharedInfo* info = SharedInfo();
+  SharedInfo* info = GetSharedInfo();
 
   DCHECK(info);
 
@@ -1158,10 +1158,6 @@ void IOBuf::FreeExtBuffer() noexcept {
 
   SharedInfo::InvokeAndDeleteEachObserver(
       observer_list_head, [](auto& entry) { entry.AfterFreeExtBuffer(); });
-
-  if (kIsMobile) {
-    buf_ = nullptr;
-  }
 }
 
 void IOBuf::AllocExtBuffer(std::size_t min_capacity, uint8_t** out_buf,
@@ -1171,7 +1167,7 @@ void IOBuf::AllocExtBuffer(std::size_t min_capacity, uint8_t** out_buf,
   }
 
   size_t malloc_size = GoodExtBufferSize(min_capacity);
-  auto buf = static_cast<uint8_t*>(checkedMalloc(malloc_size));
+  auto buf = static_cast<uint8_t*>(checked_malloc(malloc_size));
   InitExtBuffer(buf, malloc_size, out_info, out_capacity);
 
   // the userData and the freeFn are nullptr here
@@ -1221,7 +1217,7 @@ std::string IOBuf::MoveToFbString() {
   //   // sharedInfo() may not be valid after fbstring str
   //   bool use_heap_full_storage = false;
   //   SharedInfoObserverEntryBase* observer_list_head = nullptr;
-  //   auto info = SharedInfo();
+  //   auto info = GetSharedInfo();
 
   //   // malloc-allocated buffers are just fine, everything else needs
   //   // to be turned into one.
@@ -1287,7 +1283,7 @@ IOBuf::Iterator IOBuf::cbegin() const { return Iterator(this, this); }
 IOBuf::Iterator IOBuf::cend() const { return Iterator(nullptr, nullptr); }
 
 std::vector<struct iovec> IOBuf::GetIov() const {
-  folly::fbvector<struct iovec> iov;
+  std::vector<struct iovec> iov;
   iov.reserve(CountChainElements());
   AppendToIov(&iov);
 
@@ -1384,7 +1380,7 @@ IOBuf::FillIovResult IOBuf::FillIov(struct iovec* iov, size_t len) const {
 }
 
 uint32_t IOBuf::ApproximateShareCountOne() const {
-  auto info = SharedInfo();
+  auto info = GetSharedInfo();
 
   if (!info) [[unlikely]] {
     return 1U;

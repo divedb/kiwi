@@ -235,6 +235,7 @@ class ErrorOr {
 
   std::error_code* GetErrorStorage() {
     assert(has_error_ && "Cannot get error when a value exists!");
+
     return reinterpret_cast<std::error_code*>(&error_storage);
   }
 
