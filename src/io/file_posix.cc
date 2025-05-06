@@ -475,91 +475,78 @@ File::Error File::OSErrorToFileError(int saved_errno) {
   }
 }
 
-// NaCl doesn't implement system calls to open files directly.
-#if !BUILDFLAG(IS_NACL)
-// TODO(erikkay): does it make sense to support FLAG_EXCLUSIVE_* here?
 void File::DoInitialize(const FilePath& path, uint32_t flags) {
-  ScopedBlockingCall scoped_blocking_call(FROM_HERE, BlockingType::MAY_BLOCK);
-  DCHECK(!IsValid());
+  static_assert(O_RDONLY == 0, "O_RDONLY must equal zero");
+
+  assert(!IsValid());
 
   int open_flags = 0;
-  if (flags & FLAG_CREATE) {
+  is_created_ = false;
+
+  // If the kFlagCreate is set, attempt to create a new file exclusively.
+  if (flags & kFlagCreate) {
     open_flags = O_CREAT | O_EXCL;
   }
 
-  created_ = false;
+  // This flag is mutually exclusive with kFlagCreate and kFlagOpenTruncated and
+  // it also requires write access.
+  if (flags & kFlagCreateAlways) {
+    assert(!open_flags);
+    assert(flags & kFlagWrite);
 
-  if (flags & FLAG_CREATE_ALWAYS) {
-    DCHECK(!open_flags);
-    DCHECK(flags & FLAG_WRITE);
     open_flags = O_CREAT | O_TRUNC;
   }
 
-  if (flags & FLAG_OPEN_TRUNCATED) {
-    DCHECK(!open_flags);
-    DCHECK(flags & FLAG_WRITE);
+  // If the kFlagOpenTruncated is set, open an existing file and truncate it to
+  // zero length. This flag is mutually exclusive with creation flags. It also
+  // requires write access.
+  if (flags & kFlagOpenTruncated) {
+    assert(!open_flags);
+    assert(flags & FLAG_WRITE);
+
     open_flags = O_TRUNC;
   }
 
-  if (!open_flags && !(flags & FLAG_OPEN) && !(flags & FLAG_OPEN_ALWAYS)) {
-    NOTREACHED();
+  // If no specific creation/truncation flags were set, ensure at least one of
+  // kFlagOpen or kFlagOpenAlways is set to indicate that an existing file
+  // should be opened.
+  if (!open_flags && !(flags & kFlagOpen) && !(flags & kFlagOpenAlways)) {
+    UNREACHABLE();
   }
 
-  if (flags & FLAG_WRITE && flags & FLAG_READ) {
+  if (flags & kFlagWrite && flags & kFlagRead) {
     open_flags |= O_RDWR;
-  } else if (flags & FLAG_WRITE) {
+  } else if (flags & kFlagWrite) {
     open_flags |= O_WRONLY;
-  } else if (!(flags & FLAG_READ) && !(flags & FLAG_WRITE_ATTRIBUTES) &&
-             !(flags & FLAG_APPEND) && !(flags & FLAG_OPEN_ALWAYS)) {
+  } else if (!(flags & kFlagRead) && !(flags & kFlagWriteAttributes) &&
+             !(flags & kFlagAppend) && !(flags & kFlagOpenAlways)) {
     // Note: For FLAG_WRITE_ATTRIBUTES and no other read/write flags, we'll
     // open the file in O_RDONLY mode (== 0, see static_assert below), so that
     // we get a fd that can be used for SetTimes().
-    NOTREACHED();
+    UNREACHABLE();
   }
 
-  if (flags & FLAG_TERMINAL_DEVICE) {
+  if (flags & kFlagTerminalDevice) {
     open_flags |= O_NOCTTY | O_NDELAY;
   }
 
-  if (flags & FLAG_APPEND && flags & FLAG_READ) {
+  if (flags & kFlagAppend && flags & kFlagRead) {
     open_flags |= O_APPEND | O_RDWR;
-  } else if (flags & FLAG_APPEND) {
+  } else if (flags & kFlagAppend) {
     open_flags |= O_APPEND | O_WRONLY;
   }
 
-  static_assert(O_RDONLY == 0, "O_RDONLY must equal zero");
-
   mode_t mode = S_IRUSR | S_IWUSR;
-#if BUILDFLAG(IS_CHROMEOS)
-  mode |= S_IRGRP | S_IROTH;
-#endif
-
-#if BUILDFLAG(IS_ANDROID)
-  if (path.IsContentUri()) {
-    int fd = internal::OpenContentUri(path, flags);
-    if (fd < 0) {
-      error_details_ = FILE_ERROR_FAILED;
-      return;
-    }
-
-    // Save path for any call to GetInfo().
-    path_ = path;
-    created_ = (flags & (FLAG_CREATE_ALWAYS | FLAG_CREATE));
-    async_ = (flags & FLAG_ASYNC);
-    error_details_ = FILE_OK;
-    file_.reset(fd);
-    return;
-  }
-#endif
 
   int descriptor = HANDLE_EINTR(open(path.value().c_str(), open_flags, mode));
 
-  if (flags & FLAG_OPEN_ALWAYS) {
+  if (flags & kFlagOpenAlways) {
     if (descriptor < 0) {
       open_flags |= O_CREAT;
       descriptor = HANDLE_EINTR(open(path.value().c_str(), open_flags, mode));
+
       if (descriptor >= 0) {
-        created_ = true;
+        is_created_ = true;
       }
     }
   }
@@ -569,19 +556,21 @@ void File::DoInitialize(const FilePath& path, uint32_t flags) {
     return;
   }
 
-  if (flags & (FLAG_CREATE_ALWAYS | FLAG_CREATE)) {
-    created_ = true;
+  if (flags & (kFlagCreateAlways | kFlagCreate)) {
+    is_created_ = true;
   }
 
-  if (flags & FLAG_DELETE_ON_CLOSE) {
+  // If kFlagDeleteOnClose is set, immediately unlink (delete) the file from the
+  // filesystem. The file will remain accessible through the open descriptor but
+  // will be removed when the last descriptor is close.
+  if (flags & kFlagDeleteOnClose) {
     unlink(path.value().c_str());
   }
 
-  async_ = ((flags & FLAG_ASYNC) == FLAG_ASYNC);
-  error_details_ = FILE_OK;
-  file_.reset(descriptor);
+  is_async_ = ((flags & kFlagAsync) == kFlagAsync);
+  error_details_ = kFileOk;
+  file_.Reset(descriptor);
 }
-#endif  // !BUILDFLAG(IS_NACL)
 
 bool File::Flush() {
   ScopedBlockingCall scoped_blocking_call(FROM_HERE, BlockingType::MAY_BLOCK);
@@ -640,9 +629,9 @@ bool File::Flush() {
 }
 
 void File::SetPlatformFile(PlatformFile file) {
-  DCHECK(!file_.is_valid());
+  assert(!file_.is_valid());
 
-  file_.reset(file);
+  file_.Reset(file);
 }
 
 // static

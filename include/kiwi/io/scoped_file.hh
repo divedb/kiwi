@@ -13,7 +13,6 @@
 #include "kiwi/portability/build_config.hh"
 
 namespace kiwi {
-
 namespace internal {
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)

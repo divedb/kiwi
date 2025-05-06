@@ -6,33 +6,23 @@
 
 #include <utility>
 
-// #include "base/check_op.h"
 #include "kiwi/io/file_path.hh"
 // #include "kiwi/io/file_tracing.hh"
 // #include "base/metrics/histogram.h"
-// #include "base/notreached.h"
 #include "kiwi/numerics/safe_conversions.hh"
 // #include "base/timer/elapsed_timer.h"
 // #include "base/trace_event/base_tracing.h"
 #include "kiwi/portability/build_config.hh"
 
-#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+#if BUILDFLAG(IS_POSIX)
 #include <errno.h>
 #endif
 
 namespace kiwi {
 
-File::Info::Info() = default;
-
-File::Info::~Info() = default;
-
-File::File() = default;
-
-#if !BUILDFLAG(IS_NACL)
-File::File(const FilePath& path, uint32_t flags) : error_details_(FILE_OK) {
+File::File(const FilePath& path, uint32_t flags) : error_details_(kFileOk) {
   Initialize(path, flags);
 }
-#endif
 
 File::File(ScopedPlatformFile platform_file)
     : File(std::move(platform_file), false) {}
@@ -40,16 +30,18 @@ File::File(ScopedPlatformFile platform_file)
 File::File(PlatformFile platform_file) : File(platform_file, false) {}
 
 File::File(ScopedPlatformFile platform_file, bool async)
-    : file_(std::move(platform_file)), error_details_(FILE_OK), async_(async) {
-#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-  // DCHECK_GE(file_.get(), -1);
+    : file_(std::move(platform_file)),
+      error_details_(kFileOk),
+      is_async_(async) {
+#if BUILDFLAG(IS_POSIX)
+  assert(file_.get() >= -1);
 #endif
 }
 
 File::File(PlatformFile platform_file, bool async)
-    : file_(platform_file), error_details_(FILE_OK), async_(async) {
-#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-  // DCHECK_GE(platform_file, -1);
+    : file_(platform_file), error_details_(kFileOk), is_async_(async) {
+#if BUILDFLAG(IS_POSIX)
+  assert(platform_file >= -1);
 #endif
 }
 
@@ -59,8 +51,8 @@ File::File(File&& other)
     : file_(other.TakePlatformFile()),
       path_(other.path_),
       error_details_(other.error_details()),
-      created_(other.created()),
-      async_(other.async_) {}
+      is_created_(other.created()),
+      is_async_(other.is_async_) {}
 
 File::~File() {
   // Go through the AssertIOAllowed logic.
@@ -77,23 +69,21 @@ File& File::operator=(File&& other) {
   return *this;
 }
 
-#if !BUILDFLAG(IS_NACL)
 void File::Initialize(const FilePath& path, uint32_t flags) {
   if (path.ReferencesParent()) {
 #if BUILDFLAG(IS_WIN)
-    ::SetLastError(ERROR_ACCESS_DENIED);
-#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+    ::SetLastError(kFileErrorAccessDenied);
+#elif BUILDFLAG(IS_POSIX)
     errno = EACCES;
 #else
 #error Unsupported platform
 #endif
-    error_details_ = FILE_ERROR_ACCESS_DENIED;
+    error_details_ = kFileErrorAccessDenied;
     return;
   }
 
   DoInitialize(path, flags);
 }
-#endif
 
 std::optional<size_t> File::Read(int64_t offset, span<uint8_t> data) {
   span<char> chars = kiwi::as_writable_chars(data);

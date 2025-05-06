@@ -7,7 +7,6 @@ HDRS
 SRCS
     "file.cc"
     "file_path.cc"
-    "file_tracing.cc"
     "iobuf.cc"
     "safe_base_name.cc"
 COPTS

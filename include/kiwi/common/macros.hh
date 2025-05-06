@@ -35,6 +35,10 @@
 #define KIWI_ARRAYSIZE(array) \
   (sizeof(::kiwi::macros_internal::ArraySizeHelper(array)))
 
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+  TypeName(const TypeName&) = delete;      \
+  TypeName& operator=(const TypeName&) = delete;
+
 namespace kiwi {
 
 namespace macros_internal {

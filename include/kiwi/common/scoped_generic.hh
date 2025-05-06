@@ -10,10 +10,7 @@
 #include <type_traits>
 #include <utility>
 
-// TODO(gc):
-// #include "base/check.h"
 #include "kiwi/portability/compiler_specific.hh"
-// #include "base/memory/raw_ptr.h"
 
 namespace kiwi {
 
@@ -97,6 +94,7 @@ class ScopedGeneric {
   struct Data : public Traits {
     explicit Data(const T& in) : generic(in) {}
     Data(const T& in, const Traits& other) : Traits(other), generic(in) {}
+
     T generic;
   };
 
@@ -137,7 +135,8 @@ class ScopedGeneric {
 
   /// Destructor. Frees the owned resource if it is valid.
   virtual ~ScopedGeneric() {
-    // CHECK(!receiving_);  // ScopedGeneric destroyed with active receiver.
+    assert(!receiving_);  // ScopedGeneric destroyed with active receiver.
+
     FreeIfNecessary();
   }
 
@@ -151,14 +150,15 @@ class ScopedGeneric {
     return *this;
   }
 
-  // Frees the currently owned object, if any. Then takes ownership of a new
-  // object, if given. Self-resets are not allowed as on unique_ptr. See
-  // http://crbug.com/162971
+  /// Frees the currently owned object, if any. Then takes ownership of a new
+  /// object, if given. Self-resets are not allowed as on unique_ptr. See
+  /// http://crbug.com/162971
   void Reset(const element_type& value = traits_type::InvalidValue()) {
     if (data_.generic != traits_type::InvalidValue() &&
         data_.generic == value) {
       abort();
     }
+
     FreeIfNecessary();
     data_.generic = value;
     TrackAcquire(value);
@@ -308,6 +308,7 @@ class ScopedGeneric {
   template <typename T2, typename Traits2>
   bool operator!=(const ScopedGeneric<T2, Traits2>& p2) const;
 
+ private:
   Data data_;
   bool receiving_ = false;
 };

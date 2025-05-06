@@ -11,6 +11,7 @@
 #include <string>
 
 #include "kiwi/chrono/time.hh"
+#include "kiwi/common/macros.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/io/file_path.hh"
 #include "kiwi/io/file_tracing.hh"
@@ -39,6 +40,8 @@ using stat_wrapper_t = struct stat;
 /// On POSIX, if the given file is a symbolic link, most of the methods apply to
 /// the file that the symbolic link resolves to.
 class BASE_EXPORT File {
+  DISALLOW_COPY_AND_ASSIGN(File);
+
  public:
   /// kFlag(Open|Create).* are mutually exclusive. You should specify exactly
   /// one of the five (possibly combining with other flags) when opening or
@@ -123,10 +126,8 @@ class BASE_EXPORT File {
   /// OK), make sure to update all functions that use it in
   /// file_util_{win|posix}.cc, too.
   struct BASE_EXPORT Info {
-    Info();
-    ~Info();
-#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-    // Fills this struct with values from |stat_info|.
+#if BUILDFLAG(IS_POSIX)
+    /// Fills this struct with values from `stat_info`.
     void FromStat(const stat_wrapper_t& stat_info);
 #endif
 
@@ -150,29 +151,38 @@ class BASE_EXPORT File {
     Time creation_time;
   };
 
-  File();
+  File() = default;
 
-  // Creates or opens the given file. This will fail with 'access denied' if the
-  // |path| contains path traversal ('..') components.
+  /// Creates or opens the given file. This will fail with 'access denied' if
+  /// the `path` contains path traversal ('..') components.
+  ///
+  /// \param path The file path.
+  /// \param flags Flags for opening or creating \see Flags.
   File(const FilePath& path, uint32_t flags);
 
-  // Takes ownership of |platform_file| and sets async to false.
+  /// Takes ownership of `platform_file` and sets async to false.
+  ///
+  /// \copydoc File(ScopedPlatformFile platform_file, bool async);
   explicit File(ScopedPlatformFile platform_file);
   explicit File(PlatformFile platform_file);
 
-  // Takes ownership of |platform_file| and sets async to the given value.
-  // This constructor exists because on Windows you can't check if platform_file
-  // is async or not.
+  /// Takes ownership of `platform_file` and sets async to the given value.
+  /// This constructor exists because on Windows you can't check if
+  /// platform_file is async or not.
+  ///
+  /// \param platform_file A scoped handle to an already-opened
+  ///                     platform-specific file.
+  /// \param async If true, the file will be operated in asynchronous
+  ///              (non-blocking) mode; otherwise, operations will be
+  ///              synchronous.
   File(ScopedPlatformFile platform_file, bool async);
   File(PlatformFile platform_file, bool async);
 
   // Creates an object with a specific error_details code.
   explicit File(Error error_details);
 
+  /// Move constructor.
   File(File&& other);
-
-  File(const File&) = delete;
-  File& operator=(const File&) = delete;
 
   ~File();
 
@@ -189,14 +199,14 @@ class BASE_EXPORT File {
   // Returns true if a new file was created (or an old one truncated to zero
   // length to simulate a new file, which can happen with
   // FLAG_CREATE_ALWAYS), and false otherwise.
-  bool created() const { return created_; }
+  bool IsCreated() const { return created_; }
 
   // Returns the OS result of opening this file. Note that the way to verify
   // the success of the operation is to use IsValid(), not this method:
   //   File file(path, flags);
   //   if (!file.IsValid())
   //     return;
-  Error error_details() const { return error_details_; }
+  Error ErrorDetails() const { return error_details_; }
 
   PlatformFile GetPlatformFile() const;
   PlatformFile TakePlatformFile();
@@ -421,29 +431,16 @@ class BASE_EXPORT File {
   }
 
  private:
-  // TODO(gc):
-  // friend class FileTracing::ScopedTrace;
-
   // Creates or opens the given file. Only called if |path| has no
   // traversal ('..') components.
   void DoInitialize(const FilePath& path, uint32_t flags);
-
   void SetPlatformFile(PlatformFile file);
 
   ScopedPlatformFile file_;
-
-  // Platform path to `file_`. Set if `this` wraps a file from an Android
-  // content provider (i.e. a content URI) or if tracing is enabled in
-  // `Initialize()`.
   FilePath path_;
-
-  // Object tied to the lifetime of |this| that enables/disables tracing.
-  // TODO(gc):
-  // FileTracing::ScopedEnabler trace_enabler_;
-
-  Error error_details_ = FILE_ERROR_FAILED;
-  bool created_ = false;
-  bool async_ = false;
+  Error error_details_ = kFileErrorFailed;
+  bool is_created_ = false;
+  bool is_async_ = false;
 };
 
 }  // namespace kiwi
