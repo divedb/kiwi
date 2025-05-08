@@ -1,0 +1,27 @@
+\doxysection{malloc.\+hh}
+\hypertarget{common_2malloc_8hh_source}{}\label{common_2malloc_8hh_source}\index{include/kiwi/common/malloc.hh@{include/kiwi/common/malloc.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacekiwi_af56c29b292dace755750b62b74c57822}{good\_malloc\_size}}(\textcolor{keywordtype}{size\_t}\ min\_size)\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ min\_size;\ \}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{namespacekiwi_a3b36ff54230b55db830045ddab5257cd}{checked\_malloc}}(\textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{void}*\ p\ =\ malloc(size);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordflow}{if}\ (!p)\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception<std::bad\_alloc>}}();}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{return}\ p;}
+\DoxyCodeLine{00027\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

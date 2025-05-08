@@ -204,29 +204,30 @@
 \DoxyCodeLine{00235\ }
 \DoxyCodeLine{00236\ \ \ std::error\_code*\ GetErrorStorage()\ \{}
 \DoxyCodeLine{00237\ \ \ \ \ assert(has\_error\_\ \&\&\ \textcolor{stringliteral}{"{}Cannot\ get\ error\ when\ a\ value\ exists!"{}});}
-\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}std::error\_code*\textcolor{keyword}{>}(\&error\_storage);}
-\DoxyCodeLine{00239\ \ \ \}}
-\DoxyCodeLine{00240\ }
-\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{const}\ std::error\_code*\ GetErrorStorage()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}ErrorOr<T>*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>GetErrorStorage();}
-\DoxyCodeLine{00243\ \ \ \}}
-\DoxyCodeLine{00244\ }
-\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{union\ }\{}
-\DoxyCodeLine{00246\ \ \ \ \ AlignedCharArrayUnion<storage\_type>\ t\_storage;}
-\DoxyCodeLine{00247\ \ \ \ \ AlignedCharArrayUnion<std::error\_code>\ error\_storage;}
-\DoxyCodeLine{00248\ \ \ \};}
-\DoxyCodeLine{00249\ }
-\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{bool}\ has\_error\_\ :\ 1;}
-\DoxyCodeLine{00251\ \};}
-\DoxyCodeLine{00252\ }
-\DoxyCodeLine{00253\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ E>}
-\DoxyCodeLine{00254\ std::enable\_if\_t<std::is\_error\_code\_enum<E>::value\ ||}
-\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_error\_condition\_enum<E>::value,}
-\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}>}
-\DoxyCodeLine{00257\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classchibicpp_1_1_error_or}{ErrorOr<T>}}\&\ err,\ E\ code)\ \{}
-\DoxyCodeLine{00258\ \ \ \textcolor{keywordflow}{return}\ err.GetError()\ ==\ code;}
-\DoxyCodeLine{00259\ \}}
-\DoxyCodeLine{00260\ }
-\DoxyCodeLine{00261\ \}\ \ \textcolor{comment}{//\ namespace\ chibicpp}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}std::error\_code*\textcolor{keyword}{>}(\&error\_storage);}
+\DoxyCodeLine{00240\ \ \ \}}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{const}\ std::error\_code*\ GetErrorStorage()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}ErrorOr<T>*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>GetErrorStorage();}
+\DoxyCodeLine{00244\ \ \ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{union\ }\{}
+\DoxyCodeLine{00247\ \ \ \ \ AlignedCharArrayUnion<storage\_type>\ t\_storage;}
+\DoxyCodeLine{00248\ \ \ \ \ AlignedCharArrayUnion<std::error\_code>\ error\_storage;}
+\DoxyCodeLine{00249\ \ \ \};}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordtype}{bool}\ has\_error\_\ :\ 1;}
+\DoxyCodeLine{00252\ \};}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ E>}
+\DoxyCodeLine{00255\ std::enable\_if\_t<std::is\_error\_code\_enum<E>::value\ ||}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_error\_condition\_enum<E>::value,}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}>}
+\DoxyCodeLine{00258\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classchibicpp_1_1_error_or}{ErrorOr<T>}}\&\ err,\ E\ code)\ \{}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordflow}{return}\ err.GetError()\ ==\ code;}
+\DoxyCodeLine{00260\ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \}\ \ \textcolor{comment}{//\ namespace\ chibicpp}}
 
 \end{DoxyCode}

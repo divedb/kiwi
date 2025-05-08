@@ -370,7 +370,10 @@ constexpr TimeDelta TimeDelta::operator-(TimeDelta other) const {
   }
 
   // Subtractions involving two infinities are only valid if signs differ.
-  CHECK_NE(int64_t{delta_}, int64_t{other.delta_});
+  // CHECK_NE(int64_t{delta_}, int64_t{other.delta_});
+
+  assert(int64_t{delta_} != int64_t{other.delta_});
+
   return (other.delta_ < 0) ? Max() : Min();
 }
 
@@ -1013,7 +1016,7 @@ constexpr double TimeDelta::InMicrosecondsF() const {
 }
 
 constexpr int64_t TimeDelta::InNanoseconds() const {
-  return base::ClampMul(delta_, Time::kNanosecondsPerMicrosecond);
+  return kiwi::ClampMul(delta_, Time::kNanosecondsPerMicrosecond);
 }
 
 // static

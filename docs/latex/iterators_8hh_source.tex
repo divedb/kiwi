@@ -1,0 +1,104 @@
+\doxysection{iterators.\+hh}
+\hypertarget{iterators_8hh_source}{}\label{iterators_8hh_source}\index{include/kiwi/common/iterators.hh@{include/kiwi/common/iterators.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00049\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ D,\ \textcolor{keyword}{typename}\ V,\ \textcolor{keyword}{typename}\ Tag>}
+\DoxyCodeLine{00070\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{IteratorFacade}}\ \{}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsEqual(D\ \textcolor{keyword}{const}\&\ lhs,\ D\ \textcolor{keyword}{const}\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs.IsEqual(rhs);\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ D\&\ AsDerived()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}D\&\textcolor{keyword}{>}(*this);\ \}}
+\DoxyCodeLine{00074\ \ \ D\ \textcolor{keyword}{const}\&\ AsDerivedConst()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}D\ const\&\textcolor{keyword}{>}(*this);\ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ V;}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{using\ }reference\ =\ value\_type\&;}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{using\ }pointer\ =\ value\_type*;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ std::ptrdiff\_t;}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ Tag;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{bool}\ operator==(D\ \textcolor{keyword}{const}\&\ lhs,\ D\ \textcolor{keyword}{const}\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ equal(lhs,\ rhs);\ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{bool}\ operator!=(D\ \textcolor{keyword}{const}\&\ lhs,\ D\ \textcolor{keyword}{const}\&\ rhs)\ \{\ \textcolor{keywordflow}{return}\ !(lhs\ ==\ rhs);\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ V\&\ operator*()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AsDerivedConst().Dereference();\ \}}
+\DoxyCodeLine{00087\ \ \ V*\ operator-\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::addressof(\textcolor{keyword}{operator}*());\ \}}
+\DoxyCodeLine{00088\ \ \ D\&\ operator++()\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ AsDerived().Increment();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ AsDerived();}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ D\ operator++(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{auto}\ ret\ =\ AsDerived();\ \ \textcolor{comment}{//\ copy}}
+\DoxyCodeLine{00096\ \ \ \ \ AsDerived().Increment();}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ D\&\ operator-\/-\/()\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ AsDerived().Decrement();}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ AsDerived();}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ D\ operator-\/-\/(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{auto}\ ret\ =\ AsDerived();\ \ \textcolor{comment}{//\ copy}}
+\DoxyCodeLine{00109\ \ \ \ \ AsDerived().Decrement();}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00112\ \ \ \}}
+\DoxyCodeLine{00113\ \};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00122\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ D,\ \textcolor{keyword}{typename}\ I,\ \textcolor{keyword}{typename}\ V,\ \textcolor{keyword}{typename}\ Tag>}
+\DoxyCodeLine{00123\ \textcolor{keyword}{class\ }IteratorAdaptor\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{IteratorFacade}}<D,\ V,\ Tag>\ \{}
+\DoxyCodeLine{00124\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{using\ }Super\ =\ \mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{IteratorFacade<D,\ V,\ Tag>}};}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ \textcolor{keyword}{typename}\ Super::value\_type;}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ \textcolor{keyword}{typename}\ Super::iterator\_category;}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{using\ }reference\ =\ \textcolor{keyword}{typename}\ Super::reference;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{using\ }pointer\ =\ \textcolor{keyword}{typename}\ Super::pointer;}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ \textcolor{keyword}{typename}\ Super::difference\_type;}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ IteratorAdaptor()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{explicit}\ IteratorAdaptor(I\ base)\ :\ base\_(std::move(base))\ \{\}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{void}\ Increment()\ \{\ ++base\_;\ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{void}\ Decrement()\ \{\ -\/-\/base\_;\ \}}
+\DoxyCodeLine{00137\ \ \ V\&\ Dereference()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *base\_;\ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{bool}\ IsEqual(D\ \textcolor{keyword}{const}\&\ rhs)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ base\_\ ==\ rhs.base\_;\ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ I\ \textcolor{keyword}{const}\&\ Base()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ base\_;\ \}}
+\DoxyCodeLine{00141\ \ \ I\&\ Base()\ \{\ \textcolor{keywordflow}{return}\ base\_;\ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00144\ \ \ I\ base\_;}
+\DoxyCodeLine{00145\ \};}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00148\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

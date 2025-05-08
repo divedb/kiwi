@@ -1,0 +1,23 @@
+\doxysection{include/kiwi/common/scope\+\_\+exit.hh File Reference}
+\hypertarget{scope__exit_8hh}{}\label{scope__exit_8hh}\index{include/kiwi/common/scope\_exit.hh@{include/kiwi/common/scope\_exit.hh}}
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{kiwi\+::detail\+::scope\+\_\+exit$<$ Callable $>$}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacekiwi}{kiwi}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Callable$>$ }\\\mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{detail\+::scope\+\_\+exit}}$<$ std\+::decay\+\_\+t$<$ Callable $>$ $>$ \mbox{\hyperlink{namespacekiwi_a851bea1bb4a936e7446e8fc1ab579231}{kiwi\+::make\+\_\+scope\+\_\+exit}} (Callable \&\&fp)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file defines the make\+\_\+scope\+\_\+exit function, which executes user-\/defined cleanup logic at scope exit. 

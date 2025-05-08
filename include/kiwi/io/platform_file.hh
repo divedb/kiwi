@@ -29,7 +29,7 @@ using ScopedPlatformFile = ::kiwi::win::ScopedHandle;
 /// disallowed in constexpr. Visual Studio accepts this, however.
 const PlatformFile kInvalidPlatformFile = INVALID_HANDLE_VALUE;
 
-#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+#elif BUILDFLAG(IS_POSIX)
 
 using PlatformFile = int;
 using ScopedPlatformFile = ::kiwi::ScopedFD;

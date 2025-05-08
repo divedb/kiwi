@@ -151,25 +151,25 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>difference_type</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1cdd3f0badce8ecc1448cb546cc4e865" id="r_a1cdd3f0badce8ecc1448cb546cc4e865"><td class="memTemplParams" colspan="2"><a id="a1cdd3f0badce8ecc1448cb546cc4e865" name="a1cdd3f0badce8ecc1448cb546cc4e865"></a>
+<tr class="memitem:a63cdc03ef69f425e93b30e9dcab2695c" id="r_a63cdc03ef69f425e93b30e9dcab2695c"><td class="memTemplParams" colspan="2"><a id="a63cdc03ef69f425e93b30e9dcab2695c" name="a63cdc03ef69f425e93b30e9dcab2695c"></a>
 template&lt;int &amp; ..., size_t M&gt; </td></tr>
-<tr class="memitem:a1cdd3f0badce8ecc1448cb546cc4e865"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>basic_cstring_view</b> (const Char(&amp;lit LIFETIME_BOUND)[M]) noexcept ENABLE_IF_ATTR(lit[M - 1u]</td></tr>
-<tr class="separator:a1cdd3f0badce8ecc1448cb546cc4e865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63cdc03ef69f425e93b30e9dcab2695c"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>basic_cstring_view</b> (const Char(&amp;lit KIWI_LIFETIME_BOUND)[M]) noexcept ENABLE_IF_ATTR(lit[M - 1u]</td></tr>
+<tr class="separator:a63cdc03ef69f425e93b30e9dcab2695c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf90e5faf43ebc6ab844ef361052959a" id="r_adf90e5faf43ebc6ab844ef361052959a"><td class="memItemLeft" align="right" valign="top"><a id="adf90e5faf43ebc6ab844ef361052959a" name="adf90e5faf43ebc6ab844ef361052959a"></a>
 constexpr literal as&#160;</td><td class="memItemRight" valign="bottom"><b>len_</b> (std::char_traits&lt; Char &gt;::length(lit))</td></tr>
 <tr class="separator:adf90e5faf43ebc6ab844ef361052959a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7230de2177f305d6dbd5aa23f7bd2766" id="r_a7230de2177f305d6dbd5aa23f7bd2766"><td class="memTemplParams" colspan="2"><a id="a7230de2177f305d6dbd5aa23f7bd2766" name="a7230de2177f305d6dbd5aa23f7bd2766"></a>
+<tr class="memitem:a5bcc58317954f5c263027f7d076f1d2a" id="r_a5bcc58317954f5c263027f7d076f1d2a"><td class="memTemplParams" colspan="2"><a id="a5bcc58317954f5c263027f7d076f1d2a" name="a5bcc58317954f5c263027f7d076f1d2a"></a>
 template&lt;std::same_as&lt; std::basic_string&lt; Char &gt; &gt; String&gt; </td></tr>
-<tr class="memitem:a7230de2177f305d6dbd5aa23f7bd2766"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>basic_cstring_view</b> (const String &amp;s LIFETIME_BOUND) noexcept</td></tr>
-<tr class="separator:a7230de2177f305d6dbd5aa23f7bd2766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3824948ab2fba9a715d1b43b1b830d6d" id="r_a3824948ab2fba9a715d1b43b1b830d6d"><td class="memTemplParams" colspan="2"><a id="a3824948ab2fba9a715d1b43b1b830d6d" name="a3824948ab2fba9a715d1b43b1b830d6d"></a>
+<tr class="memitem:a5bcc58317954f5c263027f7d076f1d2a"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>basic_cstring_view</b> (const String &amp;s KIWI_LIFETIME_BOUND) noexcept</td></tr>
+<tr class="separator:a5bcc58317954f5c263027f7d076f1d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac840aa32e76eb7b9c72c1335160797a7" id="r_ac840aa32e76eb7b9c72c1335160797a7"><td class="memTemplParams" colspan="2"><a id="ac840aa32e76eb7b9c72c1335160797a7" name="ac840aa32e76eb7b9c72c1335160797a7"></a>
 template&lt;class String&gt; <br />
 requires (std::same_as&lt;std::remove_cvref_t&lt;String&gt;, Char*&gt; || std::same_as&lt;std::remove_cvref_t&lt;String&gt;, const Char*&gt;)</td></tr>
-<tr class="memitem:a3824948ab2fba9a715d1b43b1b830d6d"><td class="memTemplItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>basic_cstring_view</b> (String &amp;&amp;ptr LIFETIME_BOUND) noexcept</td></tr>
-<tr class="separator:a3824948ab2fba9a715d1b43b1b830d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa48ae3b669919c5ab64941cc0e71d8f7" id="r_aa48ae3b669919c5ab64941cc0e71d8f7"><td class="memItemLeft" align="right" valign="top"><a id="aa48ae3b669919c5ab64941cc0e71d8f7" name="aa48ae3b669919c5ab64941cc0e71d8f7"></a>
-UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>basic_cstring_view</b> (const Char *ptr LIFETIME_BOUND, size_t len)</td></tr>
-<tr class="separator:aa48ae3b669919c5ab64941cc0e71d8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac840aa32e76eb7b9c72c1335160797a7"><td class="memTemplItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>basic_cstring_view</b> (String &amp;&amp;ptr KIWI_LIFETIME_BOUND) noexcept</td></tr>
+<tr class="separator:ac840aa32e76eb7b9c72c1335160797a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a907e9da034866207efef9e297d5a3" id="r_a83a907e9da034866207efef9e297d5a3"><td class="memItemLeft" align="right" valign="top"><a id="a83a907e9da034866207efef9e297d5a3" name="a83a907e9da034866207efef9e297d5a3"></a>
+UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>basic_cstring_view</b> (const Char *ptr KIWI_LIFETIME_BOUND, size_t len)</td></tr>
+<tr class="separator:a83a907e9da034866207efef9e297d5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0bcf768456ba84c54fc403b422298b4" id="r_ab0bcf768456ba84c54fc403b422298b4"><td class="memItemLeft" align="right" valign="top"><a id="ab0bcf768456ba84c54fc403b422298b4" name="ab0bcf768456ba84c54fc403b422298b4"></a>
 PURE_FUNCTION constexpr const Char *&#160;</td><td class="memItemRight" valign="bottom"><b>c_str</b> () const noexcept</td></tr>
 <tr class="separator:ab0bcf768456ba84c54fc403b422298b4"><td class="memSeparator" colspan="2">&#160;</td></tr>

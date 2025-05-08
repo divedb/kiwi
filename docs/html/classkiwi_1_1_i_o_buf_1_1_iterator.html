@@ -112,8 +112,11 @@ $(function(){initNavTree('classkiwi_1_1_i_o_buf_1_1_iterator.html',''); initResi
 Inheritance diagram for kiwi::IOBuf::Iterator:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classkiwi_1_1_i_o_buf_1_1_iterator.png" alt=""/>
- </div></div>
+  <img src="classkiwi_1_1_i_o_buf_1_1_iterator.png" usemap="#kiwi::IOBuf::Iterator_map" alt=""/>
+  <map id="kiwi::IOBuf::Iterator_map" name="kiwi::IOBuf::Iterator_map">
+<area href="classkiwi_1_1detail_1_1_iterator_facade.html" alt="kiwi::detail::IteratorFacade&lt; IOBuf::Iterator, ByteRange const, std::forward_iterator_tag &gt;" shape="rect" coords="0,0,511,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -126,15 +129,53 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a244969b654b7cac81f309965c50f35a0" id="r_a244969b654b7cac81f309965c50f35a0"><td class="memItemLeft" align="right" valign="top"><a id="a244969b654b7cac81f309965c50f35a0" name="a244969b654b7cac81f309965c50f35a0"></a>
 <a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">Iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">Iterator</a> const &amp;rhs)</td></tr>
 <tr class="separator:a244969b654b7cac81f309965c50f35a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acab9ed9271d6b0318693a51fffae92ea" id="r_acab9ed9271d6b0318693a51fffae92ea"><td class="memItemLeft" align="right" valign="top"><a id="acab9ed9271d6b0318693a51fffae92ea" name="acab9ed9271d6b0318693a51fffae92ea"></a>
-const ByteRange &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dereference</b> () const</td></tr>
-<tr class="separator:acab9ed9271d6b0318693a51fffae92ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7373f151890289951974e286d9f2495d" id="r_a7373f151890289951974e286d9f2495d"><td class="memItemLeft" align="right" valign="top"><a id="a7373f151890289951974e286d9f2495d" name="a7373f151890289951974e286d9f2495d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>equal</b> (const <a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">Iterator</a> &amp;other) const</td></tr>
-<tr class="separator:a7373f151890289951974e286d9f2495d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5c0e9a468dd00fc3a3c475e8df476f8" id="r_aa5c0e9a468dd00fc3a3c475e8df476f8"><td class="memItemLeft" align="right" valign="top"><a id="aa5c0e9a468dd00fc3a3c475e8df476f8" name="aa5c0e9a468dd00fc3a3c475e8df476f8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>increment</b> ()</td></tr>
-<tr class="separator:aa5c0e9a468dd00fc3a3c475e8df476f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6cb760aadb05349e3b8213a8a56bbee" id="r_ac6cb760aadb05349e3b8213a8a56bbee"><td class="memItemLeft" align="right" valign="top"><a id="ac6cb760aadb05349e3b8213a8a56bbee" name="ac6cb760aadb05349e3b8213a8a56bbee"></a>
+const <a class="el" href="classkiwi_1_1span.html">ByteRange</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Dereference</b> () const</td></tr>
+<tr class="separator:ac6cb760aadb05349e3b8213a8a56bbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4be874c364b89ba44dd35d5f47dac28" id="r_ab4be874c364b89ba44dd35d5f47dac28"><td class="memItemLeft" align="right" valign="top"><a id="ab4be874c364b89ba44dd35d5f47dac28" name="ab4be874c364b89ba44dd35d5f47dac28"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsEqual</b> (const <a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">Iterator</a> &amp;other) const</td></tr>
+<tr class="separator:ab4be874c364b89ba44dd35d5f47dac28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f0cd3dcc1e5d24a494d7a7cd9aa2397" id="r_a4f0cd3dcc1e5d24a494d7a7cd9aa2397"><td class="memItemLeft" align="right" valign="top"><a id="a4f0cd3dcc1e5d24a494d7a7cd9aa2397" name="a4f0cd3dcc1e5d24a494d7a7cd9aa2397"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Increment</b> ()</td></tr>
+<tr class="separator:a4f0cd3dcc1e5d24a494d7a7cd9aa2397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classkiwi_1_1detail_1_1_iterator_facade')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classkiwi_1_1detail_1_1_iterator_facade.html">kiwi::detail::IteratorFacade&lt; IOBuf::Iterator, ByteRange const, std::forward_iterator_tag &gt;</a></td></tr>
+<tr class="memitem:af2435e8c3676b3f796157c85dbccd515 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade" id="r_af2435e8c3676b3f796157c85dbccd515"><td class="memItemLeft" align="right" valign="top">
+ByteRange const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const</td></tr>
+<tr class="separator:af2435e8c3676b3f796157c85dbccd515 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08520bd938aab103b4bdaabec5131892 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade" id="r_a08520bd938aab103b4bdaabec5131892"><td class="memItemLeft" align="right" valign="top">
+ByteRange const *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="separator:a08520bd938aab103b4bdaabec5131892 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c06ec2d9bfedfac99dc51a79761f246 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade" id="r_a6c06ec2d9bfedfac99dc51a79761f246"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">IOBuf::Iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> ()</td></tr>
+<tr class="separator:a6c06ec2d9bfedfac99dc51a79761f246 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c573868a6d23c50623f4968981dc232 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade" id="r_a5c573868a6d23c50623f4968981dc232"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">IOBuf::Iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> (int)</td></tr>
+<tr class="separator:a5c573868a6d23c50623f4968981dc232 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab81337cf10ff6ad90572338febadd9c7 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade" id="r_ab81337cf10ff6ad90572338febadd9c7"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">IOBuf::Iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator--</b> ()</td></tr>
+<tr class="separator:ab81337cf10ff6ad90572338febadd9c7 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa822f1cebc69053069bb95104885da37 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade" id="r_aa822f1cebc69053069bb95104885da37"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classkiwi_1_1_i_o_buf_1_1_iterator.html">IOBuf::Iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator--</b> (int)</td></tr>
+<tr class="separator:aa822f1cebc69053069bb95104885da37 inherit pub_methods_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classkiwi_1_1detail_1_1_iterator_facade"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classkiwi_1_1detail_1_1_iterator_facade')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classkiwi_1_1detail_1_1_iterator_facade.html">kiwi::detail::IteratorFacade&lt; IOBuf::Iterator, ByteRange const, std::forward_iterator_tag &gt;</a></td></tr>
+<tr class="memitem:a7996ca2249210b81b9340940aa5fc741 inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade" id="r_a7996ca2249210b81b9340940aa5fc741"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b></td></tr>
+<tr class="separator:a7996ca2249210b81b9340940aa5fc741 inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f2c71049f8a96b164c3209dbb1fd3ff inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade" id="r_a2f2c71049f8a96b164c3209dbb1fd3ff"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b></td></tr>
+<tr class="separator:a2f2c71049f8a96b164c3209dbb1fd3ff inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a282cfbf32f5a093b66aeeeaab41ecedb inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade" id="r_a282cfbf32f5a093b66aeeeaab41ecedb"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b></td></tr>
+<tr class="separator:a282cfbf32f5a093b66aeeeaab41ecedb inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d929350ebae81056ad2828877cf4fe8 inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade" id="r_a2d929350ebae81056ad2828877cf4fe8"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>difference_type</b></td></tr>
+<tr class="separator:a2d929350ebae81056ad2828877cf4fe8 inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a976edc44148dbd6a5f0f7f9a3247f6 inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade" id="r_a6a976edc44148dbd6a5f0f7f9a3247f6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>iterator_category</b></td></tr>
+<tr class="separator:a6a976edc44148dbd6a5f0f7f9a3247f6 inherit pub_types_classkiwi_1_1detail_1_1_iterator_facade"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/kiwi/io/<a class="el" href="iobuf_8hh_source.html">iobuf.hh</a></li>

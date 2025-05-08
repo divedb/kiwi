@@ -425,11 +425,11 @@
 \DoxyCodeLine{00481\ \ \ \ \ \textcolor{keyword}{static}\ RefCounted*\ create(\textcolor{keywordtype}{size\_t}*\ size)\ \{}
 \DoxyCodeLine{00482\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ capacityBytes;}
 \DoxyCodeLine{00483\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!folly::checked\_add(\&capacityBytes,\ *size,\ \textcolor{keywordtype}{size\_t}(1)))\ \{}
-\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ throw\_exception(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
 \DoxyCodeLine{00485\ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00486\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!folly::checked\_muladd(\&capacityBytes,\ capacityBytes,\ \textcolor{keyword}{sizeof}(Char),}
 \DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ getDataOffset()))\ \{}
-\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ throw\_exception(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
 \DoxyCodeLine{00489\ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00490\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ allocSize\ =\ goodMallocSize(capacityBytes);}
 \DoxyCodeLine{00491\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ result\ =\ \textcolor{keyword}{static\_cast<}RefCounted*\textcolor{keyword}{>}(checkedMalloc(allocSize));}
@@ -453,11 +453,11 @@
 \DoxyCodeLine{00509\ \ \ \ \ \ \ assert(*newCapacity\ >\ 0\ \&\&\ *newCapacity\ >\ currentSize);}
 \DoxyCodeLine{00510\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ capacityBytes;}
 \DoxyCodeLine{00511\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!folly::checked\_add(\&capacityBytes,\ *newCapacity,\ \textcolor{keywordtype}{size\_t}(1)))\ \{}
-\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ throw\_exception(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
 \DoxyCodeLine{00513\ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00514\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!folly::checked\_muladd(\&capacityBytes,\ capacityBytes,\ \textcolor{keyword}{sizeof}(Char),}
 \DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ getDataOffset()))\ \{}
-\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ throw\_exception(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
 \DoxyCodeLine{00517\ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00518\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ allocNewCapacity\ =\ goodMallocSize(capacityBytes);}
 \DoxyCodeLine{00519\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \textcolor{keyword}{const}\ dis\ =\ fromData(\mbox{\hyperlink{classkiwi_1_1fbstring__core_a9c13e797d636505b5b1229034788a7c7}{data}});}
@@ -590,8 +590,8 @@
 \DoxyCodeLine{00649\ \textcolor{keywordtype}{void}\ fbstring\_core<Char>::CopyMedium(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1fbstring__core}{fbstring\_core}}\&\ rhs)\ \{}
 \DoxyCodeLine{00650\ \ \ \textcolor{comment}{//\ Medium\ strings\ are\ copied\ eagerly.\ Don't\ forget\ to\ allocate}}
 \DoxyCodeLine{00651\ \ \ \textcolor{comment}{//\ one\ extra\ Char\ for\ the\ null\ terminator.}}
-\DoxyCodeLine{00652\ \ \ \textcolor{keyword}{auto}\ \textcolor{keyword}{const}\ alloc\_size\ =\ good\_malloc\_size((1\ +\ rhs.ml\_.size\_)\ *\ \textcolor{keyword}{sizeof}(Char));}
-\DoxyCodeLine{00653\ \ \ ml\_.data\_\ =\ \textcolor{keyword}{static\_cast<}Char*\textcolor{keyword}{>}(checked\_malloc(allocSize));}
+\DoxyCodeLine{00652\ \ \ \textcolor{keyword}{auto}\ \textcolor{keyword}{const}\ alloc\_size\ =\ \mbox{\hyperlink{namespacekiwi_af56c29b292dace755750b62b74c57822}{good\_malloc\_size}}((1\ +\ rhs.ml\_.size\_)\ *\ \textcolor{keyword}{sizeof}(Char));}
+\DoxyCodeLine{00653\ \ \ ml\_.data\_\ =\ \textcolor{keyword}{static\_cast<}Char*\textcolor{keyword}{>}(\mbox{\hyperlink{namespacekiwi_a3b36ff54230b55db830045ddab5257cd}{checked\_malloc}}(allocSize));}
 \DoxyCodeLine{00654\ \ \ \textcolor{comment}{//\ Also\ copies\ terminator.}}
 \DoxyCodeLine{00655\ \ \ fbstring\_detail::podCopy(rhs.ml\_.data\_,\ rhs.ml\_.data\_\ +\ rhs.ml\_.size\_\ +\ 1,}
 \DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ml\_.data\_);}

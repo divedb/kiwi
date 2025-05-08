@@ -17,38 +17,36 @@
 \DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00014\ }
 \DoxyCodeLine{00026\ \textcolor{keyword}{class\ }BASE\_EXPORT\ SafeBaseName\ \{}
-\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{explicit}\ SafeBaseName(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}{path}})\ :\ path\_(\mbox{\hyperlink{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}{path}})\ \{\}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{explicit}\ SafeBaseName(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_ac3daf3d490dbfd2e2682527084671311}{path}})\ :\ path\_(\mbox{\hyperlink{classkiwi_1_1_safe_base_name_ac3daf3d490dbfd2e2682527084671311}{path}})\ \{\}}
 \DoxyCodeLine{00029\ }
 \DoxyCodeLine{00030\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ std::optional<SafeBaseName>\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a775c207f9df73f170f9620b9e06dafb5}{Create}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}{path}});}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ std::optional<SafeBaseName>\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a775c207f9df73f170f9620b9e06dafb5}{Create}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_ac3daf3d490dbfd2e2682527084671311}{path}});}
 \DoxyCodeLine{00040\ }
 \DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ Same\ as\ above,\ but\ takes\ a\ StringViewType\ for\ convenience.}}
 \DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ std::optional<SafeBaseName>\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a775c207f9df73f170f9620b9e06dafb5}{Create}}(FilePath::StringViewType);}
 \DoxyCodeLine{00043\ }
 \DoxyCodeLine{00045\ \ \ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a4a8119436f2620a1f434b39924335ab6}{SafeBaseName}}()\ =\ \textcolor{keywordflow}{default};}
 \DoxyCodeLine{00046\ }
-\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a49529f853ea85af0030c298b324bc00f}{path}}()\ const\ LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ path\_;\ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_ac3daf3d490dbfd2e2682527084671311}{path}}()\ const\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ path\_;\ \}}
 \DoxyCodeLine{00049\ }
 \DoxyCodeLine{00057\ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_ad4d5eaeb3de0e3fab3983c5f24933d96}{AsUTF8Unsafe}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ path\_.AsUTF8Unsafe();\ \}}
 \DoxyCodeLine{00058\ }
-\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a9cd6fda74d2d6a602a3e2cfc739c4d9c}{value}}()\ const\ LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_accc4f5aa48ecabad26d11c7d1f44b72e}{value}}()\ const\ KIWI\_LIFETIME\_BOUND\ \{}
 \DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ path\_.value();}
 \DoxyCodeLine{00062\ \ \ \}}
 \DoxyCodeLine{00063\ }
 \DoxyCodeLine{00065\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_af986a9df8652b1522ef04f3c4ab5fa71}{empty}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ path\_.empty();\ \}}
 \DoxyCodeLine{00066\ }
-\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_a6f7b783641055cd976e7421a1d9cbcbe}{operator==}}(\textcolor{keyword}{const}\ SafeBaseName\&\ that)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name_aee59611ef66edd4e57fecd81318512ed}{operator==}}(\textcolor{keyword}{const}\ SafeBaseName\&\ that)\textcolor{keyword}{\ const\ }\{}
 \DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ path\_\ ==\ that.path\_;}
 \DoxyCodeLine{00071\ \ \ \}}
 \DoxyCodeLine{00072\ }
-\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{SafeBaseName}}\&\ that)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ that);}
-\DoxyCodeLine{00075\ \ \ \}}
-\DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00078\ \ \ FilePath\ path\_;}
-\DoxyCodeLine{00079\ \};}
-\DoxyCodeLine{00080\ }
-\DoxyCodeLine{00081\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{SafeBaseName}}\&\ that)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ that);\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00076\ \ \ FilePath\ path\_;}
+\DoxyCodeLine{00077\ \};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

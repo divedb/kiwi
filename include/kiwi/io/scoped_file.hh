@@ -31,7 +31,7 @@ struct BASE_EXPORT ScopedFDCloseTraits : public ScopedGenericOwnershipTracking {
                       int fd);
 };
 
-#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+#elif BUILDFLAG(IS_POSIX)
 
 struct BASE_EXPORT ScopedFDCloseTraits {
   static int InvalidValue() { return -1; }

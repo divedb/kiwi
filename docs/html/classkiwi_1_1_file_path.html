@@ -147,8 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4dd7106c446bdb203701ea0f57f2cbb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0521858e6819bd9bf6374d0d08cb7830" id="r_a0521858e6819bd9bf6374d0d08cb7830"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0521858e6819bd9bf6374d0d08cb7830">operator&lt;=&gt;</a> (const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;that) const =default</td></tr>
 <tr class="separator:a0521858e6819bd9bf6374d0d08cb7830"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e3085d1bdc7d4f549f78bd508a1700" id="r_a80e3085d1bdc7d4f549f78bd508a1700"><td class="memItemLeft" align="right" valign="top">const StringType &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80e3085d1bdc7d4f549f78bd508a1700">value</a> () const LIFETIME_BOUND</td></tr>
-<tr class="separator:a80e3085d1bdc7d4f549f78bd508a1700"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75be8717acbe051950263be6f2441519" id="r_a75be8717acbe051950263be6f2441519"><td class="memItemLeft" align="right" valign="top">const StringType &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75be8717acbe051950263be6f2441519">value</a> () const KIWI_LIFETIME_BOUND</td></tr>
+<tr class="separator:a75be8717acbe051950263be6f2441519"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dfa92903e8b0a36440f5eada6b84e0e" id="r_a9dfa92903e8b0a36440f5eada6b84e0e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dfa92903e8b0a36440f5eada6b84e0e">empty</a> () const</td></tr>
 <tr class="separator:a9dfa92903e8b0a36440f5eada6b84e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e985818282ead9557ac2e6bfffd6244" id="r_a1e985818282ead9557ac2e6bfffd6244"><td class="memItemLeft" align="right" valign="top"><a id="a1e985818282ead9557ac2e6bfffd6244" name="a1e985818282ead9557ac2e6bfffd6244"></a>
@@ -906,7 +906,7 @@ static constexpr CharType&#160;</td><td class="memItemRight" valign="bottom"><b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a vector of all of the components of the provided path. It is equivalent to calling <a class="el" href="#aa6ebd711e718e13dfcbc5d81d33c4348">DirName()</a>.<a class="el" href="#a80e3085d1bdc7d4f549f78bd508a1700">value()</a> on the path's root component, and <a class="el" href="#addf8d007b5113191da07a2f90b5eca81">BaseName()</a>.<a class="el" href="#a80e3085d1bdc7d4f549f78bd508a1700">value()</a> on each child component.</p>
+<p>Returns a vector of all of the components of the provided path. It is equivalent to calling <a class="el" href="#aa6ebd711e718e13dfcbc5d81d33c4348">DirName()</a>.<a class="el" href="#a75be8717acbe051950263be6f2441519">value()</a> on the path's root component, and <a class="el" href="#addf8d007b5113191da07a2f90b5eca81">BaseName()</a>.<a class="el" href="#a75be8717acbe051950263be6f2441519">value()</a> on each child component.</p>
 <p>To make sure this is lossless so we can differentiate absolute and relative paths, the root slash will be included even though no other slashes will be. The precise behavior is:</p>
 <p>Posix: "/foo/bar" -&gt; [ "/", "foo", "bar" ] Windows: "C:\foo\bar" -&gt; [ "C:", "\\", "foo", "bar" ]</p>
 <dl class="section return"><dt>Returns</dt><dd>A vector of path components. </dd></dl>
@@ -1492,8 +1492,8 @@ static constexpr CharType&#160;</td><td class="memItemRight" valign="bottom"><b>
 
 </div>
 </div>
-<a id="a80e3085d1bdc7d4f549f78bd508a1700" name="a80e3085d1bdc7d4f549f78bd508a1700"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80e3085d1bdc7d4f549f78bd508a1700">&#9670;&#160;</a></span>value()</h2>
+<a id="a75be8717acbe051950263be6f2441519" name="a75be8717acbe051950263be6f2441519"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75be8717acbe051950263be6f2441519">&#9670;&#160;</a></span>value()</h2>
 
 <div class="memitem">
 <div class="memproto">

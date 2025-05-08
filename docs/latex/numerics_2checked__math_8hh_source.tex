@@ -1,0 +1,378 @@
+\doxysection{checked\+\_\+math.\+hh}
+\hypertarget{numerics_2checked__math_8hh_source}{}\label{numerics_2checked__math_8hh_source}\index{include/kiwi/numerics/checked\_math.hh@{include/kiwi/numerics/checked\_math.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#ifndef\ BASE\_NUMERICS\_CHECKED\_MATH\_H\_}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ BASE\_NUMERICS\_CHECKED\_MATH\_H\_}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/checked\_math\_impl.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_math\_shared\_impl.hh"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }CheckedNumeric\ \{}
+\DoxyCodeLine{00023\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ Copy\ constructor.}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric(\textcolor{keyword}{const}\ CheckedNumeric<Src>\&\ rhs)}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ :\ state\_(rhs.state\_.value(),\ rhs.IsValid())\ \{\}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ This\ is\ not\ an\ explicit\ constructor\ because\ we\ implicitly\ upgrade\ regular}}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ numerics\ to\ CheckedNumerics\ to\ make\ them\ easier\ to\ use.}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<Src>)}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric(Src\ value)\ :\ state\_(value)\ \{\}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ This\ is\ not\ an\ explicit\ constructor\ because\ we\ want\ a\ seamless\ conversion}}
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ from\ StrictNumeric\ types.}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric(\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Src>}}\ value)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ :\ state\_(\textcolor{keyword}{static\_cast<}Src\textcolor{keyword}{>}(value))\ \{\}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//\ IsValid()\ -\/\ The\ public\ API\ to\ test\ if\ a\ CheckedNumeric\ is\ currently\ valid.}}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ A\ range\ checked\ destination\ type\ can\ be\ supplied\ using\ the\ Dst\ template}}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ parameter.}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ T>}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ state\_.is\_valid()\ \&\&}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ IsValueInRangeForNumericType<Dst>(state\_.value());}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{//\ AssignIfValid(Dst)\ -\/\ Assigns\ the\ underlying\ value\ if\ it\ is\ currently\ valid}}
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ and\ is\ within\ the\ range\ supported\ by\ the\ destination\ type.\ Returns\ true\ if}}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ successful\ and\ false\ otherwise.}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)\ ||\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00061\ \ \ \_\_attribute\_\_((warn\_unused\_result))}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#elif\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00063\ \ \ \_Check\_return\_}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00066\ \ \ AssignIfValid(Dst*\ result)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsValid<Dst>())\ [[likely]]\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(state\_.value());}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ ValueOrDie()\ -\/\ The\ primary\ accessor\ for\ the\ underlying\ value.\ If\ the}}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ current\ state\ is\ not\ valid\ it\ will\ CHECK\ and\ crash.}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ A\ range\ checked\ destination\ type\ can\ be\ supplied\ using\ the\ Dst\ template}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ parameter,\ which\ will\ trigger\ a\ CHECK\ if\ the\ value\ is\ not\ in\ bounds\ for}}
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//\ the\ destination.}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ The\ CHECK\ behavior\ can\ be\ overridden\ by\ supplying\ a\ handler\ as\ a}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//\ template\ parameter,\ for\ test\ code,\ etc.\ However,\ the\ handler\ cannot\ access}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ the\ underlying\ value,\ and\ it\ is\ not\ available\ through\ other\ means.}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ T,\ \textcolor{keyword}{class}\ CheckHandler\ =\ CheckOnFailure>}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Dst>}}\ ValueOrDie()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsValid<Dst>())\ [[likely]]\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(state\_.value());}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckHandler::template\ HandleFailure<Dst>();}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ ValueOrDefault(T\ default\_value)\ -\/\ A\ convenience\ method\ that\ returns\ the}}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ current\ value\ if\ the\ state\ is\ valid,\ and\ the\ supplied\ default\_value\ for}}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ any\ other\ state.}}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ A\ range\ checked\ destination\ type\ can\ be\ supplied\ using\ the\ Dst\ template}}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ parameter.\ WARNING:\ This\ function\ may\ fail\ to\ compile\ or\ CHECK\ at\ runtime}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ if\ the\ supplied\ default\_value\ is\ not\ within\ range\ of\ the\ destination\ type.}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ T,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Dst>}}\ ValueOrDefault(Src\ default\_value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsValid<Dst>())\ [[likely]]\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(state\_.value());}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ checked\_cast<Dst>(default\_value);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//\ Returns\ a\ checked\ numeric\ of\ the\ specified\ type,\ cast\ from\ the\ current}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ CheckedNumeric.\ If\ the\ current\ state\ is\ invalid\ or\ the\ destination\ cannot}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ represent\ the\ result\ then\ the\ returned\ CheckedNumeric\ will\ be\ invalid.}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric<UnderlyingType<Dst>>\ Cast()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//\ This\ friend\ method\ is\ available\ solely\ for\ providing\ more\ detailed\ logging}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//\ in\ the\ tests.\ Do\ not\ implement\ it\ in\ production\ code,\ because\ the}}
+\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//\ underlying\ values\ may\ change\ at\ any\ time.}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{friend}\ U\ GetNumericValueForTest(\textcolor{keyword}{const}\ CheckedNumeric<U>\&\ src);}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ Prototypes\ for\ the\ supported\ arithmetic\ operator\ overloads.}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator+=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator-\/=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator*=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator/=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator\%=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator<<=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator>>=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator\&=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator|=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator\string^=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\ operator-\/()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{comment}{//\ Use\ an\ optimized\ code\ path\ for\ a\ known\ run-\/time\ variable.}}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (!std::is\_constant\_evaluated()\ \&\&\ std::is\_signed\_v<T>\ \&\&}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ std::is\_floating\_point\_v<T>)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FastRuntimeNegate();}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ The\ negation\ of\ two's\ complement\ int\ min\ is\ int\ min.}}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_valid\ =}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ IsValid()\ \&\&}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ (!std::is\_signed\_v<T>\ ||\ std::is\_floating\_point\_v<T>\ ||}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ NegateWrapper(state\_.value())\ !=\ std::numeric\_limits<T>::lowest());}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedNumeric<T>(NegateWrapper(state\_.value()),\ is\_valid);}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\ operator\string~()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedNumeric<decltype(InvertWrapper(T()))>(}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ InvertWrapper(state\_.value()),\ IsValid());}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\ Abs()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{return}\ !IsValueNegative(state\_.value())\ ?\ *this\ :\ -\/*\textcolor{keyword}{this};}
+\DoxyCodeLine{00161\ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric<typename\ MathWrapper<CheckedMaxOp,\ T,\ U>::type>\ Max(}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ U\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckMax(*\textcolor{keyword}{this},\ rhs);}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric<typename\ MathWrapper<CheckedMinOp,\ T,\ U>::type>\ Min(}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ U\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckMin(*\textcolor{keyword}{this},\ rhs);}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ This\ function\ is\ available\ only\ for\ integral\ types.\ It\ returns\ an\ unsigned}}
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{//\ integer\ of\ the\ same\ width\ as\ the\ source\ type,\ containing\ the\ absolute\ value}}
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ of\ the\ source,\ and\ properly\ handling\ signed\ min.}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric<typename\ UnsignedOrFloatForSize<T>::type>}
+\DoxyCodeLine{00179\ \ \ UnsignedAbs()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedNumeric<typename\ UnsignedOrFloatForSize<T>::type>(}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ SafeUnsignedAbs(state\_.value()),\ state\_.is\_valid());}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator++()\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ *\textcolor{keyword}{this}\ +=\ 1;}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\ operator++(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{const}\ CheckedNumeric\ value\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00191\ \ \ \ \ ++*\textcolor{keyword}{this};}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ operator-\/-\/()\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ *\textcolor{keyword}{this}\ -\/=\ 1;}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00198\ \ \ \}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\ operator-\/-\/(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{const}\ CheckedNumeric\ value\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00202\ \ \ \ \ -\/-\/*\textcolor{keyword}{this};}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00204\ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ These\ perform\ the\ actual\ math\ operations\ on\ the\ CheckedNumerics.}}
+\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ Binary\ arithmetic\ operations.}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ CheckedNumeric\ MathOp(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{using\ }Math\ =\ \textcolor{keyword}{typename}\ MathWrapper<M,\ L,\ R>::math;}
+\DoxyCodeLine{00211\ \ \ \ \ T\ result\ =\ 0;}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_valid\ =}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ Wrapper<L>::is\_valid(lhs)\ \&\&\ Wrapper<R>::is\_valid(rhs)\ \&\&}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ Math::Do(Wrapper<L>::value(lhs),\ Wrapper<R>::value(rhs),\ \&result);}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedNumeric<T>(result,\ is\_valid);}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ Assignment\ arithmetic\ operations.}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric\&\ MathOp(R\ rhs)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keyword}{using\ }Math\ =\ \textcolor{keyword}{typename}\ MathWrapper<M,\ T,\ R>::math;}
+\DoxyCodeLine{00222\ \ \ \ \ T\ result\ =\ 0;\ \ \textcolor{comment}{//\ Using\ T\ as\ the\ destination\ saves\ a\ range\ check.}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_valid\ =}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ state\_.is\_valid()\ \&\&\ Wrapper<R>::is\_valid(rhs)\ \&\&}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ Math::Do(state\_.value(),\ Wrapper<R>::value(rhs),\ \&result);}
+\DoxyCodeLine{00226\ \ \ \ \ *\textcolor{keyword}{this}\ =\ CheckedNumeric<T>(result,\ is\_valid);}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<U>}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }CheckedNumeric;}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ CheckedNumericState<T>\ state\_;}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ CheckedNumeric\ FastRuntimeNegate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00238\ \ \ \ \ T\ result;}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ success\ =\ CheckedSubOp<T,\ T>::Do(T(0),\ state\_.value(),\ \&result);}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedNumeric<T>(result,\ IsValid()\ \&\&\ success);}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumeric(Src\ value,\ \textcolor{keywordtype}{bool}\ is\_valid)}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ :\ state\_(value,\ is\_valid)\ \{\}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ These\ wrappers\ allow\ us\ to\ handle\ state\ the\ same\ way\ for\ both}}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ CheckedNumeric\ and\ POD\ arithmetic\ types.}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{struct\ }Wrapper\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_valid(Src)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Src\ value(Src\ value)\ \{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{00253\ \ \ \};}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{struct\ }Wrapper<CheckedNumeric<Src>>\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_valid(CheckedNumeric<Src>\ v)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v.IsValid();}
+\DoxyCodeLine{00259\ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Src\ value(CheckedNumeric<Src>\ v)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v.state\_.value();}
+\DoxyCodeLine{00262\ \ \ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \};}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{struct\ }Wrapper<\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}<Src>>\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_valid(\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Src>}})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Src\ value(\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Src>}}\ v)\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Src\textcolor{keyword}{>}(v);}
+\DoxyCodeLine{00270\ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \};}
+\DoxyCodeLine{00272\ \};}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00275\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric}}(T)\ -\/>\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<T>}};}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \textcolor{comment}{//\ Convenience\ functions\ to\ avoid\ the\ ugly\ template\ disambiguator\ syntax.}}
+\DoxyCodeLine{00278\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00279\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsValidForType(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<Src>}}\ value)\ \{}
+\DoxyCodeLine{00280\ \ \ \textcolor{keywordflow}{return}\ value.template\ IsValid<Dst>();}
+\DoxyCodeLine{00281\ \}}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00284\ \textcolor{keyword}{constexpr}\ StrictNumeric<Dst>\ ValueOrDieForType(}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_checked_numeric}{CheckedNumeric<Src>}}\ value)\ \{}
+\DoxyCodeLine{00286\ \ \ \textcolor{keywordflow}{return}\ value.template\ ValueOrDie<Dst>();}
+\DoxyCodeLine{00287\ \}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Default>}
+\DoxyCodeLine{00290\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Dst>}}\ ValueOrDefaultForType(\mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<Src>}}\ value,}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Default\ default\_value)\ \{}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordflow}{return}\ value.template\ ValueOrDefault<Dst>(default\_value);}
+\DoxyCodeLine{00293\ \}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{comment}{//\ Convenience\ wrapper\ to\ return\ a\ new\ CheckedNumeric\ from\ the\ provided}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ arithmetic\ or\ CheckedNumericType.}}
+\DoxyCodeLine{00297\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00298\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<UnderlyingType<T>}}>\ MakeCheckedNum(T\ value)\ \{}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00300\ \}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{comment}{//\ These\ implement\ the\ variadic\ wrapper\ for\ the\ math\ operations.}}
+\DoxyCodeLine{00303\ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00304\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<typename\ MathWrapper<M,\ L,\ R>::type}}>\ CheckMathOp(}
+\DoxyCodeLine{00305\ \ \ \ \ L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{using\ }Math\ =\ \textcolor{keyword}{typename}\ MathWrapper<M,\ L,\ R>::math;}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<typename\ Math::result\_type>::template}}\ MathOp<M>(lhs,}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rhs);}
+\DoxyCodeLine{00309\ \}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \textcolor{comment}{//\ General\ purpose\ wrapper\ template\ for\ arithmetic\ operations.}}
+\DoxyCodeLine{00312\ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R,}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00314\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ CheckMathOp(L\ lhs,\ R\ rhs,\ Args...\ args)\ \{}
+\DoxyCodeLine{00315\ \ \ \textcolor{keywordflow}{return}\ CheckMathOp<M>(CheckMathOp<M>(lhs,\ rhs),\ args...);}
+\DoxyCodeLine{00316\ \}}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Add,\ +,\ +=)}
+\DoxyCodeLine{00319\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Sub,\ -\/,\ -\/=)}
+\DoxyCodeLine{00320\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Mul,\ *,\ *=)}
+\DoxyCodeLine{00321\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Div,\ /,\ /=)}
+\DoxyCodeLine{00322\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Mod,\ \%,\ \%=)}
+\DoxyCodeLine{00323\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Lsh,\ <<,\ <<=)}
+\DoxyCodeLine{00324\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Rsh,\ >>,\ >>=)}
+\DoxyCodeLine{00325\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ And,\ \&,\ \&=)}
+\DoxyCodeLine{00326\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Or,\ |,\ |=)}
+\DoxyCodeLine{00327\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Checked,\ Check,\ Xor,\ \string^,\ \string^=)}
+\DoxyCodeLine{00328\ BASE\_NUMERIC\_ARITHMETIC\_VARIADIC(Checked,\ Check,\ Max)}
+\DoxyCodeLine{00329\ BASE\_NUMERIC\_ARITHMETIC\_VARIADIC(Checked,\ Check,\ Min)}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \textcolor{comment}{//\ These\ are\ some\ extra\ StrictNumeric\ operators\ to\ support\ simple\ pointer}}
+\DoxyCodeLine{00332\ \textcolor{comment}{//\ arithmetic\ with\ our\ result\ types.\ Since\ wrapping\ on\ a\ pointer\ is\ always}}
+\DoxyCodeLine{00333\ \textcolor{comment}{//\ bad,\ we\ trigger\ the\ CHECK\ condition\ here.}}
+\DoxyCodeLine{00334\ template\ <typename\ L,\ typename\ R>}
+\DoxyCodeLine{00335\ L*\ operator+(L*\ lhs,\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}<R>\ rhs)\ \{}
+\DoxyCodeLine{00336\ \ \ \textcolor{keyword}{const}\ uintptr\_t\ result\ =\ CheckAdd(\textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(lhs),}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CheckMul(\textcolor{keyword}{sizeof}(L),\ \textcolor{keyword}{static\_cast<}R\textcolor{keyword}{>}(rhs)))}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .template\ ValueOrDie<uintptr\_t>();}
+\DoxyCodeLine{00339\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}L*\textcolor{keyword}{>}(result);}
+\DoxyCodeLine{00340\ \}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00343\ L*\ operator-\/(L*\ lhs,\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<R>}}\ rhs)\ \{}
+\DoxyCodeLine{00344\ \ \ \textcolor{keyword}{const}\ uintptr\_t\ result\ =\ CheckSub(\textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(lhs),}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CheckMul(\textcolor{keyword}{sizeof}(L),\ \textcolor{keyword}{static\_cast<}R\textcolor{keyword}{>}(rhs)))}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .template\ ValueOrDie<uintptr\_t>();}
+\DoxyCodeLine{00347\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}L*\textcolor{keyword}{>}(result);}
+\DoxyCodeLine{00348\ \}}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00351\ }
+\DoxyCodeLine{00352\ \textcolor{keyword}{using\ }internal::CheckAdd;}
+\DoxyCodeLine{00353\ \textcolor{keyword}{using\ }internal::CheckAnd;}
+\DoxyCodeLine{00354\ \textcolor{keyword}{using\ }internal::CheckDiv;}
+\DoxyCodeLine{00355\ \textcolor{keyword}{using\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{internal::CheckedNumeric}};}
+\DoxyCodeLine{00356\ \textcolor{keyword}{using\ }internal::CheckLsh;}
+\DoxyCodeLine{00357\ \textcolor{keyword}{using\ }internal::CheckMax;}
+\DoxyCodeLine{00358\ \textcolor{keyword}{using\ }internal::CheckMin;}
+\DoxyCodeLine{00359\ \textcolor{keyword}{using\ }internal::CheckMod;}
+\DoxyCodeLine{00360\ \textcolor{keyword}{using\ }internal::CheckMul;}
+\DoxyCodeLine{00361\ \textcolor{keyword}{using\ }internal::CheckOr;}
+\DoxyCodeLine{00362\ \textcolor{keyword}{using\ }internal::CheckRsh;}
+\DoxyCodeLine{00363\ \textcolor{keyword}{using\ }internal::CheckSub;}
+\DoxyCodeLine{00364\ \textcolor{keyword}{using\ }internal::CheckXor;}
+\DoxyCodeLine{00365\ \textcolor{keyword}{using\ }internal::IsValidForType;}
+\DoxyCodeLine{00366\ \textcolor{keyword}{using\ }internal::MakeCheckedNum;}
+\DoxyCodeLine{00367\ \textcolor{keyword}{using\ }internal::ValueOrDefaultForType;}
+\DoxyCodeLine{00368\ \textcolor{keyword}{using\ }internal::ValueOrDieForType;}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_NUMERICS\_CHECKED\_MATH\_H\_}}
+
+\end{DoxyCode}

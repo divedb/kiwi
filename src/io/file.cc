@@ -6,12 +6,9 @@
 
 #include <utility>
 
+#include "kiwi/common/logging.hh"
 #include "kiwi/io/file_path.hh"
-// #include "kiwi/io/file_tracing.hh"
-// #include "base/metrics/histogram.h"
 #include "kiwi/numerics/safe_conversions.hh"
-// #include "base/timer/elapsed_timer.h"
-// #include "base/trace_event/base_tracing.h"
 #include "kiwi/portability/build_config.hh"
 
 #if BUILDFLAG(IS_POSIX)
@@ -34,14 +31,14 @@ File::File(ScopedPlatformFile platform_file, bool async)
       error_details_(kFileOk),
       is_async_(async) {
 #if BUILDFLAG(IS_POSIX)
-  assert(file_.get() >= -1);
+  DCHECK_GE(file_.get(), -1);
 #endif
 }
 
 File::File(PlatformFile platform_file, bool async)
     : file_(platform_file), error_details_(kFileOk), is_async_(async) {
 #if BUILDFLAG(IS_POSIX)
-  assert(platform_file >= -1);
+  DCHECK_GE(platform_file, -1);
 #endif
 }
 
@@ -50,8 +47,8 @@ File::File(Error error_details) : error_details_(error_details) {}
 File::File(File&& other)
     : file_(other.TakePlatformFile()),
       path_(other.path_),
-      error_details_(other.error_details()),
-      is_created_(other.created()),
+      error_details_(other.ErrorDetails()),
+      is_created_(other.IsCreated()),
       is_async_(other.is_async_) {}
 
 File::~File() {
@@ -63,9 +60,10 @@ File& File::operator=(File&& other) {
   Close();
   SetPlatformFile(other.TakePlatformFile());
   path_ = other.path_;
-  error_details_ = other.error_details();
-  created_ = other.created();
-  async_ = other.async_;
+  error_details_ = other.ErrorDetails();
+  is_created_ = other.IsCreated();
+  is_async_ = other.IsAsync();
+
   return *this;
 }
 
@@ -86,13 +84,15 @@ void File::Initialize(const FilePath& path, uint32_t flags) {
 }
 
 std::optional<size_t> File::Read(int64_t offset, span<uint8_t> data) {
-  span<char> chars = kiwi::as_writable_chars(data);
+  kiwi::span<char> chars = kiwi::as_writable_chars(data);
   int size = checked_cast<int>(chars.size());
   // SAFETY: `chars.size()` describes valid portion of `chars.data()`.
   int result = UNSAFE_BUFFERS(Read(offset, chars.data(), size));
+
   if (result < 0) {
     return std::nullopt;
   }
+
   return checked_cast<size_t>(result);
 }
 
@@ -183,59 +183,52 @@ std::optional<size_t> File::WriteAtCurrentPosNoBestEffort(
   if (result < 0) {
     return std::nullopt;
   }
+
   return checked_cast<size_t>(result);
 }
 
 // static
 std::string File::ErrorToString(Error error) {
   switch (error) {
-    case FILE_OK:
+    case kFileOk:
       return "FILE_OK";
-    case FILE_ERROR_FAILED:
+    case kFileErrorFailed:
       return "FILE_ERROR_FAILED";
-    case FILE_ERROR_IN_USE:
+    case kFileErrorInUse:
       return "FILE_ERROR_IN_USE";
-    case FILE_ERROR_EXISTS:
+    case kFileErrorExists:
       return "FILE_ERROR_EXISTS";
-    case FILE_ERROR_NOT_FOUND:
+    case kFileErrorNotFound:
       return "FILE_ERROR_NOT_FOUND";
-    case FILE_ERROR_ACCESS_DENIED:
+    case kFileErrorAccessDenied:
       return "FILE_ERROR_ACCESS_DENIED";
-    case FILE_ERROR_TOO_MANY_OPENED:
+    case kFileErrorTooManyOpened:
       return "FILE_ERROR_TOO_MANY_OPENED";
-    case FILE_ERROR_NO_MEMORY:
+    case kFileErrorNoMemory:
       return "FILE_ERROR_NO_MEMORY";
-    case FILE_ERROR_NO_SPACE:
+    case kFileErrorNoSpace:
       return "FILE_ERROR_NO_SPACE";
-    case FILE_ERROR_NOT_A_DIRECTORY:
+    case kFileErrorNotADirectory:
       return "FILE_ERROR_NOT_A_DIRECTORY";
-    case FILE_ERROR_INVALID_OPERATION:
+    case kFileErrorInvalidOperation:
       return "FILE_ERROR_INVALID_OPERATION";
-    case FILE_ERROR_SECURITY:
+    case kFileErrorSecurity:
       return "FILE_ERROR_SECURITY";
-    case FILE_ERROR_ABORT:
+    case kFileErrorAbort:
       return "FILE_ERROR_ABORT";
-    case FILE_ERROR_NOT_A_FILE:
+    case kFileErrorNotAFile:
       return "FILE_ERROR_NOT_A_FILE";
-    case FILE_ERROR_NOT_EMPTY:
+    case kFileErrorNotEmpty:
       return "FILE_ERROR_NOT_EMPTY";
-    case FILE_ERROR_INVALID_URL:
+    case kFileErrorInvalidUrl:
       return "FILE_ERROR_INVALID_URL";
-    case FILE_ERROR_IO:
+    case kFileErrorIO:
       return "FILE_ERROR_IO";
-    case FILE_ERROR_MAX:
+    case kFileErrorMax:
       break;
   }
 
   UNREACHABLE();
 }
-
-// void File::WriteIntoTrace(perfetto::TracedValue context) const {
-//   auto dict = std::move(context).WriteDictionary();
-//   dict.Add("is_valid", IsValid());
-//   dict.Add("created", created_);
-//   dict.Add("async", async_);
-//   dict.Add("error_details", ErrorToString(error_details_));
-// }
 
 }  // namespace kiwi

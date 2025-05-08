@@ -86,19 +86,19 @@ requires (internal\+::\+Compatible\+Iter$<$element\+\_\+type, It$>$)}\\UNSAFE\+\
 {\footnotesize template$<$typename It, typename End$>$ \newline
 requires (internal\+::\+Compatible\+Iter$<$element\+\_\+type, It$>$ \&\& std\+::sized\+\_\+sentinel\+\_\+for$<$End, It$>$ \&\& !std\+::is\+\_\+convertible\+\_\+v$<$End, size\+\_\+t$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, End last)
 \item 
-\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae21324445f4e4630e724092c518bd782}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae21324445f4e4630e724092c518bd782} 
-{\footnotesize template$<$size\+\_\+t N$>$ }\\constexpr {\bfseries span} (std\+::type\+\_\+identity\+\_\+t$<$ element\+\_\+type $>$(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}N\mbox{]}) noexcept
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a806bc65b4e246990ed791c31f98ee8c4}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a806bc65b4e246990ed791c31f98ee8c4} 
+{\footnotesize template$<$size\+\_\+t N$>$ }\\constexpr {\bfseries span} (std\+::type\+\_\+identity\+\_\+t$<$ element\+\_\+type $>$(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}N\mbox{]}) noexcept
 \item 
-\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a881c43a6e3d642977aab75a297fbf363}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a881c43a6e3d642977aab75a297fbf363} 
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4c3493902033aa21fb1a50a6d085b78f}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a4c3493902033aa21fb1a50a6d085b78f} 
 {\footnotesize template$<$typename R$>$ \newline
-requires (internal\+::\+Compatible\+Range$<$element\+\_\+type, R$>$)}\\constexpr {\bfseries span} (R \&\&range LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Compatible\+Range$<$element\+\_\+type, R$>$)}\\constexpr {\bfseries span} (R \&\&range KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
 \Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a37fb4d3f7589cdb6fa359139edcc4900}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a37fb4d3f7589cdb6fa359139edcc4900} 
 {\footnotesize template$<$typename R$>$ \newline
 requires (internal\+::\+Compatible\+Range$<$element\+\_\+type, R$>$ \&\& std\+::ranges\+::borrowed\+\_\+range$<$R$>$)}\\constexpr {\bfseries span} (R \&\&range)
 \item 
-\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae1e19182c124e0d3667043d3159e0615}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_ae1e19182c124e0d3667043d3159e0615} 
-constexpr {\bfseries span} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ il LIFETIME\+\_\+\+BOUND)
+\Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_acbc08de132652242c26defddb443821a}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_acbc08de132652242c26defddb443821a} 
+constexpr {\bfseries span} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ il KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
 \Hypertarget{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a54efcf4f2b0e8285803782560540a7f9}\label{classkiwi_1_1span_3_01_element_type_00_01dynamic__extent_00_01_internal_ptr_type_01_4_a54efcf4f2b0e8285803782560540a7f9} 
 constexpr {\bfseries span} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&other) noexcept=default
@@ -221,14 +221,14 @@ UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, \mbox{\h
 \Hypertarget{classkiwi_1_1span_a13560651a49ccc75c1e366f239237bb1}\label{classkiwi_1_1span_a13560651a49ccc75c1e366f239237bb1} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries span} (It first, End last)
 \item 
-\Hypertarget{classkiwi_1_1span_aa95d5b37114a6050833160b8e7b68f32}\label{classkiwi_1_1span_aa95d5b37114a6050833160b8e7b68f32} 
-constexpr {\bfseries span} (std\+::type\+\_\+identity\+\_\+t$<$ element\+\_\+type $>$(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}extent\mbox{]}) noexcept
+\Hypertarget{classkiwi_1_1span_abc139cc364782c15ab4d3ce1070af3f5}\label{classkiwi_1_1span_abc139cc364782c15ab4d3ce1070af3f5} 
+constexpr {\bfseries span} (std\+::type\+\_\+identity\+\_\+t$<$ element\+\_\+type $>$(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}extent\mbox{]}) noexcept
 \item 
 \Hypertarget{classkiwi_1_1span_a0a30f9eab825e56c147be904ad0557b3}\label{classkiwi_1_1span_a0a30f9eab825e56c147be904ad0557b3} 
 constexpr {\bfseries span} (R \&\&range)
 \item 
-\Hypertarget{classkiwi_1_1span_a2071735c1eb795b611a81d24b6410283}\label{classkiwi_1_1span_a2071735c1eb795b611a81d24b6410283} 
-constexpr {\bfseries span} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ il LIFETIME\+\_\+\+BOUND)
+\Hypertarget{classkiwi_1_1span_af5a13971c5537f30dff47ae173711ac1}\label{classkiwi_1_1span_af5a13971c5537f30dff47ae173711ac1} 
+constexpr {\bfseries span} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ il KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
 \Hypertarget{classkiwi_1_1span_af0c0388cba3be4e199007bf165a661e5}\label{classkiwi_1_1span_af0c0388cba3be4e199007bf165a661e5} 
 constexpr {\bfseries span} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&other) noexcept=default
@@ -236,8 +236,8 @@ constexpr {\bfseries span} (const \mbox{\hyperlink{classkiwi_1_1span}{span}} \&o
 \Hypertarget{classkiwi_1_1span_ac0a533d2423ba0f55d4257fad812128b}\label{classkiwi_1_1span_ac0a533d2423ba0f55d4257fad812128b} 
 constexpr {\bfseries span} (\mbox{\hyperlink{classkiwi_1_1span}{span}} \&\&other) noexcept=default
 \item 
-\Hypertarget{classkiwi_1_1span_a9014f60ba26d079b73ad93318ab0f96e}\label{classkiwi_1_1span_a9014f60ba26d079b73ad93318ab0f96e} 
-constexpr {\bfseries explicit} (N !=extent) \mbox{\hyperlink{classkiwi_1_1span}{span}}(R \&\&range LIFETIME\+\_\+\+BOUND)
+\Hypertarget{classkiwi_1_1span_a163a250908b6a533753d92231e8d354b}\label{classkiwi_1_1span_a163a250908b6a533753d92231e8d354b} 
+constexpr {\bfseries explicit} (N !=extent) \mbox{\hyperlink{classkiwi_1_1span}{span}}(R \&\&range KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
 \Hypertarget{classkiwi_1_1span_a03103144d79eba071f1cb26ec9dc1012}\label{classkiwi_1_1span_a03103144d79eba071f1cb26ec9dc1012} 
 constexpr {\bfseries explicit} (Other\+Extent==dynamic\+\_\+extent) \mbox{\hyperlink{classkiwi_1_1span}{span}}(const \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Other\+Element\+Type

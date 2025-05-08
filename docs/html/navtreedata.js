@@ -43,7 +43,9 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ]
+        [ "Typedefs", "functions_type.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Enumerator", "functions_eval.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -55,9 +57,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "adl_8hh_source.html",
-"classkiwi_1_1_i_o_buf.html#a3c1716d549a392455b8ff73320d75b01",
-"classkiwi_1_1_string_ref.html#a817f88db73fc820718155d3ccd50d8e1",
-"namespacekiwi.html#aafd2344a5cb4e995b1be3bb5d28eb116"
+"classkiwi_1_1_file_path.html#a9710b8e4137152bfd74e0ca1cb8a34e3",
+"classkiwi_1_1_safe_base_name.html",
+"conceptkiwi_1_1internal_1_1_span_constructible_from.html",
+"structkiwi_1_1_i_o_buf_1_1_heap_full_storage.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

@@ -464,13 +464,13 @@
 \DoxyCodeLine{00763\ \};}
 \DoxyCodeLine{00764\ }
 \DoxyCodeLine{00767\ }
-\DoxyCodeLine{00768\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
+\DoxyCodeLine{00768\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator==(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
 \DoxyCodeLine{00769\ \ \ \textcolor{keywordflow}{if}\ (LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}()\ !=\ RHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
 \DoxyCodeLine{00770\ \ \ \textcolor{keywordflow}{if}\ (LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_ab1878183097249a0366e98ef7ae92a6b}{empty}}())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
 \DoxyCodeLine{00771\ \ \ return\ ::memcmp(LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}(),\ RHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_aefac4eb75529060cceab89a44d019f8d}{data}}(),\ LHS.\mbox{\hyperlink{classkiwi_1_1_string_ref_a4c83ea33a9e5c7a41ce367bfd4837767}{size}}())\ ==\ 0;}
 \DoxyCodeLine{00772\ \}}
 \DoxyCodeLine{00773\ }
-\DoxyCodeLine{00774\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}}(StringRef\ LHS,\ StringRef\ RHS)\ \{\ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);\ \}}
+\DoxyCodeLine{00774\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator!=(StringRef\ LHS,\ StringRef\ RHS)\ \{\ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);\ \}}
 \DoxyCodeLine{00775\ }
 \DoxyCodeLine{00776\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator<(\mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ LHS,\ \mbox{\hyperlink{classkiwi_1_1_string_ref}{StringRef}}\ RHS)\ \{}
 \DoxyCodeLine{00777\ \ \ \textcolor{keywordflow}{return}\ LHS.compare(RHS)\ <\ 0;}

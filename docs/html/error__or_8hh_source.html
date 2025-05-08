@@ -308,31 +308,32 @@ $(function(){initNavTree('error__or_8hh_source.html',''); initResizable(true); }
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  std::error_code* GetErrorStorage() {</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    assert(has_error_ &amp;&amp; <span class="stringliteral">&quot;Cannot get error when a value exists!&quot;</span>);</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>std::error_code*<span class="keyword">&gt;</span>(&amp;error_storage);</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  }</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keyword">const</span> std::error_code* GetErrorStorage()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>ErrorOr&lt;T&gt;*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;GetErrorStorage();</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  }</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keyword">union </span>{</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    AlignedCharArrayUnion&lt;storage_type&gt; t_storage;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    AlignedCharArrayUnion&lt;std::error_code&gt; error_storage;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  };</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="keywordtype">bool</span> has_error_ : 1;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>};</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>std::error_code*<span class="keyword">&gt;</span>(&amp;error_storage);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  }</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keyword">const</span> std::error_code* GetErrorStorage()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>ErrorOr&lt;T&gt;*<span class="keyword">&gt;</span>(<span class="keyword">this</span>)-&gt;GetErrorStorage();</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  }</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="keyword">union </span>{</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    AlignedCharArrayUnion&lt;storage_type&gt; t_storage;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    AlignedCharArrayUnion&lt;std::error_code&gt; error_storage;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  };</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keywordtype">bool</span> has_error_ : 1;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>};</div>
 </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> E&gt;</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>std::enable_if_t&lt;std::is_error_code_enum&lt;E&gt;::value ||</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                     std::is_error_condition_enum&lt;E&gt;::value,</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                 <span class="keywordtype">bool</span>&gt;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>operator==(<span class="keyword">const</span> <a class="code hl_class" href="classchibicpp_1_1_error_or.html">ErrorOr&lt;T&gt;</a>&amp; err, E code) {</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordflow">return</span> err.GetError() == code;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>}</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>}  <span class="comment">// namespace chibicpp</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> E&gt;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>std::enable_if_t&lt;std::is_error_code_enum&lt;E&gt;::value ||</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                     std::is_error_condition_enum&lt;E&gt;::value,</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                 <span class="keywordtype">bool</span>&gt;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>operator==(<span class="keyword">const</span> <a class="code hl_class" href="classchibicpp_1_1_error_or.html">ErrorOr&lt;T&gt;</a>&amp; err, E code) {</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordflow">return</span> err.GetError() == code;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>}</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}  <span class="comment">// namespace chibicpp</span></div>
 <div class="ttc" id="aclasschibicpp_1_1_error_or_html"><div class="ttname"><a href="classchibicpp_1_1_error_or.html">chibicpp::ErrorOr</a></div><div class="ttdef"><b>Definition</b> error_or.hh:56</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

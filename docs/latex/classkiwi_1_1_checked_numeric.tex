@@ -1,0 +1,116 @@
+\doxysection{kiwi\+::Checked\+Numeric\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_checked_numeric}{}\label{classkiwi_1_1_checked_numeric}\index{kiwi::CheckedNumeric$<$ T $>$@{kiwi::CheckedNumeric$<$ T $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_adf6bc25098ae1185913999ada909c9a2}\label{classkiwi_1_1_checked_numeric_adf6bc25098ae1185913999ada909c9a2} 
+using {\bfseries type} = T
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a74b67be3c015080bbd6e1c3aadf2c7d2}\label{classkiwi_1_1_checked_numeric_a74b67be3c015080bbd6e1c3aadf2c7d2} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr {\bfseries Checked\+Numeric} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ Src $>$ \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_af78d2152d3a50c44d08ab60ca2630537}\label{classkiwi_1_1_checked_numeric_af78d2152d3a50c44d08ab60ca2630537} 
+{\footnotesize template$<$typename Src$>$ \newline
+requires (std\+::is\+\_\+arithmetic\+\_\+v$<$Src$>$)}\\constexpr {\bfseries Checked\+Numeric} (Src value)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a586f95f276a382ec9d761de0429f5e81}\label{classkiwi_1_1_checked_numeric_a586f95f276a382ec9d761de0429f5e81} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr {\bfseries Checked\+Numeric} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ Src $>$ value)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ac7eb5f47cec55ac949127ec1e9543be6}\label{classkiwi_1_1_checked_numeric_ac7eb5f47cec55ac949127ec1e9543be6} 
+{\footnotesize template$<$typename Dst = T$>$ }\\constexpr bool {\bfseries Is\+Valid} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a68dc383ead9b1d220d00f1bbb8271dc4}\label{classkiwi_1_1_checked_numeric_a68dc383ead9b1d220d00f1bbb8271dc4} 
+{\footnotesize template$<$typename Dst$>$ }\\constexpr bool {\bfseries Assign\+If\+Valid} (Dst \texorpdfstring{$\ast$}{*}result) const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ac9ef903581af6439b99b6591dd2605da}\label{classkiwi_1_1_checked_numeric_ac9ef903581af6439b99b6591dd2605da} 
+{\footnotesize template$<$typename Dst = T, class Check\+Handler = Check\+On\+Failure$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ Dst $>$ {\bfseries Value\+Or\+Die} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a3ed770d0d9ed4ae04d0474d4dc9b4781}\label{classkiwi_1_1_checked_numeric_a3ed770d0d9ed4ae04d0474d4dc9b4781} 
+{\footnotesize template$<$typename Dst = T, typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ Dst $>$ {\bfseries Value\+Or\+Default} (Src default\+\_\+value) const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a8fae8787cb8f06f33111a30d0788dff8}\label{classkiwi_1_1_checked_numeric_a8fae8787cb8f06f33111a30d0788dff8} 
+{\footnotesize template$<$typename Dst$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ Underlying\+Type$<$ Dst $>$ $>$ {\bfseries Cast} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a4c4260bea4bdc2ee4e05e69566b0e30a}\label{classkiwi_1_1_checked_numeric_a4c4260bea4bdc2ee4e05e69566b0e30a} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator+=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ad6ccdb7893f911496ad4a8044a09b104}\label{classkiwi_1_1_checked_numeric_ad6ccdb7893f911496ad4a8044a09b104} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator-\/=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ad103cb1219c3a6ebd27e5a25b159d168}\label{classkiwi_1_1_checked_numeric_ad103cb1219c3a6ebd27e5a25b159d168} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a3a10186d5f38728e633cd372f6980b26}\label{classkiwi_1_1_checked_numeric_a3a10186d5f38728e633cd372f6980b26} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator/=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ad57f9275ac85eb2bc81d59d9fec7f34b}\label{classkiwi_1_1_checked_numeric_ad57f9275ac85eb2bc81d59d9fec7f34b} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator\%=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a0a24879722057ef9d30305340746c97e}\label{classkiwi_1_1_checked_numeric_a0a24879722057ef9d30305340746c97e} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator$<$$<$=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a0adff155e4149af90effa6bc083d2630}\label{classkiwi_1_1_checked_numeric_a0adff155e4149af90effa6bc083d2630} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator$>$$>$=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a435b4c9dbcbc896ac78a25e4eae23bfe}\label{classkiwi_1_1_checked_numeric_a435b4c9dbcbc896ac78a25e4eae23bfe} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator\&=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_aee8cd22eeac7e8790a6aa313352b80a6}\label{classkiwi_1_1_checked_numeric_aee8cd22eeac7e8790a6aa313352b80a6} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator\texorpdfstring{$\vert$}{|}=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a8aa0cc46f10d66bb1052f03414726e30}\label{classkiwi_1_1_checked_numeric_a8aa0cc46f10d66bb1052f03414726e30} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator\texorpdfstring{$^\wedge$}{\string^}=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a3397d7330793d823ef09ea61a0f093c9}\label{classkiwi_1_1_checked_numeric_a3397d7330793d823ef09ea61a0f093c9} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} {\bfseries operator-\/} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a19a53ad840885b11d67956e0a69d5501}\label{classkiwi_1_1_checked_numeric_a19a53ad840885b11d67956e0a69d5501} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} {\bfseries operator\texorpdfstring{$\sim$}{\string~}} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ad764a1a072e9e03516ca25cf466098c0}\label{classkiwi_1_1_checked_numeric_ad764a1a072e9e03516ca25cf466098c0} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} {\bfseries Abs} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a7ad5ac95b3f9c1b2c66076554916a877}\label{classkiwi_1_1_checked_numeric_a7ad5ac95b3f9c1b2c66076554916a877} 
+{\footnotesize template$<$typename U$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ typename Math\+Wrapper$<$ Checked\+Max\+Op, T, U $>$\+::type $>$ {\bfseries Max} (U rhs) const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a5e19638b0a1855e2d7432ddb08d2ddad}\label{classkiwi_1_1_checked_numeric_a5e19638b0a1855e2d7432ddb08d2ddad} 
+{\footnotesize template$<$typename U$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ typename Math\+Wrapper$<$ Checked\+Min\+Op, T, U $>$\+::type $>$ {\bfseries Min} (U rhs) const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_af4d39d1f1cac7a82aea0f79c3a311496}\label{classkiwi_1_1_checked_numeric_af4d39d1f1cac7a82aea0f79c3a311496} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ typename Unsigned\+Or\+Float\+For\+Size$<$ T $>$\+::type $>$ {\bfseries Unsigned\+Abs} () const
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a65196ddf112f30aa8e48a49d6e10c277}\label{classkiwi_1_1_checked_numeric_a65196ddf112f30aa8e48a49d6e10c277} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator++} ()
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a0f985972bce403b9f2600a8a3ad3d016}\label{classkiwi_1_1_checked_numeric_a0f985972bce403b9f2600a8a3ad3d016} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} {\bfseries operator++} (int)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ad11e6ddebb231c6064cacda5b5aed691}\label{classkiwi_1_1_checked_numeric_ad11e6ddebb231c6064cacda5b5aed691} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries operator-\/-\/} ()
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a6083989b4f67d00ad5816ebbe81703ff}\label{classkiwi_1_1_checked_numeric_a6083989b4f67d00ad5816ebbe81703ff} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} {\bfseries operator-\/-\/} (int)
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a72ace16c69ac2e17060aa6225c77fc8a}\label{classkiwi_1_1_checked_numeric_a72ace16c69ac2e17060aa6225c77fc8a} 
+{\footnotesize template$<$template$<$ typename, typename $>$ class M, typename R$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} \& {\bfseries Math\+Op} (R rhs)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_a80948619f5429e0c15f63dd7302f12d1}\label{classkiwi_1_1_checked_numeric_a80948619f5429e0c15f63dd7302f12d1} 
+{\footnotesize template$<$template$<$ typename, typename $>$ class M, typename L, typename R$>$ }\\static constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}} {\bfseries Math\+Op} (L lhs, R rhs)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_checked_numeric_ab4f079a6499231ca7edfd7ebb1267ea8}\label{classkiwi_1_1_checked_numeric_ab4f079a6499231ca7edfd7ebb1267ea8} 
+{\footnotesize template$<$typename U$>$ }\\U {\bfseries Get\+Numeric\+Value\+For\+Test} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ U $>$ \&src)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/numerics/checked\+\_\+math.\+hh\end{DoxyCompactItemize}

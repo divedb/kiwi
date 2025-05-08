@@ -14,7 +14,6 @@
 #include "kiwi/common/macros.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/io/file_path.hh"
-#include "kiwi/io/file_tracing.hh"
 #include "kiwi/io/platform_file.hh"
 #include "kiwi/portability/base_export.hh"
 #include "kiwi/portability/build_config.hh"
@@ -43,6 +42,11 @@ class BASE_EXPORT File {
   DISALLOW_COPY_AND_ASSIGN(File);
 
  public:
+  enum class LockMode {
+    kShared,
+    kExclusive,
+  };
+
   /// kFlag(Open|Create).* are mutually exclusive. You should specify exactly
   /// one of the five (possibly combining with other flags) when opening or
   /// creating a file. kFlag(Write|Append) are mutually exclusive. This is so
@@ -113,7 +117,7 @@ class BASE_EXPORT File {
     kFileErrorNotAFile = -13,
     kFileErrorNotEmpty = -14,
     kFileErrorInvalidUrl = -15,
-    kFileErrorIo = -16,
+    kFileErrorIO = -16,
     /// Put new entries here and increment kFileErrorMax.
     kFileErrorMax = -17
   };
@@ -191,126 +195,142 @@ class BASE_EXPORT File {
   // Creates or opens the given file.
   void Initialize(const FilePath& path, uint32_t flags);
 
-  // Returns |true| if the handle / fd wrapped by this object is valid.  This
-  // method doesn't interact with the file system and is thus safe to be called
-  // from threads that disallow blocking.
+  /// \return true if the handle or fd wrapped by this object is valid.  This
+  ///         method doesn't interact with the file system and is thus safe to
+  ///         be called from threads that disallow blocking.
   bool IsValid() const;
 
-  // Returns true if a new file was created (or an old one truncated to zero
-  // length to simulate a new file, which can happen with
-  // FLAG_CREATE_ALWAYS), and false otherwise.
-  bool IsCreated() const { return created_; }
+  /// \return true if a new file was created (or an old one truncated to zero
+  ///         length to simulate a new file, which can happen with
+  ///         kFlagCreateAlways), and false otherwise.
+  bool IsCreated() const { return is_created_; }
 
-  // Returns the OS result of opening this file. Note that the way to verify
-  // the success of the operation is to use IsValid(), not this method:
-  //   File file(path, flags);
-  //   if (!file.IsValid())
-  //     return;
+  /// Note that the way to verify the success of the operation is to use
+  /// IsValid(), not this method:
+  ///
+  /// \code
+  /// File file(path, flags);
+  /// if (!file.IsValid())
+  ///   return;
+  /// \endcode
+  ///
+  /// \return The OS result of opening this file.
   Error ErrorDetails() const { return error_details_; }
 
-  PlatformFile GetPlatformFile() const;
-  PlatformFile TakePlatformFile();
+  PlatformFile GetPlatformFile() const { return file_.get(); }
+  PlatformFile TakePlatformFile() { return file_.Release(); }
 
-  // Destroying this object closes the file automatically.
+  /// Destroying this object closes the file automatically.
   void Close();
 
-  // Changes current position in the file to an |offset| relative to an origin
-  // defined by |whence|. Returns the resultant current position in the file
-  // (relative to the start) or -1 in case of error.
+  /// Changes current position in the file to an `offset` relative to an origin
+  /// defined by `whence`.
+  ///
+  /// \param whence The reference point for the offset. \see Whence.
+  /// \param offset The number of bytes to move the file pointer relative to
+  ///               whence.
+  /// \return The new offset from the beginning of the file, or -1 on error.
   int64_t Seek(Whence whence, int64_t offset);
 
-  // Simplified versions of Read() and friends (see below) that check the
-  // return value and just return a boolean. They return true if and only if
-  // the function read in exactly |data.size()| bytes of data.
-  bool ReadAndCheck(int64_t offset, span<uint8_t> data);
-  bool ReadAtCurrentPosAndCheck(span<uint8_t> data);
+  /// Simplified versions of Read() and friends (see below) that check the
+  /// return value and just return a boolean.
+  ///
+  /// \param offset The byte offset in the file from which to start reading.
+  /// \param data A span representing the buffer to store the read data.
+  /// \return true iff the function read in exactly `data.size()` bytes of data.
+  bool ReadAndCheck(int64_t offset, kiwi::span<uint8_t> data);
+  bool ReadAtCurrentPosAndCheck(kiwi::span<uint8_t> data);
 
-  // Reads the given number of bytes (or until EOF is reached) starting with the
-  // given offset. Returns the number of bytes read, or -1 on error. Note that
-  // this function makes a best effort to read all data on all platforms, so it
-  // is not intended for stream oriented files but instead for cases when the
-  // normal expectation is that actually |size| bytes are read unless there is
-  // an error.
+  /// Reads the given number of bytes (or until EOF is reached) starting with
+  /// the given offset.
+  ///
+  /// Note that this function makes a best effort to read all data on all
+  /// platforms, so it is not intended for stream oriented files but instead for
+  /// cases when the normal expectation is that actually `size` bytes are read
+  /// unless there is an error.
+  ///
+  /// \param offset The byte offset in the file from which to start reading.
+  /// \param data A pointer to buffer.
+  /// \param size The number of bytes to read.
+  /// \return The number of bytes read, or -1 on error.
   UNSAFE_BUFFER_USAGE int Read(int64_t offset, char* data, int size);
   std::optional<size_t> Read(int64_t offset, kiwi::span<uint8_t> data);
 
-  // Same as above but without seek.
+  /// Same as above but without seek.
+  ///
+  /// \copydoc int Read(int64_t offset, char* data, int size);
   UNSAFE_BUFFER_USAGE int ReadAtCurrentPos(char* data, int size);
   std::optional<size_t> ReadAtCurrentPos(kiwi::span<uint8_t> data);
 
-  // Reads the given number of bytes (or until EOF is reached) starting with the
-  // given offset, but does not make any effort to read all data on all
-  // platforms. Returns the number of bytes read, or -1/std::nullopt on error.
+  /// Reads the given number of bytes (or until EOF is reached) starting with
+  /// the given offset, but does not make any effort to read all data on all
+  /// platforms. Returns the number of bytes read, or -1/std::nullopt on error.
   UNSAFE_BUFFER_USAGE int ReadNoBestEffort(int64_t offset, char* data,
                                            int size);
   std::optional<size_t> ReadNoBestEffort(int64_t offset,
                                          kiwi::span<uint8_t> data);
 
-  // Same as above but without seek.
+  /// Same as above but without seek.
+  /// \copydoc nt ReadNoBestEffort(int64_t offset, char* data, int size);
   UNSAFE_BUFFER_USAGE int ReadAtCurrentPosNoBestEffort(char* data, int size);
   std::optional<size_t> ReadAtCurrentPosNoBestEffort(kiwi::span<uint8_t> data);
 
-  // Simplified versions of Write() and friends (see below) that check the
-  // return value and just return a boolean. They return true if and only if
-  // the function wrote out exactly |data.size()| bytes of data.
+  /// Simplified versions of Write() and friends (see below) that check the
+  /// return value and just return a boolean. They return true if and only if
+  /// the function wrote out exactly |data.size()| bytes of data.
   bool WriteAndCheck(int64_t offset, span<const uint8_t> data);
   bool WriteAtCurrentPosAndCheck(span<const uint8_t> data);
 
-  // Writes the given buffer into the file at the given offset, overwritting any
-  // data that was previously there. Returns the number of bytes written, or -1
-  // on error. Note that this function makes a best effort to write all data on
-  // all platforms. |data| can be nullptr when |size| is 0.
-  // Ignores the offset and writes to the end of the file if the file was opened
-  // with FLAG_APPEND.
+  /// Writes the given buffer into the file at the given offset, overwritting
+  /// any data that was previously there. Returns the number of bytes written,
+  /// or -1 on error. Note that this function makes a best effort to write all
+  /// data on all platforms. |data| can be nullptr when |size| is 0. Ignores the
+  /// offset and writes to the end of the file if the file was opened with
+  /// FLAG_APPEND.
   UNSAFE_BUFFER_USAGE int Write(int64_t offset, const char* data, int size);
   std::optional<size_t> Write(int64_t offset, kiwi::span<const uint8_t> data);
 
-  // Save as above but without seek.
+  /// Save as above but without seek.
   UNSAFE_BUFFER_USAGE int WriteAtCurrentPos(const char* data, int size);
   std::optional<size_t> WriteAtCurrentPos(kiwi::span<const uint8_t> data);
 
-  // Save as above but does not make any effort to write all data on all
-  // platforms. Returns the number of bytes written, or -1/std::nullopt
-  // on error.
+  /// Save as above but does not make any effort to write all data on all
+  /// platforms. Returns the number of bytes written, or -1/std::nullopt
+  /// on error.
   UNSAFE_BUFFER_USAGE int WriteAtCurrentPosNoBestEffort(const char* data,
                                                         int size);
   std::optional<size_t> WriteAtCurrentPosNoBestEffort(
       kiwi::span<const uint8_t> data);
 
-  // Returns the current size of this file, or a negative number on failure.
+  /// Returns the current size of this file, or a negative number on failure.
   int64_t GetLength() const;
 
-  // Truncates the file to the given length. If |length| is greater than the
-  // current size of the file, the file is extended with zeros. If the file
-  // doesn't exist, |false| is returned.
-  bool SetLength(int64_t length);
+  /// Truncates the file to the given length. If |length| is greater than the
+  /// current size of the file, the file is extended with zeros. If the file
+  /// doesn't exist, |false| is returned.
+  bool Truncate(int64_t length);
 
-  // Instructs the filesystem to flush the file to disk. (POSIX: fsync, Windows:
-  // FlushFileBuffers).
-  // Calling Flush() does not guarantee file integrity and thus is not a valid
-  // substitute for file integrity checks and recovery codepaths for malformed
-  // files. It can also be *really* slow, so avoid blocking on Flush(),
-  // especially please don't block shutdown on Flush().
-  // Latency percentiles of Flush() across all platforms as of July 2016:
-  // 50 %     > 5 ms
-  // 10 %     > 58 ms
-  //  1 %     > 357 ms
-  //  0.1 %   > 1.8 seconds
-  //  0.01 %  > 7.6 seconds
+  /// Instructs the filesystem to flush the file to disk. (POSIX: fsync,
+  /// Windows: FlushFileBuffers). Calling Flush() does not guarantee file
+  /// integrity and thus is not a valid substitute for file integrity checks and
+  /// recovery codepaths for malformed files. It can also be *really* slow, so
+  /// avoid blocking on Flush(), especially please don't block shutdown on
+  /// Flush().
+  ///
+  /// Latency percentiles of Flush() across all platforms as of July 2016:
+  ///
+  /// 50 %     > 5 ms
+  /// 10 %     > 58 ms
+  ///  1 %     > 357 ms
+  ///  0.1 %   > 1.8 seconds
+  ///  0.01 %  > 7.6 seconds
   bool Flush();
 
-  // Updates the file times.
-  // bool SetTimes(Time last_access_time, Time last_modified_time);
+  /// Updates the file times.
+  bool SetTimes(Time last_access_time, Time last_modified_time);
 
-  // Returns some basic information for the given file.
+  /// Returns some basic information for the given file.
   bool GetInfo(Info* info) const;
-
-#if !BUILDFLAG( \
-    IS_FUCHSIA)  // Fuchsia's POSIX API does not support file locking.
-  enum class LockMode {
-    kShared,
-    kExclusive,
-  };
 
   // Attempts to take an exclusive write lock on the file. Returns immediately
   // (i.e. does not wait for another process to unlock the file). If the lock
@@ -337,8 +357,6 @@ class BASE_EXPORT File {
   // Unlock a file previously locked.
   Error Unlock();
 
-#endif  // !BUILDFLAG(IS_FUCHSIA)
-
   // Returns a new object referencing this file for use within the current
   // process. Handling of FLAG_DELETE_ON_CLOSE varies by OS. On POSIX, the File
   // object that was created or initialized with this flag will have unlinked
@@ -346,16 +364,7 @@ class BASE_EXPORT File {
   // underlying file is deleted when the last handle to it is closed.
   File Duplicate() const;
 
-  bool async() const { return async_; }
-
-  // Serialise this object into a trace.
-  // void WriteIntoTrace(perfetto::TracedValue context) const;
-
-#if BUILDFLAG(IS_APPLE)
-  // Initializes experiments. Must be invoked early in process startup, but
-  // after `FeatureList` initialization.
-  static void InitializeFeatures();
-#endif  // BUILDFLAG(IS_APPLE)
+  bool IsAsync() const { return is_async_; }
 
 #if BUILDFLAG(IS_WIN)
   // Sets or clears the DeleteFile disposition on the file. Returns true if
@@ -394,20 +403,20 @@ class BASE_EXPORT File {
   // Precondition: last_error is not 0, also known as ERROR_SUCCESS.
   static Error OSErrorToFileError(DWORD last_error);
 #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-  // Precondition: saved_errno is not 0.
+  /// Precondition: saved_errno is not 0.
   static Error OSErrorToFileError(int saved_errno);
 #endif
 
-  // Gets the last global error (errno or GetLastError()) and converts it to the
-  // closest base::File::Error equivalent via OSErrorToFileError(). It should
-  // therefore only be called immediately after another base::File method fails.
-  // base::File never resets the global error to zero.
+  /// Gets the last global error (errno or GetLastError()) and converts it to
+  /// the closest base::File::Error equivalent via OSErrorToFileError(). It
+  /// should therefore only be called immediately after another base::File
+  /// method fails. base::File never resets the global error to zero.
   static Error GetLastFileError();
 
-  // Converts an error value to a human-readable form. Used for logging.
+  /// Converts an error value to a human-readable form. Used for logging.
   static std::string ErrorToString(Error error);
 
-#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+#if BUILDFLAG(IS_POSIX)
   // Wrapper for stat().
   static int Stat(const FilePath& path, stat_wrapper_t* sb);
   // Wrapper for fstat().
@@ -416,17 +425,18 @@ class BASE_EXPORT File {
   static int Lstat(const FilePath& path, stat_wrapper_t* sb);
 #endif
 
-  // This function can be used to augment `flags` with the correct flags
-  // required to create a File that can be safely passed to an untrusted
-  // process. It must be called if the File is intended to be transferred to an
-  // untrusted process, but can still be safely called even if the File is not
-  // intended to be transferred.
+  /// This function can be used to augment `flags` with the correct flags
+  /// required to create a File that can be safely passed to an untrusted
+  /// process. It must be called if the File is intended to be transferred to an
+  /// untrusted process, but can still be safely called even if the File is not
+  /// intended to be transferred.
   static constexpr uint32_t AddFlagsForPassingToUntrustedProcess(
       uint32_t flags) {
-    if (flags & File::FLAG_WRITE || flags & File::FLAG_APPEND ||
-        flags & File::FLAG_WRITE_ATTRIBUTES) {
-      flags |= File::FLAG_WIN_NO_EXECUTE;
+    if (flags & File::kFlagWrite || flags & File::kFlagAppend ||
+        flags & File::kFlagWriteAttributes) {
+      flags |= File::kFlagWinNoExecute;
     }
+
     return flags;
   }
 

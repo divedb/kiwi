@@ -1,0 +1,250 @@
+\doxysection{clamped\+\_\+math.\+hh}
+\hypertarget{clamped__math_8hh_source}{}\label{clamped__math_8hh_source}\index{include/kiwi/numerics/clamped\_math.hh@{include/kiwi/numerics/clamped\_math.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#ifndef\ BASE\_NUMERICS\_CLAMPED\_MATH\_H\_}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ BASE\_NUMERICS\_CLAMPED\_MATH\_H\_}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/clamped\_math\_impl.hh"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_math\_shared\_impl.hh"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }ClampedNumeric\ \{}
+\DoxyCodeLine{00020\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \textcolor{comment}{//\ Copy\ constructor.}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric(\textcolor{keyword}{const}\ ClampedNumeric<Src>\&\ rhs)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ :\ value\_(saturated\_cast<T>(rhs.value\_))\ \{\}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ This\ is\ not\ an\ explicit\ constructor\ because\ we\ implicitly\ upgrade\ regular}}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ numerics\ to\ ClampedNumerics\ to\ make\ them\ easier\ to\ use.}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{requires}(IsNumeric<Src>)}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric(Src\ value)\ :\ value\_(saturated\_cast<T>(value))\ \{\}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ This\ is\ not\ an\ explicit\ constructor\ because\ we\ want\ a\ seamless\ conversion}}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{//\ from\ StrictNumeric\ types.}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric(\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<Src>}}\ value)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ :\ value\_(saturated\_cast<T>(\textcolor{keyword}{static\_cast<}Src\textcolor{keyword}{>}(value)))\ \{\}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ Returns\ a\ ClampedNumeric\ of\ the\ specified\ type,\ cast\ from\ the\ current}}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ ClampedNumeric,\ and\ saturated\ to\ the\ destination\ type.}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric<UnderlyingType<Dst>>\ Cast()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ Prototypes\ for\ the\ supported\ arithmetic\ operator\ overloads.}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator+=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator-\/=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator*=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator/=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator\%=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator<<=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator>>=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator\&=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator|=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator\string^=(\textcolor{keyword}{const}\ Src\ rhs);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\ operator-\/()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ The\ negation\ of\ two's\ complement\ int\ min\ is\ int\ min,\ so\ that's\ the}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//\ only\ overflow\ case\ where\ we\ will\ saturate.}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<T>(SaturatedNegWrapper(value\_));}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\ operator\string~()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<decltype(InvertWrapper(T()))>(InvertWrapper(value\_));}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\ Abs()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ The\ negation\ of\ two's\ complement\ int\ min\ is\ int\ min,\ so\ that's\ the}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ only\ overflow\ case\ where\ we\ will\ saturate.}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<T>(SaturatedAbsWrapper(value\_));}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric<typename\ MathWrapper<ClampedMaxOp,\ T,\ U>::type>\ Max(}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ U\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{using\ }result\_type\ =\ \textcolor{keyword}{typename}\ MathWrapper<ClampedMaxOp,\ T,\ U>::type;}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<result\_type>(}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ ClampedMaxOp<T,\ U>::Do(value\_,\ Wrapper<U>::value(rhs)));}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric<typename\ MathWrapper<ClampedMinOp,\ T,\ U>::type>\ Min(}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ U\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{using\ }result\_type\ =\ \textcolor{keyword}{typename}\ MathWrapper<ClampedMinOp,\ T,\ U>::type;}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<result\_type>(}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ ClampedMinOp<T,\ U>::Do(value\_,\ Wrapper<U>::value(rhs)));}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ This\ function\ is\ available\ only\ for\ integral\ types.\ It\ returns\ an\ unsigned}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ integer\ of\ the\ same\ width\ as\ the\ source\ type,\ containing\ the\ absolute\ value}}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//\ of\ the\ source,\ and\ properly\ handling\ signed\ min.}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric<typename\ UnsignedOrFloatForSize<T>::type>}
+\DoxyCodeLine{00109\ \ \ UnsignedAbs()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<typename\ UnsignedOrFloatForSize<T>::type>(}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ SafeUnsignedAbs(value\_));}
+\DoxyCodeLine{00112\ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator++()\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ *\textcolor{keyword}{this}\ +=\ 1;}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\ operator++(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ ClampedNumeric\ value\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00121\ \ \ \ \ *\textcolor{keyword}{this}\ +=\ 1;}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ operator-\/-\/()\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ *\textcolor{keyword}{this}\ -\/=\ 1;}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\ operator-\/-\/(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ ClampedNumeric\ value\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00132\ \ \ \ \ *\textcolor{keyword}{this}\ -\/=\ 1;}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//\ These\ perform\ the\ actual\ math\ operations\ on\ the\ ClampedNumerics.}}
+\DoxyCodeLine{00137\ \ \ \textcolor{comment}{//\ Binary\ arithmetic\ operations.}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ ClampedNumeric\ MathOp(L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{using\ }Math\ =\ \textcolor{keyword}{typename}\ MathWrapper<M,\ L,\ R>::math;}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ ClampedNumeric<T>(}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ Math::template\ Do<T>(Wrapper<L>::value(lhs),\ Wrapper<R>::value(rhs)));}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{comment}{//\ Assignment\ arithmetic\ operations.}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{constexpr}\ ClampedNumeric\&\ MathOp(R\ rhs)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{using\ }Math\ =\ \textcolor{keyword}{typename}\ MathWrapper<M,\ T,\ R>::math;}
+\DoxyCodeLine{00149\ \ \ \ \ *\textcolor{keyword}{this}\ =}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ ClampedNumeric<T>(Math::template\ Do<T>(value\_,\ Wrapper<R>::value(rhs)));}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<ArithmeticOrUnderlyingEnum<Dst>>}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ Dst()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{comment}{//\ NOLINT(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<ArithmeticOrUnderlyingEnum<Dst>>(value\_);}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ This\ method\ extracts\ the\ raw\ integer\ value\ without\ saturating\ it\ to\ the}}
+\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//\ destination\ type\ as\ the\ conversion\ operator\ does.\ This\ is\ useful\ when}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ e.g.\ assigning\ to\ an\ auto\ type\ or\ passing\ as\ a\ deduced\ template\ parameter.}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{constexpr}\ T\ RawValue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value\_;\ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<U>}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }ClampedNumeric;}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ T\ value\_\ =\ 0;}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//\ These\ wrappers\ allow\ us\ to\ handle\ state\ the\ same\ way\ for\ both}}
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//\ ClampedNumeric\ and\ POD\ arithmetic\ types.}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{struct\ }Wrapper\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ UnderlyingType<Src>\ value(Src\ value)\ \{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{00177\ \ \ \};}
+\DoxyCodeLine{00178\ \};}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00181\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{ClampedNumeric}}(T)\ -\/>\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{ClampedNumeric<T>}};}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ Convenience\ wrapper\ to\ return\ a\ new\ ClampedNumeric\ from\ the\ provided}}
+\DoxyCodeLine{00184\ \textcolor{comment}{//\ arithmetic\ or\ ClampedNumericType.}}
+\DoxyCodeLine{00185\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00186\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{ClampedNumeric<UnderlyingType<T>}}>\ MakeClampedNum(T\ value)\ \{}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00188\ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{comment}{//\ These\ implement\ the\ variadic\ wrapper\ for\ the\ math\ operations.}}
+\DoxyCodeLine{00191\ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00192\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1_clamped_numeric}{ClampedNumeric<typename\ MathWrapper<M,\ L,\ R>::type}}>\ ClampMathOp(}
+\DoxyCodeLine{00193\ \ \ \ \ L\ lhs,\ R\ rhs)\ \{}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{using\ }Math\ =\ \textcolor{keyword}{typename}\ MathWrapper<M,\ L,\ R>::math;}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_clamped_numeric}{ClampedNumeric<typename\ Math::result\_type>::template}}\ MathOp<M>(lhs,}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rhs);}
+\DoxyCodeLine{00197\ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \textcolor{comment}{//\ General\ purpose\ wrapper\ template\ for\ arithmetic\ operations.}}
+\DoxyCodeLine{00200\ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R,}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00202\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ ClampMathOp(L\ lhs,\ R\ rhs,\ Args...\ args)\ \{}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordflow}{return}\ ClampMathOp<M>(ClampMathOp<M>(lhs,\ rhs),\ args...);}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Add,\ +,\ +=)}
+\DoxyCodeLine{00207\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Sub,\ -\/,\ -\/=)}
+\DoxyCodeLine{00208\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Mul,\ *,\ *=)}
+\DoxyCodeLine{00209\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Div,\ /,\ /=)}
+\DoxyCodeLine{00210\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Mod,\ \%,\ \%=)}
+\DoxyCodeLine{00211\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Lsh,\ <<,\ <<=)}
+\DoxyCodeLine{00212\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Rsh,\ >>,\ >>=)}
+\DoxyCodeLine{00213\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ And,\ \&,\ \&=)}
+\DoxyCodeLine{00214\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Or,\ |,\ |=)}
+\DoxyCodeLine{00215\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(Clamped,\ Clamp,\ Xor,\ \string^,\ \string^=)}
+\DoxyCodeLine{00216\ BASE\_NUMERIC\_ARITHMETIC\_VARIADIC(Clamped,\ Clamp,\ Max)}
+\DoxyCodeLine{00217\ BASE\_NUMERIC\_ARITHMETIC\_VARIADIC(Clamped,\ Clamp,\ Min)}
+\DoxyCodeLine{00218\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Clamped,\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_less}{IsLess}},\ <)}
+\DoxyCodeLine{00219\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Clamped,\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_less_or_equal}{IsLessOrEqual}},\ <=)}
+\DoxyCodeLine{00220\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Clamped,\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_greater}{IsGreater}},\ >)}
+\DoxyCodeLine{00221\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Clamped,\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_greater_or_equal}{IsGreaterOrEqual}},\ >=)}
+\DoxyCodeLine{00222\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Clamped,\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_equal}{IsEqual}},\ ==)}
+\DoxyCodeLine{00223\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Clamped,\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_not_equal}{IsNotEqual}},\ !=)}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ using\ internal::ClampAdd;}
+\DoxyCodeLine{00228\ using\ internal::ClampAnd;}
+\DoxyCodeLine{00229\ using\ internal::ClampDiv;}
+\DoxyCodeLine{00230\ using\ internal::\mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{ClampedNumeric}};}
+\DoxyCodeLine{00231\ using\ internal::ClampLsh;}
+\DoxyCodeLine{00232\ using\ internal::ClampMax;}
+\DoxyCodeLine{00233\ using\ internal::ClampMin;}
+\DoxyCodeLine{00234\ using\ internal::ClampMod;}
+\DoxyCodeLine{00235\ using\ internal::ClampMul;}
+\DoxyCodeLine{00236\ using\ internal::ClampOr;}
+\DoxyCodeLine{00237\ using\ internal::ClampRsh;}
+\DoxyCodeLine{00238\ using\ internal::ClampSub;}
+\DoxyCodeLine{00239\ using\ internal::ClampXor;}
+\DoxyCodeLine{00240\ using\ internal::MakeClampedNum;}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_NUMERICS\_CLAMPED\_MATH\_H\_}}
+
+\end{DoxyCode}

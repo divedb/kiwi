@@ -1,5 +1,9 @@
 \doxysection{kiwi\+::File Class Reference}
 \hypertarget{classkiwi_1_1_file}{}\label{classkiwi_1_1_file}\index{kiwi::File@{kiwi::File}}
+
+
+{\ttfamily \#include $<$file.\+hh$>$}
+
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -8,69 +12,67 @@ struct \mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}}
 \doxysubsubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619} 
-enum {\bfseries Flags} \+: uint32\+\_\+t \{ \newline
-{\bfseries FLAG\+\_\+\+OPEN} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
-, {\bfseries FLAG\+\_\+\+CREATE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
-, {\bfseries FLAG\+\_\+\+OPEN\+\_\+\+ALWAYS} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
-, {\bfseries FLAG\+\_\+\+CREATE\+\_\+\+ALWAYS} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
+enum \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}{Flags}} \+: uint32\+\_\+t \{ \newline
+\mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a}{k\+Flag\+Open}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d}{k\+Flag\+Create}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648}{k\+Flag\+Open\+Always}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84}{k\+Flag\+Create\+Always}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
 , \newline
-{\bfseries FLAG\+\_\+\+OPEN\+\_\+\+TRUNCATED} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
-, {\bfseries FLAG\+\_\+\+READ} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 5
-, {\bfseries FLAG\+\_\+\+WRITE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 6
-, {\bfseries FLAG\+\_\+\+APPEND} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 7
+\mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6}{k\+Flag\+Open\+Truncated}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
+, {\bfseries k\+Flag\+Read} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 5
+, {\bfseries k\+Flag\+Write} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 6
+, {\bfseries k\+Flag\+Append} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 7
 , \newline
-{\bfseries FLAG\+\_\+\+WIN\+\_\+\+EXCLUSIVE\+\_\+\+READ} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+EXCLUSIVE\+\_\+\+WRITE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 9
-, {\bfseries FLAG\+\_\+\+ASYNC} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 10
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+TEMPORARY} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 11
+\mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63}{k\+Flag\+Win\+Exclusive\+Read}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8}{k\+Flag\+Win\+Exclusive\+Write}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 9
+, {\bfseries k\+Flag\+Async} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 10
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3}{k\+Flag\+Win\+Temporary}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 11
 , \newline
-{\bfseries FLAG\+\_\+\+WIN\+\_\+\+HIDDEN} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 12
-, {\bfseries FLAG\+\_\+\+DELETE\+\_\+\+ON\+\_\+\+CLOSE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 13
-, {\bfseries FLAG\+\_\+\+WRITE\+\_\+\+ATTRIBUTES} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 14
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+SHARE\+\_\+\+DELETE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 15
+\mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4}{k\+Flag\+Win\+Hidden}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 12
+, {\bfseries k\+Flag\+Delete\+On\+Close} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 13
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694}{k\+Flag\+Write\+Attributes}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 14
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52}{k\+Flag\+Win\+Share\+Delete}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 15
 , \newline
-{\bfseries FLAG\+\_\+\+TERMINAL\+\_\+\+DEVICE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 16
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+BACKUP\+\_\+\+SEMANTICS} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 17
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+EXECUTE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 18
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+SEQUENTIAL\+\_\+\+SCAN} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 19
+\mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118}{k\+Flag\+Terminal\+Device}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 16
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da}{k\+Flag\+Win\+Backup\+Semantics}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 17
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e}{k\+Flag\+Win\+Execute}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 18
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a}{k\+Flag\+Win\+Sequential\+Scan}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 19
 , \newline
-{\bfseries FLAG\+\_\+\+CAN\+\_\+\+DELETE\+\_\+\+ON\+\_\+\+CLOSE} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 20
-, {\bfseries FLAG\+\_\+\+WIN\+\_\+\+NO\+\_\+\+EXECUTE}
+\mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58}{k\+Flag\+Can\+Delete\+On\+Close}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 20
+, \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78}{k\+Flag\+Win\+No\+Execute}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 21
  \}
 \item 
-\Hypertarget{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}\label{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609} 
-enum {\bfseries Error} \{ \newline
-{\bfseries FILE\+\_\+\+OK} = 0
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+FAILED} = -\/1
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+IN\+\_\+\+USE} = -\/2
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+EXISTS} = -\/3
+enum \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} \{ \newline
+{\bfseries k\+File\+Ok} = 0
+, {\bfseries k\+File\+Error\+Failed} = -\/1
+, {\bfseries k\+File\+Error\+In\+Use} = -\/2
+, {\bfseries k\+File\+Error\+Exists} = -\/3
 , \newline
-{\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+FOUND} = -\/4
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+ACCESS\+\_\+\+DENIED} = -\/5
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+TOO\+\_\+\+MANY\+\_\+\+OPENED} = -\/6
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NO\+\_\+\+MEMORY} = -\/7
+{\bfseries k\+File\+Error\+Not\+Found} = -\/4
+, {\bfseries k\+File\+Error\+Access\+Denied} = -\/5
+, {\bfseries k\+File\+Error\+Too\+Many\+Opened} = -\/6
+, {\bfseries k\+File\+Error\+No\+Memory} = -\/7
 , \newline
-{\bfseries FILE\+\_\+\+ERROR\+\_\+\+NO\+\_\+\+SPACE} = -\/8
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+A\+\_\+\+DIRECTORY} = -\/9
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+INVALID\+\_\+\+OPERATION} = -\/10
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+SECURITY} = -\/11
+{\bfseries k\+File\+Error\+No\+Space} = -\/8
+, {\bfseries k\+File\+Error\+Not\+ADirectory} = -\/9
+, {\bfseries k\+File\+Error\+Invalid\+Operation} = -\/10
+, {\bfseries k\+File\+Error\+Security} = -\/11
 , \newline
-{\bfseries FILE\+\_\+\+ERROR\+\_\+\+ABORT} = -\/12
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+A\+\_\+\+FILE} = -\/13
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+NOT\+\_\+\+EMPTY} = -\/14
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+INVALID\+\_\+\+URL} = -\/15
+{\bfseries k\+File\+Error\+Abort} = -\/12
+, {\bfseries k\+File\+Error\+Not\+AFile} = -\/13
+, {\bfseries k\+File\+Error\+Not\+Empty} = -\/14
+, {\bfseries k\+File\+Error\+Invalid\+Url} = -\/15
 , \newline
-{\bfseries FILE\+\_\+\+ERROR\+\_\+\+IO} = -\/16
-, {\bfseries FILE\+\_\+\+ERROR\+\_\+\+MAX} = -\/17
+{\bfseries k\+File\+Error\+Io} = -\/16
+, \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82}{k\+File\+Error\+Max}} = -\/17
  \}
 \item 
 \Hypertarget{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}\label{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572} 
-enum {\bfseries Whence} \{ {\bfseries FROM\+\_\+\+BEGIN} = 0
-, {\bfseries FROM\+\_\+\+CURRENT} = 1
-, {\bfseries FROM\+\_\+\+END} = 2
+enum \mbox{\hyperlink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{Whence}} \{ {\bfseries k\+From\+Begin} = 0
+, {\bfseries k\+From\+Current} = 1
+, {\bfseries k\+From\+End} = 2
  \}
-\item 
+\begin{DoxyCompactList}\small\item\em This explicit mapping matches both FILE\+\_\+ on Windows and SEEK\+\_\+ on Linux. \end{DoxyCompactList}\item 
 \Hypertarget{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482}\label{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482} 
 enum class {\bfseries Lock\+Mode} \{ {\bfseries k\+Shared}
 , {\bfseries k\+Exclusive}
@@ -79,47 +81,35 @@ enum class {\bfseries Lock\+Mode} \{ {\bfseries k\+Shared}
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}\label{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387} 
-{\bfseries File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
+\mbox{\hyperlink{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}{File}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
 \item 
-\Hypertarget{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}\label{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0} 
-{\bfseries File} (Scoped\+Platform\+File platform\+\_\+file)
+\mbox{\hyperlink{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}{File}} (Scoped\+Platform\+File platform\+\_\+file)
 \item 
 \Hypertarget{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899}\label{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899} 
 {\bfseries File} (Platform\+File platform\+\_\+file)
 \item 
-\Hypertarget{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}\label{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03} 
-{\bfseries File} (Scoped\+Platform\+File platform\+\_\+file, bool async)
+\mbox{\hyperlink{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}{File}} (Scoped\+Platform\+File platform\+\_\+file, bool async)
 \item 
 \Hypertarget{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f}\label{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f} 
 {\bfseries File} (Platform\+File platform\+\_\+file, bool async)
 \item 
 \Hypertarget{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049}\label{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049} 
-{\bfseries File} (Error error\+\_\+details)
+{\bfseries File} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error\+\_\+details)
 \item 
 \Hypertarget{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4}\label{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4} 
 {\bfseries File} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
-\item 
-\Hypertarget{classkiwi_1_1_file_a8f6e8789b320c737acda0ba394ae6ecc}\label{classkiwi_1_1_file_a8f6e8789b320c737acda0ba394ae6ecc} 
-{\bfseries File} (const \mbox{\hyperlink{classkiwi_1_1_file}{File}} \&)=delete
-\item 
-\Hypertarget{classkiwi_1_1_file_a4ba891743e59b7c6807bbcdb9288087a}\label{classkiwi_1_1_file_a4ba891743e59b7c6807bbcdb9288087a} 
-\mbox{\hyperlink{classkiwi_1_1_file}{File}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_file}{File}} \&)=delete
-\item 
+\begin{DoxyCompactList}\small\item\em Move constructor. \end{DoxyCompactList}\item 
 \Hypertarget{classkiwi_1_1_file_a7c2ae7d574cb16e26a59407554428ec8}\label{classkiwi_1_1_file_a7c2ae7d574cb16e26a59407554428ec8} 
 \mbox{\hyperlink{classkiwi_1_1_file}{File}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
 \item 
 \Hypertarget{classkiwi_1_1_file_a277a950e2310f6868d23d8e49ba2384e}\label{classkiwi_1_1_file_a277a950e2310f6868d23d8e49ba2384e} 
 void {\bfseries Initialize} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
 \item 
-\Hypertarget{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}\label{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940} 
-bool {\bfseries Is\+Valid} () const
+bool \mbox{\hyperlink{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}{Is\+Valid}} () const
 \item 
-\Hypertarget{classkiwi_1_1_file_aba4b8779d5377d5b06d97e8e14dc2fc4}\label{classkiwi_1_1_file_aba4b8779d5377d5b06d97e8e14dc2fc4} 
-bool {\bfseries created} () const
+bool \mbox{\hyperlink{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7}{Is\+Created}} () const
 \item 
-\Hypertarget{classkiwi_1_1_file_aacb3338d0a736a736d3ca83053bfeb65}\label{classkiwi_1_1_file_aacb3338d0a736a736d3ca83053bfeb65} 
-Error {\bfseries error\+\_\+details} () const
+\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} \mbox{\hyperlink{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831}{Error\+Details}} () const
 \item 
 \Hypertarget{classkiwi_1_1_file_a424ce3170ab9b04ed3a03d85935c16d1}\label{classkiwi_1_1_file_a424ce3170ab9b04ed3a03d85935c16d1} 
 Platform\+File {\bfseries Get\+Platform\+File} () const
@@ -129,35 +119,33 @@ Platform\+File {\bfseries Take\+Platform\+File} ()
 \item 
 \Hypertarget{classkiwi_1_1_file_a5632f8ac891e6c3a2353aab99fb19791}\label{classkiwi_1_1_file_a5632f8ac891e6c3a2353aab99fb19791} 
 void {\bfseries Close} ()
+\begin{DoxyCompactList}\small\item\em Destroying this object closes the file automatically. \end{DoxyCompactList}\item 
+int64\+\_\+t \mbox{\hyperlink{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4}{Seek}} (\mbox{\hyperlink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{Whence}} whence, int64\+\_\+t offset)
 \item 
-\Hypertarget{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4}\label{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4} 
-int64\+\_\+t {\bfseries Seek} (Whence whence, int64\+\_\+t offset)
+bool \mbox{\hyperlink{classkiwi_1_1_file_a3606ad7fb26e2a27ec681f3060028eb0}{Read\+And\+Check}} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_af5fa1f9f3506b2e02aea1aa8f0e2d5e0}\label{classkiwi_1_1_file_af5fa1f9f3506b2e02aea1aa8f0e2d5e0} 
-bool {\bfseries Read\+And\+Check} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ uint8\+\_\+t $>$ data)
+\Hypertarget{classkiwi_1_1_file_afcea20f07715ff9cf0092f599d290872}\label{classkiwi_1_1_file_afcea20f07715ff9cf0092f599d290872} 
+bool {\bfseries Read\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a0a40335083f996f7e64ba9d5f6ae0fec}\label{classkiwi_1_1_file_a0a40335083f996f7e64ba9d5f6ae0fec} 
-bool {\bfseries Read\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ uint8\+\_\+t $>$ data)
-\item 
-\Hypertarget{classkiwi_1_1_file_afe8653746eba5a524b14c8692adf7bdb}\label{classkiwi_1_1_file_afe8653746eba5a524b14c8692adf7bdb} 
+\Hypertarget{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}\label{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a5240f205ddd91d6b7f59d0b960a282d5}\label{classkiwi_1_1_file_a5240f205ddd91d6b7f59d0b960a282d5} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a6eaf56053758a88e12e89d9c248fa563}\label{classkiwi_1_1_file_a6eaf56053758a88e12e89d9c248fa563} 
+\Hypertarget{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067}\label{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+At\+Current\+Pos} (char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a6145138e263aadb88303a921ee7e262f}\label{classkiwi_1_1_file_a6145138e263aadb88303a921ee7e262f} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+At\+Current\+Pos} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a8a7ffbb6090101f8296aa2b61d9f08f9}\label{classkiwi_1_1_file_a8a7ffbb6090101f8296aa2b61d9f08f9} 
+\Hypertarget{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79}\label{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+No\+Best\+Effort} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a472be55b66f6891c066143e0aa4491c9}\label{classkiwi_1_1_file_a472be55b66f6891c066143e0aa4491c9} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+No\+Best\+Effort} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_abeb16639e3a3486914a5f96933c995ad}\label{classkiwi_1_1_file_abeb16639e3a3486914a5f96933c995ad} 
+\Hypertarget{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a}\label{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+At\+Current\+Pos\+No\+Best\+Effort} (char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_acb20fbb8d9357641363478587996eee3}\label{classkiwi_1_1_file_acb20fbb8d9357641363478587996eee3} 
@@ -169,19 +157,19 @@ bool {\bfseries Write\+And\+Check} (int64\+\_\+t offset, \mbox{\hyperlink{classk
 \Hypertarget{classkiwi_1_1_file_a4f07a8790ebdf12c0da72d7fb7ee6bf1}\label{classkiwi_1_1_file_a4f07a8790ebdf12c0da72d7fb7ee6bf1} 
 bool {\bfseries Write\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_afad48310e64920383c6d6e3d0ef8eec6}\label{classkiwi_1_1_file_afad48310e64920383c6d6e3d0ef8eec6} 
+\Hypertarget{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9}\label{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write} (int64\+\_\+t offset, const char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a6ca850368f70477f71e8a2b2f02efacd}\label{classkiwi_1_1_file_a6ca850368f70477f71e8a2b2f02efacd} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a98500ccbe3bb72cddb2a2cc5c2660781}\label{classkiwi_1_1_file_a98500ccbe3bb72cddb2a2cc5c2660781} 
+\Hypertarget{classkiwi_1_1_file_a699deb00efeb73849eef5324477aa1b6}\label{classkiwi_1_1_file_a699deb00efeb73849eef5324477aa1b6} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write\+At\+Current\+Pos} (const char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_afae6ec38532e1c29a237a2890b925772}\label{classkiwi_1_1_file_afae6ec38532e1c29a237a2890b925772} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write\+At\+Current\+Pos} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a9e79090eca58b68f6fe0854c25c42d7d}\label{classkiwi_1_1_file_a9e79090eca58b68f6fe0854c25c42d7d} 
+\Hypertarget{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab}\label{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write\+At\+Current\+Pos\+No\+Best\+Effort} (const char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a813d31de9d083a53ee8e4b500a4f3486}\label{classkiwi_1_1_file_a813d31de9d083a53ee8e4b500a4f3486} 
@@ -199,11 +187,11 @@ bool {\bfseries Flush} ()
 \Hypertarget{classkiwi_1_1_file_a11ac8cb486c052c627b4fdefaabb18bf}\label{classkiwi_1_1_file_a11ac8cb486c052c627b4fdefaabb18bf} 
 bool {\bfseries Get\+Info} (\mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}} \texorpdfstring{$\ast$}{*}info) const
 \item 
-\Hypertarget{classkiwi_1_1_file_a008513b2f5917d686632c19044c5eeeb}\label{classkiwi_1_1_file_a008513b2f5917d686632c19044c5eeeb} 
-Error {\bfseries Lock} (Lock\+Mode mode)
+\Hypertarget{classkiwi_1_1_file_af3ec6fc05cec4e47af152742dc68b813}\label{classkiwi_1_1_file_af3ec6fc05cec4e47af152742dc68b813} 
+\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} {\bfseries Lock} (Lock\+Mode mode)
 \item 
-\Hypertarget{classkiwi_1_1_file_a9b1f9909e952819d2a5ee5ac349deca3}\label{classkiwi_1_1_file_a9b1f9909e952819d2a5ee5ac349deca3} 
-Error {\bfseries Unlock} ()
+\Hypertarget{classkiwi_1_1_file_ab4c4c29851846c7925121b0f6c849aec}\label{classkiwi_1_1_file_ab4c4c29851846c7925121b0f6c849aec} 
+\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} {\bfseries Unlock} ()
 \item 
 \Hypertarget{classkiwi_1_1_file_af84dfd24529df2f4f029b9ebb911edbb}\label{classkiwi_1_1_file_af84dfd24529df2f4f029b9ebb911edbb} 
 \mbox{\hyperlink{classkiwi_1_1_file}{File}} {\bfseries Duplicate} () const
@@ -214,18 +202,255 @@ bool {\bfseries async} () const
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classkiwi_1_1_file_ae9664bd051841a1bb115196e8c795a1b}\label{classkiwi_1_1_file_ae9664bd051841a1bb115196e8c795a1b} 
-static Error {\bfseries Get\+Last\+File\+Error} ()
+\Hypertarget{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084}\label{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084} 
+static \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} {\bfseries Get\+Last\+File\+Error} ()
 \item 
 \Hypertarget{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae}\label{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae} 
-static std\+::string {\bfseries Error\+To\+String} (Error error)
+static std\+::string {\bfseries Error\+To\+String} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error)
 \item 
 \Hypertarget{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8}\label{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8} 
 static constexpr uint32\+\_\+t {\bfseries Add\+Flags\+For\+Passing\+To\+Untrusted\+Process} (uint32\+\_\+t flags)
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Detailed Description}
+Thin wrapper around an OS-\/level file. Note that this class does not provide any support for asynchronous IO, other than the ability to create asynchronous handles on Windows.
+
+Note about const\+: this class does not attempt to determine if the underlying file system object is affected by a particular method in order to consider that method const or not. Only methods that deal with member variables in an obvious non-\/modifying way are marked as const. Any method that forward calls to the OS is not considered const, even if there is no apparent change to member variables.
+
+On POSIX, if the given file is a symbolic link, most of the methods apply to the file that the symbolic link resolves to. 
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}\index{kiwi::File@{kiwi::File}!Error@{Error}}
+\index{Error@{Error}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Error}{Error}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609} 
+enum \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{kiwi\+::\+File\+::\+Error}}}
+
+This enum has been recorded in multiple histograms using Platform\+File\+Error enum. If the order of the fields needs to change, please ensure that those histograms are obsolete or have been moved to a different enum.
+
+k\+File\+Error\+Access\+Denied is returned when a call fails because of a filesystem restriction. FILE\+\_\+\+ERROR\+\_\+\+SECURITY is returned when a browser policy doesn\textquotesingle{}t allow the operation to be executed. \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFileErrorMax@{kFileErrorMax}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFileErrorMax@{kFileErrorMax}}}\Hypertarget{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82}\label{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82} 
+k\+File\+Error\+Max&Put new entries here and increment k\+File\+Error\+Max. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}\index{kiwi::File@{kiwi::File}!Flags@{Flags}}
+\index{Flags@{Flags}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Flags}{Flags}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619} 
+enum \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}{kiwi\+::\+File\+::\+Flags}} \+: uint32\+\_\+t}
+
+k\+Flag(Open\texorpdfstring{$\vert$}{|}\+Create).\texorpdfstring{$\ast$}{*} are mutually exclusive. You should specify exactly one of the five (possibly combining with other flags) when opening or creating a file. k\+Flag(Write\texorpdfstring{$\vert$}{|}\+Append) are mutually exclusive. This is so that APPEND behavior will be consistent with O\+\_\+\+APPEND on POSIX. \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagOpen@{kFlagOpen}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagOpen@{kFlagOpen}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a} 
+k\+Flag\+Open&Opens a file, only if it exists. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagCreate@{kFlagCreate}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagCreate@{kFlagCreate}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d} 
+k\+Flag\+Create&Creates a new file, only if it does not already exist. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagOpenAlways@{kFlagOpenAlways}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagOpenAlways@{kFlagOpenAlways}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648} 
+k\+Flag\+Open\+Always&May create a new file. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagCreateAlways@{kFlagCreateAlways}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagCreateAlways@{kFlagCreateAlways}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84} 
+k\+Flag\+Create\+Always&May overwrite an old file. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagOpenTruncated@{kFlagOpenTruncated}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagOpenTruncated@{kFlagOpenTruncated}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6} 
+k\+Flag\+Open\+Truncated&Opens a file and truncates it, only if it exists. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinExclusiveRead@{kFlagWinExclusiveRead}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinExclusiveRead@{kFlagWinExclusiveRead}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63} 
+k\+Flag\+Win\+Exclusive\+Read&Windows only. Opposite of SHARE. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinExclusiveWrite@{kFlagWinExclusiveWrite}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinExclusiveWrite@{kFlagWinExclusiveWrite}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8} 
+k\+Flag\+Win\+Exclusive\+Write&Windows only. Opposite of SHARE. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinTemporary@{kFlagWinTemporary}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinTemporary@{kFlagWinTemporary}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3} 
+k\+Flag\+Win\+Temporary&Windows only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinHidden@{kFlagWinHidden}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinHidden@{kFlagWinHidden}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4} 
+k\+Flag\+Win\+Hidden&Windows only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWriteAttributes@{kFlagWriteAttributes}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWriteAttributes@{kFlagWriteAttributes}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694} 
+k\+Flag\+Write\+Attributes&Allows writing attributes, e.\+g., Set\+Times(). \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinShareDelete@{kFlagWinShareDelete}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinShareDelete@{kFlagWinShareDelete}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52} 
+k\+Flag\+Win\+Share\+Delete&Windows only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagTerminalDevice@{kFlagTerminalDevice}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagTerminalDevice@{kFlagTerminalDevice}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118} 
+k\+Flag\+Terminal\+Device&Serial port flags. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinBackupSemantics@{kFlagWinBackupSemantics}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinBackupSemantics@{kFlagWinBackupSemantics}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da} 
+k\+Flag\+Win\+Backup\+Semantics&Windows only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinExecute@{kFlagWinExecute}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinExecute@{kFlagWinExecute}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e} 
+k\+Flag\+Win\+Execute&Windows only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinSequentialScan@{kFlagWinSequentialScan}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinSequentialScan@{kFlagWinSequentialScan}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a} 
+k\+Flag\+Win\+Sequential\+Scan&Windows only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagCanDeleteOnClose@{kFlagCanDeleteOnClose}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagCanDeleteOnClose@{kFlagCanDeleteOnClose}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58} 
+k\+Flag\+Can\+Delete\+On\+Close&Requests permission to delete via Delete\+On\+Close(). \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinNoExecute@{kFlagWinNoExecute}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinNoExecute@{kFlagWinNoExecute}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78} 
+k\+Flag\+Win\+No\+Execute&Windows only. Prevents EXECUTE access. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}\index{kiwi::File@{kiwi::File}!File@{File}}
+\index{File@{File}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387} 
+kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{path}{, }\item[{uint32\+\_\+t}]{flags}{}\end{DoxyParamCaption})}
+
+Creates or opens the given file. This will fail with \textquotesingle{}access denied\textquotesingle{} if the {\ttfamily path} contains path traversal (\textquotesingle{}..\textquotesingle{}) components.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The file path. \\
+\hline
+{\em flags} & \doxylink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}{Flags} for opening or creating \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\doxylink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}{Flags}. 
+\end{DoxySeeAlso}
+\Hypertarget{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}\index{kiwi::File@{kiwi::File}!File@{File}}
+\index{File@{File}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0} 
+kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{Scoped\+Platform\+File}]{platform\+\_\+file}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Takes ownership of {\ttfamily platform\+\_\+file} and sets async to false.
+
+Takes ownership of {\ttfamily platform\+\_\+file} and sets async to the given value. This constructor exists because on Windows you can\textquotesingle{}t check if platform\+\_\+file is async or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em platform\+\_\+file} & A scoped handle to an already-\/opened platform-\/specific file. \\
+\hline
+{\em async} & If true, the file will be operated in asynchronous (non-\/blocking) mode; otherwise, operations will be synchronous.    \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}\index{kiwi::File@{kiwi::File}!File@{File}}
+\index{File@{File}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03} 
+kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{Scoped\+Platform\+File}]{platform\+\_\+file}{, }\item[{bool}]{async}{}\end{DoxyParamCaption})}
+
+Takes ownership of {\ttfamily platform\+\_\+file} and sets async to the given value. This constructor exists because on Windows you can\textquotesingle{}t check if platform\+\_\+file is async or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em platform\+\_\+file} & A scoped handle to an already-\/opened platform-\/specific file. \\
+\hline
+{\em async} & If true, the file will be operated in asynchronous (non-\/blocking) mode; otherwise, operations will be synchronous. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831}\index{kiwi::File@{kiwi::File}!ErrorDetails@{ErrorDetails}}
+\index{ErrorDetails@{ErrorDetails}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{ErrorDetails()}{ErrorDetails()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831} 
+\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} kiwi\+::\+File\+::\+Error\+Details (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Note that the way to verify the success of the operation is to use \doxylink{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}{Is\+Valid()}, not this method\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{File\ file(path,\ flags);}
+\DoxyCodeLine{\textcolor{keywordflow}{if}\ (!file.IsValid())}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return};}
+
+\end{DoxyCode}
+
+
+\begin{DoxyReturn}{Returns}
+The OS result of opening this file. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7}\index{kiwi::File@{kiwi::File}!IsCreated@{IsCreated}}
+\index{IsCreated@{IsCreated}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{IsCreated()}{IsCreated()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7} 
+bool kiwi\+::\+File\+::\+Is\+Created (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+true if a new file was created (or an old one truncated to zero length to simulate a new file, which can happen with k\+Flag\+Create\+Always), and false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}\index{kiwi::File@{kiwi::File}!IsValid@{IsValid}}
+\index{IsValid@{IsValid}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{IsValid()}{IsValid()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940} 
+bool kiwi\+::\+File\+::\+Is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if the handle or fd wrapped by this object is valid. This method doesn\textquotesingle{}t interact with the file system and is thus safe to be called from threads that disallow blocking. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_a3606ad7fb26e2a27ec681f3060028eb0}\index{kiwi::File@{kiwi::File}!ReadAndCheck@{ReadAndCheck}}
+\index{ReadAndCheck@{ReadAndCheck}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{ReadAndCheck()}{ReadAndCheck()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a3606ad7fb26e2a27ec681f3060028eb0} 
+bool kiwi\+::\+File\+::\+Read\+And\+Check (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{offset}{, }\item[{\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$}]{data}{}\end{DoxyParamCaption})}
+
+Simplified versions of Read() and friends (see below) that check the return value and just return a boolean.
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset} & The byte offset in the file from which to start reading. \\
+\hline
+{\em data} & A span representing the buffer to store the read data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff the function read in exactly {\ttfamily data.\+size()} bytes of data. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4}\index{kiwi::File@{kiwi::File}!Seek@{Seek}}
+\index{Seek@{Seek}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Seek()}{Seek()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4} 
+int64\+\_\+t kiwi\+::\+File\+::\+Seek (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{Whence}}}]{whence}{, }\item[{int64\+\_\+t}]{offset}{}\end{DoxyParamCaption})}
+
+Changes current position in the file to an {\ttfamily offset} relative to an origin defined by {\ttfamily whence}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em whence} & The reference point for the offset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\doxylink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{Whence}. 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em offset} & The number of bytes to move the file pointer relative to whence. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new offset from the beginning of the file, or -\/1 on error. 
+\end{DoxyReturn}
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
 include/kiwi/io/file.\+hh\item 
-src/io/file.\+cc\end{DoxyCompactItemize}
+src/io/file.\+cc\item 
+src/io/file\+\_\+posix.\+cc\end{DoxyCompactItemize}

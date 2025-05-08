@@ -1,0 +1,161 @@
+\doxysection{safe\+\_\+math\+\_\+clang\+\_\+gcc\+\_\+impl.\+hh}
+\hypertarget{safe__math__clang__gcc__impl_8hh_source}{}\label{safe__math__clang__gcc__impl_8hh_source}\index{include/kiwi/numerics/safe\_math\_clang\_gcc\_impl.hh@{include/kiwi/numerics/safe\_math\_clang\_gcc\_impl.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#if\ !defined(\_\_native\_client\_\_)\ \&\&\ (defined(\_\_ARMEL\_\_)\ ||\ defined(\_\_arch64\_\_))}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}base/numerics/safe\_math\_arm\_impl.h"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_ASSEMBLER\_SAFE\_MATH\ (1)}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_ASSEMBLER\_SAFE\_MATH\ (0)}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ These\ are\ the\ non-\/functioning\ boilerplate\ implementations\ of\ the\ optimized}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ safe\ math\ routines.}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#if\ !BASE\_HAS\_ASSEMBLER\_SAFE\_MATH}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mul_fast_asm_op}{CheckedMulFastAsmOp}}\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T,\ U,\ V*)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<bool>();}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00038\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_asm_op}{ClampedAddFastAsmOp}}\ \{}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T,\ U)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<V>();}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_sub_fast_asm_op}{ClampedSubFastAsmOp}}\ \{}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T,\ U)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<V>();}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00058\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_mul_fast_asm_op}{ClampedMulFastAsmOp}}\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T,\ U)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<V>();}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_HAS\_ASSEMBLER\_SAFE\_MATH}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#undef\ BASE\_HAS\_ASSEMBLER\_SAFE\_MATH}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00070\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_fast_op}{CheckedAddFastOp}}\ \{}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00073\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ !\_\_builtin\_add\_overflow(x,\ y,\ result);}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00079\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_sub_fast_op}{CheckedSubFastOp}}\ \{}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00082\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ !\_\_builtin\_sub\_overflow(x,\ y,\ result);}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00088\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mul_fast_op}{CheckedMulFastOp}}\ \{}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)}}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ TODO(jschuh):\ Get\ the\ Clang\ runtime\ library\ issues\ sorted\ out\ so\ we\ can}}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ support\ full-\/width,\ mixed-\/sign\ multiply\ builtins.}}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ https://crbug.com/613003}}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ We\ can\ support\ intptr\_t,\ uintptr\_t,\ or\ a\ smaller\ common\ type.}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ (kIsTypeInRangeForNumericType<intptr\_t,\ T>\ \&\&}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ kIsTypeInRangeForNumericType<intptr\_t,\ U>)\ ||}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ (kIsTypeInRangeForNumericType<uintptr\_t,\ T>\ \&\&}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ kIsTypeInRangeForNumericType<uintptr\_t,\ U>);}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00103\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedMulFastAsmOp<T,\ U>::is\_supported}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ CheckedMulFastAsmOp<T,\ U>::Do(x,\ y,\ result)}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ !\_\_builtin\_mul\_overflow(x,\ y,\ result);}
+\DoxyCodeLine{00107\ \ \ \}}
+\DoxyCodeLine{00108\ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00111\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_op}{ClampedAddFastOp}}\ \{}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ ClampedAddFastAsmOp<T,\ U>::is\_supported;}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00114\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ V\ Do(T\ x,\ U\ y)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_asm_op}{ClampedAddFastAsmOp<T,\ U>::template}}\ Do<V>(x,\ y);}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00120\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_sub_fast_op}{ClampedSubFastOp}}\ \{}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ ClampedSubFastAsmOp<T,\ U>::is\_supported;}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00123\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ V\ Do(T\ x,\ U\ y)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_sub_fast_asm_op}{ClampedSubFastAsmOp<T,\ U>::template}}\ Do<V>(x,\ y);}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00129\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_mul_fast_op}{ClampedMulFastOp}}\ \{}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ ClampedMulFastAsmOp<T,\ U>::is\_supported;}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00132\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ V\ Do(T\ x,\ U\ y)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_mul_fast_asm_op}{ClampedMulFastAsmOp<T,\ U>::template}}\ Do<V>(x,\ y);}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00138\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_neg_fast_op}{ClampedNegFastOp}}\ \{}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ std::is\_signed\_v<T>;}
+\DoxyCodeLine{00140\ \ \ \_\_attribute\_\_((always\_inline))\ \textcolor{keyword}{static}\ T\ Do(T\ value)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{comment}{//\ Use\ this\ when\ there\ is\ no\ assembler\ path\ available.}}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ClampedSubFastAsmOp<T,\ T>::is\_supported)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ T\ result;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !\_\_builtin\_sub\_overflow(T(0),\ value,\ \&result)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ result}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ std::numeric\_limits<T>::max();}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ Fallback\ to\ the\ normal\ subtraction\ path.}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_sub_fast_op}{ClampedSubFastOp<T,\ T>::template}}\ Do<T>(T(0),\ value);}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \};}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00155\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

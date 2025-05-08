@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['kfileerrormax_0',['kFileErrorMax',['../classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82',1,'kiwi::File']]],
+  ['kflagcandeleteonclose_1',['kFlagCanDeleteOnClose',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58',1,'kiwi::File']]],
+  ['kflagcreate_2',['kFlagCreate',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d',1,'kiwi::File']]],
+  ['kflagcreatealways_3',['kFlagCreateAlways',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84',1,'kiwi::File']]],
+  ['kflagopen_4',['kFlagOpen',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a',1,'kiwi::File']]],
+  ['kflagopenalways_5',['kFlagOpenAlways',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648',1,'kiwi::File']]],
+  ['kflagopentruncated_6',['kFlagOpenTruncated',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6',1,'kiwi::File']]],
+  ['kflagterminaldevice_7',['kFlagTerminalDevice',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118',1,'kiwi::File']]],
+  ['kflagwinbackupsemantics_8',['kFlagWinBackupSemantics',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da',1,'kiwi::File']]],
+  ['kflagwinexclusiveread_9',['kFlagWinExclusiveRead',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63',1,'kiwi::File']]],
+  ['kflagwinexclusivewrite_10',['kFlagWinExclusiveWrite',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8',1,'kiwi::File']]],
+  ['kflagwinexecute_11',['kFlagWinExecute',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e',1,'kiwi::File']]],
+  ['kflagwinhidden_12',['kFlagWinHidden',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4',1,'kiwi::File']]],
+  ['kflagwinnoexecute_13',['kFlagWinNoExecute',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78',1,'kiwi::File']]],
+  ['kflagwinsequentialscan_14',['kFlagWinSequentialScan',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a',1,'kiwi::File']]],
+  ['kflagwinsharedelete_15',['kFlagWinShareDelete',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52',1,'kiwi::File']]],
+  ['kflagwintemporary_16',['kFlagWinTemporary',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3',1,'kiwi::File']]],
+  ['kflagwriteattributes_17',['kFlagWriteAttributes',['../classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694',1,'kiwi::File']]]
+];

@@ -1,0 +1,108 @@
+\doxysection{kiwi\+::detail\+::Iterator\+Adaptor\texorpdfstring{$<$}{<} D, I, V, Tag \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor}{}\label{classkiwi_1_1detail_1_1_iterator_adaptor}\index{kiwi::detail::IteratorAdaptor$<$ D, I, V, Tag $>$@{kiwi::detail::IteratorAdaptor$<$ D, I, V, Tag $>$}}
+
+
+{\ttfamily \#include $<$iterators.\+hh$>$}
+
+Inheritance diagram for kiwi\+::detail\+::Iterator\+Adaptor\texorpdfstring{$<$}{<} D, I, V, Tag \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1detail_1_1_iterator_adaptor}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_aed739f7feb68a69329dda20859040a9b}\label{classkiwi_1_1detail_1_1_iterator_adaptor_aed739f7feb68a69329dda20859040a9b} 
+using {\bfseries Super} = \mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{Iterator\+Facade}}$<$D, V, Tag$>$
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a3392b001fa09af96de4cbe5d309af129}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a3392b001fa09af96de4cbe5d309af129} 
+using {\bfseries value\+\_\+type} = typename Super\+::value\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a99679c4de977810de5bea275a88112b3}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a99679c4de977810de5bea275a88112b3} 
+using {\bfseries iterator\+\_\+category} = typename Super\+::iterator\+\_\+category
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_ab472c9c41e874d05fca40c9a68f96b80}\label{classkiwi_1_1detail_1_1_iterator_adaptor_ab472c9c41e874d05fca40c9a68f96b80} 
+using {\bfseries reference} = typename Super\+::reference
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_ac9f33533bcce64df9116de1d1c725c1b}\label{classkiwi_1_1detail_1_1_iterator_adaptor_ac9f33533bcce64df9116de1d1c725c1b} 
+using {\bfseries pointer} = typename Super\+::pointer
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a8b3c0161110526299bf647f320952614}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a8b3c0161110526299bf647f320952614} 
+using {\bfseries difference\+\_\+type} = typename Super\+::difference\+\_\+type
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{kiwi\+::detail\+::\+Iterator\+Facade$<$ D, V, Tag $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+using {\bfseries value\+\_\+type} = V
+\item 
+using {\bfseries reference} = value\+\_\+type\&
+\item 
+using {\bfseries pointer} = value\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+using {\bfseries iterator\+\_\+category} = Tag
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a2bdc7cee06b6b2e0b2c686ffb0d1afba}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a2bdc7cee06b6b2e0b2c686ffb0d1afba} 
+{\bfseries Iterator\+Adaptor} (I base)
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_af8a55b375bf194d17abd5ba99264127d}\label{classkiwi_1_1detail_1_1_iterator_adaptor_af8a55b375bf194d17abd5ba99264127d} 
+void {\bfseries Increment} ()
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a86bef5b6d74f70a1e582dfae39b6b616}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a86bef5b6d74f70a1e582dfae39b6b616} 
+void {\bfseries Decrement} ()
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a6d33f4d83c6ec081568442e91e8bd8e9}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a6d33f4d83c6ec081568442e91e8bd8e9} 
+V \& {\bfseries Dereference} () const
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a0b061526e1a380b98b4122f5b2ef3261}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a0b061526e1a380b98b4122f5b2ef3261} 
+bool {\bfseries Is\+Equal} (D const \&rhs) const
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_afc3191bcd2dc8dc426ec5ac73fd03a6b}\label{classkiwi_1_1detail_1_1_iterator_adaptor_afc3191bcd2dc8dc426ec5ac73fd03a6b} 
+I const \& {\bfseries Base} () const
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_adaptor_a77d3a5a8bacd724780333ffe0aacb7bc}\label{classkiwi_1_1detail_1_1_iterator_adaptor_a77d3a5a8bacd724780333ffe0aacb7bc} 
+I \& {\bfseries Base} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{kiwi\+::detail\+::\+Iterator\+Facade$<$ D, V, Tag $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+V \& {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+V \texorpdfstring{$\ast$}{*} {\bfseries operator-\/$>$} () const
+\item 
+D \& {\bfseries operator++} ()
+\item 
+D {\bfseries operator++} (int)
+\item 
+D \& {\bfseries operator-\/-\/} ()
+\item 
+D {\bfseries operator-\/-\/} (int)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename D, typename I, typename V, typename Tag$>$\newline
+class kiwi\+::detail\+::\+Iterator\+Adaptor$<$ D, I, V, Tag $>$}
+Wrap one iterator while providing an interator interface with e.\+g. a different value\+\_\+type.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & The deriving class (CRTP). \\
+\hline
+{\em I} & The wrapper iterator type. \\
+\hline
+{\em V} & The value type. \\
+\hline
+{\em Tag} & The iterator category tag. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/iterators.\+hh\end{DoxyCompactItemize}

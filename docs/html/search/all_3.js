@@ -34,7 +34,7 @@ var searchData=
   ['densemapiterator_3c_20keyt_2c_20valuet_2c_20keyinfot_2c_20buckett_2c_20true_20_3e_31',['DenseMapIterator&lt; KeyT, ValueT, KeyInfoT, BucketT, true &gt;',['../classkiwi_1_1_dense_map_iterator.html',1,'kiwi']]],
   ['densemappair_32',['DenseMapPair',['../structkiwi_1_1detail_1_1_dense_map_pair.html',1,'kiwi::detail']]],
   ['dependenttype_33',['DependentType',['../structkiwi_1_1_dependent_type.html',1,'kiwi']]],
-  ['destroy_34',['destroy',['../classkiwi_1_1_i_o_buf.html#a60be51495b7dd12f238f4266bee48eb6',1,'kiwi::IOBuf']]],
+  ['destroy_34',['Destroy',['../classkiwi_1_1_i_o_buf.html#a98078164d255f6b0773220e8dd498949',1,'kiwi::IOBuf']]],
   ['details_35',['API Details',['../classkiwi_1_1_i_o_buf.html#autotoc_md0',1,'']]],
   ['detecteol_36',['detectEOL',['../classkiwi_1_1_string_ref.html#a582f6e9d4c39412ff6190e7fc3c7a2ba',1,'kiwi::StringRef']]],
   ['dirname_37',['DirName',['../classkiwi_1_1_file_path.html#aa6ebd711e718e13dfcbc5d81d33c4348',1,'kiwi::FilePath']]],

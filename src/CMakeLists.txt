@@ -20,6 +20,7 @@ function(kiwi_cc_library)
     endif()
 endfunction()
 
+add_subdirectory(chrono)
 add_subdirectory(io)
 add_subdirectory(metrics)
 add_subdirectory(strings)

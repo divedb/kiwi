@@ -1,0 +1,97 @@
+\doxysection{kiwi\+::detail\+::Iterator\+Facade\texorpdfstring{$<$}{<} D, V, Tag \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1detail_1_1_iterator_facade}{}\label{classkiwi_1_1detail_1_1_iterator_facade}\index{kiwi::detail::IteratorFacade$<$ D, V, Tag $>$@{kiwi::detail::IteratorFacade$<$ D, V, Tag $>$}}
+
+
+{\ttfamily \#include $<$iterators.\+hh$>$}
+
+Inheritance diagram for kiwi\+::detail\+::Iterator\+Facade\texorpdfstring{$<$}{<} D, V, Tag \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1detail_1_1_iterator_facade}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a7996ca2249210b81b9340940aa5fc741}\label{classkiwi_1_1detail_1_1_iterator_facade_a7996ca2249210b81b9340940aa5fc741} 
+using {\bfseries value\+\_\+type} = V
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a2f2c71049f8a96b164c3209dbb1fd3ff}\label{classkiwi_1_1detail_1_1_iterator_facade_a2f2c71049f8a96b164c3209dbb1fd3ff} 
+using {\bfseries reference} = value\+\_\+type\&
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a282cfbf32f5a093b66aeeeaab41ecedb}\label{classkiwi_1_1detail_1_1_iterator_facade_a282cfbf32f5a093b66aeeeaab41ecedb} 
+using {\bfseries pointer} = value\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a2d929350ebae81056ad2828877cf4fe8}\label{classkiwi_1_1detail_1_1_iterator_facade_a2d929350ebae81056ad2828877cf4fe8} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a6a976edc44148dbd6a5f0f7f9a3247f6}\label{classkiwi_1_1detail_1_1_iterator_facade_a6a976edc44148dbd6a5f0f7f9a3247f6} 
+using {\bfseries iterator\+\_\+category} = Tag
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_af2435e8c3676b3f796157c85dbccd515}\label{classkiwi_1_1detail_1_1_iterator_facade_af2435e8c3676b3f796157c85dbccd515} 
+V \& {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a08520bd938aab103b4bdaabec5131892}\label{classkiwi_1_1detail_1_1_iterator_facade_a08520bd938aab103b4bdaabec5131892} 
+V \texorpdfstring{$\ast$}{*} {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a6c06ec2d9bfedfac99dc51a79761f246}\label{classkiwi_1_1detail_1_1_iterator_facade_a6c06ec2d9bfedfac99dc51a79761f246} 
+D \& {\bfseries operator++} ()
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a5c573868a6d23c50623f4968981dc232}\label{classkiwi_1_1detail_1_1_iterator_facade_a5c573868a6d23c50623f4968981dc232} 
+D {\bfseries operator++} (int)
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_ab81337cf10ff6ad90572338febadd9c7}\label{classkiwi_1_1detail_1_1_iterator_facade_ab81337cf10ff6ad90572338febadd9c7} 
+D \& {\bfseries operator-\/-\/} ()
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_aa822f1cebc69053069bb95104885da37}\label{classkiwi_1_1detail_1_1_iterator_facade_aa822f1cebc69053069bb95104885da37} 
+D {\bfseries operator-\/-\/} (int)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a9b1aba425659b9c1ef3dde3328c14da2}\label{classkiwi_1_1detail_1_1_iterator_facade_a9b1aba425659b9c1ef3dde3328c14da2} 
+bool {\bfseries operator==} (D const \&lhs, D const \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1_iterator_facade_a296244220fd50e81003c8b94277c6e8e}\label{classkiwi_1_1detail_1_1_iterator_facade_a296244220fd50e81003c8b94277c6e8e} 
+bool {\bfseries operator!=} (D const \&lhs, D const \&rhs)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename D, typename V, typename Tag$>$\newline
+class kiwi\+::detail\+::\+Iterator\+Facade$<$ D, V, Tag $>$}
+Currently this only supports forward and bidirectional iteration. The derived class must must have definitions for these methods\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ Increment();}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ Decrement();\ \textcolor{comment}{//\ optional,\ to\ be\ used\ with\ bidirectional}}
+\DoxyCodeLine{reference\ Dereference()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\textcolor{keywordtype}{bool}\ IsEqual([appropriate\ iterator\ type]\ \textcolor{keyword}{const}\&\ rhs)\ \textcolor{keyword}{const};}
+
+\end{DoxyCode}
+
+
+These names are consistent with those used by the Boost iterator facade / adaptor classes to ease migration classes in this file.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & The deriving class (CRTP). \\
+\hline
+{\em V} & The value type. \\
+\hline
+{\em Tag} & The iterator category, one of\+:
+\begin{DoxyItemize}
+\item std\+::forward\+\_\+iterator\+\_\+tag
+\item std\+::bidirectional\+\_\+iterator\+\_\+tag 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/iterators.\+hh\end{DoxyCompactItemize}

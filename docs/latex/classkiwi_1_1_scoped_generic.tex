@@ -37,8 +37,7 @@ virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Scoped\+Generic} ()
 \begin{DoxyCompactList}\small\item\em Destructor. Frees the owned resource if it is valid. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}} \& \mbox{\hyperlink{classkiwi_1_1_scoped_generic_ae0b7bd0251f6b850caf247e25ca05882}{operator=}} (\mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&\&rvalue)
 \item 
-\Hypertarget{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5}\label{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5} 
-void {\bfseries Reset} (const element\+\_\+type \&value=traits\+\_\+type\+::\+Invalid\+Value())
+void \mbox{\hyperlink{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5}{Reset}} (const element\+\_\+type \&value=traits\+\_\+type\+::\+Invalid\+Value())
 \item 
 \Hypertarget{classkiwi_1_1_scoped_generic_abf18fb0e144de3661e26fc08a5da968a}\label{classkiwi_1_1_scoped_generic_abf18fb0e144de3661e26fc08a5da968a} 
 element\+\_\+type {\bfseries Release} ()
@@ -55,11 +54,11 @@ bool {\bfseries operator==} (const element\+\_\+type \&value) const
 \Hypertarget{classkiwi_1_1_scoped_generic_a0d0bbd350e7b473dacce69c8ede99a8a}\label{classkiwi_1_1_scoped_generic_a0d0bbd350e7b473dacce69c8ede99a8a} 
 bool {\bfseries operator!=} (const element\+\_\+type \&value) const
 \item 
-\Hypertarget{classkiwi_1_1_scoped_generic_ae67232254eb9c3e1b43a7bdc0f6123ae}\label{classkiwi_1_1_scoped_generic_ae67232254eb9c3e1b43a7bdc0f6123ae} 
-Traits \& {\bfseries get\+\_\+traits} () LIFETIME\+\_\+\+BOUND
+\Hypertarget{classkiwi_1_1_scoped_generic_a3da0b214bc3ace255072d128cc3fcf85}\label{classkiwi_1_1_scoped_generic_a3da0b214bc3ace255072d128cc3fcf85} 
+Traits \& {\bfseries get\+\_\+traits} () KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
 \item 
-\Hypertarget{classkiwi_1_1_scoped_generic_aa41c529441a4a1f2329285bda117c16f}\label{classkiwi_1_1_scoped_generic_aa41c529441a4a1f2329285bda117c16f} 
-const Traits \& {\bfseries get\+\_\+traits} () const LIFETIME\+\_\+\+BOUND
+\Hypertarget{classkiwi_1_1_scoped_generic_af05015db56f408fa515e7af2c24688b6}\label{classkiwi_1_1_scoped_generic_af05015db56f408fa515e7af2c24688b6} 
+const Traits \& {\bfseries get\+\_\+traits} () const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
 \end{DoxyCompactItemize}
 
 
@@ -128,7 +127,14 @@ Move assignment operator. Allows assignment from a \doxylink{classkiwi_1_1_scope
 \begin{DoxyReturn}{Returns}
 A reference to this \doxylink{classkiwi_1_1_scoped_generic}{Scoped\+Generic} object. 
 \end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5}\index{kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}!Reset@{Reset}}
+\index{Reset@{Reset}!kiwi::ScopedGeneric$<$ T, Traits $>$@{kiwi::ScopedGeneric$<$ T, Traits $>$}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_scoped_generic_a8f6e7f18d07a8e4efc348453450454a5} 
+template$<$typename T, typename Traits$>$ \\
+void \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{kiwi\+::\+Scoped\+Generic}}$<$ T, Traits $>$\+::\+Reset (\begin{DoxyParamCaption}\item[{const element\+\_\+type \&}]{value}{ = {\ttfamily traits\+\_\+type\+:\+:InvalidValue()}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+Frees the currently owned object, if any. Then takes ownership of a new object, if given. Self-\/resets are not allowed as on unique\+\_\+ptr. See \href{http://crbug.com/162971}{\texttt{ http\+://crbug.\+com/162971}} 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

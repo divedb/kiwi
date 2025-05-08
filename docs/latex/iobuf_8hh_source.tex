@@ -24,921 +24,933 @@
 \DoxyCodeLine{00020\ }
 \DoxyCodeLine{00021\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00022\ }
-\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <folly/Function.h>}}
-\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <folly/Portability.h>}}
-\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <folly/detail/Iterators.h>}}
-\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <folly/lang/CheckedMath.h>}}
-\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <folly/lang/Ordering.h>}}
-\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <folly/portability/SysUio.h>}}
-\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <folly/synchronization/MicroSpinLock.h>}}
-\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <glog/logging.h>}}
-\DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <atomic>}}
-\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <cassert>}}
-\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ <cinttypes>}}
-\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <cstddef>}}
-\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <cstring>}}
-\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ <iterator>}}
-\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ <limits>}}
-\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ <memory>}}
-\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
-\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <glog/logging.h>}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <cinttypes>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <compare>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/exception.hh"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/function\_ref.hh"{}}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/iterators.hh"{}}}
 \DoxyCodeLine{00042\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
 \DoxyCodeLine{00043\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
-\DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ KIWI\_PUSH\_WARNING}
-\DoxyCodeLine{00046\ \textcolor{comment}{//\ Ignore\ shadowing\ warnings\ within\ this\ file,\ so\ includers\ can\ use\ -\/Wshadow.}}
-\DoxyCodeLine{00047\ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wshadow"{}})}
-\DoxyCodeLine{00048\ \textcolor{comment}{//\ Some\ compilers\ break\ on\ -\/Wdocumentation.\ Not\ all\ compilers\ recognise\ that}}
-\DoxyCodeLine{00049\ \textcolor{comment}{//\ option,\ so\ we\ also\ suppress\ -\/Wpragmas}}
-\DoxyCodeLine{00050\ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wpragmas"{}})}
-\DoxyCodeLine{00051\ \textcolor{comment}{//\ Ignore\ documentation\ warnings,\ to\ enable\ overloads\ to\ share\ documentation}}
-\DoxyCodeLine{00052\ \textcolor{comment}{//\ with\ differing\ parameters}}
-\DoxyCodeLine{00053\ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wdocumentation"{}})}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ namespace\ \mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ "{}kiwi/sys/uio.hh"{}}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/checked\_math.hh"{}}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ KIWI\_PUSH\_WARNING}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ Ignore\ shadowing\ warnings\ within\ this\ file,\ so\ includers\ can\ use\ -\/Wshadow.}}
+\DoxyCodeLine{00049\ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wshadow"{}})}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Some\ compilers\ break\ on\ -\/Wdocumentation.\ Not\ all\ compilers\ recognise\ that}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ option,\ so\ we\ also\ suppress\ -\/Wpragmas}}
+\DoxyCodeLine{00052\ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wpragmas"{}})}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ Ignore\ documentation\ warnings,\ to\ enable\ overloads\ to\ share\ documentation}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ with\ differing\ parameters}}
+\DoxyCodeLine{00055\ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wdocumentation"{}})}
 \DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00057\ namespace\ \mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
 \DoxyCodeLine{00058\ }
-\DoxyCodeLine{00062\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00063\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{IsUniquePtrToSL}}\ :\ std::false\_type\ \{\};}
-\DoxyCodeLine{00064\ }
-\DoxyCodeLine{00065\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ D>}
-\DoxyCodeLine{00066\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{IsUniquePtrToSL}}<std::unique\_ptr<T,\ D>>\ :\ std::is\_standard\_layout<T>\ \{\};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00059\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00065\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{IsUniquePtrToSL}}\ :\ std::false\_type\ \{\};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ D>}
+\DoxyCodeLine{00068\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{IsUniquePtrToSL}}<std::unique\_ptr<T,\ D>>\ :\ std::is\_standard\_layout<T>\ \{\};}
 \DoxyCodeLine{00069\ }
-\DoxyCodeLine{00289\ \textcolor{keyword}{class\ }IOBuf\ \{}
-\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{class\ }DeleterBase\ \{}
-\DoxyCodeLine{00291\ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~DeleterBase()\ \{\}}
-\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Dispose(\textcolor{keywordtype}{void}*\ p)\ \textcolor{keyword}{noexcept}\ =\ 0;}
-\DoxyCodeLine{00294\ \ \ \};}
-\DoxyCodeLine{00295\ }
-\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ UniquePtr>}
-\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{class\ }UniquePtrDeleter\ :\ \textcolor{keyword}{public}\ DeleterBase\ \{}
-\DoxyCodeLine{00298\ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keyword}{using\ }Pointer\ =\ \textcolor{keyword}{typename}\ UniquePtr::pointer;}
-\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keyword}{using\ }Deleter\ =\ \textcolor{keyword}{typename}\ UniquePtr::deleter\_type;}
+\DoxyCodeLine{00070\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00291\ \textcolor{keyword}{class\ }IOBuf\ \{}
+\DoxyCodeLine{00292\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{enum}\ CreateOp\ \{\ kCreate\ \};}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{enum}\ WrapBufferOp\ \{\ kWrapBuffer\ \};}
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{enum}\ TakeOwnershipOp\ \{\ kTaskeOwnership\ \};}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{enum}\ CopyBufferOp\ \{\ kCopyBuffer\ \};}
+\DoxyCodeLine{00299\ \ \ \textcolor{keyword}{enum}\ SizedFree\ \{\ kSizedFree\ \};}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{enum\ class}\ CombinedOption\ \{\ kDefault,\ kCombined,\ kSeparate\ \};}
 \DoxyCodeLine{00301\ }
-\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keyword}{explicit}\ UniquePtrDeleter(Deleter\ deleter)\ :\ deleter\_(std::move(deleter))\ \{\}}
-\DoxyCodeLine{00303\ }
-\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordtype}{void}\ Dispose(\textcolor{keywordtype}{void}*\ p)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
-\DoxyCodeLine{00305\ \ \ \ \ \ \ deleter\_(\textcolor{keyword}{static\_cast<}Pointer\textcolor{keyword}{>}(p));}
-\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{this};}
-\DoxyCodeLine{00307\ \ \ \ \ \}}
-\DoxyCodeLine{00308\ }
-\DoxyCodeLine{00309\ \ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00310\ \ \ \ \ Deleter\ deleter\_;}
-\DoxyCodeLine{00311\ \ \ \};}
-\DoxyCodeLine{00312\ }
-\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FreeUniquePtrBuffer(\textcolor{keywordtype}{void}*\ ptr,\ \textcolor{keywordtype}{void}*\ user\_data)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keyword}{static\_cast<}DeleterBase*\textcolor{keyword}{>}(user\_data)-\/>Dispose(ptr);}
-\DoxyCodeLine{00315\ \ \ \}}
-\DoxyCodeLine{00316\ }
-\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uintptr\_t\ PackFlagsAndSharedInfo(uintptr\_t\ flags,}
-\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo*\ info)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00319\ \ \ \ \ uintptr\_t\ uinfo\ =\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(info);}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ uint8\_t;}
+\DoxyCodeLine{00303\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}};}
+\DoxyCodeLine{00304\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}};}
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{using\ }ByteRange\ =\ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<uint8\_t>}};}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{using\ }FreeFunction\ =\ void\ (*)(\textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{void}*\ user\_data);}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00309\ \ \ \textcolor{keyword}{class\ }DeleterBase\ \{}
+\DoxyCodeLine{00310\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~DeleterBase()\ \{\}}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Dispose(\textcolor{keywordtype}{void}*\ p)\ \textcolor{keyword}{noexcept}\ =\ 0;}
+\DoxyCodeLine{00313\ \ \ \};}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ UniquePtr>}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{class\ }UniquePtrDeleter\ :\ \textcolor{keyword}{public}\ DeleterBase\ \{}
+\DoxyCodeLine{00317\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{using\ }Pointer\ =\ \textcolor{keyword}{typename}\ UniquePtr::pointer;}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keyword}{using\ }Deleter\ =\ \textcolor{keyword}{typename}\ UniquePtr::deleter\_type;}
 \DoxyCodeLine{00320\ }
-\DoxyCodeLine{00321\ \ \ \ \ DCHECK\_EQ(flags\ \&\ \string~kFlagMask,\ 0u);}
-\DoxyCodeLine{00322\ \ \ \ \ DCHECK\_EQ(uinfo\ \&\ kFlagMask,\ 0u);}
-\DoxyCodeLine{00323\ }
-\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{return}\ flags\ |\ uinfo;}
-\DoxyCodeLine{00325\ \ \ \}}
-\DoxyCodeLine{00326\ }
-\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{inline}\ SharedInfo*\ SharedInfo()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}SharedInfo*\textcolor{keyword}{>}(flags\_and\_shared\_info\_\ \&\ \string~kFlagMask);}
-\DoxyCodeLine{00329\ \ \ \}}
-\DoxyCodeLine{00330\ }
-\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetSharedInfo(SharedInfo*\ info)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00332\ \ \ \ \ uintptr\_t\ uinfo\ =\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(info);}
-\DoxyCodeLine{00333\ }
-\DoxyCodeLine{00334\ \ \ \ \ DCHECK\_EQ(uinfo\ \&\ kFlagMask,\ 0u);}
-\DoxyCodeLine{00335\ }
-\DoxyCodeLine{00336\ \ \ \ \ flags\_and\_shared\_info\_\ =\ (flags\_and\_shared\_info\_\ \&\ kFlagMask)\ |\ uinfo;}
-\DoxyCodeLine{00337\ \ \ \}}
-\DoxyCodeLine{00338\ }
-\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{inline}\ uintptr\_t\ Flags()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{return}\ flags\_and\_shared\_info\_\ \&\ kFlagMask;}
-\DoxyCodeLine{00341\ \ \ \}}
-\DoxyCodeLine{00342\ }
-\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetFlags(uintptr\_t\ flags)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00344\ \ \ \ \ DCHECK\_EQ(flags\ \&\ \string~kFlagMask,\ 0u);}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keyword}{explicit}\ UniquePtrDeleter(Deleter\ deleter)\ :\ deleter\_(std::move(deleter))\ \{\}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordtype}{void}\ Dispose(\textcolor{keywordtype}{void}*\ p)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ deleter\_(\textcolor{keyword}{static\_cast<}Pointer\textcolor{keyword}{>}(p));}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00326\ \ \ \ \ \}}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00329\ \ \ \ \ Deleter\ deleter\_;}
+\DoxyCodeLine{00330\ \ \ \};}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{enum}\ FlagsEnum\ :\ uintptr\_t\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{comment}{//\ Adding\ any\ more\ flags\ would\ not\ work\ on\ 32-\/bit\ architectures,}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{comment}{//\ as\ these\ flags\ are\ stashed\ in\ the\ least\ significant\ 2\ bits\ of\ a}}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{comment}{//\ max-\/align-\/aligned\ pointer.}}
+\DoxyCodeLine{00336\ \ \ \ \ kFlagFreeSharedInfo\ =\ 0x1,}
+\DoxyCodeLine{00337\ \ \ \ \ kFlagMask\ =\ (1\ <<\ 2\ \textcolor{comment}{/*\ least\ significant\ bits\ */})\ -\/\ 1,}
+\DoxyCodeLine{00338\ \ \ \};}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \ \ \textcolor{keyword}{struct\ }SharedInfoObserverEntryBase\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ SharedInfoObserverEntryBase*\ prev\{\textcolor{keyword}{this}\};}
+\DoxyCodeLine{00342\ \ \ \ \ SharedInfoObserverEntryBase*\ next\{\textcolor{keyword}{this}\};}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~SharedInfoObserverEntryBase()\ =\ \textcolor{keywordflow}{default};}
 \DoxyCodeLine{00345\ }
-\DoxyCodeLine{00346\ \ \ \ \ flags\_and\_shared\_info\_\ |=\ flags;}
-\DoxyCodeLine{00347\ \ \ \}}
-\DoxyCodeLine{00348\ }
-\DoxyCodeLine{00349\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ ClearFlags(uintptr\_t\ flags)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00350\ \ \ \ \ DCHECK\_EQ(flags\ \&\ \string~kFlagMask,\ 0u);}
-\DoxyCodeLine{00351\ }
-\DoxyCodeLine{00352\ \ \ \ \ flags\_and\_shared\_info\_\ \&=\ \string~flags;}
-\DoxyCodeLine{00353\ \ \ \}}
-\DoxyCodeLine{00354\ }
-\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetFlagsAndSharedInfo(uintptr\_t\ flags,}
-\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo*\ info)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00357\ \ \ \ \ flags\_and\_shared\_info\_\ =\ PackFlagsAndSharedInfo(flags,\ info);}
-\DoxyCodeLine{00358\ \ \ \}}
-\DoxyCodeLine{00359\ }
-\DoxyCodeLine{00360\ \ \ \textcolor{keyword}{enum\ class}\ TakeOwnershipOption\ \{\ DEFAULT,\ STORE\_SIZE\ \};}
-\DoxyCodeLine{00361\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ takeOwnership(\textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
-\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ offset,}
-\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},}
-\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ freeFn,}
-\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ userData,\ \textcolor{keywordtype}{bool}\ freeOnError,}
-\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TakeOwnershipOption\ option);}
-\DoxyCodeLine{00367\ }
-\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{enum}\ FlagsEnum\ :\ uintptr\_t\ \{}
-\DoxyCodeLine{00369\ \ \ \ \ \textcolor{comment}{//\ Adding\ any\ more\ flags\ would\ not\ work\ on\ 32-\/bit\ architectures,}}
-\DoxyCodeLine{00370\ \ \ \ \ \textcolor{comment}{//\ as\ these\ flags\ are\ stashed\ in\ the\ least\ significant\ 2\ bits\ of\ a}}
-\DoxyCodeLine{00371\ \ \ \ \ \textcolor{comment}{//\ max-\/align-\/aligned\ pointer.}}
-\DoxyCodeLine{00372\ \ \ \ \ kFlagFreeSharedInfo\ =\ 0x1,}
-\DoxyCodeLine{00373\ \ \ \ \ kFlagMask\ =\ (1\ <<\ 2\ \textcolor{comment}{/*\ least\ significant\ bits\ */})\ -\/\ 1,}
-\DoxyCodeLine{00374\ \ \ \};}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AfterFreeExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ =\ 0;}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AfterReleaseExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ =\ 0;}
+\DoxyCodeLine{00348\ \ \ \};}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Observer>}
+\DoxyCodeLine{00351\ \ \ \textcolor{keyword}{struct\ }SharedInfoObserverEntry\ :\ SharedInfoObserverEntryBase\ \{}
+\DoxyCodeLine{00352\ \ \ \ \ std::decay\_t<Observer>\ observer;}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{explicit}\ SharedInfoObserverEntry(Observer\&\&\ obs)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(Observer(std::forward<Observer>(obs))))}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ :\ observer(std::forward<Observer>(obs))\ \{\}}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{keywordtype}{void}\ AfterFreeExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{final}\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ observer.AfterFreeExtBuffer();}
+\DoxyCodeLine{00360\ \ \ \ \ \}}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordtype}{void}\ AfterReleaseExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{final}\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ observer.AfterReleaseExtBuffer();}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \};}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ \textcolor{keyword}{class\ }SharedInfo\ \{}
+\DoxyCodeLine{00368\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{keyword}{using\ }ObserverCb\ =\ \mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<void(SharedInfoObserverEntryBase\&)>;}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReleaseStorage(SharedInfo*\ info)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ InvokeAndDeleteEachObserver(}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ SharedInfoObserverEntryBase*\ observer\_list\_head,}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ ObserverCb\ cb)\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00375\ }
-\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{struct\ }SharedInfoObserverEntryBase\ \{}
-\DoxyCodeLine{00377\ \ \ \ \ SharedInfoObserverEntryBase*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1dc8d8e9ebdec00d38c56e49b9d4dba9}{prev}}\{\textcolor{keyword}{this}\};}
-\DoxyCodeLine{00378\ \ \ \ \ SharedInfoObserverEntryBase*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}}\{\textcolor{keyword}{this}\};}
-\DoxyCodeLine{00379\ }
-\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~SharedInfoObserverEntryBase()\ =\ \textcolor{keywordflow}{default};}
-\DoxyCodeLine{00381\ }
-\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AfterFreeExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ =\ 0;}
-\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AfterReleaseExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ =\ 0;}
-\DoxyCodeLine{00384\ \ \ \};}
-\DoxyCodeLine{00385\ }
-\DoxyCodeLine{00386\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Observer>}
-\DoxyCodeLine{00387\ \ \ \textcolor{keyword}{struct\ }SharedInfoObserverEntry\ :\ SharedInfoObserverEntryBase\ \{}
-\DoxyCodeLine{00388\ \ \ \ \ std::decay\_t<Observer>\ observer;}
+\DoxyCodeLine{00376\ \ \ \ \ SharedInfo();}
+\DoxyCodeLine{00377\ \ \ \ \ SharedInfo(FreeFunction\ fn,\ \textcolor{keywordtype}{void}*\ arg,\ \textcolor{keywordtype}{bool}\ hfs\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{comment}{//\ A\ pointer\ to\ a\ function\ to\ call\ to\ free\ the\ buffer\ when\ the\ refcount}}
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{comment}{//\ hits\ 0.\ \ If\ this\ is\ null,\ free()\ will\ be\ used\ instead.}}
+\DoxyCodeLine{00381\ \ \ \ \ FreeFunction\ free\_fn;}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data;}
+\DoxyCodeLine{00383\ \ \ \ \ SharedInfoObserverEntryBase*\ observer\_list\_head\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00384\ \ \ \ \ std::atomic<uint32\_t>\ refcount;}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordtype}{bool}\ externally\_shared\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordtype}{bool}\ use\_heap\_full\_storage\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00387\ \ \ \ \ std::mutex\ observer\_list\_lock;}
+\DoxyCodeLine{00388\ \ \ \};}
 \DoxyCodeLine{00389\ }
-\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keyword}{explicit}\ SharedInfoObserverEntry(Observer\&\&\ obs)\ \textcolor{keyword}{noexcept}(}
-\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(Observer(std::forward<Observer>(obs))))}
-\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ :\ observer(std::forward<Observer>(obs))\ \{\}}
-\DoxyCodeLine{00393\ }
-\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keywordtype}{void}\ AfterFreeExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{final}\ \{}
-\DoxyCodeLine{00395\ \ \ \ \ \ \ observer.AfterFreeExtBuffer();}
-\DoxyCodeLine{00396\ \ \ \ \ \}}
-\DoxyCodeLine{00397\ }
-\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keywordtype}{void}\ AfterReleaseExtBuffer()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{final}\ \{}
-\DoxyCodeLine{00399\ \ \ \ \ \ \ observer.AfterReleaseExtBuffer();}
-\DoxyCodeLine{00400\ \ \ \ \ \}}
-\DoxyCodeLine{00401\ \ \ \};}
-\DoxyCodeLine{00402\ }
-\DoxyCodeLine{00403\ \ \ \textcolor{keyword}{struct\ }SharedInfo\ \{}
-\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keyword}{using\ }ObserverCb\ =\ folly::FunctionRef<void(SharedInfoObserverEntryBase\&)>;}
+\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_prefix}{HeapPrefix}};}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_storage}{HeapStorage}};}
+\DoxyCodeLine{00393\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_full_storage}{HeapFullStorage}};}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{struct\ }InternalConstructor\ \{\};\ \ \textcolor{comment}{//\ avoid\ conflicts}}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FreeUniquePtrBuffer(\textcolor{keywordtype}{void}*\ ptr,\ \textcolor{keywordtype}{void}*\ user\_data)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keyword}{static\_cast<}DeleterBase*\textcolor{keyword}{>}(user\_data)-\/>Dispose(ptr);}
+\DoxyCodeLine{00404\ \ \ \}}
 \DoxyCodeLine{00405\ }
-\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReleaseStorage(SharedInfo*\ info)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ InvokeAndDeleteEachObserver(}
-\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ SharedInfoObserverEntryBase*\ observer\_list\_head,}
-\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ ObserverCb\ cb)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00410\ }
-\DoxyCodeLine{00411\ \ \ \ \ SharedInfo();}
-\DoxyCodeLine{00412\ \ \ \ \ SharedInfo(FreeFunction\ fn,\ \textcolor{keywordtype}{void}*\ arg,\ \textcolor{keywordtype}{bool}\ hfs\ =\ \textcolor{keyword}{false});}
-\DoxyCodeLine{00413\ }
-\DoxyCodeLine{00414\ \ \ \ \ \textcolor{comment}{//\ A\ pointer\ to\ a\ function\ to\ call\ to\ free\ the\ buffer\ when\ the\ refcount}}
-\DoxyCodeLine{00415\ \ \ \ \ \textcolor{comment}{//\ hits\ 0.\ \ If\ this\ is\ null,\ free()\ will\ be\ used\ instead.}}
-\DoxyCodeLine{00416\ \ \ \ \ FreeFunction\ free\_fn;}
-\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data;}
-\DoxyCodeLine{00418\ \ \ \ \ SharedInfoObserverEntryBase*\ observer\_list\_head\{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{00419\ \ \ \ \ std::atomic<uint32\_t>\ refcount;}
-\DoxyCodeLine{00420\ \ \ \ \ \textcolor{keywordtype}{bool}\ externally\_shared\{\textcolor{keyword}{false}\};}
-\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordtype}{bool}\ use\_heap\_full\_storage\{\textcolor{keyword}{false}\};}
-\DoxyCodeLine{00422\ \ \ \ \ MicroSpinLock\ observer\_list\_lock\{0\};}
-\DoxyCodeLine{00423\ \ \ \};}
+\DoxyCodeLine{00406\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uintptr\_t\ PackFlagsAndSharedInfo(uintptr\_t\ flags,}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo*\ info)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ uintptr\_t\ uinfo\ =\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(info);}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \ \ \ \ DCHECK\_EQ(flags\ \&\ \string~kFlagMask,\ 0u);}
+\DoxyCodeLine{00411\ \ \ \ \ DCHECK\_EQ(uinfo\ \&\ kFlagMask,\ 0u);}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \ \ \textcolor{keywordflow}{return}\ flags\ |\ uinfo;}
+\DoxyCodeLine{00414\ \ \ \}}
+\DoxyCodeLine{00415\ }
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{inline}\ SharedInfo*\ GetSharedInfo()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}SharedInfo*\textcolor{keyword}{>}(flags\_and\_shared\_info\_\ \&\ \string~kFlagMask);}
+\DoxyCodeLine{00418\ \ \ \}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetSharedInfo(SharedInfo*\ info)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ uintptr\_t\ uinfo\ =\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(info);}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \ \ \ \ DCHECK\_EQ(uinfo\ \&\ kFlagMask,\ 0u);}
 \DoxyCodeLine{00424\ }
-\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_prefix}{HeapPrefix}};}
-\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_storage}{HeapStorage}};}
-\DoxyCodeLine{00428\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_full_storage}{HeapFullStorage}};}
-\DoxyCodeLine{00429\ }
-\DoxyCodeLine{00437\ \ \ \textcolor{keyword}{struct\ }InternalConstructor\ \{\};\ \ \textcolor{comment}{//\ avoid\ conflicts}}
-\DoxyCodeLine{00438\ \ \ IOBuf(InternalConstructor,\ uintptr\_t\ flagsAndSharedInfo,\ uint8\_t*\ buf,}
-\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}},\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}})\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00425\ \ \ \ \ flags\_and\_shared\_info\_\ =\ (flags\_and\_shared\_info\_\ \&\ kFlagMask)\ |\ uinfo;}
+\DoxyCodeLine{00426\ \ \ \}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \ \ \textcolor{keyword}{inline}\ uintptr\_t\ Flags()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordflow}{return}\ flags\_and\_shared\_info\_\ \&\ kFlagMask;}
+\DoxyCodeLine{00430\ \ \ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetFlags(uintptr\_t\ flags)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00433\ \ \ \ \ DCHECK\_EQ(flags\ \&\ \string~kFlagMask,\ 0u);}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \ \ flags\_and\_shared\_info\_\ |=\ flags;}
+\DoxyCodeLine{00436\ \ \ \}}
+\DoxyCodeLine{00437\ }
+\DoxyCodeLine{00438\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ ClearFlags(uintptr\_t\ flags)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ DCHECK\_EQ(flags\ \&\ \string~kFlagMask,\ 0u);}
 \DoxyCodeLine{00440\ }
-\DoxyCodeLine{00441\ \ \ \textcolor{keywordtype}{void}\ UnshareOneSlow();}
-\DoxyCodeLine{00442\ \ \ \textcolor{keywordtype}{void}\ UnshareChained();}
-\DoxyCodeLine{00443\ \ \ \textcolor{keywordtype}{void}\ MakeManagedChained();}
-\DoxyCodeLine{00444\ \ \ \textcolor{keywordtype}{void}\ CoalesceSlow();}
-\DoxyCodeLine{00445\ \ \ \textcolor{keywordtype}{void}\ CoalesceSlow(\textcolor{keywordtype}{size\_t}\ max\_length);}
-\DoxyCodeLine{00446\ }
-\DoxyCodeLine{00447\ \ \ \textcolor{comment}{//\ newLength\ must\ be\ the\ entire\ length\ of\ the\ buffers\ between\ this\ and}}
-\DoxyCodeLine{00448\ \ \ \textcolor{comment}{//\ end\ (no\ truncation)}}
-\DoxyCodeLine{00449\ \ \ \textcolor{keywordtype}{void}\ CoalesceAndReallocate(\textcolor{keywordtype}{size\_t}\ new\_head\_room,\ \textcolor{keywordtype}{size\_t}\ new\_length,}
-\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}},\ \textcolor{keywordtype}{size\_t}\ new\_tail\_room);}
-\DoxyCodeLine{00451\ \ \ \textcolor{keywordtype}{void}\ CoalesceAndReallocate(\textcolor{keywordtype}{size\_t}\ new\_length,\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}})\ \{}
-\DoxyCodeLine{00452\ \ \ \ \ CoalesceAndReallocate(HeadRoom(),\ new\_length,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}},\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}}-\/>prev\_-\/>TailRoom());}
-\DoxyCodeLine{00453\ \ \ \}}
-\DoxyCodeLine{00454\ \ \ \textcolor{keywordtype}{void}\ DecrementRefcount()\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00455\ \ \ \textcolor{keywordtype}{void}\ ReserveSlow(std::size\_t\ min\_head\_room,\ std::size\_t\ min\_tail\_room);}
-\DoxyCodeLine{00456\ \ \ \textcolor{keywordtype}{void}\ FreeExtBuffer()\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00457\ }
-\DoxyCodeLine{00458\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GoodExtBufferSize(std::size\_t\ min\_capacity);}
-\DoxyCodeLine{00459\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ InitExtBuffer(uint8\_t*\ buf,\ \textcolor{keywordtype}{size\_t}\ malloc\_size,}
-\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo**\ info\_return,}
-\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t*\ capacity\_return);}
-\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AllocExtBuffer(std::size\_t\ min\_capacity,\ uint8\_t**\ buf\_return,}
-\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo**\ info\_return,}
-\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t*\ capacity\_return);}
-\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReleaseStorage(\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_storage}{HeapStorage}}*\ storage,}
-\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ free\_flags)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FreeInternalBuf(\textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{void}*\ user\_data)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00468\ }
-\DoxyCodeLine{00469\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}};}
-\DoxyCodeLine{00471\ }
-\DoxyCodeLine{00472\ \ \ \textcolor{keyword}{enum}\ CreateOp\ \{\ kCreate\ \};}
-\DoxyCodeLine{00473\ \ \ \textcolor{keyword}{enum}\ WrapBufferOp\ \{\ kWrapBuffer\ \};}
-\DoxyCodeLine{00474\ \ \ \textcolor{keyword}{enum}\ TakeOwnershipOp\ \{\ kTaskeOwnership\ \};}
-\DoxyCodeLine{00475\ \ \ \textcolor{keyword}{enum}\ CopyBufferOp\ \{\ kCopyBuffer\ \};}
-\DoxyCodeLine{00476\ \ \ \textcolor{keyword}{enum}\ SizedFree\ \{\ kSizedFree\ \};}
-\DoxyCodeLine{00477\ \ \ \textcolor{keyword}{enum\ class}\ CombinedOption\ \{\ kDefault,\ kCombined,\ kSeparate\ \};}
-\DoxyCodeLine{00478\ }
-\DoxyCodeLine{00479\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ \mbox{\hyperlink{classkiwi_1_1span}{span<uint8\_t>}};}
-\DoxyCodeLine{00480\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}};}
-\DoxyCodeLine{00481\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}};}
-\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{using\ }FreeFunction\ =\ void\ (*)(\textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{void}*\ user\_data);}
-\DoxyCodeLine{00483\ }
-\DoxyCodeLine{00487\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adf34bb99883797ca5833f83b088bf4}{Create}}(std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
-\DoxyCodeLine{00488\ }
-\DoxyCodeLine{00500\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae82194b9a5e964b1dc08402514e5b4b5}{CreateCombined}}(std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
-\DoxyCodeLine{00501\ }
-\DoxyCodeLine{00513\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a377b22ca8a44bc7a56e96f2a03b4e416}{createSeparate}}(std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
-\DoxyCodeLine{00514\ }
-\DoxyCodeLine{00530\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad0d73e8bb4220ff0f467b74ccaec3318}{createChain}}(\textcolor{keywordtype}{size\_t}\ totalCapacity,}
-\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ maxBufCapacity);}
-\DoxyCodeLine{00532\ }
-\DoxyCodeLine{00538\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{WrapBuffer}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,}
-\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
-\DoxyCodeLine{00540\ }
-\DoxyCodeLine{00542\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a73bd25f5c105b84ef5512ac4563b9dc7}{WrapBuffer}}(ByteRange\ br)\ \{}
-\DoxyCodeLine{00543\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{WrapBuffer}}(br.data(),\ br.size());}
-\DoxyCodeLine{00544\ \ \ \}}
-\DoxyCodeLine{00545\ }
-\DoxyCodeLine{00568\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ goodSize(\textcolor{keywordtype}{size\_t}\ minCapacity,}
-\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CombinedOption\ combined\ =\ CombinedOption::DEFAULT);}
-\DoxyCodeLine{00570\ }
-\DoxyCodeLine{00581\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(CreateOp,\ std::size\_t\ capacity);}
-\DoxyCodeLine{00582\ }
-\DoxyCodeLine{00618\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa056c927383e7c10899bbcffaf415983}{IOBuf}}(TakeOwnershipOp\ op,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
-\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true})}
-\DoxyCodeLine{00621\ \ \ \ \ \ \ :\ IOBuf(op,\ buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ freeFn,\ userData,\ freeOnError)\ \{\}}
-\DoxyCodeLine{00622\ }
-\DoxyCodeLine{00629\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac3e180cd2f9b38a1714e27128f0847af}{takeOwnership}}(\textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
-\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keywordflow}{return}\ takeOwnership(buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ freeFn,\ userData,}
-\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ freeOnError,\ TakeOwnershipOption::DEFAULT);}
-\DoxyCodeLine{00635\ \ \ \}}
-\DoxyCodeLine{00636\ }
-\DoxyCodeLine{00643\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad81ff588cbe4381e7939c9cb731eb6be}{takeOwnership}}(\textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
-\DoxyCodeLine{00644\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},}
-\DoxyCodeLine{00645\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00647\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{00648\ \ \ \ \ \textcolor{keywordflow}{return}\ takeOwnership(buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},\ freeFn,\ userData,}
-\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ freeOnError,\ TakeOwnershipOption::DEFAULT);}
-\DoxyCodeLine{00650\ \ \ \}}
-\DoxyCodeLine{00651\ }
-\DoxyCodeLine{00654\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a90935fddc509ab6c1a2e32f0f91bf118}{IOBuf}}(TakeOwnershipOp\ op,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},}
-\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true})}
-\DoxyCodeLine{00657\ \ \ \ \ \ \ :\ IOBuf(op,\ buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},\ freeFn,\ userData,\ freeOnError)\ \{\}}
-\DoxyCodeLine{00658\ }
-\DoxyCodeLine{00665\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aac7ce83b5eb1452b99c476908eac0965}{takeOwnership}}(\textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
-\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ offset,}
-\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},}
-\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{00671\ \ \ \ \ \textcolor{keywordflow}{return}\ takeOwnership(buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ offset,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},\ freeFn,\ userData,}
-\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ freeOnError,\ TakeOwnershipOption::DEFAULT);}
-\DoxyCodeLine{00673\ \ \ \}}
-\DoxyCodeLine{00674\ }
-\DoxyCodeLine{00681\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2d26a2465a52b3278a9e6074ea1208a1}{takeOwnership}}(SizedFree,\ \textcolor{keywordtype}{void}*\ buf,}
-\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
-\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ offset,}
-\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},}
-\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{00686\ \ \ \ \ \textcolor{keywordflow}{return}\ takeOwnership(buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ offset,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}},\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}),\ freeOnError,}
-\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TakeOwnershipOption::STORE\_SIZE);}
-\DoxyCodeLine{00689\ \ \ \}}
-\DoxyCodeLine{00690\ }
-\DoxyCodeLine{00693\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(TakeOwnershipOp,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ capacity,\ std::size\_t\ offset,}
-\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ std::size\_t\ length,\ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true});}
-\DoxyCodeLine{00696\ }
-\DoxyCodeLine{00699\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(TakeOwnershipOp,\ SizedFree,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ capacity,}
-\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ std::size\_t\ offset,\ std::size\_t\ length,\ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true});}
-\DoxyCodeLine{00701\ }
-\DoxyCodeLine{00733\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ UniquePtr>}
-\DoxyCodeLine{00734\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ std::enable\_if<detail::IsUniquePtrToSL<UniquePtr>::value,}
-\DoxyCodeLine{00735\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<IOBuf>>::type}
-\DoxyCodeLine{00736\ \ \ takeOwnership(UniquePtr\&\&\ buf,\ \textcolor{keywordtype}{size\_t}\ count\ =\ 1);}
-\DoxyCodeLine{00737\ }
-\DoxyCodeLine{00756\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(WrapBufferOp\ op,\ ByteRange\ br)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00757\ }
-\DoxyCodeLine{00759\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(WrapBufferOp\ op,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ capacity)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00760\ }
-\DoxyCodeLine{00770\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ wrapBufferAsValue(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,}
-\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ capacity)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00772\ }
-\DoxyCodeLine{00774\ \ \ \textcolor{keyword}{static}\ IOBuf\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afa17b1b205405c86436c8ccf416cfd91}{wrapBufferAsValue}}(ByteRange\ br)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00775\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4836fd6ecb59206fd76fb6c0fe9cbe31}{wrapBufferAsValue}}(br.data(),\ br.size());}
-\DoxyCodeLine{00776\ \ \ \}}
-\DoxyCodeLine{00777\ }
-\DoxyCodeLine{00797\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(CopyBufferOp\ op,\ ByteRange\ br,\ std::size\_t\ headroom\ =\ 0,}
-\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom\ =\ 0);}
-\DoxyCodeLine{00799\ }
-\DoxyCodeLine{00801\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(CopyBufferOp\ op,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ size,}
-\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ std::size\_t\ headroom\ =\ 0,\ std::size\_t\ minTailroom\ =\ 0);}
-\DoxyCodeLine{00803\ }
-\DoxyCodeLine{00809\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{copyBuffer}}(ByteRange\ br,}
-\DoxyCodeLine{00810\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}\ =\ 0,}
-\DoxyCodeLine{00811\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom\ =\ 0)\ \{}
-\DoxyCodeLine{00812\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{copyBuffer}}(br.data(),\ br.size(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},\ minTailroom);}
-\DoxyCodeLine{00813\ \ \ \}}
-\DoxyCodeLine{00814\ }
-\DoxyCodeLine{00816\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ copyBuffer(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ size,}
-\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ headroom\ =\ 0,}
-\DoxyCodeLine{00818\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom\ =\ 0);}
-\DoxyCodeLine{00819\ }
-\DoxyCodeLine{00827\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ copyBuffer(StringPiece\ buf,}
-\DoxyCodeLine{00828\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ headroom\ =\ 0,}
-\DoxyCodeLine{00829\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom\ =\ 0);}
-\DoxyCodeLine{00830\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(CopyBufferOp\ op,\ StringPiece\ buf,\ std::size\_t\ headroom\ =\ 0,}
-\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom\ =\ 0)}
-\DoxyCodeLine{00832\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(op,\ buf.data(),\ buf.size(),\ headroom,\ minTailroom)\ \{\}}
-\DoxyCodeLine{00833\ }
-\DoxyCodeLine{00841\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ maybeCopyBuffer(StringPiece\ buf,}
-\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ headroom\ =\ 0,}
-\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom\ =\ 0);}
-\DoxyCodeLine{00844\ }
-\DoxyCodeLine{00856\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a60be51495b7dd12f238f4266bee48eb6}{destroy}}(std::unique\_ptr<IOBuf>\&\&\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}})\ \{}
-\DoxyCodeLine{00857\ \ \ \ \ \textcolor{keyword}{auto}\ destroyer\ =\ std::move(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}});}
-\DoxyCodeLine{00858\ \ \ \}}
-\DoxyCodeLine{00859\ }
-\DoxyCodeLine{00871\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{\string~IOBuf}}();}
-\DoxyCodeLine{00872\ }
-\DoxyCodeLine{00883\ \ \ \textcolor{keywordtype}{bool}\ empty()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00884\ }
-\DoxyCodeLine{00890\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
-\DoxyCodeLine{00891\ }
-\DoxyCodeLine{00900\ \ \ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2b949842f11562927a401770ea86090d}{writableData}}()\ \{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
-\DoxyCodeLine{00901\ }
-\DoxyCodeLine{00907\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_\ +\ length\_;\ \}}
-\DoxyCodeLine{00908\ }
-\DoxyCodeLine{00917\ \ \ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a87d8ebe5659dc5d9eae75afd890a8862}{writableTail}}()\ \{\ \textcolor{keywordflow}{return}\ data\_\ +\ length\_;\ \}}
-\DoxyCodeLine{00918\ }
-\DoxyCodeLine{00926\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ length\_;\ \}}
-\DoxyCodeLine{00927\ }
-\DoxyCodeLine{00935\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::size\_t(data\_\ -\/\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer}}());\ \}}
-\DoxyCodeLine{00936\ }
-\DoxyCodeLine{00944\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::size\_t(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a52101c7e9f2f5124cbbb3198dc2db17c}{bufferEnd}}()\ -\/\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}}());\ \}}
+\DoxyCodeLine{00441\ \ \ \ \ flags\_and\_shared\_info\_\ \&=\ \string~flags;}
+\DoxyCodeLine{00442\ \ \ \}}
+\DoxyCodeLine{00443\ }
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetFlagsAndSharedInfo(uintptr\_t\ flags,}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo*\ info)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ flags\_and\_shared\_info\_\ =\ PackFlagsAndSharedInfo(flags,\ info);}
+\DoxyCodeLine{00447\ \ \ \}}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \ \ \textcolor{keyword}{enum\ class}\ TakeOwnershipOption\ \{\ kDefault,\ kStoreSize\ \};}
+\DoxyCodeLine{00450\ }
+\DoxyCodeLine{00451\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ TakeOwnership(}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ std::size\_t\ offset,\ std::size\_t\ length,}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ FreeFunction\ free\_fn,\ \textcolor{keywordtype}{void}*\ user\_data,\ \textcolor{keywordtype}{bool}\ free\_on\_error,}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ TakeOwnershipOption\ option);}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ IOBuf(InternalConstructor,\ uintptr\_t\ flagsAndSharedInfo,\ uint8\_t*\ buf,}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}},\ std::size\_t\ length)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00458\ }
+\DoxyCodeLine{00459\ \ \ \textcolor{keywordtype}{void}\ UnshareOneSlow();}
+\DoxyCodeLine{00460\ \ \ \textcolor{keywordtype}{void}\ UnshareChained();}
+\DoxyCodeLine{00461\ \ \ \textcolor{keywordtype}{void}\ MakeManagedChained();}
+\DoxyCodeLine{00462\ \ \ \textcolor{keywordtype}{void}\ CoalesceSlow();}
+\DoxyCodeLine{00463\ \ \ \textcolor{keywordtype}{void}\ CoalesceSlow(\textcolor{keywordtype}{size\_t}\ max\_length);}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ \textcolor{comment}{//\ newLength\ must\ be\ the\ entire\ length\ of\ the\ buffers\ between\ this\ and}}
+\DoxyCodeLine{00466\ \ \ \textcolor{comment}{//\ end\ (no\ truncation)}}
+\DoxyCodeLine{00467\ \ \ \textcolor{keywordtype}{void}\ CoalesceAndReallocate(\textcolor{keywordtype}{size\_t}\ new\_head\_room,\ \textcolor{keywordtype}{size\_t}\ new\_length,}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}},\ \textcolor{keywordtype}{size\_t}\ new\_tail\_room);}
+\DoxyCodeLine{00469\ \ \ \textcolor{keywordtype}{void}\ CoalesceAndReallocate(\textcolor{keywordtype}{size\_t}\ new\_length,\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}})\ \{}
+\DoxyCodeLine{00470\ \ \ \ \ CoalesceAndReallocate(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}(),\ new\_length,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}},\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}}-\/>prev\_-\/>TailRoom());}
+\DoxyCodeLine{00471\ \ \ \}}
+\DoxyCodeLine{00472\ \ \ \textcolor{keywordtype}{void}\ DecrementRefcount()\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00473\ \ \ \textcolor{keywordtype}{void}\ ReserveSlow(std::size\_t\ min\_head\_room,\ std::size\_t\ min\_tail\_room);}
+\DoxyCodeLine{00474\ \ \ \textcolor{keywordtype}{void}\ FreeExtBuffer()\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00476\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GoodExtBufferSize(std::size\_t\ min\_capacity);}
+\DoxyCodeLine{00477\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ InitExtBuffer(uint8\_t*\ buf,\ \textcolor{keywordtype}{size\_t}\ malloc\_size,}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo**\ info\_return,}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t*\ capacity\_return);}
+\DoxyCodeLine{00480\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AllocExtBuffer(std::size\_t\ min\_capacity,\ uint8\_t**\ buf\_return,}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedInfo**\ info\_return,}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t*\ capacity\_return);}
+\DoxyCodeLine{00483\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReleaseStorage(\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_heap_storage}{HeapStorage}}*\ storage,}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ free\_flags)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00485\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FreeInternalBuf(\textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{void}*\ user\_data)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00491\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a8e0900f4f9d06d41fa4e7c083217c6a5}{Create}}(std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
+\DoxyCodeLine{00492\ }
+\DoxyCodeLine{00504\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a658b91e57a2ba2db9f44f52754816cd0}{CreateCombined}}(std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
+\DoxyCodeLine{00505\ }
+\DoxyCodeLine{00515\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a72e3a9dbf354e19f5a944d98d6c02dff}{CreateSeparate}}(std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00531\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a7ec83685834b52dc2abb979c60a041f0}{CreateChain}}(\textcolor{keywordtype}{size\_t}\ total\_capacity,}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ max\_buf\_capacity);}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00539\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{WrapBuffer}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00543\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a73bd25f5c105b84ef5512ac4563b9dc7}{WrapBuffer}}(ByteRange\ br)\ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{WrapBuffer}}(br.data(),\ br.size());}
+\DoxyCodeLine{00545\ \ \ \}}
+\DoxyCodeLine{00546\ }
+\DoxyCodeLine{00551\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0021793658b0d2bc1b179710296dcb55}{TakeOwnership}}(\textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \textcolor{keywordflow}{return}\ TakeOwnership(buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ free\_fn,\ user\_data,}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free\_on\_error,\ TakeOwnershipOption::kDefault);}
+\DoxyCodeLine{00557\ \ \ \}}
+\DoxyCodeLine{00558\ }
+\DoxyCodeLine{00563\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa4997f43bc6a4087debc998829057614}{TakeOwnership}}(\textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ length,}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00568\ \ \ \ \ \textcolor{keywordflow}{return}\ TakeOwnership(buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ length,\ free\_fn,\ user\_data,}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free\_on\_error,\ TakeOwnershipOption::kDefault);}
+\DoxyCodeLine{00570\ \ \ \}}
+\DoxyCodeLine{00571\ }
+\DoxyCodeLine{00601\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ UniquePtr>}
+\DoxyCodeLine{00602\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ std::enable\_if<detail::IsUniquePtrToSL<UniquePtr>::value,}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<IOBuf>>::type}
+\DoxyCodeLine{00604\ \ \ TakeOwnership(UniquePtr\&\&\ buf,\ \textcolor{keywordtype}{size\_t}\ count\ =\ 1);}
+\DoxyCodeLine{00605\ }
+\DoxyCodeLine{00616\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ WrapIov(\textcolor{keyword}{const}\ \mbox{\hyperlink{structiovec}{iovec}}*\ vec,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00633\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ TakeOwnershipIov(\textcolor{keyword}{const}\ \mbox{\hyperlink{structiovec}{iovec}}*\ vec,\ \textcolor{keywordtype}{size\_t}\ count,}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00637\ }
+\DoxyCodeLine{00645\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ WrapBufferAsValue(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ capacity)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00649\ \ \ \textcolor{keyword}{static}\ IOBuf\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5bb99bd7abf8d1b185d4fe18a80c44ad}{WrapBufferAsValue}}(ByteRange\ br)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00650\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a64afb5aeb32475087026e7fa44ef37e8}{WrapBufferAsValue}}(br.data(),\ br.size());}
+\DoxyCodeLine{00651\ \ \ \}}
+\DoxyCodeLine{00652\ }
+\DoxyCodeLine{00658\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5c9ba80c7ca24ab312bfca2816e184bb}{CopyBuffer}}(ByteRange\ br,}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ head\_room\ =\ 0,}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ min\_tail\_room\ =\ 0)\ \{}
+\DoxyCodeLine{00661\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5c9ba80c7ca24ab312bfca2816e184bb}{CopyBuffer}}(br.data(),\ br.size(),\ head\_room,\ min\_tail\_room);}
+\DoxyCodeLine{00662\ \ \ \}}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00665\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ CopyBuffer(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ size,}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ head\_room\ =\ 0,}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ min\_tail\_room\ =\ 0);}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00674\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ CopyBuffer(std::string\_view\ buf,}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ head\_room\ =\ 0,}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ min\_tail\_room\ =\ 0);}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00683\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ MaybeCopyBuffer(std::string\_view\ buf,}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ head\_room\ =\ 0,}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ min\_tail\_room\ =\ 0);}
+\DoxyCodeLine{00686\ }
+\DoxyCodeLine{00696\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a98078164d255f6b0773220e8dd498949}{Destroy}}(std::unique\_ptr<IOBuf>\&\&\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}})\ \{}
+\DoxyCodeLine{00697\ \ \ \ \ \textcolor{keyword}{auto}\ destroyer\ =\ std::move(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}});}
+\DoxyCodeLine{00698\ \ \ \}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00720\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GoodSize(\textcolor{keywordtype}{size\_t}\ min\_capacity,}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CombinedOption\ combined\ =\ CombinedOption::kDefault);}
+\DoxyCodeLine{00722\ }
+\DoxyCodeLine{00733\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(CreateOp,\ std::size\_t\ capacity);}
+\DoxyCodeLine{00734\ }
+\DoxyCodeLine{00770\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0da85cf118a667a0f9267bd3e580c95c}{IOBuf}}(TakeOwnershipOp\ op,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ :\ IOBuf(op,\ buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ free\_fn,\ user\_data,}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free\_on\_error)\ \{\}}
+\DoxyCodeLine{00775\ }
+\DoxyCodeLine{00778\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a99e9c470caa96aec01ba4c5a0880d8c1}{IOBuf}}(TakeOwnershipOp\ op,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ std::size\_t\ length,}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ :\ IOBuf(op,\ buf,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ 0,\ length,\ free\_fn,\ user\_data,\ free\_on\_error)\ \{}
+\DoxyCodeLine{00782\ \ \ \}}
+\DoxyCodeLine{00783\ }
+\DoxyCodeLine{00786\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(TakeOwnershipOp,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ capacity,\ std::size\_t\ offset,}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \ \ std::size\_t\ length,\ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00789\ }
+\DoxyCodeLine{00792\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}(TakeOwnershipOp,\ SizedFree,\ \textcolor{keywordtype}{void}*\ buf,\ std::size\_t\ capacity,}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \ \ std::size\_t\ offset,\ std::size\_t\ length,\ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00794\ }
+\DoxyCodeLine{00800\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2b84f84ca1454238aa2531223d420a78}{IOBuf}}()\ noexcept;}
+\DoxyCodeLine{00801\ }
+\DoxyCodeLine{00805\ \ \ IOBuf(const\ IOBuf\&\ other);}
+\DoxyCodeLine{00806\ }
+\DoxyCodeLine{00817\ \ \ IOBuf(IOBuf\&\&\ other)\ noexcept;}
+\DoxyCodeLine{00818\ }
+\DoxyCodeLine{00824\ \ \ IOBuf\&\ operator=(IOBuf\&\&\ other)\ noexcept;}
+\DoxyCodeLine{00825\ }
+\DoxyCodeLine{00830\ \ \ IOBuf\&\ operator=(const\ IOBuf\&\ other);}
+\DoxyCodeLine{00831\ }
+\DoxyCodeLine{00850\ \ \ IOBuf(WrapBufferOp\ op,\ ByteRange\ br)\ noexcept;}
+\DoxyCodeLine{00851\ }
+\DoxyCodeLine{00853\ \ \ IOBuf(WrapBufferOp\ op,\ const\ \textcolor{keywordtype}{void}*\ buf,\ std::\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}})\ noexcept;}
+\DoxyCodeLine{00854\ }
+\DoxyCodeLine{00873\ \ \ IOBuf(CopyBufferOp\ op,\ ByteRange\ br,\ std::\textcolor{keywordtype}{size\_t}\ head\_room\ =\ 0,}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \ \ std::\textcolor{keywordtype}{size\_t}\ min\_tail\_room\ =\ 0);}
+\DoxyCodeLine{00875\ }
+\DoxyCodeLine{00877\ \ \ IOBuf(CopyBufferOp\ op,\ const\ \textcolor{keywordtype}{void}*\ buf,\ std::\textcolor{keywordtype}{size\_t}\ size,}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \ \ std::\textcolor{keywordtype}{size\_t}\ head\_room\ =\ 0,\ std::\textcolor{keywordtype}{size\_t}\ min\_tail\_room\ =\ 0);}
+\DoxyCodeLine{00879\ }
+\DoxyCodeLine{00880\ \ \ IOBuf(CopyBufferOp\ op,\ std::string\_view\ buf,\ std::\textcolor{keywordtype}{size\_t}\ headroom\ =\ 0,}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ \ \ std::\textcolor{keywordtype}{size\_t}\ minTailroom\ =\ 0)}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ :\ IOBuf(op,\ buf.\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}(),\ buf.size(),\ headroom,\ minTailroom)\ \{\}}
+\DoxyCodeLine{00883\ }
+\DoxyCodeLine{00893\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{\string~IOBuf}}();}
+\DoxyCodeLine{00894\ }
+\DoxyCodeLine{00903\ \ \ \textcolor{keywordtype}{bool}\ empty()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00904\ }
+\DoxyCodeLine{00908\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
+\DoxyCodeLine{00909\ }
+\DoxyCodeLine{00916\ \ \ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a05c8383995275986e0534b77a6438a31}{WritableData}}()\ \{\ \textcolor{keywordflow}{return}\ data\_;\ \}}
+\DoxyCodeLine{00917\ }
+\DoxyCodeLine{00921\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a27b29fcaa18008ff3ba19d93303a4082}{Tail}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_\ +\ length\_;\ \}}
+\DoxyCodeLine{00922\ }
+\DoxyCodeLine{00929\ \ \ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a77919d0f48c5fe6895b7fcfa4e48016b}{WritableTail}}()\ \{\ \textcolor{keywordflow}{return}\ data\_\ +\ length\_;\ \}}
+\DoxyCodeLine{00930\ }
+\DoxyCodeLine{00937\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a73808ff60c3bdbd250e0a4dbf556dd45}{Length}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ length\_;\ \}}
+\DoxyCodeLine{00938\ }
+\DoxyCodeLine{00944\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::size\_t(data\_\ -\/\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a679f13d5591ed0e4963eb9cc078e9486}{Buffer}}());\ \}}
 \DoxyCodeLine{00945\ }
-\DoxyCodeLine{00955\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2e241c00471e7626c88e4d6ab6adde47}{buffer}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ buf\_;\ \}}
-\DoxyCodeLine{00956\ }
-\DoxyCodeLine{00965\ \ \ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af260b74cbff89444b43f9aa565adb5a2}{writableBuffer}}()\ \{\ \textcolor{keywordflow}{return}\ buf\_;\ \}}
-\DoxyCodeLine{00966\ }
-\DoxyCodeLine{00976\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a52101c7e9f2f5124cbbb3198dc2db17c}{bufferEnd}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ buf\_\ +\ capacity\_;\ \}}
-\DoxyCodeLine{00977\ }
-\DoxyCodeLine{00986\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ capacity\_;\ \}}
-\DoxyCodeLine{00987\ }
-\DoxyCodeLine{00993\ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}}()\ \{\ \textcolor{keywordflow}{return}\ next\_;\ \}}
-\DoxyCodeLine{00995\ \ \ \textcolor{keyword}{const}\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a27ca4397f2f95450e40410604e9da80c}{next}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ next\_;\ \}}
-\DoxyCodeLine{00996\ }
-\DoxyCodeLine{01002\ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1dc8d8e9ebdec00d38c56e49b9d4dba9}{prev}}()\ \{\ \textcolor{keywordflow}{return}\ prev\_;\ \}}
-\DoxyCodeLine{01004\ \ \ \textcolor{keyword}{const}\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac7257bbb8cf1fb8af4cf0f55a0dcf24e}{prev}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ prev\_;\ \}}
-\DoxyCodeLine{01005\ }
-\DoxyCodeLine{01026\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a05c7a1d0badf1067d6fdaab3e99c4ed1}{advance}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01027\ \ \ \ \ \textcolor{comment}{//\ In\ debug\ builds,\ assert\ if\ there\ is\ a\ problem.}}
-\DoxyCodeLine{01028\ \ \ \ \ assert(amount\ <=\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}}());}
-\DoxyCodeLine{01029\ }
-\DoxyCodeLine{01030\ \ \ \ \ \textcolor{keywordflow}{if}\ (length\_\ >\ 0)\ \{}
-\DoxyCodeLine{01031\ \ \ \ \ \ \ memmove(data\_\ +\ amount,\ data\_,\ length\_);}
-\DoxyCodeLine{01032\ \ \ \ \ \}}
-\DoxyCodeLine{01033\ \ \ \ \ data\_\ +=\ amount;}
-\DoxyCodeLine{01034\ \ \ \}}
-\DoxyCodeLine{01035\ }
-\DoxyCodeLine{01055\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1c8ecea8c0344ba83f0fd858297a70b4}{retreat}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01056\ \ \ \ \ \textcolor{comment}{//\ In\ debug\ builds,\ assert\ if\ there\ is\ a\ problem.}}
-\DoxyCodeLine{01057\ \ \ \ \ assert(amount\ <=\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}());}
-\DoxyCodeLine{01058\ }
-\DoxyCodeLine{01059\ \ \ \ \ \textcolor{keywordflow}{if}\ (length\_\ >\ 0)\ \{}
-\DoxyCodeLine{01060\ \ \ \ \ \ \ memmove(data\_\ -\/\ amount,\ data\_,\ length\_);}
-\DoxyCodeLine{01061\ \ \ \ \ \}}
-\DoxyCodeLine{01062\ \ \ \ \ data\_\ -\/=\ amount;}
-\DoxyCodeLine{01063\ \ \ \}}
-\DoxyCodeLine{01064\ }
-\DoxyCodeLine{01080\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}{prepend}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01081\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}());}
-\DoxyCodeLine{01082\ \ \ \ \ data\_\ -\/=\ amount;}
-\DoxyCodeLine{01083\ \ \ \ \ length\_\ +=\ amount;}
-\DoxyCodeLine{01084\ \ \ \}}
-\DoxyCodeLine{01085\ }
-\DoxyCodeLine{01101\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a58f2ebcaac78afff44d08396db944369}{append}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01102\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}}());}
-\DoxyCodeLine{01103\ \ \ \ \ length\_\ +=\ amount;}
-\DoxyCodeLine{01104\ \ \ \}}
-\DoxyCodeLine{01105\ }
-\DoxyCodeLine{01120\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a381d2d1b74123ec548a5701d2568684a}{trimStart}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01121\ \ \ \ \ DCHECK\_LE(amount,\ length\_);}
-\DoxyCodeLine{01122\ \ \ \ \ data\_\ +=\ amount;}
-\DoxyCodeLine{01123\ \ \ \ \ length\_\ -\/=\ amount;}
-\DoxyCodeLine{01124\ \ \ \}}
-\DoxyCodeLine{01125\ }
-\DoxyCodeLine{01140\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aea86aa0e0a0d63df21b6076ea7acf8af}{trimEnd}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01141\ \ \ \ \ DCHECK\_LE(amount,\ length\_);}
-\DoxyCodeLine{01142\ \ \ \ \ length\_\ -\/=\ amount;}
-\DoxyCodeLine{01143\ \ \ \}}
-\DoxyCodeLine{01144\ }
-\DoxyCodeLine{01156\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a65e1fb2d692aaca855d5e8c137395dd9}{trimWritableTail}}(std::size\_t\ amount)\ \{}
-\DoxyCodeLine{01157\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}}());}
-\DoxyCodeLine{01158\ \ \ \ \ capacity\_\ -\/=\ amount;}
+\DoxyCodeLine{00951\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23acbdc67f657564e646efe8cd9a6fa3}{TailRoom}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::size\_t(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a98b138b44fdf260ac04ad2c3f35a3f2f}{BufferEnd}}()\ -\/\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a27b29fcaa18008ff3ba19d93303a4082}{Tail}}());\ \}}
+\DoxyCodeLine{00952\ }
+\DoxyCodeLine{00960\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a679f13d5591ed0e4963eb9cc078e9486}{Buffer}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ buf\_;\ \}}
+\DoxyCodeLine{00961\ }
+\DoxyCodeLine{00968\ \ \ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2a17715736ebb6e17e0a1f22fe46fa9a}{WritableBuffer}}()\ \{\ \textcolor{keywordflow}{return}\ buf\_;\ \}}
+\DoxyCodeLine{00969\ }
+\DoxyCodeLine{00977\ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a98b138b44fdf260ac04ad2c3f35a3f2f}{BufferEnd}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ buf\_\ +\ capacity\_;\ \}}
+\DoxyCodeLine{00978\ }
+\DoxyCodeLine{00985\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ capacity\_;\ \}}
+\DoxyCodeLine{00986\ }
+\DoxyCodeLine{00990\ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aea1b72cbad61f1afcc081eaad99590d5}{Next}}()\ \{\ \textcolor{keywordflow}{return}\ next\_;\ \}}
+\DoxyCodeLine{00991\ }
+\DoxyCodeLine{00993\ \ \ \textcolor{keyword}{const}\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aeb8c881127b62ed7370552cba6d1db21}{Next}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ next\_;\ \}}
+\DoxyCodeLine{00994\ }
+\DoxyCodeLine{00998\ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6e6cfe3b15ad1c481d93926b3c0337a4}{Prev}}()\ \{\ \textcolor{keywordflow}{return}\ prev\_;\ \}}
+\DoxyCodeLine{00999\ }
+\DoxyCodeLine{01001\ \ \ \textcolor{keyword}{const}\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad34fb6470113b215c11dc1b84296ac50}{Prev}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ prev\_;\ \}}
+\DoxyCodeLine{01002\ }
+\DoxyCodeLine{01021\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aff66dd7c31c9340d6b9a64b4026d1b5f}{Advance}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01022\ \ \ \ \ \textcolor{comment}{//\ In\ debug\ builds,\ assert\ if\ there\ is\ a\ problem.}}
+\DoxyCodeLine{01023\ \ \ \ \ assert(amount\ <=\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23acbdc67f657564e646efe8cd9a6fa3}{TailRoom}}());}
+\DoxyCodeLine{01024\ }
+\DoxyCodeLine{01025\ \ \ \ \ \textcolor{keywordflow}{if}\ (length\_\ >\ 0)\ \{}
+\DoxyCodeLine{01026\ \ \ \ \ \ \ memmove(data\_\ +\ amount,\ data\_,\ length\_);}
+\DoxyCodeLine{01027\ \ \ \ \ \}}
+\DoxyCodeLine{01028\ }
+\DoxyCodeLine{01029\ \ \ \ \ data\_\ +=\ amount;}
+\DoxyCodeLine{01030\ \ \ \}}
+\DoxyCodeLine{01031\ }
+\DoxyCodeLine{01049\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adc048704e057d61e58e09367661d2454}{Retreat}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01050\ \ \ \ \ \textcolor{comment}{//\ In\ debug\ builds,\ assert\ if\ there\ is\ a\ problem.}}
+\DoxyCodeLine{01051\ \ \ \ \ assert(amount\ <=\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}());}
+\DoxyCodeLine{01052\ }
+\DoxyCodeLine{01053\ \ \ \ \ \textcolor{keywordflow}{if}\ (length\_\ >\ 0)\ \{}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ memmove(data\_\ -\/\ amount,\ data\_,\ length\_);}
+\DoxyCodeLine{01055\ \ \ \ \ \}}
+\DoxyCodeLine{01056\ }
+\DoxyCodeLine{01057\ \ \ \ \ data\_\ -\/=\ amount;}
+\DoxyCodeLine{01058\ \ \ \}}
+\DoxyCodeLine{01059\ }
+\DoxyCodeLine{01073\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}{prepend}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01074\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}());}
+\DoxyCodeLine{01075\ }
+\DoxyCodeLine{01076\ \ \ \ \ data\_\ -\/=\ amount;}
+\DoxyCodeLine{01077\ \ \ \ \ length\_\ +=\ amount;}
+\DoxyCodeLine{01078\ \ \ \}}
+\DoxyCodeLine{01079\ }
+\DoxyCodeLine{01093\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a984449ddf4541eca038b1b4f7b93dd97}{Append}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01094\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23acbdc67f657564e646efe8cd9a6fa3}{TailRoom}}());}
+\DoxyCodeLine{01095\ }
+\DoxyCodeLine{01096\ \ \ \ \ length\_\ +=\ amount;}
+\DoxyCodeLine{01097\ \ \ \}}
+\DoxyCodeLine{01098\ }
+\DoxyCodeLine{01111\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ab3d9b6d522b325ff3d8ba04dcafe3203}{TrimStart}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01112\ \ \ \ \ DCHECK\_LE(amount,\ length\_);}
+\DoxyCodeLine{01113\ }
+\DoxyCodeLine{01114\ \ \ \ \ data\_\ +=\ amount;}
+\DoxyCodeLine{01115\ \ \ \ \ length\_\ -\/=\ amount;}
+\DoxyCodeLine{01116\ \ \ \}}
+\DoxyCodeLine{01117\ }
+\DoxyCodeLine{01130\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adb54ae0c205585a88308117dd3e8354e}{TrimEnd}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01131\ \ \ \ \ DCHECK\_LE(amount,\ length\_);}
+\DoxyCodeLine{01132\ }
+\DoxyCodeLine{01133\ \ \ \ \ length\_\ -\/=\ amount;}
+\DoxyCodeLine{01134\ \ \ \}}
+\DoxyCodeLine{01135\ }
+\DoxyCodeLine{01146\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ab4c768ff0dfc147881a75afc1fe403ea}{TrimWritableTail}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01147\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23acbdc67f657564e646efe8cd9a6fa3}{TailRoom}}());}
+\DoxyCodeLine{01148\ }
+\DoxyCodeLine{01149\ \ \ \ \ capacity\_\ -\/=\ amount;}
+\DoxyCodeLine{01150\ \ \ \}}
+\DoxyCodeLine{01151\ }
+\DoxyCodeLine{01156\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a840a75e5d2f1cc2fb467260fda98ea52}{clear}}()\ \{}
+\DoxyCodeLine{01157\ \ \ \ \ data\_\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2a17715736ebb6e17e0a1f22fe46fa9a}{WritableBuffer}}();}
+\DoxyCodeLine{01158\ \ \ \ \ length\_\ =\ 0;}
 \DoxyCodeLine{01159\ \ \ \}}
 \DoxyCodeLine{01160\ }
-\DoxyCodeLine{01167\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a840a75e5d2f1cc2fb467260fda98ea52}{clear}}()\ \{}
-\DoxyCodeLine{01168\ \ \ \ \ data\_\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af260b74cbff89444b43f9aa565adb5a2}{writableBuffer}}();}
-\DoxyCodeLine{01169\ \ \ \ \ length\_\ =\ 0;}
-\DoxyCodeLine{01170\ \ \ \}}
-\DoxyCodeLine{01171\ }
-\DoxyCodeLine{01190\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af3fd393000ae4af69d38acc5091de05e}{reserve}}(std::size\_t\ minHeadroom,\ std::size\_t\ minTailroom)\ \{}
-\DoxyCodeLine{01191\ \ \ \ \ \textcolor{comment}{//\ Maybe\ we\ don't\ need\ to\ do\ anything.}}
-\DoxyCodeLine{01192\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}()\ >=\ minHeadroom\ \&\&\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}}()\ >=\ minTailroom)\ \{}
-\DoxyCodeLine{01193\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{01194\ \ \ \ \ \}}
-\DoxyCodeLine{01195\ \ \ \ \ \textcolor{comment}{//\ If\ the\ buffer\ is\ empty\ but\ we\ have\ enough\ total\ room\ (head\ +\ tail),}}
-\DoxyCodeLine{01196\ \ \ \ \ \textcolor{comment}{//\ move\ the\ data\_\ pointer\ around.}}
-\DoxyCodeLine{01197\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f7a0b3ad7873298dd70cfff02224f3b}{length}}()\ ==\ 0\ \&\&\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}()\ +\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25a949b6543aac3a26928b486900863e}{tailroom}}()\ >=\ minHeadroom\ +\ minTailroom)\ \{}
-\DoxyCodeLine{01198\ \ \ \ \ \ \ data\_\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af260b74cbff89444b43f9aa565adb5a2}{writableBuffer}}()\ +\ minHeadroom;}
-\DoxyCodeLine{01199\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{01200\ \ \ \ \ \}}
-\DoxyCodeLine{01201\ \ \ \ \ \textcolor{comment}{//\ Bah,\ we\ have\ to\ do\ actual\ work.}}
-\DoxyCodeLine{01202\ \ \ \ \ reserveSlow(minHeadroom,\ minTailroom);}
-\DoxyCodeLine{01203\ \ \ \}}
-\DoxyCodeLine{01204\ }
-\DoxyCodeLine{01216\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{isChained}}()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{01217\ \ \ \ \ assert((next\_\ ==\ \textcolor{keyword}{this})\ ==\ (prev\_\ ==\ \textcolor{keyword}{this}));}
-\DoxyCodeLine{01218\ \ \ \ \ \textcolor{keywordflow}{return}\ next\_\ !=\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01219\ \ \ \}}
-\DoxyCodeLine{01220\ }
-\DoxyCodeLine{01230\ \ \ \textcolor{keywordtype}{size\_t}\ countChainElements()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01231\ }
-\DoxyCodeLine{01239\ \ \ std::size\_t\ computeChainDataLength()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01240\ }
-\DoxyCodeLine{01248\ \ \ std::size\_t\ computeChainCapacity()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01249\ }
-\DoxyCodeLine{01260\ \ \ \textcolor{keywordtype}{void}\ appendToChain(std::unique\_ptr<IOBuf>\&\&\ iobuf);}
-\DoxyCodeLine{01261\ }
-\DoxyCodeLine{01275\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7}{insertAfterThisOne}}(std::unique\_ptr<IOBuf>\&\&\ iobuf)\ \{}
-\DoxyCodeLine{01276\ \ \ \ \ \textcolor{comment}{//\ Just\ use\ appendToChain()\ on\ the\ next\ element\ in\ our\ chain}}
-\DoxyCodeLine{01277\ \ \ \ \ next\_-\/>appendToChain(std::move(iobuf));}
-\DoxyCodeLine{01278\ \ \ \}}
-\DoxyCodeLine{01279\ }
-\DoxyCodeLine{01292\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16464d617a3b81f64716508cfb203b6e}{prependChain}}(std::unique\_ptr<IOBuf>\&\&\ iobuf)\ \{}
-\DoxyCodeLine{01293\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2fcea063a89ec88c0882efed55de8492}{appendToChain}}(std::move(iobuf));}
-\DoxyCodeLine{01294\ \ \ \}}
-\DoxyCodeLine{01295\ }
-\DoxyCodeLine{01304\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa8c7ab4ba6b1fa390d7399994cea6081}{appendChain}}(std::unique\_ptr<IOBuf>\&\&\ iobuf)\ \{}
-\DoxyCodeLine{01305\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adbd9d04ab1f41919cae8d099e1bbcad7}{insertAfterThisOne}}(std::move(iobuf));}
+\DoxyCodeLine{01177\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6e23d4cbb808550af93558459aaa092d}{reserve}}(std::size\_t\ min\_head\_room,\ std::size\_t\ min\_tail\_room)\ \{}
+\DoxyCodeLine{01178\ \ \ \ \ \textcolor{comment}{//\ Maybe\ we\ don't\ need\ to\ do\ anything.}}
+\DoxyCodeLine{01179\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}()\ >=\ min\_head\_room\ \&\&\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23acbdc67f657564e646efe8cd9a6fa3}{TailRoom}}()\ >=\ min\_tail\_room)\ \{}
+\DoxyCodeLine{01180\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01181\ \ \ \ \ \}}
+\DoxyCodeLine{01182\ }
+\DoxyCodeLine{01183\ \ \ \ \ \textcolor{comment}{//\ If\ the\ buffer\ is\ empty\ but\ we\ have\ enough\ total\ room\ (head\ +\ tail),}}
+\DoxyCodeLine{01184\ \ \ \ \ \textcolor{comment}{//\ move\ the\ data\_\ pointer\ around.}}
+\DoxyCodeLine{01185\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a73808ff60c3bdbd250e0a4dbf556dd45}{Length}}()\ ==\ 0\ \&\&}
+\DoxyCodeLine{01186\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}()\ +\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a23acbdc67f657564e646efe8cd9a6fa3}{TailRoom}}()\ >=\ min\_head\_room\ +\ min\_tail\_room)\ \{}
+\DoxyCodeLine{01187\ \ \ \ \ \ \ data\_\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2a17715736ebb6e17e0a1f22fe46fa9a}{WritableBuffer}}()\ +\ min\_head\_room;}
+\DoxyCodeLine{01188\ }
+\DoxyCodeLine{01189\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01190\ \ \ \ \ \}}
+\DoxyCodeLine{01191\ }
+\DoxyCodeLine{01192\ \ \ \ \ \textcolor{comment}{//\ Bah,\ we\ have\ to\ do\ actual\ work.}}
+\DoxyCodeLine{01193\ \ \ \ \ ReserveSlow(min\_head\_room,\ min\_tail\_room);}
+\DoxyCodeLine{01194\ \ \ \}}
+\DoxyCodeLine{01195\ }
+\DoxyCodeLine{01205\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a327d1deedf8559d086fe372e7de6c753}{IsChained}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01206\ \ \ \ \ assert((next\_\ ==\ \textcolor{keyword}{this})\ ==\ (prev\_\ ==\ \textcolor{keyword}{this}));}
+\DoxyCodeLine{01207\ }
+\DoxyCodeLine{01208\ \ \ \ \ \textcolor{keywordflow}{return}\ next\_\ !=\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01209\ \ \ \}}
+\DoxyCodeLine{01210\ }
+\DoxyCodeLine{01218\ \ \ \textcolor{keywordtype}{size\_t}\ CountChainElements()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01219\ }
+\DoxyCodeLine{01225\ \ \ std::size\_t\ ComputeChainDataLength()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01226\ }
+\DoxyCodeLine{01232\ \ \ std::size\_t\ ComputeChainCapacity()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01233\ }
+\DoxyCodeLine{01242\ \ \ \textcolor{keywordtype}{void}\ AppendToChain(std::unique\_ptr<IOBuf>\&\&\ iobuf);}
+\DoxyCodeLine{01243\ }
+\DoxyCodeLine{01255\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a39cce2803d306fcb964a3087b8a030e7}{InsertAfterThisOne}}(std::unique\_ptr<IOBuf>\&\&\ iobuf)\ \{}
+\DoxyCodeLine{01256\ \ \ \ \ \textcolor{comment}{//\ Just\ use\ appendToChain()\ on\ the\ next\ element\ in\ our\ chain}}
+\DoxyCodeLine{01257\ \ \ \ \ next\_-\/>AppendToChain(std::move(iobuf));}
+\DoxyCodeLine{01258\ \ \ \}}
+\DoxyCodeLine{01259\ }
+\DoxyCodeLine{01270\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a8c15c5b8a4558580586e7b01940c48d6}{PrependChain}}(std::unique\_ptr<IOBuf>\&\&\ iobuf)\ \{}
+\DoxyCodeLine{01271\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a21785f202ca90b05faa6d4b9483c2206}{AppendToChain}}(std::move(iobuf));}
+\DoxyCodeLine{01272\ \ \ \}}
+\DoxyCodeLine{01273\ }
+\DoxyCodeLine{01280\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a7feebf266b48e22f583c927a86a98cd0}{AppendChain}}(std::unique\_ptr<IOBuf>\&\&\ iobuf)\ \{}
+\DoxyCodeLine{01281\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a39cce2803d306fcb964a3087b8a030e7}{InsertAfterThisOne}}(std::move(iobuf));}
+\DoxyCodeLine{01282\ \ \ \}}
+\DoxyCodeLine{01283\ }
+\DoxyCodeLine{01299\ \ \ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a45cd21c00ea100c65d0a01fb07d70303}{Unlink}}()\ \{}
+\DoxyCodeLine{01300\ \ \ \ \ next\_-\/>prev\_\ =\ prev\_;}
+\DoxyCodeLine{01301\ \ \ \ \ prev\_-\/>next\_\ =\ next\_;}
+\DoxyCodeLine{01302\ \ \ \ \ prev\_\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01303\ \ \ \ \ next\_\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01304\ }
+\DoxyCodeLine{01305\ \ \ \ \ \textcolor{keywordflow}{return}\ std::unique\_ptr<IOBuf>(\textcolor{keyword}{this});}
 \DoxyCodeLine{01306\ \ \ \}}
 \DoxyCodeLine{01307\ }
-\DoxyCodeLine{01325\ \ \ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac2b6a93a054ed120ba6866bcf4d8237b}{unlink}}()\ \{}
-\DoxyCodeLine{01326\ \ \ \ \ next\_-\/>prev\_\ =\ prev\_;}
-\DoxyCodeLine{01327\ \ \ \ \ prev\_-\/>next\_\ =\ next\_;}
-\DoxyCodeLine{01328\ \ \ \ \ prev\_\ =\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01329\ \ \ \ \ next\_\ =\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01330\ \ \ \ \ \textcolor{keywordflow}{return}\ std::unique\_ptr<IOBuf>(\textcolor{keyword}{this});}
-\DoxyCodeLine{01331\ \ \ \}}
-\DoxyCodeLine{01332\ }
-\DoxyCodeLine{01347\ \ \ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop}}()\ \{}
-\DoxyCodeLine{01348\ \ \ \ \ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}}\ =\ next\_;}
-\DoxyCodeLine{01349\ \ \ \ \ next\_-\/>prev\_\ =\ prev\_;}
-\DoxyCodeLine{01350\ \ \ \ \ prev\_-\/>next\_\ =\ next\_;}
-\DoxyCodeLine{01351\ \ \ \ \ prev\_\ =\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01352\ \ \ \ \ next\_\ =\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01353\ \ \ \ \ \textcolor{keywordflow}{return}\ std::unique\_ptr<IOBuf>((\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}}\ ==\ \textcolor{keyword}{this})\ ?\ \textcolor{keyword}{nullptr}\ :\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}});}
-\DoxyCodeLine{01354\ \ \ \}}
+\DoxyCodeLine{01319\ \ \ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop}}()\ \{}
+\DoxyCodeLine{01320\ \ \ \ \ IOBuf*\ next\ =\ next\_;}
+\DoxyCodeLine{01321\ \ \ \ \ next\_-\/>prev\_\ =\ prev\_;}
+\DoxyCodeLine{01322\ \ \ \ \ prev\_-\/>next\_\ =\ next\_;}
+\DoxyCodeLine{01323\ \ \ \ \ prev\_\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01324\ \ \ \ \ next\_\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01325\ }
+\DoxyCodeLine{01326\ \ \ \ \ \textcolor{keywordflow}{return}\ std::unique\_ptr<IOBuf>((next\ ==\ \textcolor{keyword}{this})\ ?\ \textcolor{keyword}{nullptr}\ :\ next);}
+\DoxyCodeLine{01327\ \ \ \}}
+\DoxyCodeLine{01328\ }
+\DoxyCodeLine{01352\ \ \ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af3c0af6870164ad98f8470ef984d8fe2}{SeparateChain}}(IOBuf*\ head,\ IOBuf*\ tail)\ \{}
+\DoxyCodeLine{01353\ \ \ \ \ assert(head\ !=\ \textcolor{keyword}{this});}
+\DoxyCodeLine{01354\ \ \ \ \ assert(tail\ !=\ \textcolor{keyword}{this});}
 \DoxyCodeLine{01355\ }
-\DoxyCodeLine{01381\ \ \ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2c51eb098792bb55b59cfc054d48f62b}{separateChain}}(IOBuf*\ head,\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}})\ \{}
-\DoxyCodeLine{01382\ \ \ \ \ assert(head\ !=\ \textcolor{keyword}{this});}
-\DoxyCodeLine{01383\ \ \ \ \ assert(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}}\ !=\ \textcolor{keyword}{this});}
-\DoxyCodeLine{01384\ }
-\DoxyCodeLine{01385\ \ \ \ \ head-\/>prev\_-\/>next\_\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}}-\/>next\_;}
-\DoxyCodeLine{01386\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}}-\/>next\_-\/>prev\_\ =\ head-\/>prev\_;}
+\DoxyCodeLine{01356\ \ \ \ \ head-\/>prev\_-\/>next\_\ =\ tail-\/>next\_;}
+\DoxyCodeLine{01357\ \ \ \ \ tail-\/>next\_-\/>prev\_\ =\ head-\/>prev\_;}
+\DoxyCodeLine{01358\ }
+\DoxyCodeLine{01359\ \ \ \ \ head-\/>prev\_\ =\ tail;}
+\DoxyCodeLine{01360\ \ \ \ \ tail-\/>next\_\ =\ head;}
+\DoxyCodeLine{01361\ }
+\DoxyCodeLine{01362\ \ \ \ \ \textcolor{keywordflow}{return}\ std::unique\_ptr<IOBuf>(head);}
+\DoxyCodeLine{01363\ \ \ \}}
+\DoxyCodeLine{01364\ }
+\DoxyCodeLine{01378\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad6d427b0dc2129015373da3e25c52d15}{IsShared}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01379\ \ \ \ \ \textcolor{keyword}{const}\ IOBuf*\ current\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01380\ }
+\DoxyCodeLine{01381\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{01382\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current-\/>\mbox{\hyperlink{classkiwi_1_1_i_o_buf_acfe2272b3bce96c3abb4d0943ef4fc9b}{IsSharedOne}}())\ \{}
+\DoxyCodeLine{01383\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01384\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01385\ }
+\DoxyCodeLine{01386\ \ \ \ \ \ \ current\ =\ current-\/>next\_;}
 \DoxyCodeLine{01387\ }
-\DoxyCodeLine{01388\ \ \ \ \ head-\/>prev\_\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}};}
-\DoxyCodeLine{01389\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1df4cbfbaada02b973c62ef4a83356d5}{tail}}-\/>next\_\ =\ head;}
-\DoxyCodeLine{01390\ }
-\DoxyCodeLine{01391\ \ \ \ \ \textcolor{keywordflow}{return}\ std::unique\_ptr<IOBuf>(head);}
+\DoxyCodeLine{01388\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{01389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01390\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01391\ \ \ \ \ \}}
 \DoxyCodeLine{01392\ \ \ \}}
 \DoxyCodeLine{01393\ }
-\DoxyCodeLine{01409\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afd89244b5f410f262aa908464c5e8fa1}{isShared}}()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{01410\ \ \ \ \ \textcolor{keyword}{const}\ IOBuf*\ current\ =\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01411\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{01412\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current-\/>\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{isSharedOne}}())\ \{}
-\DoxyCodeLine{01413\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{01414\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{01415\ \ \ \ \ \ \ current\ =\ current-\/>next\_;}
-\DoxyCodeLine{01416\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\ ==\ \textcolor{keyword}{this})\ \{}
-\DoxyCodeLine{01417\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{01418\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{01419\ \ \ \ \ \}}
+\DoxyCodeLine{01402\ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a60bb8092a47d0323280174c78d61c3c2}{GetUserData}}()\ const\ noexcept\ \{}
+\DoxyCodeLine{01403\ \ \ \ \ \textcolor{keyword}{auto}\ info\ =\ GetSharedInfo();}
+\DoxyCodeLine{01404\ }
+\DoxyCodeLine{01405\ \ \ \ \ \textcolor{keywordflow}{return}\ info\ ?\ info-\/>user\_data\ :\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01406\ \ \ \}}
+\DoxyCodeLine{01407\ }
+\DoxyCodeLine{01416\ \ \ FreeFunction\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a28e1ea256d1bd6bbbdafdea48dfed2eb}{GetFreeFn}}()\ const\ noexcept\ \{}
+\DoxyCodeLine{01417\ \ \ \ \ \textcolor{keyword}{auto}\ info\ =\ GetSharedInfo();}
+\DoxyCodeLine{01418\ }
+\DoxyCodeLine{01419\ \ \ \ \ \textcolor{keywordflow}{return}\ info\ ?\ info-\/>free\_fn\ :\ \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{01420\ \ \ \}}
 \DoxyCodeLine{01421\ }
-\DoxyCodeLine{01432\ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac2257122c9144063b7c775fca0f93f37}{getUserData}}()\ const\ noexcept\ \{}
-\DoxyCodeLine{01433\ \ \ \ \ SharedInfo*\ info\ =\ sharedInfo();}
-\DoxyCodeLine{01434\ \ \ \ \ \textcolor{keywordflow}{return}\ info\ ?\ info-\/>userData\ :\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{01435\ \ \ \}}
+\DoxyCodeLine{01429\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Observer>}
+\DoxyCodeLine{01430\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a459ea5071c51a5015b35dafeae183ff0}{AppendSharedInfoObserver}}(Observer\&\&\ observer)\ \{}
+\DoxyCodeLine{01431\ \ \ \ \ \textcolor{keyword}{auto}\ info\ =\ GetSharedInfo();}
+\DoxyCodeLine{01432\ }
+\DoxyCodeLine{01433\ \ \ \ \ \textcolor{keywordflow}{if}\ (!info)\ \{}
+\DoxyCodeLine{01434\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01435\ \ \ \ \ \}}
 \DoxyCodeLine{01436\ }
-\DoxyCodeLine{01447\ \ \ FreeFunction\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af85710265218a2f770abedd96d97bd83}{getFreeFn}}()\ const\ noexcept\ \{}
-\DoxyCodeLine{01448\ \ \ \ \ SharedInfo*\ info\ =\ sharedInfo();}
-\DoxyCodeLine{01449\ \ \ \ \ \textcolor{keywordflow}{return}\ info\ ?\ info-\/>freeFn\ :\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{01450\ \ \ \}}
-\DoxyCodeLine{01451\ }
-\DoxyCodeLine{01461\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Observer>}
-\DoxyCodeLine{01462\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa225ec9d716734af44e8f4d1b09cd683}{appendSharedInfoObserver}}(Observer\&\&\ observer)\ \{}
-\DoxyCodeLine{01463\ \ \ \ \ SharedInfo*\ info\ =\ sharedInfo();}
-\DoxyCodeLine{01464\ \ \ \ \ \textcolor{keywordflow}{if}\ (!info)\ \{}
-\DoxyCodeLine{01465\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{01466\ \ \ \ \ \}}
-\DoxyCodeLine{01467\ }
-\DoxyCodeLine{01468\ \ \ \ \ \textcolor{keyword}{auto}*\ entry\ =}
-\DoxyCodeLine{01469\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ SharedInfoObserverEntry<Observer>(std::forward<Observer>(observer));}
-\DoxyCodeLine{01470\ \ \ \ \ std::lock\_guard<MicroSpinLock>\ guard(info-\/>observerListLock);}
-\DoxyCodeLine{01471\ \ \ \ \ \textcolor{keywordflow}{if}\ (!info-\/>observerListHead)\ \{}
-\DoxyCodeLine{01472\ \ \ \ \ \ \ info-\/>observerListHead\ =\ entry;}
-\DoxyCodeLine{01473\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{01474\ \ \ \ \ \ \ \textcolor{comment}{//\ prepend}}
-\DoxyCodeLine{01475\ \ \ \ \ \ \ entry-\/>next\ =\ info-\/>observerListHead;}
-\DoxyCodeLine{01476\ \ \ \ \ \ \ entry-\/>prev\ =\ info-\/>observerListHead-\/>prev;}
-\DoxyCodeLine{01477\ \ \ \ \ \ \ info-\/>observerListHead-\/>prev-\/>next\ =\ entry;}
-\DoxyCodeLine{01478\ \ \ \ \ \ \ info-\/>observerListHead-\/>prev\ =\ entry;}
-\DoxyCodeLine{01479\ \ \ \ \ \}}
-\DoxyCodeLine{01480\ }
-\DoxyCodeLine{01481\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{01482\ \ \ \}}
-\DoxyCodeLine{01483\ }
-\DoxyCodeLine{01494\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa22e9603db12c73badfc8e21d3f4adcc}{isManaged}}()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{01495\ \ \ \ \ \textcolor{keyword}{const}\ IOBuf*\ current\ =\ \textcolor{keyword}{this};}
-\DoxyCodeLine{01496\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{01497\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!current-\/>\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}{isManagedOne}}())\ \{}
-\DoxyCodeLine{01498\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{01499\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{01500\ \ \ \ \ \ \ current\ =\ current-\/>next\_;}
-\DoxyCodeLine{01501\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\ ==\ \textcolor{keyword}{this})\ \{}
-\DoxyCodeLine{01502\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{01503\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{01504\ \ \ \ \ \}}
-\DoxyCodeLine{01505\ \ \ \}}
+\DoxyCodeLine{01437\ \ \ \ \ \textcolor{keyword}{auto}*\ entry\ =}
+\DoxyCodeLine{01438\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ SharedInfoObserverEntry<Observer>(std::forward<Observer>(observer));}
+\DoxyCodeLine{01439\ \ \ \ \ std::lock\_guard<std::mutex>\ guard(info-\/>observer\_list\_lock);}
+\DoxyCodeLine{01440\ }
+\DoxyCodeLine{01441\ \ \ \ \ \textcolor{keywordflow}{if}\ (!info-\/>observer\_list\_head)\ \{}
+\DoxyCodeLine{01442\ \ \ \ \ \ \ info-\/>observer\_list\_head\ =\ entry;}
+\DoxyCodeLine{01443\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01444\ \ \ \ \ \ \ \textcolor{comment}{//\ prepend}}
+\DoxyCodeLine{01445\ \ \ \ \ \ \ entry-\/>next\ =\ info-\/>observer\_list\_head;}
+\DoxyCodeLine{01446\ \ \ \ \ \ \ entry-\/>prev\ =\ info-\/>observer\_list\_head-\/>prev;}
+\DoxyCodeLine{01447\ \ \ \ \ \ \ info-\/>observer\_list\_head-\/>prev-\/>next\ =\ entry;}
+\DoxyCodeLine{01448\ \ \ \ \ \ \ info-\/>observer\_list\_head-\/>prev\ =\ entry;}
+\DoxyCodeLine{01449\ \ \ \ \ \}}
+\DoxyCodeLine{01450\ }
+\DoxyCodeLine{01451\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01452\ \ \ \}}
+\DoxyCodeLine{01453\ }
+\DoxyCodeLine{01462\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae206bc7d596ee0679fb459e6f44f2756}{IsManaged}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01463\ \ \ \ \ \textcolor{keyword}{const}\ IOBuf*\ current\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{01464\ }
+\DoxyCodeLine{01465\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{01466\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!current-\/>\mbox{\hyperlink{classkiwi_1_1_i_o_buf_ab044ec809760986f38f05f56048c90ce}{IsManagedOne}}())\ \{}
+\DoxyCodeLine{01467\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01468\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01469\ }
+\DoxyCodeLine{01470\ \ \ \ \ \ \ current\ =\ current-\/>next\_;}
+\DoxyCodeLine{01471\ }
+\DoxyCodeLine{01472\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{01473\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01474\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01475\ \ \ \ \ \}}
+\DoxyCodeLine{01476\ \ \ \}}
+\DoxyCodeLine{01477\ }
+\DoxyCodeLine{01488\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ab044ec809760986f38f05f56048c90ce}{IsManagedOne}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ GetSharedInfo();\ \}}
+\DoxyCodeLine{01489\ }
+\DoxyCodeLine{01505\ \ \ uint32\_t\ ApproximateShareCountOne()\ \textcolor{keyword}{const};}
 \DoxyCodeLine{01506\ }
-\DoxyCodeLine{01519\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}{isManagedOne}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ sharedInfo();\ \}}
-\DoxyCodeLine{01520\ }
-\DoxyCodeLine{01538\ \ \ uint32\_t\ approximateShareCountOne()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01539\ }
-\DoxyCodeLine{01554\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{isSharedOne}}()\ const\ noexcept\ \{}
-\DoxyCodeLine{01555\ \ \ \ \ \textcolor{comment}{//\ If\ this\ is\ a\ user-\/owned\ buffer,\ it\ is\ always\ considered\ shared}}
-\DoxyCodeLine{01556\ \ \ \ \ \textcolor{keywordflow}{if}\ (FOLLY\_UNLIKELY(!sharedInfo()))\ \{}
-\DoxyCodeLine{01557\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{01558\ \ \ \ \ \}}
-\DoxyCodeLine{01559\ }
-\DoxyCodeLine{01560\ \ \ \ \ \textcolor{keywordflow}{if}\ (FOLLY\_UNLIKELY(sharedInfo()-\/>externallyShared))\ \{}
-\DoxyCodeLine{01561\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{01562\ \ \ \ \ \}}
-\DoxyCodeLine{01563\ }
-\DoxyCodeLine{01564\ \ \ \ \ \textcolor{keywordflow}{return}\ sharedInfo()-\/>refcount.load(std::memory\_order\_acquire)\ >\ 1;}
-\DoxyCodeLine{01565\ \ \ \}}
-\DoxyCodeLine{01566\ }
-\DoxyCodeLine{01597\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a81ae2bc0e965bd2f064eab8be5aca20a}{unshare}}()\ \{}
-\DoxyCodeLine{01598\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{isChained}}())\ \{}
-\DoxyCodeLine{01599\ \ \ \ \ \ \ unshareChained();}
-\DoxyCodeLine{01600\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{01601\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}{unshareOne}}();}
-\DoxyCodeLine{01602\ \ \ \ \ \}}
-\DoxyCodeLine{01603\ \ \ \}}
-\DoxyCodeLine{01604\ }
-\DoxyCodeLine{01616\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a59963bfa0d8a3833e1746e6674513c77}{unshareOne}}()\ \{}
-\DoxyCodeLine{01617\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0c97fe228756f08adc44cf2c341f9c48}{isSharedOne}}())\ \{}
-\DoxyCodeLine{01618\ \ \ \ \ \ \ unshareOneSlow();}
-\DoxyCodeLine{01619\ \ \ \ \ \}}
-\DoxyCodeLine{01620\ \ \ \}}
-\DoxyCodeLine{01621\ }
-\DoxyCodeLine{01633\ \ \ \textcolor{keywordtype}{void}\ markExternallyShared();}
-\DoxyCodeLine{01634\ }
-\DoxyCodeLine{01646\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a247fc1ca4456b087267fca6e5ffc7ca9}{markExternallySharedOne}}()\ \{}
-\DoxyCodeLine{01647\ \ \ \ \ SharedInfo*\ info\ =\ sharedInfo();}
-\DoxyCodeLine{01648\ \ \ \ \ \textcolor{keywordflow}{if}\ (info)\ \{}
-\DoxyCodeLine{01649\ \ \ \ \ \ \ info-\/>externallyShared\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{01650\ \ \ \ \ \}}
-\DoxyCodeLine{01651\ \ \ \}}
-\DoxyCodeLine{01652\ }
-\DoxyCodeLine{01666\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ada90ffb9e75a1954c0364bd465e0ca10}{makeManaged}}()\ \{}
-\DoxyCodeLine{01667\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{isChained}}())\ \{}
-\DoxyCodeLine{01668\ \ \ \ \ \ \ makeManagedChained();}
-\DoxyCodeLine{01669\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{01670\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3af33eb4f4099792d2194526af915940}{makeManagedOne}}();}
-\DoxyCodeLine{01671\ \ \ \ \ \}}
-\DoxyCodeLine{01672\ \ \ \}}
+\DoxyCodeLine{01519\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_acfe2272b3bce96c3abb4d0943ef4fc9b}{IsSharedOne}}()\ const\ noexcept\ \{}
+\DoxyCodeLine{01520\ \ \ \ \ \textcolor{keyword}{auto}\ info\ =\ GetSharedInfo();}
+\DoxyCodeLine{01521\ }
+\DoxyCodeLine{01522\ \ \ \ \ \textcolor{comment}{//\ If\ this\ is\ a\ user-\/owned\ buffer,\ it\ is\ always\ considered\ shared.}}
+\DoxyCodeLine{01523\ \ \ \ \ \textcolor{keywordflow}{if}\ (!info)\ [[unlikely]]\ \{}
+\DoxyCodeLine{01524\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01525\ \ \ \ \ \}}
+\DoxyCodeLine{01526\ }
+\DoxyCodeLine{01527\ \ \ \ \ \textcolor{keywordflow}{if}\ (info-\/>externally\_shared)\ [[unlikely]]\ \{}
+\DoxyCodeLine{01528\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01529\ \ \ \ \ \}}
+\DoxyCodeLine{01530\ }
+\DoxyCodeLine{01531\ \ \ \ \ \textcolor{keywordflow}{return}\ info-\/>refcount.load(std::memory\_order\_acquire)\ >\ 1;}
+\DoxyCodeLine{01532\ \ \ \}}
+\DoxyCodeLine{01533\ }
+\DoxyCodeLine{01562\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a02310eb3c6cfac120d0b7d962097e6ab}{Unshare}}()\ \{}
+\DoxyCodeLine{01563\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a327d1deedf8559d086fe372e7de6c753}{IsChained}}())\ \{}
+\DoxyCodeLine{01564\ \ \ \ \ \ \ UnshareChained();}
+\DoxyCodeLine{01565\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01566\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3a25efa83923b3904420315cfcbbbd0a}{UnshareOne}}();}
+\DoxyCodeLine{01567\ \ \ \ \ \}}
+\DoxyCodeLine{01568\ \ \ \}}
+\DoxyCodeLine{01569\ }
+\DoxyCodeLine{01579\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3a25efa83923b3904420315cfcbbbd0a}{UnshareOne}}()\ \{}
+\DoxyCodeLine{01580\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_acfe2272b3bce96c3abb4d0943ef4fc9b}{IsSharedOne}}())\ \{}
+\DoxyCodeLine{01581\ \ \ \ \ \ \ UnshareOneSlow();}
+\DoxyCodeLine{01582\ \ \ \ \ \}}
+\DoxyCodeLine{01583\ \ \ \}}
+\DoxyCodeLine{01584\ }
+\DoxyCodeLine{01594\ \ \ \textcolor{keywordtype}{void}\ MarkExternallyShared();}
+\DoxyCodeLine{01595\ }
+\DoxyCodeLine{01605\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aca41d072b060f79a73bc3e6b67dca4bb}{MarkExternallySharedOne}}()\ \{}
+\DoxyCodeLine{01606\ \ \ \ \ \textcolor{keyword}{auto}\ info\ =\ GetSharedInfo();}
+\DoxyCodeLine{01607\ }
+\DoxyCodeLine{01608\ \ \ \ \ \textcolor{keywordflow}{if}\ (info)\ \{}
+\DoxyCodeLine{01609\ \ \ \ \ \ \ info-\/>externally\_shared\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01610\ \ \ \ \ \}}
+\DoxyCodeLine{01611\ \ \ \}}
+\DoxyCodeLine{01612\ }
+\DoxyCodeLine{01624\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2c24eab145eaf298ac70d02eee0baa3d}{MakeManaged}}()\ \{}
+\DoxyCodeLine{01625\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a327d1deedf8559d086fe372e7de6c753}{IsChained}}())\ \{}
+\DoxyCodeLine{01626\ \ \ \ \ \ \ MakeManagedChained();}
+\DoxyCodeLine{01627\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01628\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a102404f55b2abc56d44bdcd10a5e4f08}{MakeManagedOne}}();}
+\DoxyCodeLine{01629\ \ \ \ \ \}}
+\DoxyCodeLine{01630\ \ \ \}}
+\DoxyCodeLine{01631\ }
+\DoxyCodeLine{01643\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a102404f55b2abc56d44bdcd10a5e4f08}{MakeManagedOne}}()\ \{}
+\DoxyCodeLine{01644\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_i_o_buf_ab044ec809760986f38f05f56048c90ce}{IsManagedOne}}())\ \{}
+\DoxyCodeLine{01645\ \ \ \ \ \ \ \textcolor{comment}{//\ We\ can\ call\ the\ internal\ function\ directly;\ unmanaged\ implies\ shared.}}
+\DoxyCodeLine{01646\ \ \ \ \ \ \ UnshareOneSlow();}
+\DoxyCodeLine{01647\ \ \ \ \ \}}
+\DoxyCodeLine{01648\ \ \ \}}
+\DoxyCodeLine{01649\ }
+\DoxyCodeLine{01669\ \ \ ByteRange\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_acc67e55ad77e64bdecd1985c89a1d3f0}{Coalesce}}()\ \{}
+\DoxyCodeLine{01670\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a327d1deedf8559d086fe372e7de6c753}{IsChained}}())\ \{}
+\DoxyCodeLine{01671\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ new\_head\_room\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}();}
+\DoxyCodeLine{01672\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ new\_tail\_room\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6e6cfe3b15ad1c481d93926b3c0337a4}{Prev}}()-\/>TailRoom();}
 \DoxyCodeLine{01673\ }
-\DoxyCodeLine{01687\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3af33eb4f4099792d2194526af915940}{makeManagedOne}}()\ \{}
-\DoxyCodeLine{01688\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a38c51004d1388e27a296985cdc108c05}{isManagedOne}}())\ \{}
-\DoxyCodeLine{01689\ \ \ \ \ \ \ \textcolor{comment}{//\ We\ can\ call\ the\ internal\ function\ directly;\ unmanaged\ implies\ shared.}}
-\DoxyCodeLine{01690\ \ \ \ \ \ \ unshareOneSlow();}
-\DoxyCodeLine{01691\ \ \ \ \ \}}
-\DoxyCodeLine{01692\ \ \ \}}
+\DoxyCodeLine{01674\ \ \ \ \ \ \ CoalesceAndReallocate(new\_head\_room,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a78fefcb935fa0e189324e07d03702320}{ComputeChainDataLength}}(),\ \textcolor{keyword}{this},}
+\DoxyCodeLine{01675\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ new\_tail\_room);}
+\DoxyCodeLine{01676\ \ \ \ \ \}}
+\DoxyCodeLine{01677\ }
+\DoxyCodeLine{01678\ \ \ \ \ \textcolor{keywordflow}{return}\ ByteRange(data\_,\ length\_);}
+\DoxyCodeLine{01679\ \ \ \}}
+\DoxyCodeLine{01680\ }
+\DoxyCodeLine{01687\ \ \ ByteRange\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a330906fb632d710757b90ad5a3c95f67}{CoalesceWithHeadroomTailroom}}(std::size\_t\ new\_head\_room,}
+\DoxyCodeLine{01688\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ new\_tail\_room)\ \{}
+\DoxyCodeLine{01689\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a327d1deedf8559d086fe372e7de6c753}{IsChained}}())\ \{}
+\DoxyCodeLine{01690\ \ \ \ \ \ \ CoalesceAndReallocate(new\_head\_room,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a78fefcb935fa0e189324e07d03702320}{ComputeChainDataLength}}(),\ \textcolor{keyword}{this},}
+\DoxyCodeLine{01691\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ new\_tail\_room);}
+\DoxyCodeLine{01692\ \ \ \ \ \}}
 \DoxyCodeLine{01693\ }
-\DoxyCodeLine{01715\ \ \ ByteRange\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a37635b09ac4a3f2baf99046cd851fc2a}{coalesce}}()\ \{}
-\DoxyCodeLine{01716\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{isChained}}())\ \{}
-\DoxyCodeLine{01717\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ newHeadroom\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}}();}
-\DoxyCodeLine{01718\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ newTailroom\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1dc8d8e9ebdec00d38c56e49b9d4dba9}{prev}}()-\/>tailroom();}
-\DoxyCodeLine{01719\ \ \ \ \ \ \ coalesceAndReallocate(newHeadroom,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}{computeChainDataLength}}(),\ \textcolor{keyword}{this},}
-\DoxyCodeLine{01720\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newTailroom);}
-\DoxyCodeLine{01721\ \ \ \ \ \}}
-\DoxyCodeLine{01722\ \ \ \ \ \textcolor{keywordflow}{return}\ ByteRange(data\_,\ length\_);}
-\DoxyCodeLine{01723\ \ \ \}}
-\DoxyCodeLine{01724\ }
-\DoxyCodeLine{01733\ \ \ ByteRange\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a31443235b88a34dc4b28e0e953e80359}{coalesceWithHeadroomTailroom}}(std::size\_t\ newHeadroom,}
-\DoxyCodeLine{01734\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ newTailroom)\ \{}
-\DoxyCodeLine{01735\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{isChained}}())\ \{}
-\DoxyCodeLine{01736\ \ \ \ \ \ \ coalesceAndReallocate(newHeadroom,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}{computeChainDataLength}}(),\ \textcolor{keyword}{this},}
-\DoxyCodeLine{01737\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newTailroom);}
-\DoxyCodeLine{01738\ \ \ \ \ \}}
-\DoxyCodeLine{01739\ \ \ \ \ \textcolor{keywordflow}{return}\ ByteRange(data\_,\ length\_);}
-\DoxyCodeLine{01740\ \ \ \}}
-\DoxyCodeLine{01741\ }
-\DoxyCodeLine{01762\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_acdec438f2dbdfa2a791081323392f632}{gather}}(std::size\_t\ contiguousLength)\ \{}
-\DoxyCodeLine{01763\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3c1716d549a392455b8ff73320d75b01}{isChained}}()\ ||\ length\_\ >=\ contiguousLength)\ \{}
-\DoxyCodeLine{01764\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{01765\ \ \ \ \ \}}
-\DoxyCodeLine{01766\ \ \ \ \ coalesceSlow(contiguousLength);}
-\DoxyCodeLine{01767\ \ \ \}}
-\DoxyCodeLine{01768\ }
-\DoxyCodeLine{01781\ \ \ std::unique\_ptr<IOBuf>\ clone()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01694\ \ \ \ \ \textcolor{keywordflow}{return}\ ByteRange(data\_,\ length\_);}
+\DoxyCodeLine{01695\ \ \ \}}
+\DoxyCodeLine{01696\ }
+\DoxyCodeLine{01715\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad01aa5a69e98470d66c113e8aafb06d1}{Gather}}(std::size\_t\ contiguous\_length)\ \{}
+\DoxyCodeLine{01716\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a327d1deedf8559d086fe372e7de6c753}{IsChained}}()\ ||\ length\_\ >=\ contiguous\_length)\ \{}
+\DoxyCodeLine{01717\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01718\ \ \ \ \ \}}
+\DoxyCodeLine{01719\ }
+\DoxyCodeLine{01720\ \ \ \ \ CoalesceSlow(contiguous\_length);}
+\DoxyCodeLine{01721\ \ \ \}}
+\DoxyCodeLine{01722\ }
+\DoxyCodeLine{01733\ \ \ std::unique\_ptr<IOBuf>\ Clone()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01734\ }
+\DoxyCodeLine{01738\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ CloneAsValue()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01739\ }
+\DoxyCodeLine{01745\ \ \ std::unique\_ptr<IOBuf>\ CloneOne()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01746\ }
+\DoxyCodeLine{01750\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ CloneOneAsValue()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01751\ }
+\DoxyCodeLine{01766\ \ \ std::unique\_ptr<IOBuf>\ CloneCoalesced()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01767\ }
+\DoxyCodeLine{01774\ \ \ std::unique\_ptr<IOBuf>\ CloneCoalescedWithHeadroomTailroom(}
+\DoxyCodeLine{01775\ \ \ \ \ \ \ std::size\_t\ new\_head\_room,\ std::size\_t\ new\_tail\_room)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01776\ }
+\DoxyCodeLine{01781\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ CloneCoalescedAsValue()\ \textcolor{keyword}{const};}
 \DoxyCodeLine{01782\ }
-\DoxyCodeLine{01788\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ cloneAsValue()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01789\ }
-\DoxyCodeLine{01797\ \ \ std::unique\_ptr<IOBuf>\ cloneOne()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01798\ }
-\DoxyCodeLine{01804\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ cloneOneAsValue()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01805\ }
-\DoxyCodeLine{01822\ \ \ std::unique\_ptr<IOBuf>\ cloneCoalesced()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01823\ }
-\DoxyCodeLine{01832\ \ \ std::unique\_ptr<IOBuf>\ cloneCoalescedWithHeadroomTailroom(}
-\DoxyCodeLine{01833\ \ \ \ \ \ \ std::size\_t\ newHeadroom,\ std::size\_t\ newTailroom)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01834\ }
-\DoxyCodeLine{01841\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ cloneCoalescedAsValue()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01842\ }
-\DoxyCodeLine{01849\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ cloneCoalescedAsValueWithHeadroomTailroom(}
-\DoxyCodeLine{01850\ \ \ \ \ \ \ std::size\_t\ newHeadroom,\ std::size\_t\ newTailroom)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01851\ }
-\DoxyCodeLine{01861\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa1fe108b608377de28f97229955d5c31}{cloneInto}}(IOBuf\&\ other)\textcolor{keyword}{\ const\ }\{\ other\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a1743440b00acb1e11a08b1464ba8ee2b}{cloneAsValue}}();\ \}}
-\DoxyCodeLine{01862\ }
-\DoxyCodeLine{01871\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a60cc7b444a16f6973c0e4bfa5281724c}{cloneOneInto}}(IOBuf\&\ other)\textcolor{keyword}{\ const\ }\{\ other\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9bdaf35f65a5484200d7ccfc115382f8}{cloneOneAsValue}}();\ \}}
-\DoxyCodeLine{01872\ }
-\DoxyCodeLine{01882\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Container>}
-\DoxyCodeLine{01883\ \ \ \textcolor{keywordtype}{void}\ appendTo(Container\&\ container)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01884\ }
-\DoxyCodeLine{01894\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Container>}
-\DoxyCodeLine{01895\ \ \ Container\ to()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01896\ }
-\DoxyCodeLine{01908\ \ \ folly::fbvector<struct\ iovec>\ getIov()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01909\ }
-\DoxyCodeLine{01923\ \ \ \textcolor{keywordtype}{void}\ appendToIov(folly::fbvector<struct\ iovec>*\ iov)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01924\ }
-\DoxyCodeLine{01925\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{FillIovResult}}\ \{}
-\DoxyCodeLine{01926\ \ \ \ \ \textcolor{comment}{//\ How\ many\ iovecs\ were\ filled\ (or\ 0\ on\ error).}}
-\DoxyCodeLine{01927\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ numIovecs;}
-\DoxyCodeLine{01928\ \ \ \ \ \textcolor{comment}{//\ The\ total\ length\ of\ filled\ iovecs\ (or\ 0\ on\ error).}}
-\DoxyCodeLine{01929\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ totalLength;}
-\DoxyCodeLine{01930\ \ \ \};}
-\DoxyCodeLine{01931\ }
-\DoxyCodeLine{01948\ \ \ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{FillIovResult}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a03b4fdd6e783dc02272edc01fb33e569}{fillIov}}(\textcolor{keyword}{struct}\ iovec*\ iov,\ \textcolor{keywordtype}{size\_t}\ len)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{01949\ }
-\DoxyCodeLine{01961\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2e78659e9a32e430966727cff4d21e91}{wrapIov}}(\textcolor{keyword}{const}\ iovec*\ vec,\ \textcolor{keywordtype}{size\_t}\ count);}
-\DoxyCodeLine{01962\ }
-\DoxyCodeLine{01979\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a96e120025a5e886cba2334f71cf67358}{takeOwnershipIov}}(\textcolor{keyword}{const}\ iovec*\ vec,\ \textcolor{keywordtype}{size\_t}\ count,}
-\DoxyCodeLine{01980\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ freeFn\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{01981\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ userData\ =\ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{01982\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ freeOnError\ =\ \textcolor{keyword}{true});}
-\DoxyCodeLine{01983\ }
-\DoxyCodeLine{01993\ \ \ \textcolor{keywordtype}{void}*\ \textcolor{keyword}{operator}\ \textcolor{keyword}{new}(\textcolor{keywordtype}{size\_t}\ size);}
-\DoxyCodeLine{01994\ }
-\DoxyCodeLine{01999\ \ \ \textcolor{keywordtype}{void}*\ \textcolor{keyword}{operator}\ \textcolor{keyword}{new}(\textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{void}*\ ptr);}
-\DoxyCodeLine{02000\ }
-\DoxyCodeLine{02005\ \ \ \textcolor{keywordtype}{void}\ \textcolor{keyword}{operator}\ \textcolor{keyword}{delete}(\textcolor{keywordtype}{void}*\ ptr);}
-\DoxyCodeLine{02006\ }
-\DoxyCodeLine{02011\ \ \ \textcolor{keywordtype}{void}\ \textcolor{keyword}{operator}\ \textcolor{keyword}{delete}(\textcolor{keywordtype}{void}*\ ptr,\ \textcolor{keywordtype}{void}*\ placement);}
-\DoxyCodeLine{02012\ }
-\DoxyCodeLine{02022\ \ \ fbstring\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adb4434c5e3cae2059ac76696ddb4e50f}{moveToFbString}}();}
-\DoxyCodeLine{02023\ }
-\DoxyCodeLine{02031\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138}{cbegin}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{02032\ }
-\DoxyCodeLine{02034\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42}{cend}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{02035\ }
-\DoxyCodeLine{02037\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223}{begin}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{02038\ }
-\DoxyCodeLine{02040\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{02041\ }
-\DoxyCodeLine{02049\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a2b84f84ca1454238aa2531223d420a78}{IOBuf}}()\ noexcept;}
-\DoxyCodeLine{02050\ }
-\DoxyCodeLine{02063\ \ \ IOBuf(IOBuf\&\&\ other)\ noexcept;}
-\DoxyCodeLine{02064\ }
-\DoxyCodeLine{02072\ \ \ IOBuf\&\ operator=(IOBuf\&\&\ other)\ noexcept;}
-\DoxyCodeLine{02073\ }
-\DoxyCodeLine{02079\ \ \ IOBuf(const\ IOBuf\&\ other);}
+\DoxyCodeLine{01788\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ CloneCoalescedAsValueWithHeadroomTailroom(}
+\DoxyCodeLine{01789\ \ \ \ \ \ \ std::size\_t\ new\_head\_room,\ std::size\_t\ new\_tail\_room)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01790\ }
+\DoxyCodeLine{01798\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae67aa00c7b4f098ec567446e5f80efc3}{CloneInto}}(IOBuf\&\ other)\textcolor{keyword}{\ const\ }\{\ other\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ac0f7ae7b52fbea81b71d468e67cc7cd2}{CloneAsValue}}();\ \}}
+\DoxyCodeLine{01799\ }
+\DoxyCodeLine{01806\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a55d8e92a27d6269fc75ec508ff9f4239}{CloneOneInto}}(IOBuf\&\ other)\textcolor{keyword}{\ const\ }\{\ other\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a54945401269798c696f3f17c43a5d6aa}{CloneOneAsValue}}();\ \}}
+\DoxyCodeLine{01807\ }
+\DoxyCodeLine{01815\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Container>}
+\DoxyCodeLine{01816\ \ \ \textcolor{keywordtype}{void}\ AppendTo(Container\&\ container)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01817\ }
+\DoxyCodeLine{01825\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Container>}
+\DoxyCodeLine{01826\ \ \ Container\ To()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01827\ }
+\DoxyCodeLine{01839\ \ \ std::vector<struct\ iovec>\ GetIov()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01840\ }
+\DoxyCodeLine{01852\ \ \ \textcolor{keywordtype}{void}\ AppendToIov(std::vector<struct\ iovec>*\ iov)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01853\ }
+\DoxyCodeLine{01854\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{FillIovResult}}\ \{}
+\DoxyCodeLine{01856\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result_aae577cd99ab04a5a5198f3c5e0fa7784}{num\_iovecs}};}
+\DoxyCodeLine{01858\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result_a7812a5e1834aa535994285c077485746}{total\_length}};}
+\DoxyCodeLine{01859\ \ \ \};}
+\DoxyCodeLine{01860\ }
+\DoxyCodeLine{01875\ \ \ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{FillIovResult}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adf0a26330fc206a4f85b079061731413}{FillIov}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structiovec}{iovec}}*\ iov,\ \textcolor{keywordtype}{size\_t}\ len)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01876\ }
+\DoxyCodeLine{01884\ \ \ \textcolor{keywordtype}{void}*\ \textcolor{keyword}{operator}\ \textcolor{keyword}{new}(\textcolor{keywordtype}{size\_t}\ size);}
+\DoxyCodeLine{01885\ }
+\DoxyCodeLine{01888\ \ \ \textcolor{keywordtype}{void}*\ \textcolor{keyword}{operator}\ \textcolor{keyword}{new}(\textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{void}*\ ptr);}
+\DoxyCodeLine{01889\ }
+\DoxyCodeLine{01892\ \ \ \textcolor{keywordtype}{void}\ \textcolor{keyword}{operator}\ \textcolor{keyword}{delete}(\textcolor{keywordtype}{void}*\ ptr);}
+\DoxyCodeLine{01893\ }
+\DoxyCodeLine{01896\ \ \ \textcolor{keywordtype}{void}\ \textcolor{keyword}{operator}\ \textcolor{keyword}{delete}(\textcolor{keywordtype}{void}*\ ptr,\ \textcolor{keywordtype}{void}*\ placement);}
+\DoxyCodeLine{01897\ }
+\DoxyCodeLine{01905\ \ \ std::string\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4e0fb2a8cb526cd819bdc625310cac6f}{MoveToFbString}}();}
+\DoxyCodeLine{01906\ }
+\DoxyCodeLine{01912\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138}{cbegin}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01913\ }
+\DoxyCodeLine{01915\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42}{cend}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01916\ }
+\DoxyCodeLine{01918\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223}{begin}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01919\ }
+\DoxyCodeLine{01921\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01922\ }
+\DoxyCodeLine{01923\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01927\ \ \ std::size\_t\ length\_\{0\};}
+\DoxyCodeLine{01928\ \ \ uint8\_t*\ data\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{01929\ }
+\DoxyCodeLine{01930\ \ \ std::size\_t\ capacity\_\{0\};}
+\DoxyCodeLine{01931\ \ \ uint8\_t*\ buf\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{01932\ }
+\DoxyCodeLine{01938\ \ \ IOBuf*\ next\_\{\textcolor{keyword}{this}\};}
+\DoxyCodeLine{01939\ \ \ IOBuf*\ prev\_\{\textcolor{keyword}{this}\};}
+\DoxyCodeLine{01940\ }
+\DoxyCodeLine{01942\ \ \ uintptr\_t\ flags\_and\_shared\_info\_\{0\};}
+\DoxyCodeLine{01943\ \};}
+\DoxyCodeLine{01944\ }
+\DoxyCodeLine{01946\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_hash}{IOBufHash}}\ \{}
+\DoxyCodeLine{01947\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\&\ buf)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{01948\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ std::unique\_ptr<IOBuf>\&\ buf)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01949\ \ \ \ \ \textcolor{keywordflow}{return}\ operator()(buf.get());}
+\DoxyCodeLine{01950\ \ \ \}}
+\DoxyCodeLine{01951\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}*\ buf)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01952\ \ \ \ \ \textcolor{keywordflow}{return}\ buf\ ?\ (*this)(*buf)\ :\ 0;}
+\DoxyCodeLine{01953\ \ \ \}}
+\DoxyCodeLine{01954\ \};}
+\DoxyCodeLine{01955\ }
+\DoxyCodeLine{01957\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_compare}{IOBufCompare}}\ \{}
+\DoxyCodeLine{01958\ \ \ std::strong\_ordering\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\&\ b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01959\ \ \ \ \ \textcolor{keywordflow}{return}\ \&a\ ==\ \&b\ ?\ std::strong\_ordering::equal\ :\ impl(a,\ b);}
+\DoxyCodeLine{01960\ \ \ \}}
+\DoxyCodeLine{01961\ }
+\DoxyCodeLine{01962\ \ \ std::strong\_ordering\ operator()(\textcolor{keyword}{const}\ std::unique\_ptr<IOBuf>\&\ a,}
+\DoxyCodeLine{01963\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::unique\_ptr<IOBuf>\&\ b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01964\ \ \ \ \ \textcolor{keywordflow}{return}\ operator()(a.get(),\ b.get());}
+\DoxyCodeLine{01965\ \ \ \}}
+\DoxyCodeLine{01966\ }
+\DoxyCodeLine{01967\ \ \ std::strong\_ordering\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}*\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}*\ b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01968\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ off}}
+\DoxyCodeLine{01969\ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{01970\ \ \ \ \ \ \ \ \ !a\ \&\&\ !b\ ?\ std::strong\_ordering::equal\ :}
+\DoxyCodeLine{01971\ \ \ \ \ \ \ \ \ !a\ \&\&\ b\ ?\ \ std::strong\_ordering::less\ :}
+\DoxyCodeLine{01972\ \ \ \ \ \ \ \ \ a\ \&\&\ !b\ ?\ \ std::strong\_ordering::greater\ :}
+\DoxyCodeLine{01973\ \ \ \ \ \ \ \ \ operator()(*a,\ *b);}
+\DoxyCodeLine{01974\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ on}}
+\DoxyCodeLine{01975\ \ \ \}}
+\DoxyCodeLine{01976\ }
+\DoxyCodeLine{01977\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01978\ \ \ std::strong\_ordering\ impl(\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ \textcolor{keyword}{const}\&\ a,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ \textcolor{keyword}{const}\&\ b)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{01979\ \};}
+\DoxyCodeLine{01980\ }
+\DoxyCodeLine{01981\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ UniquePtr>}
+\DoxyCodeLine{01982\ \textcolor{keyword}{typename}\ std::enable\_if<detail::IsUniquePtrToSL<UniquePtr>::value,}
+\DoxyCodeLine{01983\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<IOBuf>>::type}
+\DoxyCodeLine{01984\ IOBuf::TakeOwnership(UniquePtr\&\&\ buf,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{01985\ \ \ \textcolor{keywordtype}{size\_t}\ size\ =\ count\ *\ \textcolor{keyword}{sizeof}(\textcolor{keyword}{typename}\ UniquePtr::element\_type);}
+\DoxyCodeLine{01986\ \ \ \textcolor{keyword}{auto}\ deleter\ =\ \textcolor{keyword}{new}\ UniquePtrDeleter<UniquePtr>(buf.get\_deleter());}
+\DoxyCodeLine{01987\ }
+\DoxyCodeLine{01988\ \ \ \textcolor{keywordflow}{return}\ TakeOwnership(buf.release(),\ size,\ \&IOBuf::FreeUniquePtrBuffer,}
+\DoxyCodeLine{01989\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deleter);}
+\DoxyCodeLine{01990\ \}}
+\DoxyCodeLine{01991\ }
+\DoxyCodeLine{01992\ \textcolor{keyword}{inline}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5c9ba80c7ca24ab312bfca2816e184bb}{IOBuf::CopyBuffer}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}},}
+\DoxyCodeLine{01993\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ size,}
+\DoxyCodeLine{01994\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ head\_room,}
+\DoxyCodeLine{01995\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ min\_tail\_room)\ \{}
+\DoxyCodeLine{01996\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}};}
+\DoxyCodeLine{01997\ }
+\DoxyCodeLine{01998\ \ \ \textcolor{keywordflow}{if}\ (!kiwi::checked\_add(\&\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ size,\ head\_room,\ min\_tail\_room))\ \{}
+\DoxyCodeLine{01999\ \ \ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
+\DoxyCodeLine{02000\ \ \ \}}
+\DoxyCodeLine{02001\ }
+\DoxyCodeLine{02002\ \ \ std::unique\_ptr<IOBuf>\ buf\ =\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a8e0900f4f9d06d41fa4e7c083217c6a5}{Create}}(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
+\DoxyCodeLine{02003\ \ \ buf-\/>Advance(head\_room);}
+\DoxyCodeLine{02004\ }
+\DoxyCodeLine{02005\ \ \ \textcolor{keywordflow}{if}\ (size\ !=\ 0)\ \{}
+\DoxyCodeLine{02006\ \ \ \ \ memcpy(buf-\/>WritableData(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}},\ size);}
+\DoxyCodeLine{02007\ \ \ \}}
+\DoxyCodeLine{02008\ }
+\DoxyCodeLine{02009\ \ \ buf-\/>Append(size);}
+\DoxyCodeLine{02010\ }
+\DoxyCodeLine{02011\ \ \ \textcolor{keywordflow}{return}\ buf;}
+\DoxyCodeLine{02012\ \}}
+\DoxyCodeLine{02013\ }
+\DoxyCodeLine{02014\ \textcolor{keyword}{inline}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5c9ba80c7ca24ab312bfca2816e184bb}{IOBuf::CopyBuffer}}(std::string\_view\ buf,}
+\DoxyCodeLine{02015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ head\_room,}
+\DoxyCodeLine{02016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ min\_tail\_room)\ \{}
+\DoxyCodeLine{02017\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5c9ba80c7ca24ab312bfca2816e184bb}{CopyBuffer}}(buf.data(),\ buf.size(),\ head\_room,\ min\_tail\_room);}
+\DoxyCodeLine{02018\ \}}
+\DoxyCodeLine{02019\ }
+\DoxyCodeLine{02020\ \textcolor{keyword}{inline}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a3cb72bf084625127b80ca48d1d2b404d}{IOBuf::MaybeCopyBuffer}}(}
+\DoxyCodeLine{02021\ \ \ \ \ std::string\_view\ buf,\ std::size\_t\ head\_room,\ std::size\_t\ min\_tail\_room)\ \{}
+\DoxyCodeLine{02022\ \ \ \textcolor{keywordflow}{if}\ (buf.empty())\ \{}
+\DoxyCodeLine{02023\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{02024\ \ \ \}}
+\DoxyCodeLine{02025\ }
+\DoxyCodeLine{02026\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a5c9ba80c7ca24ab312bfca2816e184bb}{CopyBuffer}}(buf.data(),\ buf.size(),\ head\_room,\ min\_tail\_room);}
+\DoxyCodeLine{02027\ \}}
+\DoxyCodeLine{02028\ }
+\DoxyCodeLine{02029\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf::Iterator}}}
+\DoxyCodeLine{02030\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classkiwi_1_1detail_1_1_iterator_facade}{detail::IteratorFacade}}<IOBuf::Iterator,\ ByteRange\ const,}
+\DoxyCodeLine{02031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::forward\_iterator\_tag>\ \{}
+\DoxyCodeLine{02032\ \ \ \textcolor{keywordtype}{void}\ SetVal()\ \{}
+\DoxyCodeLine{02033\ \ \ \ \ \textcolor{keyword}{auto}\ tmp\ =\ \textcolor{keyword}{const\_cast<}IOBuf*\textcolor{keyword}{>}(pos\_);}
+\DoxyCodeLine{02034\ }
+\DoxyCodeLine{02035\ \ \ \ \ val\_\ =\ ByteRange(tmp-\/>WritableData(),\ tmp-\/>WritableTail());}
+\DoxyCodeLine{02036\ \ \ \}}
+\DoxyCodeLine{02037\ }
+\DoxyCodeLine{02038\ \ \ \textcolor{keywordtype}{void}\ AdjustForEnd()\ \{}
+\DoxyCodeLine{02039\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_\ ==\ end\_)\ \{}
+\DoxyCodeLine{02040\ \ \ \ \ \ \ pos\_\ =\ end\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{02041\ \ \ \ \ \ \ val\_\ =\ ByteRange();}
+\DoxyCodeLine{02042\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{02043\ \ \ \ \ \ \ SetVal();}
+\DoxyCodeLine{02044\ \ \ \ \ \}}
+\DoxyCodeLine{02045\ \ \ \}}
+\DoxyCodeLine{02046\ }
+\DoxyCodeLine{02047\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{02048\ \ \ \textcolor{comment}{//\ Note\ that\ IOBufs\ are\ stored\ as\ a\ circular\ list\ without\ a\ guard\ node,}}
+\DoxyCodeLine{02049\ \ \ \textcolor{comment}{//\ so\ pos\ ==\ end\ is\ ambiguous\ (it\ may\ mean\ "{}begin"{}\ or\ "{}end"{}).\ \ To\ solve}}
+\DoxyCodeLine{02050\ \ \ \textcolor{comment}{//\ the\ ambiguity\ (at\ the\ cost\ of\ one\ extra\ comparison\ in\ the\ "{}increment"{}}}
+\DoxyCodeLine{02051\ \ \ \textcolor{comment}{//\ code\ path),\ we\ define\ end\ iterators\ as\ having\ pos\_\ ==\ end\_\ ==\ nullptr}}
+\DoxyCodeLine{02052\ \ \ \textcolor{comment}{//\ and\ we\ only\ allow\ forward\ iteration.}}
+\DoxyCodeLine{02053\ \ \ \textcolor{keyword}{explicit}\ Iterator(\textcolor{keyword}{const}\ IOBuf*\ pos,\ \textcolor{keyword}{const}\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}})\ :\ pos\_(pos),\ end\_(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}})\ \{}
+\DoxyCodeLine{02054\ \ \ \ \ \textcolor{comment}{//\ Sadly,\ we\ must\ return\ by\ const\ reference,\ not\ by\ value.}}
+\DoxyCodeLine{02055\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_)\ \{}
+\DoxyCodeLine{02056\ \ \ \ \ \ \ SetVal();}
+\DoxyCodeLine{02057\ \ \ \ \ \}}
+\DoxyCodeLine{02058\ \ \ \}}
+\DoxyCodeLine{02059\ }
+\DoxyCodeLine{02060\ \ \ Iterator()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{02061\ \ \ Iterator(Iterator\ \textcolor{keyword}{const}\&\ rhs)\ :\ Iterator(rhs.pos\_,\ rhs.end\_)\ \{\}}
+\DoxyCodeLine{02062\ \ \ Iterator\&\ operator=(Iterator\ \textcolor{keyword}{const}\&\ rhs)\ \{}
+\DoxyCodeLine{02063\ \ \ \ \ pos\_\ =\ rhs.pos\_;}
+\DoxyCodeLine{02064\ \ \ \ \ end\_\ =\ rhs.end\_;}
+\DoxyCodeLine{02065\ }
+\DoxyCodeLine{02066\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_)\ \{}
+\DoxyCodeLine{02067\ \ \ \ \ \ \ SetVal();}
+\DoxyCodeLine{02068\ \ \ \ \ \}}
+\DoxyCodeLine{02069\ }
+\DoxyCodeLine{02070\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{02071\ \ \ \}}
+\DoxyCodeLine{02072\ }
+\DoxyCodeLine{02073\ \ \ \textcolor{keyword}{const}\ ByteRange\&\ Dereference()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ val\_;\ \}}
+\DoxyCodeLine{02074\ \ \ \textcolor{keywordtype}{bool}\ IsEqual(\textcolor{keyword}{const}\ Iterator\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{02075\ \ \ \ \ \textcolor{comment}{//\ We\ must\ compare\ end\_\ in\ addition\ to\ pos\_,\ because\ forward\ traversal}}
+\DoxyCodeLine{02076\ \ \ \ \ \textcolor{comment}{//\ requires\ that\ if\ two\ iterators\ are\ equal\ (a\ ==\ b)\ and\ dereferenceable,}}
+\DoxyCodeLine{02077\ \ \ \ \ \textcolor{comment}{//\ then\ ++a\ ==\ ++b.}}
+\DoxyCodeLine{02078\ \ \ \ \ \textcolor{keywordflow}{return}\ pos\_\ ==\ other.pos\_\ \&\&\ end\_\ ==\ other.end\_;}
+\DoxyCodeLine{02079\ \ \ \}}
 \DoxyCodeLine{02080\ }
-\DoxyCodeLine{02087\ \ \ IOBuf\&\ operator=(const\ IOBuf\&\ other);}
-\DoxyCodeLine{02088\ }
-\DoxyCodeLine{02089\ \ private:}
-\DoxyCodeLine{02093\ \ \ std::\textcolor{keywordtype}{size\_t}\ length\_\{0\};}
-\DoxyCodeLine{02094\ \ \ uint8\_t*\ data\_\{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{02095\ }
-\DoxyCodeLine{02096\ \ \ std::size\_t\ capacity\_\{0\};}
-\DoxyCodeLine{02097\ \ \ uint8\_t*\ buf\_\{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{02098\ }
-\DoxyCodeLine{02099\ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{02100\ \textcolor{comment}{\ \ \ *\ Links\ to\ the\ next\ and\ the\ previous\ IOBuf\ in\ this\ chain.}}
-\DoxyCodeLine{02101\ \textcolor{comment}{\ \ \ *}}
-\DoxyCodeLine{02102\ \textcolor{comment}{\ \ \ *\ The\ chain\ is\ circularly\ linked\ (the\ last\ element\ in\ the\ chain\ points\ back}}
-\DoxyCodeLine{02103\ \textcolor{comment}{\ \ \ *\ at\ the\ head),\ and\ next\_\ and\ prev\_\ can\ never\ be\ null.\ \ If\ this\ IOBuf\ is\ the}}
-\DoxyCodeLine{02104\ \textcolor{comment}{\ \ \ *\ only\ element\ in\ the\ chain,\ next\_\ and\ prev\_\ will\ both\ point\ to\ this.}}
-\DoxyCodeLine{02105\ \textcolor{comment}{\ \ \ */}}
-\DoxyCodeLine{02106\ \ \ IOBuf*\ next\_\{\textcolor{keyword}{this}\};}
-\DoxyCodeLine{02107\ \ \ IOBuf*\ prev\_\{\textcolor{keyword}{this}\};}
-\DoxyCodeLine{02108\ }
-\DoxyCodeLine{02109\ \ \ \textcolor{comment}{//\ Pack\ flags\ in\ least\ significant\ 2\ bits,\ sharedInfo\ in\ the\ rest.}}
-\DoxyCodeLine{02110\ \ \ uintptr\_t\ flags\_and\_shared\_info\_\{0\};}
-\DoxyCodeLine{02111\ \};}
-\DoxyCodeLine{02112\ }
-\DoxyCodeLine{02116\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_hash}{IOBufHash}}\ \{}
-\DoxyCodeLine{02117\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\&\ buf)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{02118\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ std::unique\_ptr<IOBuf>\&\ buf)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{02119\ \ \ \ \ \textcolor{keywordflow}{return}\ operator()(buf.get());}
-\DoxyCodeLine{02120\ \ \ \}}
-\DoxyCodeLine{02121\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}*\ buf)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{02122\ \ \ \ \ \textcolor{keywordflow}{return}\ buf\ ?\ (*this)(*buf)\ :\ 0;}
-\DoxyCodeLine{02123\ \ \ \}}
-\DoxyCodeLine{02124\ \};}
-\DoxyCodeLine{02125\ }
-\DoxyCodeLine{02129\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_compare}{IOBufCompare}}\ \{}
-\DoxyCodeLine{02130\ \ \ ordering\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\&\ b)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{02131\ \ \ \ \ \textcolor{keywordflow}{return}\ \&a\ ==\ \&b\ ?\ ordering::eq\ :\ impl(a,\ b);}
-\DoxyCodeLine{02132\ \ \ \}}
-\DoxyCodeLine{02133\ \ \ ordering\ operator()(\textcolor{keyword}{const}\ std::unique\_ptr<IOBuf>\&\ a,}
-\DoxyCodeLine{02134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::unique\_ptr<IOBuf>\&\ b)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{02135\ \ \ \ \ \textcolor{keywordflow}{return}\ operator()(a.get(),\ b.get());}
-\DoxyCodeLine{02136\ \ \ \}}
-\DoxyCodeLine{02137\ \ \ ordering\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}*\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}*\ b)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{02138\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ off}}
-\DoxyCodeLine{02139\ \ \ \ \ \textcolor{keywordflow}{return}}
-\DoxyCodeLine{02140\ \ \ \ \ \ \ \ \ !a\ \&\&\ !b\ ?\ ordering::eq\ :}
-\DoxyCodeLine{02141\ \ \ \ \ \ \ \ \ !a\ \&\&\ b\ ?\ ordering::lt\ :}
-\DoxyCodeLine{02142\ \ \ \ \ \ \ \ \ a\ \&\&\ !b\ ?\ ordering::gt\ :}
-\DoxyCodeLine{02143\ \ \ \ \ \ \ \ \ operator()(*a,\ *b);}
-\DoxyCodeLine{02144\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ on}}
-\DoxyCodeLine{02145\ \ \ \}}
-\DoxyCodeLine{02146\ }
-\DoxyCodeLine{02147\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{02148\ \ \ ordering\ impl(\mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ \textcolor{keyword}{const}\&\ a,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}\ \textcolor{keyword}{const}\&\ b)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{02149\ \};}
-\DoxyCodeLine{02150\ }
-\DoxyCodeLine{02154\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_equal_to}{IOBufEqualTo}}\ :\ compare\_equal\_to<IOBufCompare>\ \{\};}
-\DoxyCodeLine{02155\ }
-\DoxyCodeLine{02159\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_not_equal_to}{IOBufNotEqualTo}}\ :\ compare\_not\_equal\_to<IOBufCompare>\ \{\};}
-\DoxyCodeLine{02160\ }
-\DoxyCodeLine{02164\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_less}{IOBufLess}}\ :\ compare\_less<IOBufCompare>\ \{\};}
-\DoxyCodeLine{02165\ }
-\DoxyCodeLine{02169\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_less_equal}{IOBufLessEqual}}\ :\ compare\_less\_equal<IOBufCompare>\ \{\};}
-\DoxyCodeLine{02170\ }
-\DoxyCodeLine{02174\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_greater}{IOBufGreater}}\ :\ compare\_greater<IOBufCompare>\ \{\};}
-\DoxyCodeLine{02175\ }
-\DoxyCodeLine{02179\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1_i_o_buf_greater_equal}{IOBufGreaterEqual}}\ :\ compare\_greater\_equal<IOBufCompare>\ \{\};}
-\DoxyCodeLine{02180\ }
-\DoxyCodeLine{02181\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ UniquePtr>}
-\DoxyCodeLine{02182\ \textcolor{keyword}{typename}\ std::enable\_if<detail::IsUniquePtrToSL<UniquePtr>::value,}
-\DoxyCodeLine{02183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<IOBuf>>::type}
-\DoxyCodeLine{02184\ IOBuf::takeOwnership(UniquePtr\&\&\ buf,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
-\DoxyCodeLine{02185\ \ \ \textcolor{keywordtype}{size\_t}\ size\ =\ count\ *\ \textcolor{keyword}{sizeof}(\textcolor{keyword}{typename}\ UniquePtr::element\_type);}
-\DoxyCodeLine{02186\ \ \ \textcolor{keyword}{auto}\ deleter\ =\ \textcolor{keyword}{new}\ UniquePtrDeleter<UniquePtr>(buf.get\_deleter());}
-\DoxyCodeLine{02187\ \ \ \textcolor{keywordflow}{return}\ takeOwnership(buf.release(),\ size,\ \&IOBuf::freeUniquePtrBuffer,}
-\DoxyCodeLine{02188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deleter);}
-\DoxyCodeLine{02189\ \}}
-\DoxyCodeLine{02190\ }
-\DoxyCodeLine{02191\ \textcolor{keyword}{inline}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{IOBuf::copyBuffer}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}},}
-\DoxyCodeLine{02192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ size,}
-\DoxyCodeLine{02193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},}
-\DoxyCodeLine{02194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom)\ \{}
-\DoxyCodeLine{02195\ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}};}
-\DoxyCodeLine{02196\ \ \ \textcolor{keywordflow}{if}\ (!folly::checked\_add(\&\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}},\ size,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},\ minTailroom))\ \{}
-\DoxyCodeLine{02197\ \ \ \ \ throw\_exception(std::length\_error(\textcolor{stringliteral}{"{}"{}}));}
-\DoxyCodeLine{02198\ \ \ \}}
-\DoxyCodeLine{02199\ \ \ std::unique\_ptr<IOBuf>\ buf\ =\ create(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}});}
-\DoxyCodeLine{02200\ \ \ buf-\/>advance(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}});}
-\DoxyCodeLine{02201\ \ \ \textcolor{keywordflow}{if}\ (size\ !=\ 0)\ \{}
-\DoxyCodeLine{02202\ \ \ \ \ memcpy(buf-\/>writableData(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}},\ size);}
-\DoxyCodeLine{02203\ \ \ \}}
-\DoxyCodeLine{02204\ \ \ buf-\/>append(size);}
-\DoxyCodeLine{02205\ \ \ \textcolor{keywordflow}{return}\ buf;}
-\DoxyCodeLine{02206\ \}}
-\DoxyCodeLine{02207\ }
-\DoxyCodeLine{02208\ \textcolor{keyword}{inline}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{IOBuf::copyBuffer}}(StringPiece\ buf,}
-\DoxyCodeLine{02209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},}
-\DoxyCodeLine{02210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom)\ \{}
-\DoxyCodeLine{02211\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{copyBuffer}}(buf.data(),\ buf.size(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},\ minTailroom);}
-\DoxyCodeLine{02212\ \}}
-\DoxyCodeLine{02213\ }
-\DoxyCodeLine{02214\ \textcolor{keyword}{inline}\ std::unique\_ptr<IOBuf>\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af20bf76b74c47e171686dc3f563709c5}{IOBuf::maybeCopyBuffer}}(StringPiece\ buf,}
-\DoxyCodeLine{02215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},}
-\DoxyCodeLine{02216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ minTailroom)\ \{}
-\DoxyCodeLine{02217\ \ \ \textcolor{keywordflow}{if}\ (buf.empty())\ \{}
-\DoxyCodeLine{02218\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{02219\ \ \ \}}
-\DoxyCodeLine{02220\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a608ddf52876a3f5d97e71599280e98c1}{copyBuffer}}(buf.data(),\ buf.size(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_afc9038d03917fa9a91e19fd68b934449}{headroom}},\ minTailroom);}
-\DoxyCodeLine{02221\ \}}
-\DoxyCodeLine{02222\ }
-\DoxyCodeLine{02223\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf::Iterator}}}
-\DoxyCodeLine{02224\ \ \ \ \ :\ \textcolor{keyword}{public}\ detail::IteratorFacade<IOBuf::Iterator,\ ByteRange\ const,}
-\DoxyCodeLine{02225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::forward\_iterator\_tag>\ \{}
-\DoxyCodeLine{02226\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{02227\ \ \ \textcolor{comment}{//\ Note\ that\ IOBufs\ are\ stored\ as\ a\ circular\ list\ without\ a\ guard\ node,}}
-\DoxyCodeLine{02228\ \ \ \textcolor{comment}{//\ so\ pos\ ==\ end\ is\ ambiguous\ (it\ may\ mean\ "{}begin"{}\ or\ "{}end"{}).\ \ To\ solve}}
-\DoxyCodeLine{02229\ \ \ \textcolor{comment}{//\ the\ ambiguity\ (at\ the\ cost\ of\ one\ extra\ comparison\ in\ the\ "{}increment"{}}}
-\DoxyCodeLine{02230\ \ \ \textcolor{comment}{//\ code\ path),\ we\ define\ end\ iterators\ as\ having\ pos\_\ ==\ end\_\ ==\ nullptr}}
-\DoxyCodeLine{02231\ \ \ \textcolor{comment}{//\ and\ we\ only\ allow\ forward\ iteration.}}
-\DoxyCodeLine{02232\ \ \ \textcolor{keyword}{explicit}\ Iterator(\textcolor{keyword}{const}\ IOBuf*\ pos,\ \textcolor{keyword}{const}\ IOBuf*\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}})\ :\ pos\_(pos),\ end\_(\mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{end}})\ \{}
-\DoxyCodeLine{02233\ \ \ \ \ \textcolor{comment}{//\ Sadly,\ we\ must\ return\ by\ const\ reference,\ not\ by\ value.}}
-\DoxyCodeLine{02234\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_)\ \{}
-\DoxyCodeLine{02235\ \ \ \ \ \ \ setVal();}
-\DoxyCodeLine{02236\ \ \ \ \ \}}
-\DoxyCodeLine{02237\ \ \ \}}
-\DoxyCodeLine{02238\ }
-\DoxyCodeLine{02239\ \ \ Iterator()\ \{\}}
-\DoxyCodeLine{02240\ }
-\DoxyCodeLine{02241\ \ \ Iterator(Iterator\ \textcolor{keyword}{const}\&\ rhs)\ :\ Iterator(rhs.pos\_,\ rhs.end\_)\ \{\}}
-\DoxyCodeLine{02242\ }
-\DoxyCodeLine{02243\ \ \ Iterator\&\ operator=(Iterator\ \textcolor{keyword}{const}\&\ rhs)\ \{}
-\DoxyCodeLine{02244\ \ \ \ \ pos\_\ =\ rhs.pos\_;}
-\DoxyCodeLine{02245\ \ \ \ \ end\_\ =\ rhs.end\_;}
-\DoxyCodeLine{02246\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_)\ \{}
-\DoxyCodeLine{02247\ \ \ \ \ \ \ setVal();}
-\DoxyCodeLine{02248\ \ \ \ \ \}}
-\DoxyCodeLine{02249\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{02250\ \ \ \}}
-\DoxyCodeLine{02251\ }
-\DoxyCodeLine{02252\ \ \ \textcolor{keyword}{const}\ ByteRange\&\ dereference()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ val\_;\ \}}
-\DoxyCodeLine{02253\ }
-\DoxyCodeLine{02254\ \ \ \textcolor{keywordtype}{bool}\ equal(\textcolor{keyword}{const}\ Iterator\&\ other)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{02255\ \ \ \ \ \textcolor{comment}{//\ We\ must\ compare\ end\_\ in\ addition\ to\ pos\_,\ because\ forward\ traversal}}
-\DoxyCodeLine{02256\ \ \ \ \ \textcolor{comment}{//\ requires\ that\ if\ two\ iterators\ are\ equal\ (a\ ==\ b)\ and\ dereferenceable,}}
-\DoxyCodeLine{02257\ \ \ \ \ \textcolor{comment}{//\ then\ ++a\ ==\ ++b.}}
-\DoxyCodeLine{02258\ \ \ \ \ \textcolor{keywordflow}{return}\ pos\_\ ==\ other.pos\_\ \&\&\ end\_\ ==\ other.end\_;}
-\DoxyCodeLine{02259\ \ \ \}}
-\DoxyCodeLine{02260\ }
-\DoxyCodeLine{02261\ \ \ \textcolor{keywordtype}{void}\ increment()\ \{}
-\DoxyCodeLine{02262\ \ \ \ \ pos\_\ =\ pos\_-\/>\mbox{\hyperlink{classkiwi_1_1_i_o_buf_a16b90f8a80e3b68fba9421fac467be20}{next}}();}
-\DoxyCodeLine{02263\ \ \ \ \ adjustForEnd();}
-\DoxyCodeLine{02264\ \ \ \}}
-\DoxyCodeLine{02265\ }
-\DoxyCodeLine{02266\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{02267\ \ \ \textcolor{keywordtype}{void}\ setVal()\ \{\ val\_\ =\ ByteRange(pos\_-\/>data(),\ pos\_-\/>tail());\ \}}
-\DoxyCodeLine{02268\ }
-\DoxyCodeLine{02269\ \ \ \textcolor{keywordtype}{void}\ adjustForEnd()\ \{}
-\DoxyCodeLine{02270\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_\ ==\ end\_)\ \{}
-\DoxyCodeLine{02271\ \ \ \ \ \ \ pos\_\ =\ end\_\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{02272\ \ \ \ \ \ \ val\_\ =\ ByteRange();}
-\DoxyCodeLine{02273\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{02274\ \ \ \ \ \ \ setVal();}
-\DoxyCodeLine{02275\ \ \ \ \ \}}
-\DoxyCodeLine{02276\ \ \ \}}
-\DoxyCodeLine{02277\ }
-\DoxyCodeLine{02278\ \ \ \textcolor{keyword}{const}\ IOBuf*\ pos\_\{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{02279\ \ \ \textcolor{keyword}{const}\ IOBuf*\ end\_\{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{02280\ \ \ ByteRange\ val\_;}
-\DoxyCodeLine{02281\ \};}
-\DoxyCodeLine{02282\ }
-\DoxyCodeLine{02283\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf::Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223}{IOBuf::begin}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138}{cbegin}}();\ \}}
-\DoxyCodeLine{02284\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf::Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{IOBuf::end}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42}{cend}}();\ \}}
-\DoxyCodeLine{02285\ }
-\DoxyCodeLine{02286\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Container>}
-\DoxyCodeLine{02287\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae15bfb4c53c8aafe8ab1ec5196865f42}{IOBuf::appendTo}}(Container\&\ container)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{02288\ \ \ \textcolor{keyword}{static\_assert}(}
-\DoxyCodeLine{02289\ \ \ \ \ \ \ (std::is\_same<typename\ Container::value\_type,\ char>::value\ ||}
-\DoxyCodeLine{02290\ \ \ \ \ \ \ \ std::is\_same<typename\ Container::value\_type,\ unsigned\ char>::value),}
-\DoxyCodeLine{02291\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Unsupported\ value\ type"{}});}
-\DoxyCodeLine{02292\ \ \ container.reserve(container.size()\ +\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a25798be3fa0c21f8501b7db16cd267a9}{computeChainDataLength}}());}
-\DoxyCodeLine{02293\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}\ :\ *\textcolor{keyword}{this})\ \{}
-\DoxyCodeLine{02294\ \ \ \ \ container.insert(container.end(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}.begin(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}.end());}
-\DoxyCodeLine{02295\ \ \ \}}
-\DoxyCodeLine{02296\ \}}
-\DoxyCodeLine{02297\ }
-\DoxyCodeLine{02298\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Container>}
-\DoxyCodeLine{02299\ Container\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a50b964c560f74a3f40ffb5e106954ee1}{IOBuf::to}}()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{02300\ \ \ Container\ result;}
-\DoxyCodeLine{02301\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ae15bfb4c53c8aafe8ab1ec5196865f42}{appendTo}}(result);}
-\DoxyCodeLine{02302\ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{02303\ \}}
-\DoxyCodeLine{02304\ }
-\DoxyCodeLine{02305\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
-\DoxyCodeLine{02306\ }
-\DoxyCodeLine{02307\ FOLLY\_POP\_WARNING}
+\DoxyCodeLine{02081\ \ \ \textcolor{keywordtype}{void}\ Increment()\ \{}
+\DoxyCodeLine{02082\ \ \ \ \ pos\_\ =\ pos\_-\/>\mbox{\hyperlink{classkiwi_1_1_i_o_buf_aea1b72cbad61f1afcc081eaad99590d5}{Next}}();}
+\DoxyCodeLine{02083\ \ \ \ \ AdjustForEnd();}
+\DoxyCodeLine{02084\ \ \ \}}
+\DoxyCodeLine{02085\ }
+\DoxyCodeLine{02086\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{02087\ \ \ \textcolor{keyword}{const}\ IOBuf*\ pos\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{02088\ \ \ \textcolor{keyword}{const}\ IOBuf*\ end\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{02089\ \ \ ByteRange\ val\_;}
+\DoxyCodeLine{02090\ \};}
+\DoxyCodeLine{02091\ }
+\DoxyCodeLine{02092\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf::Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_af9acb767b93f0efd67990f4a4351a223}{IOBuf::begin}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad22211b3c6c1c99872f05ed23e55d138}{cbegin}}();\ \}}
+\DoxyCodeLine{02093\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_1_1_iterator}{IOBuf::Iterator}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ad096f4cf2aaac5ee522618ad6dbe9cbc}{IOBuf::end}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a815f1a7b3d0014fb9cd2c7e20a2fcd42}{cend}}();\ \}}
+\DoxyCodeLine{02094\ }
+\DoxyCodeLine{02095\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Container>}
+\DoxyCodeLine{02096\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a7b47ae84869903d1c7e60c2fff9866d5}{IOBuf::AppendTo}}(Container\&\ container)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{02097\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<typename\ Container::value\_type,\ uint8\_t>,}
+\DoxyCodeLine{02098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Unsupported\ value\ type"{}});}
+\DoxyCodeLine{02099\ }
+\DoxyCodeLine{02100\ \ \ container.reserve(container.size()\ +\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a78fefcb935fa0e189324e07d03702320}{ComputeChainDataLength}}());}
+\DoxyCodeLine{02101\ }
+\DoxyCodeLine{02102\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}\ :\ *\textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{02103\ \ \ \ \ container.insert(container.end(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}.begin(),\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data}}.end());}
+\DoxyCodeLine{02104\ \ \ \}}
+\DoxyCodeLine{02105\ \}}
+\DoxyCodeLine{02106\ }
+\DoxyCodeLine{02107\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Container>}
+\DoxyCodeLine{02108\ Container\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_abe51f49dc01310e4cb457238b0a2ffe8}{IOBuf::To}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{02109\ \ \ Container\ result;}
+\DoxyCodeLine{02110\ \ \ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a7b47ae84869903d1c7e60c2fff9866d5}{AppendTo}}(result);}
+\DoxyCodeLine{02111\ }
+\DoxyCodeLine{02112\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{02113\ \}}
+\DoxyCodeLine{02114\ }
+\DoxyCodeLine{02115\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{02116\ }
+\DoxyCodeLine{02117\ KIWI\_POP\_WARNING}
 
 \end{DoxyCode}

@@ -1,0 +1,309 @@
+\doxysection{checked\+\_\+math.\+hh}
+\hypertarget{util_2checked__math_8hh_source}{}\label{util_2checked__math_8hh_source}\index{include/kiwi/util/checked\_math.hh@{include/kiwi/util/checked\_math.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <intrin.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00032\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_\textcolor{keywordtype}{int}egral\_v<T>>>}
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{bool}\ generic\_checked\_add(T*\ result,\ T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_signed\_v<T>)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ >=\ 0)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::numeric\_limits<T>::max()\ -\/\ a\ <\ b)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (b\ <\ std::numeric\_limits<T>::min()\ -\/\ a)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ *result\ =\ a\ +\ b;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00050\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ <\ std::numeric\_limits<T>::max()\ -\/\ b)\ [[likely]]\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ *result\ =\ a\ +\ b;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00055\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00064\ \textcolor{keywordtype}{bool}\ generic\_checked\_small\_mul(T*\ result,\ T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static\_assert}(\textcolor{keyword}{sizeof}(T)\ <\ \textcolor{keyword}{sizeof}(uint64\_t),\ \textcolor{stringliteral}{"{}Too\ large"{}});}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ uint64\_t\ res\ =\ \textcolor{keyword}{static\_cast<}uint64\_t\textcolor{keyword}{>}(a)\ *\ \textcolor{keyword}{static\_cast<}uint64\_t\textcolor{keyword}{>}(b);}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{constexpr}\ uint64\_t\ overflow\_mask\ =\ \string~((1ULL\ <<\ (\textcolor{keyword}{sizeof}(T)\ *\ 8))\ -\/\ 1);}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordflow}{if}\ ((res\ \&\ overflow\_mask)\ !=\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(res);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00077\ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00080\ std::enable\_if\_t<\textcolor{keyword}{sizeof}(T)\ <\ \textcolor{keyword}{sizeof}(uint64\_t),\ \textcolor{keywordtype}{bool}>\ generic\_checked\_mul(}
+\DoxyCodeLine{00081\ \ \ \ \ T*\ result,\ T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordflow}{return}\ generic\_checked\_small\_mul(result,\ a,\ b);}
+\DoxyCodeLine{00083\ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00086\ std::enable\_if\_t<\textcolor{keyword}{sizeof}(T)\ ==\ \textcolor{keyword}{sizeof}(uint64\_t),\ \textcolor{keywordtype}{bool}>\ generic\_checked\_mul(}
+\DoxyCodeLine{00087\ \ \ \ \ T*\ result,\ T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{constexpr}\ uint64\_t\ half\_bits\ =\ 32;}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{constexpr}\ uint64\_t\ half\_mask\ =\ (1ULL\ <<\ half\_bits)\ -\/\ 1ULL;}
+\DoxyCodeLine{00090\ \ \ uint64\_t\ lhs\_high\ =\ a\ >>\ half\_bits;}
+\DoxyCodeLine{00091\ \ \ uint64\_t\ lhs\_low\ =\ a\ \&\ half\_mask;}
+\DoxyCodeLine{00092\ \ \ uint64\_t\ rhs\_high\ =\ b\ >>\ half\_bits;}
+\DoxyCodeLine{00093\ \ \ uint64\_t\ rhs\_low\ =\ b\ \&\ half\_mask;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordflow}{if}\ (lhs\_high\ ==\ 0\ \&\&\ rhs\_high\ ==\ 0)\ [[likely]]\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ *result\ =\ lhs\_low\ *\ rhs\_low;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordflow}{if}\ (lhs\_high\ !=\ 0\ \&\&\ rhs\_high\ !=\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ uint64\_t\ mid\_bits1\ =\ lhs\_low\ *\ rhs\_high;}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordflow}{if}\ (mid\_bits1\ >>\ half\_bits\ !=\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ uint64\_t\ mid\_bits2\ =\ lhs\_high\ *\ rhs\_low;}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordflow}{if}\ (mid\_bits2\ >>\ half\_bits\ !=\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ uint64\_t\ mid\_bits\ =\ mid\_bits1\ +\ mid\_bits2;}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordflow}{if}\ (mid\_bits\ >>\ half\_bits\ !=\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ uint64\_t\ bot\_bits\ =\ lhs\_low\ *\ rhs\_low;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordflow}{if}\ (!generic\_checked\_add(result,\ bot\_bits,\ mid\_bits\ <<\ half\_bits))}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ [[unlikely]]\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00141\ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_\textcolor{keywordtype}{int}egral\_v<T>>>}
+\DoxyCodeLine{00146\ \textcolor{keywordtype}{bool}\ checked\_add(T*\ result,\ T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#if\ HAS\_BUILTIN(\_\_builtin\_add\_overflow)}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordflow}{if}\ (!\_\_builtin\_add\_overflow(a,\ b,\ result))\ [[likely]]\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordflow}{return}\ detail::generic\_checked\_add(result,\ a,\ b);}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00158\ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00161\ \textcolor{keywordtype}{bool}\ checked\_add(T*\ result,\ T\ a,\ T\ b,\ T\ c)\ \{}
+\DoxyCodeLine{00162\ \ \ T\ tmp\{\};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordflow}{if}\ (!checked\_add(\&tmp,\ a,\ b))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordflow}{if}\ (!checked\_add(\&tmp,\ tmp,\ c))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ *result\ =\ tmp;}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00179\ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00182\ \textcolor{keywordtype}{bool}\ checked\_add(T*\ result,\ T\ a,\ T\ b,\ T\ c,\ T\ d)\ \{}
+\DoxyCodeLine{00183\ \ \ T\ tmp\{\};}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordflow}{if}\ (!checked\_add(\&tmp,\ a,\ b))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordflow}{if}\ (!checked\_add(\&tmp,\ tmp,\ c))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordflow}{if}\ (!checked\_add(\&tmp,\ tmp,\ d))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ *result\ =\ tmp;}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00205\ \}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00208\ \textcolor{keywordtype}{bool}\ checked\_div(T*\ result,\ T\ dividend,\ T\ divisor)\ \{}
+\DoxyCodeLine{00209\ \ \ \textcolor{keywordflow}{if}\ (divisor\ ==\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ *result\ =\ dividend\ /\ divisor;}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00218\ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00221\ \textcolor{keywordtype}{bool}\ checked\_mod(T*\ result,\ T\ dividend,\ T\ divisor)\ \{}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordflow}{if}\ (divisor\ ==\ 0)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00226\ \ \ \}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ *result\ =\ dividend\ \%\ divisor;}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00231\ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00234\ \textcolor{keywordtype}{bool}\ checked\_mul(T*\ result,\ T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00235\ \ \ assert(result\ !=\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#if\ HAS\_BUILTIN(\_\_builtin\_mul\_overflow)}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keywordflow}{if}\ (!\_\_builtin\_mul\_overflow(a,\ b,\ result))\ [[likely]]\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#elif\ \_MSC\_VER\ \&\&\ ARCH\_CPU\_X86\_64}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{static\_assert}(\textcolor{keyword}{sizeof}(T)\ <=\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{unsigned}\ \_\_int64),\ \textcolor{stringliteral}{"{}Too\ large"{}});}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{sizeof}(T)\ <\ \textcolor{keyword}{sizeof}(uint64\_t))\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{return}\ detail::generic\_checked\_mul(result,\ a,\ b);}
+\DoxyCodeLine{00249\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \_\_int64\ high;}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \_\_int64\ low\ =\ \_umul128(a,\ b,\ \&high);}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{if}\ (high\ ==\ 0)\ [[likely]]\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(low);}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00257\ \ \ \ \ \}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordflow}{return}\ detail::generic\_checked\_mul(result,\ a,\ b);}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00266\ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
+\DoxyCodeLine{00269\ \textcolor{keywordtype}{bool}\ checked\_muladd(T*\ result,\ T\ base,\ T\ mul,\ T\ add)\ \{}
+\DoxyCodeLine{00270\ \ \ T\ tmp\{\};}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ \textcolor{keywordflow}{if}\ (!checked\_mul(\&tmp,\ base,\ mul))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordflow}{if}\ (!checked\_add(\&tmp,\ tmp,\ add))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ *result\ =\ \{\};}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00282\ \ \ \}}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ *result\ =\ tmp;}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00287\ \}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ T2,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_pointer<T>::value>,}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_unsigned<T2>::value>>}
+\DoxyCodeLine{00292\ \textcolor{keywordtype}{bool}\ checked\_add(T*\ result,\ T\ a,\ T2\ b)\ \{}
+\DoxyCodeLine{00293\ \ \ \textcolor{keywordtype}{size\_t}\ out\ =\ 0;}
+\DoxyCodeLine{00294\ \ \ \textcolor{keywordtype}{bool}\ ret\ =\ checked\_muladd(\&out,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(b),}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(std::remove\_pointer\_t<T>),}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(a));}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \ \ *result\ =\ \textcolor{keyword}{reinterpret\_cast<}T\textcolor{keyword}{>}(out);}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00301\ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

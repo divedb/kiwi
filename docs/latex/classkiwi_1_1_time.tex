@@ -1,0 +1,227 @@
+\doxysection{kiwi\+::Time Class Reference}
+\hypertarget{classkiwi_1_1_time}{}\label{classkiwi_1_1_time}\index{kiwi::Time@{kiwi::Time}}
+Inheritance diagram for kiwi\+::Time\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_time}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1_time_1_1_exploded}{Exploded}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_time_a689f346b8dbb4b9a9ff5f41e8a7cb4e1}\label{classkiwi_1_1_time_a689f346b8dbb4b9a9ff5f41e8a7cb4e1} 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries To\+Delta\+Since\+Windows\+Epoch} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_aeefbfab6ee4f2c5c34f06d6501e50bfa}\label{classkiwi_1_1_time_aeefbfab6ee4f2c5c34f06d6501e50bfa} 
+constexpr time\+\_\+t {\bfseries To\+TimeT} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_a4ebd47f28869ecd10f1967709b498c4f}\label{classkiwi_1_1_time_a4ebd47f28869ecd10f1967709b498c4f} 
+constexpr double {\bfseries In\+Seconds\+FSince\+Unix\+Epoch} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_a0c23bae128abb524a49dac75cdb44f19}\label{classkiwi_1_1_time_a0c23bae128abb524a49dac75cdb44f19} 
+constexpr int64\+\_\+t {\bfseries In\+Milliseconds\+Since\+Unix\+Epoch} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_a691c564646edab0af2257145c330fa74}\label{classkiwi_1_1_time_a691c564646edab0af2257145c330fa74} 
+constexpr double {\bfseries In\+Milliseconds\+FSince\+Unix\+Epoch} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_a124e3123b18b7fb621d0b65290f68502}\label{classkiwi_1_1_time_a124e3123b18b7fb621d0b65290f68502} 
+constexpr double {\bfseries In\+Milliseconds\+FSince\+Unix\+Epoch\+Ignoring\+Null} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_a71ca076779ee0f07590ba775715bf7d0}\label{classkiwi_1_1_time_a71ca076779ee0f07590ba775715bf7d0} 
+void {\bfseries UTCExplode} (\mbox{\hyperlink{structkiwi_1_1_time_1_1_exploded}{Exploded}} \texorpdfstring{$\ast$}{*}exploded) const
+\item 
+\Hypertarget{classkiwi_1_1_time_a0c0efb194de1e69bc0fd69f4507ec6bc}\label{classkiwi_1_1_time_a0c0efb194de1e69bc0fd69f4507ec6bc} 
+void {\bfseries Local\+Explode} (\mbox{\hyperlink{structkiwi_1_1_time_1_1_exploded}{Exploded}} \texorpdfstring{$\ast$}{*}exploded) const
+\item 
+\Hypertarget{classkiwi_1_1_time_a47116d4dd850d57c219dfca92a5941c9}\label{classkiwi_1_1_time_a47116d4dd850d57c219dfca92a5941c9} 
+\mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries UTCMidnight} () const
+\item 
+\Hypertarget{classkiwi_1_1_time_a578aae73ab2affd1505ffca5b30a95fc}\label{classkiwi_1_1_time_a578aae73ab2affd1505ffca5b30a95fc} 
+\mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries Local\+Midnight} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool {\bfseries is\+\_\+null} () const
+\item 
+constexpr bool {\bfseries is\+\_\+max} () const
+\item 
+constexpr bool {\bfseries is\+\_\+min} () const
+\item 
+constexpr bool {\bfseries is\+\_\+inf} () const
+\item 
+constexpr int64\+\_\+t {\bfseries To\+Internal\+Value} () const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries since\+\_\+origin} () const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries operator-\/} (const \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{Time\+Base}}$<$ \mbox{\hyperlink{classkiwi_1_1_time}{Time}} $>$ \&other) const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries operator-\/} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries operator+} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \& {\bfseries operator+=} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \& {\bfseries operator-\/=} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_time_a0be64a0a8197de07a2e2edbb7acaa0d6}\label{classkiwi_1_1_time_a0be64a0a8197de07a2e2edbb7acaa0d6} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries Unix\+Epoch} ()
+\item 
+\Hypertarget{classkiwi_1_1_time_a5131d90c62eff818f3d4bebbbfa91cea}\label{classkiwi_1_1_time_a5131d90c62eff818f3d4bebbbfa91cea} 
+static \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries Now} ()
+\item 
+\Hypertarget{classkiwi_1_1_time_ae4462b176d16d05837bcca16736bb5c1}\label{classkiwi_1_1_time_ae4462b176d16d05837bcca16736bb5c1} 
+static \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries Now\+From\+System\+Time} ()
+\item 
+\Hypertarget{classkiwi_1_1_time_a5403e143e95bb22f425f8893b3dd37d1}\label{classkiwi_1_1_time_a5403e143e95bb22f425f8893b3dd37d1} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+Delta\+Since\+Windows\+Epoch} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+\Hypertarget{classkiwi_1_1_time_a345635a0c9746a63b536cf0f349c8421}\label{classkiwi_1_1_time_a345635a0c9746a63b536cf0f349c8421} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+TimeT} (time\+\_\+t tt)
+\item 
+\Hypertarget{classkiwi_1_1_time_ac6580e2583a241752065bf8b516a255a}\label{classkiwi_1_1_time_ac6580e2583a241752065bf8b516a255a} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+Seconds\+Since\+Unix\+Epoch} (double dt)
+\item 
+\Hypertarget{classkiwi_1_1_time_adcdb8a4698ec967517e30258331a94ed}\label{classkiwi_1_1_time_adcdb8a4698ec967517e30258331a94ed} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+Milliseconds\+Since\+Unix\+Epoch} (int64\+\_\+t dt)
+\item 
+\Hypertarget{classkiwi_1_1_time_a59b3f4bdeb5aef17c183382fbf52809d}\label{classkiwi_1_1_time_a59b3f4bdeb5aef17c183382fbf52809d} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+Milliseconds\+Since\+Unix\+Epoch} (double dt)
+\item 
+\Hypertarget{classkiwi_1_1_time_a16acf347b9ad8b22ead97883139f0602}\label{classkiwi_1_1_time_a16acf347b9ad8b22ead97883139f0602} 
+{\footnotesize template$<$typename T$>$ \newline
+requires (std\+::integral$<$T$>$ \&\& !std\+::same\+\_\+as$<$T, int64\+\_\+t$>$ \&\& (sizeof(T) $<$ sizeof(int64\+\_\+t) \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} (sizeof(T) == sizeof(int64\+\_\+t) \&\& std\+::is\+\_\+signed\+\_\+v$<$T$>$)))}\\static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+Milliseconds\+Since\+Unix\+Epoch} (T ms\+\_\+since\+\_\+epoch)
+\item 
+\Hypertarget{classkiwi_1_1_time_a1190197d587370f38f323e2a21fdd2e1}\label{classkiwi_1_1_time_a1190197d587370f38f323e2a21fdd2e1} 
+static bool {\bfseries From\+UTCExploded} (const \mbox{\hyperlink{structkiwi_1_1_time_1_1_exploded}{Exploded}} \&exploded, \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}time)
+\item 
+\Hypertarget{classkiwi_1_1_time_a99adb62a3a7c2098f903209d2143481f}\label{classkiwi_1_1_time_a99adb62a3a7c2098f903209d2143481f} 
+static bool {\bfseries From\+Local\+Exploded} (const \mbox{\hyperlink{structkiwi_1_1_time_1_1_exploded}{Exploded}} \&exploded, \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}time)
+\item 
+\Hypertarget{classkiwi_1_1_time_adf4c5f6570c7fb937daecf688bfe4496}\label{classkiwi_1_1_time_adf4c5f6570c7fb937daecf688bfe4496} 
+static bool {\bfseries From\+String} (const char \texorpdfstring{$\ast$}{*}time\+\_\+string, \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}parsed\+\_\+time)
+\item 
+\Hypertarget{classkiwi_1_1_time_aac1fed1eda84e83e9f8b7fc2641022db}\label{classkiwi_1_1_time_aac1fed1eda84e83e9f8b7fc2641022db} 
+static bool {\bfseries From\+UTCString} (const char \texorpdfstring{$\ast$}{*}time\+\_\+string, \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \texorpdfstring{$\ast$}{*}parsed\+\_\+time)
+\item 
+\Hypertarget{classkiwi_1_1_time_a757e4aae322a02d6f8aaac2e575ede90}\label{classkiwi_1_1_time_a757e4aae322a02d6f8aaac2e575ede90} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries From\+Internal\+Value} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries Max} ()
+\item 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries Min} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int64\+\_\+t \mbox{\hyperlink{classkiwi_1_1_time_ae90c376b1d521fc7fd8994fd015e72cf}{k\+Time\+TTo\+Microseconds\+Offset}}
+\item 
+static constexpr int \mbox{\hyperlink{classkiwi_1_1_time_a37be3bacd9789f3c4f9c9dff6c307d0f}{k\+Exploded\+Min\+Year}}
+\item 
+static constexpr int \mbox{\hyperlink{classkiwi_1_1_time_ac14273ae78584df4ad501f6d50909829}{k\+Exploded\+Max\+Year}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Hours\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Minutes\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Week}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Microsecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Second}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_time_aa19772ee401e5cf2a775205465b259d4}\label{classkiwi_1_1_time_aa19772ee401e5cf2a775205465b259d4} 
+class {\bfseries time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr {\bfseries Time\+Base} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Time $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ int64\+\_\+t $>$ {\bfseries us\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classkiwi_1_1_time_ac14273ae78584df4ad501f6d50909829}\index{kiwi::Time@{kiwi::Time}!kExplodedMaxYear@{kExplodedMaxYear}}
+\index{kExplodedMaxYear@{kExplodedMaxYear}!kiwi::Time@{kiwi::Time}}
+\doxysubsubsection{\texorpdfstring{kExplodedMaxYear}{kExplodedMaxYear}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_time_ac14273ae78584df4ad501f6d50909829} 
+int kiwi\+::\+Time\+::k\+Exploded\+Max\+Year\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ (\textcolor{keyword}{sizeof}(time\_t)\ ==\ 4\ ?\ 2037\ :\ std::numeric\_limits<int>::max())}
+
+\end{DoxyCode}
+\Hypertarget{classkiwi_1_1_time_a37be3bacd9789f3c4f9c9dff6c307d0f}\index{kiwi::Time@{kiwi::Time}!kExplodedMinYear@{kExplodedMinYear}}
+\index{kExplodedMinYear@{kExplodedMinYear}!kiwi::Time@{kiwi::Time}}
+\doxysubsubsection{\texorpdfstring{kExplodedMinYear}{kExplodedMinYear}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_time_a37be3bacd9789f3c4f9c9dff6c307d0f} 
+int kiwi\+::\+Time\+::k\+Exploded\+Min\+Year\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ (\textcolor{keyword}{sizeof}(time\_t)\ ==\ 4\ ?\ 1902\ :\ std::numeric\_limits<int>::min())}
+
+\end{DoxyCode}
+\Hypertarget{classkiwi_1_1_time_ae90c376b1d521fc7fd8994fd015e72cf}\index{kiwi::Time@{kiwi::Time}!kTimeTToMicrosecondsOffset@{kTimeTToMicrosecondsOffset}}
+\index{kTimeTToMicrosecondsOffset@{kTimeTToMicrosecondsOffset}!kiwi::Time@{kiwi::Time}}
+\doxysubsubsection{\texorpdfstring{kTimeTToMicrosecondsOffset}{kTimeTToMicrosecondsOffset}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_time_ae90c376b1d521fc7fd8994fd015e72cf} 
+int64\+\_\+t kiwi\+::\+Time\+::k\+Time\+TTo\+Microseconds\+Offset\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ INT64\_C(11644473600000000)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/chrono/time.\+hh\end{DoxyCompactItemize}

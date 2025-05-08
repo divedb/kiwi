@@ -1,0 +1,15 @@
+kiwi_cc_library(
+NAME
+    chrono
+HDRS
+    ${KIWI_INCLUDE_DIR}
+    ${glog_SOURCE_DIR}/src
+SRCS
+    "time_conversion_posix.cc"
+COPTS
+    ${KIWI_LIB_COPTS}
+DEPS
+    glog::glog
+ALIAS
+    kiwi::chrono
+)

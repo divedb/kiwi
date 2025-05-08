@@ -12,28 +12,47 @@ var hierarchy =
     [ "kiwi::internal::BigEnoughPromotionImpl< Lhs, Rhs, true, false >", "structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01true_00_01false_01_4.html", null ],
     [ "kiwi::CaseInsensitiveCompareASCII< Char >", "structkiwi_1_1_case_insensitive_compare_a_s_c_i_i.html", null ],
     [ "kiwi::internal::CharacterMatcher< CharT >", "structkiwi_1_1internal_1_1_character_matcher.html", null ],
+    [ "kiwi::internal::CheckedAddFastOp< T, U >", "structkiwi_1_1internal_1_1_checked_add_fast_op.html", null ],
     [ "kiwi::CheckedContiguousIterator< T >", "classkiwi_1_1_checked_contiguous_iterator.html", null ],
+    [ "kiwi::internal::CheckedMulFastAsmOp< T, U >", "structkiwi_1_1internal_1_1_checked_mul_fast_asm_op.html", null ],
+    [ "kiwi::internal::CheckedMulFastOp< T, U >", "structkiwi_1_1internal_1_1_checked_mul_fast_op.html", null ],
+    [ "kiwi::CheckedNumeric< T >", "classkiwi_1_1_checked_numeric.html", null ],
     [ "kiwi::internal::CheckedNumeric< T >", "classkiwi_1_1internal_1_1_checked_numeric.html", null ],
+    [ "kiwi::internal::CheckedSubFastOp< T, U >", "structkiwi_1_1internal_1_1_checked_sub_fast_op.html", null ],
     [ "kiwi::internal::CheckOnFailure", "structkiwi_1_1internal_1_1_check_on_failure.html", null ],
+    [ "kiwi::internal::ClampedAddFastAsmOp< T, U >", "structkiwi_1_1internal_1_1_clamped_add_fast_asm_op.html", null ],
+    [ "kiwi::internal::ClampedAddFastOp< T, U >", "structkiwi_1_1internal_1_1_clamped_add_fast_op.html", null ],
+    [ "kiwi::internal::ClampedAddOp< T, U >", "structkiwi_1_1internal_1_1_clamped_add_op.html", null ],
+    [ "kiwi::internal::ClampedAddOp< T, U >", "structkiwi_1_1internal_1_1_clamped_add_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedAndOp< T, U >", "structkiwi_1_1internal_1_1_clamped_and_op.html", null ],
+    [ "kiwi::internal::ClampedAndOp< T, U >", "structkiwi_1_1internal_1_1_clamped_and_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedDivOp< T, U >", "structkiwi_1_1internal_1_1_clamped_div_op.html", null ],
+    [ "kiwi::internal::ClampedDivOp< T, U >", "structkiwi_1_1internal_1_1_clamped_div_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedLshOp< T, U >", "structkiwi_1_1internal_1_1_clamped_lsh_op.html", null ],
+    [ "kiwi::internal::ClampedLshOp< T, U >", "structkiwi_1_1internal_1_1_clamped_lsh_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedMaxOp< T, U >", "structkiwi_1_1internal_1_1_clamped_max_op.html", null ],
+    [ "kiwi::internal::ClampedMaxOp< T, U >", "structkiwi_1_1internal_1_1_clamped_max_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedMinOp< T, U >", "structkiwi_1_1internal_1_1_clamped_min_op.html", null ],
+    [ "kiwi::internal::ClampedMinOp< T, U >", "structkiwi_1_1internal_1_1_clamped_min_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedModOp< T, U >", "structkiwi_1_1internal_1_1_clamped_mod_op.html", null ],
+    [ "kiwi::internal::ClampedModOp< T, U >", "structkiwi_1_1internal_1_1_clamped_mod_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedMulFastAsmOp< T, U >", "structkiwi_1_1internal_1_1_clamped_mul_fast_asm_op.html", null ],
+    [ "kiwi::internal::ClampedMulFastOp< T, U >", "structkiwi_1_1internal_1_1_clamped_mul_fast_op.html", null ],
+    [ "kiwi::internal::ClampedMulOp< T, U >", "structkiwi_1_1internal_1_1_clamped_mul_op.html", null ],
+    [ "kiwi::internal::ClampedMulOp< T, U >", "structkiwi_1_1internal_1_1_clamped_mul_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedNegFastOp< T >", "structkiwi_1_1internal_1_1_clamped_neg_fast_op.html", null ],
+    [ "kiwi::ClampedNumeric< T >", "classkiwi_1_1_clamped_numeric.html", null ],
     [ "kiwi::internal::ClampedNumeric< T >", "classkiwi_1_1internal_1_1_clamped_numeric.html", null ],
-    [ "compare_equal_to", null, [
-      [ "kiwi::IOBufEqualTo", "structkiwi_1_1_i_o_buf_equal_to.html", null ]
-    ] ],
-    [ "compare_greater", null, [
-      [ "kiwi::IOBufGreater", "structkiwi_1_1_i_o_buf_greater.html", null ]
-    ] ],
-    [ "compare_greater_equal", null, [
-      [ "kiwi::IOBufGreaterEqual", "structkiwi_1_1_i_o_buf_greater_equal.html", null ]
-    ] ],
-    [ "compare_less", null, [
-      [ "kiwi::IOBufLess", "structkiwi_1_1_i_o_buf_less.html", null ]
-    ] ],
-    [ "compare_less_equal", null, [
-      [ "kiwi::IOBufLessEqual", "structkiwi_1_1_i_o_buf_less_equal.html", null ]
-    ] ],
-    [ "compare_not_equal_to", null, [
-      [ "kiwi::IOBufNotEqualTo", "structkiwi_1_1_i_o_buf_not_equal_to.html", null ]
-    ] ],
+    [ "kiwi::internal::ClampedOrOp< T, U >", "structkiwi_1_1internal_1_1_clamped_or_op.html", null ],
+    [ "kiwi::internal::ClampedOrOp< T, U >", "structkiwi_1_1internal_1_1_clamped_or_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedRshOp< T, U >", "structkiwi_1_1internal_1_1_clamped_rsh_op.html", null ],
+    [ "kiwi::internal::ClampedRshOp< T, U >", "structkiwi_1_1internal_1_1_clamped_rsh_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedSubFastAsmOp< T, U >", "structkiwi_1_1internal_1_1_clamped_sub_fast_asm_op.html", null ],
+    [ "kiwi::internal::ClampedSubFastOp< T, U >", "structkiwi_1_1internal_1_1_clamped_sub_fast_op.html", null ],
+    [ "kiwi::internal::ClampedSubOp< T, U >", "structkiwi_1_1internal_1_1_clamped_sub_op.html", null ],
+    [ "kiwi::internal::ClampedSubOp< T, U >", "structkiwi_1_1internal_1_1_clamped_sub_op_3_01_t_00_01_u_01_4.html", null ],
+    [ "kiwi::internal::ClampedXorOp< T, U >", "structkiwi_1_1internal_1_1_clamped_xor_op.html", null ],
+    [ "kiwi::internal::ClampedXorOp< T, U >", "structkiwi_1_1internal_1_1_clamped_xor_op_3_01_t_00_01_u_01_4.html", null ],
     [ "kiwi::CompressedPairElem< Tp, Idx, CanBeEmptyBase >", "classkiwi_1_1_compressed_pair_elem.html", null ],
     [ "kiwi::CompressedPairElem< T1, 0 >", "classkiwi_1_1_compressed_pair_elem.html", [
       [ "kiwi::CompressedPair< T1, T2 >", "classkiwi_1_1_compressed_pair.html", null ]
@@ -73,7 +92,7 @@ var hierarchy =
     [ "kiwi::internal::DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kSigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_068019bfc45e94b50e41ebc27487aac3.html", null ],
     [ "kiwi::internal::DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kUnsigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_28e8c4d5749e96dd2728056f98fd8aaf.html", null ],
     [ "chibicpp::ErrorOr< T >", "classchibicpp_1_1_error_or.html", null ],
-    [ "base::Time::Exploded", "structbase_1_1_time_1_1_exploded.html", null ],
+    [ "kiwi::Time::Exploded", "structkiwi_1_1_time_1_1_exploded.html", null ],
     [ "std::false_type", null, [
       [ "kiwi::detail::IsUniquePtrToSL< std::unique_ptr< T, D > >", "structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l_3_01std_1_1unique__ptr_3_01_t_00_01_d_01_4_01_4.html", null ],
       [ "kiwi::detail::is_comparable_to_nullptr< T, std::enable_if_t< std::is_convertible< decltype(std::declval< T >() !=nullptr), bool >::value > >", "structkiwi_1_1detail_1_1is__comparable__to__nullptr_3_01_t_00_01std_1_1enable__if__t_3_01std_1_148c1e83e8fb5b34a745631a606e7a54f.html", null ],
@@ -117,6 +136,7 @@ var hierarchy =
     [ "kiwi::IOBuf", "classkiwi_1_1_i_o_buf.html", null ],
     [ "kiwi::IOBufCompare", "structkiwi_1_1_i_o_buf_compare.html", null ],
     [ "kiwi::IOBufHash", "structkiwi_1_1_i_o_buf_hash.html", null ],
+    [ "iovec", "structiovec.html", null ],
     [ "std::is_standard_layout", null, [
       [ "kiwi::detail::IsUniquePtrToSL< std::unique_ptr< T, D > >", "structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l_3_01std_1_1unique__ptr_3_01_t_00_01_d_01_4_01_4.html", null ]
     ] ],
@@ -130,10 +150,14 @@ var hierarchy =
     [ "kiwi::detail::IsPointerLike< T * >", "structkiwi_1_1detail_1_1_is_pointer_like_3_01_t_01_5_01_4.html", null ],
     [ "kiwi::internal::IsValueInRangeFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_is_value_in_range_fast_op.html", null ],
     [ "kiwi::internal::IsValueInRangeFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_is_value_in_range_fast_op_3_01_dst_00_01_src_01_4.html", null ],
-    [ "detail::IteratorFacade", null, [
+    [ "kiwi::detail::IteratorFacade< D, V, Tag >", "classkiwi_1_1detail_1_1_iterator_facade.html", [
+      [ "kiwi::detail::IteratorAdaptor< D, I, V, Tag >", "classkiwi_1_1detail_1_1_iterator_adaptor.html", null ]
+    ] ],
+    [ "kiwi::detail::IteratorFacade< IOBuf::Iterator, ByteRange const, std::forward_iterator_tag >", "classkiwi_1_1detail_1_1_iterator_facade.html", [
       [ "kiwi::IOBuf::Iterator", "classkiwi_1_1_i_o_buf_1_1_iterator.html", null ]
     ] ],
     [ "kiwi::LittleEndian", "classkiwi_1_1_little_endian.html", null ],
+    [ "kiwi::internal::MathWrapper< M, L, R, Math >", "structkiwi_1_1internal_1_1_math_wrapper.html", null ],
     [ "kiwi::internal::NarrowingRange< Dst, Src, Bounds >", "structkiwi_1_1internal_1_1_narrowing_range.html", null ],
     [ "kiwi::NoDestructor< T >", "classkiwi_1_1_no_destructor.html", null ],
     [ "kiwi::NotNull< T >", "classkiwi_1_1_not_null.html", [
@@ -170,6 +194,7 @@ var hierarchy =
     [ "kiwi::internal::SaturateFastAsmOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_asm_op.html", null ],
     [ "kiwi::internal::SaturateFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_op.html", null ],
     [ "kiwi::internal::SaturateFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_op_3_01_dst_00_01_src_01_4.html", null ],
+    [ "kiwi::detail::scope_exit< Callable >", "classkiwi_1_1detail_1_1scope__exit.html", null ],
     [ "kiwi::FileTracing::ScopedEnabler", "classkiwi_1_1_file_tracing_1_1_scoped_enabler.html", null ],
     [ "kiwi::internal::ScopedFILECloser", "structkiwi_1_1internal_1_1_scoped_f_i_l_e_closer.html", null ],
     [ "kiwi::ScopedGeneric< T, Traits >", "classkiwi_1_1_scoped_generic.html", null ],
@@ -183,20 +208,23 @@ var hierarchy =
       [ "kiwi::StringLiteral", "classkiwi_1_1_string_literal.html", null ]
     ] ],
     [ "kiwi::internal::SubstringMatcher< CharT >", "structkiwi_1_1internal_1_1_substring_matcher.html", null ],
-    [ "base::time_internal::TimeBase< TimeClass >", "classbase_1_1time__internal_1_1_time_base.html", null ],
-    [ "base::time_internal::TimeBase< LiveTicks >", "classbase_1_1time__internal_1_1_time_base.html", [
-      [ "base::LiveTicks", "classbase_1_1_live_ticks.html", null ]
+    [ "kiwi::detail::throw_exception_arg_array_", "structkiwi_1_1detail_1_1throw__exception__arg__array__.html", null ],
+    [ "kiwi::detail::throw_exception_arg_base_", "structkiwi_1_1detail_1_1throw__exception__arg__base__.html", null ],
+    [ "kiwi::detail::throw_exception_arg_trivial_", "structkiwi_1_1detail_1_1throw__exception__arg__trivial__.html", null ],
+    [ "kiwi::time_internal::TimeBase< TimeClass >", "classkiwi_1_1time__internal_1_1_time_base.html", null ],
+    [ "kiwi::time_internal::TimeBase< LiveTicks >", "classkiwi_1_1time__internal_1_1_time_base.html", [
+      [ "kiwi::LiveTicks", "classkiwi_1_1_live_ticks.html", null ]
     ] ],
-    [ "base::time_internal::TimeBase< ThreadTicks >", "classbase_1_1time__internal_1_1_time_base.html", [
-      [ "base::ThreadTicks", "classbase_1_1_thread_ticks.html", null ]
+    [ "kiwi::time_internal::TimeBase< ThreadTicks >", "classkiwi_1_1time__internal_1_1_time_base.html", [
+      [ "kiwi::ThreadTicks", "classkiwi_1_1_thread_ticks.html", null ]
     ] ],
-    [ "base::time_internal::TimeBase< Time >", "classbase_1_1time__internal_1_1_time_base.html", [
-      [ "base::Time", "classbase_1_1_time.html", null ]
+    [ "kiwi::time_internal::TimeBase< Time >", "classkiwi_1_1time__internal_1_1_time_base.html", [
+      [ "kiwi::Time", "classkiwi_1_1_time.html", null ]
     ] ],
-    [ "base::time_internal::TimeBase< TimeTicks >", "classbase_1_1time__internal_1_1_time_base.html", [
-      [ "base::TimeTicks", "classbase_1_1_time_ticks.html", null ]
+    [ "kiwi::time_internal::TimeBase< TimeTicks >", "classkiwi_1_1time__internal_1_1_time_base.html", [
+      [ "kiwi::TimeTicks", "classkiwi_1_1_time_ticks.html", null ]
     ] ],
-    [ "base::TimeDelta", "classbase_1_1_time_delta.html", null ],
+    [ "kiwi::TimeDelta", "classkiwi_1_1_time_delta.html", null ],
     [ "kiwi::internal::ToStringHelper< T >", "structkiwi_1_1internal_1_1_to_string_helper.html", null ],
     [ "kiwi::internal::ToStringHelper< bool >", "structkiwi_1_1internal_1_1_to_string_helper_3_01bool_01_4.html", null ],
     [ "kiwi::internal::ToStringHelper< std::tuple< T... > >", "structkiwi_1_1internal_1_1_to_string_helper_3_01std_1_1tuple_3_01_t_8_8_8_01_4_01_4.html", null ],
@@ -213,5 +241,7 @@ var hierarchy =
     [ "kiwi::internal::UnderlyingTypeImpl< CheckedNumeric< T > >", "structkiwi_1_1internal_1_1_underlying_type_impl_3_01_checked_numeric_3_01_t_01_4_01_4.html", null ],
     [ "kiwi::internal::UnderlyingTypeImpl< ClampedNumeric< T > >", "structkiwi_1_1internal_1_1_underlying_type_impl_3_01_clamped_numeric_3_01_t_01_4_01_4.html", null ],
     [ "kiwi::internal::UnderlyingTypeImpl< StrictNumeric< T > >", "structkiwi_1_1internal_1_1_underlying_type_impl_3_01_strict_numeric_3_01_t_01_4_01_4.html", null ],
+    [ "kiwi::internal::UnsignedOrFloatForSize< Numeric >", "structkiwi_1_1internal_1_1_unsigned_or_float_for_size.html", null ],
+    [ "kiwi::internal::UnsignedOrFloatForSize< Numeric >", "structkiwi_1_1internal_1_1_unsigned_or_float_for_size_3_01_numeric_01_4.html", null ],
     [ "kiwi::ValueInitTag", "structkiwi_1_1_value_init_tag.html", null ]
 ];

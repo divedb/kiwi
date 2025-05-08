@@ -9,6 +9,7 @@ var searchData=
   ['filliovresult_6',['FillIovResult',['../structkiwi_1_1_i_o_buf_1_1_fill_iov_result.html',1,'kiwi::IOBuf']]],
   ['function_5fref_7',['function_ref',['../classkiwi_1_1function__ref.html',1,'kiwi']]],
   ['function_5fref_3c_20ret_28params_2e_2e_2e_29_3e_8',['function_ref&lt; Ret(Params...)&gt;',['../classkiwi_1_1function__ref_3_01_ret_07_params_8_8_8_08_4.html',1,'kiwi']]],
-  ['functionpointerliketypetraits_9',['FunctionPointerLikeTypeTraits',['../structkiwi_1_1_function_pointer_like_type_traits.html',1,'kiwi']]],
-  ['functionpointerliketypetraits_3c_204_2c_20returnt_28_2a_29_28paramts_2e_2e_2e_29_3e_10',['FunctionPointerLikeTypeTraits&lt; 4, ReturnT(*)(ParamTs...)&gt;',['../structkiwi_1_1_function_pointer_like_type_traits.html',1,'kiwi']]]
+  ['function_5fref_3c_20void_28sharedinfoobserverentrybase_20_26_29_3e_9',['function_ref&lt; void(SharedInfoObserverEntryBase &amp;)&gt;',['../classkiwi_1_1function__ref.html',1,'kiwi']]],
+  ['functionpointerliketypetraits_10',['FunctionPointerLikeTypeTraits',['../structkiwi_1_1_function_pointer_like_type_traits.html',1,'kiwi']]],
+  ['functionpointerliketypetraits_3c_204_2c_20returnt_28_2a_29_28paramts_2e_2e_2e_29_3e_11',['FunctionPointerLikeTypeTraits&lt; 4, ReturnT(*)(ParamTs...)&gt;',['../structkiwi_1_1_function_pointer_like_type_traits.html',1,'kiwi']]]
 ];

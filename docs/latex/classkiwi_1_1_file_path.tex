@@ -36,7 +36,7 @@ bool \mbox{\hyperlink{classkiwi_1_1_file_path_a4dd7106c446bdb203701ea0f57f2cbb1}
 \item 
 auto \mbox{\hyperlink{classkiwi_1_1_file_path_a0521858e6819bd9bf6374d0d08cb7830}{operator$<$=$>$}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&that) const =default
 \item 
-const String\+Type \& \mbox{\hyperlink{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}{value}} () const LIFETIME\+\_\+\+BOUND
+const String\+Type \& \mbox{\hyperlink{classkiwi_1_1_file_path_a75be8717acbe051950263be6f2441519}{value}} () const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
 \item 
 bool \mbox{\hyperlink{classkiwi_1_1_file_path_a9dfa92903e8b0a36440f5eada6b84e0e}{empty}} () const
 \item 
@@ -441,7 +441,7 @@ A \doxylink{classkiwi_1_1_file_path}{File\+Path} object from a path name in UTF-
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_path_ac163246d808a7561bc2617b417da0280} 
 std\+::vector$<$ File\+Path\+::\+String\+Type $>$ kiwi\+::\+File\+Path\+::\+Get\+Components (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
 
-Returns a vector of all of the components of the provided path. It is equivalent to calling \doxylink{classkiwi_1_1_file_path_aa6ebd711e718e13dfcbc5d81d33c4348}{Dir\+Name()}.\doxylink{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}{value()} on the path\textquotesingle{}s root component, and \doxylink{classkiwi_1_1_file_path_addf8d007b5113191da07a2f90b5eca81}{Base\+Name()}.\doxylink{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}{value()} on each child component.
+Returns a vector of all of the components of the provided path. It is equivalent to calling \doxylink{classkiwi_1_1_file_path_aa6ebd711e718e13dfcbc5d81d33c4348}{Dir\+Name()}.\doxylink{classkiwi_1_1_file_path_a75be8717acbe051950263be6f2441519}{value()} on the path\textquotesingle{}s root component, and \doxylink{classkiwi_1_1_file_path_addf8d007b5113191da07a2f90b5eca81}{Base\+Name()}.\doxylink{classkiwi_1_1_file_path_a75be8717acbe051950263be6f2441519}{value()} on each child component.
 
 To make sure this is lossless so we can differentiate absolute and relative paths, the root slash will be included even though no other slashes will be. The precise behavior is\+:
 
@@ -735,10 +735,10 @@ A new \doxylink{classkiwi_1_1_file_path}{File\+Path} with the extension replaced
 \begin{DoxyReturn}{Returns}
 A copy of this \doxylink{classkiwi_1_1_file_path}{File\+Path} that does not end with a trailing separator. 
 \end{DoxyReturn}
-\Hypertarget{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700}\index{kiwi::FilePath@{kiwi::FilePath}!value@{value}}
+\Hypertarget{classkiwi_1_1_file_path_a75be8717acbe051950263be6f2441519}\index{kiwi::FilePath@{kiwi::FilePath}!value@{value}}
 \index{value@{value}!kiwi::FilePath@{kiwi::FilePath}}
 \doxysubsubsection{\texorpdfstring{value()}{value()}}
-{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a80e3085d1bdc7d4f549f78bd508a1700} 
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_path_a75be8717acbe051950263be6f2441519} 
 const String\+Type \& kiwi\+::\+File\+Path\+::value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \begin{DoxyReturn}{Returns}

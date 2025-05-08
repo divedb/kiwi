@@ -7,13 +7,16 @@ HDRS
 SRCS
     "file.cc"
     "file_path.cc"
+    "file_posix.cc"
     "iobuf.cc"
     "safe_base_name.cc"
+    "scoped_file.cc"
 COPTS
     ${KIWI_LIB_COPTS}
 DEPS
     glog::glog
     kiwi::strings
+    kiwi::chrono
 ALIAS
     kiwi::files
 )

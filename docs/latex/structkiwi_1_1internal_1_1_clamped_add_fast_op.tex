@@ -1,0 +1,47 @@
+\doxysection{kiwi\+::internal\+::Clamped\+Add\+Fast\+Op\texorpdfstring{$<$}{<} T, U \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1internal_1_1_clamped_add_fast_op}{}\label{structkiwi_1_1internal_1_1_clamped_add_fast_op}\index{kiwi::internal::ClampedAddFastOp$<$ T, U $>$@{kiwi::internal::ClampedAddFastOp$<$ T, U $>$}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_clamped_add_fast_op_ae27c7bdc8d569e823a751ccfc1f086c7}\label{structkiwi_1_1internal_1_1_clamped_add_fast_op_ae27c7bdc8d569e823a751ccfc1f086c7} 
+{\footnotesize template$<$typename V$>$ }\\{\bfseries \+\_\+\+\_\+attribute\+\_\+\+\_\+} ((always\+\_\+inline)) static V Do(T x
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_clamped_add_fast_op_adbf87042f5973f29d48074256190e63a}\label{structkiwi_1_1internal_1_1_clamped_add_fast_op_adbf87042f5973f29d48074256190e63a} 
+{\footnotesize template$<$typename V$>$ }\\static constexpr V {\bfseries Do} (T, U)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+U \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_op_af5c984e693b0677fb3ebfa55262422f4}{y}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_clamped_add_fast_op_ace94eb59a113425981b61253d998a351}\label{structkiwi_1_1internal_1_1_clamped_add_fast_op_ace94eb59a113425981b61253d998a351} 
+static const bool {\bfseries is\+\_\+supported} = \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_asm_op}{Clamped\+Add\+Fast\+Asm\+Op}}$<$T, U$>$\+::is\+\_\+supported
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1internal_1_1_clamped_add_fast_op_af5c984e693b0677fb3ebfa55262422f4}\index{kiwi::internal::ClampedAddFastOp$<$ T, U $>$@{kiwi::internal::ClampedAddFastOp$<$ T, U $>$}!y@{y}}
+\index{y@{y}!kiwi::internal::ClampedAddFastOp$<$ T, U $>$@{kiwi::internal::ClampedAddFastOp$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily \label{structkiwi_1_1internal_1_1_clamped_add_fast_op_af5c984e693b0677fb3ebfa55262422f4} 
+template$<$typename T, typename U$>$ \\
+U \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_op}{kiwi\+::internal\+::\+Clamped\+Add\+Fast\+Op}}$<$ T, U $>$\+::y}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_asm_op}{ClampedAddFastAsmOp<T,\ U>::template}}\ Do<V>(x,\ y)}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/numerics/safe\+\_\+math\+\_\+clang\+\_\+gcc\+\_\+impl.\+hh\item 
+include/kiwi/numerics/safe\+\_\+math\+\_\+shared\+\_\+impl.\+hh\end{DoxyCompactItemize}

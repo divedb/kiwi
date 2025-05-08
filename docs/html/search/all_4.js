@@ -8,10 +8,12 @@ var searchData=
   ['endswithseparator_5',['EndsWithSeparator',['../classkiwi_1_1_file_path.html#a673b30597f9ea337be99d6e13e54a705',1,'kiwi::FilePath']]],
   ['epoch_5ftracker_2ehh_6',['epoch_tracker.hh',['../epoch__tracker_8hh.html',1,'']]],
   ['equals_5finsensitive_7',['equals_insensitive',['../classkiwi_1_1_string_ref.html#ac8358d88240ae38511a984e107bd16a1',1,'kiwi::StringRef']]],
-  ['error_5for_2ehh_8',['error_or.hh',['../error__or_8hh.html',1,'']]],
-  ['erroror_9',['ErrorOr',['../classchibicpp_1_1_error_or.html',1,'chibicpp']]],
-  ['explicitly_5fconvertible_10',['explicitly_convertible',['../structkiwi_1_1explicitly__convertible.html',1,'kiwi']]],
-  ['explicitly_5fconvertible_3c_20from_2c_20to_2c_20std_3a_3avoid_5ft_3c_20decltype_28static_5fcast_3c_20to_20_3e_28std_3a_3adeclval_3c_20std_3a_3aadd_5frvalue_5freference_5ft_3c_20from_20_3e_20_3e_28_29_29_29_3e_20_3e_11',['explicitly_convertible&lt; From, To, std::void_t&lt; decltype(static_cast&lt; To &gt;(std::declval&lt; std::add_rvalue_reference_t&lt; From &gt; &gt;()))&gt; &gt;',['../structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942.html',1,'kiwi']]],
-  ['exploded_12',['Exploded',['../structbase_1_1_time_1_1_exploded.html',1,'base::Time']]],
-  ['extension_13',['Extension',['../classkiwi_1_1_file_path.html#ae4db75fe363d7316cd6b72b7e2bf88aa',1,'kiwi::FilePath']]]
+  ['error_8',['Error',['../classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609',1,'kiwi::File']]],
+  ['error_5for_2ehh_9',['error_or.hh',['../error__or_8hh.html',1,'']]],
+  ['errordetails_10',['ErrorDetails',['../classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831',1,'kiwi::File']]],
+  ['erroror_11',['ErrorOr',['../classchibicpp_1_1_error_or.html',1,'chibicpp']]],
+  ['explicitly_5fconvertible_12',['explicitly_convertible',['../structkiwi_1_1explicitly__convertible.html',1,'kiwi']]],
+  ['explicitly_5fconvertible_3c_20from_2c_20to_2c_20std_3a_3avoid_5ft_3c_20decltype_28static_5fcast_3c_20to_20_3e_28std_3a_3adeclval_3c_20std_3a_3aadd_5frvalue_5freference_5ft_3c_20from_20_3e_20_3e_28_29_29_29_3e_20_3e_13',['explicitly_convertible&lt; From, To, std::void_t&lt; decltype(static_cast&lt; To &gt;(std::declval&lt; std::add_rvalue_reference_t&lt; From &gt; &gt;()))&gt; &gt;',['../structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942.html',1,'kiwi']]],
+  ['exploded_14',['Exploded',['../structkiwi_1_1_time_1_1_exploded.html',1,'kiwi::Time']]],
+  ['extension_15',['Extension',['../classkiwi_1_1_file_path.html#ae4db75fe363d7316cd6b72b7e2bf88aa',1,'kiwi::FilePath']]]
 ];

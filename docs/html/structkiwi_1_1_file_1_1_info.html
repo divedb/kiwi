@@ -108,22 +108,54 @@ $(function(){initNavTree('structkiwi_1_1_file_1_1_info.html',''); initResizable(
   <div class="headertitle"><div class="title">kiwi::File::Info Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="file_8hh_source.html">file.hh</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3adc579dc504bd32ced23d01620c14e8" id="r_a3adc579dc504bd32ced23d01620c14e8"><td class="memItemLeft" align="right" valign="top"><a id="a3adc579dc504bd32ced23d01620c14e8" name="a3adc579dc504bd32ced23d01620c14e8"></a>
 int64_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> = 0</td></tr>
+<tr class="memdesc:a3adc579dc504bd32ced23d01620c14e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the file in bytes. Undefined when is_directory is true. <br /></td></tr>
 <tr class="separator:a3adc579dc504bd32ced23d01620c14e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ae4ad86c40ece21136378dac46dcd54" id="r_a7ae4ad86c40ece21136378dac46dcd54"><td class="memItemLeft" align="right" valign="top"><a id="a7ae4ad86c40ece21136378dac46dcd54" name="a7ae4ad86c40ece21136378dac46dcd54"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_directory</b> = false</td></tr>
+<tr class="memdesc:a7ae4ad86c40ece21136378dac46dcd54"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the file corresponds to a directory. <br /></td></tr>
 <tr class="separator:a7ae4ad86c40ece21136378dac46dcd54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3dd5b35aa78c52c6907346931c5b844" id="r_ac3dd5b35aa78c52c6907346931c5b844"><td class="memItemLeft" align="right" valign="top"><a id="ac3dd5b35aa78c52c6907346931c5b844" name="ac3dd5b35aa78c52c6907346931c5b844"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_symbolic_link</b> = false</td></tr>
+<tr class="memitem:ac3dd5b35aa78c52c6907346931c5b844" id="r_ac3dd5b35aa78c52c6907346931c5b844"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3dd5b35aa78c52c6907346931c5b844">is_symbolic_link</a> = false</td></tr>
 <tr class="separator:ac3dd5b35aa78c52c6907346931c5b844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d1c179442cfde5e9f86790b1bec80a4" id="r_a6d1c179442cfde5e9f86790b1bec80a4"><td class="memItemLeft" align="right" valign="top"><a id="a6d1c179442cfde5e9f86790b1bec80a4" name="a6d1c179442cfde5e9f86790b1bec80a4"></a>
+<a class="el" href="classkiwi_1_1_time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>last_modified</b></td></tr>
+<tr class="memdesc:a6d1c179442cfde5e9f86790b1bec80a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last modified time of a file. <br /></td></tr>
+<tr class="separator:a6d1c179442cfde5e9f86790b1bec80a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5942cea3444b4acf0ac6e99ffa1272a" id="r_ab5942cea3444b4acf0ac6e99ffa1272a"><td class="memItemLeft" align="right" valign="top"><a id="ab5942cea3444b4acf0ac6e99ffa1272a" name="ab5942cea3444b4acf0ac6e99ffa1272a"></a>
+<a class="el" href="classkiwi_1_1_time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>last_accessed</b></td></tr>
+<tr class="memdesc:ab5942cea3444b4acf0ac6e99ffa1272a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last accessed time of a file. <br /></td></tr>
+<tr class="separator:ab5942cea3444b4acf0ac6e99ffa1272a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e1c37f189fe7554fee41aafa668d7bf" id="r_a0e1c37f189fe7554fee41aafa668d7bf"><td class="memItemLeft" align="right" valign="top"><a id="a0e1c37f189fe7554fee41aafa668d7bf" name="a0e1c37f189fe7554fee41aafa668d7bf"></a>
+<a class="el" href="classkiwi_1_1_time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>creation_time</b></td></tr>
+<tr class="memdesc:a0e1c37f189fe7554fee41aafa668d7bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The creation time of a file. <br /></td></tr>
+<tr class="separator:a0e1c37f189fe7554fee41aafa668d7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Used to hold information about a given file. If you add more fields to this structure (platform-specific fields are OK), make sure to update all functions that use it in file_util_{win|posix}.cc, too. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac3dd5b35aa78c52c6907346931c5b844" name="ac3dd5b35aa78c52c6907346931c5b844"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3dd5b35aa78c52c6907346931c5b844">&#9670;&#160;</a></span>is_symbolic_link</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::Info::is_symbolic_link = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>True if the file corresponds to a symbolic link. For Windows currently not supported and thus always false. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/kiwi/io/<a class="el" href="file_8hh_source.html">file.hh</a></li>
-<li>src/io/<b>file.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

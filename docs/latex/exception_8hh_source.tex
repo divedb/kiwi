@@ -1,0 +1,82 @@
+\doxysection{exception.\+hh}
+\hypertarget{exception_8hh_source}{}\label{exception_8hh_source}\index{include/kiwi/common/exception.hh@{include/kiwi/common/exception.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ex>}
+\DoxyCodeLine{00014\ [[noreturn,\ KIWI\_ATTR\_GNU\_COLD]]\ KIWI\_NOINLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(Ex\&\&\ ex)\ \{}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_EXCEPTIONS}}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{static\_cast<}Ex\&\&\textcolor{keyword}{>}(ex);}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00018\ \ \ (void)ex;}
+\DoxyCodeLine{00019\ \ \ std::terminate();}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00021\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ex>}
+\DoxyCodeLine{00027\ [[noreturn,\ KIWI\_ATTR\_GNU\_COLD]]\ KIWI\_NOINLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_af132070951b2a07a01af8a189a3aed0a}{terminate\_with}}(}
+\DoxyCodeLine{00028\ \ \ \ \ Ex\&\&\ ex)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(\textcolor{keyword}{static\_cast<}Ex\&\&\textcolor{keyword}{>}(ex));}
+\DoxyCodeLine{00030\ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1throw__exception__arg__array__}{throw\_exception\_arg\_array\_}}\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{using\ }v\ =\ std::remove\_extent\_t<std::remove\_reference\_t<R>>;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{using\ }apply\ =\ std::enable\_if\_t<std::is\_same<char\ const,\ v<R>>::value,\ v<R>*>;}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1throw__exception__arg__trivial__}{throw\_exception\_arg\_trivial\_}}\ \{}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{using\ }apply\ =\ std::remove\_cvref\_t<R>;}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1throw__exception__arg__base__}{throw\_exception\_arg\_base\_}}\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{using\ }apply\ =\ R;}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{using\ }throw\_exception\_arg\_\ =\ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00053\ \ \ \ \ std::conditional\_t<}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ std::is\_array<std::remove\_reference\_t<R>>::value,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1throw__exception__arg__array__}{throw\_exception\_arg\_array\_}},}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ std::conditional\_t<std::is\_trivially\_copyable\_v<std::remove\_cvref\_t<R>>,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1throw__exception__arg__trivial__}{throw\_exception\_arg\_trivial\_}},}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1throw__exception__arg__base__}{throw\_exception\_arg\_base\_}}>>;}
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{using\ }throw\_exception\_arg\_t\ =}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{typename}\ throw\_exception\_arg\_<R>::template\ apply<R>;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ex,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00064\ [[noreturn,\ KIWI\_ATTR\_GNU\_COLD]]\ KIWI\_NOINLINE\ \textcolor{keywordtype}{void}\ throw\_exception\_(}
+\DoxyCodeLine{00065\ \ \ \ \ Args...\ args)\ \{}
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(Ex(\textcolor{keyword}{static\_cast<}Args\textcolor{keyword}{>}(args)...));}
+\DoxyCodeLine{00067\ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ex,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00070\ [[noreturn,\ KIWI\_ATTR\_GNU\_COLD]]\ KIWI\_NOINLINE\ \textcolor{keywordtype}{void}\ terminate\_with\_(}
+\DoxyCodeLine{00071\ \ \ \ \ Args...\ args)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00072\ \ \ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(Ex(\textcolor{keyword}{static\_cast<}Args\textcolor{keyword}{>}(args)...));}
+\DoxyCodeLine{00073\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ex,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00092\ [[noreturn]]\ KIWI\_ERASE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\_exception}}(Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00093\ \ \ detail::throw\_exception\_<Ex,\ detail::throw\_exception\_arg\_t<Args\&\&>...>(}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Args\&\&\textcolor{keyword}{>}(args)...);}
+\DoxyCodeLine{00095\ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

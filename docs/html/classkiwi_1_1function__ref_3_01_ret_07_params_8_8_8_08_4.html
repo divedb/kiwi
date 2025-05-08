@@ -114,6 +114,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1778a72f97bf8aa11dca9b1d625b57b" id="r_ad1778a72f97bf8aa11dca9b1d625b57b"><td class="memItemLeft" align="right" valign="top"><a id="ad1778a72f97bf8aa11dca9b1d625b57b" name="ad1778a72f97bf8aa11dca9b1d625b57b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>function_ref</b> (std::nullptr_t)</td></tr>
 <tr class="separator:ad1778a72f97bf8aa11dca9b1d625b57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace31c54aa89ac134000e1663242fe807" id="r_ace31c54aa89ac134000e1663242fe807"><td class="memTemplParams" colspan="2"><a id="ace31c54aa89ac134000e1663242fe807" name="ace31c54aa89ac134000e1663242fe807"></a>
+template&lt;typename Callable&gt; </td></tr>
+<tr class="memitem:ace31c54aa89ac134000e1663242fe807"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>function_ref</b> (Callable &amp;&amp;callable KIWI_LIFETIME_BOUND, std::enable_if_t&lt;!std::is_same&lt; std::remove_cvref_t&lt; Callable &gt;, <a class="el" href="classkiwi_1_1function__ref.html">function_ref</a> &gt;::value &gt; *=nullptr, std::enable_if_t&lt; std::is_void&lt; Ret &gt;::value||std::is_convertible&lt; decltype(std::declval&lt; Callable &gt;()(std::declval&lt; Params &gt;()...)), Ret &gt;::value &gt; *=nullptr)</td></tr>
+<tr class="separator:ace31c54aa89ac134000e1663242fe807"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37a87a4f20a0caf589c535f13b8cc1c7" id="r_a37a87a4f20a0caf589c535f13b8cc1c7"><td class="memItemLeft" align="right" valign="top"><a id="a37a87a4f20a0caf589c535f13b8cc1c7" name="a37a87a4f20a0caf589c535f13b8cc1c7"></a>
+Ret&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (Params... params) const</td></tr>
+<tr class="separator:a37a87a4f20a0caf589c535f13b8cc1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9e8c6e602d4f7a3b1555251c4d97620" id="r_af9e8c6e602d4f7a3b1555251c4d97620"><td class="memItemLeft" align="right" valign="top"><a id="af9e8c6e602d4f7a3b1555251c4d97620" name="af9e8c6e602d4f7a3b1555251c4d97620"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="separator:af9e8c6e602d4f7a3b1555251c4d97620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d3803a307deb5f3d9fdd51dbfca849" id="r_a81d3803a307deb5f3d9fdd51dbfca849"><td class="memItemLeft" align="right" valign="top"><a id="a81d3803a307deb5f3d9fdd51dbfca849" name="a81d3803a307deb5f3d9fdd51dbfca849"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classkiwi_1_1function__ref.html">function_ref</a>&lt; Ret(Params...)&gt; &amp;other) const</td></tr>
+<tr class="separator:a81d3803a307deb5f3d9fdd51dbfca849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1778a72f97bf8aa11dca9b1d625b57b" id="r_ad1778a72f97bf8aa11dca9b1d625b57b"><td class="memItemLeft" align="right" valign="top"><a id="ad1778a72f97bf8aa11dca9b1d625b57b" name="ad1778a72f97bf8aa11dca9b1d625b57b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>function_ref</b> (std::nullptr_t)</td></tr>
+<tr class="separator:ad1778a72f97bf8aa11dca9b1d625b57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e1da42f35b4fe7847d5994da461cdc" id="r_a96e1da42f35b4fe7847d5994da461cdc"><td class="memTemplParams" colspan="2"><a id="a96e1da42f35b4fe7847d5994da461cdc" name="a96e1da42f35b4fe7847d5994da461cdc"></a>
 template&lt;typename Callable&gt; </td></tr>
 <tr class="memitem:a96e1da42f35b4fe7847d5994da461cdc"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>function_ref</b> (Callable &amp;&amp;callable, std::enable_if_t&lt;!std::is_same&lt; std::remove_cvref_t&lt; Callable &gt;, <a class="el" href="classkiwi_1_1function__ref.html">function_ref</a> &gt;::value &gt; *=nullptr, std::enable_if_t&lt; std::is_void&lt; Ret &gt;::value||std::is_convertible&lt; decltype(std::declval&lt; Callable &gt;()(std::declval&lt; Params &gt;()...)), Ret &gt;::value &gt; *=nullptr)</td></tr>
@@ -125,7 +141,8 @@ Ret&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (Params
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="separator:af9e8c6e602d4f7a3b1555251c4d97620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>include/kiwi/common/<a class="el" href="function__ref_8hh_source.html">function_ref.hh</a></li>
 <li>include/kiwi/util/<a class="el" href="function__extras_8hh_source.html">function_extras.hh</a></li>
 </ul>
 </div><!-- contents -->

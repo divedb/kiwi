@@ -10,6 +10,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "kiwi/common/logging.hh"
 #include "kiwi/portability/compiler_specific.hh"
 
 namespace kiwi {
@@ -135,7 +136,7 @@ class ScopedGeneric {
 
   /// Destructor. Frees the owned resource if it is valid.
   virtual ~ScopedGeneric() {
-    assert(!receiving_);  // ScopedGeneric destroyed with active receiver.
+    DCHECK(!receiving_);  // ScopedGeneric destroyed with active receiver.
 
     FreeIfNecessary();
   }
@@ -171,6 +172,7 @@ class ScopedGeneric {
     element_type old_generic =
         std::exchange(data_.generic, traits_type::InvalidValue());
     TrackRelease(old_generic);
+
     return old_generic;
   }
 

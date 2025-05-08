@@ -1,0 +1,50 @@
+\doxysection{kiwi\+::internal\+::Checked\+Add\+Fast\+Op\texorpdfstring{$<$}{<} T, U \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1internal_1_1_checked_add_fast_op}{}\label{structkiwi_1_1internal_1_1_checked_add_fast_op}\index{kiwi::internal::CheckedAddFastOp$<$ T, U $>$@{kiwi::internal::CheckedAddFastOp$<$ T, U $>$}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_checked_add_fast_op_a537e5f229c0bff968b611eae7571ab46}\label{structkiwi_1_1internal_1_1_checked_add_fast_op_a537e5f229c0bff968b611eae7571ab46} 
+{\footnotesize template$<$typename V$>$ }\\{\bfseries \+\_\+\+\_\+attribute\+\_\+\+\_\+} ((always\+\_\+inline)) static const expr bool Do(T x
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_checked_add_fast_op_a1c33deb9f3d2d63aff0b0d60270ab58a}\label{structkiwi_1_1internal_1_1_checked_add_fast_op_a1c33deb9f3d2d63aff0b0d60270ab58a} 
+{\footnotesize template$<$typename V$>$ }\\static constexpr bool {\bfseries Do} (T, U, V \texorpdfstring{$\ast$}{*})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_checked_add_fast_op_ab8d604de33cf1b504fe500739cb76593}\label{structkiwi_1_1internal_1_1_checked_add_fast_op_ab8d604de33cf1b504fe500739cb76593} 
+U {\bfseries y}
+\item 
+U V \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_fast_op_a7066dee71770b3ac47cbcfd19ea6606d}{result}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1internal_1_1_checked_add_fast_op_a087c21557ef70209dd2bb31ccd6372ba}\label{structkiwi_1_1internal_1_1_checked_add_fast_op_a087c21557ef70209dd2bb31ccd6372ba} 
+static const bool {\bfseries is\+\_\+supported} = true
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1internal_1_1_checked_add_fast_op_a7066dee71770b3ac47cbcfd19ea6606d}\index{kiwi::internal::CheckedAddFastOp$<$ T, U $>$@{kiwi::internal::CheckedAddFastOp$<$ T, U $>$}!result@{result}}
+\index{result@{result}!kiwi::internal::CheckedAddFastOp$<$ T, U $>$@{kiwi::internal::CheckedAddFastOp$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{result}{result}}
+{\footnotesize\ttfamily \label{structkiwi_1_1internal_1_1_checked_add_fast_op_a7066dee71770b3ac47cbcfd19ea6606d} 
+template$<$typename T, typename U$>$ \\
+U V\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_fast_op}{kiwi\+::internal\+::\+Checked\+Add\+Fast\+Op}}$<$ T, U $>$\+::result}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ !\_\_builtin\_add\_overflow(x,\ y,\ result)}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/numerics/safe\+\_\+math\+\_\+clang\+\_\+gcc\+\_\+impl.\+hh\item 
+include/kiwi/numerics/safe\+\_\+math\+\_\+shared\+\_\+impl.\+hh\end{DoxyCompactItemize}

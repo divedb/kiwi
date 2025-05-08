@@ -15,6 +15,10 @@ struct \mbox{\hyperlink{structkiwi_1_1_case_insensitive_compare_a_s_c_i_i}{Case\
 \item 
 class \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}}
 \item 
+class \mbox{\hyperlink{classkiwi_1_1_checked_numeric}{Checked\+Numeric}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_clamped_numeric}{Clamped\+Numeric}}
+\item 
 class \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}}
 \item 
 class \mbox{\hyperlink{classkiwi_1_1_compressed_pair_elem}{Compressed\+Pair\+Elem}}
@@ -84,22 +88,12 @@ struct \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_traits}{Functi
 class \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_compare}{IOBuf\+Compare}}
-\item 
-struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_equal_to}{IOBuf\+Equal\+To}}
-\item 
-struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_greater}{IOBuf\+Greater}}
-\item 
-struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_greater_equal}{IOBuf\+Greater\+Equal}}
-\item 
+\begin{DoxyCompactList}\small\item\em Ordering for \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects. Compares data in the entire chain. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_hash}{IOBuf\+Hash}}
-\item 
-struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_less}{IOBuf\+Less}}
-\item 
-struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_less_equal}{IOBuf\+Less\+Equal}}
-\item 
-struct \mbox{\hyperlink{structkiwi_1_1_i_o_buf_not_equal_to}{IOBuf\+Not\+Equal\+To}}
-\item 
+\begin{DoxyCompactList}\small\item\em Hasher for \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects. Hashes the entire chain using Spooky\+Hash\+V2. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classkiwi_1_1_little_endian}{Little\+Endian}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_live_ticks}{Live\+Ticks}}
 \item 
 class \mbox{\hyperlink{classkiwi_1_1_no_destructor}{No\+Destructor}}
 \item 
@@ -142,6 +136,14 @@ class \mbox{\hyperlink{classkiwi_1_1_strict_numeric}{Strict\+Numeric}}
 class \mbox{\hyperlink{classkiwi_1_1_string_literal}{String\+Literal}}
 \item 
 class \mbox{\hyperlink{classkiwi_1_1_string_ref}{String\+Ref}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_time}{Time}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_time_ticks}{Time\+Ticks}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_value_init_tag}{Value\+Init\+Tag}}
 \end{DoxyCompactItemize}
@@ -495,12 +497,63 @@ std\+::u16string {\bfseries ASCIITo\+UTF16} (std\+::string\+\_\+view ascii)
 \Hypertarget{namespacekiwi_a118b49e828ba48fdf59d8f16bfbd0d07}\label{namespacekiwi_a118b49e828ba48fdf59d8f16bfbd0d07} 
 std\+::string {\bfseries UTF16\+To\+ASCII} (std\+::u16string\+\_\+view utf16)
 \item 
-{\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
+\Hypertarget{namespacekiwi_adb239b525e1fdda472b97877cf94a052}\label{namespacekiwi_adb239b525e1fdda472b97877cf94a052} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Microseconds} (T n)
 \item 
-{\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
+\Hypertarget{namespacekiwi_a00cf276e2e9eca06fa27cd17e37e2552}\label{namespacekiwi_a00cf276e2e9eca06fa27cd17e37e2552} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries operator\texorpdfstring{$\ast$}{*}} (T a, \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} td)
 \item 
-\Hypertarget{namespacekiwi_a17e2f3adbc1f7b74232fafa46584e5ee}\label{namespacekiwi_a17e2f3adbc1f7b74232fafa46584e5ee} 
-{\footnotesize template$<$typename KeyT, typename ValueT, typename Key\+InfoT$>$ }\\size\+\_\+t {\bfseries capacity\+\_\+in\+\_\+bytes} (const \mbox{\hyperlink{classkiwi_1_1_dense_map}{Dense\+Map}}$<$ KeyT, ValueT, Key\+InfoT $>$ \&X)
+\Hypertarget{namespacekiwi_aa3b82fb180c22d6af1fb74121af245ff}\label{namespacekiwi_aa3b82fb180c22d6af1fb74121af245ff} 
+BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} time\+\_\+delta)
+\item 
+\Hypertarget{namespacekiwi_af517971caf6d3568bc4d271d2ef54516}\label{namespacekiwi_af517971caf6d3568bc4d271d2ef54516} 
+{\footnotesize template$<$class Time\+Class$>$ }\\constexpr Time\+Class {\bfseries operator+} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta, Time\+Class t)
+\item 
+\Hypertarget{namespacekiwi_acfc20b2031d643382a80d1d4fc266e8e}\label{namespacekiwi_acfc20b2031d643382a80d1d4fc266e8e} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Days} (T n)
+\item 
+\Hypertarget{namespacekiwi_acf794fcd8bd4fd3ec12e359972ac9db5}\label{namespacekiwi_acf794fcd8bd4fd3ec12e359972ac9db5} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Hours} (T n)
+\item 
+\Hypertarget{namespacekiwi_aad0580fb45eb07d7318f0b3536e23b84}\label{namespacekiwi_aad0580fb45eb07d7318f0b3536e23b84} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Minutes} (T n)
+\item 
+\Hypertarget{namespacekiwi_a9fc445708fd8483f5db6e94857b2bb45}\label{namespacekiwi_a9fc445708fd8483f5db6e94857b2bb45} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Seconds} (T n)
+\item 
+\Hypertarget{namespacekiwi_af66a80b7d41cdb243259fa90483d608a}\label{namespacekiwi_af66a80b7d41cdb243259fa90483d608a} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Milliseconds} (T n)
+\item 
+\Hypertarget{namespacekiwi_ad7ad3ef0fb857f43e62836ed26572ce8}\label{namespacekiwi_ad7ad3ef0fb857f43e62836ed26572ce8} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Nanoseconds} (T n)
+\item 
+\Hypertarget{namespacekiwi_a9bbe688c0355bfa173f9517663914d9a}\label{namespacekiwi_a9bbe688c0355bfa173f9517663914d9a} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries Hertz} (T n)
+\item 
+\Hypertarget{namespacekiwi_a5f249101f4274de93fdb1b1444277ad0}\label{namespacekiwi_a5f249101f4274de93fdb1b1444277ad0} 
+BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, \mbox{\hyperlink{classkiwi_1_1_time}{Time}} time)
+\item 
+\Hypertarget{namespacekiwi_a36d58f5c01aa153ac4163dc867ef2b17}\label{namespacekiwi_a36d58f5c01aa153ac4163dc867ef2b17} 
+BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, \mbox{\hyperlink{classkiwi_1_1_time_ticks}{Time\+Ticks}} time\+\_\+ticks)
+\item 
+\Hypertarget{namespacekiwi_aa0346144be1a600599f04e9868e3e273}\label{namespacekiwi_aa0346144be1a600599f04e9868e3e273} 
+BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, \mbox{\hyperlink{classkiwi_1_1_live_ticks}{Live\+Ticks}} live\+\_\+ticks)
+\item 
+\Hypertarget{namespacekiwi_af873ba15bad0b10eb3bc3a827599b66f}\label{namespacekiwi_af873ba15bad0b10eb3bc3a827599b66f} 
+BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} time\+\_\+ticks)
+\item 
+{\footnotesize template$<$typename Ex$>$ }\\KIWI\+\_\+\+NOINLINE void \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\+\_\+exception}} (Ex \&\&ex)
+\item 
+{\footnotesize template$<$typename Ex$>$ }\\KIWI\+\_\+\+NOINLINE void \mbox{\hyperlink{namespacekiwi_af132070951b2a07a01af8a189a3aed0a}{terminate\+\_\+with}} (Ex \&\&ex) noexcept
+\item 
+{\footnotesize template$<$typename Ex, typename... Args$>$ }\\KIWI\+\_\+\+ERASE void \mbox{\hyperlink{namespacekiwi_a1b0531b9bf4f9470756d9958881b8b8c}{throw\+\_\+exception}} (Args \&\&... args)
+\item 
+\Hypertarget{namespacekiwi_af56c29b292dace755750b62b74c57822}\label{namespacekiwi_af56c29b292dace755750b62b74c57822} 
+size\+\_\+t {\bfseries good\+\_\+malloc\+\_\+size} (size\+\_\+t min\+\_\+size) noexcept
+\begin{DoxyCompactList}\small\item\em TODO(gc)\+: Adapt mimalloc. \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacekiwi_a3b36ff54230b55db830045ddab5257cd}{checked\+\_\+malloc}} (size\+\_\+t size)
+\item 
+{\footnotesize template$<$typename Callable$>$ }\\\mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{detail\+::scope\+\_\+exit}}$<$ std\+::decay\+\_\+t$<$ Callable $>$ $>$ \mbox{\hyperlink{namespacekiwi_a851bea1bb4a936e7446e8fc1ab579231}{make\+\_\+scope\+\_\+exit}} (Callable \&\&fp)
 \item 
 \Hypertarget{namespacekiwi_a94f304584bf024abddfe678de63b2d76}\label{namespacekiwi_a94f304584bf024abddfe678de63b2d76} 
 {\footnotesize template$<$class T, class Traits$>$ }\\void {\bfseries swap} (const \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&a, const \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&b)
@@ -510,6 +563,13 @@ std\+::string {\bfseries UTF16\+To\+ASCII} (std\+::u16string\+\_\+view utf16)
 \item 
 \Hypertarget{namespacekiwi_ac6a40566dbacc763303a5dd1cd2360d7}\label{namespacekiwi_ac6a40566dbacc763303a5dd1cd2360d7} 
 {\footnotesize template$<$class T, class Traits$>$ }\\bool {\bfseries operator!=} (const T \&value, const \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}$<$ T, Traits $>$ \&scoped)
+\item 
+{\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
+\item 
+{\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
+\item 
+\Hypertarget{namespacekiwi_a17e2f3adbc1f7b74232fafa46584e5ee}\label{namespacekiwi_a17e2f3adbc1f7b74232fafa46584e5ee} 
+{\footnotesize template$<$typename KeyT, typename ValueT, typename Key\+InfoT$>$ }\\size\+\_\+t {\bfseries capacity\+\_\+in\+\_\+bytes} (const \mbox{\hyperlink{classkiwi_1_1_dense_map}{Dense\+Map}}$<$ KeyT, ValueT, Key\+InfoT $>$ \&X)
 \item 
 \Hypertarget{namespacekiwi_a5918c1d57af638ec5d178d0a52ceff4f}\label{namespacekiwi_a5918c1d57af638ec5d178d0a52ceff4f} 
 {\footnotesize template$<$typename It, typename End\+Or\+Size$>$ \newline
@@ -573,53 +633,53 @@ requires (internal\+::\+Span\+Converts\+To\+String\+View$<$Element\+Type$>$ \tex
 \Hypertarget{namespacekiwi_ae88b93cea185d8ed1ff0e9f732bf5645}\label{namespacekiwi_ae88b93cea185d8ed1ff0e9f732bf5645} 
 {\footnotesize template$<$typename Element\+Type, size\+\_\+t Extent, typename Internal\+Ptr\+Type$>$ }\\constexpr void {\bfseries Print\+To} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ Element\+Type, Extent, Internal\+Ptr\+Type $>$ s, std\+::ostream \texorpdfstring{$\ast$}{*}os)
 \item 
-\Hypertarget{namespacekiwi_a8c9f60e04e7d5c0a378b95e348c31ee3}\label{namespacekiwi_a8c9f60e04e7d5c0a378b95e348c31ee3} 
-{\footnotesize template$<$typename T$>$ }\\constexpr auto {\bfseries span\+\_\+from\+\_\+ref} (const T \&t LIFETIME\+\_\+\+BOUND)
+\Hypertarget{namespacekiwi_a8b20bea7c52736dc1156fd88ef23925c}\label{namespacekiwi_a8b20bea7c52736dc1156fd88ef23925c} 
+{\footnotesize template$<$typename T$>$ }\\constexpr auto {\bfseries span\+\_\+from\+\_\+ref} (const T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_ad7f1497d52dda1d305d389dcc0d207c6}\label{namespacekiwi_ad7f1497d52dda1d305d389dcc0d207c6} 
-{\footnotesize template$<$typename T$>$ }\\constexpr auto {\bfseries span\+\_\+from\+\_\+ref} (T \&t LIFETIME\+\_\+\+BOUND)
+\Hypertarget{namespacekiwi_a28c63448da83e5a469809e59cd8c988e}\label{namespacekiwi_a28c63448da83e5a469809e59cd8c988e} 
+{\footnotesize template$<$typename T$>$ }\\constexpr auto {\bfseries span\+\_\+from\+\_\+ref} (T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_a97f09485c55dd98bc468a0102f2610fe}\label{namespacekiwi_a97f09485c55dd98bc468a0102f2610fe} 
+\Hypertarget{namespacekiwi_ab99fe2b82171a45c4bde585793696e68}\label{namespacekiwi_ab99fe2b82171a45c4bde585793696e68} 
 {\footnotesize template$<$typename T$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (const T \&t LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (const T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_a2693b1bd7756aced4d0ec09b0d04aa43}\label{namespacekiwi_a2693b1bd7756aced4d0ec09b0d04aa43} 
+\Hypertarget{namespacekiwi_a25c21c6b74a920dea7ffab8b76233e78}\label{namespacekiwi_a25c21c6b74a920dea7ffab8b76233e78} 
 {\footnotesize template$<$typename T$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const T \&t LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_ad94b4613d7d499408e9db1d2daf9da46}\label{namespacekiwi_ad94b4613d7d499408e9db1d2daf9da46} 
+\Hypertarget{namespacekiwi_aa1ae434523804b189c4ccdb0fd8ebf83}\label{namespacekiwi_aa1ae434523804b189c4ccdb0fd8ebf83} 
 {\footnotesize template$<$typename T$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (T \&t LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_a6e5b9d0710914db3517b68e73990a4c0}\label{namespacekiwi_a6e5b9d0710914db3517b68e73990a4c0} 
+\Hypertarget{namespacekiwi_a9be6bc304337987f0f8a1801cf89d804}\label{namespacekiwi_a9be6bc304337987f0f8a1801cf89d804} 
 {\footnotesize template$<$typename T$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, T \&t LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$T$>$)}\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+ref} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_ade896ce6ed9de5beab31e506cf7333f1}\label{namespacekiwi_ade896ce6ed9de5beab31e506cf7333f1} 
-{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries span\+\_\+from\+\_\+cstring} (const CharT(\&str LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
+\Hypertarget{namespacekiwi_aae305627dc1af7104fa34713612d625d}\label{namespacekiwi_aae305627dc1af7104fa34713612d625d} 
+{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries span\+\_\+from\+\_\+cstring} (const CharT(\&str KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
 \item 
-\Hypertarget{namespacekiwi_a7063dc982cb39c0a85b54bbff8487ce9}\label{namespacekiwi_a7063dc982cb39c0a85b54bbff8487ce9} 
-{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries span\+\_\+with\+\_\+nul\+\_\+from\+\_\+cstring} (const CharT(\&str LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
+\Hypertarget{namespacekiwi_a65aa285461ee6578ebfc74ee9cb68d82}\label{namespacekiwi_a65aa285461ee6578ebfc74ee9cb68d82} 
+{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries span\+\_\+with\+\_\+nul\+\_\+from\+\_\+cstring} (const CharT(\&str KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
 \item 
 \Hypertarget{namespacekiwi_a065d6ecf4f7bb3f950a1f13d33d7571f}\label{namespacekiwi_a065d6ecf4f7bb3f950a1f13d33d7571f} 
 {\footnotesize template$<$typename CharT$>$ }\\constexpr auto {\bfseries span\+\_\+with\+\_\+nul\+\_\+from\+\_\+cstring\+\_\+view} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}}$<$ CharT $>$ str)
 \item 
-\Hypertarget{namespacekiwi_a343cce621530a178aefdd33d713ab8bc}\label{namespacekiwi_a343cce621530a178aefdd33d713ab8bc} 
-{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+cstring} (const CharT(\&str LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
+\Hypertarget{namespacekiwi_ab7b0699e48e9d13b3a757aa25d8a5d22}\label{namespacekiwi_ab7b0699e48e9d13b3a757aa25d8a5d22} 
+{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries byte\+\_\+span\+\_\+from\+\_\+cstring} (const CharT(\&str KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
 \item 
-\Hypertarget{namespacekiwi_ae2dfbc72ea2edc114f26bdeaa7b25829}\label{namespacekiwi_ae2dfbc72ea2edc114f26bdeaa7b25829} 
-{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries byte\+\_\+span\+\_\+with\+\_\+nul\+\_\+from\+\_\+cstring} (const CharT(\&str LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
+\Hypertarget{namespacekiwi_ace3c867a9a4896af8ce8575dc35a5190}\label{namespacekiwi_ace3c867a9a4896af8ce8575dc35a5190} 
+{\footnotesize template$<$typename CharT, size\+\_\+t Extent$>$ }\\constexpr auto {\bfseries byte\+\_\+span\+\_\+with\+\_\+nul\+\_\+from\+\_\+cstring} (const CharT(\&str KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(str\mbox{[}Extent -\/ 1u\mbox{]}
 \item 
 \Hypertarget{namespacekiwi_ac64df7d0b231a9f46aeaa2d034b1f4f4}\label{namespacekiwi_ac64df7d0b231a9f46aeaa2d034b1f4f4} 
 {\footnotesize template$<$typename CharT$>$ }\\constexpr auto {\bfseries byte\+\_\+span\+\_\+with\+\_\+nul\+\_\+from\+\_\+cstring\+\_\+view} (\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\+\_\+cstring\+\_\+view}}$<$ CharT $>$ str)
 \item 
-\Hypertarget{namespacekiwi_abffa4df754ffb350a76f8e02d7015029}\label{namespacekiwi_abffa4df754ffb350a76f8e02d7015029} 
+\Hypertarget{namespacekiwi_a0b279c89fa13958e5919f14fc2694acd}\label{namespacekiwi_a0b279c89fa13958e5919f14fc2694acd} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename T$>$ \newline
-requires (internal\+::\+Byte\+Span\+Constructible\+From$<$const T\&$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (const T \&t LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Byte\+Span\+Constructible\+From$<$const T\&$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (const T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
-\Hypertarget{namespacekiwi_aba940ee8e9bdd9a81e1da638d88c96e0}\label{namespacekiwi_aba940ee8e9bdd9a81e1da638d88c96e0} 
+\Hypertarget{namespacekiwi_a27125f988ad042697ecf072b28855a8b}\label{namespacekiwi_a27125f988ad042697ecf072b28855a8b} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename T$>$ \newline
-requires (internal\+::\+Byte\+Span\+Constructible\+From\+Non\+Unique$<$const T\&$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const T \&t LIFETIME\+\_\+\+BOUND)
+requires (internal\+::\+Byte\+Span\+Constructible\+From\+Non\+Unique$<$const T\&$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const T \&t KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
 \item 
 \Hypertarget{namespacekiwi_a0ff7e435afcd890b0714945506943d04}\label{namespacekiwi_a0ff7e435afcd890b0714945506943d04} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename T$>$ \newline
@@ -629,13 +689,13 @@ requires (internal\+::\+Byte\+Span\+Constructible\+From$<$const T\&$>$ \&\& std\
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename T$>$ \newline
 requires (internal\+::\+Byte\+Span\+Constructible\+From\+Non\+Unique$<$const T\&$>$ \&\& std\+::ranges\+::borrowed\+\_\+range$<$T$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const T \&t)
 \item 
-\Hypertarget{namespacekiwi_a034fcb02a5951c2f70c115e5214779fd}\label{namespacekiwi_a034fcb02a5951c2f70c115e5214779fd} 
+\Hypertarget{namespacekiwi_af46c22c87c342e415b505fb3657e65ce}\label{namespacekiwi_af46c22c87c342e415b505fb3657e65ce} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename Element\+Type, size\+\_\+t Extent$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (const Element\+Type(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
+requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (const Element\+Type(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
 \item 
-\Hypertarget{namespacekiwi_a1873df4f299d1fad43e6ebbe7b88141f}\label{namespacekiwi_a1873df4f299d1fad43e6ebbe7b88141f} 
+\Hypertarget{namespacekiwi_ab6ee3650ddfa8dd9f4052e66efc472a2}\label{namespacekiwi_ab6ee3650ddfa8dd9f4052e66efc472a2} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename Element\+Type, size\+\_\+t Extent$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const Element\+Type(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
+requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, const Element\+Type(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
 \item 
 \Hypertarget{namespacekiwi_ad8ee98cb03287fef9a72f49a482ba781}\label{namespacekiwi_ad8ee98cb03287fef9a72f49a482ba781} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename T$>$ \newline
@@ -645,13 +705,13 @@ requires (internal\+::\+Byte\+Span\+Constructible\+From$<$T \&\&$>$ \&\& !std\+:
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename T$>$ \newline
 requires (internal\+::\+Byte\+Span\+Constructible\+From\+Non\+Unique$<$T \&\&$>$ \&\& !std\+::is\+\_\+const\+\_\+v$<$internal\+::\+Element\+Type\+Of\+Span\+Constructed\+From$<$T$>$$>$)}\\constexpr auto {\bfseries as\+\_\+writable\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, T \&\&t)
 \item 
-\Hypertarget{namespacekiwi_a2364a53fca35477bfca704491fc1af85}\label{namespacekiwi_a2364a53fca35477bfca704491fc1af85} 
+\Hypertarget{namespacekiwi_a9c32e431130f5e3ea1e14c3b17d7e3b8}\label{namespacekiwi_a9c32e431130f5e3ea1e14c3b17d7e3b8} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename Element\+Type, size\+\_\+t Extent$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$Element\+Type$>$ \&\& !std\+::is\+\_\+const\+\_\+v$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+writable\+\_\+byte\+\_\+span} (Element\+Type(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
+requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$Element\+Type$>$ \&\& !std\+::is\+\_\+const\+\_\+v$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+writable\+\_\+byte\+\_\+span} (Element\+Type(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
 \item 
-\Hypertarget{namespacekiwi_aa3f66efe0166c0f2bfdd0d6c10a8d3a1}\label{namespacekiwi_aa3f66efe0166c0f2bfdd0d6c10a8d3a1} 
+\Hypertarget{namespacekiwi_a255eefdff965a8f662435a32bec70a11}\label{namespacekiwi_a255eefdff965a8f662435a32bec70a11} 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename Element\+Type, size\+\_\+t Extent$>$ \newline
-requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$Element\+Type$>$ \&\& !std\+::is\+\_\+const\+\_\+v$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+writable\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, Element\+Type(\&arr LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
+requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$Element\+Type$>$ \&\& !std\+::is\+\_\+const\+\_\+v$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+writable\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, Element\+Type(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
 \item 
 \Hypertarget{namespacekiwi_a55488d84d56e15427a20bf7ca2aa0e09}\label{namespacekiwi_a55488d84d56e15427a20bf7ca2aa0e09} 
 {\footnotesize template$<$typename Dst = int, typename Src$>$ \newline
@@ -849,8 +909,8 @@ requires (sizeof(Char) $>$ 1)}\\constexpr bool {\bfseries Is\+Unicode\+Whitespac
 \Hypertarget{namespacekiwi_a41c306c8ea42dbeff9eaf6379da78cb0}\label{namespacekiwi_a41c306c8ea42dbeff9eaf6379da78cb0} 
 {\footnotesize template$<$typename Char$>$ }\\constexpr bool {\bfseries Is\+Whitespace} (Char c)
 \item 
-\Hypertarget{namespacekiwi_ac73899c9502c4ac63cd14cf681e4a14f}\label{namespacekiwi_ac73899c9502c4ac63cd14cf681e4a14f} 
-{\footnotesize template$<$class CharT, size\+\_\+t N$>$ }\\std\+::basic\+\_\+string\+\_\+view$<$ CharT $>$ {\bfseries Make\+String\+View\+With\+Nul\+Chars} (const CharT(\&lit LIFETIME\+\_\+\+BOUND)\mbox{[}N\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(lit\mbox{[}N -\/ 1u\mbox{]}
+\Hypertarget{namespacekiwi_a158073cd18899fa914d08f9add15cf1e}\label{namespacekiwi_a158073cd18899fa914d08f9add15cf1e} 
+{\footnotesize template$<$class CharT, size\+\_\+t N$>$ }\\std\+::basic\+\_\+string\+\_\+view$<$ CharT $>$ {\bfseries Make\+String\+View\+With\+Nul\+Chars} (const CharT(\&lit KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}N\mbox{]}) ENABLE\+\_\+\+IF\+\_\+\+ATTR(lit\mbox{[}N -\/ 1u\mbox{]}
 \item 
 \Hypertarget{namespacekiwi_a2d72a3075303cb3e6f9132e4119234ef}\label{namespacekiwi_a2d72a3075303cb3e6f9132e4119234ef} 
 char \texorpdfstring{$\ast$}{*} {\bfseries strdup} (const char \texorpdfstring{$\ast$}{*}str)
@@ -900,6 +960,12 @@ BASE\+\_\+\+EXPORT std\+::wstring {\bfseries UTF16\+To\+Wide} (std\+::u16string\
 \Hypertarget{namespacekiwi_a8ce6d69fab18945ba96866f9af356688}\label{namespacekiwi_a8ce6d69fab18945ba96866f9af356688} 
 {\footnotesize template$<$typename T = void\texorpdfstring{$\ast$}{*}$>$ }\\bool {\bfseries should\+\_\+reverse\+\_\+iterate} ()
 \item 
+\Hypertarget{namespacekiwi_a480f5c3c291cd7825477354a3b8d2fb1}\label{namespacekiwi_a480f5c3c291cd7825477354a3b8d2fb1} 
+ssize\+\_\+t {\bfseries preadv} (int fd, const struct \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}iov, int count, off\+\_\+t offset)
+\item 
+\Hypertarget{namespacekiwi_a28eccc308004cca55a1d6ffd0cdf64ec}\label{namespacekiwi_a28eccc308004cca55a1d6ffd0cdf64ec} 
+ssize\+\_\+t {\bfseries pwritev} (int fd, const struct \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}iov, int count, off\+\_\+t offset)
+\item 
 \Hypertarget{namespacekiwi_a545be0b80d40123e6bc55a7def28dfd8}\label{namespacekiwi_a545be0b80d40123e6bc55a7def28dfd8} 
 {\footnotesize template$<$typename T$>$ \newline
 requires (!std\+::is\+\_\+function\+\_\+v$<$T$>$)}\\constexpr T \texorpdfstring{$\ast$}{*} {\bfseries to\+\_\+address} (T \texorpdfstring{$\ast$}{*}p) noexcept
@@ -919,6 +985,30 @@ requires requires(const P\& p) \{ std\+::pointer\+\_\+traits$<$P$>$\+::to\+\_\+a
 {\footnotesize template$<$typename T$>$ }\\constexpr void \mbox{\hyperlink{namespacekiwi_a62418bf6fb23b063e11692bcc5f107e4}{adl\+\_\+swap}} (T \&\&lhs, T \&\&rhs) noexcept(noexcept(adl\+\_\+detail\+::swap\+\_\+impl(std\+::declval$<$ T $>$(), std\+::declval$<$ T $>$())))
 \item 
 {\footnotesize template$<$typename RangeT$>$ }\\constexpr auto \mbox{\hyperlink{namespacekiwi_ab44651a5abd7052057a373071c81644e}{adl\+\_\+size}} (RangeT \&\&range) -\/$>$ decltype(adl\+\_\+detail\+::size\+\_\+impl(std\+::forward$<$ RangeT $>$(range)))
+\item 
+\Hypertarget{namespacekiwi_a1c9f56b542df4acb1909071c0a6916e2}\label{namespacekiwi_a1c9f56b542df4acb1909071c0a6916e2} 
+{\footnotesize template$<$typename T, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+integral\+\_\+v$<$\+T$>$$>$$>$ }\\bool {\bfseries checked\+\_\+add} (T \texorpdfstring{$\ast$}{*}result, T a, T b)
+\item 
+\Hypertarget{namespacekiwi_a6ac01e2b14269fb5e3eed46c7d7785bf}\label{namespacekiwi_a6ac01e2b14269fb5e3eed46c7d7785bf} 
+{\footnotesize template$<$typename T, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+unsigned$<$\+T$>$\+::value$>$$>$ }\\bool {\bfseries checked\+\_\+add} (T \texorpdfstring{$\ast$}{*}result, T a, T b, T c)
+\item 
+\Hypertarget{namespacekiwi_a94f3ee019494e1b6a16593fb09dd7bb2}\label{namespacekiwi_a94f3ee019494e1b6a16593fb09dd7bb2} 
+{\footnotesize template$<$typename T, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+unsigned$<$\+T$>$\+::value$>$$>$ }\\bool {\bfseries checked\+\_\+add} (T \texorpdfstring{$\ast$}{*}result, T a, T b, T c, T d)
+\item 
+\Hypertarget{namespacekiwi_aa3415f8db77b73cf1b56d911f7f4c057}\label{namespacekiwi_aa3415f8db77b73cf1b56d911f7f4c057} 
+{\footnotesize template$<$typename T$>$ }\\bool {\bfseries checked\+\_\+div} (T \texorpdfstring{$\ast$}{*}result, T dividend, T divisor)
+\item 
+\Hypertarget{namespacekiwi_ad93a6f051ab422e0623b5b0c06ca4a1b}\label{namespacekiwi_ad93a6f051ab422e0623b5b0c06ca4a1b} 
+{\footnotesize template$<$typename T$>$ }\\bool {\bfseries checked\+\_\+mod} (T \texorpdfstring{$\ast$}{*}result, T dividend, T divisor)
+\item 
+\Hypertarget{namespacekiwi_a50c5337e3a4c8b63ff6c2bbe04dcfab9}\label{namespacekiwi_a50c5337e3a4c8b63ff6c2bbe04dcfab9} 
+{\footnotesize template$<$typename T, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+unsigned$<$\+T$>$\+::value$>$$>$ }\\bool {\bfseries checked\+\_\+mul} (T \texorpdfstring{$\ast$}{*}result, T a, T b)
+\item 
+\Hypertarget{namespacekiwi_a498b47f5cc581ab2c922c509df09191d}\label{namespacekiwi_a498b47f5cc581ab2c922c509df09191d} 
+{\footnotesize template$<$typename T, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+unsigned$<$\+T$>$\+::value$>$$>$ }\\bool {\bfseries checked\+\_\+muladd} (T \texorpdfstring{$\ast$}{*}result, T base, T mul, T add)
+\item 
+\Hypertarget{namespacekiwi_a78d5e8cb292b2b93fe98be54442b9ed5}\label{namespacekiwi_a78d5e8cb292b2b93fe98be54442b9ed5} 
+{\footnotesize template$<$typename T, typename T2, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+pointer$<$\+T$>$\+::value$>$, typename = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+unsigned$<$\+T2$>$\+::value$>$$>$ }\\bool {\bfseries checked\+\_\+add} (T \texorpdfstring{$\ast$}{*}result, T a, T2 b)
 \item 
 \Hypertarget{namespacekiwi_aa853fa8697503ff46bca3de124bb384f}\label{namespacekiwi_aa853fa8697503ff46bca3de124bb384f} 
 {\footnotesize template$<$typename T1, typename T2$>$ }\\void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}}$<$ T1, T2 $>$ \&lhs, \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}}$<$ T1, T2 $>$ \&rhs) noexcept(std\+::is\+\_\+nothrow\+\_\+swappable\+\_\+v$<$ T1 $>$ \&\&std\+::is\+\_\+nothrow\+\_\+swappable\+\_\+v$<$ T2 $>$)
@@ -978,6 +1068,21 @@ constexpr uint64\+\_\+t \mbox{\hyperlink{namespacekiwi_a4dc5f5939c0201509e3946b9
 \item 
 \Hypertarget{namespacekiwi_abc0a677f40ba6d0c0e649e670bb2d5d4}\label{namespacekiwi_abc0a677f40ba6d0c0e649e670bb2d5d4} 
 {\footnotesize template$<$typename T$>$ }\\auto {\bfseries make\+\_\+strict\+\_\+not\+\_\+null} (T \&\&t) noexcept
+\item 
+\Hypertarget{namespacekiwi_af3af0151b062404323017faf4db289bb}\label{namespacekiwi_af3af0151b062404323017faf4db289bb} 
+{\footnotesize template$<$typename Dst, typename Src$>$ }\\constexpr bool {\bfseries Is\+Valid\+For\+Type} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ Src $>$ value)
+\item 
+\Hypertarget{namespacekiwi_aaf88bf6731e62ad460e761a30093c9d3}\label{namespacekiwi_aaf88bf6731e62ad460e761a30093c9d3} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ Underlying\+Type$<$ T $>$ $>$ {\bfseries Make\+Checked\+Num} (T value)
+\item 
+\Hypertarget{namespacekiwi_aa6fba60ca4ef88cc7c31a79e65a1b90a}\label{namespacekiwi_aa6fba60ca4ef88cc7c31a79e65a1b90a} 
+{\footnotesize template$<$typename Dst, typename Src, typename Default$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ Dst $>$ {\bfseries Value\+Or\+Default\+For\+Type} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ Src $>$ value, Default default\+\_\+value)
+\item 
+\Hypertarget{namespacekiwi_a533d0931d766e9c0a4365e94e164a775}\label{namespacekiwi_a533d0931d766e9c0a4365e94e164a775} 
+{\footnotesize template$<$typename Dst, typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ Dst $>$ {\bfseries Value\+Or\+Die\+For\+Type} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{Checked\+Numeric}}$<$ Src $>$ value)
+\item 
+\Hypertarget{namespacekiwi_aff2f63340359ff31a0ccb0e5b7e22d27}\label{namespacekiwi_aff2f63340359ff31a0ccb0e5b7e22d27} 
+{\footnotesize template$<$typename T$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ Underlying\+Type$<$ T $>$ $>$ {\bfseries Make\+Clamped\+Num} (T value)
 \item 
 \Hypertarget{namespacekiwi_a158292cfc2d7e541b885e25109fd851b}\label{namespacekiwi_a158292cfc2d7e541b885e25109fd851b} 
 {\footnotesize template$<$typename Src, typename Dst = std\+::make\+\_\+signed\+\_\+t$<$\+Underlying\+Type$<$\+Src$>$$>$$>$ \newline
@@ -1074,6 +1179,9 @@ constexpr size\+\_\+t {\bfseries dynamic\+\_\+extent} = std\+::numeric\+\_\+limi
 \Hypertarget{namespacekiwi_ad8f885b390696ffc880552b4ab15331d}\label{namespacekiwi_ad8f885b390696ffc880552b4ab15331d} 
 constexpr char {\bfseries k\+Infra\+Ascii\+Whitespace} \mbox{[}$\,$\mbox{]} = \{0x09, 0x0A, 0x0C, 0x0D, 0x20\}
 \item 
+\Hypertarget{namespacekiwi_afbffd96b197169350fe9563c145d2fbe}\label{namespacekiwi_afbffd96b197169350fe9563c145d2fbe} 
+constexpr size\+\_\+t {\bfseries k\+Iov\+Max} = IOV\+\_\+\+MAX
+\item 
 {\footnotesize template$<$typename... Args$>$ }\\constexpr bool \mbox{\hyperlink{namespacekiwi_abf95adf64edbf485f61000fbc5abb9b2}{Always\+False}}
 \item 
 \Hypertarget{namespacekiwi_a047bba408afb0519030de80571c89ab2}\label{namespacekiwi_a047bba408afb0519030de80571c89ab2} 
@@ -1082,6 +1190,54 @@ constexpr char {\bfseries k\+Infra\+Ascii\+Whitespace} \mbox{[}$\,$\mbox{]} = \{
 
 
 \doxysubsection{Detailed Description}
+{\ttfamily \doxylink{classkiwi_1_1_time}{Time}} represents an absolute point in coordinated universal time (UTC), internally represented as microseconds (s/1,000,000) since the Windows epoch (1601-\/01-\/01 00\+:00\+:00 UTC). System-\/dependent clock interface routines are defined in time\+\_\+\+PLATFORM.\+cc. Note that values for {\ttfamily \doxylink{classkiwi_1_1_time}{Time}} may skew and jump around as the operating system makes adjustments to synchronize (e.\+g., with NTP servers). Thus, client code that uses the {\ttfamily \doxylink{classkiwi_1_1_time}{Time}} class must account for this.
+
+{\ttfamily \doxylink{classkiwi_1_1_time_delta}{Time\+Delta}} represents a duration of time, internally represented in microseconds.
+
+{\ttfamily \doxylink{classkiwi_1_1_time_ticks}{Time\+Ticks}} and {\ttfamily \doxylink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} represent an abstract time that is most of the time incrementing, for use in measuring time durations. Internally, they are represented in microseconds. They cannot be converted to a human-\/readable time, but are guaranteed not to decrease (unlike the {\ttfamily \doxylink{classkiwi_1_1_time}{Time}} class). Note that {\ttfamily \doxylink{classkiwi_1_1_time_ticks}{Time\+Ticks}} may "{}stand still"{} (e.\+g., if the computer is suspended), and {\ttfamily \doxylink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} will "{}stand still"{} whenever the thread has been de-\/scheduled by the operating system.
+
+All time classes are copyable, assignable, and occupy 64 bits per instance. Prefer to pass them by value, e.\+g.\+:
+
+void My\+Function(\+Time\+Delta arg);
+
+All time classes support {\ttfamily operator\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}} with logging streams, e.\+g. {\ttfamily LOG(\+INFO)}. For human-\/readable formatting, use //base/i18n/time\+\_\+formatting.h.
+
+Example use cases for different time classes\+:
+
+\doxylink{classkiwi_1_1_time}{Time}\+: Interpreting the wall-\/clock time provided by a remote system. Detecting whether cached resources have expired. Providing the user with a display of the current date and time. Determining the amount of time between events across re-\/boots of the machine.
+
+\doxylink{classkiwi_1_1_time_ticks}{Time\+Ticks}\+: Tracking the amount of time a task runs. Executing delayed tasks at the right time. Computing presentation timestamps. Synchronizing audio and video using \doxylink{classkiwi_1_1_time_ticks}{Time\+Ticks} as a common reference clock (lip-\/sync). Measuring network round-\/trip latency.
+
+\doxylink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}\+: Benchmarking how long the current thread has been doing actual work.
+
+Serialization\+:
+
+Use the helpers in //base/json/values\+\_\+util.h when serializing {\ttfamily \doxylink{classkiwi_1_1_time}{Time}} or {\ttfamily \doxylink{classkiwi_1_1_time_delta}{Time\+Delta}} to/from {\ttfamily base\+::\+Value}.
+
+Otherwise\+:
+
+
+\begin{DoxyItemize}
+\item \doxylink{classkiwi_1_1_time}{Time}\+: use {\ttfamily From\+Delta\+Since\+Windows\+Epoch()}/{\ttfamily To\+Delta\+Since\+Windows\+Epoch()}.
+\item \doxylink{classkiwi_1_1_time_delta}{Time\+Delta}\+: use {\ttfamily base\+::\+Microseconds()}/{\ttfamily In\+Microseconds()}.
+\end{DoxyItemize}
+
+{\ttfamily \doxylink{classkiwi_1_1_time_ticks}{Time\+Ticks}} and {\ttfamily \doxylink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} do not have a stable origin; serialization for the purpose of persistence is not supported.
+
+This contains stripped-\/down workalikes of some Boost classes\+:
+
+iterator\+\_\+adaptor iterator\+\_\+facade
+
+Rationale\+: the boost headers providing those classes are surprisingly large. The bloat comes from the headers themselves, but more so, their transitive includes.
+
+These implementations are simple and minimal. They may be missing features provided by the Boost classes mentioned above. Also at this time they only support forward-\/iterators. They provide just enough for the few uses within Folly libs; more features will be slapped in here if and when they\textquotesingle{}re needed.
+
+These classes may possibly add features as well. Care is taken not to change functionality where it\textquotesingle{}s expected to be the same (e.\+g. {\ttfamily dereference} will do the same thing).
+
+These are currently only intended for use within Folly, hence their living under detail. Use outside Folly is not recommended.
+
+To see how to use these classes, find the instances where this is used within Folly libs. Common use cases can also be found in {\ttfamily Iterators\+Test.\+cpp}.
+
 This file defines platform-\/independent types for dealing with platform-\/dependent files. If possible, use the higher-\/level \doxylink{classkiwi_1_1_file}{kiwi\+::\+File} class rather than these primitives. 
 
 \doxysubsection{Typedef Documentation}
@@ -1203,7 +1359,23 @@ Returns an ASCII character, converting to lowercase if uppercase is passed. Note
 {\footnotesize\ttfamily \label{namespacekiwi_a5a3b3437014200485ed150114bed1374} 
 char kiwi\+::ascii\+\_\+toupper (\begin{DoxyParamCaption}\item[{unsigned char}]{c}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-Returns the ASCII character, converting to upper-\/case if lower-\/case is passed. Note that characters values \texorpdfstring{$>$}{>} 127 are simply returned. \Hypertarget{namespacekiwi_ae379daf00c748739813e37270e578dd3}\index{kiwi@{kiwi}!Crc32@{Crc32}}
+Returns the ASCII character, converting to upper-\/case if lower-\/case is passed. Note that characters values \texorpdfstring{$>$}{>} 127 are simply returned. \Hypertarget{namespacekiwi_a3b36ff54230b55db830045ddab5257cd}\index{kiwi@{kiwi}!checked\_malloc@{checked\_malloc}}
+\index{checked\_malloc@{checked\_malloc}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{checked\_malloc()}{checked\_malloc()}}
+{\footnotesize\ttfamily \label{namespacekiwi_a3b36ff54230b55db830045ddab5257cd} 
+void \texorpdfstring{$\ast$}{*} kiwi\+::checked\+\_\+malloc (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Trivial wrapper around malloc that check for allocation failure and throw std\+::bad\+\_\+alloc in that case.
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & The number of bytes to allocate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The pointer to allocated buffer. \textbackslash{}methodset Allocation Wrappers 
+\end{DoxyReturn}
+\Hypertarget{namespacekiwi_ae379daf00c748739813e37270e578dd3}\index{kiwi@{kiwi}!Crc32@{Crc32}}
 \index{Crc32@{Crc32}!kiwi@{kiwi}}
 \doxysubsubsection{\texorpdfstring{Crc32()}{Crc32()}}
 {\footnotesize\ttfamily \label{namespacekiwi_ae379daf00c748739813e37270e578dd3} 
@@ -1211,7 +1383,16 @@ BASE\+\_\+\+EXPORT uint32\+\_\+t kiwi\+::\+Crc32 (\begin{DoxyParamCaption}\item[
 
 We generate the CRC-\/32 using the low order bits to select whether to XOR in the reversed polynomial 0x\+EDB88320. This is nice and simple, and allows us to keep the quotient in a uint32\+\_\+t. Since we\textquotesingle{}re not concerned about the nature of corruptions (i.\+e., we don\textquotesingle{}t care about bit sequencing, since we are handling memory changes, which are more grotesque) so we don\textquotesingle{}t bother to get the CRC correct for big-\/endian vs little-\/ending calculations. All we need is a nice hash, that tends to depend on all the bits of the sample, with very little chance of changes in one place impacting changes in another place.
 
-This provides a simple, fast CRC-\/32 calculation that can be used for checking the integrity of data. It is not a "{}secure"{} calculation! {\ttfamily sum} can start with any seed or be used to continue an operation began with previous data. \Hypertarget{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4}\index{kiwi@{kiwi}!next\_power\_of\_2@{next\_power\_of\_2}}
+This provides a simple, fast CRC-\/32 calculation that can be used for checking the integrity of data. It is not a "{}secure"{} calculation! {\ttfamily sum} can start with any seed or be used to continue an operation began with previous data. \Hypertarget{namespacekiwi_a851bea1bb4a936e7446e8fc1ab579231}\index{kiwi@{kiwi}!make\_scope\_exit@{make\_scope\_exit}}
+\index{make\_scope\_exit@{make\_scope\_exit}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{make\_scope\_exit()}{make\_scope\_exit()}}
+{\footnotesize\ttfamily \label{namespacekiwi_a851bea1bb4a936e7446e8fc1ab579231} 
+template$<$typename Callable$>$ \\
+\mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{detail\+::scope\+\_\+exit}}$<$ std\+::decay\+\_\+t$<$ Callable $>$ $>$ kiwi\+::make\+\_\+scope\+\_\+exit (\begin{DoxyParamCaption}\item[{Callable \&\&}]{fp}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+Keeps the callable object that is passed in, and execute it at the destruction of the returned object (usually at the scope exit where the returned object is kept).
+
+Interface is specified by p0052r2. \Hypertarget{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4}\index{kiwi@{kiwi}!next\_power\_of\_2@{next\_power\_of\_2}}
 \index{next\_power\_of\_2@{next\_power\_of\_2}!kiwi@{kiwi}}
 \doxysubsubsection{\texorpdfstring{next\_power\_of\_2()}{next\_power\_of\_2()}}
 {\footnotesize\ttfamily \label{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4} 
@@ -1253,7 +1434,43 @@ Returns std\+::string\+\_\+view with whitespace stripped from the beginning of t
 {\footnotesize\ttfamily \label{namespacekiwi_af5cbd2bb4f38765346d22c0c384c808c} 
 std\+::string\+\_\+view kiwi\+::strip\+\_\+trailing\+\_\+ascii\+\_\+whitespace (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{str}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
 
-Returns std\+::string\+\_\+view with whitespace stripped from the end of the given string\+\_\+view. 
+Returns std\+::string\+\_\+view with whitespace stripped from the end of the given string\+\_\+view. \Hypertarget{namespacekiwi_af132070951b2a07a01af8a189a3aed0a}\index{kiwi@{kiwi}!terminate\_with@{terminate\_with}}
+\index{terminate\_with@{terminate\_with}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{terminate\_with()}{terminate\_with()}}
+{\footnotesize\ttfamily \label{namespacekiwi_af132070951b2a07a01af8a189a3aed0a} 
+template$<$typename Ex$>$ \\
+KIWI\+\_\+\+NOINLINE void kiwi\+::terminate\+\_\+with (\begin{DoxyParamCaption}\item[{Ex \&\&}]{ex}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+terminate\+\_\+with
+
+Terminates as if by forwarding to throw\+\_\+exception but in a noexcept context. \Hypertarget{namespacekiwi_a1b0531b9bf4f9470756d9958881b8b8c}\index{kiwi@{kiwi}!throw\_exception@{throw\_exception}}
+\index{throw\_exception@{throw\_exception}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{throw\_exception()}{throw\_exception()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{namespacekiwi_a1b0531b9bf4f9470756d9958881b8b8c} 
+template$<$typename Ex, typename... Args$>$ \\
+KIWI\+\_\+\+ERASE void kiwi\+::throw\+\_\+exception (\begin{DoxyParamCaption}\item[{Args \&\&...}]{args}{}\end{DoxyParamCaption})}
+
+throw\+\_\+exception
+
+Construct and throw an exception if exceptions are enabled, or terminate if compiled with -\/fno-\/exceptions.
+
+Does not perfectly forward all its arguments. Instead, in the interest of minimizing common-\/case inline code size, decays its arguments as follows\+:
+\begin{DoxyItemize}
+\item refs to arrays of char const are decayed to char const\texorpdfstring{$\ast$}{*}
+\item refs to arrays are otherwise invalid
+\item refs to trivial types are decayed to values
+\end{DoxyItemize}
+
+The reason for treating refs to arrays as invalid is to avoid having two behaviors for refs to arrays, one for the general case and one for where the inner type is char const. Having two behaviors can be surprising, so avoid. \Hypertarget{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}\index{kiwi@{kiwi}!throw\_exception@{throw\_exception}}
+\index{throw\_exception@{throw\_exception}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{throw\_exception()}{throw\_exception()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900} 
+template$<$typename Ex$>$ \\
+KIWI\+\_\+\+NOINLINE void kiwi\+::throw\+\_\+exception (\begin{DoxyParamCaption}\item[{Ex \&\&}]{ex}{}\end{DoxyParamCaption})}
+
+throw\+\_\+exception
+
+Throw an exception if exceptions are enabled, or terminate if compiled with -\/fno-\/exceptions. 
 
 \doxysubsection{Variable Documentation}
 \Hypertarget{namespacekiwi_abf95adf64edbf485f61000fbc5abb9b2}\index{kiwi@{kiwi}!AlwaysFalse@{AlwaysFalse}}

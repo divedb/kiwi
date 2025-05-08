@@ -102,11 +102,150 @@ $(function(){initNavTree('classkiwi_1_1internal_1_1_checked_numeric.html',''); i
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="classkiwi_1_1internal_1_1_checked_numeric-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">kiwi::internal::CheckedNumeric&lt; T &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:adf6bc25098ae1185913999ada909c9a2" id="r_adf6bc25098ae1185913999ada909c9a2"><td class="memItemLeft" align="right" valign="top"><a id="adf6bc25098ae1185913999ada909c9a2" name="adf6bc25098ae1185913999ada909c9a2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>type</b> = T</td></tr>
+<tr class="separator:adf6bc25098ae1185913999ada909c9a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a74b67be3c015080bbd6e1c3aadf2c7d2" id="r_a74b67be3c015080bbd6e1c3aadf2c7d2"><td class="memTemplParams" colspan="2"><a id="a74b67be3c015080bbd6e1c3aadf2c7d2" name="a74b67be3c015080bbd6e1c3aadf2c7d2"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a74b67be3c015080bbd6e1c3aadf2c7d2"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>CheckedNumeric</b> (const <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt; Src &gt; &amp;rhs)</td></tr>
+<tr class="separator:a74b67be3c015080bbd6e1c3aadf2c7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af78d2152d3a50c44d08ab60ca2630537" id="r_af78d2152d3a50c44d08ab60ca2630537"><td class="memTemplParams" colspan="2"><a id="af78d2152d3a50c44d08ab60ca2630537" name="af78d2152d3a50c44d08ab60ca2630537"></a>
+template&lt;typename Src&gt; <br />
+requires (std::is_arithmetic_v&lt;Src&gt;)</td></tr>
+<tr class="memitem:af78d2152d3a50c44d08ab60ca2630537"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>CheckedNumeric</b> (Src value)</td></tr>
+<tr class="separator:af78d2152d3a50c44d08ab60ca2630537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a586f95f276a382ec9d761de0429f5e81" id="r_a586f95f276a382ec9d761de0429f5e81"><td class="memTemplParams" colspan="2"><a id="a586f95f276a382ec9d761de0429f5e81" name="a586f95f276a382ec9d761de0429f5e81"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a586f95f276a382ec9d761de0429f5e81"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>CheckedNumeric</b> (<a class="el" href="classkiwi_1_1internal_1_1_strict_numeric.html">StrictNumeric</a>&lt; Src &gt; value)</td></tr>
+<tr class="separator:a586f95f276a382ec9d761de0429f5e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7eb5f47cec55ac949127ec1e9543be6" id="r_ac7eb5f47cec55ac949127ec1e9543be6"><td class="memTemplParams" colspan="2"><a id="ac7eb5f47cec55ac949127ec1e9543be6" name="ac7eb5f47cec55ac949127ec1e9543be6"></a>
+template&lt;typename Dst = T&gt; </td></tr>
+<tr class="memitem:ac7eb5f47cec55ac949127ec1e9543be6"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>IsValid</b> () const</td></tr>
+<tr class="separator:ac7eb5f47cec55ac949127ec1e9543be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68dc383ead9b1d220d00f1bbb8271dc4" id="r_a68dc383ead9b1d220d00f1bbb8271dc4"><td class="memTemplParams" colspan="2"><a id="a68dc383ead9b1d220d00f1bbb8271dc4" name="a68dc383ead9b1d220d00f1bbb8271dc4"></a>
+template&lt;typename Dst&gt; </td></tr>
+<tr class="memitem:a68dc383ead9b1d220d00f1bbb8271dc4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>AssignIfValid</b> (Dst *result) const</td></tr>
+<tr class="separator:a68dc383ead9b1d220d00f1bbb8271dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9ef903581af6439b99b6591dd2605da" id="r_ac9ef903581af6439b99b6591dd2605da"><td class="memTemplParams" colspan="2"><a id="ac9ef903581af6439b99b6591dd2605da" name="ac9ef903581af6439b99b6591dd2605da"></a>
+template&lt;typename Dst = T, class CheckHandler = CheckOnFailure&gt; </td></tr>
+<tr class="memitem:ac9ef903581af6439b99b6591dd2605da"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_strict_numeric.html">StrictNumeric</a>&lt; Dst &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ValueOrDie</b> () const</td></tr>
+<tr class="separator:ac9ef903581af6439b99b6591dd2605da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ed770d0d9ed4ae04d0474d4dc9b4781" id="r_a3ed770d0d9ed4ae04d0474d4dc9b4781"><td class="memTemplParams" colspan="2"><a id="a3ed770d0d9ed4ae04d0474d4dc9b4781" name="a3ed770d0d9ed4ae04d0474d4dc9b4781"></a>
+template&lt;typename Dst = T, typename Src&gt; </td></tr>
+<tr class="memitem:a3ed770d0d9ed4ae04d0474d4dc9b4781"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_strict_numeric.html">StrictNumeric</a>&lt; Dst &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ValueOrDefault</b> (Src default_value) const</td></tr>
+<tr class="separator:a3ed770d0d9ed4ae04d0474d4dc9b4781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fae8787cb8f06f33111a30d0788dff8" id="r_a8fae8787cb8f06f33111a30d0788dff8"><td class="memTemplParams" colspan="2"><a id="a8fae8787cb8f06f33111a30d0788dff8" name="a8fae8787cb8f06f33111a30d0788dff8"></a>
+template&lt;typename Dst&gt; </td></tr>
+<tr class="memitem:a8fae8787cb8f06f33111a30d0788dff8"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt; UnderlyingType&lt; Dst &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Cast</b> () const</td></tr>
+<tr class="separator:a8fae8787cb8f06f33111a30d0788dff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c4260bea4bdc2ee4e05e69566b0e30a" id="r_a4c4260bea4bdc2ee4e05e69566b0e30a"><td class="memTemplParams" colspan="2"><a id="a4c4260bea4bdc2ee4e05e69566b0e30a" name="a4c4260bea4bdc2ee4e05e69566b0e30a"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a4c4260bea4bdc2ee4e05e69566b0e30a"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator+=</b> (const Src rhs)</td></tr>
+<tr class="separator:a4c4260bea4bdc2ee4e05e69566b0e30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6ccdb7893f911496ad4a8044a09b104" id="r_ad6ccdb7893f911496ad4a8044a09b104"><td class="memTemplParams" colspan="2"><a id="ad6ccdb7893f911496ad4a8044a09b104" name="ad6ccdb7893f911496ad4a8044a09b104"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:ad6ccdb7893f911496ad4a8044a09b104"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator-=</b> (const Src rhs)</td></tr>
+<tr class="separator:ad6ccdb7893f911496ad4a8044a09b104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad103cb1219c3a6ebd27e5a25b159d168" id="r_ad103cb1219c3a6ebd27e5a25b159d168"><td class="memTemplParams" colspan="2"><a id="ad103cb1219c3a6ebd27e5a25b159d168" name="ad103cb1219c3a6ebd27e5a25b159d168"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:ad103cb1219c3a6ebd27e5a25b159d168"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator*=</b> (const Src rhs)</td></tr>
+<tr class="separator:ad103cb1219c3a6ebd27e5a25b159d168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a10186d5f38728e633cd372f6980b26" id="r_a3a10186d5f38728e633cd372f6980b26"><td class="memTemplParams" colspan="2"><a id="a3a10186d5f38728e633cd372f6980b26" name="a3a10186d5f38728e633cd372f6980b26"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a3a10186d5f38728e633cd372f6980b26"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator/=</b> (const Src rhs)</td></tr>
+<tr class="separator:a3a10186d5f38728e633cd372f6980b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad57f9275ac85eb2bc81d59d9fec7f34b" id="r_ad57f9275ac85eb2bc81d59d9fec7f34b"><td class="memTemplParams" colspan="2"><a id="ad57f9275ac85eb2bc81d59d9fec7f34b" name="ad57f9275ac85eb2bc81d59d9fec7f34b"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:ad57f9275ac85eb2bc81d59d9fec7f34b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator%=</b> (const Src rhs)</td></tr>
+<tr class="separator:ad57f9275ac85eb2bc81d59d9fec7f34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a24879722057ef9d30305340746c97e" id="r_a0a24879722057ef9d30305340746c97e"><td class="memTemplParams" colspan="2"><a id="a0a24879722057ef9d30305340746c97e" name="a0a24879722057ef9d30305340746c97e"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a0a24879722057ef9d30305340746c97e"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;=</b> (const Src rhs)</td></tr>
+<tr class="separator:a0a24879722057ef9d30305340746c97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0adff155e4149af90effa6bc083d2630" id="r_a0adff155e4149af90effa6bc083d2630"><td class="memTemplParams" colspan="2"><a id="a0adff155e4149af90effa6bc083d2630" name="a0adff155e4149af90effa6bc083d2630"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a0adff155e4149af90effa6bc083d2630"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&gt;&gt;=</b> (const Src rhs)</td></tr>
+<tr class="separator:a0adff155e4149af90effa6bc083d2630"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a435b4c9dbcbc896ac78a25e4eae23bfe" id="r_a435b4c9dbcbc896ac78a25e4eae23bfe"><td class="memTemplParams" colspan="2"><a id="a435b4c9dbcbc896ac78a25e4eae23bfe" name="a435b4c9dbcbc896ac78a25e4eae23bfe"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a435b4c9dbcbc896ac78a25e4eae23bfe"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&amp;=</b> (const Src rhs)</td></tr>
+<tr class="separator:a435b4c9dbcbc896ac78a25e4eae23bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee8cd22eeac7e8790a6aa313352b80a6" id="r_aee8cd22eeac7e8790a6aa313352b80a6"><td class="memTemplParams" colspan="2"><a id="aee8cd22eeac7e8790a6aa313352b80a6" name="aee8cd22eeac7e8790a6aa313352b80a6"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:aee8cd22eeac7e8790a6aa313352b80a6"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator|=</b> (const Src rhs)</td></tr>
+<tr class="separator:aee8cd22eeac7e8790a6aa313352b80a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa0cc46f10d66bb1052f03414726e30" id="r_a8aa0cc46f10d66bb1052f03414726e30"><td class="memTemplParams" colspan="2"><a id="a8aa0cc46f10d66bb1052f03414726e30" name="a8aa0cc46f10d66bb1052f03414726e30"></a>
+template&lt;typename Src&gt; </td></tr>
+<tr class="memitem:a8aa0cc46f10d66bb1052f03414726e30"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator^=</b> (const Src rhs)</td></tr>
+<tr class="separator:a8aa0cc46f10d66bb1052f03414726e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3397d7330793d823ef09ea61a0f093c9" id="r_a3397d7330793d823ef09ea61a0f093c9"><td class="memItemLeft" align="right" valign="top"><a id="a3397d7330793d823ef09ea61a0f093c9" name="a3397d7330793d823ef09ea61a0f093c9"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> () const</td></tr>
+<tr class="separator:a3397d7330793d823ef09ea61a0f093c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19a53ad840885b11d67956e0a69d5501" id="r_a19a53ad840885b11d67956e0a69d5501"><td class="memItemLeft" align="right" valign="top"><a id="a19a53ad840885b11d67956e0a69d5501" name="a19a53ad840885b11d67956e0a69d5501"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator~</b> () const</td></tr>
+<tr class="separator:a19a53ad840885b11d67956e0a69d5501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad764a1a072e9e03516ca25cf466098c0" id="r_ad764a1a072e9e03516ca25cf466098c0"><td class="memItemLeft" align="right" valign="top"><a id="ad764a1a072e9e03516ca25cf466098c0" name="ad764a1a072e9e03516ca25cf466098c0"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Abs</b> () const</td></tr>
+<tr class="separator:ad764a1a072e9e03516ca25cf466098c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ad5ac95b3f9c1b2c66076554916a877" id="r_a7ad5ac95b3f9c1b2c66076554916a877"><td class="memTemplParams" colspan="2"><a id="a7ad5ac95b3f9c1b2c66076554916a877" name="a7ad5ac95b3f9c1b2c66076554916a877"></a>
+template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a7ad5ac95b3f9c1b2c66076554916a877"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt; typename <a class="el" href="structkiwi_1_1internal_1_1_math_wrapper.html">MathWrapper</a>&lt; CheckedMaxOp, T, U &gt;::type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Max</b> (U rhs) const</td></tr>
+<tr class="separator:a7ad5ac95b3f9c1b2c66076554916a877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e19638b0a1855e2d7432ddb08d2ddad" id="r_a5e19638b0a1855e2d7432ddb08d2ddad"><td class="memTemplParams" colspan="2"><a id="a5e19638b0a1855e2d7432ddb08d2ddad" name="a5e19638b0a1855e2d7432ddb08d2ddad"></a>
+template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a5e19638b0a1855e2d7432ddb08d2ddad"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt; typename <a class="el" href="structkiwi_1_1internal_1_1_math_wrapper.html">MathWrapper</a>&lt; CheckedMinOp, T, U &gt;::type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Min</b> (U rhs) const</td></tr>
+<tr class="separator:a5e19638b0a1855e2d7432ddb08d2ddad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d39d1f1cac7a82aea0f79c3a311496" id="r_af4d39d1f1cac7a82aea0f79c3a311496"><td class="memItemLeft" align="right" valign="top"><a id="af4d39d1f1cac7a82aea0f79c3a311496" name="af4d39d1f1cac7a82aea0f79c3a311496"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt; typename <a class="el" href="structkiwi_1_1internal_1_1_unsigned_or_float_for_size.html">UnsignedOrFloatForSize</a>&lt; T &gt;::type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>UnsignedAbs</b> () const</td></tr>
+<tr class="separator:af4d39d1f1cac7a82aea0f79c3a311496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65196ddf112f30aa8e48a49d6e10c277" id="r_a65196ddf112f30aa8e48a49d6e10c277"><td class="memItemLeft" align="right" valign="top"><a id="a65196ddf112f30aa8e48a49d6e10c277" name="a65196ddf112f30aa8e48a49d6e10c277"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> ()</td></tr>
+<tr class="separator:a65196ddf112f30aa8e48a49d6e10c277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f985972bce403b9f2600a8a3ad3d016" id="r_a0f985972bce403b9f2600a8a3ad3d016"><td class="memItemLeft" align="right" valign="top"><a id="a0f985972bce403b9f2600a8a3ad3d016" name="a0f985972bce403b9f2600a8a3ad3d016"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> (int)</td></tr>
+<tr class="separator:a0f985972bce403b9f2600a8a3ad3d016"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad11e6ddebb231c6064cacda5b5aed691" id="r_ad11e6ddebb231c6064cacda5b5aed691"><td class="memItemLeft" align="right" valign="top"><a id="ad11e6ddebb231c6064cacda5b5aed691" name="ad11e6ddebb231c6064cacda5b5aed691"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator--</b> ()</td></tr>
+<tr class="separator:ad11e6ddebb231c6064cacda5b5aed691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6083989b4f67d00ad5816ebbe81703ff" id="r_a6083989b4f67d00ad5816ebbe81703ff"><td class="memItemLeft" align="right" valign="top"><a id="a6083989b4f67d00ad5816ebbe81703ff" name="a6083989b4f67d00ad5816ebbe81703ff"></a>
+constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator--</b> (int)</td></tr>
+<tr class="separator:a6083989b4f67d00ad5816ebbe81703ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72ace16c69ac2e17060aa6225c77fc8a" id="r_a72ace16c69ac2e17060aa6225c77fc8a"><td class="memTemplParams" colspan="2"><a id="a72ace16c69ac2e17060aa6225c77fc8a" name="a72ace16c69ac2e17060aa6225c77fc8a"></a>
+template&lt;template&lt; typename, typename &gt; class M, typename R&gt; </td></tr>
+<tr class="memitem:a72ace16c69ac2e17060aa6225c77fc8a"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>MathOp</b> (R rhs)</td></tr>
+<tr class="separator:a72ace16c69ac2e17060aa6225c77fc8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a80948619f5429e0c15f63dd7302f12d1" id="r_a80948619f5429e0c15f63dd7302f12d1"><td class="memTemplParams" colspan="2"><a id="a80948619f5429e0c15f63dd7302f12d1" name="a80948619f5429e0c15f63dd7302f12d1"></a>
+template&lt;template&lt; typename, typename &gt; class M, typename L, typename R&gt; </td></tr>
+<tr class="memitem:a80948619f5429e0c15f63dd7302f12d1"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>MathOp</b> (L lhs, R rhs)</td></tr>
+<tr class="separator:a80948619f5429e0c15f63dd7302f12d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ab4f079a6499231ca7edfd7ebb1267ea8" id="r_ab4f079a6499231ca7edfd7ebb1267ea8"><td class="memTemplParams" colspan="2"><a id="ab4f079a6499231ca7edfd7ebb1267ea8" name="ab4f079a6499231ca7edfd7ebb1267ea8"></a>
+template&lt;typename U&gt; </td></tr>
+<tr class="memitem:ab4f079a6499231ca7edfd7ebb1267ea8"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetNumericValueForTest</b> (const <a class="el" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt; U &gt; &amp;src)</td></tr>
+<tr class="separator:ab4f079a6499231ca7edfd7ebb1267ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/kiwi/numerics/<a class="el" href="safe__conversions__impl_8hh_source.html">safe_conversions_impl.hh</a></li>
+<li>include/kiwi/numerics/<a class="el" href="numerics_2checked__math_8hh_source.html">checked_math.hh</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

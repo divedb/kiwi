@@ -13,9 +13,9 @@ var searchData=
   ['bigenoughpromotionimpl_3c_20lhs_2c_20rhs_2c_20false_2c_20false_20_3e_10',['BigEnoughPromotionImpl&lt; Lhs, Rhs, false, false &gt;',['../structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01false_00_01false_01_4.html',1,'kiwi::internal']]],
   ['bigenoughpromotionimpl_3c_20lhs_2c_20rhs_2c_20true_2c_20false_20_3e_11',['BigEnoughPromotionImpl&lt; Lhs, Rhs, true, false &gt;',['../structkiwi_1_1internal_1_1_big_enough_promotion_impl_3_01_lhs_00_01_rhs_00_01true_00_01false_01_4.html',1,'kiwi::internal']]],
   ['bitsare_12',['BitsAre',['../conceptkiwi_1_1_0d066213132031337175374203243225120302073357074022_1_1_bits_are.html',1,'kiwi::@066213132031337175374203243225120302073357074022']]],
-  ['buffer_13',['buffer',['../classkiwi_1_1_i_o_buf.html#a2e241c00471e7626c88e4d6ab6adde47',1,'kiwi::IOBuf']]],
+  ['buffer_13',['Buffer',['../classkiwi_1_1_i_o_buf.html#a679f13d5591ed0e4963eb9cc078e9486',1,'kiwi::IOBuf']]],
   ['buffer_20sharing_14',['Buffer Sharing',['../classkiwi_1_1_i_o_buf.html#autotoc_md2',1,'']]],
-  ['bufferend_15',['bufferEnd',['../classkiwi_1_1_i_o_buf.html#a52101c7e9f2f5124cbbb3198dc2db17c',1,'kiwi::IOBuf']]],
+  ['bufferend_15',['BufferEnd',['../classkiwi_1_1_i_o_buf.html#a98b138b44fdf260ac04ad2c3f35a3f2f',1,'kiwi::IOBuf']]],
   ['bytespanconstructiblefrom_16',['ByteSpanConstructibleFrom',['../conceptkiwi_1_1internal_1_1_byte_span_constructible_from.html',1,'kiwi::internal']]],
   ['bytespanconstructiblefromnonunique_17',['ByteSpanConstructibleFromNonUnique',['../conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique.html',1,'kiwi::internal']]]
 ];

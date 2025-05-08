@@ -11,10 +11,10 @@
 #include <limits>
 #include <type_traits>
 
-#include "kiwi/numerics/safe_conversions_impl.hh"  // IWYU pragma: export
+#include "kiwi/numerics/safe_conversions_impl.hh"
 
 #if defined(__ARMEL__) && !defined(__native_client__)
-#include "kiwi/numerics/safe_conversions_arm_impl.h"  // IWYU pragma: export
+#include "kiwi/numerics/safe_conversions_arm_impl.h"
 #define BASE_HAS_OPTIMIZED_SAFE_CONVERSIONS (1)
 #else
 #define BASE_HAS_OPTIMIZED_SAFE_CONVERSIONS (0)
@@ -27,6 +27,7 @@ namespace internal {
 template <typename Dst, typename Src>
 struct SaturateFastAsmOp {
   static constexpr bool is_supported = false;
+
   static constexpr Dst Do(Src) {
     // Force a compile failure if instantiated.
     return CheckOnFailure::template HandleFailure<Dst>();
@@ -35,18 +36,19 @@ struct SaturateFastAsmOp {
 #endif  // BASE_HAS_OPTIMIZED_SAFE_CONVERSIONS
 #undef BASE_HAS_OPTIMIZED_SAFE_CONVERSIONS
 
-// The following special case a few specific integer conversions where we can
-// eke out better performance than range checking.
+/// The following special case a few specific integer conversions where we can
+/// eke out better performance than range checking.
 template <typename Dst, typename Src>
 struct IsValueInRangeFastOp {
   static constexpr bool is_supported = false;
+
   static constexpr bool Do(Src) {
     // Force a compile failure if instantiated.
     return CheckOnFailure::template HandleFailure<bool>();
   }
 };
 
-// Signed to signed range comparison.
+/// Signed to signed range comparison.
 template <typename Dst, typename Src>
   requires(std::signed_integral<Dst> && std::signed_integral<Src> &&
            !kIsTypeInRangeForNumericType<Dst, Src>)
@@ -102,6 +104,7 @@ constexpr Dst checked_cast(Src value) {
   if (IsValueInRangeForNumericType<Dst>(value)) [[likely]] {
     return static_cast<Dst>(static_cast<UnderlyingType<Src>>(value));
   }
+
   return CheckHandler::template HandleFailure<Dst>();
 }
 

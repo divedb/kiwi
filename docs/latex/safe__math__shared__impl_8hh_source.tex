@@ -1,0 +1,206 @@
+\doxysection{safe\+\_\+math\+\_\+shared\+\_\+impl.\+hh}
+\hypertarget{safe__math__shared__impl_8hh_source}{}\label{safe__math__shared__impl_8hh_source}\index{include/kiwi/numerics/safe\_math\_shared\_impl.hh@{include/kiwi/numerics/safe\_math\_shared\_impl.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#if\ defined(\_\_asmjs\_\_)\ ||\ defined(\_\_wasm\_\_)}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ Optimized\ safe\ math\ instructions\ are\ incompatible\ with\ asmjs.}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_OPTIMIZED\_SAFE\_MATH\ (0)}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ Where\ available\ use\ builtin\ math\ overflow\ support\ on\ Clang\ and\ GCC.}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#elif\ !defined(\_\_native\_client\_\_)\ \&\&\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \ \ ((defined(\_\_clang\_\_)\ \&\&\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \ \ \ \ ((\_\_clang\_major\_\_\ >\ 3)\ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \ \ \ \ \ (\_\_clang\_major\_\_\ ==\ 3\ \&\&\ \_\_clang\_minor\_\_\ >=\ 4)))\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \ \ \ (defined(\_\_GNUC\_\_)\ \&\&\ \_\_GNUC\_\_\ >=\ 5))}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_math\_clang\_gcc\_impl.hh"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_OPTIMIZED\_SAFE\_MATH\ (1)}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_OPTIMIZED\_SAFE\_MATH\ (0)}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ These\ are\ the\ non-\/functioning\ boilerplate\ implementations\ of\ the\ optimized}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ safe\ math\ routines.}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#if\ !BASE\_HAS\_OPTIMIZED\_SAFE\_MATH}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00035\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_fast_op}{CheckedAddFastOp}}\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T,\ U,\ V*)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<bool>();}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00045\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_sub_fast_op}{CheckedSubFastOp}}\ \{}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T,\ U,\ V*)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<bool>();}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00055\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mul_fast_op}{CheckedMulFastOp}}\ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T,\ U,\ V*)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<bool>();}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00065\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_add_fast_op}{ClampedAddFastOp}}\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T,\ U)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<V>();}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00075\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_sub_fast_op}{ClampedSubFastOp}}\ \{}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T,\ U)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<V>();}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ \};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00085\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_mul_fast_op}{ClampedMulFastOp}}\ \{}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T,\ U)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<V>();}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00095\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_neg_fast_op}{ClampedNegFastOp}}\ \{}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ Do(T)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<T>();}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \};}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_HAS\_OPTIMIZED\_SAFE\_MATH}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#undef\ BASE\_HAS\_OPTIMIZED\_SAFE\_MATH}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ This\ is\ used\ for\ UnsignedAbs,\ where\ we\ need\ to\ support\ floating-\/point}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ template\ instantiations\ even\ though\ we\ don't\ actually\ support\ the\ operations.}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ However,\ there\ is\ no\ corresponding\ implementation\ of\ e.g.\ SafeUnsignedAbs,}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ so\ the\ float\ versions\ will\ not\ compile.}}
+\DoxyCodeLine{00109\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Numeric>}
+\DoxyCodeLine{00110\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_unsigned_or_float_for_size}{UnsignedOrFloatForSize}};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Numeric>}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{requires}(std::integral<Numeric>)}
+\DoxyCodeLine{00114\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_unsigned_or_float_for_size}{UnsignedOrFloatForSize<Numeric>}}\ \{}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{using\ }type\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned<Numeric>::type;}
+\DoxyCodeLine{00116\ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Numeric>}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{requires}(std::floating\_point<Numeric>)}
+\DoxyCodeLine{00120\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_unsigned_or_float_for_size}{UnsignedOrFloatForSize<Numeric>}}\ \{}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{using\ }type\ =\ Numeric;}
+\DoxyCodeLine{00122\ \};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ Wrap\ the\ unary\ operations\ to\ allow\ SFINAE\ when\ instantiating\ integrals\ versus}}
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ floating\ points.\ These\ don't\ perform\ any\ overflow\ checking.\ Rather,\ they}}
+\DoxyCodeLine{00126\ \textcolor{comment}{//\ exhibit\ well-\/defined\ overflow\ semantics\ and\ rely\ on\ the\ caller\ to\ detect}}
+\DoxyCodeLine{00127\ \textcolor{comment}{//\ if\ an\ overflow\ occurred.}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{requires}(std::integral<T>)}
+\DoxyCodeLine{00131\ \textcolor{keyword}{constexpr}\ T\ NegateWrapper(T\ value)\ \{}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{using\ }UnsignedT\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type;}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ This\ will\ compile\ to\ a\ NEG\ on\ Intel,\ and\ is\ normal\ negation\ on\ ARM.}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(UnsignedT(0)\ -\/\ \textcolor{keyword}{static\_cast<}UnsignedT\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00135\ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{requires}(std::floating\_point<T>)}
+\DoxyCodeLine{00139\ \textcolor{keyword}{constexpr}\ T\ NegateWrapper(T\ value)\ \{}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordflow}{return}\ -\/value;}
+\DoxyCodeLine{00141\ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{requires}(std::integral<T>)}
+\DoxyCodeLine{00145\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type\ InvertWrapper(T\ value)\ \{}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordflow}{return}\ \string~value;}
+\DoxyCodeLine{00147\ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{requires}(std::integral<T>)}
+\DoxyCodeLine{00151\ \textcolor{keyword}{constexpr}\ T\ AbsWrapper(T\ value)\ \{}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(SafeUnsignedAbs(value));}
+\DoxyCodeLine{00153\ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{requires}(std::floating\_point<T>)}
+\DoxyCodeLine{00157\ \textcolor{keyword}{constexpr}\ T\ AbsWrapper(T\ value)\ \{}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordflow}{return}\ value\ <\ 0\ ?\ -\/value\ :\ value;}
+\DoxyCodeLine{00159\ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \textcolor{keyword}{template}\ <\textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }M,\ \textcolor{keyword}{typename}\ L,\ \textcolor{keyword}{typename}\ R,}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Math\ =\ M<UnderlyingType<L>,\ UnderlyingType<R>>>}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{requires}\ \textcolor{keyword}{requires}\ \{\ \textcolor{keyword}{typename}\ Math::result\_type;\ \}}
+\DoxyCodeLine{00164\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_math_wrapper}{MathWrapper}}\ \{}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{using\ }math\ =\ Math;}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{using\ }type\ =\ \textcolor{keyword}{typename}\ math::result\_type;}
+\DoxyCodeLine{00167\ \};}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ The\ following\ macros\ are\ just\ boilerplate\ for\ the\ standard\ arithmetic}}
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ operator\ overloads\ and\ variadic\ function\ templates.\ A\ macro\ isn't\ the\ nicest}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//\ solution,\ but\ it\ beats\ rewriting\ these\ over\ and\ over\ again.}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#define\ BASE\_NUMERIC\_ARITHMETIC\_VARIADIC(CLASS,\ CL\_ABBR,\ OP\_NAME)\ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\ \ template\ <typename\ L,\ typename\ R,\ typename...\ Args>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\ \ constexpr\ auto\ CL\_ABBR\#\#OP\_NAME(L\ lhs,\ R\ rhs,\ Args...\ args)\ \{\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\ \ \ \ return\ CL\_ABBR\#\#MathOp<CLASS\#\#OP\_NAME\#\#Op,\ L,\ R,\ Args...>(lhs,\ rhs,\ \(\backslash\)}}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ args...);\ \(\backslash\)}}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#define\ BASE\_NUMERIC\_ARITHMETIC\_OPERATORS(CLASS,\ CL\_ABBR,\ OP\_NAME,\ OP,\ CMP\_OP)\ \(\backslash\)}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\ \ }\textcolor{comment}{/*\ Binary\ arithmetic\ operator\ for\ all\ CLASS\#\#Numeric\ operations.\ */}\textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\ \ template\ <typename\ L,\ typename\ R>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\ \ \ \ requires(Is\#\#CLASS\#\#Op<L,\ R>)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\ \ constexpr\ CLASS\#\#Numeric<typename\ MathWrapper<CLASS\#\#OP\_NAME\#\#Op,\ L,\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ R>::type>\ operator\ OP(L\ lhs,\ \ \ \(\backslash\)}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ R\ rhs)\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\ \ \ \ return\ decltype(lhs\ OP\ rhs)::template\ MathOp<CLASS\#\#OP\_NAME\#\#Op>(lhs,\ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rhs);\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\ \ }\textcolor{comment}{/*\ Assignment\ arithmetic\ operator\ implementation\ from\ CLASS\#\#Numeric.\ */}\textcolor{preprocessor}{\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\ \ template\ <typename\ L>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\ \ \ \ requires\ std::is\_arithmetic\_v<L>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\ \ template\ <typename\ R>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\ \ constexpr\ CLASS\#\#Numeric<L>\&\ CLASS\#\#Numeric<L>::operator\ CMP\_OP(R\ rhs)\ \{\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\ \ \ \ return\ MathOp<CLASS\#\#OP\_NAME\#\#Op>(rhs);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\ \ }\textcolor{comment}{/*\ Variadic\ arithmetic\ functions\ that\ return\ CLASS\#\#Numeric.\ */}\textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\ \ BASE\_NUMERIC\_ARITHMETIC\_VARIADIC(CLASS,\ CL\_ABBR,\ OP\_NAME)}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00200\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

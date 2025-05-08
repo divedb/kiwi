@@ -659,7 +659,7 @@
 \DoxyCodeLine{00655\ \textcolor{comment}{//\ preserves\ internal\ NUL\ characters.}}
 \DoxyCodeLine{00656\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ CharT,\ \textcolor{keywordtype}{size\_t}\ N>}
 \DoxyCodeLine{00657\ std::basic\_string\_view<CharT>\ MakeStringViewWithNulChars(}
-\DoxyCodeLine{00658\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&lit\ LIFETIME\_BOUND)[N])}
+\DoxyCodeLine{00658\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&lit\ KIWI\_LIFETIME\_BOUND)[N])}
 \DoxyCodeLine{00659\ \ \ \ \ ENABLE\_IF\_ATTR(lit[N\ -\/\ 1u]\ ==\ CharT\{0\},}
 \DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
 \DoxyCodeLine{00661\ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<CharT>(lit,\ N\ -\/\ 1u);}

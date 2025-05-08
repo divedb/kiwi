@@ -1,0 +1,110 @@
+\doxysection{kiwi\+::Thread\+Ticks Class Reference}
+\hypertarget{classkiwi_1_1_thread_ticks}{}\label{classkiwi_1_1_thread_ticks}\index{kiwi::ThreadTicks@{kiwi::ThreadTicks}}
+Inheritance diagram for kiwi\+::Thread\+Ticks\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_thread_ticks}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_thread_ticks_a17659032c5b97a73dcfb734034c68d7c}\label{classkiwi_1_1_thread_ticks_a17659032c5b97a73dcfb734034c68d7c} 
+static bool {\bfseries Is\+Supported} ()
+\item 
+\Hypertarget{classkiwi_1_1_thread_ticks_ae02266651ad2efcbdb9dd0f54e508b7f}\label{classkiwi_1_1_thread_ticks_ae02266651ad2efcbdb9dd0f54e508b7f} 
+static void {\bfseries Wait\+Until\+Initialized} ()
+\item 
+\Hypertarget{classkiwi_1_1_thread_ticks_aef97d69e887f013aa3104e5c1f3df190}\label{classkiwi_1_1_thread_ticks_aef97d69e887f013aa3104e5c1f3df190} 
+static \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries Now} ()
+\item 
+\Hypertarget{classkiwi_1_1_thread_ticks_a117ff7f3856408e0ba65c93639766d0b}\label{classkiwi_1_1_thread_ticks_a117ff7f3856408e0ba65c93639766d0b} 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries From\+Internal\+Value} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries Max} ()
+\item 
+static constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries Min} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_thread_ticks_a9eeeb6fc42d5276b80227378c73717b2}\label{classkiwi_1_1_thread_ticks_a9eeeb6fc42d5276b80227378c73717b2} 
+class {\bfseries time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool {\bfseries is\+\_\+null} () const
+\item 
+constexpr bool {\bfseries is\+\_\+max} () const
+\item 
+constexpr bool {\bfseries is\+\_\+min} () const
+\item 
+constexpr bool {\bfseries is\+\_\+inf} () const
+\item 
+constexpr int64\+\_\+t {\bfseries To\+Internal\+Value} () const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries since\+\_\+origin} () const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} {\bfseries operator-\/} (const \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{Time\+Base}}$<$ \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} $>$ \&other) const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries operator-\/} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} {\bfseries operator+} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta) const
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} \& {\bfseries operator+=} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta)
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} \& {\bfseries operator-\/=} (\mbox{\hyperlink{classkiwi_1_1_time_delta}{Time\+Delta}} delta)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Hours\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Minutes\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Seconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Milliseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Second}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Minute}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Hour}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Day}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Microseconds\+Per\+Week}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Microsecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Millisecond}
+\item 
+static constexpr int64\+\_\+t {\bfseries k\+Nanoseconds\+Per\+Second}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+constexpr {\bfseries Time\+Base} (int64\+\_\+t us)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classkiwi_1_1time__internal_1_1_time_base}{kiwi\+::time\+\_\+internal\+::\+Time\+Base$<$ Thread\+Ticks $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ int64\+\_\+t $>$ {\bfseries us\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/chrono/time.\+hh\end{DoxyCompactItemize}

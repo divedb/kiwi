@@ -109,25 +109,27 @@ $(function(){initNavTree('structkiwi_1_1_i_o_buf_compare.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
+<p>Ordering for <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> objects. Compares data in the entire chain.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="iobuf_8hh_source.html">iobuf.hh</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a500ce3dc4b219c70c9385df30b0d5b0f" id="r_a500ce3dc4b219c70c9385df30b0d5b0f"><td class="memItemLeft" align="right" valign="top"><a id="a500ce3dc4b219c70c9385df30b0d5b0f" name="a500ce3dc4b219c70c9385df30b0d5b0f"></a>
-ordering&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &amp;a, const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &amp;b) const</td></tr>
-<tr class="separator:a500ce3dc4b219c70c9385df30b0d5b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0deb7674b54c1b1c89224d201eba16d4" id="r_a0deb7674b54c1b1c89224d201eba16d4"><td class="memItemLeft" align="right" valign="top"><a id="a0deb7674b54c1b1c89224d201eba16d4" name="a0deb7674b54c1b1c89224d201eba16d4"></a>
-ordering&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const std::unique_ptr&lt; <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &gt; &amp;a, const std::unique_ptr&lt; <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &gt; &amp;b) const</td></tr>
-<tr class="separator:a0deb7674b54c1b1c89224d201eba16d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeb3e1d8baf4dcfed83e00e8d1472179" id="r_abeb3e1d8baf4dcfed83e00e8d1472179"><td class="memItemLeft" align="right" valign="top"><a id="abeb3e1d8baf4dcfed83e00e8d1472179" name="abeb3e1d8baf4dcfed83e00e8d1472179"></a>
-ordering&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> *a, const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> *b) const</td></tr>
-<tr class="separator:abeb3e1d8baf4dcfed83e00e8d1472179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26c30aef4007f31aacb34ff008fbd02" id="r_af26c30aef4007f31aacb34ff008fbd02"><td class="memItemLeft" align="right" valign="top"><a id="af26c30aef4007f31aacb34ff008fbd02" name="af26c30aef4007f31aacb34ff008fbd02"></a>
+std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &amp;a, const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &amp;b) const</td></tr>
+<tr class="separator:af26c30aef4007f31aacb34ff008fbd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a998a2dfb6f206fb91d84500f6044829c" id="r_a998a2dfb6f206fb91d84500f6044829c"><td class="memItemLeft" align="right" valign="top"><a id="a998a2dfb6f206fb91d84500f6044829c" name="a998a2dfb6f206fb91d84500f6044829c"></a>
+std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const std::unique_ptr&lt; <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &gt; &amp;a, const std::unique_ptr&lt; <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> &gt; &amp;b) const</td></tr>
+<tr class="separator:a998a2dfb6f206fb91d84500f6044829c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a993ba6f5c80a871b130ea48162618af4" id="r_a993ba6f5c80a871b130ea48162618af4"><td class="memItemLeft" align="right" valign="top"><a id="a993ba6f5c80a871b130ea48162618af4" name="a993ba6f5c80a871b130ea48162618af4"></a>
+std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> *a, const <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> *b) const</td></tr>
+<tr class="separator:a993ba6f5c80a871b130ea48162618af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Ordering for <a class="el" href="classkiwi_1_1_i_o_buf.html">IOBuf</a> objects. Compares data in the entire chain. </p>
-</div><hr/>The documentation for this struct was generated from the following files:<ul>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/kiwi/io/<a class="el" href="iobuf_8hh_source.html">iobuf.hh</a></li>
-<li>src/io/<b>iobuf.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

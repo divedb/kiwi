@@ -14,440 +14,349 @@
 \DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <optional>}}
 \DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string>}}
 \DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ \textcolor{comment}{//\ TODO(gc):}}
-\DoxyCodeLine{00014\ \textcolor{comment}{//\ \#include\ "{}base/time/time.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/chrono/time.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/macros.hh"{}}}
 \DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
 \DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file\_path.hh"{}}}
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file\_tracing.hh"{}}}
-\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/platform\_file.hh"{}}}
-\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/platform\_file.hh"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
 \DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
-\DoxyCodeLine{00021\ \textcolor{comment}{//\ TODO(gc):}}
-\DoxyCodeLine{00022\ \textcolor{comment}{//\ \#include\ "{}base/trace\_event/base\_tracing\_forward.h"{}}}
-\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \textcolor{keyword}{struct\ }stat;}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \textcolor{keyword}{using\ }stat\_wrapper\_t\ =\ \textcolor{keyword}{struct\ }stat;}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \textcolor{comment}{//\ Thin\ wrapper\ around\ an\ OS-\/level\ file.}}
-\DoxyCodeLine{00032\ \textcolor{comment}{//\ Note\ that\ this\ class\ does\ not\ provide\ any\ support\ for\ asynchronous\ IO,\ other}}
-\DoxyCodeLine{00033\ \textcolor{comment}{//\ than\ the\ ability\ to\ create\ asynchronous\ handles\ on\ Windows.}}
-\DoxyCodeLine{00034\ \textcolor{comment}{//}}
-\DoxyCodeLine{00035\ \textcolor{comment}{//\ Note\ about\ const:\ this\ class\ does\ not\ attempt\ to\ determine\ if\ the\ underlying}}
-\DoxyCodeLine{00036\ \textcolor{comment}{//\ file\ system\ object\ is\ affected\ by\ a\ particular\ method\ in\ order\ to\ consider}}
-\DoxyCodeLine{00037\ \textcolor{comment}{//\ that\ method\ const\ or\ not.\ Only\ methods\ that\ deal\ with\ member\ variables\ in\ an}}
-\DoxyCodeLine{00038\ \textcolor{comment}{//\ obvious\ non-\/modifying\ way\ are\ marked\ as\ const.\ Any\ method\ that\ forward\ calls}}
-\DoxyCodeLine{00039\ \textcolor{comment}{//\ to\ the\ OS\ is\ not\ considered\ const,\ even\ if\ there\ is\ no\ apparent\ change\ to}}
-\DoxyCodeLine{00040\ \textcolor{comment}{//\ member\ variables.}}
-\DoxyCodeLine{00041\ \textcolor{comment}{//}}
-\DoxyCodeLine{00042\ \textcolor{comment}{//\ On\ POSIX,\ if\ the\ given\ file\ is\ a\ symbolic\ link,\ most\ of\ the\ methods\ apply\ to}}
-\DoxyCodeLine{00043\ \textcolor{comment}{//\ the\ file\ that\ the\ symbolic\ link\ resolves\ to.}}
-\DoxyCodeLine{00044\ \textcolor{keyword}{class\ }BASE\_EXPORT\ File\ \{}
-\DoxyCodeLine{00045\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//\ FLAG\_(OPEN|CREATE).*\ are\ mutually\ exclusive.\ You\ should\ specify\ exactly\ one}}
-\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//\ of\ the\ five\ (possibly\ combining\ with\ other\ flags)\ when\ opening\ or\ creating}}
-\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ a\ file.}}
-\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ FLAG\_(WRITE|APPEND)\ are\ mutually\ exclusive.\ This\ is\ so\ that\ APPEND\ behavior}}
-\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//\ will\ be\ consistent\ with\ O\_APPEND\ on\ POSIX.}}
-\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{enum}\ Flags\ :\ uint32\_t\ \{}
-\DoxyCodeLine{00052\ \ \ \ \ FLAG\_OPEN\ =\ 1\ <<\ 0,\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Opens\ a\ file,\ only\ if\ it\ exists.}}
-\DoxyCodeLine{00053\ \ \ \ \ FLAG\_CREATE\ =\ 1\ <<\ 1,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Creates\ a\ new\ file,\ only\ if\ it\ does\ not}}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ already\ exist.}}
-\DoxyCodeLine{00055\ \ \ \ \ FLAG\_OPEN\_ALWAYS\ =\ 1\ <<\ 2,\ \ \ \ \ \textcolor{comment}{//\ May\ create\ a\ new\ file.}}
-\DoxyCodeLine{00056\ \ \ \ \ FLAG\_CREATE\_ALWAYS\ =\ 1\ <<\ 3,\ \ \ \textcolor{comment}{//\ May\ overwrite\ an\ old\ file.}}
-\DoxyCodeLine{00057\ \ \ \ \ FLAG\_OPEN\_TRUNCATED\ =\ 1\ <<\ 4,\ \ \textcolor{comment}{//\ Opens\ a\ file\ and\ truncates\ it,\ only\ if\ it}}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ exists.}}
-\DoxyCodeLine{00059\ \ \ \ \ FLAG\_READ\ =\ 1\ <<\ 5,}
-\DoxyCodeLine{00060\ \ \ \ \ FLAG\_WRITE\ =\ 1\ <<\ 6,}
-\DoxyCodeLine{00061\ \ \ \ \ FLAG\_APPEND\ =\ 1\ <<\ 7,}
-\DoxyCodeLine{00062\ \ \ \ \ FLAG\_WIN\_EXCLUSIVE\_READ\ =\ 1\ <<\ 8,\ \ \ \textcolor{comment}{//\ Windows\ only.\ Opposite\ of\ SHARE.}}
-\DoxyCodeLine{00063\ \ \ \ \ FLAG\_WIN\_EXCLUSIVE\_WRITE\ =\ 1\ <<\ 9,\ \ \textcolor{comment}{//\ Windows\ only.\ Opposite\ of\ SHARE.}}
-\DoxyCodeLine{00064\ \ \ \ \ FLAG\_ASYNC\ =\ 1\ <<\ 10,}
-\DoxyCodeLine{00065\ \ \ \ \ FLAG\_WIN\_TEMPORARY\ =\ 1\ <<\ 11,\ \ \textcolor{comment}{//\ Windows\ only.}}
-\DoxyCodeLine{00066\ \ \ \ \ FLAG\_WIN\_HIDDEN\ =\ 1\ <<\ 12,\ \ \ \ \ \textcolor{comment}{//\ Windows\ only.}}
-\DoxyCodeLine{00067\ \ \ \ \ FLAG\_DELETE\_ON\_CLOSE\ =\ 1\ <<\ 13,}
-\DoxyCodeLine{00068\ \ \ \ \ FLAG\_WRITE\_ATTRIBUTES\ =\ 1\ <<\ 14,\ \ \textcolor{comment}{//\ File\ opened\ in\ a\ mode\ allowing\ writing}}
-\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ attributes,\ such\ as\ with\ SetTimes().}}
-\DoxyCodeLine{00070\ \ \ \ \ FLAG\_WIN\_SHARE\_DELETE\ =\ 1\ <<\ 15,\ \ \textcolor{comment}{//\ Windows\ only.}}
-\DoxyCodeLine{00071\ \ \ \ \ FLAG\_TERMINAL\_DEVICE\ =\ 1\ <<\ 16,\ \ \ \textcolor{comment}{//\ Serial\ port\ flags.}}
-\DoxyCodeLine{00072\ \ \ \ \ FLAG\_WIN\_BACKUP\_SEMANTICS\ =\ 1\ <<\ 17,\ \ \textcolor{comment}{//\ Windows\ only.}}
-\DoxyCodeLine{00073\ \ \ \ \ FLAG\_WIN\_EXECUTE\ =\ 1\ <<\ 18,\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Windows\ only.}}
-\DoxyCodeLine{00074\ \ \ \ \ FLAG\_WIN\_SEQUENTIAL\_SCAN\ =\ 1\ <<\ 19,\ \ \ \textcolor{comment}{//\ Windows\ only.}}
-\DoxyCodeLine{00075\ \ \ \ \ FLAG\_CAN\_DELETE\_ON\_CLOSE\ =\ 1\ <<\ 20,\ \ \textcolor{comment}{//\ Requests\ permission\ to\ delete\ a\ file}}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ via\ DeleteOnClose()\ (Windows\ only).}}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ See\ DeleteOnClose()\ for\ details.}}
-\DoxyCodeLine{00078\ \ \ \ \ FLAG\_WIN\_NO\_EXECUTE\ =}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ 1\ <<\ 21,\ \ \textcolor{comment}{//\ Windows\ only.\ Marks\ the\ file\ with\ a\ deny\ ACE\ that\ prevents}}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ opening\ the\ file\ with\ EXECUTE\ access.\ Cannot\ be\ used\ with}}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ FILE\_WIN\_EXECUTE\ flag.\ See\ also\ PreventExecuteMapping.}}
-\DoxyCodeLine{00082\ \ \ \};}
-\DoxyCodeLine{00083\ }
-\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//\ This\ enum\ has\ been\ recorded\ in\ multiple\ histograms\ using\ PlatformFileError}}
-\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//\ enum.\ If\ the\ order\ of\ the\ fields\ needs\ to\ change,\ please\ ensure\ that\ those}}
-\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ histograms\ are\ obsolete\ or\ have\ been\ moved\ to\ a\ different\ enum.}}
-\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ FILE\_ERROR\_ACCESS\_DENIED\ is\ returned\ when\ a\ call\ fails\ because\ of\ a}}
-\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ filesystem\ restriction.\ FILE\_ERROR\_SECURITY\ is\ returned\ when\ a\ browser}}
-\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ policy\ doesn't\ allow\ the\ operation\ to\ be\ executed.}}
-\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{enum}\ Error\ \{}
-\DoxyCodeLine{00092\ \ \ \ \ FILE\_OK\ =\ 0,}
-\DoxyCodeLine{00093\ \ \ \ \ FILE\_ERROR\_FAILED\ =\ -\/1,}
-\DoxyCodeLine{00094\ \ \ \ \ FILE\_ERROR\_IN\_USE\ =\ -\/2,}
-\DoxyCodeLine{00095\ \ \ \ \ FILE\_ERROR\_EXISTS\ =\ -\/3,}
-\DoxyCodeLine{00096\ \ \ \ \ FILE\_ERROR\_NOT\_FOUND\ =\ -\/4,}
-\DoxyCodeLine{00097\ \ \ \ \ FILE\_ERROR\_ACCESS\_DENIED\ =\ -\/5,}
-\DoxyCodeLine{00098\ \ \ \ \ FILE\_ERROR\_TOO\_MANY\_OPENED\ =\ -\/6,}
-\DoxyCodeLine{00099\ \ \ \ \ FILE\_ERROR\_NO\_MEMORY\ =\ -\/7,}
-\DoxyCodeLine{00100\ \ \ \ \ FILE\_ERROR\_NO\_SPACE\ =\ -\/8,}
-\DoxyCodeLine{00101\ \ \ \ \ FILE\_ERROR\_NOT\_A\_DIRECTORY\ =\ -\/9,}
-\DoxyCodeLine{00102\ \ \ \ \ FILE\_ERROR\_INVALID\_OPERATION\ =\ -\/10,}
-\DoxyCodeLine{00103\ \ \ \ \ FILE\_ERROR\_SECURITY\ =\ -\/11,}
-\DoxyCodeLine{00104\ \ \ \ \ FILE\_ERROR\_ABORT\ =\ -\/12,}
-\DoxyCodeLine{00105\ \ \ \ \ FILE\_ERROR\_NOT\_A\_FILE\ =\ -\/13,}
-\DoxyCodeLine{00106\ \ \ \ \ FILE\_ERROR\_NOT\_EMPTY\ =\ -\/14,}
-\DoxyCodeLine{00107\ \ \ \ \ FILE\_ERROR\_INVALID\_URL\ =\ -\/15,}
-\DoxyCodeLine{00108\ \ \ \ \ FILE\_ERROR\_IO\ =\ -\/16,}
-\DoxyCodeLine{00109\ \ \ \ \ \textcolor{comment}{//\ Put\ new\ entries\ here\ and\ increment\ FILE\_ERROR\_MAX.}}
-\DoxyCodeLine{00110\ \ \ \ \ FILE\_ERROR\_MAX\ =\ -\/17}
-\DoxyCodeLine{00111\ \ \ \};}
-\DoxyCodeLine{00112\ }
-\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//\ This\ explicit\ mapping\ matches\ both\ FILE\_\ on\ Windows\ and\ SEEK\_\ on\ Linux.}}
-\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{enum}\ Whence\ \{\ FROM\_BEGIN\ =\ 0,\ FROM\_CURRENT\ =\ 1,\ FROM\_END\ =\ 2\ \};}
-\DoxyCodeLine{00115\ }
-\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ Used\ to\ hold\ information\ about\ a\ given\ file.}}
-\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//\ If\ you\ add\ more\ fields\ to\ this\ structure\ (platform-\/specific\ fields\ are\ OK),}}
-\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ make\ sure\ to\ update\ all\ functions\ that\ use\ it\ in\ file\_util\_\{win|posix\}.cc,}}
-\DoxyCodeLine{00119\ \ \ \textcolor{comment}{//\ too,\ and\ the\ ParamTraits<base::File::Info>\ implementation\ in}}
-\DoxyCodeLine{00120\ \ \ \textcolor{comment}{//\ ipc/ipc\_message\_utils.cc.}}
-\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{struct\ }BASE\_EXPORT\ Info\ \{}
-\DoxyCodeLine{00122\ \ \ \ \ Info();}
-\DoxyCodeLine{00123\ \ \ \ \ \string~Info();}
-\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00125\ \ \ \ \ \textcolor{comment}{//\ Fills\ this\ struct\ with\ values\ from\ |stat\_info|.}}
-\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{void}\ FromStat(\textcolor{keyword}{const}\ stat\_wrapper\_t\&\ stat\_info);}
-\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00128\ }
-\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ The\ size\ of\ the\ file\ in\ bytes.\ \ Undefined\ when\ is\_directory\ is\ true.}}
-\DoxyCodeLine{00130\ \ \ \ \ int64\_t\ size\ =\ 0;}
-\DoxyCodeLine{00131\ }
-\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ True\ if\ the\ file\ corresponds\ to\ a\ directory.}}
-\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_directory\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00134\ }
-\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ True\ if\ the\ file\ corresponds\ to\ a\ symbolic\ link.\ \ For\ Windows\ currently}}
-\DoxyCodeLine{00136\ \ \ \ \ \textcolor{comment}{//\ not\ supported\ and\ thus\ always\ false.}}
-\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_symbolic\_link\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }stat;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{using\ }stat\_wrapper\_t\ =\ \textcolor{keyword}{struct\ }stat;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{class\ }BASE\_EXPORT\ File\ \{}
+\DoxyCodeLine{00042\ \ \ DISALLOW\_COPY\_AND\_ASSIGN(File);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}{Flags}}\ :\ uint32\_t\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a}{kFlagOpen}}\ =\ 1\ <<\ 0,}
+\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d}{kFlagCreate}}\ =\ 1\ <<\ 1,}
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648}{kFlagOpenAlways}}\ =\ 1\ <<\ 2,}
+\DoxyCodeLine{00057\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84}{kFlagCreateAlways}}\ =\ 1\ <<\ 3,}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6}{kFlagOpenTruncated}}\ =\ 1\ <<\ 4,}
+\DoxyCodeLine{00060\ \ \ \ \ kFlagRead\ =\ 1\ <<\ 5,}
+\DoxyCodeLine{00061\ \ \ \ \ kFlagWrite\ =\ 1\ <<\ 6,}
+\DoxyCodeLine{00062\ \ \ \ \ kFlagAppend\ =\ 1\ <<\ 7,}
+\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63}{kFlagWinExclusiveRead}}\ =\ 1\ <<\ 8,}
+\DoxyCodeLine{00066\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8}{kFlagWinExclusiveWrite}}\ =\ 1\ <<\ 9,}
+\DoxyCodeLine{00067\ \ \ \ \ kFlagAsync\ =\ 1\ <<\ 10,}
+\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3}{kFlagWinTemporary}}\ =\ 1\ <<\ 11,}
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4}{kFlagWinHidden}}\ =\ 1\ <<\ 12,}
+\DoxyCodeLine{00072\ \ \ \ \ kFlagDeleteOnClose\ =\ 1\ <<\ 13,}
+\DoxyCodeLine{00074\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694}{kFlagWriteAttributes}}\ =\ 1\ <<\ 14,}
+\DoxyCodeLine{00076\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52}{kFlagWinShareDelete}}\ =\ 1\ <<\ 15,}
+\DoxyCodeLine{00078\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118}{kFlagTerminalDevice}}\ =\ 1\ <<\ 16,}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da}{kFlagWinBackupSemantics}}\ =\ 1\ <<\ 17,}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e}{kFlagWinExecute}}\ =\ 1\ <<\ 18,}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a}{kFlagWinSequentialScan}}\ =\ 1\ <<\ 19,}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58}{kFlagCanDeleteOnClose}}\ =\ 1\ <<\ 20,}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78}{kFlagWinNoExecute}}\ =\ 1\ <<\ 21,}
+\DoxyCodeLine{00089\ \ \ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}}\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ kFileOk\ =\ 0,}
+\DoxyCodeLine{00100\ \ \ \ \ kFileErrorFailed\ =\ -\/1,}
+\DoxyCodeLine{00101\ \ \ \ \ kFileErrorInUse\ =\ -\/2,}
+\DoxyCodeLine{00102\ \ \ \ \ kFileErrorExists\ =\ -\/3,}
+\DoxyCodeLine{00103\ \ \ \ \ kFileErrorNotFound\ =\ -\/4,}
+\DoxyCodeLine{00104\ \ \ \ \ kFileErrorAccessDenied\ =\ -\/5,}
+\DoxyCodeLine{00105\ \ \ \ \ kFileErrorTooManyOpened\ =\ -\/6,}
+\DoxyCodeLine{00106\ \ \ \ \ kFileErrorNoMemory\ =\ -\/7,}
+\DoxyCodeLine{00107\ \ \ \ \ kFileErrorNoSpace\ =\ -\/8,}
+\DoxyCodeLine{00108\ \ \ \ \ kFileErrorNotADirectory\ =\ -\/9,}
+\DoxyCodeLine{00109\ \ \ \ \ kFileErrorInvalidOperation\ =\ -\/10,}
+\DoxyCodeLine{00110\ \ \ \ \ kFileErrorSecurity\ =\ -\/11,}
+\DoxyCodeLine{00111\ \ \ \ \ kFileErrorAbort\ =\ -\/12,}
+\DoxyCodeLine{00112\ \ \ \ \ kFileErrorNotAFile\ =\ -\/13,}
+\DoxyCodeLine{00113\ \ \ \ \ kFileErrorNotEmpty\ =\ -\/14,}
+\DoxyCodeLine{00114\ \ \ \ \ kFileErrorInvalidUrl\ =\ -\/15,}
+\DoxyCodeLine{00115\ \ \ \ \ kFileErrorIo\ =\ -\/16,}
+\DoxyCodeLine{00117\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82}{kFileErrorMax}}\ =\ -\/17}
+\DoxyCodeLine{00118\ \ \ \};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{Whence}}\ \{\ kFromBegin\ =\ 0,\ kFromCurrent\ =\ 1,\ kFromEnd\ =\ 2\ \};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{struct\ }BASE\_EXPORT\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}}\ \{}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{void}\ FromStat(\textcolor{keyword}{const}\ stat\_wrapper\_t\&\ stat\_info);}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00134\ \ \ \ \ int64\_t\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_a3adc579dc504bd32ced23d01620c14e8}{size}}\ =\ 0;}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_a7ae4ad86c40ece21136378dac46dcd54}{is\_directory}}\ =\ \textcolor{keyword}{false};}
 \DoxyCodeLine{00138\ }
-\DoxyCodeLine{00139\ \ \ \ \ \textcolor{comment}{//\ The\ last\ modified\ time\ of\ a\ file.}}
-\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//\ Time\ last\_modified;}}
-\DoxyCodeLine{00141\ }
-\DoxyCodeLine{00142\ \ \ \ \ \textcolor{comment}{//\ The\ last\ accessed\ time\ of\ a\ file.}}
-\DoxyCodeLine{00143\ \ \ \ \ \textcolor{comment}{//\ Time\ last\_accessed;}}
-\DoxyCodeLine{00144\ }
-\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ The\ creation\ time\ of\ a\ file.}}
-\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ Time\ creation\_time;}}
-\DoxyCodeLine{00147\ \ \ \};}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_ac3dd5b35aa78c52c6907346931c5b844}{is\_symbolic\_link}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00144\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_a6d1c179442cfde5e9f86790b1bec80a4}{last\_modified}};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00147\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_ab5942cea3444b4acf0ac6e99ffa1272a}{last\_accessed}};}
 \DoxyCodeLine{00148\ }
-\DoxyCodeLine{00149\ \ \ File();}
-\DoxyCodeLine{00150\ }
-\DoxyCodeLine{00151\ \ \ \textcolor{comment}{//\ Creates\ or\ opens\ the\ given\ file.\ This\ will\ fail\ with\ 'access\ denied'\ if\ the}}
-\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ |path|\ contains\ path\ traversal\ ('..')\ components.}}
-\DoxyCodeLine{00153\ \ \ File(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ path,\ uint32\_t\ flags);}
+\DoxyCodeLine{00150\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_a0e1c37f189fe7554fee41aafa668d7bf}{creation\_time}};}
+\DoxyCodeLine{00151\ \ \ \};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ File()\ =\ \textcolor{keywordflow}{default};}
 \DoxyCodeLine{00154\ }
-\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ Takes\ ownership\ of\ |platform\_file|\ and\ sets\ async\ to\ false.}}
-\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{explicit}\ File(ScopedPlatformFile\ platform\_file);}
-\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{explicit}\ File(PlatformFile\ platform\_file);}
-\DoxyCodeLine{00158\ }
-\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//\ Takes\ ownership\ of\ |platform\_file|\ and\ sets\ async\ to\ the\ given\ value.}}
-\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ This\ constructor\ exists\ because\ on\ Windows\ you\ can't\ check\ if\ platform\_file}}
-\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//\ is\ async\ or\ not.}}
-\DoxyCodeLine{00162\ \ \ File(ScopedPlatformFile\ platform\_file,\ \textcolor{keywordtype}{bool}\ async);}
-\DoxyCodeLine{00163\ \ \ File(PlatformFile\ platform\_file,\ \textcolor{keywordtype}{bool}\ async);}
-\DoxyCodeLine{00164\ }
-\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ Creates\ an\ object\ with\ a\ specific\ error\_details\ code.}}
-\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{explicit}\ File(Error\ error\_details);}
+\DoxyCodeLine{00160\ \ \ File(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ path,\ uint32\_t\ flags);}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{explicit}\ File(ScopedPlatformFile\ platform\_file);}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{explicit}\ File(PlatformFile\ platform\_file);}
 \DoxyCodeLine{00167\ }
-\DoxyCodeLine{00168\ \ \ File(File\&\&\ other);}
-\DoxyCodeLine{00169\ }
-\DoxyCodeLine{00170\ \ \ File(\textcolor{keyword}{const}\ File\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00171\ \ \ File\&\ operator=(\textcolor{keyword}{const}\ File\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00172\ }
-\DoxyCodeLine{00173\ \ \ \string~File();}
-\DoxyCodeLine{00174\ }
-\DoxyCodeLine{00175\ \ \ File\&\ operator=(File\&\&\ other);}
-\DoxyCodeLine{00176\ }
-\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ Creates\ or\ opens\ the\ given\ file.}}
-\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{void}\ Initialize(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ path,\ uint32\_t\ flags);}
+\DoxyCodeLine{00177\ \ \ File(ScopedPlatformFile\ platform\_file,\ \textcolor{keywordtype}{bool}\ async);}
+\DoxyCodeLine{00178\ \ \ File(PlatformFile\ platform\_file,\ \textcolor{keywordtype}{bool}\ async);}
 \DoxyCodeLine{00179\ }
-\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//\ Returns\ |true|\ if\ the\ handle\ /\ fd\ wrapped\ by\ this\ object\ is\ valid.\ \ This}}
-\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ method\ doesn't\ interact\ with\ the\ file\ system\ and\ is\ thus\ safe\ to\ be\ called}}
-\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//\ from\ threads\ that\ disallow\ blocking.}}
-\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00184\ }
-\DoxyCodeLine{00185\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ a\ new\ file\ was\ created\ (or\ an\ old\ one\ truncated\ to\ zero}}
-\DoxyCodeLine{00186\ \ \ \textcolor{comment}{//\ length\ to\ simulate\ a\ new\ file,\ which\ can\ happen\ with}}
-\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//\ FLAG\_CREATE\_ALWAYS),\ and\ false\ otherwise.}}
-\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{bool}\ created()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ created\_;\ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//\ Creates\ an\ object\ with\ a\ specific\ error\_details\ code.}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{explicit}\ File(\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}}\ error\_details);}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00184\ \ \ File(File\&\&\ other);}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \string~File();}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ File\&\ operator=(File\&\&\ other);}
 \DoxyCodeLine{00189\ }
-\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ Returns\ the\ OS\ result\ of\ opening\ this\ file.\ Note\ that\ the\ way\ to\ verify}}
-\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ the\ success\ of\ the\ operation\ is\ to\ use\ IsValid(),\ not\ this\ method:}}
-\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ \ \ File\ file(path,\ flags);}}
-\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ \ \ if\ (!file.IsValid())}}
-\DoxyCodeLine{00194\ \ \ \textcolor{comment}{//\ \ \ \ \ return;}}
-\DoxyCodeLine{00195\ \ \ Error\ error\_details()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ error\_details\_;\ \}}
-\DoxyCodeLine{00196\ }
-\DoxyCodeLine{00197\ \ \ PlatformFile\ GetPlatformFile()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00198\ \ \ PlatformFile\ TakePlatformFile();}
-\DoxyCodeLine{00199\ }
-\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ Destroying\ this\ object\ closes\ the\ file\ automatically.}}
-\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{void}\ Close();}
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ Creates\ or\ opens\ the\ given\ file.}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keywordtype}{void}\ Initialize(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\&\ path,\ uint32\_t\ flags);}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}{IsValid}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7}{IsCreated}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ created\_;\ \}}
 \DoxyCodeLine{00202\ }
-\DoxyCodeLine{00203\ \ \ \textcolor{comment}{//\ Changes\ current\ position\ in\ the\ file\ to\ an\ |offset|\ relative\ to\ an\ origin}}
-\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ defined\ by\ |whence|.\ Returns\ the\ resultant\ current\ position\ in\ the\ file}}
-\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ (relative\ to\ the\ start)\ or\ -\/1\ in\ case\ of\ error.}}
-\DoxyCodeLine{00206\ \ \ int64\_t\ Seek(Whence\ whence,\ int64\_t\ offset);}
-\DoxyCodeLine{00207\ }
-\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//\ Simplified\ versions\ of\ Read()\ and\ friends\ (see\ below)\ that\ check\ the}}
-\DoxyCodeLine{00209\ \ \ \textcolor{comment}{//\ return\ value\ and\ just\ return\ a\ boolean.\ They\ return\ true\ if\ and\ only\ if}}
-\DoxyCodeLine{00210\ \ \ \textcolor{comment}{//\ the\ function\ read\ in\ exactly\ |data.size()|\ bytes\ of\ data.}}
-\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{bool}\ ReadAndCheck(int64\_t\ offset,\ span<uint8\_t>\ data);}
-\DoxyCodeLine{00212\ \ \ \textcolor{keywordtype}{bool}\ ReadAtCurrentPosAndCheck(span<uint8\_t>\ data);}
-\DoxyCodeLine{00213\ }
-\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ Reads\ the\ given\ number\ of\ bytes\ (or\ until\ EOF\ is\ reached)\ starting\ with\ the}}
-\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ given\ offset.\ Returns\ the\ number\ of\ bytes\ read,\ or\ -\/1\ on\ error.\ Note\ that}}
-\DoxyCodeLine{00216\ \ \ \textcolor{comment}{//\ this\ function\ makes\ a\ best\ effort\ to\ read\ all\ data\ on\ all\ platforms,\ so\ it}}
-\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ is\ not\ intended\ for\ stream\ oriented\ files\ but\ instead\ for\ cases\ when\ the}}
-\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ normal\ expectation\ is\ that\ actually\ |size|\ bytes\ are\ read\ unless\ there\ is}}
-\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//\ an\ error.}}
-\DoxyCodeLine{00220\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ Read(int64\_t\ offset,\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00221\ \ \ std::optional<size\_t>\ Read(int64\_t\ offset,\ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<uint8\_t>}}\ data);}
-\DoxyCodeLine{00222\ }
-\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ Same\ as\ above\ but\ without\ seek.}}
-\DoxyCodeLine{00224\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ ReadAtCurrentPos(\textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00225\ \ \ std::optional<size\_t>\ ReadAtCurrentPos(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<uint8\_t>}}\ data);}
-\DoxyCodeLine{00226\ }
-\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//\ Reads\ the\ given\ number\ of\ bytes\ (or\ until\ EOF\ is\ reached)\ starting\ with\ the}}
-\DoxyCodeLine{00228\ \ \ \textcolor{comment}{//\ given\ offset,\ but\ does\ not\ make\ any\ effort\ to\ read\ all\ data\ on\ all}}
-\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//\ platforms.\ Returns\ the\ number\ of\ bytes\ read,\ or\ -\/1/std::nullopt\ on\ error.}}
-\DoxyCodeLine{00230\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ ReadNoBestEffort(int64\_t\ offset,\ \textcolor{keywordtype}{char}*\ data,}
-\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00232\ \ \ std::optional<size\_t>\ ReadNoBestEffort(int64\_t\ offset,}
-\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<uint8\_t>}}\ data);}
-\DoxyCodeLine{00234\ }
-\DoxyCodeLine{00235\ \ \ \textcolor{comment}{//\ Same\ as\ above\ but\ without\ seek.}}
-\DoxyCodeLine{00236\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ ReadAtCurrentPosNoBestEffort(\textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00237\ \ \ std::optional<size\_t>\ ReadAtCurrentPosNoBestEffort(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<uint8\_t>}}\ data);}
+\DoxyCodeLine{00213\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}}\ \mbox{\hyperlink{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831}{ErrorDetails}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ error\_details\_;\ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ PlatformFile\ GetPlatformFile()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ file\_.get();\ \}}
+\DoxyCodeLine{00216\ \ \ PlatformFile\ TakePlatformFile()\ \{\ \textcolor{keywordflow}{return}\ file\_.Release();\ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{void}\ Close();}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00228\ \ \ int64\_t\ Seek(Whence\ whence,\ int64\_t\ offset);}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00236\ \ \ \textcolor{keywordtype}{bool}\ ReadAndCheck(int64\_t\ offset,\ kiwi::span<uint8\_t>\ data);}
+\DoxyCodeLine{00237\ \ \ \textcolor{keywordtype}{bool}\ ReadAtCurrentPosAndCheck(kiwi::span<uint8\_t>\ data);}
 \DoxyCodeLine{00238\ }
-\DoxyCodeLine{00239\ \ \ \textcolor{comment}{//\ Simplified\ versions\ of\ Write()\ and\ friends\ (see\ below)\ that\ check\ the}}
-\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ return\ value\ and\ just\ return\ a\ boolean.\ They\ return\ true\ if\ and\ only\ if}}
-\DoxyCodeLine{00241\ \ \ \textcolor{comment}{//\ the\ function\ wrote\ out\ exactly\ |data.size()|\ bytes\ of\ data.}}
-\DoxyCodeLine{00242\ \ \ \textcolor{keywordtype}{bool}\ WriteAndCheck(int64\_t\ offset,\ span<const\ uint8\_t>\ data);}
-\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{bool}\ WriteAtCurrentPosAndCheck(span<const\ uint8\_t>\ data);}
-\DoxyCodeLine{00244\ }
-\DoxyCodeLine{00245\ \ \ \textcolor{comment}{//\ Writes\ the\ given\ buffer\ into\ the\ file\ at\ the\ given\ offset,\ overwritting\ any}}
-\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ data\ that\ was\ previously\ there.\ Returns\ the\ number\ of\ bytes\ written,\ or\ -\/1}}
-\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ on\ error.\ Note\ that\ this\ function\ makes\ a\ best\ effort\ to\ write\ all\ data\ on}}
-\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ all\ platforms.\ |data|\ can\ be\ nullptr\ when\ |size|\ is\ 0.}}
-\DoxyCodeLine{00249\ \ \ \textcolor{comment}{//\ Ignores\ the\ offset\ and\ writes\ to\ the\ end\ of\ the\ file\ if\ the\ file\ was\ opened}}
-\DoxyCodeLine{00250\ \ \ \textcolor{comment}{//\ with\ FLAG\_APPEND.}}
-\DoxyCodeLine{00251\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ Write(int64\_t\ offset,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00252\ \ \ std::optional<size\_t>\ Write(int64\_t\ offset,\ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ uint8\_t>}}\ data);}
-\DoxyCodeLine{00253\ }
-\DoxyCodeLine{00254\ \ \ \textcolor{comment}{//\ Save\ as\ above\ but\ without\ seek.}}
-\DoxyCodeLine{00255\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ WriteAtCurrentPos(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00256\ \ \ std::optional<size\_t>\ WriteAtCurrentPos(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ uint8\_t>}}\ data);}
-\DoxyCodeLine{00257\ }
-\DoxyCodeLine{00258\ \ \ \textcolor{comment}{//\ Save\ as\ above\ but\ does\ not\ make\ any\ effort\ to\ write\ all\ data\ on\ all}}
-\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//\ platforms.\ Returns\ the\ number\ of\ bytes\ written,\ or\ -\/1/std::nullopt}}
-\DoxyCodeLine{00260\ \ \ \textcolor{comment}{//\ on\ error.}}
-\DoxyCodeLine{00261\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ WriteAtCurrentPosNoBestEffort(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,}
-\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size);}
-\DoxyCodeLine{00263\ \ \ std::optional<size\_t>\ WriteAtCurrentPosNoBestEffort(}
-\DoxyCodeLine{00264\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ uint8\_t>}}\ data);}
-\DoxyCodeLine{00265\ }
-\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//\ Returns\ the\ current\ size\ of\ this\ file,\ or\ a\ negative\ number\ on\ failure.}}
-\DoxyCodeLine{00267\ \ \ int64\_t\ GetLength()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00268\ }
-\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//\ Truncates\ the\ file\ to\ the\ given\ length.\ If\ |length|\ is\ greater\ than\ the}}
-\DoxyCodeLine{00270\ \ \ \textcolor{comment}{//\ current\ size\ of\ the\ file,\ the\ file\ is\ extended\ with\ zeros.\ If\ the\ file}}
-\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ doesn't\ exist,\ |false|\ is\ returned.}}
-\DoxyCodeLine{00272\ \ \ \textcolor{keywordtype}{bool}\ SetLength(int64\_t\ length);}
-\DoxyCodeLine{00273\ }
-\DoxyCodeLine{00274\ \ \ \textcolor{comment}{//\ Instructs\ the\ filesystem\ to\ flush\ the\ file\ to\ disk.\ (POSIX:\ fsync,\ Windows:}}
-\DoxyCodeLine{00275\ \ \ \textcolor{comment}{//\ FlushFileBuffers).}}
-\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//\ Calling\ Flush()\ does\ not\ guarantee\ file\ integrity\ and\ thus\ is\ not\ a\ valid}}
-\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//\ substitute\ for\ file\ integrity\ checks\ and\ recovery\ codepaths\ for\ malformed}}
-\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//\ files.\ It\ can\ also\ be\ *really*\ slow,\ so\ avoid\ blocking\ on\ Flush(),}}
-\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ especially\ please\ don't\ block\ shutdown\ on\ Flush().}}
-\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ Latency\ percentiles\ of\ Flush()\ across\ all\ platforms\ as\ of\ July\ 2016:}}
-\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ 50\ \%\ \ \ \ \ >\ 5\ ms}}
-\DoxyCodeLine{00282\ \ \ \textcolor{comment}{//\ 10\ \%\ \ \ \ \ >\ 58\ ms}}
-\DoxyCodeLine{00283\ \ \ \textcolor{comment}{//\ \ 1\ \%\ \ \ \ \ >\ 357\ ms}}
-\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ \ 0.1\ \%\ \ \ >\ 1.8\ seconds}}
-\DoxyCodeLine{00285\ \ \ \textcolor{comment}{//\ \ 0.01\ \%\ \ >\ 7.6\ seconds}}
-\DoxyCodeLine{00286\ \ \ \textcolor{keywordtype}{bool}\ Flush();}
-\DoxyCodeLine{00287\ }
-\DoxyCodeLine{00288\ \ \ \textcolor{comment}{//\ Updates\ the\ file\ times.}}
-\DoxyCodeLine{00289\ \ \ \textcolor{comment}{//\ bool\ SetTimes(Time\ last\_access\_time,\ Time\ last\_modified\_time);}}
+\DoxyCodeLine{00239\ \ \ \textcolor{comment}{//\ Reads\ the\ given\ number\ of\ bytes\ (or\ until\ EOF\ is\ reached)\ starting\ with\ the}}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ given\ offset.\ Returns\ the\ number\ of\ bytes\ read,\ or\ -\/1\ on\ error.\ Note\ that}}
+\DoxyCodeLine{00241\ \ \ \textcolor{comment}{//\ this\ function\ makes\ a\ best\ effort\ to\ read\ all\ data\ on\ all\ platforms,\ so\ it}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ is\ not\ intended\ for\ stream\ oriented\ files\ but\ instead\ for\ cases\ when\ the}}
+\DoxyCodeLine{00243\ \ \ \textcolor{comment}{//\ normal\ expectation\ is\ that\ actually\ |size|\ bytes\ are\ read\ unless\ there\ is}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{//\ an\ error.}}
+\DoxyCodeLine{00245\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ Read(int64\_t\ offset,\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00246\ \ \ std::optional<size\_t>\ Read(int64\_t\ offset,\ kiwi::span<uint8\_t>\ data);}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ Same\ as\ above\ but\ without\ seek.}}
+\DoxyCodeLine{00249\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ ReadAtCurrentPos(\textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00250\ \ \ std::optional<size\_t>\ ReadAtCurrentPos(kiwi::span<uint8\_t>\ data);}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ Reads\ the\ given\ number\ of\ bytes\ (or\ until\ EOF\ is\ reached)\ starting\ with\ the}}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ given\ offset,\ but\ does\ not\ make\ any\ effort\ to\ read\ all\ data\ on\ all}}
+\DoxyCodeLine{00254\ \ \ \textcolor{comment}{//\ platforms.\ Returns\ the\ number\ of\ bytes\ read,\ or\ -\/1/std::nullopt\ on\ error.}}
+\DoxyCodeLine{00255\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ ReadNoBestEffort(int64\_t\ offset,\ \textcolor{keywordtype}{char}*\ data,}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00257\ \ \ std::optional<size\_t>\ ReadNoBestEffort(int64\_t\ offset,}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::span<uint8\_t>\ data);}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \ \ \textcolor{comment}{//\ Same\ as\ above\ but\ without\ seek.}}
+\DoxyCodeLine{00261\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ ReadAtCurrentPosNoBestEffort(\textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00262\ \ \ std::optional<size\_t>\ ReadAtCurrentPosNoBestEffort(kiwi::span<uint8\_t>\ data);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//\ Simplified\ versions\ of\ Write()\ and\ friends\ (see\ below)\ that\ check\ the}}
+\DoxyCodeLine{00265\ \ \ \textcolor{comment}{//\ return\ value\ and\ just\ return\ a\ boolean.\ They\ return\ true\ if\ and\ only\ if}}
+\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//\ the\ function\ wrote\ out\ exactly\ |data.size()|\ bytes\ of\ data.}}
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{bool}\ WriteAndCheck(int64\_t\ offset,\ span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{bool}\ WriteAtCurrentPosAndCheck(span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \textcolor{comment}{//\ Writes\ the\ given\ buffer\ into\ the\ file\ at\ the\ given\ offset,\ overwritting\ any}}
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ data\ that\ was\ previously\ there.\ Returns\ the\ number\ of\ bytes\ written,\ or\ -\/1}}
+\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//\ on\ error.\ Note\ that\ this\ function\ makes\ a\ best\ effort\ to\ write\ all\ data\ on}}
+\DoxyCodeLine{00273\ \ \ \textcolor{comment}{//\ all\ platforms.\ |data|\ can\ be\ nullptr\ when\ |size|\ is\ 0.}}
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{//\ Ignores\ the\ offset\ and\ writes\ to\ the\ end\ of\ the\ file\ if\ the\ file\ was\ opened}}
+\DoxyCodeLine{00275\ \ \ \textcolor{comment}{//\ with\ FLAG\_APPEND.}}
+\DoxyCodeLine{00276\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ Write(int64\_t\ offset,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00277\ \ \ std::optional<size\_t>\ Write(int64\_t\ offset,\ kiwi::span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ Save\ as\ above\ but\ without\ seek.}}
+\DoxyCodeLine{00280\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ WriteAtCurrentPos(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00281\ \ \ std::optional<size\_t>\ WriteAtCurrentPos(kiwi::span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \textcolor{comment}{//\ Save\ as\ above\ but\ does\ not\ make\ any\ effort\ to\ write\ all\ data\ on\ all}}
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ platforms.\ Returns\ the\ number\ of\ bytes\ written,\ or\ -\/1/std::nullopt}}
+\DoxyCodeLine{00285\ \ \ \textcolor{comment}{//\ on\ error.}}
+\DoxyCodeLine{00286\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{int}\ WriteAtCurrentPosNoBestEffort(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size);}
+\DoxyCodeLine{00288\ \ \ std::optional<size\_t>\ WriteAtCurrentPosNoBestEffort(}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ kiwi::span<const\ uint8\_t>\ data);}
 \DoxyCodeLine{00290\ }
-\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ Returns\ some\ basic\ information\ for\ the\ given\ file.}}
-\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{bool}\ GetInfo(Info*\ info)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ Returns\ the\ current\ size\ of\ this\ file,\ or\ a\ negative\ number\ on\ failure.}}
+\DoxyCodeLine{00292\ \ \ int64\_t\ GetLength()\ \textcolor{keyword}{const};}
 \DoxyCodeLine{00293\ }
-\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#if\ !BUILDFLAG(\ \(\backslash\)}}
-\DoxyCodeLine{00295\ \textcolor{preprocessor}{\ \ \ \ IS\_FUCHSIA)\ \ }\textcolor{comment}{//\ Fuchsia's\ POSIX\ API\ does\ not\ support\ file\ locking.}}
-\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{enum\ class}\ LockMode\ \{}
-\DoxyCodeLine{00297\ \ \ \ \ kShared,}
-\DoxyCodeLine{00298\ \ \ \ \ kExclusive,}
-\DoxyCodeLine{00299\ \ \ \};}
-\DoxyCodeLine{00300\ }
-\DoxyCodeLine{00301\ \ \ \textcolor{comment}{//\ Attempts\ to\ take\ an\ exclusive\ write\ lock\ on\ the\ file.\ Returns\ immediately}}
-\DoxyCodeLine{00302\ \ \ \textcolor{comment}{//\ (i.e.\ does\ not\ wait\ for\ another\ process\ to\ unlock\ the\ file).\ If\ the\ lock}}
-\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ was\ obtained,\ the\ result\ will\ be\ FILE\_OK.\ A\ lock\ only\ guarantees}}
-\DoxyCodeLine{00304\ \ \ \textcolor{comment}{//\ that\ other\ processes\ may\ not\ also\ take\ a\ lock\ on\ the\ same\ file\ with\ the}}
-\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ same\ API\ -\/\ it\ may\ still\ be\ opened,\ renamed,\ unlinked,\ etc.}}
-\DoxyCodeLine{00306\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00307\ \ \ \textcolor{comment}{//\ Common\ semantics:}}
-\DoxyCodeLine{00308\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ held\ by\ processes,\ but\ not\ inherited\ by\ child\ processes.}}
-\DoxyCodeLine{00309\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ released\ by\ the\ OS\ on\ file\ close\ or\ process\ termination.}}
-\DoxyCodeLine{00310\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ reliable\ only\ on\ local\ filesystems.}}
-\DoxyCodeLine{00311\ \ \ \textcolor{comment}{//\ \ *\ Duplicated\ file\ handles\ may\ also\ write\ to\ locked\ files.}}
-\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//\ Windows-\/specific\ semantics:}}
-\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ mandatory\ for\ read/write\ APIs,\ advisory\ for\ mapping\ APIs.}}
-\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ \ *\ Within\ a\ process,\ locking\ the\ same\ file\ (by\ the\ same\ or\ new\ handle)}}
-\DoxyCodeLine{00315\ \ \ \textcolor{comment}{//\ \ \ \ will\ fail.}}
-\DoxyCodeLine{00316\ \ \ \textcolor{comment}{//\ POSIX-\/specific\ semantics:}}
-\DoxyCodeLine{00317\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ advisory\ only.}}
-\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//\ \ *\ Within\ a\ process,\ locking\ the\ same\ file\ (by\ the\ same\ or\ new\ handle)}}
-\DoxyCodeLine{00319\ \ \ \textcolor{comment}{//\ \ \ \ will\ succeed.\ The\ new\ lock\ replaces\ the\ old\ lock.}}
-\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//\ \ *\ Closing\ any\ descriptor\ on\ a\ given\ file\ releases\ the\ lock.}}
-\DoxyCodeLine{00321\ \ \ Error\ Lock(LockMode\ mode);}
-\DoxyCodeLine{00322\ }
-\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//\ Unlock\ a\ file\ previously\ locked.}}
-\DoxyCodeLine{00324\ \ \ Error\ Unlock();}
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{//\ Truncates\ the\ file\ to\ the\ given\ length.\ If\ |length|\ is\ greater\ than\ the}}
+\DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ current\ size\ of\ the\ file,\ the\ file\ is\ extended\ with\ zeros.\ If\ the\ file}}
+\DoxyCodeLine{00296\ \ \ \textcolor{comment}{//\ doesn't\ exist,\ |false|\ is\ returned.}}
+\DoxyCodeLine{00297\ \ \ \textcolor{keywordtype}{bool}\ SetLength(int64\_t\ length);}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ \textcolor{comment}{//\ Instructs\ the\ filesystem\ to\ flush\ the\ file\ to\ disk.\ (POSIX:\ fsync,\ Windows:}}
+\DoxyCodeLine{00300\ \ \ \textcolor{comment}{//\ FlushFileBuffers).}}
+\DoxyCodeLine{00301\ \ \ \textcolor{comment}{//\ Calling\ Flush()\ does\ not\ guarantee\ file\ integrity\ and\ thus\ is\ not\ a\ valid}}
+\DoxyCodeLine{00302\ \ \ \textcolor{comment}{//\ substitute\ for\ file\ integrity\ checks\ and\ recovery\ codepaths\ for\ malformed}}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ files.\ It\ can\ also\ be\ *really*\ slow,\ so\ avoid\ blocking\ on\ Flush(),}}
+\DoxyCodeLine{00304\ \ \ \textcolor{comment}{//\ especially\ please\ don't\ block\ shutdown\ on\ Flush().}}
+\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ Latency\ percentiles\ of\ Flush()\ across\ all\ platforms\ as\ of\ July\ 2016:}}
+\DoxyCodeLine{00306\ \ \ \textcolor{comment}{//\ 50\ \%\ \ \ \ \ >\ 5\ ms}}
+\DoxyCodeLine{00307\ \ \ \textcolor{comment}{//\ 10\ \%\ \ \ \ \ >\ 58\ ms}}
+\DoxyCodeLine{00308\ \ \ \textcolor{comment}{//\ \ 1\ \%\ \ \ \ \ >\ 357\ ms}}
+\DoxyCodeLine{00309\ \ \ \textcolor{comment}{//\ \ 0.1\ \%\ \ \ >\ 1.8\ seconds}}
+\DoxyCodeLine{00310\ \ \ \textcolor{comment}{//\ \ 0.01\ \%\ \ >\ 7.6\ seconds}}
+\DoxyCodeLine{00311\ \ \ \textcolor{keywordtype}{bool}\ Flush();}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//\ Updates\ the\ file\ times.}}
+\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ bool\ SetTimes(Time\ last\_access\_time,\ Time\ last\_modified\_time);}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \textcolor{comment}{//\ Returns\ some\ basic\ information\ for\ the\ given\ file.}}
+\DoxyCodeLine{00317\ \ \ \textcolor{keywordtype}{bool}\ GetInfo(Info*\ info)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \textcolor{preprocessor}{\#if\ !BUILDFLAG(\ \(\backslash\)}}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\ \ \ \ IS\_FUCHSIA)\ \ }\textcolor{comment}{//\ Fuchsia's\ POSIX\ API\ does\ not\ support\ file\ locking.}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{enum\ class}\ LockMode\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ kShared,}
+\DoxyCodeLine{00323\ \ \ \ \ kExclusive,}
+\DoxyCodeLine{00324\ \ \ \};}
 \DoxyCodeLine{00325\ }
-\DoxyCodeLine{00326\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00327\ }
-\DoxyCodeLine{00328\ \ \ \textcolor{comment}{//\ Returns\ a\ new\ object\ referencing\ this\ file\ for\ use\ within\ the\ current}}
-\DoxyCodeLine{00329\ \ \ \textcolor{comment}{//\ process.\ Handling\ of\ FLAG\_DELETE\_ON\_CLOSE\ varies\ by\ OS.\ On\ POSIX,\ the\ File}}
-\DoxyCodeLine{00330\ \ \ \textcolor{comment}{//\ object\ that\ was\ created\ or\ initialized\ with\ this\ flag\ will\ have\ unlinked}}
-\DoxyCodeLine{00331\ \ \ \textcolor{comment}{//\ the\ underlying\ file\ when\ it\ was\ created\ or\ opened.\ On\ Windows,\ the}}
-\DoxyCodeLine{00332\ \ \ \textcolor{comment}{//\ underlying\ file\ is\ deleted\ when\ the\ last\ handle\ to\ it\ is\ closed.}}
-\DoxyCodeLine{00333\ \ \ File\ Duplicate()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00334\ }
-\DoxyCodeLine{00335\ \ \ \textcolor{keywordtype}{bool}\ async()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ async\_;\ \}}
-\DoxyCodeLine{00336\ }
-\DoxyCodeLine{00337\ \ \ \textcolor{comment}{//\ Serialise\ this\ object\ into\ a\ trace.}}
-\DoxyCodeLine{00338\ \ \ \textcolor{comment}{//\ void\ WriteIntoTrace(perfetto::TracedValue\ context)\ const;}}
-\DoxyCodeLine{00339\ }
-\DoxyCodeLine{00340\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_APPLE)}}
-\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//\ Initializes\ experiments.\ Must\ be\ invoked\ early\ in\ process\ startup,\ but}}
-\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ after\ \`{}FeatureList`\ initialization.}}
-\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ InitializeFeatures();}
-\DoxyCodeLine{00344\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_APPLE)}}
-\DoxyCodeLine{00345\ }
-\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
-\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//\ Sets\ or\ clears\ the\ DeleteFile\ disposition\ on\ the\ file.\ Returns\ true\ if}}
-\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ the\ disposition\ was\ set\ or\ cleared,\ as\ indicated\ by\ |delete\_on\_close|.}}
-\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00350\ \ \ \textcolor{comment}{//\ Microsoft\ Windows\ deletes\ a\ file\ only\ when\ the\ DeleteFile\ disposition\ is}}
-\DoxyCodeLine{00351\ \ \ \textcolor{comment}{//\ set\ on\ a\ file\ when\ the\ last\ handle\ to\ the\ last\ underlying\ kernel\ File}}
-\DoxyCodeLine{00352\ \ \ \textcolor{comment}{//\ object\ is\ closed.\ This\ disposition\ is\ be\ set\ by:}}
-\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ -\/\ Calling\ the\ Win32\ DeleteFile\ function\ with\ the\ path\ to\ a\ file.}}
-\DoxyCodeLine{00354\ \ \ \textcolor{comment}{//\ -\/\ Opening/creating\ a\ file\ with\ FLAG\_DELETE\_ON\_CLOSE\ and\ then\ closing\ all}}
-\DoxyCodeLine{00355\ \ \ \textcolor{comment}{//\ \ \ handles\ to\ that\ File\ object.}}
-\DoxyCodeLine{00356\ \ \ \textcolor{comment}{//\ -\/\ Opening/creating\ a\ file\ with\ FLAG\_CAN\_DELETE\_ON\_CLOSE\ and\ subsequently}}
-\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//\ \ \ calling\ DeleteOnClose(true).}}
-\DoxyCodeLine{00358\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00359\ \ \ \textcolor{comment}{//\ In\ all\ cases,\ all\ pre-\/existing\ handles\ to\ the\ file\ must\ have\ been\ opened}}
-\DoxyCodeLine{00360\ \ \ \textcolor{comment}{//\ with\ FLAG\_WIN\_SHARE\_DELETE.\ Once\ the\ disposition\ has\ been\ set\ by\ any\ of\ the}}
-\DoxyCodeLine{00361\ \ \ \textcolor{comment}{//\ above\ means,\ no\ new\ File\ objects\ can\ be\ created\ for\ the\ file.}}
-\DoxyCodeLine{00362\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00363\ \ \ \textcolor{comment}{//\ So:}}
-\DoxyCodeLine{00364\ \ \ \textcolor{comment}{//\ -\/\ Use\ FLAG\_WIN\_SHARE\_DELETE\ when\ creating/opening\ a\ file\ to\ allow\ another}}
-\DoxyCodeLine{00365\ \ \ \textcolor{comment}{//\ \ \ entity\ on\ the\ system\ to\ cause\ it\ to\ be\ deleted\ when\ it\ is\ closed.\ (Note:}}
-\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//\ \ \ another\ entity\ can\ delete\ the\ file\ the\ moment\ after\ it\ is\ closed,\ so\ not}}
-\DoxyCodeLine{00367\ \ \ \textcolor{comment}{//\ \ \ using\ this\ permission\ doesn't\ provide\ any\ protections.)}}
-\DoxyCodeLine{00368\ \ \ \textcolor{comment}{//\ -\/\ Use\ FLAG\_DELETE\_ON\_CLOSE\ for\ any\ file\ that\ is\ to\ be\ deleted\ after\ use.}}
-\DoxyCodeLine{00369\ \ \ \textcolor{comment}{//\ \ \ The\ OS\ will\ ensure\ it\ is\ deleted\ even\ in\ the\ face\ of\ process\ termination.}}
-\DoxyCodeLine{00370\ \ \ \textcolor{comment}{//\ \ \ Note\ that\ it's\ possible\ for\ deletion\ to\ be\ cancelled\ via\ another\ File}}
-\DoxyCodeLine{00371\ \ \ \textcolor{comment}{//\ \ \ object\ referencing\ the\ same\ file\ using\ DeleteOnClose(false)\ to\ clear\ the}}
-\DoxyCodeLine{00372\ \ \ \textcolor{comment}{//\ \ \ DeleteFile\ disposition\ after\ the\ original\ File\ is\ closed.}}
-\DoxyCodeLine{00373\ \ \ \textcolor{comment}{//\ -\/\ Use\ FLAG\_CAN\_DELETE\_ON\_CLOSE\ in\ conjunction\ with\ DeleteOnClose()\ to\ alter}}
-\DoxyCodeLine{00374\ \ \ \textcolor{comment}{//\ \ \ the\ DeleteFile\ disposition\ on\ an\ open\ handle.\ This\ fine-\/grained\ control}}
-\DoxyCodeLine{00375\ \ \ \textcolor{comment}{//\ \ \ allows\ for\ marking\ a\ file\ for\ deletion\ during\ processing\ so\ that\ it\ is}}
-\DoxyCodeLine{00376\ \ \ \textcolor{comment}{//\ \ \ deleted\ in\ the\ event\ of\ untimely\ process\ termination,\ and\ then\ clearing}}
-\DoxyCodeLine{00377\ \ \ \textcolor{comment}{//\ \ \ this\ state\ once\ the\ file\ is\ suitable\ for\ persistence.}}
-\DoxyCodeLine{00378\ \ \ \textcolor{keywordtype}{bool}\ DeleteOnClose(\textcolor{keywordtype}{bool}\ delete\_on\_close);}
-\DoxyCodeLine{00379\ }
-\DoxyCodeLine{00380\ \ \ \textcolor{comment}{//\ Precondition:\ last\_error\ is\ not\ 0,\ also\ known\ as\ ERROR\_SUCCESS.}}
-\DoxyCodeLine{00381\ \ \ \textcolor{keyword}{static}\ Error\ OSErrorToFileError(DWORD\ last\_error);}
-\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00383\ \ \ \textcolor{comment}{//\ Precondition:\ saved\_errno\ is\ not\ 0.}}
-\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{static}\ Error\ OSErrorToFileError(\textcolor{keywordtype}{int}\ saved\_errno);}
-\DoxyCodeLine{00385\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00386\ }
-\DoxyCodeLine{00387\ \ \ \textcolor{comment}{//\ Gets\ the\ last\ global\ error\ (errno\ or\ GetLastError())\ and\ converts\ it\ to\ the}}
-\DoxyCodeLine{00388\ \ \ \textcolor{comment}{//\ closest\ base::File::Error\ equivalent\ via\ OSErrorToFileError().\ It\ should}}
-\DoxyCodeLine{00389\ \ \ \textcolor{comment}{//\ therefore\ only\ be\ called\ immediately\ after\ another\ base::File\ method\ fails.}}
-\DoxyCodeLine{00390\ \ \ \textcolor{comment}{//\ base::File\ never\ resets\ the\ global\ error\ to\ zero.}}
-\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{static}\ Error\ GetLastFileError();}
-\DoxyCodeLine{00392\ }
-\DoxyCodeLine{00393\ \ \ \textcolor{comment}{//\ Converts\ an\ error\ value\ to\ a\ human-\/readable\ form.\ Used\ for\ logging.}}
-\DoxyCodeLine{00394\ \ \ \textcolor{keyword}{static}\ std::string\ ErrorToString(Error\ error);}
-\DoxyCodeLine{00395\ }
-\DoxyCodeLine{00396\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00397\ \ \ \textcolor{comment}{//\ Wrapper\ for\ stat().}}
-\DoxyCodeLine{00398\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Stat(\textcolor{keyword}{const}\ FilePath\&\ path,\ stat\_wrapper\_t*\ sb);}
-\DoxyCodeLine{00399\ \ \ \textcolor{comment}{//\ Wrapper\ for\ fstat().}}
-\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Fstat(\textcolor{keywordtype}{int}\ fd,\ stat\_wrapper\_t*\ sb);}
-\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//\ Wrapper\ for\ lstat().}}
-\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Lstat(\textcolor{keyword}{const}\ FilePath\&\ path,\ stat\_wrapper\_t*\ sb);}
-\DoxyCodeLine{00403\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00326\ \ \ \textcolor{comment}{//\ Attempts\ to\ take\ an\ exclusive\ write\ lock\ on\ the\ file.\ Returns\ immediately}}
+\DoxyCodeLine{00327\ \ \ \textcolor{comment}{//\ (i.e.\ does\ not\ wait\ for\ another\ process\ to\ unlock\ the\ file).\ If\ the\ lock}}
+\DoxyCodeLine{00328\ \ \ \textcolor{comment}{//\ was\ obtained,\ the\ result\ will\ be\ FILE\_OK.\ A\ lock\ only\ guarantees}}
+\DoxyCodeLine{00329\ \ \ \textcolor{comment}{//\ that\ other\ processes\ may\ not\ also\ take\ a\ lock\ on\ the\ same\ file\ with\ the}}
+\DoxyCodeLine{00330\ \ \ \textcolor{comment}{//\ same\ API\ -\/\ it\ may\ still\ be\ opened,\ renamed,\ unlinked,\ etc.}}
+\DoxyCodeLine{00331\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00332\ \ \ \textcolor{comment}{//\ Common\ semantics:}}
+\DoxyCodeLine{00333\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ held\ by\ processes,\ but\ not\ inherited\ by\ child\ processes.}}
+\DoxyCodeLine{00334\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ released\ by\ the\ OS\ on\ file\ close\ or\ process\ termination.}}
+\DoxyCodeLine{00335\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ reliable\ only\ on\ local\ filesystems.}}
+\DoxyCodeLine{00336\ \ \ \textcolor{comment}{//\ \ *\ Duplicated\ file\ handles\ may\ also\ write\ to\ locked\ files.}}
+\DoxyCodeLine{00337\ \ \ \textcolor{comment}{//\ Windows-\/specific\ semantics:}}
+\DoxyCodeLine{00338\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ mandatory\ for\ read/write\ APIs,\ advisory\ for\ mapping\ APIs.}}
+\DoxyCodeLine{00339\ \ \ \textcolor{comment}{//\ \ *\ Within\ a\ process,\ locking\ the\ same\ file\ (by\ the\ same\ or\ new\ handle)}}
+\DoxyCodeLine{00340\ \ \ \textcolor{comment}{//\ \ \ \ will\ fail.}}
+\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//\ POSIX-\/specific\ semantics:}}
+\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ \ *\ Locks\ are\ advisory\ only.}}
+\DoxyCodeLine{00343\ \ \ \textcolor{comment}{//\ \ *\ Within\ a\ process,\ locking\ the\ same\ file\ (by\ the\ same\ or\ new\ handle)}}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//\ \ \ \ will\ succeed.\ The\ new\ lock\ replaces\ the\ old\ lock.}}
+\DoxyCodeLine{00345\ \ \ \textcolor{comment}{//\ \ *\ Closing\ any\ descriptor\ on\ a\ given\ file\ releases\ the\ lock.}}
+\DoxyCodeLine{00346\ \ \ Error\ Lock(LockMode\ mode);}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ Unlock\ a\ file\ previously\ locked.}}
+\DoxyCodeLine{00349\ \ \ Error\ Unlock();}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ Returns\ a\ new\ object\ referencing\ this\ file\ for\ use\ within\ the\ current}}
+\DoxyCodeLine{00354\ \ \ \textcolor{comment}{//\ process.\ Handling\ of\ FLAG\_DELETE\_ON\_CLOSE\ varies\ by\ OS.\ On\ POSIX,\ the\ File}}
+\DoxyCodeLine{00355\ \ \ \textcolor{comment}{//\ object\ that\ was\ created\ or\ initialized\ with\ this\ flag\ will\ have\ unlinked}}
+\DoxyCodeLine{00356\ \ \ \textcolor{comment}{//\ the\ underlying\ file\ when\ it\ was\ created\ or\ opened.\ On\ Windows,\ the}}
+\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//\ underlying\ file\ is\ deleted\ when\ the\ last\ handle\ to\ it\ is\ closed.}}
+\DoxyCodeLine{00358\ \ \ File\ Duplicate()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \textcolor{keywordtype}{bool}\ async()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ async\_;\ \}}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \textcolor{comment}{//\ Serialise\ this\ object\ into\ a\ trace.}}
+\DoxyCodeLine{00363\ \ \ \textcolor{comment}{//\ void\ WriteIntoTrace(perfetto::TracedValue\ context)\ const;}}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//\ Initializes\ experiments.\ Must\ be\ invoked\ early\ in\ process\ startup,\ but}}
+\DoxyCodeLine{00367\ \ \ \textcolor{comment}{//\ after\ \`{}FeatureList`\ initialization.}}
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ InitializeFeatures();}
+\DoxyCodeLine{00369\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_APPLE)}}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00372\ \ \ \textcolor{comment}{//\ Sets\ or\ clears\ the\ DeleteFile\ disposition\ on\ the\ file.\ Returns\ true\ if}}
+\DoxyCodeLine{00373\ \ \ \textcolor{comment}{//\ the\ disposition\ was\ set\ or\ cleared,\ as\ indicated\ by\ |delete\_on\_close|.}}
+\DoxyCodeLine{00374\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00375\ \ \ \textcolor{comment}{//\ Microsoft\ Windows\ deletes\ a\ file\ only\ when\ the\ DeleteFile\ disposition\ is}}
+\DoxyCodeLine{00376\ \ \ \textcolor{comment}{//\ set\ on\ a\ file\ when\ the\ last\ handle\ to\ the\ last\ underlying\ kernel\ File}}
+\DoxyCodeLine{00377\ \ \ \textcolor{comment}{//\ object\ is\ closed.\ This\ disposition\ is\ be\ set\ by:}}
+\DoxyCodeLine{00378\ \ \ \textcolor{comment}{//\ -\/\ Calling\ the\ Win32\ DeleteFile\ function\ with\ the\ path\ to\ a\ file.}}
+\DoxyCodeLine{00379\ \ \ \textcolor{comment}{//\ -\/\ Opening/creating\ a\ file\ with\ FLAG\_DELETE\_ON\_CLOSE\ and\ then\ closing\ all}}
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{//\ \ \ handles\ to\ that\ File\ object.}}
+\DoxyCodeLine{00381\ \ \ \textcolor{comment}{//\ -\/\ Opening/creating\ a\ file\ with\ FLAG\_CAN\_DELETE\_ON\_CLOSE\ and\ subsequently}}
+\DoxyCodeLine{00382\ \ \ \textcolor{comment}{//\ \ \ calling\ DeleteOnClose(true).}}
+\DoxyCodeLine{00383\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00384\ \ \ \textcolor{comment}{//\ In\ all\ cases,\ all\ pre-\/existing\ handles\ to\ the\ file\ must\ have\ been\ opened}}
+\DoxyCodeLine{00385\ \ \ \textcolor{comment}{//\ with\ FLAG\_WIN\_SHARE\_DELETE.\ Once\ the\ disposition\ has\ been\ set\ by\ any\ of\ the}}
+\DoxyCodeLine{00386\ \ \ \textcolor{comment}{//\ above\ means,\ no\ new\ File\ objects\ can\ be\ created\ for\ the\ file.}}
+\DoxyCodeLine{00387\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00388\ \ \ \textcolor{comment}{//\ So:}}
+\DoxyCodeLine{00389\ \ \ \textcolor{comment}{//\ -\/\ Use\ FLAG\_WIN\_SHARE\_DELETE\ when\ creating/opening\ a\ file\ to\ allow\ another}}
+\DoxyCodeLine{00390\ \ \ \textcolor{comment}{//\ \ \ entity\ on\ the\ system\ to\ cause\ it\ to\ be\ deleted\ when\ it\ is\ closed.\ (Note:}}
+\DoxyCodeLine{00391\ \ \ \textcolor{comment}{//\ \ \ another\ entity\ can\ delete\ the\ file\ the\ moment\ after\ it\ is\ closed,\ so\ not}}
+\DoxyCodeLine{00392\ \ \ \textcolor{comment}{//\ \ \ using\ this\ permission\ doesn't\ provide\ any\ protections.)}}
+\DoxyCodeLine{00393\ \ \ \textcolor{comment}{//\ -\/\ Use\ FLAG\_DELETE\_ON\_CLOSE\ for\ any\ file\ that\ is\ to\ be\ deleted\ after\ use.}}
+\DoxyCodeLine{00394\ \ \ \textcolor{comment}{//\ \ \ The\ OS\ will\ ensure\ it\ is\ deleted\ even\ in\ the\ face\ of\ process\ termination.}}
+\DoxyCodeLine{00395\ \ \ \textcolor{comment}{//\ \ \ Note\ that\ it's\ possible\ for\ deletion\ to\ be\ cancelled\ via\ another\ File}}
+\DoxyCodeLine{00396\ \ \ \textcolor{comment}{//\ \ \ object\ referencing\ the\ same\ file\ using\ DeleteOnClose(false)\ to\ clear\ the}}
+\DoxyCodeLine{00397\ \ \ \textcolor{comment}{//\ \ \ DeleteFile\ disposition\ after\ the\ original\ File\ is\ closed.}}
+\DoxyCodeLine{00398\ \ \ \textcolor{comment}{//\ -\/\ Use\ FLAG\_CAN\_DELETE\_ON\_CLOSE\ in\ conjunction\ with\ DeleteOnClose()\ to\ alter}}
+\DoxyCodeLine{00399\ \ \ \textcolor{comment}{//\ \ \ the\ DeleteFile\ disposition\ on\ an\ open\ handle.\ This\ fine-\/grained\ control}}
+\DoxyCodeLine{00400\ \ \ \textcolor{comment}{//\ \ \ allows\ for\ marking\ a\ file\ for\ deletion\ during\ processing\ so\ that\ it\ is}}
+\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//\ \ \ deleted\ in\ the\ event\ of\ untimely\ process\ termination,\ and\ then\ clearing}}
+\DoxyCodeLine{00402\ \ \ \textcolor{comment}{//\ \ \ this\ state\ once\ the\ file\ is\ suitable\ for\ persistence.}}
+\DoxyCodeLine{00403\ \ \ \textcolor{keywordtype}{bool}\ DeleteOnClose(\textcolor{keywordtype}{bool}\ delete\_on\_close);}
 \DoxyCodeLine{00404\ }
-\DoxyCodeLine{00405\ \ \ \textcolor{comment}{//\ This\ function\ can\ be\ used\ to\ augment\ \`{}flags`\ with\ the\ correct\ flags}}
-\DoxyCodeLine{00406\ \ \ \textcolor{comment}{//\ required\ to\ create\ a\ File\ that\ can\ be\ safely\ passed\ to\ an\ untrusted}}
-\DoxyCodeLine{00407\ \ \ \textcolor{comment}{//\ process.\ It\ must\ be\ called\ if\ the\ File\ is\ intended\ to\ be\ transferred\ to\ an}}
-\DoxyCodeLine{00408\ \ \ \textcolor{comment}{//\ untrusted\ process,\ but\ can\ still\ be\ safely\ called\ even\ if\ the\ File\ is\ not}}
-\DoxyCodeLine{00409\ \ \ \textcolor{comment}{//\ intended\ to\ be\ transferred.}}
-\DoxyCodeLine{00410\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint32\_t\ AddFlagsForPassingToUntrustedProcess(}
-\DoxyCodeLine{00411\ \ \ \ \ \ \ uint32\_t\ flags)\ \{}
-\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordflow}{if}\ (flags\ \&\ File::FLAG\_WRITE\ ||\ flags\ \&\ File::FLAG\_APPEND\ ||}
-\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ flags\ \&\ File::FLAG\_WRITE\_ATTRIBUTES)\ \{}
-\DoxyCodeLine{00414\ \ \ \ \ \ \ flags\ |=\ File::FLAG\_WIN\_NO\_EXECUTE;}
-\DoxyCodeLine{00415\ \ \ \ \ \}}
-\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordflow}{return}\ flags;}
-\DoxyCodeLine{00417\ \ \ \}}
-\DoxyCodeLine{00418\ }
-\DoxyCodeLine{00419\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00420\ \ \ \textcolor{comment}{//\ TODO(gc):}}
-\DoxyCodeLine{00421\ \ \ \textcolor{comment}{//\ friend\ class\ FileTracing::ScopedTrace;}}
-\DoxyCodeLine{00422\ }
-\DoxyCodeLine{00423\ \ \ \textcolor{comment}{//\ Creates\ or\ opens\ the\ given\ file.\ Only\ called\ if\ |path|\ has\ no}}
-\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//\ traversal\ ('..')\ components.}}
-\DoxyCodeLine{00425\ \ \ \textcolor{keywordtype}{void}\ DoInitialize(\textcolor{keyword}{const}\ FilePath\&\ path,\ uint32\_t\ flags);}
-\DoxyCodeLine{00426\ }
-\DoxyCodeLine{00427\ \ \ \textcolor{keywordtype}{void}\ SetPlatformFile(PlatformFile\ file);}
-\DoxyCodeLine{00428\ }
-\DoxyCodeLine{00429\ \ \ ScopedPlatformFile\ file\_;}
-\DoxyCodeLine{00430\ }
-\DoxyCodeLine{00431\ \ \ \textcolor{comment}{//\ Platform\ path\ to\ \`{}file\_`.\ Set\ if\ \`{}this`\ wraps\ a\ file\ from\ an\ Android}}
-\DoxyCodeLine{00432\ \ \ \textcolor{comment}{//\ content\ provider\ (i.e.\ a\ content\ URI)\ or\ if\ tracing\ is\ enabled\ in}}
-\DoxyCodeLine{00433\ \ \ \textcolor{comment}{//\ \`{}Initialize()`.}}
-\DoxyCodeLine{00434\ \ \ FilePath\ path\_;}
-\DoxyCodeLine{00435\ }
-\DoxyCodeLine{00436\ \ \ \textcolor{comment}{//\ Object\ tied\ to\ the\ lifetime\ of\ |this|\ that\ enables/disables\ tracing.}}
-\DoxyCodeLine{00437\ \ \ \textcolor{comment}{//\ TODO(gc):}}
-\DoxyCodeLine{00438\ \ \ \textcolor{comment}{//\ FileTracing::ScopedEnabler\ trace\_enabler\_;}}
-\DoxyCodeLine{00439\ }
-\DoxyCodeLine{00440\ \ \ Error\ error\_details\_\ =\ FILE\_ERROR\_FAILED;}
-\DoxyCodeLine{00441\ \ \ \textcolor{keywordtype}{bool}\ created\_\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00442\ \ \ \textcolor{keywordtype}{bool}\ async\_\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00443\ \};}
-\DoxyCodeLine{00444\ }
-\DoxyCodeLine{00445\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
-\DoxyCodeLine{00446\ }
-\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_FILES\_FILE\_H\_}}
+\DoxyCodeLine{00405\ \ \ \textcolor{comment}{//\ Precondition:\ last\_error\ is\ not\ 0,\ also\ known\ as\ ERROR\_SUCCESS.}}
+\DoxyCodeLine{00406\ \ \ \textcolor{keyword}{static}\ Error\ OSErrorToFileError(DWORD\ last\_error);}
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00408\ \ \ \textcolor{comment}{//\ Precondition:\ saved\_errno\ is\ not\ 0.}}
+\DoxyCodeLine{00409\ \ \ \textcolor{keyword}{static}\ Error\ OSErrorToFileError(\textcolor{keywordtype}{int}\ saved\_errno);}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ \ \ \textcolor{comment}{//\ Gets\ the\ last\ global\ error\ (errno\ or\ GetLastError())\ and\ converts\ it\ to\ the}}
+\DoxyCodeLine{00413\ \ \ \textcolor{comment}{//\ closest\ base::File::Error\ equivalent\ via\ OSErrorToFileError().\ It\ should}}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//\ therefore\ only\ be\ called\ immediately\ after\ another\ base::File\ method\ fails.}}
+\DoxyCodeLine{00415\ \ \ \textcolor{comment}{//\ base::File\ never\ resets\ the\ global\ error\ to\ zero.}}
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{static}\ Error\ GetLastFileError();}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \textcolor{comment}{//\ Converts\ an\ error\ value\ to\ a\ human-\/readable\ form.\ Used\ for\ logging.}}
+\DoxyCodeLine{00419\ \ \ \textcolor{keyword}{static}\ std::string\ ErrorToString(Error\ error);}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00422\ \ \ \textcolor{comment}{//\ Wrapper\ for\ stat().}}
+\DoxyCodeLine{00423\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Stat(\textcolor{keyword}{const}\ FilePath\&\ path,\ stat\_wrapper\_t*\ sb);}
+\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//\ Wrapper\ for\ fstat().}}
+\DoxyCodeLine{00425\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Fstat(\textcolor{keywordtype}{int}\ fd,\ stat\_wrapper\_t*\ sb);}
+\DoxyCodeLine{00426\ \ \ \textcolor{comment}{//\ Wrapper\ for\ lstat().}}
+\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Lstat(\textcolor{keyword}{const}\ FilePath\&\ path,\ stat\_wrapper\_t*\ sb);}
+\DoxyCodeLine{00428\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \ \ \textcolor{comment}{//\ This\ function\ can\ be\ used\ to\ augment\ \`{}flags`\ with\ the\ correct\ flags}}
+\DoxyCodeLine{00431\ \ \ \textcolor{comment}{//\ required\ to\ create\ a\ File\ that\ can\ be\ safely\ passed\ to\ an\ untrusted}}
+\DoxyCodeLine{00432\ \ \ \textcolor{comment}{//\ process.\ It\ must\ be\ called\ if\ the\ File\ is\ intended\ to\ be\ transferred\ to\ an}}
+\DoxyCodeLine{00433\ \ \ \textcolor{comment}{//\ untrusted\ process,\ but\ can\ still\ be\ safely\ called\ even\ if\ the\ File\ is\ not}}
+\DoxyCodeLine{00434\ \ \ \textcolor{comment}{//\ intended\ to\ be\ transferred.}}
+\DoxyCodeLine{00435\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint32\_t\ AddFlagsForPassingToUntrustedProcess(}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ uint32\_t\ flags)\ \{}
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{keywordflow}{if}\ (flags\ \&\ File::FLAG\_WRITE\ ||\ flags\ \&\ File::FLAG\_APPEND\ ||}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ flags\ \&\ File::FLAG\_WRITE\_ATTRIBUTES)\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ flags\ |=\ File::FLAG\_WIN\_NO\_EXECUTE;}
+\DoxyCodeLine{00440\ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \ \ \textcolor{keywordflow}{return}\ flags;}
+\DoxyCodeLine{00442\ \ \ \}}
+\DoxyCodeLine{00443\ }
+\DoxyCodeLine{00444\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00445\ \ \ \textcolor{comment}{//\ Creates\ or\ opens\ the\ given\ file.\ Only\ called\ if\ |path|\ has\ no}}
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//\ traversal\ ('..')\ components.}}
+\DoxyCodeLine{00447\ \ \ \textcolor{keywordtype}{void}\ DoInitialize(\textcolor{keyword}{const}\ FilePath\&\ path,\ uint32\_t\ flags);}
+\DoxyCodeLine{00448\ \ \ \textcolor{keywordtype}{void}\ SetPlatformFile(PlatformFile\ file);}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00450\ \ \ ScopedPlatformFile\ file\_;}
+\DoxyCodeLine{00451\ \ \ FilePath\ path\_;}
+\DoxyCodeLine{00452\ \ \ Error\ error\_details\_\ =\ kFileErrorFailed;}
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordtype}{bool}\ is\_created\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00454\ \ \ \textcolor{keywordtype}{bool}\ is\_async\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00455\ \};}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00458\ }
+\DoxyCodeLine{00459\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_FILES\_FILE\_H\_}}
 
 \end{DoxyCode}

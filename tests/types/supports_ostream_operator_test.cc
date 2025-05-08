@@ -16,12 +16,16 @@ enum SimpleEnum { SIMPLE_ENUM };
 enum EnumWithExplicitType : uint64_t { ENUM_WITH_EXPLICIT_TYPE };
 enum class ScopedEnum { SCOPED_ENUM };
 enum class ScopedEnumWithOperator { SCOPED_ENUM_WITH_OPERATOR };
-std::ostream& operator<<(std::ostream& os, ScopedEnumWithOperator v) {
+
+std::ostream& operator<<(std::ostream& os,
+                         [[maybe_unused]] ScopedEnumWithOperator v) {
   return os;
 }
+
 struct SimpleStruct {};
 struct StructWithOperator {};
-std::ostream& operator<<(std::ostream& os, const StructWithOperator& v) {
+std::ostream& operator<<(std::ostream& os,
+                         [[maybe_unused]] const StructWithOperator& v) {
   return os;
 }
 

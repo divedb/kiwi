@@ -83,511 +83,512 @@
 \DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ \`{}\`{}\`{}}}
 \DoxyCodeLine{00080\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...,\ \textcolor{keywordtype}{size\_t}\ M>}
 \DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(\textcolor{keyword}{const}\ Char\ (\&lit\ LIFETIME\_BOUND)[M])\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ ENABLE\_IF\_ATTR(lit[M\ -\/\ 1u]\ ==\ Char\{0\},\ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ :\ ptr\_(lit),\ len\_(std::char\_traits<Char>::length(lit))\ \{}
-\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ For\ non-\/clang\ compilers.\ On\ clang,\ the\ function\ is\ not\ even\ callable}}
-\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ without\ this\ being\ known\ to\ pass\ at\ compile\ time.}}
-\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ lit\ is\ an\ array\ of\ size\ M,\ so\ M-\/1\ is\ in\ bounds.}}
-\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ DCHECK\_EQ(UNSAFE\_BUFFERS(lit[M\ -\/\ 1u]),\ Char\{0\});}}
-\DoxyCodeLine{00090\ \ \ \}}
-\DoxyCodeLine{00091\ }
-\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ Constructs\ a\ cstring\ view\ from\ a\ std::string\ (or\ other\ std::basic\_string}}
-\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ type).\ The\ string\ parameter\ must\ outlive\ the\ cstring\ view,\ including\ that}}
-\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ it\ must\ not\ be\ moved-\/from\ or\ destroyed.}}
-\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00096\ \ \ \textcolor{comment}{//\ This\ conversion\ is\ implicit,\ which\ matches\ the\ conversion\ from\ std::string}}
-\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//\ to\ std::string\_view\ (through\ string's\ \`{}operator\ string\_view()`).}}
-\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ \#\ Interaction\ with\ SSO}}
-\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ std::string\ stores\ its\ contents\ inline\ when\ they\ fit\ (which\ is\ an}}
-\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ implementation\ defined\ length),\ instead\ of\ in\ a\ heap-\/allocated\ buffer.\ This}}
-\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ is\ referred\ to\ as\ the\ Small\ String\ Optimization.\ This\ means\ that\ moving\ or}}
-\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ destring\ a\ std::string\ will\ invalidate\ a\ cstring\ view\ and\ leave\ it\ with}}
-\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//\ dangling\ pointers.\ This\ differs\ from\ the\ behaviour\ of\ std::vector\ and\ span,}}
-\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ since\ pointers\ into\ a\ std::vector\ remain\ valid\ after\ moving\ the\ std::vector}}
-\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ and\ destroying\ the\ original.}}
-\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00108\ \ \ \textcolor{comment}{//\ \#\ Preventing\ implicit\ temporaries}}
-\DoxyCodeLine{00109\ \ \ \textcolor{comment}{//\ Because\ std::string\ can\ be\ implicitly\ constructed,\ the\ string\ constructor}}
-\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//\ may\ unintentionally\ be\ called\ with\ a\ temporary\ \`{}std::string`\ when\ called}}
-\DoxyCodeLine{00111\ \ \ \textcolor{comment}{//\ with\ values\ that\ convert\ to\ \`{}std::string`.\ We\ prevent\ this\ templating\ this}}
-\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//\ constructor\ and\ requiring\ the\ incoming\ type\ to\ actually\ be\ a\ \`{}std::string`}}
-\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//\ (or\ other\ \`{}std::basic\_string`).\ This\ also\ improves\ compiler\ errors,}}
-\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//\ compared\ to\ deleting\ a\ string\&\&\ overload,\ when\ passed\ an\ array\ that\ does}}
-\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ not\ match\ the\ \`{}ENABLE\_IF\_ATTR`\ constructor\ condition\ by\ not\ sending\ it\ to\ a}}
-\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ deleted\ overload\ receiving\ \`{}std::string`.}}
-\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{template}\ <std::same\_as<std::basic\_\textcolor{keywordtype}{string}<Char>>\ String>}
-\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(\textcolor{keyword}{const}\ String\&\ s\ LIFETIME\_BOUND)\ noexcept}
-\DoxyCodeLine{00120\ \ \ \ \ \ \ :\ ptr\_(s.c\_str()),\ len\_(s.size())\ \{\}}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \textcolor{comment}{//\ Unsafe\ construction\ from\ a\ NUL-\/terminated\ cstring,\ primarily\ for\ use\ with\ C}}
-\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ APIs.\ Prefer\ to\ construct\ cstring\ view\ from\ a\ string\ literal,\ std::string,}}
-\DoxyCodeLine{00124\ \ \ \textcolor{comment}{//\ or\ another\ cstring\ view.}}
-\DoxyCodeLine{00125\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//\ \#\ Safety}}
-\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ The\ \`{}ptr`\ must\ point\ to\ a\ NUL-\/terminated\ string\ or\ Undefined\ Behaviour\ will}}
-\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ result.}}
-\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00130\ \ \ \textcolor{comment}{//\ \#\ Implementation\ note}}
-\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//\ We\ use\ a\ \`{}String\&\&`\ template\ to\ ensure\ the\ input\ is\ a\ pointer\ and\ not\ an}}
-\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ array\ that\ decayed\ to\ a\ pointer.\ This\ ensures\ the\ ctor\ will\ not\ act\ as\ a}}
-\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ fallback\ for\ the\ string\ literal\ ctor\ when\ the\ enable\_if\ condition\ fails.}}
-\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ String>}
-\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{requires}(std::same\_as<std::remove\_cvref\_t<String>,\ Char*>\ ||}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::same\_as<std::remove\_cvref\_t<String>,\ \textcolor{keyword}{const}\ Char*>)}
-\DoxyCodeLine{00137\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(}
-\DoxyCodeLine{00138\ \ \ \ \ \ \ String\&\&\ ptr\ LIFETIME\_BOUND)\ noexcept}
-\DoxyCodeLine{00139\ \ \ \ \ \ \ :\ ptr\_(ptr),\ len\_(std::char\_traits<Char>::length(ptr))\ \{\}}
-\DoxyCodeLine{00140\ }
-\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//\ Unsafe\ construction\ from\ a\ NUL-\/terminated\ pointer\ and\ length.\ This\ allows}}
-\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ the\ string\ to\ contain\ embedded\ NULs.\ Prefer\ to\ construct\ cstring\ view\ from}}
-\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//\ a\ string\ literal,\ std::string,\ or\ another\ cstring\ view.}}
-\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00145\ \ \ \textcolor{comment}{//\ \#\ Safety}}
-\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//\ The\ \`{}ptr`\ and\ \`{}len`\ pair\ indicate\ a\ valid\ NUL-\/terminated\ string:}}
-\DoxyCodeLine{00147\ \ \ \textcolor{comment}{//\ *\ The\ \`{}ptr`\ must\ not\ be\ null,\ and\ must\ point\ to\ a\ NUL-\/terminated\ string.}}
-\DoxyCodeLine{00148\ \ \ \textcolor{comment}{//\ *\ The\ \`{}len`\ must\ be\ valid\ such\ that\ \`{}ptr\ +\ len`\ gives\ a\ pointer\ to\ the}}
-\DoxyCodeLine{00149\ \ \ \textcolor{comment}{//\ \ \ terminating\ NUL\ and\ is\ in\ the\ same\ allocation\ as\ \`{}ptr`.}}
-\DoxyCodeLine{00150\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(}
-\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Char*\ ptr\ LIFETIME\_BOUND,\ \textcolor{keywordtype}{size\_t}\ len)}
-\DoxyCodeLine{00152\ \ \ \ \ \ \ :\ ptr\_(ptr),\ len\_(len)\ \{}
-\DoxyCodeLine{00153\ \ \ \ \ \textcolor{comment}{//\ This\ method\ is\ marked\ UNSAFE\_BUFFER\_USAGE\ so\ we\ are\ trusting\ the\ caller}}
-\DoxyCodeLine{00154\ \ \ \ \ \textcolor{comment}{//\ to\ do\ things\ right,\ and\ expecting\ strong\ scrutiny\ at\ the\ call\ site,\ but}}
-\DoxyCodeLine{00155\ \ \ \ \ \textcolor{comment}{//\ we\ perform\ a\ debug\ check\ to\ help\ catch\ mistakes\ regardless.}}
-\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00157\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr`\ points\ to\ \`{}len`\ many\ chars\ and\ then\ a\ NUL,\ according\ to\ the}}
-\DoxyCodeLine{00158\ \ \ \ \ \textcolor{comment}{//\ caller\ of\ this\ method.\ So\ then\ \`{}len`\ index\ will\ be\ in\ bounds\ and\ return}}
-\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{//\ the\ NUL.}}
-\DoxyCodeLine{00160\ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
-\DoxyCodeLine{00161\ \ \ \ \ \textcolor{comment}{//\ DCHECK\_EQ(UNSAFE\_BUFFERS(ptr[len]),\ Char\{0\});}}
-\DoxyCodeLine{00162\ \ \ \}}
-\DoxyCodeLine{00163\ }
-\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//\ Returns\ a\ pointer\ to\ the\ NUL-\/terminated\ string,\ for\ passing\ to\ C-\/style\ APIs}}
-\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ that\ require\ \`{}const\ char*`\ (or\ whatever\ the\ \`{}Char`\ type\ is).}}
-\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ This\ is\ never\ null.}}
-\DoxyCodeLine{00168\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char*\ c\_str()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ ptr\_;\ \}}
-\DoxyCodeLine{00169\ }
-\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ Returns\ a\ pointer\ to\ underlying\ buffer.\ To\ get\ a\ string\ pointer,\ use}}
-\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ \`{}c\_str()`.}}
-\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//\ Pair\ with\ \`{}size()`\ to\ construct\ a\ bounded\ non-\/NUL-\/terminated\ view,\ such\ as}}
-\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ by\ \`{}base::span`.\ This\ is\ never\ null.}}
-\DoxyCodeLine{00175\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char*\ data()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ ptr\_;\ \}}
-\DoxyCodeLine{00176\ }
-\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ Returns\ the\ number\ of\ characters\ in\ the\ string,\ not\ including\ the}}
-\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
-\DoxyCodeLine{00179\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ size()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ len\_;\ \}}
-\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//\ An\ alias\ for\ \`{}size()`,\ returning\ the\ number\ of\ characters\ in\ the\ string.}}
-\DoxyCodeLine{00181\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ length()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ len\_;\ \}}
-\DoxyCodeLine{00182\ }
-\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ is\ for\ an\ empty\ string.\ When\ empty,\ it\ is}}
-\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ pointing\ to\ a\ cstring\ that\ contains\ only\ a\ NUL\ character.}}
-\DoxyCodeLine{00185\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ empty()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ len\_\ ==\ 0u;\ \}}
-\DoxyCodeLine{00186\ }
-\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//\ Returns\ the\ maximum\ number\ of\ characters\ that\ can\ be\ represented\ inside\ the}}
-\DoxyCodeLine{00188\ \ \ \textcolor{comment}{//\ cstring\ view\ for\ character\ type\ \`{}Char`.}}
-\DoxyCodeLine{00189\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ This\ is\ the\ number\ of\ \`{}Char`\ objects\ that\ can\ fit\ inside\ an\ addressable}}
-\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ byte\ array.\ Since\ the\ number\ of\ bytes\ allowed\ is\ fixed,\ the\ number\ returned}}
-\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ is\ smaller\ when\ the\ \`{}Char`\ is\ a\ larger\ type.}}
-\DoxyCodeLine{00193\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ max\_size()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(-\/1)\ /\ \textcolor{keyword}{sizeof}(Char);}
-\DoxyCodeLine{00195\ \ \ \}}
-\DoxyCodeLine{00196\ }
-\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//\ Returns\ the\ number\ of\ bytes\ in\ the\ string,\ not\ including\ the\ terminating}}
-\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ NUL.\ To\ include\ the\ NUL,\ add\ \`{}sizeof(Char)`\ where\ \`{}Char`\ is\ the\ character}}
-\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//\ type\ of\ the\ cstring\ view\ (accessible\ as\ the\ \`{}value\_type`\ alias).}}
-\DoxyCodeLine{00200\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ size\_bytes()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{return}\ len\_\ *\ \textcolor{keyword}{sizeof}(Char);}
-\DoxyCodeLine{00202\ \ \ \}}
-\DoxyCodeLine{00203\ }
-\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
-\DoxyCodeLine{00205\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ iterator\ begin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00206\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_\ +\ len\_`\ for\ a\ cstring\ view\ always\ gives\ a\ pointer\ in}}
-\DoxyCodeLine{00207\ \ \ \ \ \textcolor{comment}{//\ the\ same\ allocation\ as\ \`{}ptr\_`\ based\ on\ the\ precondition\ of}}
-\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{//\ the\ type.}}
-\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(iterator(ptr\_,\ ptr\_\ +\ len\_));}
-\DoxyCodeLine{00210\ \ \ \}}
-\DoxyCodeLine{00211\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
-\DoxyCodeLine{00212\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ iterator\ end()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00213\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_\ +\ len\_`\ for\ a\ cstring\ view\ always\ gives\ a\ pointer\ in}}
-\DoxyCodeLine{00214\ \ \ \ \ \textcolor{comment}{//\ the\ same\ allocation\ as\ \`{}ptr\_`\ based\ on\ the\ precondition\ of}}
-\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ the\ type.}}
-\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(iterator(ptr\_,\ ptr\_\ +\ len\_,\ ptr\_\ +\ len\_));}
-\DoxyCodeLine{00217\ \ \ \}}
-\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
-\DoxyCodeLine{00219\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_iterator\ cbegin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ begin();}
-\DoxyCodeLine{00221\ \ \ \}}
-\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
-\DoxyCodeLine{00223\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_iterator\ cend()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ end();\ \}}
-\DoxyCodeLine{00224\ }
-\DoxyCodeLine{00225\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
-\DoxyCodeLine{00226\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
-\DoxyCodeLine{00227\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ reverse\_iterator\ rbegin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(end());}
-\DoxyCodeLine{00229\ \ \ \}}
-\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
-\DoxyCodeLine{00231\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
-\DoxyCodeLine{00232\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ reverse\_iterator\ rend()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(begin());}
-\DoxyCodeLine{00234\ \ \ \}}
-\DoxyCodeLine{00235\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
-\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
-\DoxyCodeLine{00237\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_reverse\_iterator\ rcbegin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(cend());}
-\DoxyCodeLine{00239\ \ \ \}}
-\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
-\DoxyCodeLine{00241\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
-\DoxyCodeLine{00242\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_reverse\_iterator\ rcend()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(cbegin());}
-\DoxyCodeLine{00244\ \ \ \}}
-\DoxyCodeLine{00245\ }
-\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ Returns\ the\ character\ at\ offset\ \`{}idx`.}}
-\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ This\ can\ be\ used\ to\ access\ any\ character\ in\ the\ ctring,\ as\ well\ as\ the\ NUL}}
-\DoxyCodeLine{00249\ \ \ \textcolor{comment}{//\ terminator.}}
-\DoxyCodeLine{00250\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//\ \#\ Checks}}
-\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ the\ \`{}idx`\ is\ inside\ the\ cstring\ (including\ at\ its}}
-\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ NUL\ terminator)\ and\ will\ terminate\ otherwise.}}
-\DoxyCodeLine{00254\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ operator[](\textcolor{keywordtype}{size\_t}\ idx)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00255\ \ \ \ \ \textcolor{comment}{//\ CHECK\_LE(idx,\ len\_);}}
-\DoxyCodeLine{00256\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_`\ points\ \`{}len\_`\ many\ elements\ plus\ a\ NUL\ terminator,\ and}}
-\DoxyCodeLine{00257\ \ \ \ \ \textcolor{comment}{//\ \`{}idx\ <=\ len\_`,\ so\ \`{}idx`\ is\ in\ range\ for\ \`{}ptr\_`.}}
-\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(ptr\_[idx]);}
-\DoxyCodeLine{00259\ \ \ \}}
-\DoxyCodeLine{00260\ }
-\DoxyCodeLine{00261\ \ \ \textcolor{comment}{//\ A\ named\ function\ that\ performs\ the\ same\ as\ \`{}operator[]`.}}
-\DoxyCodeLine{00262\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ at(\textcolor{keywordtype}{size\_t}\ idx)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})[idx];}
-\DoxyCodeLine{00264\ \ \ \}}
-\DoxyCodeLine{00265\ }
-\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ character\ in\ the\ cstring\ view.}}
-\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ \#\ Checks}}
-\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ the\ string\ is\ non-\/empty,\ and\ will\ terminate}}
-\DoxyCodeLine{00270\ \ \ \textcolor{comment}{//\ otherwise.}}
-\DoxyCodeLine{00271\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ front()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00272\ \ \ \ \ \textcolor{comment}{//\ CHECK(len\_);}}
-\DoxyCodeLine{00273\ \ \ \ \ \textcolor{comment}{//\ Since\ \`{}len\_\ >\ 0`,\ 0\ is\ a\ valid\ offset\ into\ the\ string\ contents.}}
-\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(ptr\_[0u]);}
-\DoxyCodeLine{00275\ \ \ \}}
-\DoxyCodeLine{00276\ }
-\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ (non-\/NUL)\ character\ in\ the\ cstring\ view.}}
-\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ \#\ Checks}}
-\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ the\ string\ is\ non-\/empty,\ and\ will\ terminate}}
-\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ otherwise.}}
-\DoxyCodeLine{00282\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ back()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00283\ \ \ \ \ \textcolor{comment}{//\ CHECK(len\_);}}
-\DoxyCodeLine{00284\ \ \ \ \ \textcolor{comment}{//\ Since\ \`{}len\_\ >\ 0`,\ \`{}len\ -\/\ 1`\ will\ not\ underflow.\ There\ are\ \`{}len\_`\ many}}
-\DoxyCodeLine{00285\ \ \ \ \ \textcolor{comment}{//\ chars\ in\ the\ string\ before\ a\ NUL,\ so\ \`{}len\_\ -\/\ 1`\ is\ in\ range\ of\ the\ string}}
-\DoxyCodeLine{00286\ \ \ \ \ \textcolor{comment}{//\ contents.}}
-\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(ptr\_[len\_\ -\/\ 1u]);}
-\DoxyCodeLine{00288\ \ \ \}}
-\DoxyCodeLine{00289\ }
-\DoxyCodeLine{00290\ \ \ \textcolor{comment}{//\ Modifies\ the\ cstring\ view\ in\ place,\ moving\ the\ front\ ahead\ by\ \`{}n`}}
-\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ characters.}}
-\DoxyCodeLine{00292\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00293\ \ \ \textcolor{comment}{//\ \#\ Checks}}
-\DoxyCodeLine{00294\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ \`{}n\ <=\ size()`,\ and\ will\ terminate\ otherwise.}}
-\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ remove\_prefix(\textcolor{keywordtype}{size\_t}\ n)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00296\ \ \ \ \ \textcolor{comment}{//\ CHECK\_LE(n,\ len\_);}}
-\DoxyCodeLine{00297\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ Since\ \`{}n\ <=\ len\_`,\ the\ pointer\ at\ offset\ \`{}n`\ is\ inside\ the\ string}}
-\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{//\ (or\ at\ the\ terminating\ NUL)\ and\ the\ \`{}len\_\ -\/\ n`\ value\ will\ not\ underflow.}}
-\DoxyCodeLine{00299\ \ \ \ \ \textcolor{comment}{//\ Thus\ the\ resulting\ pointer\ is\ still\ a\ NUL-\/\ terminated\ string\ of\ length}}
-\DoxyCodeLine{00300\ \ \ \ \ \textcolor{comment}{//\ \`{}len\_\ -\/\ n`.}}
-\DoxyCodeLine{00301\ \ \ \ \ ptr\_\ =\ UNSAFE\_BUFFERS(ptr\_\ +\ n);}
-\DoxyCodeLine{00302\ \ \ \ \ len\_\ =\ len\_\ -\/\ n;}
-\DoxyCodeLine{00303\ \ \ \}}
-\DoxyCodeLine{00304\ }
-\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ No\ \`{}remove\_suffix()`\ method\ exists\ as\ it\ would\ remove\ the\ terminating\ NUL}}
-\DoxyCodeLine{00306\ \ \ \textcolor{comment}{//\ character.\ Convert\ to\ a\ \`{}std::string\_view`\ (either\ by\ construction\ or\ with}}
-\DoxyCodeLine{00307\ \ \ \textcolor{comment}{//\ a\ \`{}substr(0u)`\ call)\ to\ construct\ arbitrary\ substrings\ that\ are\ not}}
-\DoxyCodeLine{00308\ \ \ \textcolor{comment}{//\ NUL-\/terminated.}}
-\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{void}\ remove\_suffix(\textcolor{keywordtype}{size\_t}\ n)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00310\ }
-\DoxyCodeLine{00311\ \ \ \textcolor{comment}{//\ Modifies\ the\ cstring\ view\ in\ place,\ swapping\ its\ contents\ with\ another\ view}}
-\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//\ of\ the\ same\ type.}}
-\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ swap(basic\_cstring\_view\&\ other)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00314\ \ \ \ \ std::swap(ptr\_,\ other.ptr\_);}
-\DoxyCodeLine{00315\ \ \ \ \ std::swap(len\_,\ other.len\_);}
-\DoxyCodeLine{00316\ \ \ \}}
-\DoxyCodeLine{00317\ }
-\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//\ Returns\ a\ string\ view\ of\ the\ subrange\ starting\ as\ \`{}pos`\ and\ including}}
-\DoxyCodeLine{00319\ \ \ \textcolor{comment}{//\ \`{}count`\ characters.\ If\ \`{}count`\ is\ not\ specified,\ or\ exceeds\ the\ length\ of}}
-\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//\ the\ string\ after\ \`{}pos`,\ the\ subrange\ returned\ will\ include\ all\ characters}}
-\DoxyCodeLine{00321\ \ \ \textcolor{comment}{//\ up\ to\ the\ terminating\ NUL.}}
-\DoxyCodeLine{00322\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//\ \#\ Checks}}
-\DoxyCodeLine{00324\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ \`{}pos`\ is\ in\ range\ for\ the\ string\ (or\ at\ the}}
-\DoxyCodeLine{00325\ \ \ \textcolor{comment}{//\ terminating\ NULL),\ and\ will\ terminate\ otherwise.}}
-\DoxyCodeLine{00326\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ std::basic\_string\_view<Char>\ substr(}
-\DoxyCodeLine{00327\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos,\ \textcolor{keywordtype}{size\_t}\ count\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00328\ \ \ \ \ \textcolor{comment}{//\ Ensure\ \`{}ptr\_\ +\ pos`\ is\ valid.\ and\ \`{}len\_\ -\/\ pos`\ does\ not\ underflow.}}
-\DoxyCodeLine{00329\ \ \ \ \ \textcolor{comment}{//\ CHECK\_LE(pos,\ len\_);}}
-\DoxyCodeLine{00330\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ We\ require\ that:}}
-\DoxyCodeLine{00331\ \ \ \ \ \textcolor{comment}{//\ *\ \`{}ptr\_\ +\ pos`\ is\ a\ pointer\ in\ the\ string.}}
-\DoxyCodeLine{00332\ \ \ \ \ \textcolor{comment}{//\ *\ \`{}pos\ +\ count\ <=\ len\_`\ so\ that\ resulting\ substring's\ end\ is\ in\ range.}}
-\DoxyCodeLine{00333\ \ \ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00334\ \ \ \ \ \textcolor{comment}{//\ The\ first\ follows\ directly\ from\ the\ CHECK\ above\ that\ \`{}pos\ <=\ len\_`.\ The}}
-\DoxyCodeLine{00335\ \ \ \ \ \textcolor{comment}{//\ second\ follows\ from\ clamping\ \`{}count`\ to\ at\ most\ \`{}len\_\ -\/\ pos`.}}
-\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(}
-\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ std::basic\_string\_view<Char>(ptr\_\ +\ pos,\ std::min(count,\ len\_\ -\/\ pos)));}
-\DoxyCodeLine{00338\ \ \ \}}
-\DoxyCodeLine{00339\ }
-\DoxyCodeLine{00340\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ starts\ with\ the\ given\ \`{}prefix`.\ Will}}
-\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//\ always\ return\ false\ if\ \`{}prefix`\ is\ larger\ than\ the\ current\ cstring\ view.}}
-\DoxyCodeLine{00342\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ starts\_with(}
-\DoxyCodeLine{00343\ \ \ \ \ \ \ std::basic\_string\_view<Char>\ prefix)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).starts\_with(prefix);}
-\DoxyCodeLine{00345\ \ \ \}}
-\DoxyCodeLine{00346\ }
-\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ starts\ with\ the\ given\ \`{}character`.}}
-\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ starts\_with(Char\ character)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).starts\_with(character);}
-\DoxyCodeLine{00350\ \ \ \}}
-\DoxyCodeLine{00351\ }
-\DoxyCodeLine{00352\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ ends\ with\ the\ given\ \`{}suffix`.\ Will}}
-\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ always\ return\ false\ if\ \`{}suffix`\ is\ larger\ than\ the\ current\ cstring\ view.}}
-\DoxyCodeLine{00354\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ ends\_with(std::basic\_string\_view<Char>\ suffix)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).ends\_with(suffix);}
-\DoxyCodeLine{00356\ \ \ \}}
-\DoxyCodeLine{00357\ }
-\DoxyCodeLine{00358\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ starts\ with\ the\ given\ \`{}character`.}}
-\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ ends\_with(Char\ character)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).ends\_with(character);}
-\DoxyCodeLine{00361\ \ \ \}}
-\DoxyCodeLine{00362\ }
-\DoxyCodeLine{00363\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ position\ in\ the\ cstring\ view\ at\ which\ \`{}search`\ is\ found,}}
-\DoxyCodeLine{00364\ \ \ \textcolor{comment}{//\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not\ specified,\ the\ entire}}
-\DoxyCodeLine{00365\ \ \ \textcolor{comment}{//\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ \`{}search`\ is\ not\ found\ or\ if}}
-\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//\ \`{}pos`\ is\ out\ of\ range.}}
-\DoxyCodeLine{00367\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find(std::basic\_string\_view<Char>\ search,}
-\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00369\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find(search,\ pos);}
-\DoxyCodeLine{00370\ \ \ \}}
-\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find(search,\ pos);}
-\DoxyCodeLine{00373\ \ \ \}}
-\DoxyCodeLine{00374\ }
-\DoxyCodeLine{00375\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ position\ in\ the\ cstring\ view\ at\ which\ \`{}search`\ is\ found,}}
-\DoxyCodeLine{00376\ \ \ \textcolor{comment}{//\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not\ specified\ or\ is\ out\ of}}
-\DoxyCodeLine{00377\ \ \ \textcolor{comment}{//\ range,\ the\ entire\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ \`{}search`\ is}}
-\DoxyCodeLine{00378\ \ \ \textcolor{comment}{//\ not\ found.}}
-\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ rfind(std::basic\_string\_view<Char>\ search,}
-\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).rfind(search,\ pos);}
-\DoxyCodeLine{00382\ \ \ \}}
-\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ rfind(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).rfind(search,\ pos);}
-\DoxyCodeLine{00385\ \ \ \}}
-\DoxyCodeLine{00386\ }
-\DoxyCodeLine{00387\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ position\ in\ the\ cstring\ view\ at\ any\ character\ in\ the}}
-\DoxyCodeLine{00388\ \ \ \textcolor{comment}{//\ \`{}search`\ is\ found,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
-\DoxyCodeLine{00389\ \ \ \textcolor{comment}{//\ specified,\ the\ entire\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ \`{}search`}}
-\DoxyCodeLine{00390\ \ \ \textcolor{comment}{//\ is\ not\ found\ or\ if\ \`{}pos`\ is\ out\ of\ range.}}
-\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_of(std::basic\_string\_view<Char>\ search,}
-\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_of(search,\ pos);}
-\DoxyCodeLine{00394\ \ \ \}}
-\DoxyCodeLine{00395\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_of(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_of(search,\ pos);}
-\DoxyCodeLine{00397\ \ \ \}}
-\DoxyCodeLine{00398\ }
-\DoxyCodeLine{00399\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ position\ in\ the\ cstring\ view\ at\ any\ character\ in\ the}}
-\DoxyCodeLine{00400\ \ \ \textcolor{comment}{//\ \`{}search`\ is\ found,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
-\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//\ specified\ or\ is\ out\ of\ range,\ the\ entire\ cstring\ view\ is\ searched.\ Returns}}
-\DoxyCodeLine{00402\ \ \ \textcolor{comment}{//\ \`{}npos`\ if\ \`{}search`\ is\ not\ found.}}
-\DoxyCodeLine{00403\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_of(std::basic\_string\_view<Char>\ search,}
-\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_of(search,\ pos);}
-\DoxyCodeLine{00406\ \ \ \}}
-\DoxyCodeLine{00407\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_of(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00408\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_of(search,\ pos);}
-\DoxyCodeLine{00409\ \ \ \}}
-\DoxyCodeLine{00410\ }
-\DoxyCodeLine{00411\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ position\ in\ the\ cstring\ view\ that\ is\ not\ equal\ to\ any}}
-\DoxyCodeLine{00412\ \ \ \textcolor{comment}{//\ character\ in\ the\ \`{}search`,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
-\DoxyCodeLine{00413\ \ \ \textcolor{comment}{//\ specified,\ the\ entire\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ every}}
-\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//\ character\ is\ part\ of\ \`{}search`\ or\ if\ \`{}pos`\ is\ out\ of\ range.}}
-\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_not\_of(std::basic\_string\_view<Char>\ search,}
-\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_not\_of(search,\ pos);}
-\DoxyCodeLine{00418\ \ \ \}}
-\DoxyCodeLine{00419\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_not\_of(Char\ search,}
-\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_not\_of(search,\ pos);}
-\DoxyCodeLine{00422\ \ \ \}}
-\DoxyCodeLine{00423\ }
-\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ position\ in\ the\ cstring\ view\ that\ is\ not\ equal\ to\ any}}
-\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ character\ in\ the\ \`{}search`,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
-\DoxyCodeLine{00426\ \ \ \textcolor{comment}{//\ specified\ or\ is\ out\ of\ range,\ the\ entire\ cstring\ view\ is\ searched.\ \ Returns}}
-\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ \`{}npos`\ if\ every\ character\ is\ part\ of\ \`{}search`.}}
-\DoxyCodeLine{00428\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_not\_of(std::basic\_string\_view<Char>\ search,}
-\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00430\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_not\_of(search,\ pos);}
-\DoxyCodeLine{00431\ \ \ \}}
-\DoxyCodeLine{00432\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_not\_of(Char\ search,}
-\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00434\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_not\_of(search,\ pos);}
-\DoxyCodeLine{00435\ \ \ \}}
-\DoxyCodeLine{00436\ }
-\DoxyCodeLine{00437\ \ \ \textcolor{comment}{//\ Compare\ two\ cstring\ views\ for\ equality,\ comparing\ the\ string\ contents.}}
-\DoxyCodeLine{00438\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator==(basic\_cstring\_view\ l,\ basic\_cstring\_view\ r)\ \{}
-\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keywordflow}{return}\ std::ranges::equal(l,\ r);}
-\DoxyCodeLine{00440\ \ \ \}}
-\DoxyCodeLine{00441\ }
-\DoxyCodeLine{00442\ \ \ \textcolor{comment}{//\ Return\ an\ ordering\ between\ two\ cstring\ views,\ comparing\ the\ string}}
-\DoxyCodeLine{00443\ \ \ \textcolor{comment}{//\ contents.}}
-\DoxyCodeLine{00444\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00445\ \ \ \textcolor{comment}{//\ cstring\ views\ are\ weakly\ ordered,\ since\ string\ views\ pointing\ into}}
-\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//\ different\ strings\ can\ compare\ as\ equal.}}
-\DoxyCodeLine{00447\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::weak\_ordering\ operator<=>(basic\_cstring\_view\ l,}
-\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ basic\_cstring\_view\ r)\ \{}
-\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keywordflow}{return}\ std::lexicographical\_compare\_three\_way(l.begin(),\ l.end(),\ r.begin(),}
-\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r.end());}
-\DoxyCodeLine{00451\ \ \ \}}
-\DoxyCodeLine{00452\ }
-\DoxyCodeLine{00453\ \ \ \textcolor{comment}{//\ Implicitly\ converts\ from\ cstring\_view\ to\ a\ non-\/NUL-\/terminated}}
-\DoxyCodeLine{00454\ \ \ \textcolor{comment}{//\ std::string\_view.\ The\ std::string\_view\ type\ implicitly\ constructs\ from}}
-\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ \`{}const\ char*`\ and\ cstring\ view\ is\ meant\ to\ replace\ the\ latter,\ so\ this\ acts}}
-\DoxyCodeLine{00456\ \ \ \textcolor{comment}{//\ like\ an\ implicit\ constructor\ on\ \`{}std::string\_view`\ for\ cstring\ views.}}
-\DoxyCodeLine{00457\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00458\ \ \ \textcolor{comment}{//\ This\ operator\ also\ avoids\ a\ requirement\ on\ having\ overloads\ for\ both}}
-\DoxyCodeLine{00459\ \ \ \textcolor{comment}{//\ std::string\_view\ and\ cstring\_view.\ Such\ overloads\ are\ ambiguous\ because}}
-\DoxyCodeLine{00460\ \ \ \textcolor{comment}{//\ both\ can\ construct\ from\ a\ character\ array.}}
-\DoxyCodeLine{00461\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00462\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00463\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ std::basic\_string\_view<Char>()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00464\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ cstring\ view\ provides\ that\ \`{}ptr\_\ +\ len\_`\ to\ be\ valid.}}
-\DoxyCodeLine{00465\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(std::basic\_string\_view<Char>(ptr\_,\ len\_));}
-\DoxyCodeLine{00466\ \ \ \}}
-\DoxyCodeLine{00467\ }
-\DoxyCodeLine{00468\ \ \ \textcolor{comment}{//\ Converts\ from\ cstring\_view\ to\ std::string.\ This\ allocates\ a\ new\ string}}
-\DoxyCodeLine{00469\ \ \ \textcolor{comment}{//\ backing\ and\ copies\ into\ it.}}
-\DoxyCodeLine{00470\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00471\ \ \ \textcolor{comment}{//\ The\ std::string\ type\ implicitly\ constructs\ from\ \`{}const\ char*`\ however\ it}}
-\DoxyCodeLine{00472\ \ \ \textcolor{comment}{//\ does\ not\ implicitly\ construct\ from\ std::string\_view.\ This\ type\ sits\ between}}
-\DoxyCodeLine{00473\ \ \ \textcolor{comment}{//\ these\ two,\ and\ opts\ towards\ making\ heap\ allocations\ explicit\ by\ requiring}}
-\DoxyCodeLine{00474\ \ \ \textcolor{comment}{//\ an\ explicit\ conversion.}}
-\DoxyCodeLine{00475\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ std::basic\_string<Char>()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00476\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ cstring\ view\ provides\ that\ \`{}ptr\_\ +\ len\_`\ to\ be\ valid.}}
-\DoxyCodeLine{00477\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(std::basic\_string<Char>(ptr\_,\ len\_));}
-\DoxyCodeLine{00478\ \ \ \}}
-\DoxyCodeLine{00479\ }
-\DoxyCodeLine{00480\ \ \ \textcolor{comment}{//\ Concatenate\ a\ std::string\ with\ a\ cstring\_view\ to\ produce\ another}}
-\DoxyCodeLine{00481\ \ \ \textcolor{comment}{//\ std::string.}}
-\DoxyCodeLine{00482\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00483\ \ \ \textcolor{comment}{//\ These\ act\ like\ overloads\ on\ \`{}std::string`\ that\ work\ for\ concatenating}}
-\DoxyCodeLine{00484\ \ \ \textcolor{comment}{//\ \`{}std::string`\ and\ \`{}const\ char*`.}}
-\DoxyCodeLine{00485\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00486\ \ \ \textcolor{comment}{//\ The\ rvalue\ overloads\ allow\ \`{}std::string`\ to\ reuse\ existing\ capacity,\ by}}
-\DoxyCodeLine{00487\ \ \ \textcolor{comment}{//\ calling\ through\ to\ the\ rvalue\ overloads\ on\ \`{}std::string`.}}
-\DoxyCodeLine{00488\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
-\DoxyCodeLine{00489\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
-\DoxyCodeLine{00490\ \ \ \ \ \ \ basic\_cstring\_view\ lhs,}
-\DoxyCodeLine{00491\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::basic\_string<Char,\ Traits,\ Alloc>\&\ rhs)\ \{}
-\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.c\_str()\ +\ rhs;}
-\DoxyCodeLine{00493\ \ \ \}}
-\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
-\DoxyCodeLine{00495\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
-\DoxyCodeLine{00496\ \ \ \ \ \ \ basic\_cstring\_view\ lhs,\ std::basic\_string<Char,\ Traits,\ Alloc>\&\&\ rhs)\ \{}
-\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.c\_str()\ +\ std::move(rhs);}
-\DoxyCodeLine{00498\ \ \ \}}
-\DoxyCodeLine{00499\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
-\DoxyCodeLine{00500\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
-\DoxyCodeLine{00501\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::basic\_string<Char,\ Traits,\ Alloc>\&\ lhs,}
-\DoxyCodeLine{00502\ \ \ \ \ \ \ basic\_cstring\_view\ rhs)\ \{}
-\DoxyCodeLine{00503\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ +\ rhs.c\_str();}
-\DoxyCodeLine{00504\ \ \ \}}
-\DoxyCodeLine{00505\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
-\DoxyCodeLine{00506\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
-\DoxyCodeLine{00507\ \ \ \ \ \ \ std::basic\_string<Char,\ Traits,\ Alloc>\&\&\ lhs,\ basic\_cstring\_view\ rhs)\ \{}
-\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(lhs)\ +\ rhs.c\_str();}
-\DoxyCodeLine{00509\ \ \ \}}
-\DoxyCodeLine{00510\ }
-\DoxyCodeLine{00511\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00512\ \ \ \textcolor{comment}{//\ An\ empty\ string\ literal\ for\ the\ \`{}Char`\ type.}}
-\DoxyCodeLine{00513\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Char\ kEmpty[]\ =\ \{Char\{0\}\};}
-\DoxyCodeLine{00514\ }
-\DoxyCodeLine{00515\ \ \ \textcolor{comment}{//\ An\ always-\/valid\ pointer\ (never\ null)\ to\ a\ NUL-\/terminated\ string.}}
-\DoxyCodeLine{00516\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00517\ \ \ \textcolor{comment}{//\ RAW\_PTR\_EXCLUSION:\ cstring\_view\ is\ typically\ used\ on\ the\ stack\ as\ a\ local}}
-\DoxyCodeLine{00518\ \ \ \textcolor{comment}{//\ variable/function\ parameter,\ so\ no\ raw\_ptr\ is\ used\ here.}}
-\DoxyCodeLine{00519\ \ \ \textcolor{comment}{/*\ RAW\_PTR\_EXCLUSION\ */}\ \textcolor{keyword}{const}\ Char*\ ptr\_;}
-\DoxyCodeLine{00520\ \ \ \textcolor{comment}{//\ The\ number\ of\ characters\ between\ \`{}ptr\_`\ and\ the\ NUL\ terminator.}}
-\DoxyCodeLine{00521\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00522\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_\ +\ len\_`\ is\ always\ valid\ since\ \`{}len\_`\ must\ not\ exceed\ the}}
-\DoxyCodeLine{00523\ \ \ \textcolor{comment}{//\ number\ of\ characters\ in\ the\ allocation,\ or\ it\ would\ no\ longer\ indicate\ the}}
-\DoxyCodeLine{00524\ \ \ \textcolor{comment}{//\ position\ of\ the\ NUL\ terminator\ in\ the\ string\ allocation.}}
-\DoxyCodeLine{00525\ \ \ \textcolor{keywordtype}{size\_t}\ len\_;}
-\DoxyCodeLine{00526\ \};}
-\DoxyCodeLine{00527\ }
-\DoxyCodeLine{00528\ \textcolor{comment}{//\ cstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a\ replacement}}
-\DoxyCodeLine{00529\ \textcolor{comment}{//\ for\ all\ use\ of\ \`{}const\ char*`,\ in\ order\ to\ provide\ bounds\ checks\ and\ prevent}}
-\DoxyCodeLine{00530\ \textcolor{comment}{//\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
-\DoxyCodeLine{00531\ \textcolor{comment}{//}}
-\DoxyCodeLine{00532\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
-\DoxyCodeLine{00533\ \textcolor{keyword}{using\ }cstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<char>}};}
-\DoxyCodeLine{00534\ }
-\DoxyCodeLine{00535\ \textcolor{comment}{//\ u16cstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a}}
-\DoxyCodeLine{00536\ \textcolor{comment}{//\ replacement\ for\ all\ use\ of\ \`{}const\ char16\_t*`,\ in\ order\ to\ provide\ bounds}}
-\DoxyCodeLine{00537\ \textcolor{comment}{//\ checks\ and\ prevent\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by}}
-\DoxyCodeLine{00538\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
-\DoxyCodeLine{00539\ \textcolor{comment}{//}}
-\DoxyCodeLine{00540\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
-\DoxyCodeLine{00541\ \textcolor{keyword}{using\ }u16cstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<char16\_t>}};}
-\DoxyCodeLine{00542\ }
-\DoxyCodeLine{00543\ \textcolor{comment}{//\ u32cstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a}}
-\DoxyCodeLine{00544\ \textcolor{comment}{//\ replacement\ for\ all\ use\ of\ \`{}const\ char32\_t*`,\ in\ order\ to\ provide\ bounds}}
-\DoxyCodeLine{00545\ \textcolor{comment}{//\ checks\ and\ prevent\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by}}
-\DoxyCodeLine{00546\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
-\DoxyCodeLine{00547\ \textcolor{comment}{//}}
-\DoxyCodeLine{00548\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
-\DoxyCodeLine{00549\ \textcolor{keyword}{using\ }u32cstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<char32\_t>}};}
-\DoxyCodeLine{00550\ }
-\DoxyCodeLine{00551\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
-\DoxyCodeLine{00552\ \textcolor{comment}{//\ wcstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a}}
-\DoxyCodeLine{00553\ \textcolor{comment}{//\ replacement\ for\ all\ use\ of\ \`{}const\ wchar\_t*`,\ in\ order\ to\ provide\ bounds}}
-\DoxyCodeLine{00554\ \textcolor{comment}{//\ checks\ and\ prevent\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by}}
-\DoxyCodeLine{00555\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
-\DoxyCodeLine{00556\ \textcolor{comment}{//}}
-\DoxyCodeLine{00557\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
-\DoxyCodeLine{00558\ \textcolor{keyword}{using\ }wcstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<wchar\_t>}};}
-\DoxyCodeLine{00559\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00560\ }
-\DoxyCodeLine{00561\ \textcolor{comment}{//\ Writes\ the\ contents\ of\ the\ cstring\ view\ to\ the\ stream.}}
-\DoxyCodeLine{00562\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char,\ \textcolor{keyword}{class}\ Traits>}
-\DoxyCodeLine{00563\ std::basic\_ostream<Char,\ Traits>\&\ operator<<(}
-\DoxyCodeLine{00564\ \ \ \ \ std::basic\_ostream<Char,\ Traits>\&\ os,\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<Char>}}\ view)\ \{}
-\DoxyCodeLine{00565\ \ \ \textcolor{keywordflow}{return}\ os\ <<\ std::basic\_string\_view<Char>(view);}
-\DoxyCodeLine{00566\ \}}
-\DoxyCodeLine{00567\ }
-\DoxyCodeLine{00568\ \textcolor{comment}{//\ Explicitly\ define\ PrintTo\ to\ avoid\ gtest\ printing\ these\ as\ containers}}
-\DoxyCodeLine{00569\ \textcolor{comment}{//\ rather\ than\ strings.}}
-\DoxyCodeLine{00570\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ PrintTo(cstring\_view\ view,\ std::ostream*\ os)\ \{\ *os\ <<\ view;\ \}}
-\DoxyCodeLine{00571\ }
-\DoxyCodeLine{00572\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
-\DoxyCodeLine{00573\ }
-\DoxyCodeLine{00574\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
-\DoxyCodeLine{00575\ \textcolor{keyword}{struct\ }std::hash<\mbox{\hyperlink{namespacekiwi}{kiwi}}::basic\_cstring\_view<Char>>\ \{}
-\DoxyCodeLine{00576\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{kiwi::basic\_cstring\_view<Char>}}\&\ t)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00577\ \ \ \ \ \textcolor{keywordflow}{return}\ std::hash<std::basic\_string\_view<Char>>()(t);}
-\DoxyCodeLine{00578\ \ \ \}}
-\DoxyCodeLine{00579\ \};}
-\DoxyCodeLine{00580\ }
-\DoxyCodeLine{00581\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
-\DoxyCodeLine{00582\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
-\DoxyCodeLine{00583\ \ \ \ \ std::ranges::enable\_borrowed\_range<kiwi::basic\_cstring\_view<Char>>\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00584\ }
-\DoxyCodeLine{00585\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
-\DoxyCodeLine{00586\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ std::ranges::enable\_view<kiwi::basic\_cstring\_view<Char>>\ =}
-\DoxyCodeLine{00587\ \ \ \ \ \textcolor{keyword}{true};}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Char\ (\&lit\ KIWI\_LIFETIME\_BOUND)[M])\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ ENABLE\_IF\_ATTR(lit[M\ -\/\ 1u]\ ==\ Char\{0\},\ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ :\ ptr\_(lit),\ len\_(std::char\_traits<Char>::length(lit))\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ For\ non-\/clang\ compilers.\ On\ clang,\ the\ function\ is\ not\ even\ callable}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ without\ this\ being\ known\ to\ pass\ at\ compile\ time.}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ lit\ is\ an\ array\ of\ size\ M,\ so\ M-\/1\ is\ in\ bounds.}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{//\ DCHECK\_EQ(UNSAFE\_BUFFERS(lit[M\ -\/\ 1u]),\ Char\{0\});}}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ Constructs\ a\ cstring\ view\ from\ a\ std::string\ (or\ other\ std::basic\_string}}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ type).\ The\ string\ parameter\ must\ outlive\ the\ cstring\ view,\ including\ that}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ it\ must\ not\ be\ moved-\/from\ or\ destroyed.}}
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//\ This\ conversion\ is\ implicit,\ which\ matches\ the\ conversion\ from\ std::string}}
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ to\ std::string\_view\ (through\ string's\ \`{}operator\ string\_view()`).}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ \#\ Interaction\ with\ SSO}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ std::string\ stores\ its\ contents\ inline\ when\ they\ fit\ (which\ is\ an}}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ implementation\ defined\ length),\ instead\ of\ in\ a\ heap-\/allocated\ buffer.\ This}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ is\ referred\ to\ as\ the\ Small\ String\ Optimization.\ This\ means\ that\ moving\ or}}
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//\ destring\ a\ std::string\ will\ invalidate\ a\ cstring\ view\ and\ leave\ it\ with}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ dangling\ pointers.\ This\ differs\ from\ the\ behaviour\ of\ std::vector\ and\ span,}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ since\ pointers\ into\ a\ std::vector\ remain\ valid\ after\ moving\ the\ std::vector}}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//\ and\ destroying\ the\ original.}}
+\DoxyCodeLine{00108\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00109\ \ \ \textcolor{comment}{//\ \#\ Preventing\ implicit\ temporaries}}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//\ Because\ std::string\ can\ be\ implicitly\ constructed,\ the\ string\ constructor}}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{//\ may\ unintentionally\ be\ called\ with\ a\ temporary\ \`{}std::string`\ when\ called}}
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//\ with\ values\ that\ convert\ to\ \`{}std::string`.\ We\ prevent\ this\ templating\ this}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//\ constructor\ and\ requiring\ the\ incoming\ type\ to\ actually\ be\ a\ \`{}std::string`}}
+\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//\ (or\ other\ \`{}std::basic\_string`).\ This\ also\ improves\ compiler\ errors,}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ compared\ to\ deleting\ a\ string\&\&\ overload,\ when\ passed\ an\ array\ that\ does}}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ not\ match\ the\ \`{}ENABLE\_IF\_ATTR`\ constructor\ condition\ by\ not\ sending\ it\ to\ a}}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//\ deleted\ overload\ receiving\ \`{}std::string`.}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{template}\ <std::same\_as<std::basic\_\textcolor{keywordtype}{string}<Char>>\ String>}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(\textcolor{keyword}{const}\ String\&\ s\ KIWI\_LIFETIME\_BOUND)\ noexcept}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ :\ ptr\_(s.c\_str()),\ len\_(s.size())\ \{\}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ Unsafe\ construction\ from\ a\ NUL-\/terminated\ cstring,\ primarily\ for\ use\ with\ C}}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{//\ APIs.\ Prefer\ to\ construct\ cstring\ view\ from\ a\ string\ literal,\ std::string,}}
+\DoxyCodeLine{00125\ \ \ \textcolor{comment}{//\ or\ another\ cstring\ view.}}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ \#\ Safety}}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ The\ \`{}ptr`\ must\ point\ to\ a\ NUL-\/terminated\ string\ or\ Undefined\ Behaviour\ will}}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//\ result.}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//\ \#\ Implementation\ note}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ We\ use\ a\ \`{}String\&\&`\ template\ to\ ensure\ the\ input\ is\ a\ pointer\ and\ not\ an}}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ array\ that\ decayed\ to\ a\ pointer.\ This\ ensures\ the\ ctor\ will\ not\ act\ as\ a}}
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{//\ fallback\ for\ the\ string\ literal\ ctor\ when\ the\ enable\_if\ condition\ fails.}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ String>}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{requires}(std::same\_as<std::remove\_cvref\_t<String>,\ Char*>\ ||}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::same\_as<std::remove\_cvref\_t<String>,\ \textcolor{keyword}{const}\ Char*>)}
+\DoxyCodeLine{00138\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ String\&\&\ ptr\ KIWI\_LIFETIME\_BOUND)\ noexcept}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ :\ ptr\_(ptr),\ len\_(std::char\_traits<Char>::length(ptr))\ \{\}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ Unsafe\ construction\ from\ a\ NUL-\/terminated\ pointer\ and\ length.\ This\ allows}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//\ the\ string\ to\ contain\ embedded\ NULs.\ Prefer\ to\ construct\ cstring\ view\ from}}
+\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//\ a\ string\ literal,\ std::string,\ or\ another\ cstring\ view.}}
+\DoxyCodeLine{00145\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//\ \#\ Safety}}
+\DoxyCodeLine{00147\ \ \ \textcolor{comment}{//\ The\ \`{}ptr`\ and\ \`{}len`\ pair\ indicate\ a\ valid\ NUL-\/terminated\ string:}}
+\DoxyCodeLine{00148\ \ \ \textcolor{comment}{//\ *\ The\ \`{}ptr`\ must\ not\ be\ null,\ and\ must\ point\ to\ a\ NUL-\/terminated\ string.}}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{//\ *\ The\ \`{}len`\ must\ be\ valid\ such\ that\ \`{}ptr\ +\ len`\ gives\ a\ pointer\ to\ the}}
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//\ \ \ terminating\ NUL\ and\ is\ in\ the\ same\ allocation\ as\ \`{}ptr`.}}
+\DoxyCodeLine{00151\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ basic\_cstring\_view(}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Char*\ ptr\ KIWI\_LIFETIME\_BOUND,\ \textcolor{keywordtype}{size\_t}\ len)}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ :\ ptr\_(ptr),\ len\_(len)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{comment}{//\ This\ method\ is\ marked\ UNSAFE\_BUFFER\_USAGE\ so\ we\ are\ trusting\ the\ caller}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{comment}{//\ to\ do\ things\ right,\ and\ expecting\ strong\ scrutiny\ at\ the\ call\ site,\ but}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//\ we\ perform\ a\ debug\ check\ to\ help\ catch\ mistakes\ regardless.}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr`\ points\ to\ \`{}len`\ many\ chars\ and\ then\ a\ NUL,\ according\ to\ the}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{//\ caller\ of\ this\ method.\ So\ then\ \`{}len`\ index\ will\ be\ in\ bounds\ and\ return}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{comment}{//\ the\ NUL.}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{comment}{//\ DCHECK\_EQ(UNSAFE\_BUFFERS(ptr[len]),\ Char\{0\});}}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ Returns\ a\ pointer\ to\ the\ NUL-\/terminated\ string,\ for\ passing\ to\ C-\/style\ APIs}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//\ that\ require\ \`{}const\ char*`\ (or\ whatever\ the\ \`{}Char`\ type\ is).}}
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00168\ \ \ \textcolor{comment}{//\ This\ is\ never\ null.}}
+\DoxyCodeLine{00169\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char*\ c\_str()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ ptr\_;\ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ Returns\ a\ pointer\ to\ underlying\ buffer.\ To\ get\ a\ string\ pointer,\ use}}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//\ \`{}c\_str()`.}}
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ Pair\ with\ \`{}size()`\ to\ construct\ a\ bounded\ non-\/NUL-\/terminated\ view,\ such\ as}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ by\ \`{}base::span`.\ This\ is\ never\ null.}}
+\DoxyCodeLine{00176\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char*\ data()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ ptr\_;\ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//\ Returns\ the\ number\ of\ characters\ in\ the\ string,\ not\ including\ the}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
+\DoxyCodeLine{00180\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ size()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ len\_;\ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ An\ alias\ for\ \`{}size()`,\ returning\ the\ number\ of\ characters\ in\ the\ string.}}
+\DoxyCodeLine{00182\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ length()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ len\_;\ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ is\ for\ an\ empty\ string.\ When\ empty,\ it\ is}}
+\DoxyCodeLine{00185\ \ \ \textcolor{comment}{//\ pointing\ to\ a\ cstring\ that\ contains\ only\ a\ NUL\ character.}}
+\DoxyCodeLine{00186\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ empty()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ len\_\ ==\ 0u;\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \textcolor{comment}{//\ Returns\ the\ maximum\ number\ of\ characters\ that\ can\ be\ represented\ inside\ the}}
+\DoxyCodeLine{00189\ \ \ \textcolor{comment}{//\ cstring\ view\ for\ character\ type\ \`{}Char`.}}
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ This\ is\ the\ number\ of\ \`{}Char`\ objects\ that\ can\ fit\ inside\ an\ addressable}}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ byte\ array.\ Since\ the\ number\ of\ bytes\ allowed\ is\ fixed,\ the\ number\ returned}}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ is\ smaller\ when\ the\ \`{}Char`\ is\ a\ larger\ type.}}
+\DoxyCodeLine{00194\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ max\_size()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(-\/1)\ /\ \textcolor{keyword}{sizeof}(Char);}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ Returns\ the\ number\ of\ bytes\ in\ the\ string,\ not\ including\ the\ terminating}}
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//\ NUL.\ To\ include\ the\ NUL,\ add\ \`{}sizeof(Char)`\ where\ \`{}Char`\ is\ the\ character}}
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ type\ of\ the\ cstring\ view\ (accessible\ as\ the\ \`{}value\_type`\ alias).}}
+\DoxyCodeLine{00201\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ size\_bytes()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{return}\ len\_\ *\ \textcolor{keyword}{sizeof}(Char);}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
+\DoxyCodeLine{00206\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ iterator\ begin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_\ +\ len\_`\ for\ a\ cstring\ view\ always\ gives\ a\ pointer\ in}}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{//\ the\ same\ allocation\ as\ \`{}ptr\_`\ based\ on\ the\ precondition\ of}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{comment}{//\ the\ type.}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(iterator(ptr\_,\ ptr\_\ +\ len\_));}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
+\DoxyCodeLine{00213\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ iterator\ end()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_\ +\ len\_`\ for\ a\ cstring\ view\ always\ gives\ a\ pointer\ in}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ the\ same\ allocation\ as\ \`{}ptr\_`\ based\ on\ the\ precondition\ of}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{comment}{//\ the\ type.}}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(iterator(ptr\_,\ ptr\_\ +\ len\_,\ ptr\_\ +\ len\_));}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
+\DoxyCodeLine{00220\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_iterator\ cbegin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{return}\ begin();}
+\DoxyCodeLine{00222\ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ Produces\ an\ iterator\ over\ the\ cstring\ view,\ excluding\ the\ terminating\ NUL.}}
+\DoxyCodeLine{00224\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_iterator\ cend()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ end();\ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
+\DoxyCodeLine{00228\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ reverse\_iterator\ rbegin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(end());}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
+\DoxyCodeLine{00232\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
+\DoxyCodeLine{00233\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ reverse\_iterator\ rend()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(begin());}
+\DoxyCodeLine{00235\ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
+\DoxyCodeLine{00238\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_reverse\_iterator\ rcbegin()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(cend());}
+\DoxyCodeLine{00240\ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \textcolor{comment}{//\ Produces\ a\ reverse\ iterator\ over\ the\ cstring\ view,\ excluding\ the}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ terminating\ NUL.}}
+\DoxyCodeLine{00243\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ const\_reverse\_iterator\ rcend()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reverse\_iterator(cbegin());}
+\DoxyCodeLine{00245\ \ \ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ Returns\ the\ character\ at\ offset\ \`{}idx`.}}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00249\ \ \ \textcolor{comment}{//\ This\ can\ be\ used\ to\ access\ any\ character\ in\ the\ ctring,\ as\ well\ as\ the\ NUL}}
+\DoxyCodeLine{00250\ \ \ \textcolor{comment}{//\ terminator.}}
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ \#\ Checks}}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ the\ \`{}idx`\ is\ inside\ the\ cstring\ (including\ at\ its}}
+\DoxyCodeLine{00254\ \ \ \textcolor{comment}{//\ NUL\ terminator)\ and\ will\ terminate\ otherwise.}}
+\DoxyCodeLine{00255\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ operator[](\textcolor{keywordtype}{size\_t}\ idx)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{comment}{//\ CHECK\_LE(idx,\ len\_);}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_`\ points\ \`{}len\_`\ many\ elements\ plus\ a\ NUL\ terminator,\ and}}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{comment}{//\ \`{}idx\ <=\ len\_`,\ so\ \`{}idx`\ is\ in\ range\ for\ \`{}ptr\_`.}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(ptr\_[idx]);}
+\DoxyCodeLine{00260\ \ \ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{comment}{//\ A\ named\ function\ that\ performs\ the\ same\ as\ \`{}operator[]`.}}
+\DoxyCodeLine{00263\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ at(\textcolor{keywordtype}{size\_t}\ idx)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})[idx];}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ character\ in\ the\ cstring\ view.}}
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//\ \#\ Checks}}
+\DoxyCodeLine{00270\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ the\ string\ is\ non-\/empty,\ and\ will\ terminate}}
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ otherwise.}}
+\DoxyCodeLine{00272\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ front()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{comment}{//\ CHECK(len\_);}}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{comment}{//\ Since\ \`{}len\_\ >\ 0`,\ 0\ is\ a\ valid\ offset\ into\ the\ string\ contents.}}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(ptr\_[0u]);}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ (non-\/NUL)\ character\ in\ the\ cstring\ view.}}
+\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ \#\ Checks}}
+\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ the\ string\ is\ non-\/empty,\ and\ will\ terminate}}
+\DoxyCodeLine{00282\ \ \ \textcolor{comment}{//\ otherwise.}}
+\DoxyCodeLine{00283\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ Char\&\ back()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{comment}{//\ CHECK(len\_);}}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{comment}{//\ Since\ \`{}len\_\ >\ 0`,\ \`{}len\ -\/\ 1`\ will\ not\ underflow.\ There\ are\ \`{}len\_`\ many}}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{comment}{//\ chars\ in\ the\ string\ before\ a\ NUL,\ so\ \`{}len\_\ -\/\ 1`\ is\ in\ range\ of\ the\ string}}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{comment}{//\ contents.}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(ptr\_[len\_\ -\/\ 1u]);}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ Modifies\ the\ cstring\ view\ in\ place,\ moving\ the\ front\ ahead\ by\ \`{}n`}}
+\DoxyCodeLine{00292\ \ \ \textcolor{comment}{//\ characters.}}
+\DoxyCodeLine{00293\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{//\ \#\ Checks}}
+\DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ \`{}n\ <=\ size()`,\ and\ will\ terminate\ otherwise.}}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ remove\_prefix(\textcolor{keywordtype}{size\_t}\ n)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{comment}{//\ CHECK\_LE(n,\ len\_);}}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ Since\ \`{}n\ <=\ len\_`,\ the\ pointer\ at\ offset\ \`{}n`\ is\ inside\ the\ string}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{comment}{//\ (or\ at\ the\ terminating\ NUL)\ and\ the\ \`{}len\_\ -\/\ n`\ value\ will\ not\ underflow.}}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{comment}{//\ Thus\ the\ resulting\ pointer\ is\ still\ a\ NUL-\/\ terminated\ string\ of\ length}}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{comment}{//\ \`{}len\_\ -\/\ n`.}}
+\DoxyCodeLine{00302\ \ \ \ \ ptr\_\ =\ UNSAFE\_BUFFERS(ptr\_\ +\ n);}
+\DoxyCodeLine{00303\ \ \ \ \ len\_\ =\ len\_\ -\/\ n;}
+\DoxyCodeLine{00304\ \ \ \}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{comment}{//\ No\ \`{}remove\_suffix()`\ method\ exists\ as\ it\ would\ remove\ the\ terminating\ NUL}}
+\DoxyCodeLine{00307\ \ \ \textcolor{comment}{//\ character.\ Convert\ to\ a\ \`{}std::string\_view`\ (either\ by\ construction\ or\ with}}
+\DoxyCodeLine{00308\ \ \ \textcolor{comment}{//\ a\ \`{}substr(0u)`\ call)\ to\ construct\ arbitrary\ substrings\ that\ are\ not}}
+\DoxyCodeLine{00309\ \ \ \textcolor{comment}{//\ NUL-\/terminated.}}
+\DoxyCodeLine{00310\ \ \ \textcolor{keywordtype}{void}\ remove\_suffix(\textcolor{keywordtype}{size\_t}\ n)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//\ Modifies\ the\ cstring\ view\ in\ place,\ swapping\ its\ contents\ with\ another\ view}}
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//\ of\ the\ same\ type.}}
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ swap(basic\_cstring\_view\&\ other)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ std::swap(ptr\_,\ other.ptr\_);}
+\DoxyCodeLine{00316\ \ \ \ \ std::swap(len\_,\ other.len\_);}
+\DoxyCodeLine{00317\ \ \ \}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \textcolor{comment}{//\ Returns\ a\ string\ view\ of\ the\ subrange\ starting\ as\ \`{}pos`\ and\ including}}
+\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//\ \`{}count`\ characters.\ If\ \`{}count`\ is\ not\ specified,\ or\ exceeds\ the\ length\ of}}
+\DoxyCodeLine{00321\ \ \ \textcolor{comment}{//\ the\ string\ after\ \`{}pos`,\ the\ subrange\ returned\ will\ include\ all\ characters}}
+\DoxyCodeLine{00322\ \ \ \textcolor{comment}{//\ up\ to\ the\ terminating\ NUL.}}
+\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00324\ \ \ \textcolor{comment}{//\ \#\ Checks}}
+\DoxyCodeLine{00325\ \ \ \textcolor{comment}{//\ The\ function\ CHECKs\ that\ \`{}pos`\ is\ in\ range\ for\ the\ string\ (or\ at\ the}}
+\DoxyCodeLine{00326\ \ \ \textcolor{comment}{//\ terminating\ NULL),\ and\ will\ terminate\ otherwise.}}
+\DoxyCodeLine{00327\ \ \ PURE\_FUNCTION\ \textcolor{keyword}{constexpr}\ std::basic\_string\_view<Char>\ substr(}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos,\ \textcolor{keywordtype}{size\_t}\ count\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{comment}{//\ Ensure\ \`{}ptr\_\ +\ pos`\ is\ valid.\ and\ \`{}len\_\ -\/\ pos`\ does\ not\ underflow.}}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{comment}{//\ CHECK\_LE(pos,\ len\_);}}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ We\ require\ that:}}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{comment}{//\ *\ \`{}ptr\_\ +\ pos`\ is\ a\ pointer\ in\ the\ string.}}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{comment}{//\ *\ \`{}pos\ +\ count\ <=\ len\_`\ so\ that\ resulting\ substring's\ end\ is\ in\ range.}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{comment}{//\ The\ first\ follows\ directly\ from\ the\ CHECK\ above\ that\ \`{}pos\ <=\ len\_`.\ The}}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{comment}{//\ second\ follows\ from\ clamping\ \`{}count`\ to\ at\ most\ \`{}len\_\ -\/\ pos`.}}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ std::basic\_string\_view<Char>(ptr\_\ +\ pos,\ std::min(count,\ len\_\ -\/\ pos)));}
+\DoxyCodeLine{00339\ \ \ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ starts\ with\ the\ given\ \`{}prefix`.\ Will}}
+\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ always\ return\ false\ if\ \`{}prefix`\ is\ larger\ than\ the\ current\ cstring\ view.}}
+\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ starts\_with(}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ std::basic\_string\_view<Char>\ prefix)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).starts\_with(prefix);}
+\DoxyCodeLine{00346\ \ \ \}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ starts\ with\ the\ given\ \`{}character`.}}
+\DoxyCodeLine{00349\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ starts\_with(Char\ character)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).starts\_with(character);}
+\DoxyCodeLine{00351\ \ \ \}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ ends\ with\ the\ given\ \`{}suffix`.\ Will}}
+\DoxyCodeLine{00354\ \ \ \textcolor{comment}{//\ always\ return\ false\ if\ \`{}suffix`\ is\ larger\ than\ the\ current\ cstring\ view.}}
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ ends\_with(std::basic\_string\_view<Char>\ suffix)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).ends\_with(suffix);}
+\DoxyCodeLine{00357\ \ \ \}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \textcolor{comment}{//\ Returns\ whether\ the\ cstring\ view\ starts\ with\ the\ given\ \`{}character`.}}
+\DoxyCodeLine{00360\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ ends\_with(Char\ character)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).ends\_with(character);}
+\DoxyCodeLine{00362\ \ \ \}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ position\ in\ the\ cstring\ view\ at\ which\ \`{}search`\ is\ found,}}
+\DoxyCodeLine{00365\ \ \ \textcolor{comment}{//\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not\ specified,\ the\ entire}}
+\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ \`{}search`\ is\ not\ found\ or\ if}}
+\DoxyCodeLine{00367\ \ \ \textcolor{comment}{//\ \`{}pos`\ is\ out\ of\ range.}}
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find(std::basic\_string\_view<Char>\ search,}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find(search,\ pos);}
+\DoxyCodeLine{00371\ \ \ \}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find(search,\ pos);}
+\DoxyCodeLine{00374\ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ position\ in\ the\ cstring\ view\ at\ which\ \`{}search`\ is\ found,}}
+\DoxyCodeLine{00377\ \ \ \textcolor{comment}{//\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not\ specified\ or\ is\ out\ of}}
+\DoxyCodeLine{00378\ \ \ \textcolor{comment}{//\ range,\ the\ entire\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ \`{}search`\ is}}
+\DoxyCodeLine{00379\ \ \ \textcolor{comment}{//\ not\ found.}}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ rfind(std::basic\_string\_view<Char>\ search,}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).rfind(search,\ pos);}
+\DoxyCodeLine{00383\ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ rfind(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).rfind(search,\ pos);}
+\DoxyCodeLine{00386\ \ \ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ position\ in\ the\ cstring\ view\ at\ any\ character\ in\ the}}
+\DoxyCodeLine{00389\ \ \ \textcolor{comment}{//\ \`{}search`\ is\ found,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
+\DoxyCodeLine{00390\ \ \ \textcolor{comment}{//\ specified,\ the\ entire\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ \`{}search`}}
+\DoxyCodeLine{00391\ \ \ \textcolor{comment}{//\ is\ not\ found\ or\ if\ \`{}pos`\ is\ out\ of\ range.}}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_of(std::basic\_string\_view<Char>\ search,}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_of(search,\ pos);}
+\DoxyCodeLine{00395\ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_of(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_of(search,\ pos);}
+\DoxyCodeLine{00398\ \ \ \}}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ position\ in\ the\ cstring\ view\ at\ any\ character\ in\ the}}
+\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//\ \`{}search`\ is\ found,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
+\DoxyCodeLine{00402\ \ \ \textcolor{comment}{//\ specified\ or\ is\ out\ of\ range,\ the\ entire\ cstring\ view\ is\ searched.\ Returns}}
+\DoxyCodeLine{00403\ \ \ \textcolor{comment}{//\ \`{}npos`\ if\ \`{}search`\ is\ not\ found.}}
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_of(std::basic\_string\_view<Char>\ search,}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_of(search,\ pos);}
+\DoxyCodeLine{00407\ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_of(Char\ search,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_of(search,\ pos);}
+\DoxyCodeLine{00410\ \ \ \}}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ \ \ \textcolor{comment}{//\ Returns\ the\ first\ position\ in\ the\ cstring\ view\ that\ is\ not\ equal\ to\ any}}
+\DoxyCodeLine{00413\ \ \ \textcolor{comment}{//\ character\ in\ the\ \`{}search`,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//\ specified,\ the\ entire\ cstring\ view\ is\ searched.\ Returns\ \`{}npos`\ if\ every}}
+\DoxyCodeLine{00415\ \ \ \textcolor{comment}{//\ character\ is\ part\ of\ \`{}search`\ or\ if\ \`{}pos`\ is\ out\ of\ range.}}
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_not\_of(std::basic\_string\_view<Char>\ search,}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_not\_of(search,\ pos);}
+\DoxyCodeLine{00419\ \ \ \}}
+\DoxyCodeLine{00420\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_first\_not\_of(Char\ search,}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0u)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00422\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_first\_not\_of(search,\ pos);}
+\DoxyCodeLine{00423\ \ \ \}}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ Returns\ the\ last\ position\ in\ the\ cstring\ view\ that\ is\ not\ equal\ to\ any}}
+\DoxyCodeLine{00426\ \ \ \textcolor{comment}{//\ character\ in\ the\ \`{}search`,\ starting\ from\ the\ offset\ \`{}pos`.\ If\ \`{}pos`\ is\ not}}
+\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ specified\ or\ is\ out\ of\ range,\ the\ entire\ cstring\ view\ is\ searched.\ \ Returns}}
+\DoxyCodeLine{00428\ \ \ \textcolor{comment}{//\ \`{}npos`\ if\ every\ character\ is\ part\ of\ \`{}search`.}}
+\DoxyCodeLine{00429\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_not\_of(std::basic\_string\_view<Char>\ search,}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_not\_of(search,\ pos);}
+\DoxyCodeLine{00432\ \ \ \}}
+\DoxyCodeLine{00433\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ find\_last\_not\_of(Char\ search,}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ npos)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keywordflow}{return}\ std::basic\_string\_view<Char>(*this).find\_last\_not\_of(search,\ pos);}
+\DoxyCodeLine{00436\ \ \ \}}
+\DoxyCodeLine{00437\ }
+\DoxyCodeLine{00438\ \ \ \textcolor{comment}{//\ Compare\ two\ cstring\ views\ for\ equality,\ comparing\ the\ string\ contents.}}
+\DoxyCodeLine{00439\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator==(basic\_cstring\_view\ l,\ basic\_cstring\_view\ r)\ \{}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keywordflow}{return}\ std::ranges::equal(l,\ r);}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \ \ \textcolor{comment}{//\ Return\ an\ ordering\ between\ two\ cstring\ views,\ comparing\ the\ string}}
+\DoxyCodeLine{00444\ \ \ \textcolor{comment}{//\ contents.}}
+\DoxyCodeLine{00445\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//\ cstring\ views\ are\ weakly\ ordered,\ since\ string\ views\ pointing\ into}}
+\DoxyCodeLine{00447\ \ \ \textcolor{comment}{//\ different\ strings\ can\ compare\ as\ equal.}}
+\DoxyCodeLine{00448\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::weak\_ordering\ operator<=>(basic\_cstring\_view\ l,}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ basic\_cstring\_view\ r)\ \{}
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{keywordflow}{return}\ std::lexicographical\_compare\_three\_way(l.begin(),\ l.end(),\ r.begin(),}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r.end());}
+\DoxyCodeLine{00452\ \ \ \}}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ \ \ \textcolor{comment}{//\ Implicitly\ converts\ from\ cstring\_view\ to\ a\ non-\/NUL-\/terminated}}
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ std::string\_view.\ The\ std::string\_view\ type\ implicitly\ constructs\ from}}
+\DoxyCodeLine{00456\ \ \ \textcolor{comment}{//\ \`{}const\ char*`\ and\ cstring\ view\ is\ meant\ to\ replace\ the\ latter,\ so\ this\ acts}}
+\DoxyCodeLine{00457\ \ \ \textcolor{comment}{//\ like\ an\ implicit\ constructor\ on\ \`{}std::string\_view`\ for\ cstring\ views.}}
+\DoxyCodeLine{00458\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00459\ \ \ \textcolor{comment}{//\ This\ operator\ also\ avoids\ a\ requirement\ on\ having\ overloads\ for\ both}}
+\DoxyCodeLine{00460\ \ \ \textcolor{comment}{//\ std::string\_view\ and\ cstring\_view.\ Such\ overloads\ are\ ambiguous\ because}}
+\DoxyCodeLine{00461\ \ \ \textcolor{comment}{//\ both\ can\ construct\ from\ a\ character\ array.}}
+\DoxyCodeLine{00462\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00463\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00464\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ std::basic\_string\_view<Char>()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00465\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ cstring\ view\ provides\ that\ \`{}ptr\_\ +\ len\_`\ to\ be\ valid.}}
+\DoxyCodeLine{00466\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(std::basic\_string\_view<Char>(ptr\_,\ len\_));}
+\DoxyCodeLine{00467\ \ \ \}}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00469\ \ \ \textcolor{comment}{//\ Converts\ from\ cstring\_view\ to\ std::string.\ This\ allocates\ a\ new\ string}}
+\DoxyCodeLine{00470\ \ \ \textcolor{comment}{//\ backing\ and\ copies\ into\ it.}}
+\DoxyCodeLine{00471\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00472\ \ \ \textcolor{comment}{//\ The\ std::string\ type\ implicitly\ constructs\ from\ \`{}const\ char*`\ however\ it}}
+\DoxyCodeLine{00473\ \ \ \textcolor{comment}{//\ does\ not\ implicitly\ construct\ from\ std::string\_view.\ This\ type\ sits\ between}}
+\DoxyCodeLine{00474\ \ \ \textcolor{comment}{//\ these\ two,\ and\ opts\ towards\ making\ heap\ allocations\ explicit\ by\ requiring}}
+\DoxyCodeLine{00475\ \ \ \textcolor{comment}{//\ an\ explicit\ conversion.}}
+\DoxyCodeLine{00476\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ std::basic\_string<Char>()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ cstring\ view\ provides\ that\ \`{}ptr\_\ +\ len\_`\ to\ be\ valid.}}
+\DoxyCodeLine{00478\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(std::basic\_string<Char>(ptr\_,\ len\_));}
+\DoxyCodeLine{00479\ \ \ \}}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ \textcolor{comment}{//\ Concatenate\ a\ std::string\ with\ a\ cstring\_view\ to\ produce\ another}}
+\DoxyCodeLine{00482\ \ \ \textcolor{comment}{//\ std::string.}}
+\DoxyCodeLine{00483\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00484\ \ \ \textcolor{comment}{//\ These\ act\ like\ overloads\ on\ \`{}std::string`\ that\ work\ for\ concatenating}}
+\DoxyCodeLine{00485\ \ \ \textcolor{comment}{//\ \`{}std::string`\ and\ \`{}const\ char*`.}}
+\DoxyCodeLine{00486\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00487\ \ \ \textcolor{comment}{//\ The\ rvalue\ overloads\ allow\ \`{}std::string`\ to\ reuse\ existing\ capacity,\ by}}
+\DoxyCodeLine{00488\ \ \ \textcolor{comment}{//\ calling\ through\ to\ the\ rvalue\ overloads\ on\ \`{}std::string`.}}
+\DoxyCodeLine{00489\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
+\DoxyCodeLine{00490\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ basic\_cstring\_view\ lhs,}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::basic\_string<Char,\ Traits,\ Alloc>\&\ rhs)\ \{}
+\DoxyCodeLine{00493\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.c\_str()\ +\ rhs;}
+\DoxyCodeLine{00494\ \ \ \}}
+\DoxyCodeLine{00495\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
+\DoxyCodeLine{00496\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ basic\_cstring\_view\ lhs,\ std::basic\_string<Char,\ Traits,\ Alloc>\&\&\ rhs)\ \{}
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.c\_str()\ +\ std::move(rhs);}
+\DoxyCodeLine{00499\ \ \ \}}
+\DoxyCodeLine{00500\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
+\DoxyCodeLine{00501\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::basic\_string<Char,\ Traits,\ Alloc>\&\ lhs,}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ basic\_cstring\_view\ rhs)\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs\ +\ rhs.c\_str();}
+\DoxyCodeLine{00505\ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traits,\ \textcolor{keyword}{class}\ Alloc>}
+\DoxyCodeLine{00507\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{constexpr}\ std::basic\_string<Char,\ Traits,\ Alloc>\ operator+(}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ std::basic\_string<Char,\ Traits,\ Alloc>\&\&\ lhs,\ basic\_cstring\_view\ rhs)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(lhs)\ +\ rhs.c\_str();}
+\DoxyCodeLine{00510\ \ \ \}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00513\ \ \ \textcolor{comment}{//\ An\ empty\ string\ literal\ for\ the\ \`{}Char`\ type.}}
+\DoxyCodeLine{00514\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Char\ kEmpty[]\ =\ \{Char\{0\}\};}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \textcolor{comment}{//\ An\ always-\/valid\ pointer\ (never\ null)\ to\ a\ NUL-\/terminated\ string.}}
+\DoxyCodeLine{00517\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00518\ \ \ \textcolor{comment}{//\ RAW\_PTR\_EXCLUSION:\ cstring\_view\ is\ typically\ used\ on\ the\ stack\ as\ a\ local}}
+\DoxyCodeLine{00519\ \ \ \textcolor{comment}{//\ variable/function\ parameter,\ so\ no\ raw\_ptr\ is\ used\ here.}}
+\DoxyCodeLine{00520\ \ \ \textcolor{comment}{/*\ RAW\_PTR\_EXCLUSION\ */}\ \textcolor{keyword}{const}\ Char*\ ptr\_;}
+\DoxyCodeLine{00521\ \ \ \textcolor{comment}{//\ The\ number\ of\ characters\ between\ \`{}ptr\_`\ and\ the\ NUL\ terminator.}}
+\DoxyCodeLine{00522\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00523\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}ptr\_\ +\ len\_`\ is\ always\ valid\ since\ \`{}len\_`\ must\ not\ exceed\ the}}
+\DoxyCodeLine{00524\ \ \ \textcolor{comment}{//\ number\ of\ characters\ in\ the\ allocation,\ or\ it\ would\ no\ longer\ indicate\ the}}
+\DoxyCodeLine{00525\ \ \ \textcolor{comment}{//\ position\ of\ the\ NUL\ terminator\ in\ the\ string\ allocation.}}
+\DoxyCodeLine{00526\ \ \ \textcolor{keywordtype}{size\_t}\ len\_;}
+\DoxyCodeLine{00527\ \};}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \textcolor{comment}{//\ cstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a\ replacement}}
+\DoxyCodeLine{00530\ \textcolor{comment}{//\ for\ all\ use\ of\ \`{}const\ char*`,\ in\ order\ to\ provide\ bounds\ checks\ and\ prevent}}
+\DoxyCodeLine{00531\ \textcolor{comment}{//\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
+\DoxyCodeLine{00532\ \textcolor{comment}{//}}
+\DoxyCodeLine{00533\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
+\DoxyCodeLine{00534\ \textcolor{keyword}{using\ }cstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<char>}};}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \textcolor{comment}{//\ u16cstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a}}
+\DoxyCodeLine{00537\ \textcolor{comment}{//\ replacement\ for\ all\ use\ of\ \`{}const\ char16\_t*`,\ in\ order\ to\ provide\ bounds}}
+\DoxyCodeLine{00538\ \textcolor{comment}{//\ checks\ and\ prevent\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by}}
+\DoxyCodeLine{00539\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
+\DoxyCodeLine{00540\ \textcolor{comment}{//}}
+\DoxyCodeLine{00541\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
+\DoxyCodeLine{00542\ \textcolor{keyword}{using\ }u16cstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<char16\_t>}};}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \textcolor{comment}{//\ u32cstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a}}
+\DoxyCodeLine{00545\ \textcolor{comment}{//\ replacement\ for\ all\ use\ of\ \`{}const\ char32\_t*`,\ in\ order\ to\ provide\ bounds}}
+\DoxyCodeLine{00546\ \textcolor{comment}{//\ checks\ and\ prevent\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by}}
+\DoxyCodeLine{00547\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
+\DoxyCodeLine{00548\ \textcolor{comment}{//}}
+\DoxyCodeLine{00549\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
+\DoxyCodeLine{00550\ \textcolor{keyword}{using\ }u32cstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<char32\_t>}};}
+\DoxyCodeLine{00551\ }
+\DoxyCodeLine{00552\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00553\ \textcolor{comment}{//\ wcstring\_view\ provides\ a\ view\ of\ a\ NUL-\/terminated\ string.\ It\ is\ a}}
+\DoxyCodeLine{00554\ \textcolor{comment}{//\ replacement\ for\ all\ use\ of\ \`{}const\ wchar\_t*`,\ in\ order\ to\ provide\ bounds}}
+\DoxyCodeLine{00555\ \textcolor{comment}{//\ checks\ and\ prevent\ unsafe\ pointer\ usage\ (otherwise\ prevented\ by}}
+\DoxyCodeLine{00556\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`).}}
+\DoxyCodeLine{00557\ \textcolor{comment}{//}}
+\DoxyCodeLine{00558\ \textcolor{comment}{//\ See\ basic\_cstring\_view\ for\ more.}}
+\DoxyCodeLine{00559\ \textcolor{keyword}{using\ }wcstring\_view\ =\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<wchar\_t>}};}
+\DoxyCodeLine{00560\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{comment}{//\ Writes\ the\ contents\ of\ the\ cstring\ view\ to\ the\ stream.}}
+\DoxyCodeLine{00563\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char,\ \textcolor{keyword}{class}\ Traits>}
+\DoxyCodeLine{00564\ std::basic\_ostream<Char,\ Traits>\&\ operator<<(}
+\DoxyCodeLine{00565\ \ \ \ \ std::basic\_ostream<Char,\ Traits>\&\ os,\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<Char>}}\ view)\ \{}
+\DoxyCodeLine{00566\ \ \ \textcolor{keywordflow}{return}\ os\ <<\ std::basic\_string\_view<Char>(view);}
+\DoxyCodeLine{00567\ \}}
+\DoxyCodeLine{00568\ }
+\DoxyCodeLine{00569\ \textcolor{comment}{//\ Explicitly\ define\ PrintTo\ to\ avoid\ gtest\ printing\ these\ as\ containers}}
+\DoxyCodeLine{00570\ \textcolor{comment}{//\ rather\ than\ strings.}}
+\DoxyCodeLine{00571\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ PrintTo(cstring\_view\ view,\ std::ostream*\ os)\ \{\ *os\ <<\ view;\ \}}
+\DoxyCodeLine{00572\ }
+\DoxyCodeLine{00573\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00574\ }
+\DoxyCodeLine{00575\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
+\DoxyCodeLine{00576\ \textcolor{keyword}{struct\ }std::hash<\mbox{\hyperlink{namespacekiwi}{kiwi}}::basic\_cstring\_view<Char>>\ \{}
+\DoxyCodeLine{00577\ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{kiwi::basic\_cstring\_view<Char>}}\&\ t)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00578\ \ \ \ \ \textcolor{keywordflow}{return}\ std::hash<std::basic\_string\_view<Char>>()(t);}
+\DoxyCodeLine{00579\ \ \ \}}
+\DoxyCodeLine{00580\ \};}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
+\DoxyCodeLine{00583\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00584\ \ \ \ \ std::ranges::enable\_borrowed\_range<kiwi::basic\_cstring\_view<Char>>\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Char>}
+\DoxyCodeLine{00587\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ std::ranges::enable\_view<kiwi::basic\_cstring\_view<Char>>\ =}
+\DoxyCodeLine{00588\ \ \ \ \ \textcolor{keyword}{true};}
 
 \end{DoxyCode}

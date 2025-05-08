@@ -1,20 +1,43 @@
 \doxysection{kiwi\+::File\+::Info Struct Reference}
 \hypertarget{structkiwi_1_1_file_1_1_info}{}\label{structkiwi_1_1_file_1_1_info}\index{kiwi::File::Info@{kiwi::File::Info}}
+
+
+{\ttfamily \#include $<$file.\+hh$>$}
+
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{structkiwi_1_1_file_1_1_info_a3adc579dc504bd32ced23d01620c14e8}\label{structkiwi_1_1_file_1_1_info_a3adc579dc504bd32ced23d01620c14e8} 
 int64\+\_\+t {\bfseries size} = 0
-\item 
+\begin{DoxyCompactList}\small\item\em The size of the file in bytes. Undefined when is\+\_\+directory is true. \end{DoxyCompactList}\item 
 \Hypertarget{structkiwi_1_1_file_1_1_info_a7ae4ad86c40ece21136378dac46dcd54}\label{structkiwi_1_1_file_1_1_info_a7ae4ad86c40ece21136378dac46dcd54} 
 bool {\bfseries is\+\_\+directory} = false
+\begin{DoxyCompactList}\small\item\em True if the file corresponds to a directory. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structkiwi_1_1_file_1_1_info_ac3dd5b35aa78c52c6907346931c5b844}{is\+\_\+symbolic\+\_\+link}} = false
 \item 
-\Hypertarget{structkiwi_1_1_file_1_1_info_ac3dd5b35aa78c52c6907346931c5b844}\label{structkiwi_1_1_file_1_1_info_ac3dd5b35aa78c52c6907346931c5b844} 
-bool {\bfseries is\+\_\+symbolic\+\_\+link} = false
-\end{DoxyCompactItemize}
+\Hypertarget{structkiwi_1_1_file_1_1_info_a6d1c179442cfde5e9f86790b1bec80a4}\label{structkiwi_1_1_file_1_1_info_a6d1c179442cfde5e9f86790b1bec80a4} 
+\mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries last\+\_\+modified}
+\begin{DoxyCompactList}\small\item\em The last modified time of a file. \end{DoxyCompactList}\item 
+\Hypertarget{structkiwi_1_1_file_1_1_info_ab5942cea3444b4acf0ac6e99ffa1272a}\label{structkiwi_1_1_file_1_1_info_ab5942cea3444b4acf0ac6e99ffa1272a} 
+\mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries last\+\_\+accessed}
+\begin{DoxyCompactList}\small\item\em The last accessed time of a file. \end{DoxyCompactList}\item 
+\Hypertarget{structkiwi_1_1_file_1_1_info_a0e1c37f189fe7554fee41aafa668d7bf}\label{structkiwi_1_1_file_1_1_info_a0e1c37f189fe7554fee41aafa668d7bf} 
+\mbox{\hyperlink{classkiwi_1_1_time}{Time}} {\bfseries creation\+\_\+time}
+\begin{DoxyCompactList}\small\item\em The creation time of a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\doxysubsection{Detailed Description}
+Used to hold information about a given file. If you add more fields to this structure (platform-\/specific fields are OK), make sure to update all functions that use it in file\+\_\+util\+\_\+\{win\texorpdfstring{$\vert$}{|}posix\}.cc, too. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1_file_1_1_info_ac3dd5b35aa78c52c6907346931c5b844}\index{kiwi::File::Info@{kiwi::File::Info}!is\_symbolic\_link@{is\_symbolic\_link}}
+\index{is\_symbolic\_link@{is\_symbolic\_link}!kiwi::File::Info@{kiwi::File::Info}}
+\doxysubsubsection{\texorpdfstring{is\_symbolic\_link}{is\_symbolic\_link}}
+{\footnotesize\ttfamily \label{structkiwi_1_1_file_1_1_info_ac3dd5b35aa78c52c6907346931c5b844} 
+bool kiwi\+::\+File\+::\+Info\+::is\+\_\+symbolic\+\_\+link = false}
+
+True if the file corresponds to a symbolic link. For Windows currently not supported and thus always false. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-include/kiwi/io/file.\+hh\item 
-src/io/file.\+cc\end{DoxyCompactItemize}
+include/kiwi/io/file.\+hh\end{DoxyCompactItemize}

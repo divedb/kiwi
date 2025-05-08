@@ -39,21 +39,21 @@ using {\bfseries difference\+\_\+type} = ptrdiff\+\_\+t
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classkiwi_1_1basic__cstring__view_a1cdd3f0badce8ecc1448cb546cc4e865}\label{classkiwi_1_1basic__cstring__view_a1cdd3f0badce8ecc1448cb546cc4e865} 
-{\footnotesize template$<$int \& ..., size\+\_\+t M$>$ }\\constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const Char(\&lit LIFETIME\+\_\+\+BOUND)\mbox{[}M\mbox{]}) noexcept ENABLE\+\_\+\+IF\+\_\+\+ATTR(lit\mbox{[}M -\/ 1u\mbox{]}
+\Hypertarget{classkiwi_1_1basic__cstring__view_a63cdc03ef69f425e93b30e9dcab2695c}\label{classkiwi_1_1basic__cstring__view_a63cdc03ef69f425e93b30e9dcab2695c} 
+{\footnotesize template$<$int \& ..., size\+\_\+t M$>$ }\\constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const Char(\&lit KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}M\mbox{]}) noexcept ENABLE\+\_\+\+IF\+\_\+\+ATTR(lit\mbox{[}M -\/ 1u\mbox{]}
 \item 
 \Hypertarget{classkiwi_1_1basic__cstring__view_adf90e5faf43ebc6ab844ef361052959a}\label{classkiwi_1_1basic__cstring__view_adf90e5faf43ebc6ab844ef361052959a} 
 constexpr literal as {\bfseries len\+\_\+} (std\+::char\+\_\+traits$<$ Char $>$\+::length(lit))
 \item 
-\Hypertarget{classkiwi_1_1basic__cstring__view_a7230de2177f305d6dbd5aa23f7bd2766}\label{classkiwi_1_1basic__cstring__view_a7230de2177f305d6dbd5aa23f7bd2766} 
-{\footnotesize template$<$std\+::same\+\_\+as$<$ std\+::basic\+\_\+string$<$ Char $>$ $>$ String$>$ }\\constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const String \&s LIFETIME\+\_\+\+BOUND) noexcept
+\Hypertarget{classkiwi_1_1basic__cstring__view_a5bcc58317954f5c263027f7d076f1d2a}\label{classkiwi_1_1basic__cstring__view_a5bcc58317954f5c263027f7d076f1d2a} 
+{\footnotesize template$<$std\+::same\+\_\+as$<$ std\+::basic\+\_\+string$<$ Char $>$ $>$ String$>$ }\\constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const String \&s KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND) noexcept
 \item 
-\Hypertarget{classkiwi_1_1basic__cstring__view_a3824948ab2fba9a715d1b43b1b830d6d}\label{classkiwi_1_1basic__cstring__view_a3824948ab2fba9a715d1b43b1b830d6d} 
+\Hypertarget{classkiwi_1_1basic__cstring__view_ac840aa32e76eb7b9c72c1335160797a7}\label{classkiwi_1_1basic__cstring__view_ac840aa32e76eb7b9c72c1335160797a7} 
 {\footnotesize template$<$class String$>$ \newline
-requires (std\+::same\+\_\+as$<$std\+::remove\+\_\+cvref\+\_\+t$<$String$>$, Char\texorpdfstring{$\ast$}{*}$>$ \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} std\+::same\+\_\+as$<$std\+::remove\+\_\+cvref\+\_\+t$<$String$>$, const Char\texorpdfstring{$\ast$}{*}$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (String \&\&ptr LIFETIME\+\_\+\+BOUND) noexcept
+requires (std\+::same\+\_\+as$<$std\+::remove\+\_\+cvref\+\_\+t$<$String$>$, Char\texorpdfstring{$\ast$}{*}$>$ \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} std\+::same\+\_\+as$<$std\+::remove\+\_\+cvref\+\_\+t$<$String$>$, const Char\texorpdfstring{$\ast$}{*}$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (String \&\&ptr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND) noexcept
 \item 
-\Hypertarget{classkiwi_1_1basic__cstring__view_aa48ae3b669919c5ab64941cc0e71d8f7}\label{classkiwi_1_1basic__cstring__view_aa48ae3b669919c5ab64941cc0e71d8f7} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const Char \texorpdfstring{$\ast$}{*}ptr LIFETIME\+\_\+\+BOUND, size\+\_\+t len)
+\Hypertarget{classkiwi_1_1basic__cstring__view_a83a907e9da034866207efef9e297d5a3}\label{classkiwi_1_1basic__cstring__view_a83a907e9da034866207efef9e297d5a3} 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE constexpr {\bfseries basic\+\_\+cstring\+\_\+view} (const Char \texorpdfstring{$\ast$}{*}ptr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND, size\+\_\+t len)
 \item 
 \Hypertarget{classkiwi_1_1basic__cstring__view_ab0bcf768456ba84c54fc403b422298b4}\label{classkiwi_1_1basic__cstring__view_ab0bcf768456ba84c54fc403b422298b4} 
 PURE\+\_\+\+FUNCTION constexpr const Char \texorpdfstring{$\ast$}{*} {\bfseries c\+\_\+str} () const noexcept

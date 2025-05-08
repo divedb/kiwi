@@ -1,7 +1,105 @@
 \doxysection{kiwi\+::internal\+::Clamped\+Numeric\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
 \hypertarget{classkiwi_1_1internal_1_1_clamped_numeric}{}\label{classkiwi_1_1internal_1_1_clamped_numeric}\index{kiwi::internal::ClampedNumeric$<$ T $>$@{kiwi::internal::ClampedNumeric$<$ T $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a824a99711d40e3b19f4b19f3b5d75782}\label{classkiwi_1_1internal_1_1_clamped_numeric_a824a99711d40e3b19f4b19f3b5d75782} 
+using {\bfseries type} = T
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a3e4e9281cf6c92f56114e30edba88ab9}\label{classkiwi_1_1internal_1_1_clamped_numeric_a3e4e9281cf6c92f56114e30edba88ab9} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr {\bfseries Clamped\+Numeric} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ Src $>$ \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ad72e897403010b9cd1a830df202116bc}\label{classkiwi_1_1internal_1_1_clamped_numeric_ad72e897403010b9cd1a830df202116bc} 
+{\footnotesize template$<$typename Src$>$ \newline
+requires (Is\+Numeric$<$Src$>$)}\\constexpr {\bfseries Clamped\+Numeric} (Src value)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_afa4639e07d1ba0dbecae4b4f7003e194}\label{classkiwi_1_1internal_1_1_clamped_numeric_afa4639e07d1ba0dbecae4b4f7003e194} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr {\bfseries Clamped\+Numeric} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{Strict\+Numeric}}$<$ Src $>$ value)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a80923b47fd7e5cc875bcae084c76580f}\label{classkiwi_1_1internal_1_1_clamped_numeric_a80923b47fd7e5cc875bcae084c76580f} 
+{\footnotesize template$<$typename Dst$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ Underlying\+Type$<$ Dst $>$ $>$ {\bfseries Cast} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a5e444ae0a941a10f637d607eea307ee9}\label{classkiwi_1_1internal_1_1_clamped_numeric_a5e444ae0a941a10f637d607eea307ee9} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator+=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a823a853ec5176e4e0c9350158407d9d5}\label{classkiwi_1_1internal_1_1_clamped_numeric_a823a853ec5176e4e0c9350158407d9d5} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator-\/=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a5261811a3e3d64921ecc8f0ab4d8ce00}\label{classkiwi_1_1internal_1_1_clamped_numeric_a5261811a3e3d64921ecc8f0ab4d8ce00} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a72a6abaac256b232168acd094d8e55c7}\label{classkiwi_1_1internal_1_1_clamped_numeric_a72a6abaac256b232168acd094d8e55c7} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator/=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ae8d0ad98c77267061a9cc890bc2c8b4c}\label{classkiwi_1_1internal_1_1_clamped_numeric_ae8d0ad98c77267061a9cc890bc2c8b4c} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator\%=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a8899b03268b5047a981a56442da2f78b}\label{classkiwi_1_1internal_1_1_clamped_numeric_a8899b03268b5047a981a56442da2f78b} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator$<$$<$=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_af65a04775eca74d841e19948b53e6a43}\label{classkiwi_1_1internal_1_1_clamped_numeric_af65a04775eca74d841e19948b53e6a43} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator$>$$>$=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_aa5e8a85a545baeb2efba43130f36faf9}\label{classkiwi_1_1internal_1_1_clamped_numeric_aa5e8a85a545baeb2efba43130f36faf9} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator\&=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ac2f6c2aef4ee8d4836afccada808fdb7}\label{classkiwi_1_1internal_1_1_clamped_numeric_ac2f6c2aef4ee8d4836afccada808fdb7} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator\texorpdfstring{$\vert$}{|}=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_aa420a8959d2a1d51a3f9180ed760d25f}\label{classkiwi_1_1internal_1_1_clamped_numeric_aa420a8959d2a1d51a3f9180ed760d25f} 
+{\footnotesize template$<$typename Src$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator\texorpdfstring{$^\wedge$}{\string^}=} (const Src rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ab5ec222dc7ef9fec24b4def63c6f3362}\label{classkiwi_1_1internal_1_1_clamped_numeric_ab5ec222dc7ef9fec24b4def63c6f3362} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} {\bfseries operator-\/} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a212ac33d842d6c805dea7184efb76c4f}\label{classkiwi_1_1internal_1_1_clamped_numeric_a212ac33d842d6c805dea7184efb76c4f} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} {\bfseries operator\texorpdfstring{$\sim$}{\string~}} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a04093f4bd9676af2e5fbf8c5d062e3ec}\label{classkiwi_1_1internal_1_1_clamped_numeric_a04093f4bd9676af2e5fbf8c5d062e3ec} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} {\bfseries Abs} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a0579d24746ea7aa28d9bf97f70d55515}\label{classkiwi_1_1internal_1_1_clamped_numeric_a0579d24746ea7aa28d9bf97f70d55515} 
+{\footnotesize template$<$typename U$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ typename \mbox{\hyperlink{structkiwi_1_1internal_1_1_math_wrapper}{Math\+Wrapper}}$<$ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_max_op}{Clamped\+Max\+Op}}, T, U $>$\+::type $>$ {\bfseries Max} (U rhs) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a07c8508191482a6d55147b368aa4d0a3}\label{classkiwi_1_1internal_1_1_clamped_numeric_a07c8508191482a6d55147b368aa4d0a3} 
+{\footnotesize template$<$typename U$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ typename \mbox{\hyperlink{structkiwi_1_1internal_1_1_math_wrapper}{Math\+Wrapper}}$<$ \mbox{\hyperlink{structkiwi_1_1internal_1_1_clamped_min_op}{Clamped\+Min\+Op}}, T, U $>$\+::type $>$ {\bfseries Min} (U rhs) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a431fe2de174b016140d7a1ca629bf52b}\label{classkiwi_1_1internal_1_1_clamped_numeric_a431fe2de174b016140d7a1ca629bf52b} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}}$<$ typename \mbox{\hyperlink{structkiwi_1_1internal_1_1_unsigned_or_float_for_size}{Unsigned\+Or\+Float\+For\+Size}}$<$ T $>$\+::type $>$ {\bfseries Unsigned\+Abs} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ac0b18164019d958ee83d3e89124f116a}\label{classkiwi_1_1internal_1_1_clamped_numeric_ac0b18164019d958ee83d3e89124f116a} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator++} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ab9fd0166349bc00136acac348ec73d55}\label{classkiwi_1_1internal_1_1_clamped_numeric_ab9fd0166349bc00136acac348ec73d55} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} {\bfseries operator++} (int)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_ac11239feac9c430dbf74251118d3638f}\label{classkiwi_1_1internal_1_1_clamped_numeric_ac11239feac9c430dbf74251118d3638f} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries operator-\/-\/} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a88a593ce3f8e68f143c084b27f8eb0c5}\label{classkiwi_1_1internal_1_1_clamped_numeric_a88a593ce3f8e68f143c084b27f8eb0c5} 
+constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} {\bfseries operator-\/-\/} (int)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a6dcf04b921e56bcdd466da386c828231}\label{classkiwi_1_1internal_1_1_clamped_numeric_a6dcf04b921e56bcdd466da386c828231} 
+{\footnotesize template$<$template$<$ typename, typename $>$ class M, typename R$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} \& {\bfseries Math\+Op} (R rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a67771e2f7545f4da4eeb90cd6ff5d141}\label{classkiwi_1_1internal_1_1_clamped_numeric_a67771e2f7545f4da4eeb90cd6ff5d141} 
+{\footnotesize template$<$typename Dst$>$ \newline
+requires std\+::is\+\_\+arithmetic\+\_\+v$<$Arithmetic\+Or\+Underlying\+Enum$<$Dst$>$$>$}\\constexpr {\bfseries operator Dst} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a05889f1a2ce54b179b338db7d39ed2be}\label{classkiwi_1_1internal_1_1_clamped_numeric_a05889f1a2ce54b179b338db7d39ed2be} 
+constexpr T {\bfseries Raw\+Value} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_clamped_numeric_a24ced2fd01f5f2837634cf4c0b13ac43}\label{classkiwi_1_1internal_1_1_clamped_numeric_a24ced2fd01f5f2837634cf4c0b13ac43} 
+{\footnotesize template$<$template$<$ typename, typename $>$ class M, typename L, typename R$>$ }\\static constexpr \mbox{\hyperlink{classkiwi_1_1internal_1_1_clamped_numeric}{Clamped\+Numeric}} {\bfseries Math\+Op} (L lhs, R rhs)
+\end{DoxyCompactItemize}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-include/kiwi/numerics/safe\+\_\+conversions\+\_\+impl.\+hh\end{DoxyCompactItemize}
+include/kiwi/numerics/clamped\+\_\+math.\+hh\end{DoxyCompactItemize}

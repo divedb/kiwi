@@ -200,23 +200,23 @@ template&lt;typename It, typename End&gt; <br />
 requires (internal::CompatibleIter&lt;element_type, It&gt; &amp;&amp; std::sized_sentinel_for&lt;End, It&gt; &amp;&amp; !std::is_convertible_v&lt;End, size_t&gt;)</td></tr>
 <tr class="memitem:ab24ecf4cdddce69d18c32ac321946212"><td class="memTemplItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>span</b> (It first, End last)</td></tr>
 <tr class="separator:ab24ecf4cdddce69d18c32ac321946212"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae21324445f4e4630e724092c518bd782" id="r_ae21324445f4e4630e724092c518bd782"><td class="memTemplParams" colspan="2"><a id="ae21324445f4e4630e724092c518bd782" name="ae21324445f4e4630e724092c518bd782"></a>
+<tr class="memitem:a806bc65b4e246990ed791c31f98ee8c4" id="r_a806bc65b4e246990ed791c31f98ee8c4"><td class="memTemplParams" colspan="2"><a id="a806bc65b4e246990ed791c31f98ee8c4" name="a806bc65b4e246990ed791c31f98ee8c4"></a>
 template&lt;size_t N&gt; </td></tr>
-<tr class="memitem:ae21324445f4e4630e724092c518bd782"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>span</b> (std::type_identity_t&lt; element_type &gt;(&amp;arr LIFETIME_BOUND)[N]) noexcept</td></tr>
-<tr class="separator:ae21324445f4e4630e724092c518bd782"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a881c43a6e3d642977aab75a297fbf363" id="r_a881c43a6e3d642977aab75a297fbf363"><td class="memTemplParams" colspan="2"><a id="a881c43a6e3d642977aab75a297fbf363" name="a881c43a6e3d642977aab75a297fbf363"></a>
+<tr class="memitem:a806bc65b4e246990ed791c31f98ee8c4"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>span</b> (std::type_identity_t&lt; element_type &gt;(&amp;arr KIWI_LIFETIME_BOUND)[N]) noexcept</td></tr>
+<tr class="separator:a806bc65b4e246990ed791c31f98ee8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3493902033aa21fb1a50a6d085b78f" id="r_a4c3493902033aa21fb1a50a6d085b78f"><td class="memTemplParams" colspan="2"><a id="a4c3493902033aa21fb1a50a6d085b78f" name="a4c3493902033aa21fb1a50a6d085b78f"></a>
 template&lt;typename R&gt; <br />
 requires (internal::CompatibleRange&lt;element_type, R&gt;)</td></tr>
-<tr class="memitem:a881c43a6e3d642977aab75a297fbf363"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>span</b> (R &amp;&amp;range LIFETIME_BOUND)</td></tr>
-<tr class="separator:a881c43a6e3d642977aab75a297fbf363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3493902033aa21fb1a50a6d085b78f"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>span</b> (R &amp;&amp;range KIWI_LIFETIME_BOUND)</td></tr>
+<tr class="separator:a4c3493902033aa21fb1a50a6d085b78f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37fb4d3f7589cdb6fa359139edcc4900" id="r_a37fb4d3f7589cdb6fa359139edcc4900"><td class="memTemplParams" colspan="2"><a id="a37fb4d3f7589cdb6fa359139edcc4900" name="a37fb4d3f7589cdb6fa359139edcc4900"></a>
 template&lt;typename R&gt; <br />
 requires (internal::CompatibleRange&lt;element_type, R&gt; &amp;&amp; std::ranges::borrowed_range&lt;R&gt;)</td></tr>
 <tr class="memitem:a37fb4d3f7589cdb6fa359139edcc4900"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>span</b> (R &amp;&amp;range)</td></tr>
 <tr class="separator:a37fb4d3f7589cdb6fa359139edcc4900"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1e19182c124e0d3667043d3159e0615" id="r_ae1e19182c124e0d3667043d3159e0615"><td class="memItemLeft" align="right" valign="top"><a id="ae1e19182c124e0d3667043d3159e0615" name="ae1e19182c124e0d3667043d3159e0615"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (std::initializer_list&lt; value_type &gt; il LIFETIME_BOUND)</td></tr>
-<tr class="separator:ae1e19182c124e0d3667043d3159e0615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbc08de132652242c26defddb443821a" id="r_acbc08de132652242c26defddb443821a"><td class="memItemLeft" align="right" valign="top"><a id="acbc08de132652242c26defddb443821a" name="acbc08de132652242c26defddb443821a"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (std::initializer_list&lt; value_type &gt; il KIWI_LIFETIME_BOUND)</td></tr>
+<tr class="separator:acbc08de132652242c26defddb443821a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54efcf4f2b0e8285803782560540a7f9" id="r_a54efcf4f2b0e8285803782560540a7f9"><td class="memItemLeft" align="right" valign="top"><a id="a54efcf4f2b0e8285803782560540a7f9" name="a54efcf4f2b0e8285803782560540a7f9"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (const <a class="el" href="classkiwi_1_1span.html">span</a> &amp;other) noexcept=default</td></tr>
 <tr class="separator:a54efcf4f2b0e8285803782560540a7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,24 +345,24 @@ UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memItemRight" valign="bottom"
 <tr class="memitem:a13560651a49ccc75c1e366f239237bb1" id="r_a13560651a49ccc75c1e366f239237bb1"><td class="memItemLeft" align="right" valign="top"><a id="a13560651a49ccc75c1e366f239237bb1" name="a13560651a49ccc75c1e366f239237bb1"></a>
 UNSAFE_BUFFER_USAGE constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (It first, End last)</td></tr>
 <tr class="separator:a13560651a49ccc75c1e366f239237bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa95d5b37114a6050833160b8e7b68f32" id="r_aa95d5b37114a6050833160b8e7b68f32"><td class="memItemLeft" align="right" valign="top"><a id="aa95d5b37114a6050833160b8e7b68f32" name="aa95d5b37114a6050833160b8e7b68f32"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (std::type_identity_t&lt; element_type &gt;(&amp;arr LIFETIME_BOUND)[extent]) noexcept</td></tr>
-<tr class="separator:aa95d5b37114a6050833160b8e7b68f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc139cc364782c15ab4d3ce1070af3f5" id="r_abc139cc364782c15ab4d3ce1070af3f5"><td class="memItemLeft" align="right" valign="top"><a id="abc139cc364782c15ab4d3ce1070af3f5" name="abc139cc364782c15ab4d3ce1070af3f5"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (std::type_identity_t&lt; element_type &gt;(&amp;arr KIWI_LIFETIME_BOUND)[extent]) noexcept</td></tr>
+<tr class="separator:abc139cc364782c15ab4d3ce1070af3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a30f9eab825e56c147be904ad0557b3" id="r_a0a30f9eab825e56c147be904ad0557b3"><td class="memItemLeft" align="right" valign="top"><a id="a0a30f9eab825e56c147be904ad0557b3" name="a0a30f9eab825e56c147be904ad0557b3"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (R &amp;&amp;range)</td></tr>
 <tr class="separator:a0a30f9eab825e56c147be904ad0557b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2071735c1eb795b611a81d24b6410283" id="r_a2071735c1eb795b611a81d24b6410283"><td class="memItemLeft" align="right" valign="top"><a id="a2071735c1eb795b611a81d24b6410283" name="a2071735c1eb795b611a81d24b6410283"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (std::initializer_list&lt; value_type &gt; il LIFETIME_BOUND)</td></tr>
-<tr class="separator:a2071735c1eb795b611a81d24b6410283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a13971c5537f30dff47ae173711ac1" id="r_af5a13971c5537f30dff47ae173711ac1"><td class="memItemLeft" align="right" valign="top"><a id="af5a13971c5537f30dff47ae173711ac1" name="af5a13971c5537f30dff47ae173711ac1"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (std::initializer_list&lt; value_type &gt; il KIWI_LIFETIME_BOUND)</td></tr>
+<tr class="separator:af5a13971c5537f30dff47ae173711ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0c0388cba3be4e199007bf165a661e5" id="r_af0c0388cba3be4e199007bf165a661e5"><td class="memItemLeft" align="right" valign="top"><a id="af0c0388cba3be4e199007bf165a661e5" name="af0c0388cba3be4e199007bf165a661e5"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (const <a class="el" href="classkiwi_1_1span.html">span</a> &amp;other) noexcept=default</td></tr>
 <tr class="separator:af0c0388cba3be4e199007bf165a661e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0a533d2423ba0f55d4257fad812128b" id="r_ac0a533d2423ba0f55d4257fad812128b"><td class="memItemLeft" align="right" valign="top"><a id="ac0a533d2423ba0f55d4257fad812128b" name="ac0a533d2423ba0f55d4257fad812128b"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>span</b> (<a class="el" href="classkiwi_1_1span.html">span</a> &amp;&amp;other) noexcept=default</td></tr>
 <tr class="separator:ac0a533d2423ba0f55d4257fad812128b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9014f60ba26d079b73ad93318ab0f96e" id="r_a9014f60ba26d079b73ad93318ab0f96e"><td class="memItemLeft" align="right" valign="top"><a id="a9014f60ba26d079b73ad93318ab0f96e" name="a9014f60ba26d079b73ad93318ab0f96e"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>explicit</b> (N !=extent) <a class="el" href="classkiwi_1_1span.html">span</a>(R &amp;&amp;range LIFETIME_BOUND)</td></tr>
-<tr class="separator:a9014f60ba26d079b73ad93318ab0f96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a163a250908b6a533753d92231e8d354b" id="r_a163a250908b6a533753d92231e8d354b"><td class="memItemLeft" align="right" valign="top"><a id="a163a250908b6a533753d92231e8d354b" name="a163a250908b6a533753d92231e8d354b"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>explicit</b> (N !=extent) <a class="el" href="classkiwi_1_1span.html">span</a>(R &amp;&amp;range KIWI_LIFETIME_BOUND)</td></tr>
+<tr class="separator:a163a250908b6a533753d92231e8d354b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03103144d79eba071f1cb26ec9dc1012" id="r_a03103144d79eba071f1cb26ec9dc1012"><td class="memItemLeft" align="right" valign="top"><a id="a03103144d79eba071f1cb26ec9dc1012" name="a03103144d79eba071f1cb26ec9dc1012"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>explicit</b> (OtherExtent==dynamic_extent) <a class="el" href="classkiwi_1_1span.html">span</a>(const <a class="el" href="classkiwi_1_1span.html">span</a>&lt; OtherElementType</td></tr>
 <tr class="separator:a03103144d79eba071f1cb26ec9dc1012"><td class="memSeparator" colspan="2">&#160;</td></tr>

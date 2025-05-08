@@ -111,6 +111,8 @@ $(function(){initNavTree('classkiwi_1_1_file.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">kiwi::File Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="file_8hh_source.html">file.hh</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -119,67 +121,68 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2e78d650505b819dd947f255e9d6a619" id="r_a2e78d650505b819dd947f255e9d6a619"><td class="memItemLeft" align="right" valign="top"><a id="a2e78d650505b819dd947f255e9d6a619" name="a2e78d650505b819dd947f255e9d6a619"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Flags</b> : uint32_t { <br />
-&#160;&#160;<b>FLAG_OPEN</b> = 1 &lt;&lt; 0
-, <b>FLAG_CREATE</b> = 1 &lt;&lt; 1
-, <b>FLAG_OPEN_ALWAYS</b> = 1 &lt;&lt; 2
-, <b>FLAG_CREATE_ALWAYS</b> = 1 &lt;&lt; 3
+<tr class="memitem:a2e78d650505b819dd947f255e9d6a619" id="r_a2e78d650505b819dd947f255e9d6a619"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e78d650505b819dd947f255e9d6a619">Flags</a> : uint32_t { <br />
+&#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a">kFlagOpen</a> = 1 &lt;&lt; 0
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d">kFlagCreate</a> = 1 &lt;&lt; 1
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648">kFlagOpenAlways</a> = 1 &lt;&lt; 2
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84">kFlagCreateAlways</a> = 1 &lt;&lt; 3
 , <br />
-&#160;&#160;<b>FLAG_OPEN_TRUNCATED</b> = 1 &lt;&lt; 4
-, <b>FLAG_READ</b> = 1 &lt;&lt; 5
-, <b>FLAG_WRITE</b> = 1 &lt;&lt; 6
-, <b>FLAG_APPEND</b> = 1 &lt;&lt; 7
+&#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6">kFlagOpenTruncated</a> = 1 &lt;&lt; 4
+, <b>kFlagRead</b> = 1 &lt;&lt; 5
+, <b>kFlagWrite</b> = 1 &lt;&lt; 6
+, <b>kFlagAppend</b> = 1 &lt;&lt; 7
 , <br />
-&#160;&#160;<b>FLAG_WIN_EXCLUSIVE_READ</b> = 1 &lt;&lt; 8
-, <b>FLAG_WIN_EXCLUSIVE_WRITE</b> = 1 &lt;&lt; 9
-, <b>FLAG_ASYNC</b> = 1 &lt;&lt; 10
-, <b>FLAG_WIN_TEMPORARY</b> = 1 &lt;&lt; 11
+&#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63">kFlagWinExclusiveRead</a> = 1 &lt;&lt; 8
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8">kFlagWinExclusiveWrite</a> = 1 &lt;&lt; 9
+, <b>kFlagAsync</b> = 1 &lt;&lt; 10
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3">kFlagWinTemporary</a> = 1 &lt;&lt; 11
 , <br />
-&#160;&#160;<b>FLAG_WIN_HIDDEN</b> = 1 &lt;&lt; 12
-, <b>FLAG_DELETE_ON_CLOSE</b> = 1 &lt;&lt; 13
-, <b>FLAG_WRITE_ATTRIBUTES</b> = 1 &lt;&lt; 14
-, <b>FLAG_WIN_SHARE_DELETE</b> = 1 &lt;&lt; 15
+&#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4">kFlagWinHidden</a> = 1 &lt;&lt; 12
+, <b>kFlagDeleteOnClose</b> = 1 &lt;&lt; 13
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694">kFlagWriteAttributes</a> = 1 &lt;&lt; 14
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52">kFlagWinShareDelete</a> = 1 &lt;&lt; 15
 , <br />
-&#160;&#160;<b>FLAG_TERMINAL_DEVICE</b> = 1 &lt;&lt; 16
-, <b>FLAG_WIN_BACKUP_SEMANTICS</b> = 1 &lt;&lt; 17
-, <b>FLAG_WIN_EXECUTE</b> = 1 &lt;&lt; 18
-, <b>FLAG_WIN_SEQUENTIAL_SCAN</b> = 1 &lt;&lt; 19
+&#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118">kFlagTerminalDevice</a> = 1 &lt;&lt; 16
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da">kFlagWinBackupSemantics</a> = 1 &lt;&lt; 17
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e">kFlagWinExecute</a> = 1 &lt;&lt; 18
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a">kFlagWinSequentialScan</a> = 1 &lt;&lt; 19
 , <br />
-&#160;&#160;<b>FLAG_CAN_DELETE_ON_CLOSE</b> = 1 &lt;&lt; 20
-, <b>FLAG_WIN_NO_EXECUTE</b>
+&#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58">kFlagCanDeleteOnClose</a> = 1 &lt;&lt; 20
+, <a class="el" href="#a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78">kFlagWinNoExecute</a> = 1 &lt;&lt; 21
 <br />
  }</td></tr>
 <tr class="separator:a2e78d650505b819dd947f255e9d6a619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7e38cc4ada147c3bfe00b80387c8609" id="r_ad7e38cc4ada147c3bfe00b80387c8609"><td class="memItemLeft" align="right" valign="top"><a id="ad7e38cc4ada147c3bfe00b80387c8609" name="ad7e38cc4ada147c3bfe00b80387c8609"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Error</b> { <br />
-&#160;&#160;<b>FILE_OK</b> = 0
-, <b>FILE_ERROR_FAILED</b> = -1
-, <b>FILE_ERROR_IN_USE</b> = -2
-, <b>FILE_ERROR_EXISTS</b> = -3
+<tr class="memitem:ad7e38cc4ada147c3bfe00b80387c8609" id="r_ad7e38cc4ada147c3bfe00b80387c8609"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> { <br />
+&#160;&#160;<b>kFileOk</b> = 0
+, <b>kFileErrorFailed</b> = -1
+, <b>kFileErrorInUse</b> = -2
+, <b>kFileErrorExists</b> = -3
 , <br />
-&#160;&#160;<b>FILE_ERROR_NOT_FOUND</b> = -4
-, <b>FILE_ERROR_ACCESS_DENIED</b> = -5
-, <b>FILE_ERROR_TOO_MANY_OPENED</b> = -6
-, <b>FILE_ERROR_NO_MEMORY</b> = -7
+&#160;&#160;<b>kFileErrorNotFound</b> = -4
+, <b>kFileErrorAccessDenied</b> = -5
+, <b>kFileErrorTooManyOpened</b> = -6
+, <b>kFileErrorNoMemory</b> = -7
 , <br />
-&#160;&#160;<b>FILE_ERROR_NO_SPACE</b> = -8
-, <b>FILE_ERROR_NOT_A_DIRECTORY</b> = -9
-, <b>FILE_ERROR_INVALID_OPERATION</b> = -10
-, <b>FILE_ERROR_SECURITY</b> = -11
+&#160;&#160;<b>kFileErrorNoSpace</b> = -8
+, <b>kFileErrorNotADirectory</b> = -9
+, <b>kFileErrorInvalidOperation</b> = -10
+, <b>kFileErrorSecurity</b> = -11
 , <br />
-&#160;&#160;<b>FILE_ERROR_ABORT</b> = -12
-, <b>FILE_ERROR_NOT_A_FILE</b> = -13
-, <b>FILE_ERROR_NOT_EMPTY</b> = -14
-, <b>FILE_ERROR_INVALID_URL</b> = -15
+&#160;&#160;<b>kFileErrorAbort</b> = -12
+, <b>kFileErrorNotAFile</b> = -13
+, <b>kFileErrorNotEmpty</b> = -14
+, <b>kFileErrorInvalidUrl</b> = -15
 , <br />
-&#160;&#160;<b>FILE_ERROR_IO</b> = -16
-, <b>FILE_ERROR_MAX</b> = -17
+&#160;&#160;<b>kFileErrorIo</b> = -16
+, <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82">kFileErrorMax</a> = -17
 <br />
  }</td></tr>
 <tr class="separator:ad7e38cc4ada147c3bfe00b80387c8609"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af604bf017dcbfa20966c1ecc71dff572" id="r_af604bf017dcbfa20966c1ecc71dff572"><td class="memItemLeft" align="right" valign="top"><a id="af604bf017dcbfa20966c1ecc71dff572" name="af604bf017dcbfa20966c1ecc71dff572"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Whence</b> { <b>FROM_BEGIN</b> = 0
-, <b>FROM_CURRENT</b> = 1
-, <b>FROM_END</b> = 2
+<tr class="memitem:af604bf017dcbfa20966c1ecc71dff572" id="r_af604bf017dcbfa20966c1ecc71dff572"><td class="memItemLeft" align="right" valign="top"><a id="af604bf017dcbfa20966c1ecc71dff572" name="af604bf017dcbfa20966c1ecc71dff572"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af604bf017dcbfa20966c1ecc71dff572">Whence</a> { <b>kFromBegin</b> = 0
+, <b>kFromCurrent</b> = 1
+, <b>kFromEnd</b> = 2
  }</td></tr>
+<tr class="memdesc:af604bf017dcbfa20966c1ecc71dff572"><td class="mdescLeft">&#160;</td><td class="mdescRight">This explicit mapping matches both FILE_ on Windows and SEEK_ on Linux. <br /></td></tr>
 <tr class="separator:af604bf017dcbfa20966c1ecc71dff572"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77bf09945b7f1a76b28ad14eba76f482" id="r_a77bf09945b7f1a76b28ad14eba76f482"><td class="memItemLeft" align="right" valign="top"><a id="a77bf09945b7f1a76b28ad14eba76f482" name="a77bf09945b7f1a76b28ad14eba76f482"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>LockMode</b> { <b>kShared</b>
 , <b>kExclusive</b>
@@ -188,48 +191,37 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a44b3d51c5757a4f59f47b5c1a6e8f387" id="r_a44b3d51c5757a4f59f47b5c1a6e8f387"><td class="memItemLeft" align="right" valign="top"><a id="a44b3d51c5757a4f59f47b5c1a6e8f387" name="a44b3d51c5757a4f59f47b5c1a6e8f387"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;path, uint32_t flags)</td></tr>
+<tr class="memitem:a44b3d51c5757a4f59f47b5c1a6e8f387" id="r_a44b3d51c5757a4f59f47b5c1a6e8f387"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44b3d51c5757a4f59f47b5c1a6e8f387">File</a> (const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;path, uint32_t flags)</td></tr>
 <tr class="separator:a44b3d51c5757a4f59f47b5c1a6e8f387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53d85e9599f331db0cf8d8363f01a5c0" id="r_a53d85e9599f331db0cf8d8363f01a5c0"><td class="memItemLeft" align="right" valign="top"><a id="a53d85e9599f331db0cf8d8363f01a5c0" name="a53d85e9599f331db0cf8d8363f01a5c0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (ScopedPlatformFile platform_file)</td></tr>
+<tr class="memitem:a53d85e9599f331db0cf8d8363f01a5c0" id="r_a53d85e9599f331db0cf8d8363f01a5c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53d85e9599f331db0cf8d8363f01a5c0">File</a> (ScopedPlatformFile platform_file)</td></tr>
 <tr class="separator:a53d85e9599f331db0cf8d8363f01a5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c46201090bc9c9c6b0666c1b64e3899" id="r_a8c46201090bc9c9c6b0666c1b64e3899"><td class="memItemLeft" align="right" valign="top"><a id="a8c46201090bc9c9c6b0666c1b64e3899" name="a8c46201090bc9c9c6b0666c1b64e3899"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (PlatformFile platform_file)</td></tr>
 <tr class="separator:a8c46201090bc9c9c6b0666c1b64e3899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac73e093b86380d33db3010492a4f0f03" id="r_ac73e093b86380d33db3010492a4f0f03"><td class="memItemLeft" align="right" valign="top"><a id="ac73e093b86380d33db3010492a4f0f03" name="ac73e093b86380d33db3010492a4f0f03"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (ScopedPlatformFile platform_file, bool async)</td></tr>
+<tr class="memitem:ac73e093b86380d33db3010492a4f0f03" id="r_ac73e093b86380d33db3010492a4f0f03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac73e093b86380d33db3010492a4f0f03">File</a> (ScopedPlatformFile platform_file, bool async)</td></tr>
 <tr class="separator:ac73e093b86380d33db3010492a4f0f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a706ca8a0cc8c990bf836b848d88aec1f" id="r_a706ca8a0cc8c990bf836b848d88aec1f"><td class="memItemLeft" align="right" valign="top"><a id="a706ca8a0cc8c990bf836b848d88aec1f" name="a706ca8a0cc8c990bf836b848d88aec1f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (PlatformFile platform_file, bool async)</td></tr>
 <tr class="separator:a706ca8a0cc8c990bf836b848d88aec1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a017b3007405be8db844ee422e9b14049" id="r_a017b3007405be8db844ee422e9b14049"><td class="memItemLeft" align="right" valign="top"><a id="a017b3007405be8db844ee422e9b14049" name="a017b3007405be8db844ee422e9b14049"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (Error error_details)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (<a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> error_details)</td></tr>
 <tr class="separator:a017b3007405be8db844ee422e9b14049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb3d77177d6e0785dc4ad3b1f36023a4" id="r_acb3d77177d6e0785dc4ad3b1f36023a4"><td class="memItemLeft" align="right" valign="top"><a id="acb3d77177d6e0785dc4ad3b1f36023a4" name="acb3d77177d6e0785dc4ad3b1f36023a4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (<a class="el" href="classkiwi_1_1_file.html">File</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:acb3d77177d6e0785dc4ad3b1f36023a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:acb3d77177d6e0785dc4ad3b1f36023a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f6e8789b320c737acda0ba394ae6ecc" id="r_a8f6e8789b320c737acda0ba394ae6ecc"><td class="memItemLeft" align="right" valign="top"><a id="a8f6e8789b320c737acda0ba394ae6ecc" name="a8f6e8789b320c737acda0ba394ae6ecc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>File</b> (const <a class="el" href="classkiwi_1_1_file.html">File</a> &amp;)=delete</td></tr>
-<tr class="separator:a8f6e8789b320c737acda0ba394ae6ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ba891743e59b7c6807bbcdb9288087a" id="r_a4ba891743e59b7c6807bbcdb9288087a"><td class="memItemLeft" align="right" valign="top"><a id="a4ba891743e59b7c6807bbcdb9288087a" name="a4ba891743e59b7c6807bbcdb9288087a"></a>
-<a class="el" href="classkiwi_1_1_file.html">File</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classkiwi_1_1_file.html">File</a> &amp;)=delete</td></tr>
-<tr class="separator:a4ba891743e59b7c6807bbcdb9288087a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c2ae7d574cb16e26a59407554428ec8" id="r_a7c2ae7d574cb16e26a59407554428ec8"><td class="memItemLeft" align="right" valign="top"><a id="a7c2ae7d574cb16e26a59407554428ec8" name="a7c2ae7d574cb16e26a59407554428ec8"></a>
 <a class="el" href="classkiwi_1_1_file.html">File</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classkiwi_1_1_file.html">File</a> &amp;&amp;other)</td></tr>
 <tr class="separator:a7c2ae7d574cb16e26a59407554428ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a277a950e2310f6868d23d8e49ba2384e" id="r_a277a950e2310f6868d23d8e49ba2384e"><td class="memItemLeft" align="right" valign="top"><a id="a277a950e2310f6868d23d8e49ba2384e" name="a277a950e2310f6868d23d8e49ba2384e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;path, uint32_t flags)</td></tr>
 <tr class="separator:a277a950e2310f6868d23d8e49ba2384e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71faf3633bb71e0af623c1bd2a978940" id="r_a71faf3633bb71e0af623c1bd2a978940"><td class="memItemLeft" align="right" valign="top"><a id="a71faf3633bb71e0af623c1bd2a978940" name="a71faf3633bb71e0af623c1bd2a978940"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsValid</b> () const</td></tr>
+<tr class="memitem:a71faf3633bb71e0af623c1bd2a978940" id="r_a71faf3633bb71e0af623c1bd2a978940"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71faf3633bb71e0af623c1bd2a978940">IsValid</a> () const</td></tr>
 <tr class="separator:a71faf3633bb71e0af623c1bd2a978940"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba4b8779d5377d5b06d97e8e14dc2fc4" id="r_aba4b8779d5377d5b06d97e8e14dc2fc4"><td class="memItemLeft" align="right" valign="top"><a id="aba4b8779d5377d5b06d97e8e14dc2fc4" name="aba4b8779d5377d5b06d97e8e14dc2fc4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>created</b> () const</td></tr>
-<tr class="separator:aba4b8779d5377d5b06d97e8e14dc2fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacb3338d0a736a736d3ca83053bfeb65" id="r_aacb3338d0a736a736d3ca83053bfeb65"><td class="memItemLeft" align="right" valign="top"><a id="aacb3338d0a736a736d3ca83053bfeb65" name="aacb3338d0a736a736d3ca83053bfeb65"></a>
-Error&#160;</td><td class="memItemRight" valign="bottom"><b>error_details</b> () const</td></tr>
-<tr class="separator:aacb3338d0a736a736d3ca83053bfeb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af608a12b8bf763738a0b2e31f27e08e7" id="r_af608a12b8bf763738a0b2e31f27e08e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af608a12b8bf763738a0b2e31f27e08e7">IsCreated</a> () const</td></tr>
+<tr class="separator:af608a12b8bf763738a0b2e31f27e08e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbaf995f649310cc94a327d64b7f0831" id="r_afbaf995f649310cc94a327d64b7f0831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbaf995f649310cc94a327d64b7f0831">ErrorDetails</a> () const</td></tr>
+<tr class="separator:afbaf995f649310cc94a327d64b7f0831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a424ce3170ab9b04ed3a03d85935c16d1" id="r_a424ce3170ab9b04ed3a03d85935c16d1"><td class="memItemLeft" align="right" valign="top"><a id="a424ce3170ab9b04ed3a03d85935c16d1" name="a424ce3170ab9b04ed3a03d85935c16d1"></a>
 PlatformFile&#160;</td><td class="memItemRight" valign="bottom"><b>GetPlatformFile</b> () const</td></tr>
 <tr class="separator:a424ce3170ab9b04ed3a03d85935c16d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,37 +230,36 @@ PlatformFile&#160;</td><td class="memItemRight" valign="bottom"><b>TakePlatformF
 <tr class="separator:aa40189ee3bc513c9e9a340053ba46de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5632f8ac891e6c3a2353aab99fb19791" id="r_a5632f8ac891e6c3a2353aab99fb19791"><td class="memItemLeft" align="right" valign="top"><a id="a5632f8ac891e6c3a2353aab99fb19791" name="a5632f8ac891e6c3a2353aab99fb19791"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Close</b> ()</td></tr>
+<tr class="memdesc:a5632f8ac891e6c3a2353aab99fb19791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroying this object closes the file automatically. <br /></td></tr>
 <tr class="separator:a5632f8ac891e6c3a2353aab99fb19791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67118e2790c56e70ed927a9e5f6a43b4" id="r_a67118e2790c56e70ed927a9e5f6a43b4"><td class="memItemLeft" align="right" valign="top"><a id="a67118e2790c56e70ed927a9e5f6a43b4" name="a67118e2790c56e70ed927a9e5f6a43b4"></a>
-int64_t&#160;</td><td class="memItemRight" valign="bottom"><b>Seek</b> (Whence whence, int64_t offset)</td></tr>
+<tr class="memitem:a67118e2790c56e70ed927a9e5f6a43b4" id="r_a67118e2790c56e70ed927a9e5f6a43b4"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67118e2790c56e70ed927a9e5f6a43b4">Seek</a> (<a class="el" href="#af604bf017dcbfa20966c1ecc71dff572">Whence</a> whence, int64_t offset)</td></tr>
 <tr class="separator:a67118e2790c56e70ed927a9e5f6a43b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5fa1f9f3506b2e02aea1aa8f0e2d5e0" id="r_af5fa1f9f3506b2e02aea1aa8f0e2d5e0"><td class="memItemLeft" align="right" valign="top"><a id="af5fa1f9f3506b2e02aea1aa8f0e2d5e0" name="af5fa1f9f3506b2e02aea1aa8f0e2d5e0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAndCheck</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">span</a>&lt; uint8_t &gt; data)</td></tr>
-<tr class="separator:af5fa1f9f3506b2e02aea1aa8f0e2d5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a40335083f996f7e64ba9d5f6ae0fec" id="r_a0a40335083f996f7e64ba9d5f6ae0fec"><td class="memItemLeft" align="right" valign="top"><a id="a0a40335083f996f7e64ba9d5f6ae0fec" name="a0a40335083f996f7e64ba9d5f6ae0fec"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosAndCheck</b> (<a class="el" href="classkiwi_1_1span.html">span</a>&lt; uint8_t &gt; data)</td></tr>
-<tr class="separator:a0a40335083f996f7e64ba9d5f6ae0fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe8653746eba5a524b14c8692adf7bdb" id="r_afe8653746eba5a524b14c8692adf7bdb"><td class="memItemLeft" align="right" valign="top"><a id="afe8653746eba5a524b14c8692adf7bdb" name="afe8653746eba5a524b14c8692adf7bdb"></a>
+<tr class="memitem:a3606ad7fb26e2a27ec681f3060028eb0" id="r_a3606ad7fb26e2a27ec681f3060028eb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3606ad7fb26e2a27ec681f3060028eb0">ReadAndCheck</a> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
+<tr class="separator:a3606ad7fb26e2a27ec681f3060028eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcea20f07715ff9cf0092f599d290872" id="r_afcea20f07715ff9cf0092f599d290872"><td class="memItemLeft" align="right" valign="top"><a id="afcea20f07715ff9cf0092f599d290872" name="afcea20f07715ff9cf0092f599d290872"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosAndCheck</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
+<tr class="separator:afcea20f07715ff9cf0092f599d290872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab4f8c0526aedb8b5f97c2e10f12f129" id="r_aab4f8c0526aedb8b5f97c2e10f12f129"><td class="memItemLeft" align="right" valign="top"><a id="aab4f8c0526aedb8b5f97c2e10f12f129" name="aab4f8c0526aedb8b5f97c2e10f12f129"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (int64_t offset, char *data, int size)</td></tr>
-<tr class="separator:afe8653746eba5a524b14c8692adf7bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:aab4f8c0526aedb8b5f97c2e10f12f129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5240f205ddd91d6b7f59d0b960a282d5" id="r_a5240f205ddd91d6b7f59d0b960a282d5"><td class="memItemLeft" align="right" valign="top"><a id="a5240f205ddd91d6b7f59d0b960a282d5" name="a5240f205ddd91d6b7f59d0b960a282d5"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a5240f205ddd91d6b7f59d0b960a282d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eaf56053758a88e12e89d9c248fa563" id="r_a6eaf56053758a88e12e89d9c248fa563"><td class="memItemLeft" align="right" valign="top"><a id="a6eaf56053758a88e12e89d9c248fa563" name="a6eaf56053758a88e12e89d9c248fa563"></a>
+<tr class="memitem:af47b5d7b4e7db08bcf5c8942e6a61067" id="r_af47b5d7b4e7db08bcf5c8942e6a61067"><td class="memItemLeft" align="right" valign="top"><a id="af47b5d7b4e7db08bcf5c8942e6a61067" name="af47b5d7b4e7db08bcf5c8942e6a61067"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPos</b> (char *data, int size)</td></tr>
-<tr class="separator:a6eaf56053758a88e12e89d9c248fa563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:af47b5d7b4e7db08bcf5c8942e6a61067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6145138e263aadb88303a921ee7e262f" id="r_a6145138e263aadb88303a921ee7e262f"><td class="memItemLeft" align="right" valign="top"><a id="a6145138e263aadb88303a921ee7e262f" name="a6145138e263aadb88303a921ee7e262f"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPos</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a6145138e263aadb88303a921ee7e262f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a7ffbb6090101f8296aa2b61d9f08f9" id="r_a8a7ffbb6090101f8296aa2b61d9f08f9"><td class="memItemLeft" align="right" valign="top"><a id="a8a7ffbb6090101f8296aa2b61d9f08f9" name="a8a7ffbb6090101f8296aa2b61d9f08f9"></a>
+<tr class="memitem:ae8f3f6380a232f5ca19d916dc33ada79" id="r_ae8f3f6380a232f5ca19d916dc33ada79"><td class="memItemLeft" align="right" valign="top"><a id="ae8f3f6380a232f5ca19d916dc33ada79" name="ae8f3f6380a232f5ca19d916dc33ada79"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadNoBestEffort</b> (int64_t offset, char *data, int size)</td></tr>
-<tr class="separator:a8a7ffbb6090101f8296aa2b61d9f08f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ae8f3f6380a232f5ca19d916dc33ada79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a472be55b66f6891c066143e0aa4491c9" id="r_a472be55b66f6891c066143e0aa4491c9"><td class="memItemLeft" align="right" valign="top"><a id="a472be55b66f6891c066143e0aa4491c9" name="a472be55b66f6891c066143e0aa4491c9"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ReadNoBestEffort</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a472be55b66f6891c066143e0aa4491c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeb16639e3a3486914a5f96933c995ad" id="r_abeb16639e3a3486914a5f96933c995ad"><td class="memItemLeft" align="right" valign="top"><a id="abeb16639e3a3486914a5f96933c995ad" name="abeb16639e3a3486914a5f96933c995ad"></a>
+<tr class="memitem:a8d7c466844c2f368c108976f84b4fa7a" id="r_a8d7c466844c2f368c108976f84b4fa7a"><td class="memItemLeft" align="right" valign="top"><a id="a8d7c466844c2f368c108976f84b4fa7a" name="a8d7c466844c2f368c108976f84b4fa7a"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosNoBestEffort</b> (char *data, int size)</td></tr>
-<tr class="separator:abeb16639e3a3486914a5f96933c995ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a8d7c466844c2f368c108976f84b4fa7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb20fbb8d9357641363478587996eee3" id="r_acb20fbb8d9357641363478587996eee3"><td class="memItemLeft" align="right" valign="top"><a id="acb20fbb8d9357641363478587996eee3" name="acb20fbb8d9357641363478587996eee3"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosNoBestEffort</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:acb20fbb8d9357641363478587996eee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,21 +269,21 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAndCheck</b> (in
 <tr class="memitem:a4f07a8790ebdf12c0da72d7fb7ee6bf1" id="r_a4f07a8790ebdf12c0da72d7fb7ee6bf1"><td class="memItemLeft" align="right" valign="top"><a id="a4f07a8790ebdf12c0da72d7fb7ee6bf1" name="a4f07a8790ebdf12c0da72d7fb7ee6bf1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPosAndCheck</b> (<a class="el" href="classkiwi_1_1span.html">span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a4f07a8790ebdf12c0da72d7fb7ee6bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afad48310e64920383c6d6e3d0ef8eec6" id="r_afad48310e64920383c6d6e3d0ef8eec6"><td class="memItemLeft" align="right" valign="top"><a id="afad48310e64920383c6d6e3d0ef8eec6" name="afad48310e64920383c6d6e3d0ef8eec6"></a>
+<tr class="memitem:ae052bbc98ce6ea22c9d24af14a6a9af9" id="r_ae052bbc98ce6ea22c9d24af14a6a9af9"><td class="memItemLeft" align="right" valign="top"><a id="ae052bbc98ce6ea22c9d24af14a6a9af9" name="ae052bbc98ce6ea22c9d24af14a6a9af9"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (int64_t offset, const char *data, int size)</td></tr>
-<tr class="separator:afad48310e64920383c6d6e3d0ef8eec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ae052bbc98ce6ea22c9d24af14a6a9af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ca850368f70477f71e8a2b2f02efacd" id="r_a6ca850368f70477f71e8a2b2f02efacd"><td class="memItemLeft" align="right" valign="top"><a id="a6ca850368f70477f71e8a2b2f02efacd" name="a6ca850368f70477f71e8a2b2f02efacd"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a6ca850368f70477f71e8a2b2f02efacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98500ccbe3bb72cddb2a2cc5c2660781" id="r_a98500ccbe3bb72cddb2a2cc5c2660781"><td class="memItemLeft" align="right" valign="top"><a id="a98500ccbe3bb72cddb2a2cc5c2660781" name="a98500ccbe3bb72cddb2a2cc5c2660781"></a>
+<tr class="memitem:a699deb00efeb73849eef5324477aa1b6" id="r_a699deb00efeb73849eef5324477aa1b6"><td class="memItemLeft" align="right" valign="top"><a id="a699deb00efeb73849eef5324477aa1b6" name="a699deb00efeb73849eef5324477aa1b6"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPos</b> (const char *data, int size)</td></tr>
-<tr class="separator:a98500ccbe3bb72cddb2a2cc5c2660781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a699deb00efeb73849eef5324477aa1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afae6ec38532e1c29a237a2890b925772" id="r_afae6ec38532e1c29a237a2890b925772"><td class="memItemLeft" align="right" valign="top"><a id="afae6ec38532e1c29a237a2890b925772" name="afae6ec38532e1c29a237a2890b925772"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPos</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:afae6ec38532e1c29a237a2890b925772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e79090eca58b68f6fe0854c25c42d7d" id="r_a9e79090eca58b68f6fe0854c25c42d7d"><td class="memItemLeft" align="right" valign="top"><a id="a9e79090eca58b68f6fe0854c25c42d7d" name="a9e79090eca58b68f6fe0854c25c42d7d"></a>
+<tr class="memitem:a9b9bd59c3bc48a35ad1b0e732daceeab" id="r_a9b9bd59c3bc48a35ad1b0e732daceeab"><td class="memItemLeft" align="right" valign="top"><a id="a9b9bd59c3bc48a35ad1b0e732daceeab" name="a9b9bd59c3bc48a35ad1b0e732daceeab"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPosNoBestEffort</b> (const char *data, int size)</td></tr>
-<tr class="separator:a9e79090eca58b68f6fe0854c25c42d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a9b9bd59c3bc48a35ad1b0e732daceeab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a813d31de9d083a53ee8e4b500a4f3486" id="r_a813d31de9d083a53ee8e4b500a4f3486"><td class="memItemLeft" align="right" valign="top"><a id="a813d31de9d083a53ee8e4b500a4f3486" name="a813d31de9d083a53ee8e4b500a4f3486"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPosNoBestEffort</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a813d31de9d083a53ee8e4b500a4f3486"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -308,12 +299,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Flush</b> ()</td></tr
 <tr class="memitem:a11ac8cb486c052c627b4fdefaabb18bf" id="r_a11ac8cb486c052c627b4fdefaabb18bf"><td class="memItemLeft" align="right" valign="top"><a id="a11ac8cb486c052c627b4fdefaabb18bf" name="a11ac8cb486c052c627b4fdefaabb18bf"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetInfo</b> (<a class="el" href="structkiwi_1_1_file_1_1_info.html">Info</a> *info) const</td></tr>
 <tr class="separator:a11ac8cb486c052c627b4fdefaabb18bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a008513b2f5917d686632c19044c5eeeb" id="r_a008513b2f5917d686632c19044c5eeeb"><td class="memItemLeft" align="right" valign="top"><a id="a008513b2f5917d686632c19044c5eeeb" name="a008513b2f5917d686632c19044c5eeeb"></a>
-Error&#160;</td><td class="memItemRight" valign="bottom"><b>Lock</b> (LockMode mode)</td></tr>
-<tr class="separator:a008513b2f5917d686632c19044c5eeeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b1f9909e952819d2a5ee5ac349deca3" id="r_a9b1f9909e952819d2a5ee5ac349deca3"><td class="memItemLeft" align="right" valign="top"><a id="a9b1f9909e952819d2a5ee5ac349deca3" name="a9b1f9909e952819d2a5ee5ac349deca3"></a>
-Error&#160;</td><td class="memItemRight" valign="bottom"><b>Unlock</b> ()</td></tr>
-<tr class="separator:a9b1f9909e952819d2a5ee5ac349deca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3ec6fc05cec4e47af152742dc68b813" id="r_af3ec6fc05cec4e47af152742dc68b813"><td class="memItemLeft" align="right" valign="top"><a id="af3ec6fc05cec4e47af152742dc68b813" name="af3ec6fc05cec4e47af152742dc68b813"></a>
+<a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Lock</b> (LockMode mode)</td></tr>
+<tr class="separator:af3ec6fc05cec4e47af152742dc68b813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4c4c29851846c7925121b0f6c849aec" id="r_ab4c4c29851846c7925121b0f6c849aec"><td class="memItemLeft" align="right" valign="top"><a id="ab4c4c29851846c7925121b0f6c849aec" name="ab4c4c29851846c7925121b0f6c849aec"></a>
+<a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Unlock</b> ()</td></tr>
+<tr class="separator:ab4c4c29851846c7925121b0f6c849aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af84dfd24529df2f4f029b9ebb911edbb" id="r_af84dfd24529df2f4f029b9ebb911edbb"><td class="memItemLeft" align="right" valign="top"><a id="af84dfd24529df2f4f029b9ebb911edbb" name="af84dfd24529df2f4f029b9ebb911edbb"></a>
 <a class="el" href="classkiwi_1_1_file.html">File</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Duplicate</b> () const</td></tr>
 <tr class="separator:af84dfd24529df2f4f029b9ebb911edbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,19 +314,331 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>async</b> () const</t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae9664bd051841a1bb115196e8c795a1b" id="r_ae9664bd051841a1bb115196e8c795a1b"><td class="memItemLeft" align="right" valign="top"><a id="ae9664bd051841a1bb115196e8c795a1b" name="ae9664bd051841a1bb115196e8c795a1b"></a>
-static Error&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastFileError</b> ()</td></tr>
-<tr class="separator:ae9664bd051841a1bb115196e8c795a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2497e2ef31b7e7781d6e691d235dc084" id="r_a2497e2ef31b7e7781d6e691d235dc084"><td class="memItemLeft" align="right" valign="top"><a id="a2497e2ef31b7e7781d6e691d235dc084" name="a2497e2ef31b7e7781d6e691d235dc084"></a>
+static <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastFileError</b> ()</td></tr>
+<tr class="separator:a2497e2ef31b7e7781d6e691d235dc084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5187b304515a8f2b0c73a15f6c023ae" id="r_ab5187b304515a8f2b0c73a15f6c023ae"><td class="memItemLeft" align="right" valign="top"><a id="ab5187b304515a8f2b0c73a15f6c023ae" name="ab5187b304515a8f2b0c73a15f6c023ae"></a>
-static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToString</b> (Error error)</td></tr>
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToString</b> (<a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> error)</td></tr>
 <tr class="separator:ab5187b304515a8f2b0c73a15f6c023ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac35f70b9e7c4aff2a4c48581195402b8" id="r_ac35f70b9e7c4aff2a4c48581195402b8"><td class="memItemLeft" align="right" valign="top"><a id="ac35f70b9e7c4aff2a4c48581195402b8" name="ac35f70b9e7c4aff2a4c48581195402b8"></a>
 static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>AddFlagsForPassingToUntrustedProcess</b> (uint32_t flags)</td></tr>
 <tr class="separator:ac35f70b9e7c4aff2a4c48581195402b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Thin wrapper around an OS-level file. Note that this class does not provide any support for asynchronous IO, other than the ability to create asynchronous handles on Windows.</p>
+<p>Note about const: this class does not attempt to determine if the underlying file system object is affected by a particular method in order to consider that method const or not. Only methods that deal with member variables in an obvious non-modifying way are marked as const. Any method that forward calls to the OS is not considered const, even if there is no apparent change to member variables.</p>
+<p>On POSIX, if the given file is a symbolic link, most of the methods apply to the file that the symbolic link resolves to. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ad7e38cc4ada147c3bfe00b80387c8609" name="ad7e38cc4ada147c3bfe00b80387c8609"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7e38cc4ada147c3bfe00b80387c8609">&#9670;&#160;</a></span>Error</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">kiwi::File::Error</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This enum has been recorded in multiple histograms using PlatformFileError enum. If the order of the fields needs to change, please ensure that those histograms are obsolete or have been moved to a different enum.</p>
+<p>kFileErrorAccessDenied is returned when a call fails because of a filesystem restriction. FILE_ERROR_SECURITY is returned when a browser policy doesn't allow the operation to be executed. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82" name="ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82"></a>kFileErrorMax&#160;</td><td class="fielddoc"><p>Put new entries here and increment kFileErrorMax. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a2e78d650505b819dd947f255e9d6a619" name="a2e78d650505b819dd947f255e9d6a619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e78d650505b819dd947f255e9d6a619">&#9670;&#160;</a></span>Flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a2e78d650505b819dd947f255e9d6a619">kiwi::File::Flags</a> : uint32_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>kFlag(Open|Create).* are mutually exclusive. You should specify exactly one of the five (possibly combining with other flags) when opening or creating a file. kFlag(Write|Append) are mutually exclusive. This is so that APPEND behavior will be consistent with O_APPEND on POSIX. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a" name="a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a"></a>kFlagOpen&#160;</td><td class="fielddoc"><p>Opens a file, only if it exists. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d" name="a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d"></a>kFlagCreate&#160;</td><td class="fielddoc"><p>Creates a new file, only if it does not already exist. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648" name="a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648"></a>kFlagOpenAlways&#160;</td><td class="fielddoc"><p>May create a new file. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84" name="a2e78d650505b819dd947f255e9d6a619a5ff979a32d570348f5e727e9dcaf0c84"></a>kFlagCreateAlways&#160;</td><td class="fielddoc"><p>May overwrite an old file. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6" name="a2e78d650505b819dd947f255e9d6a619a3fc90c0986cd3ba889ab4112f8e616b6"></a>kFlagOpenTruncated&#160;</td><td class="fielddoc"><p>Opens a file and truncates it, only if it exists. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63" name="a2e78d650505b819dd947f255e9d6a619ae3ac6fa7cb23e6eb093ebc54bc1e3f63"></a>kFlagWinExclusiveRead&#160;</td><td class="fielddoc"><p>Windows only. Opposite of SHARE. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8" name="a2e78d650505b819dd947f255e9d6a619ad60f08904e104e09c8a9f91c13efd5d8"></a>kFlagWinExclusiveWrite&#160;</td><td class="fielddoc"><p>Windows only. Opposite of SHARE. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3" name="a2e78d650505b819dd947f255e9d6a619ab46e90161a68ffdf11cecde3931fc8d3"></a>kFlagWinTemporary&#160;</td><td class="fielddoc"><p>Windows only. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4" name="a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4"></a>kFlagWinHidden&#160;</td><td class="fielddoc"><p>Windows only. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694" name="a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694"></a>kFlagWriteAttributes&#160;</td><td class="fielddoc"><p>Allows writing attributes, e.g., SetTimes(). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52" name="a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52"></a>kFlagWinShareDelete&#160;</td><td class="fielddoc"><p>Windows only. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118" name="a2e78d650505b819dd947f255e9d6a619a72c911d59714bd24ffc5d27224bbb118"></a>kFlagTerminalDevice&#160;</td><td class="fielddoc"><p>Serial port flags. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da" name="a2e78d650505b819dd947f255e9d6a619a8ccfe62b8929baf576c2f6eff8d675da"></a>kFlagWinBackupSemantics&#160;</td><td class="fielddoc"><p>Windows only. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e" name="a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e"></a>kFlagWinExecute&#160;</td><td class="fielddoc"><p>Windows only. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a" name="a2e78d650505b819dd947f255e9d6a619ad9bc1b8e8c3ac9f0da5870d55534f37a"></a>kFlagWinSequentialScan&#160;</td><td class="fielddoc"><p>Windows only. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58" name="a2e78d650505b819dd947f255e9d6a619aec4949a90e60a8e20f006dc2859a7d58"></a>kFlagCanDeleteOnClose&#160;</td><td class="fielddoc"><p>Requests permission to delete via DeleteOnClose(). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78" name="a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78"></a>kFlagWinNoExecute&#160;</td><td class="fielddoc"><p>Windows only. Prevents EXECUTE access. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a44b3d51c5757a4f59f47b5c1a6e8f387" name="a44b3d51c5757a4f59f47b5c1a6e8f387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44b3d51c5757a4f59f47b5c1a6e8f387">&#9670;&#160;</a></span>File() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">kiwi::File::File </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classkiwi_1_1_file_path.html">FilePath</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Creates or opens the given file. This will fail with 'access denied' if the <code>path</code> contains path traversal ('..') components.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>The file path. </td></tr>
+    <tr><td class="paramname">flags</td><td><a class="el" href="#a2e78d650505b819dd947f255e9d6a619">Flags</a> for opening or creating </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2e78d650505b819dd947f255e9d6a619">Flags</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a53d85e9599f331db0cf8d8363f01a5c0" name="a53d85e9599f331db0cf8d8363f01a5c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53d85e9599f331db0cf8d8363f01a5c0">&#9670;&#160;</a></span>File() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">kiwi::File::File </td>
+          <td>(</td>
+          <td class="paramtype">ScopedPlatformFile</td>          <td class="paramname"><span class="paramname"><em>platform_file</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Takes ownership of <code>platform_file</code> and sets async to false.</p>
+<p>Takes ownership of <code>platform_file</code> and sets async to the given value. This constructor exists because on Windows you can't check if platform_file is async or not.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">platform_file</td><td>A scoped handle to an already-opened platform-specific file. </td></tr>
+    <tr><td class="paramname">async</td><td>If true, the file will be operated in asynchronous (non-blocking) mode; otherwise, operations will be synchronous.    </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac73e093b86380d33db3010492a4f0f03" name="ac73e093b86380d33db3010492a4f0f03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac73e093b86380d33db3010492a4f0f03">&#9670;&#160;</a></span>File() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">kiwi::File::File </td>
+          <td>(</td>
+          <td class="paramtype">ScopedPlatformFile</td>          <td class="paramname"><span class="paramname"><em>platform_file</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>async</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Takes ownership of <code>platform_file</code> and sets async to the given value. This constructor exists because on Windows you can't check if platform_file is async or not.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">platform_file</td><td>A scoped handle to an already-opened platform-specific file. </td></tr>
+    <tr><td class="paramname">async</td><td>If true, the file will be operated in asynchronous (non-blocking) mode; otherwise, operations will be synchronous. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afbaf995f649310cc94a327d64b7f0831" name="afbaf995f649310cc94a327d64b7f0831"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbaf995f649310cc94a327d64b7f0831">&#9670;&#160;</a></span>ErrorDetails()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> kiwi::File::ErrorDetails </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Note that the way to verify the success of the operation is to use <a class="el" href="#a71faf3633bb71e0af623c1bd2a978940">IsValid()</a>, not this method:</p>
+<div class="fragment"><div class="line">File file(path, flags);</div>
+<div class="line"><span class="keywordflow">if</span> (!file.IsValid())</div>
+<div class="line">  <span class="keywordflow">return</span>;</div>
+</div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>The OS result of opening this file. </dd></dl>
+
+</div>
+</div>
+<a id="af608a12b8bf763738a0b2e31f27e08e7" name="af608a12b8bf763738a0b2e31f27e08e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af608a12b8bf763738a0b2e31f27e08e7">&#9670;&#160;</a></span>IsCreated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::IsCreated </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if a new file was created (or an old one truncated to zero length to simulate a new file, which can happen with kFlagCreateAlways), and false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a71faf3633bb71e0af623c1bd2a978940" name="a71faf3633bb71e0af623c1bd2a978940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71faf3633bb71e0af623c1bd2a978940">&#9670;&#160;</a></span>IsValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::IsValid </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if the handle or fd wrapped by this object is valid. This method doesn't interact with the file system and is thus safe to be called from threads that disallow blocking. </dd></dl>
+
+</div>
+</div>
+<a id="a3606ad7fb26e2a27ec681f3060028eb0" name="a3606ad7fb26e2a27ec681f3060028eb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3606ad7fb26e2a27ec681f3060028eb0">&#9670;&#160;</a></span>ReadAndCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::ReadAndCheck </td>
+          <td>(</td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt;</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Simplified versions of Read() and friends (see below) that check the return value and just return a boolean.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offset</td><td>The byte offset in the file from which to start reading. </td></tr>
+    <tr><td class="paramname">data</td><td>A span representing the buffer to store the read data. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true iff the function read in exactly <code>data.size()</code> bytes of data. </dd></dl>
+
+</div>
+</div>
+<a id="a67118e2790c56e70ed927a9e5f6a43b4" name="a67118e2790c56e70ed927a9e5f6a43b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67118e2790c56e70ed927a9e5f6a43b4">&#9670;&#160;</a></span>Seek()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t kiwi::File::Seek </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#af604bf017dcbfa20966c1ecc71dff572">Whence</a></td>          <td class="paramname"><span class="paramname"><em>whence</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Changes current position in the file to an <code>offset</code> relative to an origin defined by <code>whence</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">whence</td><td>The reference point for the offset. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af604bf017dcbfa20966c1ecc71dff572" title="This explicit mapping matches both FILE_ on Windows and SEEK_ on Linux.">Whence</a>. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offset</td><td>The number of bytes to move the file pointer relative to whence. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new offset from the beginning of the file, or -1 on error. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/kiwi/io/<a class="el" href="file_8hh_source.html">file.hh</a></li>
 <li>src/io/<b>file.cc</b></li>
+<li>src/io/<b>file_posix.cc</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

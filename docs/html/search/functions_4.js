@@ -7,5 +7,6 @@ var searchData=
   ['ends_5fwith_5finsensitive_4',['ends_with_insensitive',['../classkiwi_1_1_string_ref.html#a274f33a8732948f6dddfc23a56fed78d',1,'kiwi::StringRef']]],
   ['endswithseparator_5',['EndsWithSeparator',['../classkiwi_1_1_file_path.html#a673b30597f9ea337be99d6e13e54a705',1,'kiwi::FilePath']]],
   ['equals_5finsensitive_6',['equals_insensitive',['../classkiwi_1_1_string_ref.html#ac8358d88240ae38511a984e107bd16a1',1,'kiwi::StringRef']]],
-  ['extension_7',['Extension',['../classkiwi_1_1_file_path.html#ae4db75fe363d7316cd6b72b7e2bf88aa',1,'kiwi::FilePath']]]
+  ['errordetails_7',['ErrorDetails',['../classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831',1,'kiwi::File']]],
+  ['extension_8',['Extension',['../classkiwi_1_1_file_path.html#ae4db75fe363d7316cd6b72b7e2bf88aa',1,'kiwi::FilePath']]]
 ];

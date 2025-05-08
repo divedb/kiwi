@@ -11,529 +11,529 @@
 \DoxyCodeLine{00007\ \textcolor{comment}{//\ optimize\ reasonably,\ even\ in\ non-\/official\ release\ builds.\ Please\ do\ not}}
 \DoxyCodeLine{00008\ \textcolor{comment}{//\ change\ the\ \`{}CHECK()`\ calls\ back\ to\ \`{}CHECK\_op()`\ calls.}}
 \DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ BASE\_CONTAINERS\_SPAN\_H\_}}
-\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ BASE\_CONTAINERS\_SPAN\_H\_}}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
-\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string.h>}}
-\DoxyCodeLine{00016\ }
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <algorithm>}}
-\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <array>}}
-\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <concepts>}}
-\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <functional>}}
-\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <initializer\_list>}}
-\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <iosfwd>}}
-\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <iterator>}}
-\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <limits>}}
-\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <memory>}}
-\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <optional>}}
-\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <ranges>}}
-\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <span>}}
-\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
-\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <utility>}}
-\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \textcolor{comment}{//\ \#include\ "{}base/check.h"{}}}
-\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/checked\_iterators.hh"{}}}
-\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span\_forward\_internal.hh"{}}}
-\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/integral\_constant\_like.hh"{}}}
-\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
-\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
-\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/cstring\_view.hh"{}}}
-\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/to\_string.hh"{}}}
-\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#include\ "{}kiwi/types/to\_address.hh"{}}}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \textcolor{comment}{//\ A\ span\ is\ a\ view\ of\ contiguous\ elements\ that\ can\ be\ accessed\ like\ an\ array,}}
-\DoxyCodeLine{00044\ \textcolor{comment}{//\ intended\ for\ use\ as\ a\ parameter\ or\ local.\ Unlike\ direct\ use\ of\ pointers\ and}}
-\DoxyCodeLine{00045\ \textcolor{comment}{//\ sizes,\ it\ enforces\ safe\ usage\ (and\ simplifies\ callers);\ unlike\ container}}
-\DoxyCodeLine{00046\ \textcolor{comment}{//\ refs,\ it\ is\ agnostic\ to\ the\ element\ container,\ expressing\ only\ "{}access\ to}}
-\DoxyCodeLine{00047\ \textcolor{comment}{//\ some\ sequence\ of\ elements"{}.\ It\ is\ similar\ to\ \`{}std::string\_view`,\ but\ for}}
-\DoxyCodeLine{00048\ \textcolor{comment}{//\ arbitrary\ elements\ instead\ of\ just\ characters,\ and\ additionally\ allowing}}
-\DoxyCodeLine{00049\ \textcolor{comment}{//\ mutation\ if\ the\ element\ type\ is\ non-\/`const`.}}
-\DoxyCodeLine{00050\ \textcolor{comment}{//}}
-\DoxyCodeLine{00051\ \textcolor{comment}{//\ Spans\ can\ be\ constructed\ from\ arrays,\ range-\/like\ objects\ (generally,\ objects}}
-\DoxyCodeLine{00052\ \textcolor{comment}{//\ which\ expose\ \`{}begin()`,\ \`{}end()`,\ \`{}data()`,\ and\ \`{}size()`),\ and\ initializer}}
-\DoxyCodeLine{00053\ \textcolor{comment}{//\ lists.\ As\ with\ all\ view\ types,\ spans\ do\ not\ own\ the\ underlying\ memory,\ so}}
-\DoxyCodeLine{00054\ \textcolor{comment}{//\ users\ must\ ensure\ they\ do\ not\ outlive\ their\ backing\ stores;\ storing\ a\ span\ as}}
-\DoxyCodeLine{00055\ \textcolor{comment}{//\ a\ member\ object\ is\ usually\ incorrect.\ (For\ the\ rare\ case\ this\ is\ useful,}}
-\DoxyCodeLine{00056\ \textcolor{comment}{//\ prefer\ \`{}raw\_span<>`\ so\ the\ underlying\ storage\ pointer\ will\ be\ protected\ by}}
-\DoxyCodeLine{00057\ \textcolor{comment}{//\ MiraclePtr.)}}
-\DoxyCodeLine{00058\ \textcolor{comment}{//}}
-\DoxyCodeLine{00059\ \textcolor{comment}{//\ Since\ spans\ only\ consist\ of\ a\ pointer\ and\ (for\ dynamic-\/extent\ spans)\ a\ size,}}
-\DoxyCodeLine{00060\ \textcolor{comment}{//\ they\ are\ lightweight;\ constructing\ and\ copying\ spans\ is\ cheap\ and\ they\ should}}
-\DoxyCodeLine{00061\ \textcolor{comment}{//\ be\ passed\ by\ value.}}
-\DoxyCodeLine{00062\ \textcolor{comment}{//}}
-\DoxyCodeLine{00063\ \textcolor{comment}{//\ Scopes\ which\ only\ need\ read\ access\ to\ the\ underlying\ data\ should\ use}}
-\DoxyCodeLine{00064\ \textcolor{comment}{//\ \`{}span<const\ T>`,\ which\ can\ be\ implicitly\ constructed\ from\ \`{}span<T>`.}}
-\DoxyCodeLine{00065\ \textcolor{comment}{//\ Habitually\ using\ \`{}span<const\ T>`\ also\ avoids\ confusing\ compile\ errors\ when}}
-\DoxyCodeLine{00066\ \textcolor{comment}{//\ trying\ to\ construct\ spans\ from\ compile-\/time\ constants\ or\ non-\/borrowed\ ranges,}}
-\DoxyCodeLine{00067\ \textcolor{comment}{//\ which\ won't\ convert\ to\ \`{}span<T>`.}}
-\DoxyCodeLine{00068\ \textcolor{comment}{//}}
-\DoxyCodeLine{00069\ \textcolor{comment}{//\ Without\ span:}}
-\DoxyCodeLine{00070\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{00071\ \textcolor{comment}{//\ \ \ /*\ Read-\/only\ usage\ */}}
-\DoxyCodeLine{00072\ \textcolor{comment}{//}}
-\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ \ //\ Implementation\ must\ avoid\ OOB\ reads.}}
-\DoxyCodeLine{00074\ \textcolor{comment}{//\ \ \ std::string\ HexEncode(const\ uint8\_t*\ data,\ size\_t\ size)\ \{\ ...\ \}}}
-\DoxyCodeLine{00075\ \textcolor{comment}{//}}
-\DoxyCodeLine{00076\ \textcolor{comment}{//\ \ \ //\ Must\ use\ a\ separate\ variable\ to\ avoid\ repeated\ generation\ calls\ below.}}
-\DoxyCodeLine{00077\ \textcolor{comment}{//\ \ \ std::vector<uint8\_t>\ data\_buffer\ =\ GenerateData();}}
-\DoxyCodeLine{00078\ \textcolor{comment}{//\ \ \ //\ Prone\ to\ accidentally\ passing\ the\ wrong\ size.}}
-\DoxyCodeLine{00079\ \textcolor{comment}{//\ \ \ std::string\ r\ =\ HexEncode(data\_buffer.data(),\ data\_buffer.size());}}
-\DoxyCodeLine{00080\ \textcolor{comment}{//}}
-\DoxyCodeLine{00081\ \textcolor{comment}{//\ \ \ /*\ Mutable\ usage\ */}}
-\DoxyCodeLine{00082\ \textcolor{comment}{//}}
-\DoxyCodeLine{00083\ \textcolor{comment}{//\ \ \ //\ Same\ concerns\ apply\ in\ this\ example.}}
-\DoxyCodeLine{00084\ \textcolor{comment}{//\ \ \ ssize\_t\ SafeSNPrintf(char*\ buf,\ size\_t\ N,\ const\ char*\ fmt,\ Args...)\ \{\ ...\ \}}}
-\DoxyCodeLine{00085\ \textcolor{comment}{//}}
-\DoxyCodeLine{00086\ \textcolor{comment}{//\ \ \ char\ str\_buffer[100];}}
-\DoxyCodeLine{00087\ \textcolor{comment}{//\ \ \ SafeSNPrintf(str\_buffer,\ sizeof(str\_buffer),\ "{}Pi\ \string~=\ \%lf"{},\ 3.14);}}
-\DoxyCodeLine{00088\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{00089\ \textcolor{comment}{//}}
-\DoxyCodeLine{00090\ \textcolor{comment}{//\ With\ span:}}
-\DoxyCodeLine{00091\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{00092\ \textcolor{comment}{//\ \ \ /*\ Read-\/only\ usage\ */}}
-\DoxyCodeLine{00093\ \textcolor{comment}{//}}
-\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ //\ Automatically\ \`{}CHECK()`s\ on\ attempted\ OOB\ accesses.}}
-\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ \ std::string\ HexEncode(span<const\ uint8\_t>\ data)\ \{\ ...\ \}}}
-\DoxyCodeLine{00096\ \textcolor{comment}{//}}
-\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ \ //\ Can\ pass\ return\ value\ directly,\ since\ it\ lives\ until\ the\ end\ of\ the\ full}}
-\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ //\ expression,\ outlasting\ the\ function\ call.\ Can't\ pass\ wrong\ size.}}
-\DoxyCodeLine{00099\ \textcolor{comment}{//\ \ \ std::string\ r\ =\ HexEncode(GenerateData());}}
-\DoxyCodeLine{00100\ \textcolor{comment}{//}}
-\DoxyCodeLine{00101\ \textcolor{comment}{//\ \ \ /*\ Mutable\ usage\ */}}
-\DoxyCodeLine{00102\ \textcolor{comment}{//}}
-\DoxyCodeLine{00103\ \textcolor{comment}{//\ \ \ //\ Can\ write\ to\ \`{}buf`,\ but\ only\ within\ bounds.}}
-\DoxyCodeLine{00104\ \textcolor{comment}{//\ \ \ ssize\_t\ SafeSNPrintf(span<char>\ buf,\ const\ char*\ fmt,\ Args...)\ \{\ ...\ \}}}
-\DoxyCodeLine{00105\ \textcolor{comment}{//}}
-\DoxyCodeLine{00106\ \textcolor{comment}{//\ \ \ char\ str\_buffer[100];}}
-\DoxyCodeLine{00107\ \textcolor{comment}{//\ \ \ //\ Automatically\ infers\ span\ size\ as\ array\ size\ (i.e.\ 100).}}
-\DoxyCodeLine{00108\ \textcolor{comment}{//\ \ \ SafeSNPrintf(str\_buffer,\ "{}Pi\ \string~=\ \%lf"{},\ 3.14);}}
-\DoxyCodeLine{00109\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
-\DoxyCodeLine{00110\ \textcolor{comment}{//}}
-\DoxyCodeLine{00111\ \textcolor{comment}{//\ Dynamic-\/extent\ vs.\ fixed-\/extent\ spans}}
-\DoxyCodeLine{00112\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00113\ \textcolor{comment}{//\ By\ default\ spans\ have\ dynamic\ extent,\ which\ means\ that\ the\ size\ is\ available}}
-\DoxyCodeLine{00114\ \textcolor{comment}{//\ at\ runtime\ via\ \`{}size()`,\ a\ la\ other\ containers\ and\ views.\ By\ using\ a\ second}}
-\DoxyCodeLine{00115\ \textcolor{comment}{//\ template\ parameter\ or\ passing\ a\ \`{}std::integral\_constant`\ to\ the\ second\ (size)}}
-\DoxyCodeLine{00116\ \textcolor{comment}{//\ constructor\ arg,\ a\ span's\ extent\ can\ be\ fixed\ at\ compile\ time;\ this\ can\ move}}
-\DoxyCodeLine{00117\ \textcolor{comment}{//\ some\ constraint\ checks\ to\ compile\ time\ and\ slightly\ improve\ codegen,\ at\ the}}
-\DoxyCodeLine{00118\ \textcolor{comment}{//\ cost\ of\ verbosity\ and\ more\ template\ instantiations.\ Methods\ like\ \`{}first()`\ or}}
-\DoxyCodeLine{00119\ \textcolor{comment}{//\ \`{}subspan()`\ also\ provide\ templated\ overloads\ that\ produce\ fixed-\/extent\ spans;}}
-\DoxyCodeLine{00120\ \textcolor{comment}{//\ these\ are\ preferred\ when\ the\ size\ is\ known\ at\ compile\ time,\ in\ part\ because}}
-\DoxyCodeLine{00121\ \textcolor{comment}{//\ e.g.\ \`{}first(1)`\ is\ a\ compile-\/error\ (the\ \`{}int`\ arg\ is\ not\ compatible\ with\ the}}
-\DoxyCodeLine{00122\ \textcolor{comment}{//\ \`{}StrictNumeric<size\_t>`\ param;\ use\ \`{}first(1u)`\ instead),\ but\ \`{}first<1>()`\ is}}
-\DoxyCodeLine{00123\ \textcolor{comment}{//\ not.}}
-\DoxyCodeLine{00124\ \textcolor{comment}{//}}
-\DoxyCodeLine{00125\ \textcolor{comment}{//\ A\ fixed-\/extent\ span\ implicitly\ converts\ to\ a\ dynamic-\/extent\ span\ (e.g.}}
-\DoxyCodeLine{00126\ \textcolor{comment}{//\ \`{}span<int,\ 6>`\ is\ implicitly\ convertible\ to\ \`{}span<int>`),\ so\ most\ code\ that}}
-\DoxyCodeLine{00127\ \textcolor{comment}{//\ operates\ on\ spans\ of\ arbitrary\ length\ can\ just\ accept\ a\ \`{}span<T>`;\ there\ is}}
-\DoxyCodeLine{00128\ \textcolor{comment}{//\ no\ need\ to\ add\ an\ additional\ overload\ for\ specially\ handling\ the\ \`{}span<T,\ N>`}}
-\DoxyCodeLine{00129\ \textcolor{comment}{//\ case.}}
-\DoxyCodeLine{00130\ \textcolor{comment}{//}}
-\DoxyCodeLine{00131\ \textcolor{comment}{//\ There\ are\ several\ ways\ to\ go\ from\ a\ dynamic-\/extent\ span\ to\ a\ fixed-\/extent}}
-\DoxyCodeLine{00132\ \textcolor{comment}{//\ span:}}
-\DoxyCodeLine{00133\ \textcolor{comment}{//\ -\/\ Explicit\ construction\ of\ \`{}span<T,\ N>`,\ which\ \`{}CHECK()`s\ if\ the\ size\ doesn't}}
-\DoxyCodeLine{00134\ \textcolor{comment}{//\ \ \ match.}}
-\DoxyCodeLine{00135\ \textcolor{comment}{//\ -\/\ Construction\ of\ \`{}span(T*,\ fixed\_extent<N>)`,\ which\ is\ equivalent\ to\ the}}
-\DoxyCodeLine{00136\ \textcolor{comment}{//\ \ \ above.}}
-\DoxyCodeLine{00137\ \textcolor{comment}{//\ -\/\ \`{}to\_fixed\_extent<N>()`,\ which\ returns\ \`{}std::nullopt`\ if\ the\ size\ doesn't}}
-\DoxyCodeLine{00138\ \textcolor{comment}{//\ \ \ match.}}
-\DoxyCodeLine{00139\ \textcolor{comment}{//\ -\/\ \`{}first<N>()`,\ \`{}last<N>()`,\ and\ \`{}subspan<Index,\ N>()`,\ which\ \`{}CHECK()`\ if}}
-\DoxyCodeLine{00140\ \textcolor{comment}{//\ \ \ the\ size\ is\ insufficient.}}
-\DoxyCodeLine{00141\ \textcolor{comment}{//}}
-\DoxyCodeLine{00142\ \textcolor{comment}{//\ Spans,\ \`{}const`,\ and\ pointer-\/type\ element\ types}}
-\DoxyCodeLine{00143\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00144\ \textcolor{comment}{//\ Pointer-\/type\ elements\ can\ make\ translating\ \`{}const`\ from\ container\ types\ to}}
-\DoxyCodeLine{00145\ \textcolor{comment}{//\ spans\ confusing.\ Fundamentally,\ if\ you\ analogize\ types\ this\ way:}}
-\DoxyCodeLine{00146\ \textcolor{comment}{//\ \ \ \`{}std::vector<T>`\ \ \ \ \ \ \ =>\ \`{}span<T>`}}
-\DoxyCodeLine{00147\ \textcolor{comment}{//\ Then\ this\ would\ be\ const\ version:}}
-\DoxyCodeLine{00148\ \textcolor{comment}{//\ \ \ \`{}const\ std::vector<T>`\ =>\ \`{}span<const\ T>`}}
-\DoxyCodeLine{00149\ \textcolor{comment}{//\ \ \ \ (or,\ more\ verbosely:)\ =>\ \`{}span<std::add\_const\_t<T>>`}}
-\DoxyCodeLine{00150\ \textcolor{comment}{//}}
-\DoxyCodeLine{00151\ \textcolor{comment}{//\ However,\ note\ that\ if\ \`{}T`\ is\ \`{}int*`,\ then\ \`{}const\ T`\ is\ \`{}int*\ const`.\ So:}}
-\DoxyCodeLine{00152\ \textcolor{comment}{//\ \ \ \`{}const\ std::vector<int*>`\ \ \ \ \ \ \ =>\ \`{}span<int*\ const>`}}
-\DoxyCodeLine{00153\ \textcolor{comment}{//\ \ \ \`{}std::vector<const\ int*>`\ \ \ \ \ \ \ =>\ \`{}span<const\ int*>`}}
-\DoxyCodeLine{00154\ \textcolor{comment}{//\ \ \ \`{}const\ std::vector<const\ int*>`\ =>\ \`{}span<const\ int*\ const>`}}
-\DoxyCodeLine{00155\ \textcolor{comment}{//}}
-\DoxyCodeLine{00156\ \textcolor{comment}{//\ (N.B.\ There\ is\ no\ entry\ above\ for\ \`{}std::vector<int*\ const>`,\ since\ per\ the}}
-\DoxyCodeLine{00157\ \textcolor{comment}{//\ C++\ standard,\ \`{}std::vector`'s\ element\ type\ must\ be\ non-\/const.)}}
-\DoxyCodeLine{00158\ \textcolor{comment}{//}}
-\DoxyCodeLine{00159\ \textcolor{comment}{//\ Byte\ spans,\ \`{}std::has\_unique\_object\_representations\_v<>`,\ and\ conversions}}
-\DoxyCodeLine{00160\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00161\ \textcolor{comment}{//\ Because\ byte\ spans\ are\ often\ used\ to\ copy\ and\ hash\ objects,\ the\ byte\ span}}
-\DoxyCodeLine{00162\ \textcolor{comment}{//\ conversion\ functions\ (e.g.\ \`{}as\_bytes()`,\ \`{}as\_byte\_span()`)\ require\ the}}
-\DoxyCodeLine{00163\ \textcolor{comment}{//\ element\ type\ to\ meet\ \`{}std::has\_unique\_object\_representations\_v<>`.\ For\ types}}
-\DoxyCodeLine{00164\ \textcolor{comment}{//\ which\ do\ not\ meet\ this\ requirement\ but\ need\ conversion\ to\ a\ byte\ span,\ there}}
-\DoxyCodeLine{00165\ \textcolor{comment}{//\ are\ two\ workarounds:}}
-\DoxyCodeLine{00166\ \textcolor{comment}{//\ \ \ 1.\ If\ the\ type\ is\ safe\ to\ convert\ to\ a\ byte\ span\ in\ general,\ specialize}}
-\DoxyCodeLine{00167\ \textcolor{comment}{//\ \ \ \ \ \ \`{}kCanSafelyConvertToByteSpan<T>`\ to\ be\ true\ for\ it.\ For\ example,\ Blink's}}
-\DoxyCodeLine{00168\ \textcolor{comment}{//\ \ \ \ \ \ \`{}AtomicString`\ is\ not\ trivially\ copyable,\ but\ it\ is\ interned,\ so\ hashing}}
-\DoxyCodeLine{00169\ \textcolor{comment}{//\ \ \ \ \ \ and\ comparing\ the\ hashed\ values\ is\ safe.}}
-\DoxyCodeLine{00170\ \textcolor{comment}{//\ \ \ 2.\ If\ the\ type\ is\ not\ safe\ in\ general\ but\ is\ safe\ for\ a\ particular\ use}}
-\DoxyCodeLine{00171\ \textcolor{comment}{//\ \ \ \ \ \ case,\ pass\ \`{}base::allow\_nonunique\_obj`\ as\ the\ first\ arg\ to\ the\ byte\ span}}
-\DoxyCodeLine{00172\ \textcolor{comment}{//\ \ \ \ \ \ conversion\ functions.\ For\ example,\ floating-\/point\ values\ are\ not\ unique}}
-\DoxyCodeLine{00173\ \textcolor{comment}{//\ \ \ \ \ \ (among\ other\ reasons,\ because\ \`{}+0`\ and\ \`{}-\/0`\ are\ distinct\ but\ compare}}
-\DoxyCodeLine{00174\ \textcolor{comment}{//\ \ \ \ \ \ equal),\ but\ they\ are\ trivially\ copyable,\ so\ serializing\ them\ to\ disk\ and}}
-\DoxyCodeLine{00175\ \textcolor{comment}{//\ \ \ \ \ \ then\ deserializing\ is\ OK.}}
-\DoxyCodeLine{00176\ \textcolor{comment}{//}}
-\DoxyCodeLine{00177\ \textcolor{comment}{//\ Spans\ using\ \`{}raw\_ptr<T>`\ for\ internal\ storage}}
-\DoxyCodeLine{00178\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00179\ \textcolor{comment}{//\ Provided\ via\ the\ type\ alias\ \`{}raw\_span<T[,\ N]>`\ (see\ base/memory/raw\_span.h).}}
-\DoxyCodeLine{00180\ \textcolor{comment}{//\ Use\ only\ for\ the\ uncommon\ case\ when\ a\ span\ should\ be\ a\ data\ member\ of\ an}}
-\DoxyCodeLine{00181\ \textcolor{comment}{//\ object;\ for\ locals\ and\ params,\ use\ \`{}span`\ (similarly\ to\ where\ you'd\ use\ a}}
-\DoxyCodeLine{00182\ \textcolor{comment}{//\ \`{}raw\_ptr<T>`\ vs.\ a\ \`{}T*`).}}
-\DoxyCodeLine{00183\ \textcolor{comment}{//}}
-\DoxyCodeLine{00184\ \textcolor{comment}{//\ Beware\ the\ risk\ of\ dangling\ pointers!\ The\ object\ owning\ the\ member\ span\ must}}
-\DoxyCodeLine{00185\ \textcolor{comment}{//\ not\ access\ that\ span's\ data\ after\ the\ backing\ storage's\ lifetime\ ends.\ This}}
-\DoxyCodeLine{00186\ \textcolor{comment}{//\ is\ the\ same\ risk\ as\ with\ all\ spans,\ but\ members\ tend\ to\ be\ longer-\/lived\ than}}
-\DoxyCodeLine{00187\ \textcolor{comment}{//\ params/locals,\ and\ thus\ more\ prone\ to\ dangerous\ use.}}
-\DoxyCodeLine{00188\ \textcolor{comment}{//}}
-\DoxyCodeLine{00189\ \textcolor{comment}{//\ Differences\ from\ \`{}std::span`}}
-\DoxyCodeLine{00190\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00191\ \textcolor{comment}{//\ https://eel.is/c++draft/views\ contains\ the\ latest\ C++\ draft\ of\ \`{}std::span`}}
-\DoxyCodeLine{00192\ \textcolor{comment}{//\ and\ related\ utilities.\ Chromium\ aims\ to\ follow\ the\ draft\ except\ where\ noted}}
-\DoxyCodeLine{00193\ \textcolor{comment}{//\ below;\ please\ report\ other\ divergences\ you\ find.}}
-\DoxyCodeLine{00194\ \textcolor{comment}{//}}
-\DoxyCodeLine{00195\ \textcolor{comment}{//\ Differences\ from\ [span.syn]:}}
-\DoxyCodeLine{00196\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}fixed\_extent<N>`\ as\ an\ alias\ to}}
-\DoxyCodeLine{00197\ \textcolor{comment}{//\ \ \ \`{}std::integral\_constant<size\_t,\ N>`,\ to\ aid\ in\ constructing\ fixed-\/extent}}
-\DoxyCodeLine{00198\ \textcolor{comment}{//\ \ \ spans\ from\ pointers.}}
-\DoxyCodeLine{00199\ \textcolor{comment}{//}}
-\DoxyCodeLine{00200\ \textcolor{comment}{//\ Differences\ from\ [span.overview]:}}
-\DoxyCodeLine{00201\ \textcolor{comment}{//\ -\/\ \`{}span`\ takes\ an\ optional\ third\ template\ argument\ that\ can\ be\ used\ to}}
-\DoxyCodeLine{00202\ \textcolor{comment}{//\ \ \ customize\ the\ underlying\ storage\ pointer\ type.\ This\ allows\ implementing}}
-\DoxyCodeLine{00203\ \textcolor{comment}{//\ \ \ \`{}raw\_span`\ as\ a\ specialization.}}
-\DoxyCodeLine{00204\ \textcolor{comment}{//}}
-\DoxyCodeLine{00205\ \textcolor{comment}{//\ Differences\ from\ [span.cons]:}}
-\DoxyCodeLine{00206\ \textcolor{comment}{//\ -\/\ The\ constructor\ which\ takes\ an\ iterator\ and\ a\ count\ uses}}
-\DoxyCodeLine{00207\ \textcolor{comment}{//\ \ \ \`{}StrictNumeric<size\_type>`\ instead\ of\ \`{}size\_type`\ to\ prevent\ unsafe\ type}}
-\DoxyCodeLine{00208\ \textcolor{comment}{//\ \ \ conversions.}}
-\DoxyCodeLine{00209\ \textcolor{comment}{//\ -\/\ Omits\ constructors\ from\ \`{}std::array`,\ since\ separating\ these\ from\ the\ range}}
-\DoxyCodeLine{00210\ \textcolor{comment}{//\ \ \ constructor\ is\ only\ useful\ to\ mark\ them\ \`{}noexcept`,\ and\ Chromium\ doesn't}}
-\DoxyCodeLine{00211\ \textcolor{comment}{//\ \ \ care\ about\ that.}}
-\DoxyCodeLine{00212\ \textcolor{comment}{//\ -\/\ Fixed-\/extent\ constructor\ from\ range\ is\ only\ \`{}explicit`\ for\ ranges\ whose}}
-\DoxyCodeLine{00213\ \textcolor{comment}{//\ \ \ extent\ cannot\ be\ statically\ computed.\ This\ matches\ the\ spirit\ of}}
-\DoxyCodeLine{00214\ \textcolor{comment}{//\ \ \ \`{}std::span`,\ which\ handles\ these\ (so\ far\ as\ it\ is\ aware)\ via\ other}}
-\DoxyCodeLine{00215\ \textcolor{comment}{//\ \ \ overloads.\ Without\ this,\ we\ would\ not\ only\ need\ the\ dedicated\ constructors}}
-\DoxyCodeLine{00216\ \textcolor{comment}{//\ \ \ from\ \`{}std::array`,\ we\ would\ also\ need\ dedicated\ constructors\ from}}
-\DoxyCodeLine{00217\ \textcolor{comment}{//\ \ \ fixed-\/extent\ \`{}std::span`.}}
-\DoxyCodeLine{00218\ \textcolor{comment}{//\ -\/\ Adds\ move\ construction\ and\ assignment.\ These\ can\ avoid\ refcount\ churn\ when}}
-\DoxyCodeLine{00219\ \textcolor{comment}{//\ \ \ the\ storage\ pointer\ is\ not\ \`{}T*`.\ Not\ necessary\ for\ \`{}std::span`\ since\ it}}
-\DoxyCodeLine{00220\ \textcolor{comment}{//\ \ \ does\ not\ allow\ customizing\ the\ storage\ pointer\ type.}}
-\DoxyCodeLine{00221\ \textcolor{comment}{//\ -\/\ Provides\ implicit\ conversion\ in\ both\ directions\ between\ fixed-\/extent\ \`{}span`}}
-\DoxyCodeLine{00222\ \textcolor{comment}{//\ \ \ and\ \`{}std::span`.\ The\ general-\/purpose\ range\ constructors\ that\ would}}
-\DoxyCodeLine{00223\ \textcolor{comment}{//\ \ \ otherwise\ handle\ these\ cases\ are\ explicit\ for\ both\ fixed-\/extent\ span\ types.}}
-\DoxyCodeLine{00224\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::copy\_from[\_nonoverlapping]()`\ as\ wrappers}}
-\DoxyCodeLine{00225\ \textcolor{comment}{//\ \ \ around\ \`{}std::ranges::copy()`\ that\ enforce\ equal-\/size\ spans.}}
-\DoxyCodeLine{00226\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::copy\_prefix\_from()`\ to\ allow\ copying\ into}}
-\DoxyCodeLine{00227\ \textcolor{comment}{//\ \ \ the\ beginning\ of\ the\ current\ span.}}
-\DoxyCodeLine{00228\ \textcolor{comment}{//}}
-\DoxyCodeLine{00229\ \textcolor{comment}{//\ Differences\ from\ [span.deduct]:}}
-\DoxyCodeLine{00230\ \textcolor{comment}{//\ -\/\ The\ deduction\ guide\ from\ a\ range\ creates\ fixed-\/extent\ spans\ if\ the\ source}}
-\DoxyCodeLine{00231\ \textcolor{comment}{//\ \ \ extent\ is\ available\ at\ compile\ time.}}
-\DoxyCodeLine{00232\ \textcolor{comment}{//}}
-\DoxyCodeLine{00233\ \textcolor{comment}{//\ Differences\ from\ [span.sub]:}}
-\DoxyCodeLine{00234\ \textcolor{comment}{//\ -\/\ As\ in\ [span.cons],\ \`{}size\_t`\ parameters\ are\ changed\ to}}
-\DoxyCodeLine{00235\ \textcolor{comment}{//\ \ \ \`{}StrictNumeric<size\_type>`.}}
-\DoxyCodeLine{00236\ \textcolor{comment}{//\ -\/\ There\ are\ separate\ overloads\ for\ one-\/arg\ and\ two-\/arg\ forms\ of\ subspan,}}
-\DoxyCodeLine{00237\ \textcolor{comment}{//\ \ \ and\ the\ two-\/arg\ form\ does\ not\ accept\ dynamic\_extent\ as\ a\ count.}}
-\DoxyCodeLine{00238\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::split\_at()`\ to\ split\ a\ single\ span\ into}}
-\DoxyCodeLine{00239\ \textcolor{comment}{//\ \ \ two\ at\ a\ given\ offset.}}
-\DoxyCodeLine{00240\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::take\_first[\_elem]()`\ to\ remove\ the\ first}}
-\DoxyCodeLine{00241\ \textcolor{comment}{//\ \ \ portion\ of\ a\ dynamic-\/extent\ span\ and\ return\ it.}}
-\DoxyCodeLine{00242\ \textcolor{comment}{//}}
-\DoxyCodeLine{00243\ \textcolor{comment}{//\ Differences\ from\ [span.obs]:}}
-\DoxyCodeLine{00244\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::operator==()`\ to\ check\ whether\ two\ spans}}
-\DoxyCodeLine{00245\ \textcolor{comment}{//\ \ \ refer\ to\ equal-\/sized\ ranges\ of\ equal\ objects.\ This\ was\ intentionally}}
-\DoxyCodeLine{00246\ \textcolor{comment}{//\ \ \ removed\ from\ \`{}std::span`\ because\ it\ makes\ the\ type\ non-\/Regular;\ see}}
-\DoxyCodeLine{00247\ \textcolor{comment}{//\ \ \ http://wg21.link/p1085\ for\ details.}}
-\DoxyCodeLine{00248\ \textcolor{comment}{//\ -\/\ Similarly,\ provides\ \`{}span::operator<=>()`,\ which\ performs\ lexicographic}}
-\DoxyCodeLine{00249\ \textcolor{comment}{//\ \ \ comparison\ between\ spans.}}
-\DoxyCodeLine{00250\ \textcolor{comment}{//}}
-\DoxyCodeLine{00251\ \textcolor{comment}{//\ Differences\ from\ [span.elem]:}}
-\DoxyCodeLine{00252\ \textcolor{comment}{//\ -\/\ Because\ Chromium\ does\ not\ use\ exceptions,\ \`{}span::at()`\ behaves\ identically}}
-\DoxyCodeLine{00253\ \textcolor{comment}{//\ \ \ to\ \`{}span::operator[]()`\ (i.e.\ it\ \`{}CHECK()`s\ on\ out-\/of-\/range\ indexes\ rather}}
-\DoxyCodeLine{00254\ \textcolor{comment}{//\ \ \ than\ throwing).}}
-\DoxyCodeLine{00255\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::get\_at()`\ to\ return\ a\ pointer\ (rather\ than}}
-\DoxyCodeLine{00256\ \textcolor{comment}{//\ \ \ reference)\ to\ an\ element.\ This\ is\ necessary\ if\ the\ backing\ memory\ may\ be}}
-\DoxyCodeLine{00257\ \textcolor{comment}{//\ \ \ uninitialized,\ since\ forming\ a\ reference\ would\ be\ UB.}}
-\DoxyCodeLine{00258\ \textcolor{comment}{//}}
-\DoxyCodeLine{00259\ \textcolor{comment}{//\ Differences\ from\ [span.objectrep]:}}
-\DoxyCodeLine{00260\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::to\_fixed\_extent<N>()`\ to\ attempt}}
-\DoxyCodeLine{00261\ \textcolor{comment}{//\ \ \ conversion\ to\ a\ fixed-\/extent\ span,\ and\ return\ null\ on\ failure.}}
-\DoxyCodeLine{00262\ \textcolor{comment}{//\ -\/\ Because\ Chromium\ bans\ \`{}std::byte`,\ \`{}as\_[writable\_]bytes()`\ use\ \`{}uint8\_t`}}
-\DoxyCodeLine{00263\ \textcolor{comment}{//\ \ \ instead\ of\ \`{}std::byte`\ as\ the\ returned\ element\ type.}}
-\DoxyCodeLine{00264\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}as\_[writable\_]chars()`\ and\ \`{}as\_string\_view()`}}
-\DoxyCodeLine{00265\ \textcolor{comment}{//\ \ \ to\ convert\ to\ other\ "{}view\ of\ bytes"{}-\/like\ objects.}}
-\DoxyCodeLine{00266\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ an\ \`{}operator<<()`\ overload\ that\ accepts\ a\ span}}
-\DoxyCodeLine{00267\ \textcolor{comment}{//\ \ \ and\ prints\ a\ byte\ representation.\ Also\ provides\ a\ \`{}PrintTo()`\ overload\ to}}
-\DoxyCodeLine{00268\ \textcolor{comment}{//\ \ \ convince\ GoogleTest\ to\ use\ this\ operator\ to\ print.}}
-\DoxyCodeLine{00269\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}[byte\_]span\_from\_ref()`\ to\ convert\ single}}
-\DoxyCodeLine{00270\ \textcolor{comment}{//\ \ \ (non-\/range)\ objects\ to\ spans.}}
-\DoxyCodeLine{00271\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}[byte\_]span\_[with\_nul\_]from\_cstring()`\ to}}
-\DoxyCodeLine{00272\ \textcolor{comment}{//\ \ \ convert\ \`{}const\ char[]`\ literals\ to\ spans.}}
-\DoxyCodeLine{00273\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}[byte\_]span\_with\_nul\_from\_cstring\_view()`\ to}}
-\DoxyCodeLine{00274\ \textcolor{comment}{//\ \ \ convert\ \`{}basic\_cstring\_view<T>`\ to\ spans,\ preserving\ the\ null\ terminator.}}
-\DoxyCodeLine{00275\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}as\_[writable\_]byte\_span()`\ to\ convert}}
-\DoxyCodeLine{00276\ \textcolor{comment}{//\ \ \ spanifiable\ objects\ directly\ to\ byte\ spans.}}
-\DoxyCodeLine{00277\ \textcolor{comment}{//\ -\/\ For\ safety,\ bans\ types\ which\ do\ not\ meet}}
-\DoxyCodeLine{00278\ \textcolor{comment}{//\ \ \ \`{}std::has\_unique\_object\_representations\_v<>`\ from\ all\ byte\ span\ conversion}}
-\DoxyCodeLine{00279\ \textcolor{comment}{//\ \ \ functions\ by\ default.\ See\ more\ detailed\ comments\ above\ for\ workarounds.}}
-\DoxyCodeLine{00280\ }
-\DoxyCodeLine{00281\ \textcolor{keyword}{namespace\ }base\ \{}
-\DoxyCodeLine{00282\ }
-\DoxyCodeLine{00283\ \textcolor{comment}{//\ Provides\ a\ compile-\/time\ fixed\ extent\ to\ the\ \`{}count`\ argument\ of\ the\ span}}
-\DoxyCodeLine{00284\ \textcolor{comment}{//\ constructor.}}
-\DoxyCodeLine{00285\ \textcolor{comment}{//}}
-\DoxyCodeLine{00286\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
-\DoxyCodeLine{00287\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
-\DoxyCodeLine{00288\ \textcolor{keyword}{using\ }fixed\_extent\ =\ std::integral\_constant<size\_t,\ N>;}
-\DoxyCodeLine{00289\ }
-\DoxyCodeLine{00290\ \}\ \ \textcolor{comment}{//\ namespace\ base}}
-\DoxyCodeLine{00291\ }
-\DoxyCodeLine{00292\ \textcolor{comment}{//\ Mark\ \`{}span`\ as\ satisfying\ the\ \`{}view`\ and\ \`{}borrowed\_range`\ concepts.\ This}}
-\DoxyCodeLine{00293\ \textcolor{comment}{//\ should\ be\ done\ before\ the\ definition\ of\ \`{}span`,\ so\ that\ any\ inlined\ calls\ to}}
-\DoxyCodeLine{00294\ \textcolor{comment}{//\ range\ functionality\ use\ the\ correct\ specializations.}}
-\DoxyCodeLine{00295\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
-\DoxyCodeLine{00296\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
-\DoxyCodeLine{00297\ \ \ \ \ std::ranges::enable\_view<kiwi::span<ElementType,\ Extent,\ InternalPtrType>>\ =}
-\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keyword}{true};}
-\DoxyCodeLine{00299\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
-\DoxyCodeLine{00300\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ std::ranges::enable\_borrowed\_range<}
-\DoxyCodeLine{00301\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<ElementType,\ Extent,\ InternalPtrType>}}>\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00302\ }
-\DoxyCodeLine{00303\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
-\DoxyCodeLine{00304\ }
-\DoxyCodeLine{00305\ \textcolor{comment}{//\ Allows\ global\ use\ of\ a\ type\ for\ conversion\ to\ byte\ spans.}}
-\DoxyCodeLine{00306\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00307\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kCanSafelyConvertToByteSpan\ =}
-\DoxyCodeLine{00308\ \ \ \ \ std::has\_unique\_object\_representations\_v<T>;}
-\DoxyCodeLine{00309\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
-\DoxyCodeLine{00310\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kCanSafelyConvertToByteSpan<std::pair<T,\ U>>\ =}
-\DoxyCodeLine{00311\ \ \ \ \ kCanSafelyConvertToByteSpan<std::remove\_cvref\_t<T>>\ \&\&}
-\DoxyCodeLine{00312\ \ \ \ \ kCanSafelyConvertToByteSpan<std::remove\_cvref\_t<U>>;}
-\DoxyCodeLine{00313\ }
-\DoxyCodeLine{00314\ \textcolor{comment}{//\ Type\ tag\ to\ provide\ to\ byte\ span\ conversion\ functions\ to\ bypass}}
-\DoxyCodeLine{00315\ \textcolor{comment}{//\ \`{}std::has\_unique\_object\_representations\_v<>`\ check.}}
-\DoxyCodeLine{00316\ \textcolor{keyword}{struct\ }allow\_nonunique\_obj\_t\ \{}
-\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{explicit}\ allow\_nonunique\_obj\_t()\ =\ \textcolor{keywordflow}{default};}
-\DoxyCodeLine{00318\ \};}
-\DoxyCodeLine{00319\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}}\ allow\_nonunique\_obj\{\};}
-\DoxyCodeLine{00320\ }
-\DoxyCodeLine{00321\ \textcolor{keyword}{namespace\ }internal\ \{}
-\DoxyCodeLine{00322\ }
-\DoxyCodeLine{00323\ \textcolor{comment}{//\ Exposition-\/only\ concept\ from\ [span.syn]}}
-\DoxyCodeLine{00324\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00325\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ MaybeStaticExt\ =\ dynamic\_extent;}
-\DoxyCodeLine{00326\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{requires}\ IntegralConstantLike<T>}
-\DoxyCodeLine{00328\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ MaybeStaticExt<T>\ =\ \{T::value\};}
-\DoxyCodeLine{00329\ }
-\DoxyCodeLine{00330\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ From,\ \textcolor{keyword}{typename}\ To>}
-\DoxyCodeLine{00331\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion}}\ =\ std::is\_convertible\_v<From\ (*)[],\ To\ (*)[]>;}
-\DoxyCodeLine{00332\ }
-\DoxyCodeLine{00333\ \textcolor{comment}{//\ Akin\ to\ \`{}std::constructible\_from<span,\ T>`,\ but\ meant\ to\ be\ used\ in\ a}}
-\DoxyCodeLine{00334\ \textcolor{comment}{//\ type-\/deducing\ context\ where\ we\ don't\ know\ what\ args\ would\ be\ deduced;}}
-\DoxyCodeLine{00335\ \textcolor{comment}{//\ \`{}std::constructible\_from`\ can't\ be\ directly\ used\ in\ such\ a\ case\ since\ the}}
-\DoxyCodeLine{00336\ \textcolor{comment}{//\ type\ parameters\ must\ be\ fully-\/specified\ (e.g.\ \`{}span<int>`),\ requiring\ us\ to}}
-\DoxyCodeLine{00337\ \textcolor{comment}{//\ have\ that\ knowledge\ already.}}
-\DoxyCodeLine{00338\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00339\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom}}\ =\ \textcolor{keyword}{requires}(T\&\&\ t)\ \{\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(std::forward<T>(t));\ \};}
-\DoxyCodeLine{00340\ }
-\DoxyCodeLine{00341\ \textcolor{comment}{//\ Returns\ the\ element\ type\ of\ \`{}span(T)`.}}
-\DoxyCodeLine{00342\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom<T>}}}
-\DoxyCodeLine{00344\ \textcolor{keyword}{using\ }ElementTypeOfSpanConstructedFrom\ =}
-\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keyword}{typename}\ \textcolor{keyword}{decltype}(\mbox{\hyperlink{classkiwi_1_1span}{span}}(std::declval<T>()))::element\_type;}
-\DoxyCodeLine{00346\ }
-\DoxyCodeLine{00347\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ It>}
-\DoxyCodeLine{00348\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{CompatibleIter}}\ =}
-\DoxyCodeLine{00349\ \ \ \ \ std::contiguous\_iterator<It>\ \&\&}
-\DoxyCodeLine{00350\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion<std::remove\_reference\_t<std::iter\_reference\_t<It>}}>,\ T>;}
-\DoxyCodeLine{00351\ }
-\DoxyCodeLine{00352\ \textcolor{comment}{//\ True\ when\ \`{}T`\ is\ a\ \`{}span`.}}
-\DoxyCodeLine{00353\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00354\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsSpan\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00355\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
-\DoxyCodeLine{00356\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsSpan<span<ElementType,\ Extent,\ InternalPtrType>>\ =}
-\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{true};}
-\DoxyCodeLine{00358\ }
-\DoxyCodeLine{00359\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ R>}
-\DoxyCodeLine{00360\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{CompatibleRange}}\ =}
-\DoxyCodeLine{00361\ \ \ \ \ std::ranges::contiguous\_range<R>\ \&\&\ std::ranges::sized\_range<R>\ \&\&}
-\DoxyCodeLine{00362\ \ \ \ \ (std::ranges::borrowed\_range<R>\ ||\ (std::is\_const\_v<T>))\ \&\&}
-\DoxyCodeLine{00363\ \ \ \ \ \textcolor{comment}{//\ \`{}span`s\ should\ go\ through\ the\ copy\ constructor.}}
-\DoxyCodeLine{00364\ \ \ \ \ (!kIsSpan<std::remove\_cvref\_t<R>>\ \&\&}
-\DoxyCodeLine{00365\ \ \ \ \ \ \textcolor{comment}{//\ Arrays\ should\ go\ through\ the\ array\ constructors.}}
-\DoxyCodeLine{00366\ \ \ \ \ \ (!std::is\_array\_v<std::remove\_cvref\_t<R>>))\ \&\&}
-\DoxyCodeLine{00367\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion}}<}
-\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ std::remove\_reference\_t<std::ranges::range\_reference\_t<R>>,\ T>;}
-\DoxyCodeLine{00369\ }
-\DoxyCodeLine{00370\ \textcolor{comment}{//\ Whether\ source\ object\ extent\ \`{}X`\ will\ work\ to\ create\ a\ span\ of\ fixed\ extent}}
-\DoxyCodeLine{00371\ \textcolor{comment}{//\ \`{}N`.\ This\ is\ not\ intended\ for\ use\ in\ dynamic-\/extent\ spans.}}
-\DoxyCodeLine{00372\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N,\ \textcolor{keywordtype}{size\_t}\ X>}
-\DoxyCodeLine{00373\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_fixed_extent_constructible_from_extent}{FixedExtentConstructibleFromExtent}}\ =\ X\ ==\ N\ ||\ X\ ==\ dynamic\_extent;}
-\DoxyCodeLine{00374\ }
-\DoxyCodeLine{00375\ \textcolor{comment}{//\ Computes\ a\ fixed\ extent\ if\ possible\ from\ a\ source\ container\ type\ \`{}T`.}}
-\DoxyCodeLine{00376\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00377\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl\ =\ dynamic\_extent;}
-\DoxyCodeLine{00378\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{requires}\ \textcolor{keyword}{requires}\ \{\ std::tuple\_size<T>();\ \}}
-\DoxyCodeLine{00380\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<T>\ =\ std::tuple\_size\_v<T>;}
-\DoxyCodeLine{00381\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
-\DoxyCodeLine{00382\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<T[N]>\ =\ N;}
-\DoxyCodeLine{00383\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
-\DoxyCodeLine{00384\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<std::span<T,\ N>>\ =\ N;}
-\DoxyCodeLine{00385\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N,\ \textcolor{keyword}{typename}\ InternalPtrType>}
-\DoxyCodeLine{00386\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<span<T,\ N,\ InternalPtrType>>\ =\ N;}
-\DoxyCodeLine{00387\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00388\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtent\ =}
-\DoxyCodeLine{00389\ \ \ \ \ kComputedExtentImpl<std::remove\_cvref\_t<T>>;}
-\DoxyCodeLine{00390\ }
-\DoxyCodeLine{00391\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00392\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{CanSafelyConvertToByteSpan}}\ =}
-\DoxyCodeLine{00393\ \ \ \ \ kCanSafelyConvertToByteSpan<std::remove\_cvref\_t<T>>;}
-\DoxyCodeLine{00394\ }
-\DoxyCodeLine{00395\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00396\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{ByteSpanConstructibleFrom}}\ =}
-\DoxyCodeLine{00397\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom<T>}}\ \&\&}
-\DoxyCodeLine{00398\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{CanSafelyConvertToByteSpan<ElementTypeOfSpanConstructedFrom<T>}}>;}
-\DoxyCodeLine{00399\ }
-\DoxyCodeLine{00400\ \textcolor{comment}{//\ Allows\ one-\/off\ use\ of\ a\ type\ that\ wouldn't\ normally\ convert\ to\ a\ byte\ span.}}
-\DoxyCodeLine{00401\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00402\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{CanSafelyConvertNonUniqueToByteSpan}}\ =}
-\DoxyCodeLine{00403\ \ \ \ \ \textcolor{comment}{//\ Non-\/trivially-\/copyable\ elements\ usually\ aren't\ safe\ even\ to\ serialize;}}
-\DoxyCodeLine{00404\ \ \ \ \ \textcolor{comment}{//\ when\ they\ are\ that's\ normally\ unconditionally\ true\ and\ can\ be\ handled}}
-\DoxyCodeLine{00405\ \ \ \ \ \textcolor{comment}{//\ using\ \`{}kCanSafelyConvertToByteSpan`.}}
-\DoxyCodeLine{00406\ \ \ \ \ std::is\_trivially\_copyable\_v<T>\ \&\&}
-\DoxyCodeLine{00407\ \ \ \ \ \textcolor{comment}{//\ If\ this\ fails,\ \`{}allow\_nonunique\_obj`\ wasn't\ necessary.}}
-\DoxyCodeLine{00408\ \ \ \ \ !std::has\_unique\_object\_representations\_v<T>;}
-\DoxyCodeLine{00409\ }
-\DoxyCodeLine{00410\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00411\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{ByteSpanConstructibleFromNonUnique}}\ =}
-\DoxyCodeLine{00412\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom<T>}}\ \&\&}
-\DoxyCodeLine{00413\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{CanSafelyConvertNonUniqueToByteSpan<ElementTypeOfSpanConstructedFrom<T>}}>;}
-\DoxyCodeLine{00414\ }
-\DoxyCodeLine{00415\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ByteType,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,}
-\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ InternalPtrType>}
-\DoxyCodeLine{00417\ \ \ \textcolor{keyword}{requires}((std::same\_as<std::remove\_const\_t<ByteType>,\ \textcolor{keywordtype}{char}>\ ||}
-\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ std::same\_as<std::remove\_const\_t<ByteType>,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}>)\ \&\&}
-\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ (std::is\_const\_v<ByteType>\ ||\ !std::is\_const\_v<ElementType>))}
-\DoxyCodeLine{00420\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(}
-\DoxyCodeLine{00421\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<ElementType,\ Extent,\ InternalPtrType>}}\ s)\ \textcolor{keyword}{noexcept}\ \{}
-\DoxyCodeLine{00422\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kByteExtent\ =}
-\DoxyCodeLine{00423\ \ \ \ \ \ \ Extent\ ==\ dynamic\_extent\ ?\ dynamic\_extent\ :\ \textcolor{keyword}{sizeof}(ElementType)\ *\ Extent;}
-\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}s.data()`\ points\ to\ at\ least\ \`{}s.size\_bytes()`\ bytes'\ worth\ of}}
-\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ valid\ elements,\ so\ the\ size\ computed\ below\ must\ only\ contain\ valid}}
-\DoxyCodeLine{00426\ \ \ \textcolor{comment}{//\ elements.\ Since\ \`{}ByteType`\ is\ an\ alias\ to\ a\ character\ type,\ it\ has\ a\ size}}
-\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ of\ 1\ byte,\ the\ resulting\ pointer\ has\ no\ alignment\ concerns,\ and\ it\ is\ not}}
-\DoxyCodeLine{00428\ \ \ \textcolor{comment}{//\ UB\ to\ access\ memory\ contents\ inside\ the\ allocation\ through\ it.}}
-\DoxyCodeLine{00429\ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span<ByteType,\ kByteExtent>}}(}
-\DoxyCodeLine{00430\ \ \ \ \ \ \ \textcolor{keyword}{reinterpret\_cast<}ByteType*\textcolor{keyword}{>}(s.data()),\ s.size\_bytes()));}
-\DoxyCodeLine{00431\ \}}
-\DoxyCodeLine{00432\ }
-\DoxyCodeLine{00433\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
-\DoxyCodeLine{00434\ }
-\DoxyCodeLine{00435\ \textcolor{comment}{//\ [span]:\ class\ \`{}span`\ (non-\/dynamic\ \`{}Extent`s)}}
-\DoxyCodeLine{00436\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
-\DoxyCodeLine{00437\ \textcolor{keyword}{class\ }GSL\_POINTER\ span\ \{}
-\DoxyCodeLine{00438\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00439\ \ \ \textcolor{keyword}{using\ }element\_type\ =\ ElementType;}
-\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ std::remove\_cv\_t<element\_type>;}
-\DoxyCodeLine{00441\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ size\_t;}
-\DoxyCodeLine{00442\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ ptrdiff\_t;}
-\DoxyCodeLine{00443\ \ \ \textcolor{keyword}{using\ }pointer\ =\ element\_type*;}
-\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ \textcolor{keyword}{const}\ element\_type*;}
-\DoxyCodeLine{00445\ \ \ \textcolor{keyword}{using\ }reference\ =\ element\_type\&;}
-\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{const}\ element\_type\&;}
-\DoxyCodeLine{00447\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{CheckedContiguousIterator<element\_type>}};}
-\DoxyCodeLine{00448\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ CheckedContiguousConstIterator<element\_type>;}
-\DoxyCodeLine{00449\ \ \ \textcolor{keyword}{using\ }reverse\_iterator\ =\ std::reverse\_iterator<iterator>;}
-\DoxyCodeLine{00450\ \ \ \textcolor{comment}{//\ TODO(C++23):\ When\ \`{}std::const\_iterator<>`\ is\ available,\ switch\ to}}
-\DoxyCodeLine{00451\ \ \ \textcolor{comment}{//\ \`{}std::const\_iterator<reverse\_iterator>`\ as\ the\ standard\ specifies.}}
-\DoxyCodeLine{00452\ \ \ \textcolor{keyword}{using\ }const\_reverse\_iterator\ =\ std::reverse\_iterator<const\_iterator>;}
-\DoxyCodeLine{00453\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ size\_type\ extent\ =\ Extent;}
-\DoxyCodeLine{00454\ }
-\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ [span.cons]:\ Constructors,\ copy,\ and\ assignment}}
-\DoxyCodeLine{00456\ \ \ \textcolor{comment}{//\ Default\ constructor.}}
-\DoxyCodeLine{00457\ \ \ \textcolor{keyword}{constexpr}\ span()\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00458\ \ \ \ \ \textcolor{keyword}{requires}(extent\ ==\ 0)}
-\DoxyCodeLine{00459\ \ \ =\ \textcolor{keywordflow}{default};}
-\DoxyCodeLine{00460\ }
-\DoxyCodeLine{00461\ \ \ \textcolor{comment}{//\ Iterator\ +\ count.}}
-\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ It>}
-\DoxyCodeLine{00463\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{internal::CompatibleIter<element\_type,\ It>}})}
-\DoxyCodeLine{00464\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}first`\ must\ point\ to\ the\ first\ of\ at\ least\ \`{}count`\ contiguous}}
-\DoxyCodeLine{00465\ \ \ \textcolor{comment}{//\ valid\ elements,\ or\ the\ span\ will\ allow\ access\ to\ invalid\ elements,}}
-\DoxyCodeLine{00466\ \ \ \textcolor{comment}{//\ resulting\ in\ UB.}}
-\DoxyCodeLine{00467\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(}
-\DoxyCodeLine{00468\ \ \ \ \ \ \ It\ first,\ [[maybe\_unused]]\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<size\_type>}}\ count)}
-\DoxyCodeLine{00469\ \ \ \ \ \ \ :\ data\_(to\_address(first))\ \{}
-\DoxyCodeLine{00470\ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
-\DoxyCodeLine{00471\ \ \ \ \ \textcolor{comment}{//\ CHECK(size\_type\{count\}\ ==\ extent);}}
-\DoxyCodeLine{00472\ }
-\DoxyCodeLine{00473\ \ \ \ \ \textcolor{comment}{//\ Non-\/zero\ \`{}count`\ implies\ non-\/null\ \`{}data\_`.\ Use\ \`{}SpanOrSize<T>`\ to}}
-\DoxyCodeLine{00474\ \ \ \ \ \textcolor{comment}{//\ represent\ a\ size\ that\ might\ not\ be\ accompanied\ by\ the\ actual\ data.}}
-\DoxyCodeLine{00475\ \ \ \ \ \textcolor{comment}{//\ DCHECK(count\ ==\ 0\ ||\ !!data\_);}}
-\DoxyCodeLine{00476\ \ \ \}}
-\DoxyCodeLine{00477\ }
-\DoxyCodeLine{00478\ \ \ \textcolor{comment}{//\ Iterator\ +\ sentinel.}}
-\DoxyCodeLine{00479\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ It,\ \textcolor{keyword}{typename}\ End>}
-\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{internal::CompatibleIter<element\_type,\ It>}}\ \&\&}
-\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::sized\_sentinel\_for<End,\ It>\ \&\&}
-\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ !std::is\_convertible\_v<End,\ size\_t>)}
-\DoxyCodeLine{00483\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}first`\ and\ \`{}last`\ must\ be\ for\ the\ same\ allocation\ and\ all\ elements}}
-\DoxyCodeLine{00484\ \ \ \textcolor{comment}{//\ in\ the\ range\ [first,\ last)\ must\ be\ valid,\ or\ the\ span\ will\ allow\ access\ to}}
-\DoxyCodeLine{00485\ \ \ \textcolor{comment}{//\ invalid\ elements,\ resulting\ in\ UB.}}
-\DoxyCodeLine{00486\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(It\ first,\ End\ last)}
-\DoxyCodeLine{00487\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ caller\ must\ guarantee\ that\ \`{}first`\ and\ \`{}last`\ point\ into}}
-\DoxyCodeLine{00488\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ same\ allocation.\ In\ this\ case,\ the\ extent\ will\ be\ the\ number\ of}}
-\DoxyCodeLine{00489\ \ \ \ \ \ \ \textcolor{comment}{//\ elements\ between\ the\ iterators\ and\ thus\ a\ valid\ size\ for\ the\ pointer\ to}}
-\DoxyCodeLine{00490\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ element\ at\ \`{}first`.}}
-\DoxyCodeLine{00491\ \ \ \ \ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00492\ \ \ \ \ \ \ \textcolor{comment}{//\ It\ is\ safe\ to\ check\ for\ underflow\ after\ subtraction\ because\ the}}
-\DoxyCodeLine{00493\ \ \ \ \ \ \ \textcolor{comment}{//\ underflow\ itself\ is\ not\ UB\ and\ \`{}size\_`\ is\ not\ converted\ to\ an\ invalid}}
-\DoxyCodeLine{00494\ \ \ \ \ \ \ \textcolor{comment}{//\ pointer\ (which\ would\ be\ UB)\ before\ the\ check.}}
-\DoxyCodeLine{00495\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(span(first,\ \textcolor{keyword}{static\_cast<}size\_type\textcolor{keyword}{>}(last\ -\/\ first)))\ \{}
-\DoxyCodeLine{00496\ \ \ \ \ \textcolor{comment}{//\ Verify\ \`{}last\ -\/\ first`\ did\ not\ underflow.}}
-\DoxyCodeLine{00497\ \ \ \ \ \textcolor{comment}{//\ CHECK(first\ <=\ last);}}
-\DoxyCodeLine{00498\ \ \ \}}
-\DoxyCodeLine{00499\ }
-\DoxyCodeLine{00500\ \ \ \textcolor{comment}{//\ Array\ of\ size\ \`{}extent`.}}
-\DoxyCodeLine{00501\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00502\ \ \ \textcolor{keyword}{constexpr}\ span(}
-\DoxyCodeLine{00503\ \ \ \ \ \ \ std::type\_identity\_t<element\_type>\ (\&arr\ LIFETIME\_BOUND)[extent])\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00504\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ type\ signature\ guarantees\ \`{}arr`\ contains\ \`{}extent`\ elements.}}
-\DoxyCodeLine{00505\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(span(arr,\ extent))\ \{\}}
-\DoxyCodeLine{00506\ }
-\DoxyCodeLine{00507\ \ \ \textcolor{comment}{//\ Range.}}
-\DoxyCodeLine{00508\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keywordtype}{size\_t}\ N\ =\ \textcolor{keywordtype}{int}ernal::kComputedExtent<R>>}
-\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{internal::CompatibleRange<element\_type,\ R>}}\ \&\&}
-\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_fixed_extent_constructible_from_extent}{internal::FixedExtentConstructibleFromExtent<extent,\ N>}})}
-\DoxyCodeLine{00511\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00512\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}(N\ !=\ extent)\ span(R\&\&\ range\ LIFETIME\_BOUND)}
-\DoxyCodeLine{00513\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}std::ranges::size()`\ returns\ the\ number\ of\ elements}}
-\DoxyCodeLine{00514\ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}std::ranges::data()`\ will\ point\ to,\ so\ accessing\ those\ elements\ will}}
-\DoxyCodeLine{00515\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ safe.}}
-\DoxyCodeLine{00516\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(}
-\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ span(std::ranges::data(range),\ std::ranges::size(range)))\ \{\}}
-\DoxyCodeLine{00518\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keywordtype}{size\_t}\ N\ =\ \textcolor{keywordtype}{int}ernal::kComputedExtent<R>>}
-\DoxyCodeLine{00519\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{internal::CompatibleRange<element\_type,\ R>}}\ \&\&}
-\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_fixed_extent_constructible_from_extent}{internal::FixedExtentConstructibleFromExtent<extent,\ N>}}\ \&\&}
-\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<R>)}
-\DoxyCodeLine{00522\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00523\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(R\&\&\ range)}
-\DoxyCodeLine{00524\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}std::ranges::size()`\ returns\ the\ number\ of\ elements}}
-\DoxyCodeLine{00525\ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}std::ranges::data()`\ will\ point\ to,\ so\ accessing\ those\ elements\ will}}
-\DoxyCodeLine{00526\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ safe.}}
-\DoxyCodeLine{00527\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(}
-\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \ \ span(std::ranges::data(range),\ std::ranges::size(range)))\ \{\}}
-\DoxyCodeLine{00529\ }
-\DoxyCodeLine{00530\ \ \ \textcolor{comment}{//\ Initializer\ list.}}
-\DoxyCodeLine{00531\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00532\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(std::initializer\_list<value\_type>\ il\ LIFETIME\_BOUND)}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <initializer\_list>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <iosfwd>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <ranges>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <span>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \#include\ "{}base/check.h"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/checked\_iterators.hh"{}}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span\_forward\_internal.hh"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/integral\_constant\_like.hh"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/cstring\_view.hh"{}}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/to\_string.hh"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ "{}kiwi/types/to\_address.hh"{}}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ A\ span\ is\ a\ view\ of\ contiguous\ elements\ that\ can\ be\ accessed\ like\ an\ array,}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ intended\ for\ use\ as\ a\ parameter\ or\ local.\ Unlike\ direct\ use\ of\ pointers\ and}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ sizes,\ it\ enforces\ safe\ usage\ (and\ simplifies\ callers);\ unlike\ container}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ refs,\ it\ is\ agnostic\ to\ the\ element\ container,\ expressing\ only\ "{}access\ to}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ some\ sequence\ of\ elements"{}.\ It\ is\ similar\ to\ \`{}std::string\_view`,\ but\ for}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ arbitrary\ elements\ instead\ of\ just\ characters,\ and\ additionally\ allowing}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ mutation\ if\ the\ element\ type\ is\ non-\/`const`.}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Spans\ can\ be\ constructed\ from\ arrays,\ range-\/like\ objects\ (generally,\ objects}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ which\ expose\ \`{}begin()`,\ \`{}end()`,\ \`{}data()`,\ and\ \`{}size()`),\ and\ initializer}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ lists.\ As\ with\ all\ view\ types,\ spans\ do\ not\ own\ the\ underlying\ memory,\ so}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ users\ must\ ensure\ they\ do\ not\ outlive\ their\ backing\ stores;\ storing\ a\ span\ as}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ a\ member\ object\ is\ usually\ incorrect.\ (For\ the\ rare\ case\ this\ is\ useful,}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ prefer\ \`{}raw\_span<>`\ so\ the\ underlying\ storage\ pointer\ will\ be\ protected\ by}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ MiraclePtr.)}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ Since\ spans\ only\ consist\ of\ a\ pointer\ and\ (for\ dynamic-\/extent\ spans)\ a\ size,}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ they\ are\ lightweight;\ constructing\ and\ copying\ spans\ is\ cheap\ and\ they\ should}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ be\ passed\ by\ value.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ Scopes\ which\ only\ need\ read\ access\ to\ the\ underlying\ data\ should\ use}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ \`{}span<const\ T>`,\ which\ can\ be\ implicitly\ constructed\ from\ \`{}span<T>`.}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ Habitually\ using\ \`{}span<const\ T>`\ also\ avoids\ confusing\ compile\ errors\ when}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ trying\ to\ construct\ spans\ from\ compile-\/time\ constants\ or\ non-\/borrowed\ ranges,}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ which\ won't\ convert\ to\ \`{}span<T>`.}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ Without\ span:}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ \ \ /*\ Read-\/only\ usage\ */}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ \ \ //\ Implementation\ must\ avoid\ OOB\ reads.}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ \ std::string\ HexEncode(const\ uint8\_t*\ data,\ size\_t\ size)\ \{\ ...\ \}}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ \ \ //\ Must\ use\ a\ separate\ variable\ to\ avoid\ repeated\ generation\ calls\ below.}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ \ \ std::vector<uint8\_t>\ data\_buffer\ =\ GenerateData();}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ \ \ //\ Prone\ to\ accidentally\ passing\ the\ wrong\ size.}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ \ \ std::string\ r\ =\ HexEncode(data\_buffer.data(),\ data\_buffer.size());}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ \ \ /*\ Mutable\ usage\ */}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ \ \ //\ Same\ concerns\ apply\ in\ this\ example.}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ \ \ ssize\_t\ SafeSNPrintf(char*\ buf,\ size\_t\ N,\ const\ char*\ fmt,\ Args...)\ \{\ ...\ \}}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ \ \ char\ str\_buffer[100];}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ \ \ SafeSNPrintf(str\_buffer,\ sizeof(str\_buffer),\ "{}Pi\ \string~=\ \%lf"{},\ 3.14);}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ With\ span:}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ \ \ /*\ Read-\/only\ usage\ */}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ \ \ //\ Automatically\ \`{}CHECK()`s\ on\ attempted\ OOB\ accesses.}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ std::string\ HexEncode(span<const\ uint8\_t>\ data)\ \{\ ...\ \}}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \ \ //\ Can\ pass\ return\ value\ directly,\ since\ it\ lives\ until\ the\ end\ of\ the\ full}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ \ //\ expression,\ outlasting\ the\ function\ call.\ Can't\ pass\ wrong\ size.}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ std::string\ r\ =\ HexEncode(GenerateData());}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ \ /*\ Mutable\ usage\ */}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ \ \ //\ Can\ write\ to\ \`{}buf`,\ but\ only\ within\ bounds.}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ \ \ ssize\_t\ SafeSNPrintf(span<char>\ buf,\ const\ char*\ fmt,\ Args...)\ \{\ ...\ \}}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ \ \ char\ str\_buffer[100];}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ \ \ //\ Automatically\ infers\ span\ size\ as\ array\ size\ (i.e.\ 100).}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ \ \ SafeSNPrintf(str\_buffer,\ "{}Pi\ \string~=\ \%lf"{},\ 3.14);}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//}}
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ Dynamic-\/extent\ vs.\ fixed-\/extent\ spans}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//\ By\ default\ spans\ have\ dynamic\ extent,\ which\ means\ that\ the\ size\ is\ available}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ at\ runtime\ via\ \`{}size()`,\ a\ la\ other\ containers\ and\ views.\ By\ using\ a\ second}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//\ template\ parameter\ or\ passing\ a\ \`{}std::integral\_constant`\ to\ the\ second\ (size)}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ constructor\ arg,\ a\ span's\ extent\ can\ be\ fixed\ at\ compile\ time;\ this\ can\ move}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ some\ constraint\ checks\ to\ compile\ time\ and\ slightly\ improve\ codegen,\ at\ the}}
+\DoxyCodeLine{00117\ \textcolor{comment}{//\ cost\ of\ verbosity\ and\ more\ template\ instantiations.\ Methods\ like\ \`{}first()`\ or}}
+\DoxyCodeLine{00118\ \textcolor{comment}{//\ \`{}subspan()`\ also\ provide\ templated\ overloads\ that\ produce\ fixed-\/extent\ spans;}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//\ these\ are\ preferred\ when\ the\ size\ is\ known\ at\ compile\ time,\ in\ part\ because}}
+\DoxyCodeLine{00120\ \textcolor{comment}{//\ e.g.\ \`{}first(1)`\ is\ a\ compile-\/error\ (the\ \`{}int`\ arg\ is\ not\ compatible\ with\ the}}
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ \`{}StrictNumeric<size\_t>`\ param;\ use\ \`{}first(1u)`\ instead),\ but\ \`{}first<1>()`\ is}}
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ not.}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ A\ fixed-\/extent\ span\ implicitly\ converts\ to\ a\ dynamic-\/extent\ span\ (e.g.}}
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ \`{}span<int,\ 6>`\ is\ implicitly\ convertible\ to\ \`{}span<int>`),\ so\ most\ code\ that}}
+\DoxyCodeLine{00126\ \textcolor{comment}{//\ operates\ on\ spans\ of\ arbitrary\ length\ can\ just\ accept\ a\ \`{}span<T>`;\ there\ is}}
+\DoxyCodeLine{00127\ \textcolor{comment}{//\ no\ need\ to\ add\ an\ additional\ overload\ for\ specially\ handling\ the\ \`{}span<T,\ N>`}}
+\DoxyCodeLine{00128\ \textcolor{comment}{//\ case.}}
+\DoxyCodeLine{00129\ \textcolor{comment}{//}}
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ There\ are\ several\ ways\ to\ go\ from\ a\ dynamic-\/extent\ span\ to\ a\ fixed-\/extent}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ span:}}
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ -\/\ Explicit\ construction\ of\ \`{}span<T,\ N>`,\ which\ \`{}CHECK()`s\ if\ the\ size\ doesn't}}
+\DoxyCodeLine{00133\ \textcolor{comment}{//\ \ \ match.}}
+\DoxyCodeLine{00134\ \textcolor{comment}{//\ -\/\ Construction\ of\ \`{}span(T*,\ fixed\_extent<N>)`,\ which\ is\ equivalent\ to\ the}}
+\DoxyCodeLine{00135\ \textcolor{comment}{//\ \ \ above.}}
+\DoxyCodeLine{00136\ \textcolor{comment}{//\ -\/\ \`{}to\_fixed\_extent<N>()`,\ which\ returns\ \`{}std::nullopt`\ if\ the\ size\ doesn't}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\ \ \ match.}}
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ -\/\ \`{}first<N>()`,\ \`{}last<N>()`,\ and\ \`{}subspan<Index,\ N>()`,\ which\ \`{}CHECK()`\ if}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//\ \ \ the\ size\ is\ insufficient.}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//}}
+\DoxyCodeLine{00141\ \textcolor{comment}{//\ Spans,\ \`{}const`,\ and\ pointer-\/type\ element\ types}}
+\DoxyCodeLine{00142\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00143\ \textcolor{comment}{//\ Pointer-\/type\ elements\ can\ make\ translating\ \`{}const`\ from\ container\ types\ to}}
+\DoxyCodeLine{00144\ \textcolor{comment}{//\ spans\ confusing.\ Fundamentally,\ if\ you\ analogize\ types\ this\ way:}}
+\DoxyCodeLine{00145\ \textcolor{comment}{//\ \ \ \`{}std::vector<T>`\ \ \ \ \ \ \ =>\ \`{}span<T>`}}
+\DoxyCodeLine{00146\ \textcolor{comment}{//\ Then\ this\ would\ be\ const\ version:}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//\ \ \ \`{}const\ std::vector<T>`\ =>\ \`{}span<const\ T>`}}
+\DoxyCodeLine{00148\ \textcolor{comment}{//\ \ \ \ (or,\ more\ verbosely:)\ =>\ \`{}span<std::add\_const\_t<T>>`}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//}}
+\DoxyCodeLine{00150\ \textcolor{comment}{//\ However,\ note\ that\ if\ \`{}T`\ is\ \`{}int*`,\ then\ \`{}const\ T`\ is\ \`{}int*\ const`.\ So:}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ \ \ \`{}const\ std::vector<int*>`\ \ \ \ \ \ \ =>\ \`{}span<int*\ const>`}}
+\DoxyCodeLine{00152\ \textcolor{comment}{//\ \ \ \`{}std::vector<const\ int*>`\ \ \ \ \ \ \ =>\ \`{}span<const\ int*>`}}
+\DoxyCodeLine{00153\ \textcolor{comment}{//\ \ \ \`{}const\ std::vector<const\ int*>`\ =>\ \`{}span<const\ int*\ const>`}}
+\DoxyCodeLine{00154\ \textcolor{comment}{//}}
+\DoxyCodeLine{00155\ \textcolor{comment}{//\ (N.B.\ There\ is\ no\ entry\ above\ for\ \`{}std::vector<int*\ const>`,\ since\ per\ the}}
+\DoxyCodeLine{00156\ \textcolor{comment}{//\ C++\ standard,\ \`{}std::vector`'s\ element\ type\ must\ be\ non-\/const.)}}
+\DoxyCodeLine{00157\ \textcolor{comment}{//}}
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ Byte\ spans,\ \`{}std::has\_unique\_object\_representations\_v<>`,\ and\ conversions}}
+\DoxyCodeLine{00159\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00160\ \textcolor{comment}{//\ Because\ byte\ spans\ are\ often\ used\ to\ copy\ and\ hash\ objects,\ the\ byte\ span}}
+\DoxyCodeLine{00161\ \textcolor{comment}{//\ conversion\ functions\ (e.g.\ \`{}as\_bytes()`,\ \`{}as\_byte\_span()`)\ require\ the}}
+\DoxyCodeLine{00162\ \textcolor{comment}{//\ element\ type\ to\ meet\ \`{}std::has\_unique\_object\_representations\_v<>`.\ For\ types}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//\ which\ do\ not\ meet\ this\ requirement\ but\ need\ conversion\ to\ a\ byte\ span,\ there}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ are\ two\ workarounds:}}
+\DoxyCodeLine{00165\ \textcolor{comment}{//\ \ \ 1.\ If\ the\ type\ is\ safe\ to\ convert\ to\ a\ byte\ span\ in\ general,\ specialize}}
+\DoxyCodeLine{00166\ \textcolor{comment}{//\ \ \ \ \ \ \`{}kCanSafelyConvertToByteSpan<T>`\ to\ be\ true\ for\ it.\ For\ example,\ Blink's}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//\ \ \ \ \ \ \`{}AtomicString`\ is\ not\ trivially\ copyable,\ but\ it\ is\ interned,\ so\ hashing}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//\ \ \ \ \ \ and\ comparing\ the\ hashed\ values\ is\ safe.}}
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ \ \ 2.\ If\ the\ type\ is\ not\ safe\ in\ general\ but\ is\ safe\ for\ a\ particular\ use}}
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ \ \ \ \ \ case,\ pass\ \`{}base::allow\_nonunique\_obj`\ as\ the\ first\ arg\ to\ the\ byte\ span}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//\ \ \ \ \ \ conversion\ functions.\ For\ example,\ floating-\/point\ values\ are\ not\ unique}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ \ \ \ \ \ (among\ other\ reasons,\ because\ \`{}+0`\ and\ \`{}-\/0`\ are\ distinct\ but\ compare}}
+\DoxyCodeLine{00173\ \textcolor{comment}{//\ \ \ \ \ \ equal),\ but\ they\ are\ trivially\ copyable,\ so\ serializing\ them\ to\ disk\ and}}
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ \ \ \ \ \ then\ deserializing\ is\ OK.}}
+\DoxyCodeLine{00175\ \textcolor{comment}{//}}
+\DoxyCodeLine{00176\ \textcolor{comment}{//\ Spans\ using\ \`{}raw\_ptr<T>`\ for\ internal\ storage}}
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00178\ \textcolor{comment}{//\ Provided\ via\ the\ type\ alias\ \`{}raw\_span<T[,\ N]>`\ (see\ base/memory/raw\_span.h).}}
+\DoxyCodeLine{00179\ \textcolor{comment}{//\ Use\ only\ for\ the\ uncommon\ case\ when\ a\ span\ should\ be\ a\ data\ member\ of\ an}}
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ object;\ for\ locals\ and\ params,\ use\ \`{}span`\ (similarly\ to\ where\ you'd\ use\ a}}
+\DoxyCodeLine{00181\ \textcolor{comment}{//\ \`{}raw\_ptr<T>`\ vs.\ a\ \`{}T*`).}}
+\DoxyCodeLine{00182\ \textcolor{comment}{//}}
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ Beware\ the\ risk\ of\ dangling\ pointers!\ The\ object\ owning\ the\ member\ span\ must}}
+\DoxyCodeLine{00184\ \textcolor{comment}{//\ not\ access\ that\ span's\ data\ after\ the\ backing\ storage's\ lifetime\ ends.\ This}}
+\DoxyCodeLine{00185\ \textcolor{comment}{//\ is\ the\ same\ risk\ as\ with\ all\ spans,\ but\ members\ tend\ to\ be\ longer-\/lived\ than}}
+\DoxyCodeLine{00186\ \textcolor{comment}{//\ params/locals,\ and\ thus\ more\ prone\ to\ dangerous\ use.}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//}}
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ Differences\ from\ \`{}std::span`}}
+\DoxyCodeLine{00189\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00190\ \textcolor{comment}{//\ https://eel.is/c++draft/views\ contains\ the\ latest\ C++\ draft\ of\ \`{}std::span`}}
+\DoxyCodeLine{00191\ \textcolor{comment}{//\ and\ related\ utilities.\ Chromium\ aims\ to\ follow\ the\ draft\ except\ where\ noted}}
+\DoxyCodeLine{00192\ \textcolor{comment}{//\ below;\ please\ report\ other\ divergences\ you\ find.}}
+\DoxyCodeLine{00193\ \textcolor{comment}{//}}
+\DoxyCodeLine{00194\ \textcolor{comment}{//\ Differences\ from\ [span.syn]:}}
+\DoxyCodeLine{00195\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}fixed\_extent<N>`\ as\ an\ alias\ to}}
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ \ \ \`{}std::integral\_constant<size\_t,\ N>`,\ to\ aid\ in\ constructing\ fixed-\/extent}}
+\DoxyCodeLine{00197\ \textcolor{comment}{//\ \ \ spans\ from\ pointers.}}
+\DoxyCodeLine{00198\ \textcolor{comment}{//}}
+\DoxyCodeLine{00199\ \textcolor{comment}{//\ Differences\ from\ [span.overview]:}}
+\DoxyCodeLine{00200\ \textcolor{comment}{//\ -\/\ \`{}span`\ takes\ an\ optional\ third\ template\ argument\ that\ can\ be\ used\ to}}
+\DoxyCodeLine{00201\ \textcolor{comment}{//\ \ \ customize\ the\ underlying\ storage\ pointer\ type.\ This\ allows\ implementing}}
+\DoxyCodeLine{00202\ \textcolor{comment}{//\ \ \ \`{}raw\_span`\ as\ a\ specialization.}}
+\DoxyCodeLine{00203\ \textcolor{comment}{//}}
+\DoxyCodeLine{00204\ \textcolor{comment}{//\ Differences\ from\ [span.cons]:}}
+\DoxyCodeLine{00205\ \textcolor{comment}{//\ -\/\ The\ constructor\ which\ takes\ an\ iterator\ and\ a\ count\ uses}}
+\DoxyCodeLine{00206\ \textcolor{comment}{//\ \ \ \`{}StrictNumeric<size\_type>`\ instead\ of\ \`{}size\_type`\ to\ prevent\ unsafe\ type}}
+\DoxyCodeLine{00207\ \textcolor{comment}{//\ \ \ conversions.}}
+\DoxyCodeLine{00208\ \textcolor{comment}{//\ -\/\ Omits\ constructors\ from\ \`{}std::array`,\ since\ separating\ these\ from\ the\ range}}
+\DoxyCodeLine{00209\ \textcolor{comment}{//\ \ \ constructor\ is\ only\ useful\ to\ mark\ them\ \`{}noexcept`,\ and\ Chromium\ doesn't}}
+\DoxyCodeLine{00210\ \textcolor{comment}{//\ \ \ care\ about\ that.}}
+\DoxyCodeLine{00211\ \textcolor{comment}{//\ -\/\ Fixed-\/extent\ constructor\ from\ range\ is\ only\ \`{}explicit`\ for\ ranges\ whose}}
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ \ \ extent\ cannot\ be\ statically\ computed.\ This\ matches\ the\ spirit\ of}}
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ \ \ \`{}std::span`,\ which\ handles\ these\ (so\ far\ as\ it\ is\ aware)\ via\ other}}
+\DoxyCodeLine{00214\ \textcolor{comment}{//\ \ \ overloads.\ Without\ this,\ we\ would\ not\ only\ need\ the\ dedicated\ constructors}}
+\DoxyCodeLine{00215\ \textcolor{comment}{//\ \ \ from\ \`{}std::array`,\ we\ would\ also\ need\ dedicated\ constructors\ from}}
+\DoxyCodeLine{00216\ \textcolor{comment}{//\ \ \ fixed-\/extent\ \`{}std::span`.}}
+\DoxyCodeLine{00217\ \textcolor{comment}{//\ -\/\ Adds\ move\ construction\ and\ assignment.\ These\ can\ avoid\ refcount\ churn\ when}}
+\DoxyCodeLine{00218\ \textcolor{comment}{//\ \ \ the\ storage\ pointer\ is\ not\ \`{}T*`.\ Not\ necessary\ for\ \`{}std::span`\ since\ it}}
+\DoxyCodeLine{00219\ \textcolor{comment}{//\ \ \ does\ not\ allow\ customizing\ the\ storage\ pointer\ type.}}
+\DoxyCodeLine{00220\ \textcolor{comment}{//\ -\/\ Provides\ implicit\ conversion\ in\ both\ directions\ between\ fixed-\/extent\ \`{}span`}}
+\DoxyCodeLine{00221\ \textcolor{comment}{//\ \ \ and\ \`{}std::span`.\ The\ general-\/purpose\ range\ constructors\ that\ would}}
+\DoxyCodeLine{00222\ \textcolor{comment}{//\ \ \ otherwise\ handle\ these\ cases\ are\ explicit\ for\ both\ fixed-\/extent\ span\ types.}}
+\DoxyCodeLine{00223\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::copy\_from[\_nonoverlapping]()`\ as\ wrappers}}
+\DoxyCodeLine{00224\ \textcolor{comment}{//\ \ \ around\ \`{}std::ranges::copy()`\ that\ enforce\ equal-\/size\ spans.}}
+\DoxyCodeLine{00225\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::copy\_prefix\_from()`\ to\ allow\ copying\ into}}
+\DoxyCodeLine{00226\ \textcolor{comment}{//\ \ \ the\ beginning\ of\ the\ current\ span.}}
+\DoxyCodeLine{00227\ \textcolor{comment}{//}}
+\DoxyCodeLine{00228\ \textcolor{comment}{//\ Differences\ from\ [span.deduct]:}}
+\DoxyCodeLine{00229\ \textcolor{comment}{//\ -\/\ The\ deduction\ guide\ from\ a\ range\ creates\ fixed-\/extent\ spans\ if\ the\ source}}
+\DoxyCodeLine{00230\ \textcolor{comment}{//\ \ \ extent\ is\ available\ at\ compile\ time.}}
+\DoxyCodeLine{00231\ \textcolor{comment}{//}}
+\DoxyCodeLine{00232\ \textcolor{comment}{//\ Differences\ from\ [span.sub]:}}
+\DoxyCodeLine{00233\ \textcolor{comment}{//\ -\/\ As\ in\ [span.cons],\ \`{}size\_t`\ parameters\ are\ changed\ to}}
+\DoxyCodeLine{00234\ \textcolor{comment}{//\ \ \ \`{}StrictNumeric<size\_type>`.}}
+\DoxyCodeLine{00235\ \textcolor{comment}{//\ -\/\ There\ are\ separate\ overloads\ for\ one-\/arg\ and\ two-\/arg\ forms\ of\ subspan,}}
+\DoxyCodeLine{00236\ \textcolor{comment}{//\ \ \ and\ the\ two-\/arg\ form\ does\ not\ accept\ dynamic\_extent\ as\ a\ count.}}
+\DoxyCodeLine{00237\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::split\_at()`\ to\ split\ a\ single\ span\ into}}
+\DoxyCodeLine{00238\ \textcolor{comment}{//\ \ \ two\ at\ a\ given\ offset.}}
+\DoxyCodeLine{00239\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::take\_first[\_elem]()`\ to\ remove\ the\ first}}
+\DoxyCodeLine{00240\ \textcolor{comment}{//\ \ \ portion\ of\ a\ dynamic-\/extent\ span\ and\ return\ it.}}
+\DoxyCodeLine{00241\ \textcolor{comment}{//}}
+\DoxyCodeLine{00242\ \textcolor{comment}{//\ Differences\ from\ [span.obs]:}}
+\DoxyCodeLine{00243\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::operator==()`\ to\ check\ whether\ two\ spans}}
+\DoxyCodeLine{00244\ \textcolor{comment}{//\ \ \ refer\ to\ equal-\/sized\ ranges\ of\ equal\ objects.\ This\ was\ intentionally}}
+\DoxyCodeLine{00245\ \textcolor{comment}{//\ \ \ removed\ from\ \`{}std::span`\ because\ it\ makes\ the\ type\ non-\/Regular;\ see}}
+\DoxyCodeLine{00246\ \textcolor{comment}{//\ \ \ http://wg21.link/p1085\ for\ details.}}
+\DoxyCodeLine{00247\ \textcolor{comment}{//\ -\/\ Similarly,\ provides\ \`{}span::operator<=>()`,\ which\ performs\ lexicographic}}
+\DoxyCodeLine{00248\ \textcolor{comment}{//\ \ \ comparison\ between\ spans.}}
+\DoxyCodeLine{00249\ \textcolor{comment}{//}}
+\DoxyCodeLine{00250\ \textcolor{comment}{//\ Differences\ from\ [span.elem]:}}
+\DoxyCodeLine{00251\ \textcolor{comment}{//\ -\/\ Because\ Chromium\ does\ not\ use\ exceptions,\ \`{}span::at()`\ behaves\ identically}}
+\DoxyCodeLine{00252\ \textcolor{comment}{//\ \ \ to\ \`{}span::operator[]()`\ (i.e.\ it\ \`{}CHECK()`s\ on\ out-\/of-\/range\ indexes\ rather}}
+\DoxyCodeLine{00253\ \textcolor{comment}{//\ \ \ than\ throwing).}}
+\DoxyCodeLine{00254\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::get\_at()`\ to\ return\ a\ pointer\ (rather\ than}}
+\DoxyCodeLine{00255\ \textcolor{comment}{//\ \ \ reference)\ to\ an\ element.\ This\ is\ necessary\ if\ the\ backing\ memory\ may\ be}}
+\DoxyCodeLine{00256\ \textcolor{comment}{//\ \ \ uninitialized,\ since\ forming\ a\ reference\ would\ be\ UB.}}
+\DoxyCodeLine{00257\ \textcolor{comment}{//}}
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ Differences\ from\ [span.objectrep]:}}
+\DoxyCodeLine{00259\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}span::to\_fixed\_extent<N>()`\ to\ attempt}}
+\DoxyCodeLine{00260\ \textcolor{comment}{//\ \ \ conversion\ to\ a\ fixed-\/extent\ span,\ and\ return\ null\ on\ failure.}}
+\DoxyCodeLine{00261\ \textcolor{comment}{//\ -\/\ Because\ Chromium\ bans\ \`{}std::byte`,\ \`{}as\_[writable\_]bytes()`\ use\ \`{}uint8\_t`}}
+\DoxyCodeLine{00262\ \textcolor{comment}{//\ \ \ instead\ of\ \`{}std::byte`\ as\ the\ returned\ element\ type.}}
+\DoxyCodeLine{00263\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}as\_[writable\_]chars()`\ and\ \`{}as\_string\_view()`}}
+\DoxyCodeLine{00264\ \textcolor{comment}{//\ \ \ to\ convert\ to\ other\ "{}view\ of\ bytes"{}-\/like\ objects.}}
+\DoxyCodeLine{00265\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ an\ \`{}operator<<()`\ overload\ that\ accepts\ a\ span}}
+\DoxyCodeLine{00266\ \textcolor{comment}{//\ \ \ and\ prints\ a\ byte\ representation.\ Also\ provides\ a\ \`{}PrintTo()`\ overload\ to}}
+\DoxyCodeLine{00267\ \textcolor{comment}{//\ \ \ convince\ GoogleTest\ to\ use\ this\ operator\ to\ print.}}
+\DoxyCodeLine{00268\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}[byte\_]span\_from\_ref()`\ to\ convert\ single}}
+\DoxyCodeLine{00269\ \textcolor{comment}{//\ \ \ (non-\/range)\ objects\ to\ spans.}}
+\DoxyCodeLine{00270\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}[byte\_]span\_[with\_nul\_]from\_cstring()`\ to}}
+\DoxyCodeLine{00271\ \textcolor{comment}{//\ \ \ convert\ \`{}const\ char[]`\ literals\ to\ spans.}}
+\DoxyCodeLine{00272\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}[byte\_]span\_with\_nul\_from\_cstring\_view()`\ to}}
+\DoxyCodeLine{00273\ \textcolor{comment}{//\ \ \ convert\ \`{}basic\_cstring\_view<T>`\ to\ spans,\ preserving\ the\ null\ terminator.}}
+\DoxyCodeLine{00274\ \textcolor{comment}{//\ -\/\ For\ convenience,\ provides\ \`{}as\_[writable\_]byte\_span()`\ to\ convert}}
+\DoxyCodeLine{00275\ \textcolor{comment}{//\ \ \ spanifiable\ objects\ directly\ to\ byte\ spans.}}
+\DoxyCodeLine{00276\ \textcolor{comment}{//\ -\/\ For\ safety,\ bans\ types\ which\ do\ not\ meet}}
+\DoxyCodeLine{00277\ \textcolor{comment}{//\ \ \ \`{}std::has\_unique\_object\_representations\_v<>`\ from\ all\ byte\ span\ conversion}}
+\DoxyCodeLine{00278\ \textcolor{comment}{//\ \ \ functions\ by\ default.\ See\ more\ detailed\ comments\ above\ for\ workarounds.}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{keyword}{namespace\ }base\ \{}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \textcolor{comment}{//\ Provides\ a\ compile-\/time\ fixed\ extent\ to\ the\ \`{}count`\ argument\ of\ the\ span}}
+\DoxyCodeLine{00283\ \textcolor{comment}{//\ constructor.}}
+\DoxyCodeLine{00284\ \textcolor{comment}{//}}
+\DoxyCodeLine{00285\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
+\DoxyCodeLine{00286\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00287\ \textcolor{keyword}{using\ }fixed\_extent\ =\ std::integral\_constant<size\_t,\ N>;}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \}\ \ \textcolor{comment}{//\ namespace\ base}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \textcolor{comment}{//\ Mark\ \`{}span`\ as\ satisfying\ the\ \`{}view`\ and\ \`{}borrowed\_range`\ concepts.\ This}}
+\DoxyCodeLine{00292\ \textcolor{comment}{//\ should\ be\ done\ before\ the\ definition\ of\ \`{}span`,\ so\ that\ any\ inlined\ calls\ to}}
+\DoxyCodeLine{00293\ \textcolor{comment}{//\ range\ functionality\ use\ the\ correct\ specializations.}}
+\DoxyCodeLine{00294\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
+\DoxyCodeLine{00295\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00296\ \ \ \ \ std::ranges::enable\_view<kiwi::span<ElementType,\ Extent,\ InternalPtrType>>\ =}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keyword}{true};}
+\DoxyCodeLine{00298\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
+\DoxyCodeLine{00299\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ std::ranges::enable\_borrowed\_range<}
+\DoxyCodeLine{00300\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<ElementType,\ Extent,\ InternalPtrType>}}>\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \textcolor{comment}{//\ Allows\ global\ use\ of\ a\ type\ for\ conversion\ to\ byte\ spans.}}
+\DoxyCodeLine{00305\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00306\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kCanSafelyConvertToByteSpan\ =}
+\DoxyCodeLine{00307\ \ \ \ \ std::has\_unique\_object\_representations\_v<T>;}
+\DoxyCodeLine{00308\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00309\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kCanSafelyConvertToByteSpan<std::pair<T,\ U>>\ =}
+\DoxyCodeLine{00310\ \ \ \ \ kCanSafelyConvertToByteSpan<std::remove\_cvref\_t<T>>\ \&\&}
+\DoxyCodeLine{00311\ \ \ \ \ kCanSafelyConvertToByteSpan<std::remove\_cvref\_t<U>>;}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \textcolor{comment}{//\ Type\ tag\ to\ provide\ to\ byte\ span\ conversion\ functions\ to\ bypass}}
+\DoxyCodeLine{00314\ \textcolor{comment}{//\ \`{}std::has\_unique\_object\_representations\_v<>`\ check.}}
+\DoxyCodeLine{00315\ \textcolor{keyword}{struct\ }allow\_nonunique\_obj\_t\ \{}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{explicit}\ allow\_nonunique\_obj\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00317\ \};}
+\DoxyCodeLine{00318\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}}\ allow\_nonunique\_obj\{\};}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \textcolor{comment}{//\ Exposition-\/only\ concept\ from\ [span.syn]}}
+\DoxyCodeLine{00323\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00324\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ MaybeStaticExt\ =\ dynamic\_extent;}
+\DoxyCodeLine{00325\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{requires}\ IntegralConstantLike<T>}
+\DoxyCodeLine{00327\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ MaybeStaticExt<T>\ =\ \{T::value\};}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ From,\ \textcolor{keyword}{typename}\ To>}
+\DoxyCodeLine{00330\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion}}\ =\ std::is\_convertible\_v<From\ (*)[],\ To\ (*)[]>;}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \textcolor{comment}{//\ Akin\ to\ \`{}std::constructible\_from<span,\ T>`,\ but\ meant\ to\ be\ used\ in\ a}}
+\DoxyCodeLine{00333\ \textcolor{comment}{//\ type-\/deducing\ context\ where\ we\ don't\ know\ what\ args\ would\ be\ deduced;}}
+\DoxyCodeLine{00334\ \textcolor{comment}{//\ \`{}std::constructible\_from`\ can't\ be\ directly\ used\ in\ such\ a\ case\ since\ the}}
+\DoxyCodeLine{00335\ \textcolor{comment}{//\ type\ parameters\ must\ be\ fully-\/specified\ (e.g.\ \`{}span<int>`),\ requiring\ us\ to}}
+\DoxyCodeLine{00336\ \textcolor{comment}{//\ have\ that\ knowledge\ already.}}
+\DoxyCodeLine{00337\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00338\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom}}\ =\ \textcolor{keyword}{requires}(T\&\&\ t)\ \{\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(std::forward<T>(t));\ \};}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \textcolor{comment}{//\ Returns\ the\ element\ type\ of\ \`{}span(T)`.}}
+\DoxyCodeLine{00341\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00342\ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom<T>}}}
+\DoxyCodeLine{00343\ \textcolor{keyword}{using\ }ElementTypeOfSpanConstructedFrom\ =}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keyword}{typename}\ \textcolor{keyword}{decltype}(\mbox{\hyperlink{classkiwi_1_1span}{span}}(std::declval<T>()))::element\_type;}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ It>}
+\DoxyCodeLine{00347\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{CompatibleIter}}\ =}
+\DoxyCodeLine{00348\ \ \ \ \ std::contiguous\_iterator<It>\ \&\&}
+\DoxyCodeLine{00349\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion<std::remove\_reference\_t<std::iter\_reference\_t<It>}}>,\ T>;}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \textcolor{comment}{//\ True\ when\ \`{}T`\ is\ a\ \`{}span`.}}
+\DoxyCodeLine{00352\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00353\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsSpan\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00354\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
+\DoxyCodeLine{00355\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsSpan<span<ElementType,\ Extent,\ InternalPtrType>>\ =}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keyword}{true};}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00359\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{CompatibleRange}}\ =}
+\DoxyCodeLine{00360\ \ \ \ \ std::ranges::contiguous\_range<R>\ \&\&\ std::ranges::sized\_range<R>\ \&\&}
+\DoxyCodeLine{00361\ \ \ \ \ (std::ranges::borrowed\_range<R>\ ||\ (std::is\_const\_v<T>))\ \&\&}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{comment}{//\ \`{}span`s\ should\ go\ through\ the\ copy\ constructor.}}
+\DoxyCodeLine{00363\ \ \ \ \ (!kIsSpan<std::remove\_cvref\_t<R>>\ \&\&}
+\DoxyCodeLine{00364\ \ \ \ \ \ \textcolor{comment}{//\ Arrays\ should\ go\ through\ the\ array\ constructors.}}
+\DoxyCodeLine{00365\ \ \ \ \ \ (!std::is\_array\_v<std::remove\_cvref\_t<R>>))\ \&\&}
+\DoxyCodeLine{00366\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_legal_data_conversion}{LegalDataConversion}}<}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ std::remove\_reference\_t<std::ranges::range\_reference\_t<R>>,\ T>;}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \textcolor{comment}{//\ Whether\ source\ object\ extent\ \`{}X`\ will\ work\ to\ create\ a\ span\ of\ fixed\ extent}}
+\DoxyCodeLine{00370\ \textcolor{comment}{//\ \`{}N`.\ This\ is\ not\ intended\ for\ use\ in\ dynamic-\/extent\ spans.}}
+\DoxyCodeLine{00371\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N,\ \textcolor{keywordtype}{size\_t}\ X>}
+\DoxyCodeLine{00372\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_fixed_extent_constructible_from_extent}{FixedExtentConstructibleFromExtent}}\ =\ X\ ==\ N\ ||\ X\ ==\ dynamic\_extent;}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \textcolor{comment}{//\ Computes\ a\ fixed\ extent\ if\ possible\ from\ a\ source\ container\ type\ \`{}T`.}}
+\DoxyCodeLine{00375\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00376\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl\ =\ dynamic\_extent;}
+\DoxyCodeLine{00377\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00378\ \ \ \textcolor{keyword}{requires}\ \textcolor{keyword}{requires}\ \{\ std::tuple\_size<T>();\ \}}
+\DoxyCodeLine{00379\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<T>\ =\ std::tuple\_size\_v<T>;}
+\DoxyCodeLine{00380\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00381\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<T[N]>\ =\ N;}
+\DoxyCodeLine{00382\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00383\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<std::span<T,\ N>>\ =\ N;}
+\DoxyCodeLine{00384\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N,\ \textcolor{keyword}{typename}\ InternalPtrType>}
+\DoxyCodeLine{00385\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtentImpl<span<T,\ N,\ InternalPtrType>>\ =\ N;}
+\DoxyCodeLine{00386\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00387\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kComputedExtent\ =}
+\DoxyCodeLine{00388\ \ \ \ \ kComputedExtentImpl<std::remove\_cvref\_t<T>>;}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00391\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{CanSafelyConvertToByteSpan}}\ =}
+\DoxyCodeLine{00392\ \ \ \ \ kCanSafelyConvertToByteSpan<std::remove\_cvref\_t<T>>;}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00395\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{ByteSpanConstructibleFrom}}\ =}
+\DoxyCodeLine{00396\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom<T>}}\ \&\&}
+\DoxyCodeLine{00397\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{CanSafelyConvertToByteSpan<ElementTypeOfSpanConstructedFrom<T>}}>;}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \textcolor{comment}{//\ Allows\ one-\/off\ use\ of\ a\ type\ that\ wouldn't\ normally\ convert\ to\ a\ byte\ span.}}
+\DoxyCodeLine{00400\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00401\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{CanSafelyConvertNonUniqueToByteSpan}}\ =}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{comment}{//\ Non-\/trivially-\/copyable\ elements\ usually\ aren't\ safe\ even\ to\ serialize;}}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{comment}{//\ when\ they\ are\ that's\ normally\ unconditionally\ true\ and\ can\ be\ handled}}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{comment}{//\ using\ \`{}kCanSafelyConvertToByteSpan`.}}
+\DoxyCodeLine{00405\ \ \ \ \ std::is\_trivially\_copyable\_v<T>\ \&\&}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{comment}{//\ If\ this\ fails,\ \`{}allow\_nonunique\_obj`\ wasn't\ necessary.}}
+\DoxyCodeLine{00407\ \ \ \ \ !std::has\_unique\_object\_representations\_v<T>;}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00410\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{ByteSpanConstructibleFromNonUnique}}\ =}
+\DoxyCodeLine{00411\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_span_constructible_from}{SpanConstructibleFrom<T>}}\ \&\&}
+\DoxyCodeLine{00412\ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{CanSafelyConvertNonUniqueToByteSpan<ElementTypeOfSpanConstructedFrom<T>}}>;}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ByteType,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ InternalPtrType>}
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{requires}((std::same\_as<std::remove\_const\_t<ByteType>,\ \textcolor{keywordtype}{char}>\ ||}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ \ \ std::same\_as<std::remove\_const\_t<ByteType>,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}>)\ \&\&}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ (std::is\_const\_v<ByteType>\ ||\ !std::is\_const\_v<ElementType>))}
+\DoxyCodeLine{00419\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(}
+\DoxyCodeLine{00420\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<ElementType,\ Extent,\ InternalPtrType>}}\ s)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00421\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kByteExtent\ =}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ Extent\ ==\ dynamic\_extent\ ?\ dynamic\_extent\ :\ \textcolor{keyword}{sizeof}(ElementType)\ *\ Extent;}
+\DoxyCodeLine{00423\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}s.data()`\ points\ to\ at\ least\ \`{}s.size\_bytes()`\ bytes'\ worth\ of}}
+\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//\ valid\ elements,\ so\ the\ size\ computed\ below\ must\ only\ contain\ valid}}
+\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ elements.\ Since\ \`{}ByteType`\ is\ an\ alias\ to\ a\ character\ type,\ it\ has\ a\ size}}
+\DoxyCodeLine{00426\ \ \ \textcolor{comment}{//\ of\ 1\ byte,\ the\ resulting\ pointer\ has\ no\ alignment\ concerns,\ and\ it\ is\ not}}
+\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ UB\ to\ access\ memory\ contents\ inside\ the\ allocation\ through\ it.}}
+\DoxyCodeLine{00428\ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span<ByteType,\ kByteExtent>}}(}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \textcolor{keyword}{reinterpret\_cast<}ByteType*\textcolor{keyword}{>}(s.data()),\ s.size\_bytes()));}
+\DoxyCodeLine{00430\ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \textcolor{comment}{//\ [span]:\ class\ \`{}span`\ (non-\/dynamic\ \`{}Extent`s)}}
+\DoxyCodeLine{00435\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent,\ \textcolor{keyword}{typename}\ InternalPtrType>}
+\DoxyCodeLine{00436\ \textcolor{keyword}{class\ }GSL\_POINTER\ span\ \{}
+\DoxyCodeLine{00437\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00438\ \ \ \textcolor{keyword}{using\ }element\_type\ =\ ElementType;}
+\DoxyCodeLine{00439\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ std::remove\_cv\_t<element\_type>;}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ size\_t;}
+\DoxyCodeLine{00441\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ ptrdiff\_t;}
+\DoxyCodeLine{00442\ \ \ \textcolor{keyword}{using\ }pointer\ =\ element\_type*;}
+\DoxyCodeLine{00443\ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ \textcolor{keyword}{const}\ element\_type*;}
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{using\ }reference\ =\ element\_type\&;}
+\DoxyCodeLine{00445\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{const}\ element\_type\&;}
+\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{CheckedContiguousIterator<element\_type>}};}
+\DoxyCodeLine{00447\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ CheckedContiguousConstIterator<element\_type>;}
+\DoxyCodeLine{00448\ \ \ \textcolor{keyword}{using\ }reverse\_iterator\ =\ std::reverse\_iterator<iterator>;}
+\DoxyCodeLine{00449\ \ \ \textcolor{comment}{//\ TODO(C++23):\ When\ \`{}std::const\_iterator<>`\ is\ available,\ switch\ to}}
+\DoxyCodeLine{00450\ \ \ \textcolor{comment}{//\ \`{}std::const\_iterator<reverse\_iterator>`\ as\ the\ standard\ specifies.}}
+\DoxyCodeLine{00451\ \ \ \textcolor{keyword}{using\ }const\_reverse\_iterator\ =\ std::reverse\_iterator<const\_iterator>;}
+\DoxyCodeLine{00452\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ size\_type\ extent\ =\ Extent;}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ \ \ \textcolor{comment}{//\ [span.cons]:\ Constructors,\ copy,\ and\ assignment}}
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ Default\ constructor.}}
+\DoxyCodeLine{00456\ \ \ \textcolor{keyword}{constexpr}\ span()\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keyword}{requires}(extent\ ==\ 0)}
+\DoxyCodeLine{00458\ \ \ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00459\ }
+\DoxyCodeLine{00460\ \ \ \textcolor{comment}{//\ Iterator\ +\ count.}}
+\DoxyCodeLine{00461\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ It>}
+\DoxyCodeLine{00462\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{internal::CompatibleIter<element\_type,\ It>}})}
+\DoxyCodeLine{00463\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}first`\ must\ point\ to\ the\ first\ of\ at\ least\ \`{}count`\ contiguous}}
+\DoxyCodeLine{00464\ \ \ \textcolor{comment}{//\ valid\ elements,\ or\ the\ span\ will\ allow\ access\ to\ invalid\ elements,}}
+\DoxyCodeLine{00465\ \ \ \textcolor{comment}{//\ resulting\ in\ UB.}}
+\DoxyCodeLine{00466\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ It\ first,\ [[maybe\_unused]]\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<size\_type>}}\ count)}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ :\ data\_(to\_address(first))\ \{}
+\DoxyCodeLine{00469\ \ \ \ \ \textcolor{comment}{//\ TODO(gc):}}
+\DoxyCodeLine{00470\ \ \ \ \ \textcolor{comment}{//\ CHECK(size\_type\{count\}\ ==\ extent);}}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{comment}{//\ Non-\/zero\ \`{}count`\ implies\ non-\/null\ \`{}data\_`.\ Use\ \`{}SpanOrSize<T>`\ to}}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{comment}{//\ represent\ a\ size\ that\ might\ not\ be\ accompanied\ by\ the\ actual\ data.}}
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{comment}{//\ DCHECK(count\ ==\ 0\ ||\ !!data\_);}}
+\DoxyCodeLine{00475\ \ \ \}}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \ \ \textcolor{comment}{//\ Iterator\ +\ sentinel.}}
+\DoxyCodeLine{00478\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ It,\ \textcolor{keyword}{typename}\ End>}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_iter}{internal::CompatibleIter<element\_type,\ It>}}\ \&\&}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::sized\_sentinel\_for<End,\ It>\ \&\&}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ !std::is\_convertible\_v<End,\ size\_t>)}
+\DoxyCodeLine{00482\ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}first`\ and\ \`{}last`\ must\ be\ for\ the\ same\ allocation\ and\ all\ elements}}
+\DoxyCodeLine{00483\ \ \ \textcolor{comment}{//\ in\ the\ range\ [first,\ last)\ must\ be\ valid,\ or\ the\ span\ will\ allow\ access\ to}}
+\DoxyCodeLine{00484\ \ \ \textcolor{comment}{//\ invalid\ elements,\ resulting\ in\ UB.}}
+\DoxyCodeLine{00485\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(It\ first,\ End\ last)}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ caller\ must\ guarantee\ that\ \`{}first`\ and\ \`{}last`\ point\ into}}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ same\ allocation.\ In\ this\ case,\ the\ extent\ will\ be\ the\ number\ of}}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \textcolor{comment}{//\ elements\ between\ the\ iterators\ and\ thus\ a\ valid\ size\ for\ the\ pointer\ to}}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ element\ at\ \`{}first`.}}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \textcolor{comment}{//\ It\ is\ safe\ to\ check\ for\ underflow\ after\ subtraction\ because\ the}}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \textcolor{comment}{//\ underflow\ itself\ is\ not\ UB\ and\ \`{}size\_`\ is\ not\ converted\ to\ an\ invalid}}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \textcolor{comment}{//\ pointer\ (which\ would\ be\ UB)\ before\ the\ check.}}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(span(first,\ \textcolor{keyword}{static\_cast<}size\_type\textcolor{keyword}{>}(last\ -\/\ first)))\ \{}
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{comment}{//\ Verify\ \`{}last\ -\/\ first`\ did\ not\ underflow.}}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{comment}{//\ CHECK(first\ <=\ last);}}
+\DoxyCodeLine{00497\ \ \ \}}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \textcolor{comment}{//\ Array\ of\ size\ \`{}extent`.}}
+\DoxyCodeLine{00500\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00501\ \ \ \textcolor{keyword}{constexpr}\ span(std::type\_identity\_t<element\_type>\ (}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \&arr\ KIWI\_LIFETIME\_BOUND)[extent])\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ type\ signature\ guarantees\ \`{}arr`\ contains\ \`{}extent`\ elements.}}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(span(arr,\ extent))\ \{\}}
+\DoxyCodeLine{00505\ }
+\DoxyCodeLine{00506\ \ \ \textcolor{comment}{//\ Range.}}
+\DoxyCodeLine{00507\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keywordtype}{size\_t}\ N\ =\ \textcolor{keywordtype}{int}ernal::kComputedExtent<R>>}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{internal::CompatibleRange<element\_type,\ R>}}\ \&\&}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_fixed_extent_constructible_from_extent}{internal::FixedExtentConstructibleFromExtent<extent,\ N>}})}
+\DoxyCodeLine{00510\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00511\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}(N\ !=\ extent)\ span(R\&\&\ range\ KIWI\_LIFETIME\_BOUND)}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}std::ranges::size()`\ returns\ the\ number\ of\ elements}}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}std::ranges::data()`\ will\ point\ to,\ so\ accessing\ those\ elements\ will}}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ safe.}}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ span(std::ranges::data(range),\ std::ranges::size(range)))\ \{\}}
+\DoxyCodeLine{00517\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keywordtype}{size\_t}\ N\ =\ \textcolor{keywordtype}{int}ernal::kComputedExtent<R>>}
+\DoxyCodeLine{00518\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{internal::CompatibleRange<element\_type,\ R>}}\ \&\&}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_fixed_extent_constructible_from_extent}{internal::FixedExtentConstructibleFromExtent<extent,\ N>}}\ \&\&}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<R>)}
+\DoxyCodeLine{00521\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00522\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(R\&\&\ range)}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}std::ranges::size()`\ returns\ the\ number\ of\ elements}}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}std::ranges::data()`\ will\ point\ to,\ so\ accessing\ those\ elements\ will}}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ safe.}}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \ \ \ \ span(std::ranges::data(range),\ std::ranges::size(range)))\ \{\}}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \ \ \textcolor{comment}{//\ Initializer\ list.}}
+\DoxyCodeLine{00530\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00531\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ span(}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ std::initializer\_list<value\_type>\ il\ KIWI\_LIFETIME\_BOUND)}
 \DoxyCodeLine{00533\ \ \ \ \ \textcolor{keyword}{requires}(std::is\_const\_v<element\_type>)}
 \DoxyCodeLine{00534\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}size()`\ is\ exactly\ the\ number\ of\ elements\ in\ the\ initializer}}
 \DoxyCodeLine{00535\ \ \ \ \ \ \ \textcolor{comment}{//\ list,\ so\ accessing\ that\ many\ will\ be\ safe.}}
@@ -994,7 +994,7 @@
 \DoxyCodeLine{00990\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ N>}
 \DoxyCodeLine{00991\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
 \DoxyCodeLine{00992\ \ \ \textcolor{keyword}{constexpr}\ span(}
-\DoxyCodeLine{00993\ \ \ \ \ \ \ std::type\_identity\_t<element\_type>\ (\&arr\ LIFETIME\_BOUND)[N])\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00993\ \ \ \ \ \ \ std::type\_identity\_t<element\_type>\ (\&arr\ KIWI\_LIFETIME\_BOUND)[N])\ \textcolor{keyword}{noexcept}}
 \DoxyCodeLine{00994\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ type\ signature\ guarantees\ \`{}arr`\ contains\ \`{}N`\ elements.}}
 \DoxyCodeLine{00995\ \ \ \ \ \ \ :\ UNSAFE\_BUFFERS(span(arr,\ N))\ \{\}}
 \DoxyCodeLine{00996\ }
@@ -1002,7 +1002,7 @@
 \DoxyCodeLine{00998\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
 \DoxyCodeLine{00999\ \ \ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_compatible_range}{internal::CompatibleRange<element\_type,\ R>}})}
 \DoxyCodeLine{01000\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{01001\ \ \ \textcolor{keyword}{constexpr}\ span(R\&\&\ range\ LIFETIME\_BOUND)}
+\DoxyCodeLine{01001\ \ \ \textcolor{keyword}{constexpr}\ span(R\&\&\ range\ KIWI\_LIFETIME\_BOUND)}
 \DoxyCodeLine{01002\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}std::ranges::size()`\ returns\ the\ number\ of\ elements}}
 \DoxyCodeLine{01003\ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}std::ranges::data()`\ will\ point\ to,\ so\ accessing\ those\ elements\ will}}
 \DoxyCodeLine{01004\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ safe.}}
@@ -1020,7 +1020,7 @@
 \DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ \ \ span(std::ranges::data(range),\ std::ranges::size(range)))\ \{\}}
 \DoxyCodeLine{01017\ }
 \DoxyCodeLine{01018\ \ \ \textcolor{comment}{//\ Initializer\ list.}}
-\DoxyCodeLine{01019\ \ \ \textcolor{keyword}{constexpr}\ span(std::initializer\_list<value\_type>\ il\ LIFETIME\_BOUND)}
+\DoxyCodeLine{01019\ \ \ \textcolor{keyword}{constexpr}\ span(std::initializer\_list<value\_type>\ il\ KIWI\_LIFETIME\_BOUND)}
 \DoxyCodeLine{01020\ \ \ \ \ \textcolor{keyword}{requires}(std::is\_const\_v<element\_type>)}
 \DoxyCodeLine{01021\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}size()`\ is\ exactly\ the\ number\ of\ elements\ in\ the\ initializer}}
 \DoxyCodeLine{01022\ \ \ \ \ \ \ \textcolor{comment}{//\ list,\ so\ accessing\ that\ many\ will\ be\ safe.}}
@@ -1554,13 +1554,13 @@
 \DoxyCodeLine{01550\ \textcolor{comment}{//}}
 \DoxyCodeLine{01551\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ inspired\ by\ Rust's\ \`{}slice::from\_ref()`.)}}
 \DoxyCodeLine{01552\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01553\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_from\_ref(\textcolor{keyword}{const}\ T\&\ t\ LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01553\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_from\_ref(\textcolor{keyword}{const}\ T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
 \DoxyCodeLine{01554\ \ \ \textcolor{comment}{//\ SAFETY:\ It's\ safe\ to\ read\ the\ memory\ at\ \`{}t`'s\ address\ as\ long\ as\ the}}
 \DoxyCodeLine{01555\ \ \ \textcolor{comment}{//\ provided\ reference\ is\ valid.}}
 \DoxyCodeLine{01556\ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ T,\ 1>}}(std::addressof(t),\ 1u));}
 \DoxyCodeLine{01557\ \}}
 \DoxyCodeLine{01558\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01559\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_from\_ref(T\&\ t\ LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01559\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_from\_ref(T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
 \DoxyCodeLine{01560\ \ \ \textcolor{comment}{//\ SAFETY:\ It's\ safe\ to\ read\ the\ memory\ at\ \`{}t`'s\ address\ as\ long\ as\ the}}
 \DoxyCodeLine{01561\ \ \ \textcolor{comment}{//\ provided\ reference\ is\ valid.}}
 \DoxyCodeLine{01562\ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span<T,\ 1>}}(std::addressof(t),\ 1u));}
@@ -1571,172 +1571,175 @@
 \DoxyCodeLine{01567\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
 \DoxyCodeLine{01568\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{01569\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{internal::CanSafelyConvertToByteSpan<T>}})}
-\DoxyCodeLine{01570\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(\textcolor{keyword}{const}\ T\&\ t\ LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01570\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(\textcolor{keyword}{const}\ T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
 \DoxyCodeLine{01571\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(span\_from\_ref(t));}
 \DoxyCodeLine{01572\ \}}
 \DoxyCodeLine{01573\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{01574\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{internal::CanSafelyConvertNonUniqueToByteSpan<T>}})}
 \DoxyCodeLine{01575\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},}
-\DoxyCodeLine{01576\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ T\&\ t\ LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01576\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
 \DoxyCodeLine{01577\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ span\_from\_ref(t));}
 \DoxyCodeLine{01578\ \}}
 \DoxyCodeLine{01579\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{01580\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{internal::CanSafelyConvertToByteSpan<T>}})}
-\DoxyCodeLine{01581\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(T\&\ t\ LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01581\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
 \DoxyCodeLine{01582\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(span\_from\_ref(t));}
 \DoxyCodeLine{01583\ \}}
 \DoxyCodeLine{01584\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
 \DoxyCodeLine{01585\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{internal::CanSafelyConvertNonUniqueToByteSpan<T>}})}
-\DoxyCodeLine{01586\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ T\&\ t\ LIFETIME\_BOUND)\ \{}
-\DoxyCodeLine{01587\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(allow\_nonunique\_obj,\ span\_from\_ref(t));}
-\DoxyCodeLine{01588\ \}}
-\DoxyCodeLine{01589\ }
-\DoxyCodeLine{01590\ \textcolor{comment}{//\ Converts\ a\ \`{}const\ CharT[]`\ literal\ to\ a\ \`{}span<const\ CharT>`,\ omitting\ the}}
-\DoxyCodeLine{01591\ \textcolor{comment}{//\ trailing\ '\(\backslash\)0'\ (internal\ '\(\backslash\)0's,\ if\ any,\ are\ preserved).\ For\ comparison:}}
-\DoxyCodeLine{01592\ \textcolor{comment}{//\ \ \ \`{}span("{}hi"{})`\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =>\ \`{}span<const\ char,\ 3>(\{'h',\ 'i',\ '\(\backslash\)0'\})`}}
-\DoxyCodeLine{01593\ \textcolor{comment}{//\ \ \ \`{}span(std::string\_view("{}hi"{}))\ =>\ \`{}span<const\ char>(\{'h',\ 'i'\})`}}
-\DoxyCodeLine{01594\ \textcolor{comment}{//\ \ \ \`{}span\_from\_cstring("{}hi"{})`\ \ \ \ \ =>\ \`{}span<const\ char,\ 2>(\{'h',\ 'i'\})`}}
-\DoxyCodeLine{01595\ \textcolor{comment}{//}}
-\DoxyCodeLine{01596\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ useful\ when\ reading\ and\ writing\ character\ subsequences\ in}}
-\DoxyCodeLine{01597\ \textcolor{comment}{//\ larger\ files.)}}
-\DoxyCodeLine{01598\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01599\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_from\_cstring(\textcolor{keyword}{const}\ CharT\ (\&str\ LIFETIME\_BOUND)[Extent])}
-\DoxyCodeLine{01600\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
-\DoxyCodeLine{01601\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
-\DoxyCodeLine{01602\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(str).template\ first<Extent\ -\/\ 1>();}
-\DoxyCodeLine{01603\ \}}
-\DoxyCodeLine{01604\ }
-\DoxyCodeLine{01605\ \textcolor{comment}{//\ Converts\ a\ \`{}const\ CharT[]`\ literal\ to\ a\ \`{}span<const\ CharT>`,\ preserving\ the}}
-\DoxyCodeLine{01606\ \textcolor{comment}{//\ trailing\ '\(\backslash\)0'.}}
-\DoxyCodeLine{01607\ \textcolor{comment}{//}}
-\DoxyCodeLine{01608\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ identical\ to\ constructor\ behavior,\ but\ more\ explicit.)}}
-\DoxyCodeLine{01609\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01610\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_with\_nul\_from\_cstring(}
-\DoxyCodeLine{01611\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&str\ LIFETIME\_BOUND)[Extent])}
-\DoxyCodeLine{01612\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
-\DoxyCodeLine{01613\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
-\DoxyCodeLine{01614\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(str);}
-\DoxyCodeLine{01615\ \}}
-\DoxyCodeLine{01616\ }
-\DoxyCodeLine{01617\ \textcolor{comment}{//\ Converts\ a\ \`{}basic\_cstring\_view`\ instance\ to\ a\ \`{}span<const\ CharT>`,\ preserving}}
-\DoxyCodeLine{01618\ \textcolor{comment}{//\ the\ trailing\ '\(\backslash\)0'.}}
-\DoxyCodeLine{01619\ \textcolor{comment}{//}}
-\DoxyCodeLine{01620\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ explicitly\ includes\ the\ trailing\ nul,\ which\ would\ be\ omitted}}
-\DoxyCodeLine{01621\ \textcolor{comment}{//\ by\ calling\ the\ range\ constructor.)}}
-\DoxyCodeLine{01622\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
-\DoxyCodeLine{01623\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_with\_nul\_from\_cstring\_view(\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<CharT>}}\ str)\ \{}
-\DoxyCodeLine{01624\ \ \ \textcolor{comment}{//\ SAFETY:\ It\ is\ safe\ to\ read\ the\ guaranteed\ null-\/terminator\ in\ \`{}str`.}}
-\DoxyCodeLine{01625\ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span}}(str.data(),\ str.size()\ +\ 1));}
-\DoxyCodeLine{01626\ \}}
-\DoxyCodeLine{01627\ }
-\DoxyCodeLine{01628\ \textcolor{comment}{//\ Like\ \`{}span\_from\_cstring()`,\ but\ returns\ a\ byte\ span.}}
-\DoxyCodeLine{01629\ \textcolor{comment}{//}}
-\DoxyCodeLine{01630\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
-\DoxyCodeLine{01631\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01632\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_cstring(\textcolor{keyword}{const}\ CharT\ (\&str\ LIFETIME\_BOUND)[Extent])}
-\DoxyCodeLine{01633\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
-\DoxyCodeLine{01634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
-\DoxyCodeLine{01635\ \ \ \textcolor{comment}{//\ Cannot\ call\ \`{}span\_from\_cstring()`\ here,\ since\ the\ array\ contents\ do\ not}}
-\DoxyCodeLine{01636\ \ \ \textcolor{comment}{//\ carry\ through\ the\ function\ call,\ so\ the\ \`{}ENABLE\_IF\_ATTR`\ will\ not\ be}}
-\DoxyCodeLine{01637\ \ \ \textcolor{comment}{//\ satisfied.}}
-\DoxyCodeLine{01638\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(str).\textcolor{keyword}{template}\ first<Extent\ -\/\ 1>());}
-\DoxyCodeLine{01639\ \}}
-\DoxyCodeLine{01640\ }
-\DoxyCodeLine{01641\ \textcolor{comment}{//\ Like\ \`{}span\_with\_nul\_from\_cstring()`,\ but\ returns\ a\ byte\ span.}}
-\DoxyCodeLine{01642\ \textcolor{comment}{//}}
-\DoxyCodeLine{01643\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
-\DoxyCodeLine{01644\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01645\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_with\_nul\_from\_cstring(}
-\DoxyCodeLine{01646\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&str\ LIFETIME\_BOUND)[Extent])}
-\DoxyCodeLine{01647\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
-\DoxyCodeLine{01648\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
-\DoxyCodeLine{01649\ \ \ \textcolor{comment}{//\ Cannot\ call\ \`{}span\_with\_nul\_from\_cstring()`\ here,\ since\ the\ array\ contents}}
-\DoxyCodeLine{01650\ \ \ \textcolor{comment}{//\ do\ not\ carry\ through\ the\ function\ call,\ so\ the\ \`{}ENABLE\_IF\_ATTR`\ will\ not\ be}}
-\DoxyCodeLine{01651\ \ \ \textcolor{comment}{//\ satisfied.}}
-\DoxyCodeLine{01652\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(str));}
-\DoxyCodeLine{01653\ \}}
-\DoxyCodeLine{01654\ }
-\DoxyCodeLine{01655\ \textcolor{comment}{//\ Like\ \`{}span\_with\_nul\_from\_cstring\_view()`,\ but\ returns\ a\ byte\ span.}}
-\DoxyCodeLine{01656\ \textcolor{comment}{//}}
-\DoxyCodeLine{01657\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
-\DoxyCodeLine{01658\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
-\DoxyCodeLine{01659\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_with\_nul\_from\_cstring\_view(}
-\DoxyCodeLine{01660\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<CharT>}}\ str)\ \{}
-\DoxyCodeLine{01661\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(span\_with\_nul\_from\_cstring\_view(str));}
-\DoxyCodeLine{01662\ \}}
-\DoxyCodeLine{01663\ }
-\DoxyCodeLine{01664\ \textcolor{comment}{//\ Converts\ an\ object\ which\ can\ already\ explicitly\ convert\ to\ some\ kind\ of\ span}}
-\DoxyCodeLine{01665\ \textcolor{comment}{//\ directly\ into\ a\ byte\ span.}}
-\DoxyCodeLine{01666\ \textcolor{comment}{//}}
-\DoxyCodeLine{01667\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
-\DoxyCodeLine{01668\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01669\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{internal::ByteSpanConstructibleFrom<const\ T\&>}})}
-\DoxyCodeLine{01670\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\textcolor{keyword}{const}\ T\&\ t\ LIFETIME\_BOUND)\ \{}
-\DoxyCodeLine{01671\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
-\DoxyCodeLine{01672\ \}}
-\DoxyCodeLine{01673\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01674\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{internal::ByteSpanConstructibleFromNonUnique<const\ T\&>}})}
-\DoxyCodeLine{01675\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ \textcolor{keyword}{const}\ T\&\ t\ LIFETIME\_BOUND)\ \{}
-\DoxyCodeLine{01676\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
-\DoxyCodeLine{01677\ \}}
-\DoxyCodeLine{01678\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01679\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{internal::ByteSpanConstructibleFrom<const\ T\&>}}\ \&\&}
-\DoxyCodeLine{01680\ \ \ \ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<T>)}
-\DoxyCodeLine{01681\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\textcolor{keyword}{const}\ T\&\ t)\ \{}
-\DoxyCodeLine{01682\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
-\DoxyCodeLine{01683\ \}}
-\DoxyCodeLine{01684\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01685\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{internal::ByteSpanConstructibleFromNonUnique<const\ T\&>}}\ \&\&}
-\DoxyCodeLine{01686\ \ \ \ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<T>)}
-\DoxyCodeLine{01687\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ \textcolor{keyword}{const}\ T\&\ t)\ \{}
-\DoxyCodeLine{01688\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
-\DoxyCodeLine{01689\ \}}
-\DoxyCodeLine{01690\ \textcolor{comment}{//\ Array\ arguments\ require\ dedicated\ specializations\ because\ if\ only\ the}}
-\DoxyCodeLine{01691\ \textcolor{comment}{//\ generalized\ functions\ are\ available,\ the\ compiler\ cannot\ deduce\ the\ template}}
-\DoxyCodeLine{01692\ \textcolor{comment}{//\ parameter.}}
-\DoxyCodeLine{01693\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01694\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{internal::CanSafelyConvertToByteSpan<ElementType>}})}
-\DoxyCodeLine{01695\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\textcolor{keyword}{const}\ ElementType\ (\&arr\ LIFETIME\_BOUND)[Extent])\ \{}
-\DoxyCodeLine{01696\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ ElementType,\ Extent>}}(arr));}
-\DoxyCodeLine{01697\ \}}
-\DoxyCodeLine{01698\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01699\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{internal::CanSafelyConvertNonUniqueToByteSpan<ElementType>}})}
-\DoxyCodeLine{01700\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},}
-\DoxyCodeLine{01701\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ElementType\ (\&arr\ LIFETIME\_BOUND)[Extent])\ \{}
-\DoxyCodeLine{01702\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ ElementType,\ Extent>}}(arr));}
-\DoxyCodeLine{01703\ \}}
-\DoxyCodeLine{01704\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01705\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{internal::ByteSpanConstructibleFrom<T\ \&\&>}}\ \&\&}
-\DoxyCodeLine{01706\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<internal::ElementTypeOfSpanConstructedFrom<T>>)}
-\DoxyCodeLine{01707\ \textcolor{comment}{//\ NOTE:\ \`{}t`\ is\ not\ marked\ as\ lifetimebound\ because\ the\ "{}non-\/const}}
-\DoxyCodeLine{01708\ \textcolor{comment}{//\ \`{}element\_type`"{}\ requirement\ above\ will\ in\ turn\ require\ \`{}T`\ to\ be\ a\ borrowed}}
-\DoxyCodeLine{01709\ \textcolor{comment}{//\ range.}}
-\DoxyCodeLine{01710\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(T\&\&\ t)\ \{}
-\DoxyCodeLine{01711\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
-\DoxyCodeLine{01712\ \}}
-\DoxyCodeLine{01713\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{01714\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{internal::ByteSpanConstructibleFromNonUnique<T\ \&\&>}}\ \&\&}
-\DoxyCodeLine{01715\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<internal::ElementTypeOfSpanConstructedFrom<T>>)}
-\DoxyCodeLine{01716\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ T\&\&\ t)\ \{}
-\DoxyCodeLine{01717\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
-\DoxyCodeLine{01718\ \}}
-\DoxyCodeLine{01719\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01720\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{internal::CanSafelyConvertToByteSpan<ElementType>}}\ \&\&}
-\DoxyCodeLine{01721\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<ElementType>)}
-\DoxyCodeLine{01722\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(}
-\DoxyCodeLine{01723\ \ \ \ \ ElementType\ (\&arr\ LIFETIME\_BOUND)[Extent])\ \{}
-\DoxyCodeLine{01724\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span<ElementType,\ Extent>}}(arr));}
-\DoxyCodeLine{01725\ \}}
-\DoxyCodeLine{01726\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
-\DoxyCodeLine{01727\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{internal::CanSafelyConvertNonUniqueToByteSpan<ElementType>}}\ \&\&}
-\DoxyCodeLine{01728\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<ElementType>)}
-\DoxyCodeLine{01729\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(}
-\DoxyCodeLine{01730\ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ ElementType\ (\&arr\ LIFETIME\_BOUND)[Extent])\ \{}
-\DoxyCodeLine{01731\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span<ElementType,\ Extent>}}(arr));}
-\DoxyCodeLine{01732\ \}}
-\DoxyCodeLine{01733\ }
-\DoxyCodeLine{01734\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
-\DoxyCodeLine{01735\ }
-\DoxyCodeLine{01736\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_CONTAINERS\_SPAN\_H\_}}
+\DoxyCodeLine{01586\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_ref(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},}
+\DoxyCodeLine{01587\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01588\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(allow\_nonunique\_obj,\ span\_from\_ref(t));}
+\DoxyCodeLine{01589\ \}}
+\DoxyCodeLine{01590\ }
+\DoxyCodeLine{01591\ \textcolor{comment}{//\ Converts\ a\ \`{}const\ CharT[]`\ literal\ to\ a\ \`{}span<const\ CharT>`,\ omitting\ the}}
+\DoxyCodeLine{01592\ \textcolor{comment}{//\ trailing\ '\(\backslash\)0'\ (internal\ '\(\backslash\)0's,\ if\ any,\ are\ preserved).\ For\ comparison:}}
+\DoxyCodeLine{01593\ \textcolor{comment}{//\ \ \ \`{}span("{}hi"{})`\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =>\ \`{}span<const\ char,\ 3>(\{'h',\ 'i',\ '\(\backslash\)0'\})`}}
+\DoxyCodeLine{01594\ \textcolor{comment}{//\ \ \ \`{}span(std::string\_view("{}hi"{}))\ =>\ \`{}span<const\ char>(\{'h',\ 'i'\})`}}
+\DoxyCodeLine{01595\ \textcolor{comment}{//\ \ \ \`{}span\_from\_cstring("{}hi"{})`\ \ \ \ \ =>\ \`{}span<const\ char,\ 2>(\{'h',\ 'i'\})`}}
+\DoxyCodeLine{01596\ \textcolor{comment}{//}}
+\DoxyCodeLine{01597\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ useful\ when\ reading\ and\ writing\ character\ subsequences\ in}}
+\DoxyCodeLine{01598\ \textcolor{comment}{//\ larger\ files.)}}
+\DoxyCodeLine{01599\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01600\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_from\_cstring(\textcolor{keyword}{const}\ CharT\ (\&str\ KIWI\_LIFETIME\_BOUND)[Extent])}
+\DoxyCodeLine{01601\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
+\DoxyCodeLine{01602\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
+\DoxyCodeLine{01603\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(str).template\ first<Extent\ -\/\ 1>();}
+\DoxyCodeLine{01604\ \}}
+\DoxyCodeLine{01605\ }
+\DoxyCodeLine{01606\ \textcolor{comment}{//\ Converts\ a\ \`{}const\ CharT[]`\ literal\ to\ a\ \`{}span<const\ CharT>`,\ preserving\ the}}
+\DoxyCodeLine{01607\ \textcolor{comment}{//\ trailing\ '\(\backslash\)0'.}}
+\DoxyCodeLine{01608\ \textcolor{comment}{//}}
+\DoxyCodeLine{01609\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ identical\ to\ constructor\ behavior,\ but\ more\ explicit.)}}
+\DoxyCodeLine{01610\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01611\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_with\_nul\_from\_cstring(}
+\DoxyCodeLine{01612\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&str\ KIWI\_LIFETIME\_BOUND)[Extent])}
+\DoxyCodeLine{01613\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
+\DoxyCodeLine{01614\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
+\DoxyCodeLine{01615\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(str);}
+\DoxyCodeLine{01616\ \}}
+\DoxyCodeLine{01617\ }
+\DoxyCodeLine{01618\ \textcolor{comment}{//\ Converts\ a\ \`{}basic\_cstring\_view`\ instance\ to\ a\ \`{}span<const\ CharT>`,\ preserving}}
+\DoxyCodeLine{01619\ \textcolor{comment}{//\ the\ trailing\ '\(\backslash\)0'.}}
+\DoxyCodeLine{01620\ \textcolor{comment}{//}}
+\DoxyCodeLine{01621\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`;\ explicitly\ includes\ the\ trailing\ nul,\ which\ would\ be\ omitted}}
+\DoxyCodeLine{01622\ \textcolor{comment}{//\ by\ calling\ the\ range\ constructor.)}}
+\DoxyCodeLine{01623\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{01624\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ span\_with\_nul\_from\_cstring\_view(\mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<CharT>}}\ str)\ \{}
+\DoxyCodeLine{01625\ \ \ \textcolor{comment}{//\ SAFETY:\ It\ is\ safe\ to\ read\ the\ guaranteed\ null-\/terminator\ in\ \`{}str`.}}
+\DoxyCodeLine{01626\ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span}}(str.data(),\ str.size()\ +\ 1));}
+\DoxyCodeLine{01627\ \}}
+\DoxyCodeLine{01628\ }
+\DoxyCodeLine{01629\ \textcolor{comment}{//\ Like\ \`{}span\_from\_cstring()`,\ but\ returns\ a\ byte\ span.}}
+\DoxyCodeLine{01630\ \textcolor{comment}{//}}
+\DoxyCodeLine{01631\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
+\DoxyCodeLine{01632\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01633\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_from\_cstring(}
+\DoxyCodeLine{01634\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&str\ KIWI\_LIFETIME\_BOUND)[Extent])}
+\DoxyCodeLine{01635\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
+\DoxyCodeLine{01636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
+\DoxyCodeLine{01637\ \ \ \textcolor{comment}{//\ Cannot\ call\ \`{}span\_from\_cstring()`\ here,\ since\ the\ array\ contents\ do\ not}}
+\DoxyCodeLine{01638\ \ \ \textcolor{comment}{//\ carry\ through\ the\ function\ call,\ so\ the\ \`{}ENABLE\_IF\_ATTR`\ will\ not\ be}}
+\DoxyCodeLine{01639\ \ \ \textcolor{comment}{//\ satisfied.}}
+\DoxyCodeLine{01640\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(str).\textcolor{keyword}{template}\ first<Extent\ -\/\ 1>());}
+\DoxyCodeLine{01641\ \}}
+\DoxyCodeLine{01642\ }
+\DoxyCodeLine{01643\ \textcolor{comment}{//\ Like\ \`{}span\_with\_nul\_from\_cstring()`,\ but\ returns\ a\ byte\ span.}}
+\DoxyCodeLine{01644\ \textcolor{comment}{//}}
+\DoxyCodeLine{01645\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
+\DoxyCodeLine{01646\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01647\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_with\_nul\_from\_cstring(}
+\DoxyCodeLine{01648\ \ \ \ \ \textcolor{keyword}{const}\ CharT\ (\&str\ KIWI\_LIFETIME\_BOUND)[Extent])}
+\DoxyCodeLine{01649\ \ \ \ \ ENABLE\_IF\_ATTR(str[Extent\ -\/\ 1u]\ ==\ CharT\{0\},}
+\DoxyCodeLine{01650\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}requires\ string\ literal\ as\ input"{}})\ \{}
+\DoxyCodeLine{01651\ \ \ \textcolor{comment}{//\ Cannot\ call\ \`{}span\_with\_nul\_from\_cstring()`\ here,\ since\ the\ array\ contents}}
+\DoxyCodeLine{01652\ \ \ \textcolor{comment}{//\ do\ not\ carry\ through\ the\ function\ call,\ so\ the\ \`{}ENABLE\_IF\_ATTR`\ will\ not\ be}}
+\DoxyCodeLine{01653\ \ \ \textcolor{comment}{//\ satisfied.}}
+\DoxyCodeLine{01654\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(str));}
+\DoxyCodeLine{01655\ \}}
+\DoxyCodeLine{01656\ }
+\DoxyCodeLine{01657\ \textcolor{comment}{//\ Like\ \`{}span\_with\_nul\_from\_cstring\_view()`,\ but\ returns\ a\ byte\ span.}}
+\DoxyCodeLine{01658\ \textcolor{comment}{//}}
+\DoxyCodeLine{01659\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
+\DoxyCodeLine{01660\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{01661\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ byte\_span\_with\_nul\_from\_cstring\_view(}
+\DoxyCodeLine{01662\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{basic\_cstring\_view<CharT>}}\ str)\ \{}
+\DoxyCodeLine{01663\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(span\_with\_nul\_from\_cstring\_view(str));}
+\DoxyCodeLine{01664\ \}}
+\DoxyCodeLine{01665\ }
+\DoxyCodeLine{01666\ \textcolor{comment}{//\ Converts\ an\ object\ which\ can\ already\ explicitly\ convert\ to\ some\ kind\ of\ span}}
+\DoxyCodeLine{01667\ \textcolor{comment}{//\ directly\ into\ a\ byte\ span.}}
+\DoxyCodeLine{01668\ \textcolor{comment}{//}}
+\DoxyCodeLine{01669\ \textcolor{comment}{//\ (Not\ in\ \`{}std::`.)}}
+\DoxyCodeLine{01670\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01671\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{internal::ByteSpanConstructibleFrom<const\ T\&>}})}
+\DoxyCodeLine{01672\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\textcolor{keyword}{const}\ T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01673\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
+\DoxyCodeLine{01674\ \}}
+\DoxyCodeLine{01675\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01676\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{internal::ByteSpanConstructibleFromNonUnique<const\ T\&>}})}
+\DoxyCodeLine{01677\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},}
+\DoxyCodeLine{01678\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ T\&\ t\ KIWI\_LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{01679\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
+\DoxyCodeLine{01680\ \}}
+\DoxyCodeLine{01681\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01682\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{internal::ByteSpanConstructibleFrom<const\ T\&>}}\ \&\&}
+\DoxyCodeLine{01683\ \ \ \ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<T>)}
+\DoxyCodeLine{01684\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\textcolor{keyword}{const}\ T\&\ t)\ \{}
+\DoxyCodeLine{01685\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
+\DoxyCodeLine{01686\ \}}
+\DoxyCodeLine{01687\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01688\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{internal::ByteSpanConstructibleFromNonUnique<const\ T\&>}}\ \&\&}
+\DoxyCodeLine{01689\ \ \ \ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<T>)}
+\DoxyCodeLine{01690\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ \textcolor{keyword}{const}\ T\&\ t)\ \{}
+\DoxyCodeLine{01691\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
+\DoxyCodeLine{01692\ \}}
+\DoxyCodeLine{01693\ \textcolor{comment}{//\ Array\ arguments\ require\ dedicated\ specializations\ because\ if\ only\ the}}
+\DoxyCodeLine{01694\ \textcolor{comment}{//\ generalized\ functions\ are\ available,\ the\ compiler\ cannot\ deduce\ the\ template}}
+\DoxyCodeLine{01695\ \textcolor{comment}{//\ parameter.}}
+\DoxyCodeLine{01696\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01697\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{internal::CanSafelyConvertToByteSpan<ElementType>}})}
+\DoxyCodeLine{01698\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(}
+\DoxyCodeLine{01699\ \ \ \ \ \textcolor{keyword}{const}\ ElementType\ (\&arr\ KIWI\_LIFETIME\_BOUND)[Extent])\ \{}
+\DoxyCodeLine{01700\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span<const\ ElementType,\ Extent>}}(arr));}
+\DoxyCodeLine{01701\ \}}
+\DoxyCodeLine{01702\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01703\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{internal::CanSafelyConvertNonUniqueToByteSpan<ElementType>}})}
+\DoxyCodeLine{01704\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_byte\_span(}
+\DoxyCodeLine{01705\ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},}
+\DoxyCodeLine{01706\ \ \ \ \ \textcolor{keyword}{const}\ ElementType\ (\&arr\ KIWI\_LIFETIME\_BOUND)[Extent])\ \{}
+\DoxyCodeLine{01707\ \ \ \textcolor{keywordflow}{return}\ as\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span<const\ ElementType,\ Extent>}}(arr));}
+\DoxyCodeLine{01708\ \}}
+\DoxyCodeLine{01709\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01710\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from}{internal::ByteSpanConstructibleFrom<T\ \&\&>}}\ \&\&}
+\DoxyCodeLine{01711\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<internal::ElementTypeOfSpanConstructedFrom<T>>)}
+\DoxyCodeLine{01712\ \textcolor{comment}{//\ NOTE:\ \`{}t`\ is\ not\ marked\ as\ lifetimebound\ because\ the\ "{}non-\/const}}
+\DoxyCodeLine{01713\ \textcolor{comment}{//\ \`{}element\_type`"{}\ requirement\ above\ will\ in\ turn\ require\ \`{}T`\ to\ be\ a\ borrowed}}
+\DoxyCodeLine{01714\ \textcolor{comment}{//\ range.}}
+\DoxyCodeLine{01715\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(T\&\&\ t)\ \{}
+\DoxyCodeLine{01716\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
+\DoxyCodeLine{01717\ \}}
+\DoxyCodeLine{01718\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01719\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_byte_span_constructible_from_non_unique}{internal::ByteSpanConstructibleFromNonUnique<T\ \&\&>}}\ \&\&}
+\DoxyCodeLine{01720\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<internal::ElementTypeOfSpanConstructedFrom<T>>)}
+\DoxyCodeLine{01721\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ T\&\&\ t)\ \{}
+\DoxyCodeLine{01722\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span}}(t));}
+\DoxyCodeLine{01723\ \}}
+\DoxyCodeLine{01724\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01725\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_to_byte_span}{internal::CanSafelyConvertToByteSpan<ElementType>}}\ \&\&}
+\DoxyCodeLine{01726\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<ElementType>)}
+\DoxyCodeLine{01727\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(}
+\DoxyCodeLine{01728\ \ \ \ \ ElementType\ (\&arr\ KIWI\_LIFETIME\_BOUND)[Extent])\ \{}
+\DoxyCodeLine{01729\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(\mbox{\hyperlink{classkiwi_1_1span}{span<ElementType,\ Extent>}}(arr));}
+\DoxyCodeLine{01730\ \}}
+\DoxyCodeLine{01731\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\&...\ ExplicitArgumentBarrier,\ \textcolor{keyword}{typename}\ ElementType,\ \textcolor{keywordtype}{size\_t}\ Extent>}
+\DoxyCodeLine{01732\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_can_safely_convert_non_unique_to_byte_span}{internal::CanSafelyConvertNonUniqueToByteSpan<ElementType>}}\ \&\&}
+\DoxyCodeLine{01733\ \ \ \ \ \ \ \ \ \ \ \ !std::is\_const\_v<ElementType>)}
+\DoxyCodeLine{01734\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ as\_writable\_byte\_span(}
+\DoxyCodeLine{01735\ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\_nonunique\_obj\_t}},\ ElementType\ (\&arr\ KIWI\_LIFETIME\_BOUND)[Extent])\ \{}
+\DoxyCodeLine{01736\ \ \ \textcolor{keywordflow}{return}\ as\_writable\_bytes(allow\_nonunique\_obj,\ \mbox{\hyperlink{classkiwi_1_1span}{span<ElementType,\ Extent>}}(arr));}
+\DoxyCodeLine{01737\ \}}
+\DoxyCodeLine{01738\ }
+\DoxyCodeLine{01739\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

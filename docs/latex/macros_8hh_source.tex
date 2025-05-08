@@ -36,14 +36,18 @@
 \DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ KIWI\_ARRAYSIZE(array)\ \(\backslash\)}}
 \DoxyCodeLine{00036\ \textcolor{preprocessor}{\ \ (sizeof(::kiwi::macros\_internal::ArraySizeHelper(array)))}}
 \DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \textcolor{keyword}{namespace\ }macros\_internal\ \{}
-\DoxyCodeLine{00043\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
-\DoxyCodeLine{00044\ \textcolor{keyword}{auto}\ ArraySizeHelper(\textcolor{keyword}{const}\ T\ (\&array)[N])\ -\/>\ char\ (\&)[N];}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \}\ \ \textcolor{comment}{//\ namespace\ macros\_internal}}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ DISALLOW\_COPY\_AND\_ASSIGN(TypeName)\ \(\backslash\)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ TypeName(const\ TypeName\&)\ =\ delete;\ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\ \ TypeName\&\ operator=(const\ TypeName\&)\ =\ delete;}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{namespace\ }macros\_internal\ \{}
+\DoxyCodeLine{00047\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00048\ \textcolor{keyword}{auto}\ ArraySizeHelper(\textcolor{keyword}{const}\ T\ (\&array)[N])\ -\/>\ char\ (\&)[N];}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \}\ \ \textcolor{comment}{//\ namespace\ macros\_internal}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

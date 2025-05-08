@@ -132,11 +132,10 @@ $(function(){initNavTree('function__extras_8hh_source.html',''); initResizable(t
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">//===----------------------------------------------------------------------===//</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Fn&gt;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classkiwi_1_1function__ref.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classkiwi_1_1function__ref.html">function_ref</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">class </span><a class="code hl_class" href="classkiwi_1_1function__ref.html">function_ref</a>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ret, <span class="keyword">typename</span>... Params&gt;</div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classkiwi_1_1function__ref_3_01_ret_07_params_8_8_8_08_4.html">   37</a></span><span class="keyword">class </span>function_ref&lt;Ret(Params...)&gt; {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">class </span><a class="code hl_class" href="classkiwi_1_1function__ref.html">function_ref</a>&lt;Ret(Params...)&gt; {</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  Ret (*callback)(intptr_t callable, Params... params) = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  intptr_t callable;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
@@ -162,7 +161,7 @@ $(function(){initNavTree('function__extras_8hh_source.html',''); initResizable(t
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                                               std::declval&lt;Params&gt;()...)),</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                                           Ret&gt;::value&gt;* = <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      : callback(callback_fn&lt;std::remove_reference_t&lt;Callable&gt;&gt;),</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        callable(<span class="keyword">reinterpret_cast&lt;</span>intptr_t<span class="keyword">&gt;</span>(&amp;callable)) {}</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        callable(reinterpret_cast&lt;intptr_t&gt;(&amp;callable)) {}</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  Ret operator()(Params... params)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">return</span> callback(callable, std::forward&lt;Params&gt;(params)...);</div>
@@ -170,11 +169,10 @@ $(function(){initNavTree('function__extras_8hh_source.html',''); initResizable(t
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">explicit</span> <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> callback; }</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
-</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}  <span class="comment">// namespace kiwi</span></div>
-<div class="ttc" id="aclasskiwi_1_1function__ref_html"><div class="ttname"><a href="classkiwi_1_1function__ref.html">kiwi::function_ref</a></div><div class="ttdef"><b>Definition</b> function_extras.hh:34</div></div>
-<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> file.cc:23</div></div>
+<div class="ttc" id="aclasskiwi_1_1function__ref_html"><div class="ttname"><a href="classkiwi_1_1function__ref.html">kiwi::function_ref</a></div><div class="ttdef"><b>Definition</b> function_ref.hh:32</div></div>
+<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> file.cc:21</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

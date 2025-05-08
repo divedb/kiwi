@@ -1,5 +1,5 @@
 \doxysection{dense\+\_\+map.\+hh}
-\hypertarget{dense__map_8hh_source}{}\label{dense__map_8hh_source}\index{include/kiwi/adt/dense\_map.hh@{include/kiwi/adt/dense\_map.hh}}
+\hypertarget{dense__map_8hh_source}{}\label{dense__map_8hh_source}\index{include/kiwi/containers/dense\_map.hh@{include/kiwi/containers/dense\_map.hh}}
 \mbox{\hyperlink{dense__map_8hh}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/ADT/DenseMap.h\ -\/\ Dense\ probed\ hash\ table\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*-\/\ C++\ -\/*-\/===//}}
@@ -23,7 +23,7 @@
 \DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
 \DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <utility>}}
 \DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{dense__map__info_8hh}{kiwi/adt/dense\_map\_info.hh}}"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}kiwi/adt/dense\_map\_info.hh"{}}}
 \DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{epoch__tracker_8hh}{kiwi/util/epoch\_tracker.hh}}"{}}}
 \DoxyCodeLine{00028\ }
 \DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
@@ -664,7 +664,7 @@
 \DoxyCodeLine{00707\ }
 \DoxyCodeLine{00714\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
 \DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
-\DoxyCodeLine{00716\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}}(}
+\DoxyCodeLine{00716\ \textcolor{keywordtype}{bool}\ operator==(}
 \DoxyCodeLine{00717\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ LHS,}
 \DoxyCodeLine{00718\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ RHS)\ \{}
 \DoxyCodeLine{00719\ \ \ \textcolor{keywordflow}{if}\ (LHS.size()\ !=\ RHS.size())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
@@ -679,7 +679,7 @@
 \DoxyCodeLine{00728\ }
 \DoxyCodeLine{00732\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DerivedT,\ \textcolor{keyword}{typename}\ KeyT,\ \textcolor{keyword}{typename}\ ValueT,\ \textcolor{keyword}{typename}\ KeyInfoT,}
 \DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ BucketT>}
-\DoxyCodeLine{00734\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a008449c6439d3cbc96cc662630b49736}{operator!=}}(}
+\DoxyCodeLine{00734\ \textcolor{keywordtype}{bool}\ operator!=(}
 \DoxyCodeLine{00735\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ LHS,}
 \DoxyCodeLine{00736\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{DenseMapBase<DerivedT,\ KeyT,\ ValueT,\ KeyInfoT,\ BucketT>}}\&\ RHS)\ \{}
 \DoxyCodeLine{00737\ \ \ \textcolor{keywordflow}{return}\ !(LHS\ ==\ RHS);}

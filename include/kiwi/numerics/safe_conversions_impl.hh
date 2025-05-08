@@ -76,9 +76,9 @@ inline constexpr bool kEnableAsmCode = true;
 inline constexpr bool kEnableAsmCode = false;
 #endif
 
-// Forces a crash, like a NOTREACHED(). Used for numeric boundary errors.
-// Also used in a constexpr template to trigger a compilation failure on
-// an error condition.
+/// Forces a crash, like a NOTREACHED(). Used for numeric boundary errors.
+/// Also used in a constexpr template to trigger a compilation failure on
+/// an error condition.
 struct CheckOnFailure {
   template <typename T>
   static T HandleFailure() {
@@ -95,11 +95,11 @@ struct CheckOnFailure {
 
 enum class IntegerRepresentation { kUnsigned, kSigned };
 
-// A range for a given nunmeric Src type is contained for a given numeric Dst
-// type if both numeric_limits<Src>::max() <= numeric_limits<Dst>::max() and
-// numeric_limits<Src>::lowest() >= numeric_limits<Dst>::lowest() are true.
-// We implement this as template specializations rather than simple static
-// comparisons to ensure type correctness in our comparisons.
+/// A range for a given nunmeric Src type is contained for a given numeric Dst
+/// type if both numeric_limits<Src>::max() <= numeric_limits<Dst>::max() and
+/// numeric_limits<Src>::lowest() >= numeric_limits<Dst>::lowest() are true.
+/// We implement this as template specializations rather than simple static
+/// comparisons to ensure type correctness in our comparisons.
 enum class NumericRangeRepresentation { kNotContained, kContained };
 
 // Helper templates to statically determine if our destination type can contain
@@ -514,18 +514,22 @@ template <typename T>
 struct UnderlyingTypeImpl {
   using type = ArithmeticOrUnderlyingEnum<T>;
 };
+
 template <typename T>
 struct UnderlyingTypeImpl<CheckedNumeric<T>> {
   using type = T;
 };
+
 template <typename T>
 struct UnderlyingTypeImpl<ClampedNumeric<T>> {
   using type = T;
 };
+
 template <typename T>
 struct UnderlyingTypeImpl<StrictNumeric<T>> {
   using type = T;
 };
+
 template <typename T>
 using UnderlyingType = typename UnderlyingTypeImpl<T>::type;
 

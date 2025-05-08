@@ -32,7 +32,7 @@
 \DoxyCodeLine{00034\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}};}
 \DoxyCodeLine{00035\ }
 \DoxyCodeLine{00036\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ret,\ \textcolor{keyword}{typename}...\ Params>}
-\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }function\_ref<Ret(Params...)>\ \{}
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}}<Ret(Params...)>\ \{}
 \DoxyCodeLine{00038\ \ \ Ret\ (*callback)(intptr\_t\ callable,\ Params...\ params)\ =\ \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{00039\ \ \ intptr\_t\ callable;}
 \DoxyCodeLine{00040\ }
@@ -58,7 +58,7 @@
 \DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::declval<Params>()...)),}
 \DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Ret>::value>*\ =\ \textcolor{keyword}{nullptr})}
 \DoxyCodeLine{00062\ \ \ \ \ \ \ :\ callback(callback\_fn<std::remove\_reference\_t<Callable>>),}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ callable(\textcolor{keyword}{reinterpret\_cast<}intptr\_t\textcolor{keyword}{>}(\&callable))\ \{\}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ callable(reinterpret\_cast<intptr\_t>(\&callable))\ \{\}}
 \DoxyCodeLine{00064\ }
 \DoxyCodeLine{00065\ \ \ Ret\ operator()(Params...\ params)\textcolor{keyword}{\ const\ }\{}
 \DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ callback(callable,\ std::forward<Params>(params)...);}

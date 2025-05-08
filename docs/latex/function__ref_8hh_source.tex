@@ -1,0 +1,75 @@
+\doxysection{function\+\_\+ref.\+hh}
+\hypertarget{function__ref_8hh_source}{}\label{function__ref_8hh_source}\index{include/kiwi/common/function\_ref.hh@{include/kiwi/common/function\_ref.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//===-\/\ llvm/ADT/STLFunctionalExtras.h\ -\/\ Extras\ for\ <functional>\ -\/*-\/\ C++\ -\/*-\/===//}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Part\ of\ the\ LLVM\ Project,\ under\ the\ Apache\ License\ v2.0\ with\ LLVM\ Exceptions.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ See\ https://llvm.org/LICENSE.txt\ for\ license\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ Apache-\/2.0\ WITH\ LLVM-\/exception}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ This\ file\ contains\ some\ extension\ to\ <functional>.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ No\ library\ is\ required\ when\ using\ these\ functions.}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ \ \ \ Extra\ additions\ to\ <functional>}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//===-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/===//}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Fn>}
+\DoxyCodeLine{00032\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1function__ref}{function\_ref}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ret,\ \textcolor{keyword}{typename}...\ Params>}
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }function\_ref<Ret(Params...)>\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable>}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ Ret\ callback\_fn(intptr\_t\ callable,\ Params...\ params)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{reinterpret\_cast<}Callable*\textcolor{keyword}{>}(callable))(}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ std::forward<Params>(params)...);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00043\ \ \ function\_ref()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00044\ \ \ function\_ref(std::nullptr\_t)\ \{\}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable>}
+\DoxyCodeLine{00047\ \ \ function\_ref(}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ Callable\&\&\ callable\ KIWI\_LIFETIME\_BOUND,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{comment}{//\ This\ is\ not\ the\ copy-\/constructor.}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ std::enable\_if\_t<!std::is\_same<std::remove\_cvref\_t<Callable>,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ function\_ref>::value>*\ =\ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{comment}{//\ Functor\ must\ be\ callable\ and\ return\ a\ suitable\ type.}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ std::enable\_if\_t<std::is\_void<Ret>::value\ ||}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_convertible<\textcolor{keyword}{decltype}(std::declval<Callable>()(}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::declval<Params>()...)),}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Ret>::value>*\ =\ \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ :\ callback\_(callback\_fn<std::remove\_reference\_t<Callable>>),}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ callable\_(\textcolor{keyword}{reinterpret\_cast<}intptr\_t\textcolor{keyword}{>}(\&callable))\ \{\}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ Ret\ operator()(Params...\ params)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ callback\_(callable\_,\ std::forward<Params>(params)...);}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ callback\_;\ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ function\_ref<Ret(Params...)>\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ callable\_\ ==\ other.callable\_;}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00071\ \ \ Ret\ (*callback\_)(intptr\_t\ callable,\ Params...\ params)\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00072\ \ \ intptr\_t\ callable\_;}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

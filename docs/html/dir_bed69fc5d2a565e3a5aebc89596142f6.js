@@ -3,6 +3,7 @@ var dir_bed69fc5d2a565e3a5aebc89596142f6 =
     [ "adl.hh", "adl_8hh_source.html", null ],
     [ "assert.hh", "assert_8hh_source.html", null ],
     [ "byte_order.hh", "byte__order_8hh_source.html", null ],
+    [ "checked_math.hh", "util_2checked__math_8hh_source.html", null ],
     [ "compressed_pair.hh", "compressed__pair_8hh_source.html", null ],
     [ "contains.hh", "contains_8hh_source.html", null ],
     [ "epoch_tracker.hh", "epoch__tracker_8hh.html", "epoch__tracker_8hh" ],
