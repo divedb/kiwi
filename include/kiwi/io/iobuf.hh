@@ -1070,7 +1070,7 @@ class IOBuf {
   /// \post Length() is increased by amount.
   ///
   /// @methodset Shifting
-  void prepend(std::size_t amount) {
+  void Prepend(std::size_t amount) {
     DCHECK_LE(amount, HeadRoom());
 
     data_ -= amount;

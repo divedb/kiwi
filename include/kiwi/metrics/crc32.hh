@@ -18,6 +18,6 @@ namespace kiwi {
 /// checking the integrity of data.  It is not a "secure" calculation!
 /// \p sum can start with any seed or be used to continue an operation began
 /// with previous data.
-BASE_EXPORT uint32_t Crc32(uint32_t sum, span<const uint8_t> data);
+BASE_EXPORT uint32_t Crc32(uint32_t sum, kiwi::span<const uint8_t> data);
 
 }  // namespace kiwi
