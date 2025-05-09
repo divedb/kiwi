@@ -539,7 +539,7 @@ class IOBuf {
   static std::unique_ptr<IOBuf> WrapBuffer(const void* buf,
                                            std::size_t capacity);
 
-  /// \copydoc wrapBuffer(const void*, std::size_t)
+  /// \copydoc WrapBuffer(const void*, std::size_t)
   static std::unique_ptr<IOBuf> WrapBuffer(ByteRange br) {
     return WrapBuffer(br.data(), br.size());
   }
