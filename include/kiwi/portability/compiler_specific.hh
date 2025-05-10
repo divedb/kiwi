@@ -28,9 +28,9 @@
 // See also:
 //   https://clang.llvm.org/docs/LanguageExtensions.html#has-builtin
 #if defined(__has_builtin)
-#define HAS_BUILTIN(x) __has_builtin(x)
+#define KIWI_HAS_BUILTIN(x) __has_builtin(x)
 #else
-#define HAS_BUILTIN(x) 0
+#define KIWI_HAS_BUILTIN(x) 0
 #endif
 
 // A wrapper around `__has_feature`, similar to `KIWI_HAS_ATTRIBUTE()`.
@@ -610,7 +610,7 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 //     // This block will only be executed if type `T` is trivially relocatable.
 //   }
 // ```
-#if HAS_BUILTIN(__is_trivially_relocatable)
+#if KIWI_HAS_BUILTIN(__is_trivially_relocatable)
 #define IS_TRIVIALLY_RELOCATABLE(t) __is_trivially_relocatable(t)
 #else
 #define IS_TRIVIALLY_RELOCATABLE(t) false

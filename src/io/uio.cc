@@ -16,14 +16,16 @@
 
 #include "kiwi/io/uio.hh"
 
-#include <folly/ScopeGuard.h>
-#include <folly/portability/Sockets.h>
-#include <folly/portability/SysFile.h>
-#include <folly/portability/SysUio.h>
-#include <folly/portability/Unistd.h>
+// #include <folly/ScopeGuard.h>
+// #include <folly/portability/Sockets.h>
+// #include <folly/portability/SysFile.h>
+// #include <folly/portability/SysUio.h>
+// #include <folly/portability/Unistd.h>
 
 #include <cerrno>
 #include <cstdio>
+
+#include "kiwi/portability/compiler_specific.hh"
 
 /// Temporarily seeks to a given offset on a file descriptor, invokes a file
 /// operation, then restores the original position.
@@ -48,72 +50,76 @@ static int WrapPositional(Func func, int fd, off_t offset, Args... args) {
   }
 
   int res = (int)func(fd, args...);
+  int saved_errno = errno;
 
-  int curErrNo = errno;
-  if (lseek(fd, origLoc, SEEK_SET) == off_t(-1)) {
+  if (lseek(fd, orig_offset, SEEK_SET) == off_t(-1)) {
     if (res == -1) {
-      errno = curErrNo;
+      errno = saved_errno;
     }
+
     return -1;
   }
-  errno = curErrNo;
+
+  errno = saved_errno;
 
   return res;
 }
 
 namespace {
-#if !FOLLY_HAVE_PREADV
-ssize_t preadv_fallback(int fd, const iovec* iov, int count, off_t offset) {
-  return static_cast<ssize_t>(wrapPositional(readv, fd, offset, iov, count));
+#if !KIWI_HAVE_PREADV
+ssize_t PReadvFallback(int fd, const iovec* iov, int count, off_t offset) {
+  return static_cast<ssize_t>(WrapPositional(readv, fd, offset, iov, count));
 }
 #endif
 
-#if !FOLLY_HAVE_PWRITEV
-ssize_t pwritev_fallback(int fd, const iovec* iov, int count, off_t offset) {
-  return static_cast<ssize_t>(wrapPositional(writev, fd, offset, iov, count));
+#if !KIWI_HAVE_PWRITEV
+ssize_t PWritevFallback(int fd, const iovec* iov, int count, off_t offset) {
+  return static_cast<ssize_t>(WrapPositional(writev, fd, offset, iov, count));
 }
 #endif
 }  // namespace
 
-namespace folly {
-#if !FOLLY_HAVE_PREADV
+namespace kiwi {
+#if !KIWI_HAVE_PREADV
 ssize_t preadv(int fd, const iovec* iov, int count, off_t offset) {
   using sig = ssize_t(int, const iovec*, int, off_t);
+
   static auto the_preadv = []() -> sig* {
-#if defined(__APPLE__) && FOLLY_HAS_BUILTIN(__builtin_available) && \
-    !TARGET_OS_SIMULATOR &&                                         \
-    (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101600 ||                    \
+#if defined(__APPLE__) && KIWI_HAS_BUILTIN(__builtin_available) && \
+    !TARGET_OS_SIMULATOR &&                                        \
+    (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101600 ||                   \
      __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000)
     if (__builtin_available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)) {
       return &::preadv;
     }
 #endif
-    return &preadv_fallback;
+
+    return &PReadvFallback;
   }();
 
   return the_preadv(fd, iov, count, offset);
 }
 #endif
 
-#if !FOLLY_HAVE_PWRITEV
+#if !KIWI_HAVE_PWRITEV
 ssize_t pwritev(int fd, const iovec* iov, int count, off_t offset) {
   using sig = ssize_t(int, const iovec*, int, off_t);
   static auto the_pwritev = []() -> sig* {
-#if defined(__APPLE__) && FOLLY_HAS_BUILTIN(__builtin_available) && \
-    !TARGET_OS_SIMULATOR &&                                         \
-    (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101600 ||                    \
+#if defined(__APPLE__) && KIWI_HAS_BUILTIN(__builtin_available) && \
+    !TARGET_OS_SIMULATOR &&                                        \
+    (__MAC_OS_X_VERSION_MAX_ALLOWED >= 101600 ||                   \
      __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000)
     if (__builtin_available(iOS 14.0, macOS 11.0, watchOS 7.0, tvOS 14.0, *)) {
       return &::pwritev;
     }
 #endif
-    return &pwritev_fallback;
+    return &PWritevFallback;
   }();
 
   return the_pwritev(fd, iov, count, offset);
 }
 #endif
-}  // namespace folly
+}  // namespace kiwi
 
 #ifdef _WIN32
 template <bool isRead>

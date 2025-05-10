@@ -22,15 +22,7 @@
 #include <limits.h>
 #include <sys/uio.h>
 #else
-#include <stdlib.h>
-
-#define UIO_MAXIOV 16
-#define IOV_MAX UIO_MAXIOV
-
-struct iovec {
-  void* iov_base;
-  size_t iov_len;
-};
+#include "kiwi/io/iovec.hh"
 
 extern "C" ssize_t readv(int fd, const iovec* iov, int count);
 extern "C" ssize_t writev(int fd, const iovec* iov, int count);
