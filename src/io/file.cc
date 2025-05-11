@@ -8,6 +8,7 @@
 
 #include "kiwi/common/logging.hh"
 #include "kiwi/io/file_path.hh"
+#include "kiwi/io/iobuf.hh"
 #include "kiwi/numerics/safe_conversions.hh"
 #include "kiwi/portability/build_config.hh"
 
@@ -141,6 +142,7 @@ std::optional<size_t> File::WriteAtCurrentPos(span<const uint8_t> data) {
   if (result < 0) {
     return std::nullopt;
   }
+
   return checked_cast<size_t>(result);
 }
 
@@ -229,6 +231,13 @@ std::string File::ErrorToString(Error error) {
   }
 
   UNREACHABLE();
+}
+
+ssize_t File::WriteIOBufAtCurrentPos(const kiwi::IOBuf& iobuf) {
+  std::vector<struct iovec> vec;
+  iobuf.AppendToIov(&vec);
+
+  return writev(file_.get(), vec.data(), vec.size());
 }
 
 }  // namespace kiwi

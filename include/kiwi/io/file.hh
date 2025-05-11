@@ -14,6 +14,7 @@
 #include "kiwi/common/macros.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/io/file_path.hh"
+#include "kiwi/io/iovec.hh"
 #include "kiwi/io/platform_file.hh"
 #include "kiwi/portability/base_export.hh"
 #include "kiwi/portability/build_config.hh"
@@ -23,6 +24,7 @@ struct stat;
 
 namespace kiwi {
 
+class IOBuf;
 using stat_wrapper_t = struct stat;
 
 /// Thin wrapper around an OS-level file.
@@ -293,6 +295,7 @@ class BASE_EXPORT File {
   /// Save as above but without seek.
   UNSAFE_BUFFER_USAGE int WriteAtCurrentPos(const char* data, int size);
   std::optional<size_t> WriteAtCurrentPos(kiwi::span<const uint8_t> data);
+  ssize_t WriteIOBufAtCurrentPos(const kiwi::IOBuf& iobuf);
 
   /// Save as above but does not make any effort to write all data on all
   /// platforms. Returns the number of bytes written, or -1/std::nullopt
