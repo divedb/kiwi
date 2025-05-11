@@ -23,5 +23,11 @@ if(USE_ZLIB)
     add_definitions(-DENABLE_ZLIB)
 endif()
 
+include(KiwiConfigChecks)
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/kiwi-config.h.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/src/kiwi-config.h
+)
+
 add_subdirectory(src)
 add_subdirectory(tests)

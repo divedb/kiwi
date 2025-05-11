@@ -40,8 +40,8 @@
 #include "kiwi/common/function_ref.hh"
 #include "kiwi/common/iterators.hh"
 #include "kiwi/containers/span.hh"
+#include "kiwi/io/uio.hh"
 #include "kiwi/portability/compiler_specific.hh"
-#include "kiwi/sys/uio.hh"
 #include "kiwi/util/checked_math.hh"
 
 KIWI_PUSH_WARNING

@@ -16,11 +16,12 @@
 
 #include "kiwi/io/uio.hh"
 
+#include "kiwi/sys/unistd.hh"
+
 // #include <folly/ScopeGuard.h>
 // #include <folly/portability/Sockets.h>
 // #include <folly/portability/SysFile.h>
 // #include <folly/portability/SysUio.h>
-// #include <folly/portability/Unistd.h>
 
 #include <cerrno>
 #include <cstdio>

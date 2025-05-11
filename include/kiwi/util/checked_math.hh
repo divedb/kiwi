@@ -144,7 +144,7 @@ std::enable_if_t<sizeof(T) == sizeof(uint64_t), bool> generic_checked_mul(
 
 template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
 bool checked_add(T* result, T a, T b) {
-#if HAS_BUILTIN(__builtin_add_overflow)
+#if KIWI_HAS_BUILTIN(__builtin_add_overflow)
   if (!__builtin_add_overflow(a, b, result)) [[likely]] {
     return true;
   }
@@ -233,7 +233,7 @@ bool checked_mod(T* result, T dividend, T divisor) {
 template <typename T, typename = std::enable_if_t<std::is_unsigned<T>::value>>
 bool checked_mul(T* result, T a, T b) {
   assert(result != nullptr);
-#if HAS_BUILTIN(__builtin_mul_overflow)
+#if KIWI_HAS_BUILTIN(__builtin_mul_overflow)
   if (!__builtin_mul_overflow(a, b, result)) [[likely]] {
     return true;
   }

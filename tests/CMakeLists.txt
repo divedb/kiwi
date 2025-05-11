@@ -41,7 +41,6 @@ function(kiwi_cc_test)
     add_test(NAME ${KIWI_TARGET_NAME} COMMAND ${KIWI_TARGET_NAME})
 endfunction()
 
-
 # add_subdirectory(util)
 add_subdirectory(metrics)
 add_subdirectory(strings)

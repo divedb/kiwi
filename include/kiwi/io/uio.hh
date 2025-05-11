@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "kiwi-config.h"
 #include "kiwi/portability/build_config.hh"
 
 #if BUILDFLAG(IS_POSIX)
