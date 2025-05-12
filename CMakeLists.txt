@@ -29,5 +29,11 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/src/kiwi-config.h
 )
 
+if(MSVC)
+  include(KiwiCompilerMSVC)
+else()
+  include(KiwiCompilerUnix)
+endif()
+
 add_subdirectory(src)
 add_subdirectory(tests)
