@@ -44,6 +44,6 @@ function(apply_kiwi_compile_options_to_target THETARGET)
       -Wuninitialized                   # Warn about uninitialized variables
       -Wunused-label                    # Warn about unused labels (e.g., `label:`)
       -Wunused-result                   # Warn if function return value is ignored
-      ${KIWI_CXX_FLAGS}                 # Additional kiwi-specific flags
+      ${KIWI_CXX_FLAGS}
   )
 endfunction()
