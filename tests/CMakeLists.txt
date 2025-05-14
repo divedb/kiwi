@@ -42,6 +42,7 @@ function(kiwi_cc_test)
 endfunction()
 
 # add_subdirectory(util)
+add_subdirectory(common)
 add_subdirectory(metrics)
 add_subdirectory(strings)
 add_subdirectory(containers)

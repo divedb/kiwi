@@ -11,7 +11,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "kiwi/posix/eintr_wrapper.hh"
+#include "kiwi/sys/eintr_wrapper.hh"
 #endif
 
 namespace kiwi::internal {

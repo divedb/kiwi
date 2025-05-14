@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// This file defines the make_scope_exit function, which executes user-defined
+/// This file defines the make_ScopeExit function, which executes user-defined
 /// cleanup logic at scope exit.
 ///
 //===----------------------------------------------------------------------===//
@@ -17,27 +17,29 @@
 #include <type_traits>
 #include <utility>
 
+#include "kiwi/portability/preprocessor.hh"
+
 namespace kiwi {
 namespace detail {
 
 template <typename Callable>
-class scope_exit {
+class ScopeExit {
  public:
   template <typename Fp>
-  explicit scope_exit(Fp&& fp) : exit_function_(std::forward<Fp>(fp)) {}
+  explicit ScopeExit(Fp&& fp) : exit_function_(std::forward<Fp>(fp)) {}
 
-  scope_exit(scope_exit&& rhs)
+  ScopeExit(ScopeExit&& rhs)
       : exit_function_(std::move(rhs.exit_function_)), engaged_(rhs.engaged_) {
     rhs.Dismiss();
   }
 
-  scope_exit(const scope_exit&) = delete;
-  scope_exit& operator=(scope_exit&&) = delete;
-  scope_exit& operator=(const scope_exit&) = delete;
+  ScopeExit(const ScopeExit&) = delete;
+  ScopeExit& operator=(ScopeExit&&) = delete;
+  ScopeExit& operator=(const ScopeExit&) = delete;
 
   void Dismiss() { engaged_ = false; }
 
-  ~scope_exit() {
+  ~ScopeExit() {
     if (engaged_) {
       exit_function_();
     }
@@ -48,6 +50,9 @@ class scope_exit {
   bool engaged_ = true;
 };
 
+// Internal use for the macro SCOPE_EXIT below.
+enum class ScopeExitTag {};
+
 }  // end namespace detail
 
 /// Keeps the callable object that is passed in, and execute it at the
@@ -56,9 +61,20 @@ class scope_exit {
 ///
 /// Interface is specified by p0052r2.
 template <typename Callable>
-[[nodiscard]] detail::scope_exit<std::decay_t<Callable>> make_scope_exit(
+[[nodiscard]] detail::ScopeExit<std::decay_t<Callable>> make_scope_exit(
     Callable&& fp) {
-  return detail::scope_exit<std::decay_t<Callable>>(std::forward<Callable>(fp));
+  return detail::ScopeExit<std::decay_t<Callable>>(std::forward<Callable>(fp));
+}
+
+template <typename FunctionType>
+detail::ScopeExit<typename std::decay<FunctionType>::type> operator+(
+    detail::ScopeExitTag, FunctionType&& fn) {
+  return detail::ScopeExit<typename std::decay<FunctionType>::type>(
+      std::forward<FunctionType>(fn));
 }
 
 }  // namespace kiwi
+
+#define SCOPE_EXIT                                 \
+  auto KIWI_ANONYMOUS_VARIABLE(SCOPE_EXIT_STATE) = \
+      ::kiwi::detail::ScopeExitTag() + [&]() noexcept

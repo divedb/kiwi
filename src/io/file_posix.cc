@@ -30,8 +30,8 @@ static_assert(sizeof(kiwi::stat_wrapper_t::st_size) >= 8);
 #include "kiwi/numerics/safe_conversions.hh"
 #include "kiwi/portability/build_config.hh"
 #include "kiwi/portability/compiler_specific.hh"
-#include "kiwi/posix/eintr_wrapper.hh"
 #include "kiwi/strings/utf_string_conversions.hh"
+#include "kiwi/sys/eintr_wrapper.hh"
 
 namespace kiwi {
 

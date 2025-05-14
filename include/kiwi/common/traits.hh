@@ -23,6 +23,8 @@
 #include <tuple>
 #include <type_traits>
 
+#include "kiwi/portability/compiler_specific.hh"
+
 namespace kiwi {
 
 #if defined(__cpp_lib_type_identity) && __cpp_lib_type_identity >= 201806L
@@ -40,6 +42,7 @@ template <typename T>
 struct type_identity {
   using type = T;
 };
+
 template <typename T>
 using type_identity_t = typename type_identity<T>::type;
 
@@ -525,7 +528,7 @@ using fallback::is_nothrow_convertible_v;
  * The default conservatively assumes the type is not
  * relocatable. Several specializations are defined for known
  * types. You may want to add your own specializations. Do so in
- * namespace folly and make sure you keep the specialization of
+ * namespace kiwi and make sure you keep the specialization of
  * IsRelocatable<SomeStruct> in the same header as SomeStruct.
  *
  * You may also declare a type to be relocatable by including
@@ -719,7 +722,7 @@ struct is_allocator : std::bool_constant<is_allocator_v<T>> {};
 }  // namespace kiwi
 
 /**
- * Use this macro ONLY inside namespace folly. When using it with a
+ * Use this macro ONLY inside namespace kiwi. When using it with a
  * regular type, use it like this:
  *
  * // Make sure you're at namespace ::folly scope
@@ -760,36 +763,36 @@ struct is_allocator : std::bool_constant<is_allocator_v<T>> {};
 
 // Use this macro ONLY at global level (no namespace)
 #define KIWI_ASSUME_FBVECTOR_COMPATIBLE(...) \
-  namespace folly {                          \
+  namespace kiwi {                           \
   template <>                                \
   KIWI_ASSUME_RELOCATABLE(__VA_ARGS__);      \
   }
 // Use this macro ONLY at global level (no namespace)
 #define KIWI_ASSUME_FBVECTOR_COMPATIBLE_1(...) \
-  namespace folly {                            \
+  namespace kiwi {                             \
   template <class T1>                          \
   KIWI_ASSUME_RELOCATABLE(__VA_ARGS__<T1>);    \
   }
 // Use this macro ONLY at global level (no namespace)
 #define KIWI_ASSUME_FBVECTOR_COMPATIBLE_2(...)  \
-  namespace folly {                             \
+  namespace kiwi {                              \
   template <class T1, class T2>                 \
   KIWI_ASSUME_RELOCATABLE(__VA_ARGS__<T1, T2>); \
   }
 // Use this macro ONLY at global level (no namespace)
 #define KIWI_ASSUME_FBVECTOR_COMPATIBLE_3(...)      \
-  namespace folly {                                 \
+  namespace kiwi {                                  \
   template <class T1, class T2, class T3>           \
   KIWI_ASSUME_RELOCATABLE(__VA_ARGS__<T1, T2, T3>); \
   }
 // Use this macro ONLY at global level (no namespace)
 #define KIWI_ASSUME_FBVECTOR_COMPATIBLE_4(...)          \
-  namespace folly {                                     \
+  namespace kiwi {                                      \
   template <class T1, class T2, class T3, class T4>     \
   KIWI_ASSUME_RELOCATABLE(__VA_ARGS__<T1, T2, T3, T4>); \
   }
 
-namespace folly {
+namespace kiwi {
 
 // STL commonly-used types
 template <class T, class U>
@@ -816,7 +819,7 @@ constexpr bool is_negative(T x) {
 // same as `x <= 0`
 template <typename T>
 constexpr bool is_non_positive(T x) {
-  return !x || folly::is_negative(x);
+  return !x || kiwi::is_negative(x);
 }
 
 // same as `x > 0`
@@ -886,7 +889,7 @@ bool greater_than(LHS const lhs) {
                                    typename std::remove_reference<LHS>::type>(
       lhs);
 }
-}  // namespace folly
+}  // namespace kiwi
 
 // Assume nothing when compiling with MSVC.
 #ifndef _MSC_VER
@@ -894,7 +897,7 @@ KIWI_ASSUME_FBVECTOR_COMPATIBLE_2(std::unique_ptr)
 KIWI_ASSUME_FBVECTOR_COMPATIBLE_1(std::shared_ptr)
 #endif
 
-namespace folly {
+namespace kiwi {
 
 //  Some compilers have signed __int128 and unsigned __int128 types, and some
 //  libraries with some compilers have traits for those types. It's a mess.
@@ -1211,4 +1214,4 @@ template <typename T, typename... Dependencies>
 using enable_std_hash_helper =
     enable_hasher_helper<T, std::hash, Dependencies...>;
 
-}  // namespace folly
+}  // namespace kiwi

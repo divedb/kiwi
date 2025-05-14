@@ -1,0 +1,14 @@
+kiwi_cc_test(
+NAME
+    traits_test
+HDRS
+    ${GTEST_INCLUDE_DIR}
+    ${KIWI_INCLUDE_DIR}
+SRCS
+    "traits_test.cc"
+COPTS
+    ${KIWI_TEST_COPTS}
+DEPS
+    gtest
+    gtest_main
+)
