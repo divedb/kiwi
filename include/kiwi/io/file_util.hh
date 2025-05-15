@@ -21,9 +21,9 @@
 #include "base/functional/callback.h"
 #include "base/types/pass_key.h"
 #include "kiwi/containers/span.hh"
-#include "kiwi/files/scoped_file.hh"
 #include "kiwi/io/file.hh"
 #include "kiwi/io/file_path.hh"
+#include "kiwi/io/scoped_file.hh"
 #include "kiwi/portability/base_export.hh"
 #include "kiwi/portability/build_config.hh"
 #include "kiwi/strings/cstring_view.hh"
@@ -761,6 +761,7 @@ BASE_EXPORT bool MoveUnsafe(const FilePath& from_path, const FilePath& to_path);
 // This function is not transactional.
 BASE_EXPORT bool CopyAndDeleteDirectory(const FilePath& from_path,
                                         const FilePath& to_path);
+
 #endif  // BUILDFLAG(IS_WIN)
 
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)

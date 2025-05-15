@@ -80,8 +80,10 @@ NAME
     strings
 HDRS
     ${KIWI_INCLUDE_DIR}
+    ${glog_SOURCE_DIR}/src
 SRCS
     "strings/strcat.cc"
+    "strings/string_split.cc"
     "strings/string_util.cc"
     "strings/string_util_constants.cc"
     "strings/sys_string_conversions_posix.cc"
@@ -91,6 +93,7 @@ SRCS
 COPTS
     ${KIWI_LIB_COPTS}
 DEPS
+    glog::glog
 ALIAS
     kiwi::strings
 )

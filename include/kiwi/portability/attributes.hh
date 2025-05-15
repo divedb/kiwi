@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "kiwi/portability/compiler_specific.hh"
+#include "kiwi/portability/build_config.hh"
 
 /// A wrapper around `__has_attribute()`, which is similar to the C++20-standard
 /// `__has_cpp_attribute()`, but tests for support for `__attribute__(())`s.
@@ -685,7 +685,7 @@
 // ```
 //   struct S {
 //      S(int* p KIWI_LIFETIME_BOUND);
-//      int* Get() KIWI_LIFETIME_BOUND;
+//      int* Get() KIWI_-BOUND;
 //   };
 //   S Func1() {
 //     int i = 0;
@@ -1043,28 +1043,3 @@
 #else
 #define KIWI_ATTR_WEAK
 #endif
-
-namespace kiwi {
-namespace detail {
-
-//  marking this as [[gnu::naked]] gets clang not to emit any text for this
-KIWI_KEEP KIWI_KEEP_DETAIL_ATTR_NAKED static void keep_anchor() {}
-
-class Keep {
- public:
-  // Must accept the anchor function as an argument.
-  KIWI_KEEP_DETAIL_ATTR_NOINLINE explicit Keep(void (*)()) noexcept {}
-};
-
-//  noinline ctor and trivial dtor minimize the text size of this
-static Keep keep_instance{keep_anchor};
-
-// weak and noinline to prevent the compiler from eliding calls.
-template <typename... T>
-KIWI_ATTR_WEAK KIWI_NOINLINE void keep_sink(T&&...) {}
-
-template <typename... T>
-KIWI_ATTR_WEAK KIWI_NOINLINE void keep_sink_nx(T&&...) noexcept {}
-
-}  // namespace detail
-}  // namespace kiwi

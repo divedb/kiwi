@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "kiwi/portability/build_config.hh"
 #include "kiwi/portability/builtin.hh"
 
 #if defined(COMPILER_MSVC) && !defined(__clang__)
@@ -19,15 +18,6 @@
 #define KIWI_HAS_FEATURE(FEATURE) __has_feature(FEATURE)
 #else
 #define KIWI_HAS_FEATURE(FEATURE) 0
-#endif
-
-// Attribute hidden.
-#if defined(_MSC_VER)
-#define KIWI_ATTR_VISIBILITY_HIDDEN
-#elif defined(__GNUC__)
-#define KIWI_ATTR_VISIBILITY_HIDDEN __attribute__((__visibility__("hidden")))
-#else
-#define KIWI_ATTR_VISIBILITY_HIDDEN
 #endif
 
 // Annotates a pointer and size directing MSAN to treat that memory region as

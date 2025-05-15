@@ -283,7 +283,7 @@
 #elif defined(_MSC_VER)
 #define COMPILER_MSVC 1
 #else
-#error Please add support for your compiler in portability/build_config.h
+#error Please add support for your compiler in portability/build_config.hh
 #endif
 
 // Processor architecture detection.  For more info on what's defined, see:
@@ -373,7 +373,7 @@
 #define ARCH_CPU_64_BITS 1
 #define ARCH_CPU_LITTLE_ENDIAN 1
 #else
-#error Please add support for your architecture in build/build_config.h
+#error Please add support for your architecture in portability/build_config.hh
 #endif
 
 // Type detection for wchar_t.
@@ -392,7 +392,7 @@
 // short wchar works for them.
 #define WCHAR_T_IS_16_BIT
 #else
-#error Please add support for your compiler in build/build_config.h
+#error Please add support for your compiler in portability/build_config.hh
 #endif
 
 #if defined(OS_ANDROID)
