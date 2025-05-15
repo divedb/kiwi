@@ -200,13 +200,6 @@
 
 #pragma once
 
-#include <folly/Portability.h>
-#include <folly/Traits.h>
-#include <folly/functional/Invoke.h>
-#include <folly/lang/Align.h>
-#include <folly/lang/Exception.h>
-#include <folly/lang/New.h>
-
 #include <cstring>
 #include <functional>
 #include <memory>
@@ -214,6 +207,9 @@
 #include <type_traits>
 #include <utility>
 
+#include "kiwi/common/align.hh"
+#include "kiwi/common/exception.hh"
+#include "kiwi/common/traits.hh"
 #include "kiwi/portability/attributes.hh"
 
 namespace kiwi {
@@ -510,9 +506,9 @@ struct DispatchBigTrivial {
         src->bigt = {};
         break;
       case Op::NUKE:
-        IsAlignLarge ? operator_delete(src->big, src->bigt.size,
+        IsAlignLarge ? operator delete(src->big, src->bigt.size,
                                        std::align_val_t(src->bigt.align))
-                     : operator_delete(src->big, src->bigt.size);
+                     : operator delete(src->big, src->bigt.size);
         break;
       case Op::HEAP:
         break;
@@ -528,8 +524,8 @@ struct DispatchBigTrivial {
     // cannot use type-specific new since type-specific new is overrideable
     // in concert with type-specific delete
     data.bigt.big = is_align_large(align)
-                        ? operator_new(size, std::align_val_t(align))
-                        : operator_new(size);
+                        ? operator new(size, std::align_val_t(align))
+                        : operator new(size);
     data.bigt.size = size;
     data.bigt.align = align;
     std::memcpy(data.bigt.big, fun, size);
@@ -1031,14 +1027,14 @@ class FunctionRef<ReturnType(Args...)> final {
   static ReturnType call(CallArg<Args>... args, void* object) {
     using Pointer = std::add_pointer_t<Fun>;
     return static_cast<ReturnType>(
-        invoke(static_cast<Fun&&>(*static_cast<Pointer>(object)),
-               static_cast<Args&&>(args)...));
+        std::invoke(static_cast<Fun&&>(*static_cast<Pointer>(object)),
+                    static_cast<Args&&>(args)...));
   }
   template <typename Fun,
             std::enable_if_t<std::is_pointer<Fun>::value, int> = 0>
   static ReturnType call(CallArg<Args>... args, void* object) {
-    return static_cast<ReturnType>(
-        invoke(reinterpret_cast<Fun>(object), static_cast<Args&&>(args)...));
+    return static_cast<ReturnType>(std::invoke(reinterpret_cast<Fun>(object),
+                                               static_cast<Args&&>(args)...));
   }
 
   void* object_{nullptr};

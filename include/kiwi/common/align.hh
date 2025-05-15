@@ -125,43 +125,47 @@ using max_align_v_ =
 /// misaligned-storage crashes on 32-bit iOS apps that use `double`.
 ///
 /// Apple's allocation reference: http://bit.ly/malloc-small
-inline constexpr std::size_t max_align_v = detail::max_align_v_::value();
-struct alignas(max_align_v) max_align_t {};
+inline constexpr std::size_t kMaxAlign = detail::max_align_v_::value();
+struct alignas(kMaxAlign) MaxAlignType {};
 
-//  Memory locations within the same cache line are subject to destructive
-//  interference, also known as false sharing, which is when concurrent
-//  accesses to these different memory locations from different cores, where at
-//  least one of the concurrent accesses is or involves a store operation,
-//  induce contention and harm performance.
-//
-//  Microbenchmarks indicate that pairs of cache lines also see destructive
-//  interference under heavy use of atomic operations, as observed for atomic
-//  increment on Sandy Bridge.
-//
-//  We assume a cache line size of 64, so we use a cache line pair size of 128
-//  to avoid destructive interference.
-//
-//  mimic: std::hardware_destructive_interference_size, C++17
-constexpr std::size_t hardware_destructive_interference_size =
-    (kIsArchArm || kIsArchS390X) ? 64 : 128;
-static_assert(hardware_destructive_interference_size >= max_align_v, "math?");
+/// Memory locations within the same cache line are subject to destructive
+/// interference, also known as false sharing, which is when concurrent
+/// accesses to these different memory locations from different cores, where at
+/// least one of the concurrent accesses is or involves a store operation,
+/// induce contention and harm performance.
+///
+/// Microbenchmarks indicate that pairs of cache lines also see destructive
+/// interference under heavy use of atomic operations, as observed for atomic
+/// increment on Sandy Bridge.
+///
+/// We assume a cache line size of 64, so we use a cache line pair size of 128
+/// to avoid destructive interference.
+///
+/// mimic: std::hardware_destructive_interference_size, C++17
+#if defined(ARCH_CPU_S390_FAMILY) || defined(ARCH_CPU_ARM_FAMILY)
+inline constexpr std::size_t kHardwareDestructiveInterferenceSize = 64;
+#else
+inline constexpr std::size_t kHardwareDestructiveInterferenceSize = 128;
+#endif
 
-//  Memory locations within the same cache line are subject to constructive
-//  interference, also known as true sharing, which is when accesses to some
-//  memory locations induce all memory locations within the same cache line to
-//  be cached, benefiting subsequent accesses to different memory locations
-//  within the same cache line and heping performance.
-//
-//  mimic: std::hardware_constructive_interference_size, C++17
-constexpr std::size_t hardware_constructive_interference_size = 64;
-static_assert(hardware_constructive_interference_size >= max_align_v, "math?");
+static_assert(kHardwareDestructiveInterferenceSize >= max_align_v, "math?");
 
-//  A value corresponding to hardware_constructive_interference_size but which
-//  may be used with alignas, since hardware_constructive_interference_size may
-//  be too large on some platforms to be used with alignas.
-constexpr std::size_t cacheline_align_v =
-    has_extended_alignment ? hardware_constructive_interference_size
-                           : max_align_v;
-struct alignas(cacheline_align_v) cacheline_align_t {};
+/// Memory locations within the same cache line are subject to constructive
+/// interference, also known as true sharing, which is when accesses to some
+/// memory locations induce all memory locations within the same cache line to
+/// be cached, benefiting subsequent accesses to different memory locations
+/// within the same cache line and heping performance.
+///
+/// mimic: std::hardware_constructive_interference_size, C++17
+inline constexpr std::size_t kHardwareConstructiveInterferenceSize = 64;
+
+static_assert(kHardwareConstructiveInterferenceSize >= kMaxAlign, "math?");
+
+/// A value corresponding to hardware_constructive_interference_size but which
+/// may be used with alignas, since hardware_constructive_interference_size may
+/// be too large on some platforms to be used with alignas.
+inline constexpr std::size_t kCacheLineAlign =
+    kHasExtendedAlignment ? kHardwareConstructiveInterferenceSize : kMaxAlign;
+struct alignas(kCacheLineAlign) CacheLineAlignType {};
 
 }  // namespace kiwi
