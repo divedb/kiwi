@@ -42,9 +42,52 @@ function(kiwi_cc_test)
 endfunction()
 
 # add_subdirectory(util)
-add_subdirectory(common)
+set(COMMON_TEST_TARGETS
+  traits_test
+  function_test
+)
+
+foreach(target ${COMMON_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+      ${target}
+    HDRS
+      ${GTEST_INCLUDE_DIR}
+      ${KIWI_INCLUDE_DIR}
+    SRCS
+      "common/${target}.cc"
+    COPTS
+      ${KIWI_TEST_COPTS}
+    DEPS
+      gtest
+      gtest_main
+  )
+endforeach()
+
+set(CONTAINERS_TEST_TARGETS
+  circular_deque_test
+  checked_iterators_test
+)
+
+foreach(target ${CONTAINERS_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+      ${target}
+    HDRS
+      ${GTEST_INCLUDE_DIR}
+      ${KIWI_INCLUDE_DIR}
+    SRCS
+      "containers/${target}.cc"
+    COPTS
+      ${KIWI_TEST_COPTS}
+    DEPS
+      gtest
+      gtest_main
+      glog::glog
+  )
+endforeach()
+
 add_subdirectory(metrics)
 add_subdirectory(strings)
-add_subdirectory(containers)
 add_subdirectory(types)
 add_subdirectory(files)
