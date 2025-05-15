@@ -148,7 +148,7 @@ inline constexpr std::size_t kHardwareDestructiveInterferenceSize = 64;
 inline constexpr std::size_t kHardwareDestructiveInterferenceSize = 128;
 #endif
 
-static_assert(kHardwareDestructiveInterferenceSize >= max_align_v, "math?");
+static_assert(kHardwareDestructiveInterferenceSize >= kMaxAlign, "math?");
 
 /// Memory locations within the same cache line are subject to constructive
 /// interference, also known as true sharing, which is when accesses to some

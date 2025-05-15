@@ -159,7 +159,7 @@
  * Casting from a non-const to a const signature is potentially dangerous,
  * as it means that a function that may change its inner state when invoked
  * is made possible to call from a const context. Therefore this cast does
- * not happen implicitly. The function `folly::constCastFunction` can
+ * not happen implicitly. The function `folly::const_cast_function` can
  * be used to perform the cast.
  *
  *     // Mutable lambda: can only be stored in a non-const folly::Function:
@@ -169,7 +169,7 @@
  *
  *     // const-cast to a const folly::Function:
  *     folly::Function<void() const> print_number_const =
- *       constCastFunction(std::move(print_number));
+ *       const_cast_function(std::move(print_number));
  *
  * When to use const function types?
  * Generally, only when you need them. When you use a `folly::Function` as a
@@ -188,14 +188,14 @@
  *
  *     std::function<void(void)> stdfunc = someCallable;
  *
- *     folly::Function<void(void) const> uniqfunc = constCastFunction(
+ *     folly::Function<void(void) const> uniqfunc = const_cast_function(
  *       folly::Function<void(void)>(someCallable)
  *     );
  *
  * You need to wrap the callable first in a non-const `folly::Function` to
  * select a non-const invoke operator (or the const one if no non-const one is
  * present), and then move it into a const `folly::Function` using
- * `constCastFunction`.
+ * `const_cast_function`.
  */
 
 #pragma once
@@ -209,7 +209,7 @@
 
 #include "kiwi/common/align.hh"
 #include "kiwi/common/exception.hh"
-#include "kiwi/common/traits.hh"
+#include "kiwi/common/utility.hh"
 #include "kiwi/portability/attributes.hh"
 
 namespace kiwi {
@@ -218,11 +218,11 @@ template <typename FunctionType>
 class Function;
 
 template <typename ReturnType, typename... Args>
-Function<ReturnType(Args...) const> ConstCastFunction(
+Function<ReturnType(Args...) const> const_cast_function(
     Function<ReturnType(Args...)>&&) noexcept;
 
 template <typename ReturnType, typename... Args>
-Function<ReturnType(Args...) const noexcept> ConstCastFunction(
+Function<ReturnType(Args...) const noexcept> const_cast_function(
     Function<ReturnType(Args...) noexcept>&&) noexcept;
 
 namespace detail {
@@ -262,17 +262,17 @@ constexpr bool isEmptyFunction(T const& t) {
 }
 
 template <typename F, typename... Args>
-using CallableResult = decltype(FOLLY_DECLVAL(F&&)(FOLLY_DECLVAL(Args&&)...));
+using CallableResult = decltype(KIWI_DECLVAL(F&&)(KIWI_DECLVAL(Args&&)...));
 
 template <typename F, typename... Args>
 constexpr bool CallableNoexcept =
-    noexcept(FOLLY_DECLVAL(F&&)(FOLLY_DECLVAL(Args&&)...));
+    noexcept(KIWI_DECLVAL(F&&)(KIWI_DECLVAL(Args&&)...));
 
 template <typename From, typename To,
           typename =
               typename std::enable_if<!std::is_reference<To>::value ||
                                       std::is_reference<From>::value>::type>
-using IfSafeResultImpl = decltype(void(static_cast<To>(FOLLY_DECLVAL(From))));
+using IfSafeResultImpl = decltype(void(static_cast<To>(KIWI_DECLVAL(From))));
 
 #if defined(_MSC_VER)
 //  Need a workaround for MSVC to avoid the inscrutable error:
@@ -471,12 +471,12 @@ struct DispatchSmallTrivial {
   template <std::size_t Size>
   static std::size_t exec_(Op o, Data* src, Data* dst) noexcept {
     switch (o) {
-      case Op::MOVE:
+      case Op::kMove:
         std::memcpy(static_cast<void*>(dst), static_cast<void*>(src), Size);
         break;
-      case Op::NUKE:
+      case Op::kNuke:
         break;
-      case Op::HEAP:
+      case Op::kHeap:
         break;
     }
     return 0U;
@@ -501,16 +501,16 @@ struct DispatchBigTrivial {
   template <bool IsAlignLarge>
   static std::size_t exec_(Op o, Data* src, Data* dst) noexcept {
     switch (o) {
-      case Op::MOVE:
+      case Op::kMove:
         dst->bigt = src->bigt;
         src->bigt = {};
         break;
-      case Op::NUKE:
+      case Op::kNuke:
         IsAlignLarge ? operator delete(src->big, src->bigt.size,
                                        std::align_val_t(src->bigt.align))
                      : operator delete(src->big, src->bigt.size);
         break;
-      case Op::HEAP:
+      case Op::kHeap:
         break;
     }
     return src->bigt.size;
@@ -518,9 +518,9 @@ struct DispatchBigTrivial {
   template <typename T>
   static constexpr auto exec = exec_<is_align_large(alignof(T))>;
 
-  FOLLY_ALWAYS_INLINE static void ctor(Data& data, void const* fun,
-                                       std::size_t size,
-                                       std::size_t align) noexcept {
+  KIWI_ALWAYS_INLINE static void ctor(Data& data, void const* fun,
+                                      std::size_t size,
+                                      std::size_t align) noexcept {
     // cannot use type-specific new since type-specific new is overrideable
     // in concert with type-specific delete
     data.bigt.big = is_align_large(align)
@@ -539,14 +539,14 @@ struct DispatchSmall {
   template <typename Fun>
   static std::size_t exec(Op o, Data* src, Data* dst) noexcept {
     switch (o) {
-      case Op::MOVE:
+      case Op::kMove:
         ::new (static_cast<void*>(&dst->tiny)) Fun(static_cast<Fun&&>(
             *static_cast<Fun*>(static_cast<void*>(&src->tiny))));
         [[fallthrough]];
-      case Op::NUKE:
+      case Op::kNuke:
         static_cast<Fun*>(static_cast<void*>(&src->tiny))->~Fun();
         break;
-      case Op::HEAP:
+      case Op::kHeap:
         break;
     }
     return 0U;
@@ -560,14 +560,14 @@ struct DispatchBig {
   template <typename Fun>
   static std::size_t exec(Op o, Data* src, Data* dst) noexcept {
     switch (o) {
-      case Op::MOVE:
+      case Op::kMove:
         dst->big = src->big;
         src->big = nullptr;
         break;
-      case Op::NUKE:
+      case Op::kNuke:
         delete static_cast<Fun*>(src->big);
         break;
-      case Op::HEAP:
+      case Op::kHeap:
         break;
     }
     return sizeof(Fun);
@@ -587,7 +587,7 @@ struct Dispatch<false, false> : DispatchBig {};
 
 template <typename Fun, bool InSituSize = sizeof(Fun) <= sizeof(Data),
           bool InSituAlign = alignof(Fun) <= alignof(Data),
-          bool InSituNoexcept = noexcept(Fun(FOLLY_DECLVAL(Fun)))>
+          bool InSituNoexcept = noexcept(Fun(KIWI_DECLVAL(Fun)))>
 using DispatchOf = Dispatch<InSituSize && InSituAlign && InSituNoexcept,
                             std::is_trivially_copyable_v<Fun>>;
 
@@ -608,7 +608,7 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
   using Exec = std::size_t (*)(Op, Data*, Data*) noexcept;
 
   friend Traits;
-  friend Function<typename Traits::ConstSignature> folly::constCastFunction<>(
+  friend Function<typename Traits::ConstSignature> kiwi::const_cast_function<>(
       Function<typename Traits::NonConstSignature>&&) noexcept;
   friend class Function<typename Traits::OtherSignature>;
 
@@ -636,7 +636,7 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
     // that must be uninitialized before exec() call in the case of self move
     that.call_ = &Traits::uninitCall;
     that.exec_ = nullptr;
-    exec(Op::MOVE, &that.data_, &data_);
+    exec(Op::kMove, &that.data_, &data_);
   }
 
   /**
@@ -726,7 +726,7 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
     }
   }
 
-  ~Function() { exec(Op::NUKE, &data_, nullptr); }
+  ~Function() { exec(Op::kNuke, &data_, nullptr); }
 
   Function& operator=(const Function&) = delete;
 
@@ -747,9 +747,9 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
    * then `*this` is left in a valid but unspecified state.
    */
   Function& operator=(Function&& that) noexcept {
-    exec(Op::NUKE, &data_, nullptr);
-    if (FOLLY_LIKELY(this != &that)) {
-      that.exec(Op::MOVE, &that.data_, &data_);
+    exec(Op::kNuke, &data_, nullptr);
+    if (KIWI_LIKELY(this != &that)) {
+      that.exec(Op::kMove, &that.data_, &data_);
       exec_ = that.exec_;
       call_ = that.call_;
     }
@@ -762,12 +762,12 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
    * Assigns a callable object to this `Function`. If the operation fails,
    * `*this` is left unmodified.
    *
-   * \note `typename = decltype(Function(FOLLY_DECLVAL(Fun&&)))` prevents this
+   * \note `typename = decltype(Function(KIWI_DECLVAL(Fun&&)))` prevents this
    * overload from being selected by overload resolution when `fun` is not a
    * compatible function.
    */
   template <typename Fun, typename...,
-            bool Nx = noexcept(Function(FOLLY_DECLVAL(Fun&&)))>
+            bool Nx = noexcept(Function(KIWI_DECLVAL(Fun&&)))>
   Function& operator=(Fun fun) noexcept(Nx) {
     // Doing this in place is more efficient when we can do so safely.
     if (Nx) {
@@ -834,7 +834,7 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
    * allocation because the callable is stored within the `Function` object.
    */
   std::size_t heapAllocatedMemory() const noexcept {
-    return exec(Op::HEAP, &data_, nullptr);
+    return exec(Op::kHeap, &data_, nullptr);
   }
 
   using typename Traits::SharedProxy;
@@ -869,7 +869,7 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
       : call_(that.call_), exec_(that.exec_) {
     that.call_ = &Traits::uninitCall;
     that.exec_ = nullptr;
-    exec(Op::MOVE, &that.data_, &data_);
+    exec(Op::kMove, &that.data_, &data_);
   }
 
   std::size_t exec(Op o, Data* src, Data* dst) const {
@@ -880,10 +880,10 @@ class Function final : private detail::function::FunctionTraits<FunctionType> {
     return exec_(o, src, dst);
   }
 
-  // The `data_` member is mutable to allow `constCastFunction` to work without
-  // invoking undefined behavior. Const-correctness is only violated when
-  // `FunctionType` is a const function type (e.g., `int() const`) and `*this`
-  // is the result of calling `constCastFunction`.
+  // The `data_` member is mutable to allow `const_cast_function` to work
+  // without invoking undefined behavior. Const-correctness is only violated
+  // when `FunctionType` is a const function type (e.g., `int() const`) and
+  // `*this` is the result of calling `const_cast_function`.
   mutable Data data_{unsafe_default_initialized};
   Call call_{&Traits::uninitCall};
   Exec exec_{nullptr};
@@ -917,48 +917,48 @@ bool operator!=(std::nullptr_t, const Function<FunctionType>& fn) {
 /**
  * Casts a `folly::Function` from non-const to a const signature.
  *
- * NOTE: The name of `constCastFunction` should warn you that something
+ * NOTE: The name of `const_cast_function` should warn you that something
  * potentially dangerous is happening. As a matter of fact, using
  * `std::function` always involves this potentially dangerous aspect, which
  * is why it is not considered fully const-safe or even const-correct.
  * However, in most of the cases you will not need the dangerous aspect at all.
  * Either you do not require invocation of the function from a const context,
- * in which case you do not need to use `constCastFunction` and just
+ * in which case you do not need to use `const_cast_function` and just
  * use a non-const `folly::Function`. Or, you may need invocation from const,
  * but the callable you are wrapping does not mutate its state (e.g. it is a
  * class object and implements `operator() const`, or it is a normal,
  * non-mutable lambda), in which case you can wrap the callable in a const
- * `folly::Function` directly, without using `constCastFunction`.
+ * `folly::Function` directly, without using `const_cast_function`.
  * Only if you require invocation from a const context of a callable that
  * may mutate itself when invoked you have to go through the above procedure.
  * However, in that case what you do is potentially dangerous and requires
  * the equivalent of a `const_cast`, hence you need to call
- * `constCastFunction`.
+ * `const_cast_function`.
  *
  * @param that a non-const folly::Function.
  */
 template <typename ReturnType, typename... Args>
-Function<ReturnType(Args...) const> constCastFunction(
+Function<ReturnType(Args...) const> const_cast_function(
     Function<ReturnType(Args...)>&& that) noexcept {
   return Function<ReturnType(Args...) const>{std::move(that),
                                              detail::function::CoerceTag{}};
 }
 
 template <typename ReturnType, typename... Args>
-Function<ReturnType(Args...) const> constCastFunction(
+Function<ReturnType(Args...) const> const_cast_function(
     Function<ReturnType(Args...) const>&& that) noexcept {
   return std::move(that);
 }
 
 template <typename ReturnType, typename... Args>
-Function<ReturnType(Args...) const noexcept> constCastFunction(
+Function<ReturnType(Args...) const noexcept> const_cast_function(
     Function<ReturnType(Args...) noexcept>&& that) noexcept {
   return Function<ReturnType(Args...) const noexcept>{
       std::move(that), detail::function::CoerceTag{}};
 }
 
 template <typename ReturnType, typename... Args>
-Function<ReturnType(Args...) const noexcept> constCastFunction(
+Function<ReturnType(Args...) const noexcept> const_cast_function(
     Function<ReturnType(Args...) const noexcept>&& that) noexcept {
   return std::move(that);
 }
@@ -1064,7 +1064,7 @@ class FunctionRef<ReturnType(Args...)> final {
       typename Fun,
       std::enable_if_t<
           Conjunction<Negation<std::is_same<FunctionRef, std::decay_t<Fun>>>,
-                      is_invocable_r<ReturnType, Fun&&, Args&&...>>::value,
+                      std::is_invocable_r<ReturnType, Fun&&, Args&&...>>::value,
           int> = 0>
   constexpr /* implicit */ FunctionRef(Fun&& fun) noexcept {
     // `Fun` may be a const type, in which case we have to do a const_cast
@@ -1087,9 +1087,10 @@ class FunctionRef<ReturnType(Args...)> final {
    * Constructs a FunctionRef from a pointer to a function. If the
    * pointer is nullptr, the FunctionRef will be empty.
    */
-  template <
-      typename Fun, std::enable_if_t<std::is_function<Fun>::value, int> = 0,
-      std::enable_if_t<is_invocable_r_v<ReturnType, Fun&, Args&&...>, int> = 0>
+  template <typename Fun,
+            std::enable_if_t<std::is_function<Fun>::value, int> = 0,
+            std::enable_if_t<std::is_invocable_r_v<ReturnType, Fun&, Args&&...>,
+                             int> = 0>
   constexpr /* implicit */ FunctionRef(Fun* fun) noexcept {
     if (fun) {
       object_ = const_cast<void*>(reinterpret_cast<void const*>(fun));

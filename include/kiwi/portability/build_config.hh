@@ -283,7 +283,7 @@
 #elif defined(_MSC_VER)
 #define COMPILER_MSVC 1
 #else
-#error Please add support for your compiler in build/build_config.h
+#error Please add support for your compiler in portability/build_config.h
 #endif
 
 // Processor architecture detection.  For more info on what's defined, see:

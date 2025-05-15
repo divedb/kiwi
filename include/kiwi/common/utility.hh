@@ -21,30 +21,29 @@
 #include <type_traits>
 #include <utility>
 
+#include "kiwi/common/traits.hh"
 #include "kiwi/portability/compiler_specific.hh"
 
 namespace kiwi {
 
-/*
- * KIWI_DECLVAL(T)
- *
- * This macro works like std::declval<T>() but does the same thing in a way
- * that does not require instantiating a function template.
- *
- * Use this macro instead of std::declval<T>() in places that are widely
- * instantiated to reduce compile-time overhead of instantiating function
- * templates.
- *
- * Note that, like std::declval<T>(), this macro can only be used in
- * unevaluated contexts.
- *
- * There are some small differences between this macro and std::declval<T>().
- * - This macro results in a value of type 'T' instead of 'T&&'.
- * - This macro requires the type T to be a complete type at the
- *   point of use.
- *   If this is a problem then use KIWI_DECLVAL(T&&) instead, or if T might
- *   be 'void', then use KIWI_DECLVAL(std::add_rvalue_reference_t<T>).
- */
+/// KIWI_DECLVAL(T)
+///
+/// This macro works like std::declval<T>() but does the same thing in a way
+/// that does not require instantiating a function template.
+///
+/// Use this macro instead of std::declval<T>() in places that are widely
+/// instantiated to reduce compile-time overhead of instantiating function
+/// templates.
+///
+/// Note that, like std::declval<T>(), this macro can only be used in
+/// unevaluated contexts.
+///
+/// There are some small differences between this macro and std::declval<T>().
+/// - This macro results in a value of type 'T' instead of 'T&&'.
+/// - This macro requires the type T to be a complete type at the
+///   point of use.
+///   If this is a problem then use KIWI_DECLVAL(T&&) instead, or if T might
+///   be 'void', then use KIWI_DECLVAL(std::add_rvalue_reference_t<T>).
 #define KIWI_DECLVAL(...) static_cast<__VA_ARGS__ (*)() noexcept>(nullptr)()
 
 namespace detail {
