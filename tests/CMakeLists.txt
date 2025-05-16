@@ -65,8 +65,9 @@ foreach(target ${COMMON_TEST_TARGETS})
 endforeach()
 
 set(CONTAINERS_TEST_TARGETS
+  checked_iterators_test  
   circular_deque_test
-  checked_iterators_test
+  heap_array_test
 )
 
 foreach(target ${CONTAINERS_TEST_TARGETS})

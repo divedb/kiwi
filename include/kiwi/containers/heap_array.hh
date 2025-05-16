@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef BASE_CONTAINERS_HEAP_ARRAY_H_
-#define BASE_CONTAINERS_HEAP_ARRAY_H_
+#pragma once
 
 #include <stddef.h>
 
@@ -60,6 +59,7 @@ class TRIVIAL_ABI GSL_OWNER HeapArray {
     if (!size) {
       return HeapArray();
     }
+
     return HeapArray(std::unique_ptr<T[], deleter_type>(new T[size]), size);
   }
 
@@ -117,21 +117,21 @@ class TRIVIAL_ABI GSL_OWNER HeapArray {
   // Prefer span-based methods below over data() where possible. The data()
   // method exists primarily to allow implicit constructions of spans.
   // Returns nullptr for a zero-sized (or moved-from) array.
-  T* data() LIFETIME_BOUND { return data_.get(); }
-  const T* data() const LIFETIME_BOUND { return data_.get(); }
+  T* data() KIWI_LIFETIME_BOUND { return data_.get(); }
+  const T* data() const KIWI_LIFETIME_BOUND { return data_.get(); }
 
-  iterator begin() LIFETIME_BOUND { return as_span().begin(); }
-  const_iterator begin() const LIFETIME_BOUND { return as_span().begin(); }
+  iterator begin() KIWI_LIFETIME_BOUND { return as_span().begin(); }
+  const_iterator begin() const KIWI_LIFETIME_BOUND { return as_span().begin(); }
 
-  iterator end() LIFETIME_BOUND { return as_span().end(); }
-  const_iterator end() const LIFETIME_BOUND { return as_span().end(); }
+  iterator end() KIWI_LIFETIME_BOUND { return as_span().end(); }
+  const_iterator end() const KIWI_LIFETIME_BOUND { return as_span().end(); }
 
-  ALWAYS_INLINE T& operator[](size_t idx) LIFETIME_BOUND {
+  KIWI_ALWAYS_INLINE T& operator[](size_t idx) KIWI_LIFETIME_BOUND {
     CHECK_LT(idx, size_);
     // SAFETY: bounds checked above.
     return UNSAFE_BUFFERS(data_.get()[idx]);
   }
-  ALWAYS_INLINE const T& operator[](size_t idx) const LIFETIME_BOUND {
+  KIWI_ALWAYS_INLINE const T& operator[](size_t idx) const KIWI_LIFETIME_BOUND {
     CHECK_LT(idx, size_);
     // SAFETY: bounds checked above.
     return UNSAFE_BUFFERS(data_.get()[idx]);
@@ -141,12 +141,12 @@ class TRIVIAL_ABI GSL_OWNER HeapArray {
   // constructible from HeapArray<T>, so an explicit call to .as_span() is
   // most useful, say, when the compiler can't deduce a template
   // argument type.
-  ALWAYS_INLINE kiwi::span<T> as_span() LIFETIME_BOUND {
+  KIWI_ALWAYS_INLINE kiwi::span<T> as_span() KIWI_LIFETIME_BOUND {
     // SAFETY: `size_` is the number of elements in the `data_` allocation` at
     // all times.
     return UNSAFE_BUFFERS(kiwi::span<T>(data_.get(), size_));
   }
-  ALWAYS_INLINE kiwi::span<const T> as_span() const LIFETIME_BOUND {
+  KIWI_ALWAYS_INLINE kiwi::span<const T> as_span() const KIWI_LIFETIME_BOUND {
     // SAFETY: `size_` is the number of elements in the `data_` allocation` at
     // all times.
     return UNSAFE_BUFFERS(kiwi::span<const T>(data_.get(), size_));
@@ -169,35 +169,35 @@ class TRIVIAL_ABI GSL_OWNER HeapArray {
   // If `count` is unspecified, all remaining elements are included. A CHECK()
   // occurs if any of the parameters results in an out-of-range position in
   // the HeapArray.
-  kiwi::span<T> subspan(size_t offset) LIFETIME_BOUND {
+  kiwi::span<T> subspan(size_t offset) KIWI_LIFETIME_BOUND {
     return as_span().subspan(offset);
   }
-  kiwi::span<const T> subspan(size_t offset) const LIFETIME_BOUND {
+  kiwi::span<const T> subspan(size_t offset) const KIWI_LIFETIME_BOUND {
     return as_span().subspan(offset);
   }
-  kiwi::span<T> subspan(size_t offset, size_t count) LIFETIME_BOUND {
+  kiwi::span<T> subspan(size_t offset, size_t count) KIWI_LIFETIME_BOUND {
     return as_span().subspan(offset, count);
   }
   kiwi::span<const T> subspan(size_t offset,
-                              size_t count) const LIFETIME_BOUND {
+                              size_t count) const KIWI_LIFETIME_BOUND {
     return as_span().subspan(offset, count);
   }
 
   // Returns a span over the first `count` elements of the HeapArray. A CHECK()
   // occurs if the `count` is larger than size of the HeapArray.
-  kiwi::span<T> first(size_t count) LIFETIME_BOUND {
+  kiwi::span<T> first(size_t count) KIWI_LIFETIME_BOUND {
     return as_span().first(count);
   }
-  kiwi::span<const T> first(size_t count) const LIFETIME_BOUND {
+  kiwi::span<const T> first(size_t count) const KIWI_LIFETIME_BOUND {
     return as_span().first(count);
   }
 
   // Returns a span over the last `count` elements of the HeapArray. A CHECK()
   // occurs if the `count` is larger than size of the HeapArray.
-  kiwi::span<T> last(size_t count) LIFETIME_BOUND {
+  kiwi::span<T> last(size_t count) KIWI_LIFETIME_BOUND {
     return as_span().last(count);
   }
-  kiwi::span<const T> last(size_t count) const LIFETIME_BOUND {
+  kiwi::span<const T> last(size_t count) const KIWI_LIFETIME_BOUND {
     return as_span().last(count);
   }
 
