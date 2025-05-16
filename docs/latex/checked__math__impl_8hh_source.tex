@@ -1,0 +1,572 @@
+\doxysection{checked\+\_\+math\+\_\+impl.\+hh}
+\hypertarget{checked__math__impl_8hh_source}{}\label{checked__math__impl_8hh_source}\index{include/kiwi/numerics/checked\_math\_impl.hh@{include/kiwi/numerics/checked\_math\_impl.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_math\_shared\_impl.hh"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00021\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ CheckedAddImpl(T\ x,\ T\ y,\ T*\ result)\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static\_assert}(std::integral<T>,\ \textcolor{stringliteral}{"{}Type\ must\ be\ integral"{}});}
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{//\ Since\ the\ value\ of\ x+y\ is\ undefined\ if\ we\ have\ a\ signed\ type,\ we\ compute}}
+\DoxyCodeLine{00024\ \ \ \textcolor{comment}{//\ it\ using\ the\ unsigned\ type\ of\ the\ same\ size.}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{using\ }UnsignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{using\ }SignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_signed<T>::type;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ ux\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(x);}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ uy\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ uresult\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(ux\ +\ uy);}
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ Addition\ is\ valid\ if\ the\ sign\ of\ (x\ +\ y)\ is\ equal\ to\ either\ that\ of\ x\ or}}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ that\ of\ y.}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{if}\ (std::is\_signed\_v<T>}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}SignedDst\textcolor{keyword}{>}((uresult\ \string^\ ux)\ \&\ (uresult\ \string^\ uy))\ <\ 0}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ :\ uresult\ <\ uy)\ \{\ \ \textcolor{comment}{//\ Unsigned\ is\ either\ valid\ or\ underflow.}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(uresult);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00039\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00042\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_op}{CheckedAddOp}}\ \{\};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00046\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_op}{CheckedAddOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ MaxExponentPromotion<T,\ U>;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (CheckedAddFastOp<T,\ U>::is\_supported)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedAddFastOp<T,\ U>::Do(x,\ y,\ result);}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ Double\ the\ underlying\ type\ up\ to\ a\ full\ machine\ word.}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{using\ }FastPromotion\ =\ FastIntegerArithmeticPromotion<T,\ U>;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ std::conditional\_t<(kIntegerBitsPlusSign<FastPromotion>\ >}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kIntegerBitsPlusSign<intptr\_t>),}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BigEnoughPromotion<T,\ U>,\ FastPromotion>;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//\ Fail\ if\ either\ operand\ is\ out\ of\ range\ for\ the\ promoted\ type.}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{comment}{//\ TODO(jschuh):\ This\ could\ be\ made\ to\ work\ for\ a\ broader\ range\ of\ values.}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<Promotion>(x)\ ||}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ !IsValueInRangeForNumericType<Promotion>(y))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ Promotion\ presult\ =\ \{\};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_valid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (kIsIntegerArithmeticSafe<Promotion,\ T,\ U>)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ presult\ =\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x)\ +\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00071\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ is\_valid\ =\ CheckedAddImpl(\textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x),}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y),\ \&presult);}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (!is\_valid\ ||\ !IsValueInRangeForNumericType<V>(presult))\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(presult);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00084\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ CheckedSubImpl(T\ x,\ T\ y,\ T*\ result)\ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static\_assert}(std::integral<T>,\ \textcolor{stringliteral}{"{}Type\ must\ be\ integral"{}});}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ Since\ the\ value\ of\ x+y\ is\ undefined\ if\ we\ have\ a\ signed\ type,\ we\ compute}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ it\ using\ the\ unsigned\ type\ of\ the\ same\ size.}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{using\ }UnsignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type;}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{using\ }SignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_signed<T>::type;}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ ux\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(x);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ uy\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ uresult\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(ux\ -\/\ uy);}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ Subtraction\ is\ valid\ if\ either\ x\ and\ y\ have\ same\ sign,\ or\ (x-\/y)\ and\ x\ have}}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ the\ same\ sign.}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordflow}{if}\ (std::is\_signed\_v<T>}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}SignedDst\textcolor{keyword}{>}((uresult\ \string^\ ux)\ \&\ (ux\ \string^\ uy))\ <\ 0}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ :\ x\ <\ y)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(uresult);}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00105\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_sub_op}{CheckedSubOp}}\ \{\};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00109\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_sub_op}{CheckedSubOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ MaxExponentPromotion<T,\ U>;}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (CheckedSubFastOp<T,\ U>::is\_supported)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedSubFastOp<T,\ U>::Do(x,\ y,\ result);}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ Double\ the\ underlying\ type\ up\ to\ a\ full\ machine\ word.}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{using\ }FastPromotion\ =\ FastIntegerArithmeticPromotion<T,\ U>;}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ std::conditional\_t<(kIntegerBitsPlusSign<FastPromotion>\ >}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kIntegerBitsPlusSign<intptr\_t>),}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BigEnoughPromotion<T,\ U>,\ FastPromotion>;}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ Fail\ if\ either\ operand\ is\ out\ of\ range\ for\ the\ promoted\ type.}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ TODO(jschuh):\ This\ could\ be\ made\ to\ work\ for\ a\ broader\ range\ of\ values.}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<Promotion>(x)\ ||}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ !IsValueInRangeForNumericType<Promotion>(y))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ Promotion\ presult\ =\ \{\};}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_valid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (kIsIntegerArithmeticSafe<Promotion,\ T,\ U>)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ presult\ =\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x)\ -\/\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00134\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ is\_valid\ =\ CheckedSubImpl(\textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x),}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y),\ \&presult);}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{if}\ (!is\_valid\ ||\ !IsValueInRangeForNumericType<V>(presult))\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(presult);}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00147\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ CheckedMulImpl(T\ x,\ T\ y,\ T*\ result)\ \{}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static\_assert}(std::integral<T>,\ \textcolor{stringliteral}{"{}Type\ must\ be\ integral"{}});}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{//\ Since\ the\ value\ of\ x*y\ is\ potentially\ undefined\ if\ we\ have\ a\ signed\ type,}}
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//\ we\ compute\ it\ using\ the\ unsigned\ type\ of\ the\ same\ size.}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{using\ }UnsignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type;}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{using\ }SignedDst\ =\ \textcolor{keyword}{typename}\ std::make\_signed<T>::type;}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ ux\ =\ SafeUnsignedAbs(x);}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ uy\ =\ SafeUnsignedAbs(y);}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{const}\ UnsignedDst\ uresult\ =\ \textcolor{keyword}{static\_cast<}UnsignedDst\textcolor{keyword}{>}(ux\ *\ uy);}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_negative\ =}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ std::is\_signed\_v<T>\ \&\&\ \textcolor{keyword}{static\_cast<}SignedDst\textcolor{keyword}{>}(x\ \string^\ y)\ <\ 0;}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ We\ have\ a\ fast\ out\ for\ unsigned\ identity\ or\ zero\ on\ the\ second\ operand.}}
+\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//\ After\ that\ it's\ an\ unsigned\ overflow\ check\ on\ the\ absolute\ value,\ with}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ a\ +1\ bound\ for\ a\ negative\ result.}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keywordflow}{if}\ (uy\ >\ UnsignedDst(!std::is\_signed\_v<T>\ ||\ is\_negative)\ \&\&}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ ux\ >\ (std::numeric\_limits<T>::max()\ +\ UnsignedDst(is\_negative))\ /\ uy)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(is\_negative\ ?\ 0\ -\/\ uresult\ :\ uresult);}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00167\ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00170\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mul_op}{CheckedMulOp}}\ \{\};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00174\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mul_op}{CheckedMulOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ MaxExponentPromotion<T,\ U>;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (CheckedMulFastOp<T,\ U>::is\_supported)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ CheckedMulFastOp<T,\ U>::Do(x,\ y,\ result);}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =\ FastIntegerArithmeticPromotion<T,\ U>;}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ Verify\ the\ destination\ type\ can\ hold\ the\ result\ (always\ true\ for\ 0).}}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{if}\ ((!IsValueInRangeForNumericType<Promotion>(x)\ ||}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ !IsValueInRangeForNumericType<Promotion>(y))\ \&\&}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ x\ \&\&\ y)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ Promotion\ presult\ =\ \{\};}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_valid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (CheckedMulFastOp<Promotion,\ Promotion>::is\_supported)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{comment}{//\ The\ fast\ op\ may\ be\ available\ with\ the\ promoted\ type.}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{comment}{//\ The\ casts\ here\ are\ safe\ because\ of\ the\ "{}value\ in\ range"{}\ conditional}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \textcolor{comment}{//\ above.}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ is\_valid\ =\ CheckedMulFastOp<Promotion,\ Promotion>::Do(}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x),\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y),\ \&presult);}
+\DoxyCodeLine{00198\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (kIsIntegerArithmeticSafe<Promotion,\ T,\ U>)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ presult\ =\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x)\ *\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00200\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ is\_valid\ =\ CheckedMulImpl(\textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x),}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y),\ \&presult);}
+\DoxyCodeLine{00203\ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordflow}{if}\ (!is\_valid\ ||\ !IsValueInRangeForNumericType<V>(presult))\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(presult);}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00209\ \ \ \}}
+\DoxyCodeLine{00210\ \};}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ Division\ just\ requires\ a\ check\ for\ a\ zero\ denominator\ or\ an\ invalid\ negation}}
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ on\ signed\ min/-\/1.}}
+\DoxyCodeLine{00214\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00215\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_div_op}{CheckedDivOp}}\ \{\};}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00219\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_div_op}{CheckedDivOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ MaxExponentPromotion<T,\ U>;}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{if}\ (!y)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00225\ \ \ \ \ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{comment}{//\ The\ overflow\ check\ can\ be\ compiled\ away\ if\ we\ don't\ have\ the\ exact}}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{comment}{//\ combination\ of\ types\ needed\ to\ trigger\ this\ case.}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =\ BigEnoughPromotion<T,\ U>;}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{if}\ (std::is\_signed\_v<T>\ \&\&\ std::is\_signed\_v<U>\ \&\&}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ kIsTypeInRangeForNumericType<T,\ Promotion>\ \&\&}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x)\ ==\ std::numeric\_limits<Promotion>::lowest()\ \&\&}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ y\ ==\ \textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(-\/1))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{comment}{//\ This\ branch\ always\ compiles\ away\ if\ the\ above\ branch\ wasn't\ removed.}}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{if}\ ((!IsValueInRangeForNumericType<Promotion>(x)\ ||}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ !IsValueInRangeForNumericType<Promotion>(y))\ \&\&}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ x)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{const}\ Promotion\ presult\ =\ Promotion(x)\ /\ Promotion(y);}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(presult))\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(presult);}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00254\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mod_op}{CheckedModOp}}\ \{\};}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00258\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mod_op}{CheckedModOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ MaxExponentPromotion<T,\ U>;}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{if}\ (!y)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keyword}{using\ }Promotion\ =\ BigEnoughPromotion<T,\ U>;}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{if}\ (std::is\_signed\_v<T>\ \&\&\ std::is\_signed\_v<U>\ \&\&}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ kIsTypeInRangeForNumericType<T,\ Promotion>\ \&\&}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x)\ ==\ std::numeric\_limits<Promotion>::lowest()\ \&\&}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ y\ ==\ \textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(-\/1))\ [[unlikely]]\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ *result\ =\ 0;}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00273\ \ \ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keyword}{const}\ Promotion\ presult\ =}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(x)\ \%\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(presult))\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00279\ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}Promotion\textcolor{keyword}{>}(presult);}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00282\ \ \ \}}
+\DoxyCodeLine{00283\ \};}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00286\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_lsh_op}{CheckedLshOp}}\ \{\};}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \textcolor{comment}{//\ Left\ shift.\ Shifts\ less\ than\ 0\ or\ greater\ than\ or\ equal\ to\ the\ number}}
+\DoxyCodeLine{00289\ \textcolor{comment}{//\ of\ bits\ in\ the\ promoted\ type\ are\ undefined.\ Shifts\ of\ negative\ values}}
+\DoxyCodeLine{00290\ \textcolor{comment}{//\ are\ undefined.\ Otherwise\ it\ is\ defined\ when\ the\ result\ fits.}}
+\DoxyCodeLine{00291\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00293\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_lsh_op}{CheckedLshOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00294\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ T;}
+\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ shift,\ V*\ result)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{comment}{//\ Disallow\ negative\ numbers\ and\ verify\ the\ shift\ is\ in\ bounds.}}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueNegative(x)\ \&\&}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ as\_unsigned(shift)\ <\ as\_unsigned(std::numeric\_limits<T>::digits))}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ [[likely]]\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \textcolor{comment}{//\ Shift\ as\ unsigned\ to\ avoid\ undefined\ behavior.}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(as\_unsigned(x)\ <<\ shift);}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ shift\ can\ be\ reversed,\ we\ know\ it\ was\ valid.}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *result\ >>\ shift\ ==\ x;}
+\DoxyCodeLine{00305\ \ \ \ \ \}}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{comment}{//\ Handle\ the\ legal\ corner-\/case\ of\ a\ full-\/width\ signed\ shift\ of\ zero.}}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{if}\ (!std::is\_signed\_v<T>\ ||\ x\ ||}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ as\_unsigned(shift)\ !=\ as\_unsigned(std::numeric\_limits<T>::digits))\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ *result\ =\ 0;}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00314\ \ \ \}}
+\DoxyCodeLine{00315\ \};}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00318\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_rsh_op}{CheckedRshOp}}\ \{\};}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{comment}{//\ Right\ shift.\ Shifts\ less\ than\ 0\ or\ greater\ than\ or\ equal\ to\ the\ number}}
+\DoxyCodeLine{00321\ \textcolor{comment}{//\ of\ bits\ in\ the\ promoted\ type\ are\ undefined.\ Otherwise,\ it\ is\ always\ defined,}}
+\DoxyCodeLine{00322\ \textcolor{comment}{//\ but\ a\ right\ shift\ of\ a\ negative\ value\ is\ implementation-\/dependent.}}
+\DoxyCodeLine{00323\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00325\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_rsh_op}{CheckedRshOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ T;}
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00328\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ shift,\ V*\ result)\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{comment}{//\ Use\ sign\ conversion\ to\ push\ negative\ values\ out\ of\ range.}}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{if}\ (as\_unsigned(shift)\ >=\ kIntegerBitsPlusSign<T>)\ [[unlikely]]\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00332\ \ \ \ \ \}}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keyword}{const}\ T\ tmp\ =\ x\ >>\ shift;}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(tmp))\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00337\ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(tmp);}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00340\ \ \ \}}
+\DoxyCodeLine{00341\ \};}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00344\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_and_op}{CheckedAndOp}}\ \{\};}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \textcolor{comment}{//\ For\ simplicity\ we\ support\ only\ unsigned\ integer\ results.}}
+\DoxyCodeLine{00347\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00349\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_and_op}{CheckedAndOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00350\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ std::make\_unsigned\_t<MaxExponentPromotion<T,\ U>>;}
+\DoxyCodeLine{00351\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00352\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keyword}{const}\ result\_type\ tmp\ =}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(x)\ \&\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(tmp))\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00357\ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(tmp);}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00360\ \ \ \}}
+\DoxyCodeLine{00361\ \};}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00364\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_or_op}{CheckedOrOp}}\ \{\};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{comment}{//\ For\ simplicity\ we\ support\ only\ unsigned\ integers.}}
+\DoxyCodeLine{00367\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00369\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_or_op}{CheckedOrOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00370\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ std::make\_unsigned\_t<MaxExponentPromotion<T,\ U>>;}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keyword}{const}\ result\_type\ tmp\ =}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(x)\ |\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(tmp))\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00377\ \ \ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(tmp);}
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00380\ \ \ \}}
+\DoxyCodeLine{00381\ \};}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00384\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_xor_op}{CheckedXorOp}}\ \{\};}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \textcolor{comment}{//\ For\ simplicity\ we\ support\ only\ unsigned\ integers.}}
+\DoxyCodeLine{00387\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{requires}(std::integral<T>\ \&\&\ std::integral<U>)}
+\DoxyCodeLine{00389\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_xor_op}{CheckedXorOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00390\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ std::make\_unsigned\_t<MaxExponentPromotion<T,\ U>>;}
+\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keyword}{const}\ result\_type\ tmp\ =}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(x)\ \string^\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(tmp))\ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00397\ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(tmp);}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00400\ \ \ \}}
+\DoxyCodeLine{00401\ \};}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \textcolor{comment}{//\ Max\ doesn't\ really\ need\ to\ be\ implemented\ this\ way\ because\ it\ can't\ fail,}}
+\DoxyCodeLine{00404\ \textcolor{comment}{//\ but\ it\ makes\ the\ code\ much\ cleaner\ to\ use\ the\ MathOp\ wrappers.}}
+\DoxyCodeLine{00405\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00406\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_max_op}{CheckedMaxOp}}\ \{\};}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00408\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00409\ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<T>\ \&\&\ std::is\_arithmetic\_v<U>)}
+\DoxyCodeLine{00410\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_max_op}{CheckedMaxOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00411\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ MaxExponentPromotion<T,\ U>;}
+\DoxyCodeLine{00412\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{keyword}{const}\ result\_type\ tmp\ =\ IsGreater<T,\ U>::Test(x,\ y)}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(x)}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(tmp))\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00419\ \ \ \ \ \}}
+\DoxyCodeLine{00420\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(tmp);}
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00422\ \ \ \}}
+\DoxyCodeLine{00423\ \};}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \textcolor{comment}{//\ Min\ doesn't\ really\ need\ to\ be\ implemented\ this\ way\ because\ it\ can't\ fail,}}
+\DoxyCodeLine{00426\ \textcolor{comment}{//\ but\ it\ makes\ the\ code\ much\ cleaner\ to\ use\ the\ MathOp\ wrappers.}}
+\DoxyCodeLine{00427\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00428\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_min_op}{CheckedMinOp}}\ \{\};}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00431\ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<T>\ \&\&\ std::is\_arithmetic\_v<U>)}
+\DoxyCodeLine{00432\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_min_op}{CheckedMinOp<T,\ U>}}\ \{}
+\DoxyCodeLine{00433\ \ \ \textcolor{keyword}{using\ }result\_type\ =\ LowestValuePromotion<T,\ U>;}
+\DoxyCodeLine{00434\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V>}
+\DoxyCodeLine{00435\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(T\ x,\ U\ y,\ V*\ result)\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keyword}{const}\ result\_type\ tmp\ =\ IsLess<T,\ U>::Test(x,\ y)}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(x)}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{keyword}{static\_cast<}result\_type\textcolor{keyword}{>}(y);}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsValueInRangeForNumericType<V>(tmp))\ \{}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00441\ \ \ \ \ \}}
+\DoxyCodeLine{00442\ \ \ \ \ *result\ =\ \textcolor{keyword}{static\_cast<}V\textcolor{keyword}{>}(tmp);}
+\DoxyCodeLine{00443\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00444\ \ \ \}}
+\DoxyCodeLine{00445\ \};}
+\DoxyCodeLine{00446\ }
+\DoxyCodeLine{00447\ \textcolor{comment}{//\ This\ is\ just\ boilerplate\ that\ wraps\ the\ standard\ floating\ point\ arithmetic.}}
+\DoxyCodeLine{00448\ \textcolor{comment}{//\ A\ macro\ isn't\ the\ nicest\ solution,\ but\ it\ beats\ rewriting\ these\ repeatedly.}}
+\DoxyCodeLine{00449\ \textcolor{preprocessor}{\#define\ BASE\_FLOAT\_ARITHMETIC\_OPS(NAME,\ OP)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00450\ \textcolor{preprocessor}{\ \ template\ <typename\ T,\ typename\ U>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00451\ \textcolor{preprocessor}{\ \ \ \ requires(std::floating\_point<T>\ ||\ std::floating\_point<U>)\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00452\ \textcolor{preprocessor}{\ \ struct\ Checked\#\#NAME\#\#Op<T,\ U>\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00453\ \textcolor{preprocessor}{\ \ \ \ using\ result\_type\ =\ MaxExponentPromotion<T,\ U>;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00454\ \textcolor{preprocessor}{\ \ \ \ template\ <typename\ V>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00455\ \textcolor{preprocessor}{\ \ \ \ static\ constexpr\ bool\ Do(T\ x,\ U\ y,\ V*\ result)\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00456\ \textcolor{preprocessor}{\ \ \ \ \ \ const\ result\_type\ presult\ =\ x\ OP\ y;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00457\ \textcolor{preprocessor}{\ \ \ \ \ \ if\ (!IsValueInRangeForNumericType<V>(presult))\ return\ false;\ \(\backslash\)}}
+\DoxyCodeLine{00458\ \textcolor{preprocessor}{\ \ \ \ \ \ *result\ =\ static\_cast<V>(presult);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00459\ \textcolor{preprocessor}{\ \ \ \ \ \ return\ true;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00460\ \textcolor{preprocessor}{\ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00461\ \textcolor{preprocessor}{\ \ \};}}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ BASE\_FLOAT\_ARITHMETIC\_OPS(Add,\ +)}
+\DoxyCodeLine{00464\ BASE\_FLOAT\_ARITHMETIC\_OPS(Sub,\ -\/)}
+\DoxyCodeLine{00465\ BASE\_FLOAT\_ARITHMETIC\_OPS(Mul,\ *)}
+\DoxyCodeLine{00466\ BASE\_FLOAT\_ARITHMETIC\_OPS(Div,\ /)}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00468\ \textcolor{preprocessor}{\#undef\ BASE\_FLOAT\_ARITHMETIC\_OPS}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \textcolor{comment}{//\ Floats\ carry\ around\ their\ validity\ state\ with\ them,\ but\ integers\ do\ not.\ So,}}
+\DoxyCodeLine{00471\ \textcolor{comment}{//\ we\ wrap\ the\ underlying\ value\ in\ a\ specialization\ in\ order\ to\ hide\ that\ detail}}
+\DoxyCodeLine{00472\ \textcolor{comment}{//\ and\ expose\ an\ interface\ via\ accessors.}}
+\DoxyCodeLine{00473\ \textcolor{keyword}{enum}\ NumericRepresentation\ \{}
+\DoxyCodeLine{00474\ \ \ NUMERIC\_INTEGER,}
+\DoxyCodeLine{00475\ \ \ NUMERIC\_FLOATING,}
+\DoxyCodeLine{00476\ \ \ NUMERIC\_UNKNOWN}
+\DoxyCodeLine{00477\ \};}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumericType>}
+\DoxyCodeLine{00480\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_get_numeric_representation}{GetNumericRepresentation}}\ \{}
+\DoxyCodeLine{00481\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ NumericRepresentation\ value\ =}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ std::integral<NumericType>}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ ?\ NUMERIC\_INTEGER}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ :\ (std::floating\_point<NumericType>\ ?\ NUMERIC\_FLOATING}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ NUMERIC\_UNKNOWN);}
+\DoxyCodeLine{00486\ \};}
+\DoxyCodeLine{00487\ }
+\DoxyCodeLine{00488\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ NumericRepresentation\ type\ =\ GetNumericRepresentation<T>::value>}
+\DoxyCodeLine{00490\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric_state}{CheckedNumericState}}\ \{\};}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \textcolor{comment}{//\ Integrals\ require\ quite\ a\ bit\ of\ additional\ housekeeping\ to\ manage\ state.}}
+\DoxyCodeLine{00493\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00494\ \textcolor{keyword}{class\ }CheckedNumericState<T,\ NUMERIC\_INTEGER>\ \{}
+\DoxyCodeLine{00495\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00496\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src\ =\ \textcolor{keywordtype}{int}>}
+\DoxyCodeLine{00497\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ CheckedNumericState(Src\ value\ =\ 0,\ \textcolor{keywordtype}{bool}\ is\_valid\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ :\ is\_valid\_(is\_valid\ \&\&\ IsValueInRangeForNumericType<T>(value)),}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ value\_(WellDefinedConversionOrZero(value,\ is\_valid\_))\ \{}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_arithmetic\_v<Src>,\ \textcolor{stringliteral}{"{}Argument\ must\ be\ numeric."{}});}
+\DoxyCodeLine{00501\ \ \ \}}
+\DoxyCodeLine{00502\ }
+\DoxyCodeLine{00503\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00504\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumericState(\textcolor{keyword}{const}\ CheckedNumericState<Src>\&\ rhs)}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ :\ CheckedNumericState(rhs.value(),\ rhs.is\_valid())\ \{\}}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_valid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ is\_valid\_;\ \}}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00509\ \ \ \textcolor{keyword}{constexpr}\ T\ value()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value\_;\ \}}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00511\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00512\ \ \ \textcolor{comment}{//\ Ensures\ that\ a\ type\ conversion\ does\ not\ trigger\ undefined\ behavior.}}
+\DoxyCodeLine{00513\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00514\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ WellDefinedConversionOrZero(Src\ value,\ \textcolor{keywordtype}{bool}\ is\_valid)\ \{}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{return}\ (std::integral<UnderlyingType<Src>>\ ||\ is\_valid)}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(value)}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ 0;}
+\DoxyCodeLine{00518\ \ \ \}}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \ \ \textcolor{comment}{//\ is\_valid\_\ precedes\ value\_\ because\ member\ initializers\ in\ the\ constructors}}
+\DoxyCodeLine{00521\ \ \ \textcolor{comment}{//\ are\ evaluated\ in\ field\ order,\ and\ is\_valid\_\ must\ be\ read\ when\ initializing}}
+\DoxyCodeLine{00522\ \ \ \textcolor{comment}{//\ value\_.}}
+\DoxyCodeLine{00523\ \ \ \textcolor{keywordtype}{bool}\ is\_valid\_;}
+\DoxyCodeLine{00524\ \ \ T\ value\_;}
+\DoxyCodeLine{00525\ \};}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \textcolor{comment}{//\ Floating\ points\ maintain\ their\ own\ validity,\ but\ need\ translation\ wrappers.}}
+\DoxyCodeLine{00528\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00529\ \textcolor{keyword}{class\ }CheckedNumericState<T,\ NUMERIC\_FLOATING>\ \{}
+\DoxyCodeLine{00530\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00531\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src\ =\ \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00532\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{explicit}\ CheckedNumericState(Src\ value\ =\ 0.0,\ \textcolor{keywordtype}{bool}\ is\_valid\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ :\ value\_(WellDefinedConversionOrNaN(}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \ \ \ \ value,\ is\_valid\ \&\&\ IsValueInRangeForNumericType<T>(value)))\ \{\}}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00537\ \ \ \textcolor{keyword}{constexpr}\ CheckedNumericState(\textcolor{keyword}{const}\ CheckedNumericState<Src>\&\ rhs)}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ :\ CheckedNumericState(rhs.value(),\ rhs.is\_valid())\ \{\}}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_valid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{comment}{//\ Written\ this\ way\ because\ std::isfinite\ is\ not\ constexpr\ before\ C++23.}}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{comment}{//\ TODO(C++23):\ Use\ \`{}std::isfinite()`\ unconditionally.}}
+\DoxyCodeLine{00543\ \ \ \ \ \textcolor{keywordflow}{return}\ std::is\_constant\_evaluated()}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ value\_\ <=\ std::numeric\_limits<T>::max()\ \&\&}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value\_\ >=\ std::numeric\_limits<T>::lowest()}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ std::isfinite(value\_);}
+\DoxyCodeLine{00547\ \ \ \}}
+\DoxyCodeLine{00548\ }
+\DoxyCodeLine{00549\ \ \ \textcolor{keyword}{constexpr}\ T\ value()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value\_;\ \}}
+\DoxyCodeLine{00550\ }
+\DoxyCodeLine{00551\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00552\ \ \ \textcolor{comment}{//\ Ensures\ that\ a\ type\ conversion\ does\ not\ trigger\ undefined\ behavior.}}
+\DoxyCodeLine{00553\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00554\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ WellDefinedConversionOrNaN(Src\ value,\ \textcolor{keywordtype}{bool}\ is\_valid)\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \textcolor{keywordflow}{return}\ (kStaticDstRangeRelationToSrcRange<T,\ UnderlyingType<Src>>\ ==}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NumericRangeRepresentation::kContained\ ||}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \ \ \ \ is\_valid)}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(value)}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ std::numeric\_limits<T>::quiet\_NaN();}
+\DoxyCodeLine{00560\ \ \ \}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \ \ T\ value\_;}
+\DoxyCodeLine{00563\ \};}
+\DoxyCodeLine{00564\ }
+\DoxyCodeLine{00565\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00566\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

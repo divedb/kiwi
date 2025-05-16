@@ -121,6 +121,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a77bf09945b7f1a76b28ad14eba76f482" id="r_a77bf09945b7f1a76b28ad14eba76f482"><td class="memItemLeft" align="right" valign="top"><a id="a77bf09945b7f1a76b28ad14eba76f482" name="a77bf09945b7f1a76b28ad14eba76f482"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>LockMode</b> { <b>kShared</b>
+, <b>kExclusive</b>
+ }</td></tr>
+<tr class="separator:a77bf09945b7f1a76b28ad14eba76f482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e78d650505b819dd947f255e9d6a619" id="r_a2e78d650505b819dd947f255e9d6a619"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e78d650505b819dd947f255e9d6a619">Flags</a> : uint32_t { <br />
 &#160;&#160;<a class="el" href="#a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a">kFlagOpen</a> = 1 &lt;&lt; 0
 , <a class="el" href="#a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d">kFlagCreate</a> = 1 &lt;&lt; 1
@@ -173,7 +177,7 @@ Public Types</h2></td></tr>
 , <b>kFileErrorNotEmpty</b> = -14
 , <b>kFileErrorInvalidUrl</b> = -15
 , <br />
-&#160;&#160;<b>kFileErrorIo</b> = -16
+&#160;&#160;<b>kFileErrorIO</b> = -16
 , <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82">kFileErrorMax</a> = -17
 <br />
  }</td></tr>
@@ -184,10 +188,6 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:af604bf017dcbfa20966c1ecc71dff572"><td class="mdescLeft">&#160;</td><td class="mdescRight">This explicit mapping matches both FILE_ on Windows and SEEK_ on Linux. <br /></td></tr>
 <tr class="separator:af604bf017dcbfa20966c1ecc71dff572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77bf09945b7f1a76b28ad14eba76f482" id="r_a77bf09945b7f1a76b28ad14eba76f482"><td class="memItemLeft" align="right" valign="top"><a id="a77bf09945b7f1a76b28ad14eba76f482" name="a77bf09945b7f1a76b28ad14eba76f482"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>LockMode</b> { <b>kShared</b>
-, <b>kExclusive</b>
- }</td></tr>
-<tr class="separator:a77bf09945b7f1a76b28ad14eba76f482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -239,65 +239,66 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Close</b> ()</td></tr
 <tr class="memitem:afcea20f07715ff9cf0092f599d290872" id="r_afcea20f07715ff9cf0092f599d290872"><td class="memItemLeft" align="right" valign="top"><a id="afcea20f07715ff9cf0092f599d290872" name="afcea20f07715ff9cf0092f599d290872"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosAndCheck</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:afcea20f07715ff9cf0092f599d290872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab4f8c0526aedb8b5f97c2e10f12f129" id="r_aab4f8c0526aedb8b5f97c2e10f12f129"><td class="memItemLeft" align="right" valign="top"><a id="aab4f8c0526aedb8b5f97c2e10f12f129" name="aab4f8c0526aedb8b5f97c2e10f12f129"></a>
-UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (int64_t offset, char *data, int size)</td></tr>
+<tr class="memitem:aab4f8c0526aedb8b5f97c2e10f12f129" id="r_aab4f8c0526aedb8b5f97c2e10f12f129"><td class="memItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab4f8c0526aedb8b5f97c2e10f12f129">Read</a> (int64_t offset, char *data, int size)</td></tr>
 <tr class="separator:aab4f8c0526aedb8b5f97c2e10f12f129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5240f205ddd91d6b7f59d0b960a282d5" id="r_a5240f205ddd91d6b7f59d0b960a282d5"><td class="memItemLeft" align="right" valign="top"><a id="a5240f205ddd91d6b7f59d0b960a282d5" name="a5240f205ddd91d6b7f59d0b960a282d5"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a5240f205ddd91d6b7f59d0b960a282d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af47b5d7b4e7db08bcf5c8942e6a61067" id="r_af47b5d7b4e7db08bcf5c8942e6a61067"><td class="memItemLeft" align="right" valign="top"><a id="af47b5d7b4e7db08bcf5c8942e6a61067" name="af47b5d7b4e7db08bcf5c8942e6a61067"></a>
-UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPos</b> (char *data, int size)</td></tr>
+<tr class="memitem:af47b5d7b4e7db08bcf5c8942e6a61067" id="r_af47b5d7b4e7db08bcf5c8942e6a61067"><td class="memItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af47b5d7b4e7db08bcf5c8942e6a61067">ReadAtCurrentPos</a> (char *data, int size)</td></tr>
 <tr class="separator:af47b5d7b4e7db08bcf5c8942e6a61067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6145138e263aadb88303a921ee7e262f" id="r_a6145138e263aadb88303a921ee7e262f"><td class="memItemLeft" align="right" valign="top"><a id="a6145138e263aadb88303a921ee7e262f" name="a6145138e263aadb88303a921ee7e262f"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPos</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a6145138e263aadb88303a921ee7e262f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8f3f6380a232f5ca19d916dc33ada79" id="r_ae8f3f6380a232f5ca19d916dc33ada79"><td class="memItemLeft" align="right" valign="top"><a id="ae8f3f6380a232f5ca19d916dc33ada79" name="ae8f3f6380a232f5ca19d916dc33ada79"></a>
-UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadNoBestEffort</b> (int64_t offset, char *data, int size)</td></tr>
+<tr class="memitem:ae8f3f6380a232f5ca19d916dc33ada79" id="r_ae8f3f6380a232f5ca19d916dc33ada79"><td class="memItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8f3f6380a232f5ca19d916dc33ada79">ReadNoBestEffort</a> (int64_t offset, char *data, int size)</td></tr>
 <tr class="separator:ae8f3f6380a232f5ca19d916dc33ada79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a472be55b66f6891c066143e0aa4491c9" id="r_a472be55b66f6891c066143e0aa4491c9"><td class="memItemLeft" align="right" valign="top"><a id="a472be55b66f6891c066143e0aa4491c9" name="a472be55b66f6891c066143e0aa4491c9"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ReadNoBestEffort</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a472be55b66f6891c066143e0aa4491c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d7c466844c2f368c108976f84b4fa7a" id="r_a8d7c466844c2f368c108976f84b4fa7a"><td class="memItemLeft" align="right" valign="top"><a id="a8d7c466844c2f368c108976f84b4fa7a" name="a8d7c466844c2f368c108976f84b4fa7a"></a>
-UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosNoBestEffort</b> (char *data, int size)</td></tr>
+<tr class="memitem:a8d7c466844c2f368c108976f84b4fa7a" id="r_a8d7c466844c2f368c108976f84b4fa7a"><td class="memItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d7c466844c2f368c108976f84b4fa7a">ReadAtCurrentPosNoBestEffort</a> (char *data, int size)</td></tr>
 <tr class="separator:a8d7c466844c2f368c108976f84b4fa7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb20fbb8d9357641363478587996eee3" id="r_acb20fbb8d9357641363478587996eee3"><td class="memItemLeft" align="right" valign="top"><a id="acb20fbb8d9357641363478587996eee3" name="acb20fbb8d9357641363478587996eee3"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAtCurrentPosNoBestEffort</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:acb20fbb8d9357641363478587996eee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a798cf360c989d91deddd333d1c67b68e" id="r_a798cf360c989d91deddd333d1c67b68e"><td class="memItemLeft" align="right" valign="top"><a id="a798cf360c989d91deddd333d1c67b68e" name="a798cf360c989d91deddd333d1c67b68e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAndCheck</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">span</a>&lt; const uint8_t &gt; data)</td></tr>
+<tr class="memitem:a798cf360c989d91deddd333d1c67b68e" id="r_a798cf360c989d91deddd333d1c67b68e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a798cf360c989d91deddd333d1c67b68e">WriteAndCheck</a> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a798cf360c989d91deddd333d1c67b68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f07a8790ebdf12c0da72d7fb7ee6bf1" id="r_a4f07a8790ebdf12c0da72d7fb7ee6bf1"><td class="memItemLeft" align="right" valign="top"><a id="a4f07a8790ebdf12c0da72d7fb7ee6bf1" name="a4f07a8790ebdf12c0da72d7fb7ee6bf1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPosAndCheck</b> (<a class="el" href="classkiwi_1_1span.html">span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a4f07a8790ebdf12c0da72d7fb7ee6bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae052bbc98ce6ea22c9d24af14a6a9af9" id="r_ae052bbc98ce6ea22c9d24af14a6a9af9"><td class="memItemLeft" align="right" valign="top"><a id="ae052bbc98ce6ea22c9d24af14a6a9af9" name="ae052bbc98ce6ea22c9d24af14a6a9af9"></a>
-UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (int64_t offset, const char *data, int size)</td></tr>
+<tr class="memitem:ae052bbc98ce6ea22c9d24af14a6a9af9" id="r_ae052bbc98ce6ea22c9d24af14a6a9af9"><td class="memItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae052bbc98ce6ea22c9d24af14a6a9af9">Write</a> (int64_t offset, const char *data, int size)</td></tr>
 <tr class="separator:ae052bbc98ce6ea22c9d24af14a6a9af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ca850368f70477f71e8a2b2f02efacd" id="r_a6ca850368f70477f71e8a2b2f02efacd"><td class="memItemLeft" align="right" valign="top"><a id="a6ca850368f70477f71e8a2b2f02efacd" name="a6ca850368f70477f71e8a2b2f02efacd"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (int64_t offset, <a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a6ca850368f70477f71e8a2b2f02efacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a699deb00efeb73849eef5324477aa1b6" id="r_a699deb00efeb73849eef5324477aa1b6"><td class="memItemLeft" align="right" valign="top"><a id="a699deb00efeb73849eef5324477aa1b6" name="a699deb00efeb73849eef5324477aa1b6"></a>
 UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPos</b> (const char *data, int size)</td></tr>
+<tr class="memdesc:a699deb00efeb73849eef5324477aa1b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save as above but without seek. <br /></td></tr>
 <tr class="separator:a699deb00efeb73849eef5324477aa1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afae6ec38532e1c29a237a2890b925772" id="r_afae6ec38532e1c29a237a2890b925772"><td class="memItemLeft" align="right" valign="top"><a id="afae6ec38532e1c29a237a2890b925772" name="afae6ec38532e1c29a237a2890b925772"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPos</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:afae6ec38532e1c29a237a2890b925772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b9bd59c3bc48a35ad1b0e732daceeab" id="r_a9b9bd59c3bc48a35ad1b0e732daceeab"><td class="memItemLeft" align="right" valign="top"><a id="a9b9bd59c3bc48a35ad1b0e732daceeab" name="a9b9bd59c3bc48a35ad1b0e732daceeab"></a>
-UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPosNoBestEffort</b> (const char *data, int size)</td></tr>
+<tr class="memitem:a0bd3da12e20809f30b9caccea76f03ed" id="r_a0bd3da12e20809f30b9caccea76f03ed"><td class="memItemLeft" align="right" valign="top"><a id="a0bd3da12e20809f30b9caccea76f03ed" name="a0bd3da12e20809f30b9caccea76f03ed"></a>
+ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>WriteIOBufAtCurrentPos</b> (const <a class="el" href="classkiwi_1_1_i_o_buf.html">kiwi::IOBuf</a> &amp;iobuf)</td></tr>
+<tr class="separator:a0bd3da12e20809f30b9caccea76f03ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b9bd59c3bc48a35ad1b0e732daceeab" id="r_a9b9bd59c3bc48a35ad1b0e732daceeab"><td class="memItemLeft" align="right" valign="top">UNSAFE_BUFFER_USAGE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b9bd59c3bc48a35ad1b0e732daceeab">WriteAtCurrentPosNoBestEffort</a> (const char *data, int size)</td></tr>
 <tr class="separator:a9b9bd59c3bc48a35ad1b0e732daceeab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a813d31de9d083a53ee8e4b500a4f3486" id="r_a813d31de9d083a53ee8e4b500a4f3486"><td class="memItemLeft" align="right" valign="top"><a id="a813d31de9d083a53ee8e4b500a4f3486" name="a813d31de9d083a53ee8e4b500a4f3486"></a>
 std::optional&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtCurrentPosNoBestEffort</b> (<a class="el" href="classkiwi_1_1span.html">kiwi::span</a>&lt; const uint8_t &gt; data)</td></tr>
 <tr class="separator:a813d31de9d083a53ee8e4b500a4f3486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd19c022f7bb41f90cdc1e23d82297ab" id="r_abd19c022f7bb41f90cdc1e23d82297ab"><td class="memItemLeft" align="right" valign="top"><a id="abd19c022f7bb41f90cdc1e23d82297ab" name="abd19c022f7bb41f90cdc1e23d82297ab"></a>
 int64_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLength</b> () const</td></tr>
+<tr class="memdesc:abd19c022f7bb41f90cdc1e23d82297ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current size of this file, or a negative number on failure. <br /></td></tr>
 <tr class="separator:abd19c022f7bb41f90cdc1e23d82297ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a73ffd32434c4ee55f22e6793dfe511" id="r_a9a73ffd32434c4ee55f22e6793dfe511"><td class="memItemLeft" align="right" valign="top"><a id="a9a73ffd32434c4ee55f22e6793dfe511" name="a9a73ffd32434c4ee55f22e6793dfe511"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetLength</b> (int64_t length)</td></tr>
-<tr class="separator:a9a73ffd32434c4ee55f22e6793dfe511"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a013f9c9d01ee3c46494a9a80e9fba8b3" id="r_a013f9c9d01ee3c46494a9a80e9fba8b3"><td class="memItemLeft" align="right" valign="top"><a id="a013f9c9d01ee3c46494a9a80e9fba8b3" name="a013f9c9d01ee3c46494a9a80e9fba8b3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Flush</b> ()</td></tr>
+<tr class="memitem:ab89787d024e791c80649b8e61a326526" id="r_ab89787d024e791c80649b8e61a326526"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab89787d024e791c80649b8e61a326526">Truncate</a> (int64_t length)</td></tr>
+<tr class="separator:ab89787d024e791c80649b8e61a326526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a013f9c9d01ee3c46494a9a80e9fba8b3" id="r_a013f9c9d01ee3c46494a9a80e9fba8b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a013f9c9d01ee3c46494a9a80e9fba8b3">Flush</a> ()</td></tr>
 <tr class="separator:a013f9c9d01ee3c46494a9a80e9fba8b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e0cfca3ed88ad9ea3131fded44beb0" id="r_a53e0cfca3ed88ad9ea3131fded44beb0"><td class="memItemLeft" align="right" valign="top"><a id="a53e0cfca3ed88ad9ea3131fded44beb0" name="a53e0cfca3ed88ad9ea3131fded44beb0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetTimes</b> (<a class="el" href="classkiwi_1_1_time.html">Time</a> last_access_time, <a class="el" href="classkiwi_1_1_time.html">Time</a> last_modified_time)</td></tr>
+<tr class="memdesc:a53e0cfca3ed88ad9ea3131fded44beb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the file times. <br /></td></tr>
+<tr class="separator:a53e0cfca3ed88ad9ea3131fded44beb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11ac8cb486c052c627b4fdefaabb18bf" id="r_a11ac8cb486c052c627b4fdefaabb18bf"><td class="memItemLeft" align="right" valign="top"><a id="a11ac8cb486c052c627b4fdefaabb18bf" name="a11ac8cb486c052c627b4fdefaabb18bf"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetInfo</b> (<a class="el" href="structkiwi_1_1_file_1_1_info.html">Info</a> *info) const</td></tr>
+<tr class="memdesc:a11ac8cb486c052c627b4fdefaabb18bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns some basic information for the given file. <br /></td></tr>
 <tr class="separator:a11ac8cb486c052c627b4fdefaabb18bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3ec6fc05cec4e47af152742dc68b813" id="r_af3ec6fc05cec4e47af152742dc68b813"><td class="memItemLeft" align="right" valign="top"><a id="af3ec6fc05cec4e47af152742dc68b813" name="af3ec6fc05cec4e47af152742dc68b813"></a>
 <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Lock</b> (LockMode mode)</td></tr>
@@ -308,20 +309,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetInfo</b> (<a class
 <tr class="memitem:af84dfd24529df2f4f029b9ebb911edbb" id="r_af84dfd24529df2f4f029b9ebb911edbb"><td class="memItemLeft" align="right" valign="top"><a id="af84dfd24529df2f4f029b9ebb911edbb" name="af84dfd24529df2f4f029b9ebb911edbb"></a>
 <a class="el" href="classkiwi_1_1_file.html">File</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Duplicate</b> () const</td></tr>
 <tr class="separator:af84dfd24529df2f4f029b9ebb911edbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f7fd2c79ebce1de2d1d4b81a3331a85" id="r_a9f7fd2c79ebce1de2d1d4b81a3331a85"><td class="memItemLeft" align="right" valign="top"><a id="a9f7fd2c79ebce1de2d1d4b81a3331a85" name="a9f7fd2c79ebce1de2d1d4b81a3331a85"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>async</b> () const</td></tr>
-<tr class="separator:a9f7fd2c79ebce1de2d1d4b81a3331a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9caf46549b6e03a532fdc64146302b8" id="r_af9caf46549b6e03a532fdc64146302b8"><td class="memItemLeft" align="right" valign="top"><a id="af9caf46549b6e03a532fdc64146302b8" name="af9caf46549b6e03a532fdc64146302b8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAsync</b> () const</td></tr>
+<tr class="separator:af9caf46549b6e03a532fdc64146302b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2497e2ef31b7e7781d6e691d235dc084" id="r_a2497e2ef31b7e7781d6e691d235dc084"><td class="memItemLeft" align="right" valign="top"><a id="a2497e2ef31b7e7781d6e691d235dc084" name="a2497e2ef31b7e7781d6e691d235dc084"></a>
-static <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastFileError</b> ()</td></tr>
+<tr class="memitem:a2497e2ef31b7e7781d6e691d235dc084" id="r_a2497e2ef31b7e7781d6e691d235dc084"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2497e2ef31b7e7781d6e691d235dc084">GetLastFileError</a> ()</td></tr>
 <tr class="separator:a2497e2ef31b7e7781d6e691d235dc084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5187b304515a8f2b0c73a15f6c023ae" id="r_ab5187b304515a8f2b0c73a15f6c023ae"><td class="memItemLeft" align="right" valign="top"><a id="ab5187b304515a8f2b0c73a15f6c023ae" name="ab5187b304515a8f2b0c73a15f6c023ae"></a>
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>ErrorToString</b> (<a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> error)</td></tr>
+<tr class="memdesc:ab5187b304515a8f2b0c73a15f6c023ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an error value to a human-readable form. Used for logging. <br /></td></tr>
 <tr class="separator:ab5187b304515a8f2b0c73a15f6c023ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac35f70b9e7c4aff2a4c48581195402b8" id="r_ac35f70b9e7c4aff2a4c48581195402b8"><td class="memItemLeft" align="right" valign="top"><a id="ac35f70b9e7c4aff2a4c48581195402b8" name="ac35f70b9e7c4aff2a4c48581195402b8"></a>
-static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>AddFlagsForPassingToUntrustedProcess</b> (uint32_t flags)</td></tr>
+<tr class="memitem:ac35f70b9e7c4aff2a4c48581195402b8" id="r_ac35f70b9e7c4aff2a4c48581195402b8"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac35f70b9e7c4aff2a4c48581195402b8">AddFlagsForPassingToUntrustedProcess</a> (uint32_t flags)</td></tr>
 <tr class="separator:ac35f70b9e7c4aff2a4c48581195402b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -380,7 +380,7 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
 </td></tr>
 <tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4" name="a2e78d650505b819dd947f255e9d6a619a59b4df4e5a9823877e8bc9259e877ea4"></a>kFlagWinHidden&#160;</td><td class="fielddoc"><p>Windows only. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694" name="a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694"></a>kFlagWriteAttributes&#160;</td><td class="fielddoc"><p>Allows writing attributes, e.g., SetTimes(). </p>
+<tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694" name="a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694"></a>kFlagWriteAttributes&#160;</td><td class="fielddoc"><p>Allows writing attributes, e.g., <a class="el" href="#a53e0cfca3ed88ad9ea3131fded44beb0" title="Updates the file times.">SetTimes()</a>. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52" name="a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52"></a>kFlagWinShareDelete&#160;</td><td class="fielddoc"><p>Windows only. </p>
 </td></tr>
@@ -495,6 +495,32 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac35f70b9e7c4aff2a4c48581195402b8" name="ac35f70b9e7c4aff2a4c48581195402b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac35f70b9e7c4aff2a4c48581195402b8">&#9670;&#160;</a></span>AddFlagsForPassingToUntrustedProcess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr uint32_t kiwi::File::AddFlagsForPassingToUntrustedProcess </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function can be used to augment <code>flags</code> with the correct flags required to create a <a class="el" href="classkiwi_1_1_file.html">File</a> that can be safely passed to an untrusted process. It must be called if the <a class="el" href="classkiwi_1_1_file.html">File</a> is intended to be transferred to an untrusted process, but can still be safely called even if the <a class="el" href="classkiwi_1_1_file.html">File</a> is not intended to be transferred. </p>
+
+</div>
+</div>
 <a id="afbaf995f649310cc94a327d64b7f0831" name="afbaf995f649310cc94a327d64b7f0831"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afbaf995f649310cc94a327d64b7f0831">&#9670;&#160;</a></span>ErrorDetails()</h2>
 
@@ -522,6 +548,52 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
 <div class="line"><span class="keywordflow">if</span> (!file.IsValid())</div>
 <div class="line">  <span class="keywordflow">return</span>;</div>
 </div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>The OS result of opening this file. </dd></dl>
+
+</div>
+</div>
+<a id="a013f9c9d01ee3c46494a9a80e9fba8b3" name="a013f9c9d01ee3c46494a9a80e9fba8b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a013f9c9d01ee3c46494a9a80e9fba8b3">&#9670;&#160;</a></span>Flush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::Flush </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Instructs the filesystem to flush the file to disk. (POSIX: fsync, Windows: FlushFileBuffers). Calling <a class="el" href="#a013f9c9d01ee3c46494a9a80e9fba8b3">Flush()</a> does not guarantee file integrity and thus is not a valid substitute for file integrity checks and recovery codepaths for malformed files. It can also be <em>really</em> slow, so avoid blocking on <a class="el" href="#a013f9c9d01ee3c46494a9a80e9fba8b3">Flush()</a>, especially please don't block shutdown on <a class="el" href="#a013f9c9d01ee3c46494a9a80e9fba8b3">Flush()</a>.</p>
+<p>Latency percentiles of <a class="el" href="#a013f9c9d01ee3c46494a9a80e9fba8b3">Flush()</a> across all platforms as of July 2016:</p>
+<p>50 % &gt; 5 ms 10 % &gt; 58 ms 1 % &gt; 357 ms 0.1 % &gt; 1.8 seconds 0.01 % &gt; 7.6 seconds </p>
+
+</div>
+</div>
+<a id="a2497e2ef31b7e7781d6e691d235dc084" name="a2497e2ef31b7e7781d6e691d235dc084"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2497e2ef31b7e7781d6e691d235dc084">&#9670;&#160;</a></span>GetLastFileError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ad7e38cc4ada147c3bfe00b80387c8609">File::Error</a> kiwi::File::GetLastFileError </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Gets the last global error (errno or GetLastError()) and converts it to the closest base::File::Error equivalent via OSErrorToFileError(). It should therefore only be called immediately after another base::File method fails. base::File never resets the global error to zero. </p>
 
 </div>
 </div>
@@ -569,6 +641,43 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
 
 </div>
 </div>
+<a id="aab4f8c0526aedb8b5f97c2e10f12f129" name="aab4f8c0526aedb8b5f97c2e10f12f129"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab4f8c0526aedb8b5f97c2e10f12f129">&#9670;&#160;</a></span>Read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kiwi::File::Read </td>
+          <td>(</td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reads the given number of bytes (or until EOF is reached) starting with the given offset.</p>
+<p>Note that this function makes a best effort to read all data on all platforms, so it is not intended for stream oriented files but instead for cases when the normal expectation is that actually <code>size</code> bytes are read unless there is an error.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offset</td><td>The byte offset in the file from which to start reading. </td></tr>
+    <tr><td class="paramname">data</td><td>A pointer to buffer. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to read. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of bytes read, or -1 on error. </dd></dl>
+
+</div>
+</div>
 <a id="a3606ad7fb26e2a27ec681f3060028eb0" name="a3606ad7fb26e2a27ec681f3060028eb0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3606ad7fb26e2a27ec681f3060028eb0">&#9670;&#160;</a></span>ReadAndCheck()</h2>
 
@@ -587,7 +696,7 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Simplified versions of Read() and friends (see below) that check the return value and just return a boolean.</p>
+<p>Simplified versions of <a class="el" href="#aab4f8c0526aedb8b5f97c2e10f12f129">Read()</a> and friends (see below) that check the return value and just return a boolean.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">offset</td><td>The byte offset in the file from which to start reading. </td></tr>
@@ -596,6 +705,80 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true iff the function read in exactly <code>data.size()</code> bytes of data. </dd></dl>
+
+</div>
+</div>
+<a id="af47b5d7b4e7db08bcf5c8942e6a61067" name="af47b5d7b4e7db08bcf5c8942e6a61067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af47b5d7b4e7db08bcf5c8942e6a61067">&#9670;&#160;</a></span>ReadAtCurrentPos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kiwi::File::ReadAtCurrentPos </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Same as above but without seek.</p>
+<p><a class="el" href="#aab4f8c0526aedb8b5f97c2e10f12f129">Read(int64_t offset, char* data, int size)</a>;</p>
+<p><a class="el" href="#aab4f8c0526aedb8b5f97c2e10f12f129">Read(int64_t offset, char* data, int size)</a>; </p>
+
+</div>
+</div>
+<a id="a8d7c466844c2f368c108976f84b4fa7a" name="a8d7c466844c2f368c108976f84b4fa7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d7c466844c2f368c108976f84b4fa7a">&#9670;&#160;</a></span>ReadAtCurrentPosNoBestEffort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kiwi::File::ReadAtCurrentPosNoBestEffort </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Same as above but without seek. <a class="el" href="#ae8f3f6380a232f5ca19d916dc33ada79">ReadNoBestEffort(int64_t offset, char* data, int size)</a>;</p>
+<p><a class="el" href="#ae8f3f6380a232f5ca19d916dc33ada79">ReadNoBestEffort(int64_t offset, char* data, int size)</a>; </p>
+
+</div>
+</div>
+<a id="ae8f3f6380a232f5ca19d916dc33ada79" name="ae8f3f6380a232f5ca19d916dc33ada79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8f3f6380a232f5ca19d916dc33ada79">&#9670;&#160;</a></span>ReadNoBestEffort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kiwi::File::ReadNoBestEffort </td>
+          <td>(</td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reads the given number of bytes (or until EOF is reached) starting with the given offset, but does not make any effort to read all data on all platforms. Returns the number of bytes read, or -1/std::nullopt on error. </p>
 
 </div>
 </div>
@@ -632,6 +815,95 @@ static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new offset from the beginning of the file, or -1 on error. </dd></dl>
+
+</div>
+</div>
+<a id="ab89787d024e791c80649b8e61a326526" name="ab89787d024e791c80649b8e61a326526"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab89787d024e791c80649b8e61a326526">&#9670;&#160;</a></span>Truncate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::Truncate </td>
+          <td>(</td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>length</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Truncates the file to the given length. If |length| is greater than the current size of the file, the file is extended with zeros. If the file doesn't exist, |false| is returned. </p>
+
+</div>
+</div>
+<a id="ae052bbc98ce6ea22c9d24af14a6a9af9" name="ae052bbc98ce6ea22c9d24af14a6a9af9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae052bbc98ce6ea22c9d24af14a6a9af9">&#9670;&#160;</a></span>Write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kiwi::File::Write </td>
+          <td>(</td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Writes the given buffer into the file at the given offset, overwritting any data that was previously there. Returns the number of bytes written, or -1 on error. Note that this function makes a best effort to write all data on all platforms. |data| can be nullptr when |size| is 0. Ignores the offset and writes to the end of the file if the file was opened with FLAG_APPEND. </p>
+
+</div>
+</div>
+<a id="a798cf360c989d91deddd333d1c67b68e" name="a798cf360c989d91deddd333d1c67b68e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a798cf360c989d91deddd333d1c67b68e">&#9670;&#160;</a></span>WriteAndCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kiwi::File::WriteAndCheck </td>
+          <td>(</td>
+          <td class="paramtype">int64_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classkiwi_1_1span.html">span</a>&lt; const uint8_t &gt;</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Simplified versions of <a class="el" href="#ae052bbc98ce6ea22c9d24af14a6a9af9">Write()</a> and friends (see below) that check the return value and just return a boolean. They return true if and only if the function wrote out exactly |data.size()| bytes of data. </p>
+
+</div>
+</div>
+<a id="a9b9bd59c3bc48a35ad1b0e732daceeab" name="a9b9bd59c3bc48a35ad1b0e732daceeab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b9bd59c3bc48a35ad1b0e732daceeab">&#9670;&#160;</a></span>WriteAtCurrentPosNoBestEffort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kiwi::File::WriteAtCurrentPosNoBestEffort </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Save as above but does not make any effort to write all data on all platforms. Returns the number of bytes written, or -1/std::nullopt on error. </p>
 
 </div>
 </div>

@@ -1,0 +1,721 @@
+\doxysection{file\+\_\+util.\+hh}
+\hypertarget{file__util_8hh_source}{}\label{file__util_8hh_source}\index{include/kiwi/io/file\_util.hh@{include/kiwi/io/file\_util.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ This\ file\ contains\ utility\ functions\ for\ dealing\ with\ the\ local}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ filesystem.}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}base/functional/callback.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}base/types/pass\_key.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file.hh"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file\_path.hh"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/scoped\_file.hh"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/cstring\_view.hh"{}}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}base/win/windows\_types.h"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ <sys/stat.h>}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}kiwi/sys/eintr\_wrapper.hh"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{namespace\ }content::internal\ \{}
+\DoxyCodeLine{00041\ \textcolor{keyword}{class\ }ChildProcessLauncherHelper;}
+\DoxyCodeLine{00042\ \}\ \ \textcolor{comment}{//\ namespace\ content::internal}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{namespace\ }base\ \{}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{class\ }Environment;}
+\DoxyCodeLine{00047\ \textcolor{keyword}{class\ }Time;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00050\ \textcolor{keyword}{class\ }PreventExecuteMappingClasses\ \{}
+\DoxyCodeLine{00051\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{using\ }PassKey\ =\ base::PassKey<PreventExecuteMappingClasses>;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ PassKey\ GetPassKey()\ \{\ \textcolor{keywordflow}{return}\ PassKey();\ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ Allowed\ to\ open\ log\ files\ in\ arbitrary\ locations.}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }content::internal::ChildProcessLauncherHelper;}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ Functions\ that\ involve\ filesystem\ access\ or\ modification:}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00092\ BASE\_EXPORT\ FilePath\ MakeAbsoluteFilePath(\textcolor{keyword}{const}\ FilePath\&\ input);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)}}
+\DoxyCodeLine{00104\ [[nodiscard]]\ BASE\_EXPORT\ std::optional<FilePath>}
+\DoxyCodeLine{00105\ MakeAbsoluteFilePathNoResolveSymbolicLinks(\textcolor{keyword}{const}\ FilePath\&\ input);}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00117\ BASE\_EXPORT\ int64\_t\ ComputeDirectorySize(\textcolor{keyword}{const}\ FilePath\&\ root\_path);}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00132\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ DeleteFile(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00144\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ DeletePathRecursively(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{comment}{//\ Returns\ a\ closure\ that,\ when\ run\ on\ any\ sequence\ that\ allows\ blocking\ calls,}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//\ will\ kick\ off\ a\ potentially\ asynchronous\ operation\ to\ delete\ \`{}path`,\ whose}}
+\DoxyCodeLine{00148\ \textcolor{comment}{//\ behavior\ is\ similar\ to\ \`{}DeleteFile()`\ and\ \`{}DeletePathRecursively()`}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//\ respectively.}}
+\DoxyCodeLine{00150\ \textcolor{comment}{//}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ In\ contrast\ to\ \`{}DeleteFile()`\ and\ \`{}DeletePathRecursively()`,\ the\ thread\ pool}}
+\DoxyCodeLine{00152\ \textcolor{comment}{//\ may\ be\ used\ in\ case\ retries\ are\ needed.\ On\ Windows,\ in\ particular,\ retries}}
+\DoxyCodeLine{00153\ \textcolor{comment}{//\ will\ be\ attempted\ for\ some\ time\ to\ allow\ other\ programs\ (e.g.,\ anti-\/virus}}
+\DoxyCodeLine{00154\ \textcolor{comment}{//\ scanners\ or\ malware)\ to\ close\ any\ open\ handles\ to\ \`{}path`\ or\ its\ contents.\ If}}
+\DoxyCodeLine{00155\ \textcolor{comment}{//\ \`{}reply\_callback`\ is\ not\ null,\ it\ will\ be\ posted\ to\ the\ caller's\ sequence\ with}}
+\DoxyCodeLine{00156\ \textcolor{comment}{//\ true\ if\ \`{}path`\ was\ fully\ deleted\ or\ false\ otherwise.}}
+\DoxyCodeLine{00157\ \textcolor{comment}{//}}
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ WARNING:\ It\ is\ NOT\ safe\ to\ use\ \`{}path`\ until\ \`{}reply\_callback`\ is\ run,\ as\ the}}
+\DoxyCodeLine{00159\ \textcolor{comment}{//\ retry\ task\ may\ still\ be\ actively\ trying\ to\ delete\ it.}}
+\DoxyCodeLine{00160\ BASE\_EXPORT\ OnceClosure\ GetDeleteFileCallback(}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path,\ OnceCallback<\textcolor{keywordtype}{void}(\textcolor{keywordtype}{bool})>\ reply\_callback\ =\ \{\});}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ BASE\_EXPORT\ OnceClosure\ GetDeletePathRecursivelyCallback(}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path,\ OnceCallback<\textcolor{keywordtype}{void}(\textcolor{keywordtype}{bool})>\ reply\_callback\ =\ \{\});}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//\ Schedules\ to\ delete\ the\ given\ path,\ whether\ it's\ a\ file\ or\ a\ directory,\ until}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//\ the\ operating\ system\ is\ restarted.}}
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ Note:}}
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ 1)\ The\ file/directory\ to\ be\ deleted\ should\ exist\ in\ a\ temp\ folder.}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//\ 2)\ The\ directory\ to\ be\ deleted\ must\ be\ empty.}}
+\DoxyCodeLine{00172\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ DeleteFileAfterReboot(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ Prevents\ opening\ the\ file\ at\ \`{}path`\ with\ EXECUTE\ access\ by\ adding\ a\ deny\ ACE}}
+\DoxyCodeLine{00175\ \textcolor{comment}{//\ on\ the\ filesystem.\ This\ allows\ the\ file\ handle\ to\ be\ safely\ passed\ to\ an}}
+\DoxyCodeLine{00176\ \textcolor{comment}{//\ untrusted\ process.\ See\ also\ \`{}File::FLAG\_WIN\_NO\_EXECUTE`.}}
+\DoxyCodeLine{00177\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ PreventExecuteMapping(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{comment}{//\ Same\ as\ PreventExecuteMapping\ but\ DCHECK\ for\ known\ allowed\ paths\ is\ omitted.}}
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ Only\ call\ this\ if\ you\ know\ the\ path\ you\ are\ providing\ is\ safe\ to\ mark\ as}}
+\DoxyCodeLine{00181\ \textcolor{comment}{//\ non-\/executable,\ such\ as\ log\ files.}}
+\DoxyCodeLine{00182\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ PreventExecuteMappingUnchecked(}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path,\ base::PassKey<PreventExecuteMappingClasses>\ passkey);}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \textcolor{comment}{//\ Set\ \`{}path\_key`\ to\ the\ second\ of\ two\ valid\ paths\ that\ support\ safely\ marking\ a}}
+\DoxyCodeLine{00186\ \textcolor{comment}{//\ file\ as\ non-\/execute.\ The\ first\ allowed\ path\ is\ always\ PATH\_TEMP.\ This\ is}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//\ needed\ to\ avoid\ layering\ violations,\ as\ the\ user\ data\ dir\ is\ an\ embedder}}
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ concept\ and\ only\ known\ later\ at\ runtime.}}
+\DoxyCodeLine{00189\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ SetExtraNoExecuteAllowedPath(\textcolor{keywordtype}{int}\ path\_key);}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{comment}{//\ Moves\ the\ given\ path,\ whether\ it's\ a\ file\ or\ a\ directory.}}
+\DoxyCodeLine{00193\ \textcolor{comment}{//\ If\ a\ simple\ rename\ is\ not\ possible,\ such\ as\ in\ the\ case\ where\ the\ paths\ are}}
+\DoxyCodeLine{00194\ \textcolor{comment}{//\ on\ different\ volumes,\ this\ will\ attempt\ to\ copy\ and\ delete.\ Returns}}
+\DoxyCodeLine{00195\ \textcolor{comment}{//\ true\ for\ success.}}
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ This\ function\ fails\ if\ either\ path\ contains\ traversal\ components\ ('..').}}
+\DoxyCodeLine{00197\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ Move(\textcolor{keyword}{const}\ FilePath\&\ from\_path,\ \textcolor{keyword}{const}\ FilePath\&\ to\_path);}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \textcolor{comment}{//\ Renames\ file\ |from\_path|\ to\ |to\_path|.\ Both\ paths\ must\ be\ on\ the\ same}}
+\DoxyCodeLine{00200\ \textcolor{comment}{//\ volume,\ or\ the\ function\ will\ fail.\ Destination\ file\ will\ be\ created}}
+\DoxyCodeLine{00201\ \textcolor{comment}{//\ if\ it\ doesn't\ exist.\ Prefer\ this\ function\ over\ Move\ when\ dealing\ with}}
+\DoxyCodeLine{00202\ \textcolor{comment}{//\ temporary\ files.\ On\ Windows\ it\ preserves\ attributes\ of\ the\ target\ file.}}
+\DoxyCodeLine{00203\ \textcolor{comment}{//\ Returns\ true\ on\ success,\ leaving\ *error\ unchanged.}}
+\DoxyCodeLine{00204\ \textcolor{comment}{//\ Returns\ false\ on\ failure\ and\ sets\ *error\ appropriately,\ if\ it\ is\ non-\/NULL.}}
+\DoxyCodeLine{00205\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReplaceFile(\textcolor{keyword}{const}\ FilePath\&\ from\_path,\ \textcolor{keyword}{const}\ FilePath\&\ to\_path,}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ File::Error*\ error);}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{comment}{//\ Copies\ a\ single\ file.\ Use\ CopyDirectory()\ to\ copy\ directories.}}
+\DoxyCodeLine{00209\ \textcolor{comment}{//\ This\ function\ fails\ if\ either\ path\ contains\ traversal\ components\ ('..').}}
+\DoxyCodeLine{00210\ \textcolor{comment}{//\ This\ function\ also\ fails\ if\ |to\_path|\ is\ a\ directory.}}
+\DoxyCodeLine{00211\ \textcolor{comment}{//}}
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ On\ POSIX,\ if\ |to\_path|\ is\ a\ symlink,\ CopyFile()\ will\ follow\ the\ symlink.\ This}}
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ may\ have\ security\ implications.\ Use\ with\ care.}}
+\DoxyCodeLine{00214\ \textcolor{comment}{//}}
+\DoxyCodeLine{00215\ \textcolor{comment}{//\ If\ |to\_path|\ already\ exists\ and\ is\ a\ regular\ file,\ it\ will\ be\ overwritten,}}
+\DoxyCodeLine{00216\ \textcolor{comment}{//\ though\ its\ permissions\ will\ stay\ the\ same.}}
+\DoxyCodeLine{00217\ \textcolor{comment}{//}}
+\DoxyCodeLine{00218\ \textcolor{comment}{//\ If\ |to\_path|\ does\ not\ exist,\ it\ will\ be\ created.\ The\ new\ file's\ permissions}}
+\DoxyCodeLine{00219\ \textcolor{comment}{//\ varies\ per\ platform:}}
+\DoxyCodeLine{00220\ \textcolor{comment}{//}}
+\DoxyCodeLine{00221\ \textcolor{comment}{//\ -\/\ This\ function\ keeps\ the\ metadata\ on\ Windows.\ The\ read\ only\ bit\ is\ not\ kept.}}
+\DoxyCodeLine{00222\ \textcolor{comment}{//\ -\/\ On\ Mac\ and\ iOS,\ |to\_path|\ retains\ |from\_path|'s\ permissions,\ except\ user}}
+\DoxyCodeLine{00223\ \textcolor{comment}{//\ \ \ read/write\ permissions\ are\ always\ set.}}
+\DoxyCodeLine{00224\ \textcolor{comment}{//\ -\/\ On\ Linux\ and\ Android,\ |to\_path|\ has\ user\ read/write\ permissions\ only.\ i.e.}}
+\DoxyCodeLine{00225\ \textcolor{comment}{//\ \ \ Always\ 0600.}}
+\DoxyCodeLine{00226\ \textcolor{comment}{//\ -\/\ On\ ChromeOS,\ |to\_path|\ has\ user\ read/write\ permissions\ and\ group/others}}
+\DoxyCodeLine{00227\ \textcolor{comment}{//\ \ \ read\ permissions.\ i.e.\ Always\ 0644.}}
+\DoxyCodeLine{00228\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CopyFile(\textcolor{keyword}{const}\ FilePath\&\ from\_path,\ \textcolor{keyword}{const}\ FilePath\&\ to\_path);}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \textcolor{comment}{//\ Copies\ the\ contents\ of\ one\ file\ into\ another.}}
+\DoxyCodeLine{00231\ \textcolor{comment}{//\ The\ files\ are\ taken\ as\ is:\ the\ copy\ is\ done\ starting\ from\ the\ current\ offset}}
+\DoxyCodeLine{00232\ \textcolor{comment}{//\ of\ |infile|\ until\ the\ end\ of\ |infile|\ is\ reached,\ into\ the\ current\ offset\ of}}
+\DoxyCodeLine{00233\ \textcolor{comment}{//\ |outfile|.}}
+\DoxyCodeLine{00234\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CopyFileContents(File\&\ infile,\ File\&\ outfile);}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{comment}{//\ Copies\ the\ given\ path,\ and\ optionally\ all\ subdirectories\ and\ their\ contents}}
+\DoxyCodeLine{00237\ \textcolor{comment}{//\ as\ well.}}
+\DoxyCodeLine{00238\ \textcolor{comment}{//}}
+\DoxyCodeLine{00239\ \textcolor{comment}{//\ If\ there\ are\ files\ existing\ under\ to\_path,\ always\ overwrite.\ Returns\ true}}
+\DoxyCodeLine{00240\ \textcolor{comment}{//\ if\ successful,\ false\ otherwise.\ Wildcards\ on\ the\ names\ are\ not\ supported.}}
+\DoxyCodeLine{00241\ \textcolor{comment}{//}}
+\DoxyCodeLine{00242\ \textcolor{comment}{//\ This\ function\ has\ the\ same\ metadata\ behavior\ as\ CopyFile().}}
+\DoxyCodeLine{00243\ \textcolor{comment}{//}}
+\DoxyCodeLine{00244\ \textcolor{comment}{//\ If\ you\ only\ need\ to\ copy\ a\ file\ use\ CopyFile,\ it's\ faster.}}
+\DoxyCodeLine{00245\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CopyDirectory(\textcolor{keyword}{const}\ FilePath\&\ from\_path,}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ to\_path,\ \textcolor{keywordtype}{bool}\ recursive);}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \textcolor{comment}{//\ Like\ CopyDirectory()\ except\ trying\ to\ overwrite\ an\ existing\ file\ will\ not}}
+\DoxyCodeLine{00249\ \textcolor{comment}{//\ work\ and\ will\ return\ false.}}
+\DoxyCodeLine{00250\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CopyDirectoryExcl(\textcolor{keyword}{const}\ FilePath\&\ from\_path,}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ to\_path,\ \textcolor{keywordtype}{bool}\ recursive);}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ path\ exists\ on\ the\ local\ filesystem,}}
+\DoxyCodeLine{00254\ \textcolor{comment}{//\ false\ otherwise.}}
+\DoxyCodeLine{00255\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ PathExists(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ path\ is\ readable\ by\ the\ user,\ false\ otherwise.}}
+\DoxyCodeLine{00258\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ PathIsReadable(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ path\ is\ writable\ by\ the\ user,\ false\ otherwise.}}
+\DoxyCodeLine{00261\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ PathIsWritable(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ path\ exists\ and\ is\ a\ directory,\ false\ otherwise.}}
+\DoxyCodeLine{00264\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ DirectoryExists(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \textcolor{comment}{//\ Returns\ true\ if\ the\ contents\ of\ the\ two\ files\ given\ are\ equal,\ false}}
+\DoxyCodeLine{00267\ \textcolor{comment}{//\ otherwise.\ \ If\ either\ file\ can't\ be\ read,\ returns\ false.}}
+\DoxyCodeLine{00268\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ContentsEqual(\textcolor{keyword}{const}\ FilePath\&\ filename1,}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ filename2);}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \textcolor{comment}{//\ Returns\ true\ if\ the\ contents\ of\ the\ two\ text\ files\ given\ are\ equal,\ false}}
+\DoxyCodeLine{00272\ \textcolor{comment}{//\ otherwise.\ \ This\ routine\ treats\ "{}\(\backslash\)r\(\backslash\)n"{}\ and\ "{}\(\backslash\)n"{}\ as\ equivalent.}}
+\DoxyCodeLine{00273\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ TextContentsEqual(\textcolor{keyword}{const}\ FilePath\&\ filename1,}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ filename2);}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \textcolor{comment}{//\ Reads\ the\ file\ at\ |path|\ and\ returns\ a\ vector\ of\ bytes\ on\ success,\ and}}
+\DoxyCodeLine{00277\ \textcolor{comment}{//\ nullopt\ on\ error.\ For\ security\ reasons,\ a\ |path|\ containing\ path\ traversal}}
+\DoxyCodeLine{00278\ \textcolor{comment}{//\ components\ ('..')\ is\ treated\ as\ a\ read\ error,\ returning\ nullopt.}}
+\DoxyCodeLine{00279\ BASE\_EXPORT\ std::optional<std::vector<uint8\_t>>\ ReadFileToBytes(}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \textcolor{comment}{//\ Reads\ the\ file\ at\ |path|\ into\ |contents|\ and\ returns\ true\ on\ success\ and}}
+\DoxyCodeLine{00283\ \textcolor{comment}{//\ false\ on\ error.\ \ For\ security\ reasons,\ a\ |path|\ containing\ path\ traversal}}
+\DoxyCodeLine{00284\ \textcolor{comment}{//\ components\ ('..')\ is\ treated\ as\ a\ read\ error\ and\ |contents|\ is\ set\ to\ empty.}}
+\DoxyCodeLine{00285\ \textcolor{comment}{//\ In\ case\ of\ I/O\ error,\ |contents|\ holds\ the\ data\ that\ could\ be\ read\ from\ the}}
+\DoxyCodeLine{00286\ \textcolor{comment}{//\ file\ before\ the\ error\ occurred.}}
+\DoxyCodeLine{00287\ \textcolor{comment}{//\ |contents|\ may\ be\ NULL,\ in\ which\ case\ this\ function\ is\ useful\ for\ its\ side}}
+\DoxyCodeLine{00288\ \textcolor{comment}{//\ effect\ of\ priming\ the\ disk\ cache\ (could\ be\ used\ for\ unit\ tests).}}
+\DoxyCodeLine{00289\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadFileToString(\textcolor{keyword}{const}\ FilePath\&\ path,\ std::string*\ contents);}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \textcolor{comment}{//\ Reads\ the\ file\ at\ |path|\ into\ |contents|\ and\ returns\ true\ on\ success\ and}}
+\DoxyCodeLine{00292\ \textcolor{comment}{//\ false\ on\ error.\ \ For\ security\ reasons,\ a\ |path|\ containing\ path\ traversal}}
+\DoxyCodeLine{00293\ \textcolor{comment}{//\ components\ ('..')\ is\ treated\ as\ a\ read\ error\ and\ |contents|\ is\ set\ to\ empty.}}
+\DoxyCodeLine{00294\ \textcolor{comment}{//\ In\ case\ of\ I/O\ error,\ |contents|\ holds\ the\ data\ that\ could\ be\ read\ from\ the}}
+\DoxyCodeLine{00295\ \textcolor{comment}{//\ file\ before\ the\ error\ occurred.\ \ When\ the\ file\ size\ exceeds\ |max\_size|,\ the}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ function\ returns\ false\ with\ |contents|\ holding\ the\ file\ truncated\ to}}
+\DoxyCodeLine{00297\ \textcolor{comment}{//\ |max\_size|.}}
+\DoxyCodeLine{00298\ \textcolor{comment}{//\ |contents|\ may\ be\ NULL,\ in\ which\ case\ this\ function\ is\ useful\ for\ its\ side}}
+\DoxyCodeLine{00299\ \textcolor{comment}{//\ effect\ of\ priming\ the\ disk\ cache\ (could\ be\ used\ for\ unit\ tests).}}
+\DoxyCodeLine{00300\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadFileToStringWithMaxSize(\textcolor{keyword}{const}\ FilePath\&\ path,}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ contents,}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ max\_size);}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \textcolor{comment}{//\ As\ ReadFileToString,\ but\ reading\ from\ an\ open\ stream\ after\ seeking\ to\ its}}
+\DoxyCodeLine{00305\ \textcolor{comment}{//\ start\ (if\ supported\ by\ the\ stream).\ This\ can\ also\ be\ used\ to\ read\ the\ whole}}
+\DoxyCodeLine{00306\ \textcolor{comment}{//\ file\ from\ a\ file\ descriptor\ by\ converting\ the\ file\ descriptor\ into\ a\ stream}}
+\DoxyCodeLine{00307\ \textcolor{comment}{//\ by\ using\ base::FileToFILE()\ before\ calling\ this\ function.}}
+\DoxyCodeLine{00308\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadStreamToString(FILE*\ stream,\ std::string*\ contents);}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{comment}{//\ As\ ReadFileToStringWithMaxSize,\ but\ reading\ from\ an\ open\ stream\ after\ seeking}}
+\DoxyCodeLine{00311\ \textcolor{comment}{//\ to\ its\ start\ (if\ supported\ by\ the\ stream).}}
+\DoxyCodeLine{00312\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadStreamToStringWithMaxSize(FILE*\ stream,\ \textcolor{keywordtype}{size\_t}\ max\_size,}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ contents);}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \textcolor{comment}{//\ Reads\ exactly\ as\ many\ bytes\ as\ \`{}buffer`\ can\ hold\ from\ file\ descriptor\ \`{}fd`}}
+\DoxyCodeLine{00318\ \textcolor{comment}{//\ into\ \`{}buffer`.\ This\ function\ is\ protected\ against\ EINTR\ and\ partial\ reads.}}
+\DoxyCodeLine{00319\ \textcolor{comment}{//\ Returns\ true\ iff\ \`{}buffer`\ was\ successfully\ filled\ with\ bytes\ read\ from\ \`{}fd`.}}
+\DoxyCodeLine{00320\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadFromFD(\textcolor{keywordtype}{int}\ fd,\ span<char>\ buffer);}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \textcolor{comment}{//\ Performs\ the\ same\ function\ as\ CreateAndOpenTemporaryStreamInDir(),\ but}}
+\DoxyCodeLine{00323\ \textcolor{comment}{//\ returns\ the\ file-\/descriptor\ wrapped\ in\ a\ ScopedFD,\ rather\ than\ the\ stream}}
+\DoxyCodeLine{00324\ \textcolor{comment}{//\ wrapped\ in\ a\ ScopedFILE.}}
+\DoxyCodeLine{00325\ \textcolor{comment}{//\ The\ caller\ is\ responsible\ for\ deleting\ the\ file\ \`{}path`\ points\ to,\ if}}
+\DoxyCodeLine{00326\ \textcolor{comment}{//\ appropriate.}}
+\DoxyCodeLine{00327\ BASE\_EXPORT\ ScopedFD\ CreateAndOpenFdForTemporaryFileInDir(\textcolor{keyword}{const}\ FilePath\&\ dir,}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ path);}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)}}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \textcolor{comment}{//\ ReadFileToStringNonBlocking\ is\ identical\ to\ ReadFileToString\ except\ it}}
+\DoxyCodeLine{00335\ \textcolor{comment}{//\ guarantees\ that\ it\ will\ not\ block.\ This\ guarantee\ is\ provided\ on\ POSIX\ by}}
+\DoxyCodeLine{00336\ \textcolor{comment}{//\ opening\ the\ file\ as\ O\_NONBLOCK.\ This\ variant\ should\ only\ be\ used\ on\ files}}
+\DoxyCodeLine{00337\ \textcolor{comment}{//\ which\ are\ guaranteed\ not\ to\ block\ (such\ as\ kernel\ files).\ Or\ in\ situations}}
+\DoxyCodeLine{00338\ \textcolor{comment}{//\ where\ a\ partial\ read\ would\ be\ acceptable\ because\ the\ backing\ store\ returned}}
+\DoxyCodeLine{00339\ \textcolor{comment}{//\ EWOULDBLOCK.}}
+\DoxyCodeLine{00340\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadFileToStringNonBlocking(\textcolor{keyword}{const}\ base::FilePath\&\ file,}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string*\ ret);}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \textcolor{comment}{//\ Creates\ a\ symbolic\ link\ at\ |symlink|\ pointing\ to\ |target|.\ \ Returns}}
+\DoxyCodeLine{00344\ \textcolor{comment}{//\ false\ on\ failure.}}
+\DoxyCodeLine{00345\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateSymbolicLink(\textcolor{keyword}{const}\ FilePath\&\ target,}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ symlink);}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \textcolor{comment}{//\ Reads\ the\ given\ |symlink|\ and\ returns\ the\ raw\ string\ in\ |target|.}}
+\DoxyCodeLine{00349\ \textcolor{comment}{//\ Returns\ false\ upon\ failure.}}
+\DoxyCodeLine{00350\ \textcolor{comment}{//\ IMPORTANT\ NOTE:\ if\ the\ string\ stored\ in\ the\ symlink\ is\ a\ relative\ file\ path,}}
+\DoxyCodeLine{00351\ \textcolor{comment}{//\ it\ should\ be\ interpreted\ relative\ to\ the\ symlink's\ directory,\ NOT\ the\ current}}
+\DoxyCodeLine{00352\ \textcolor{comment}{//\ working\ directory.\ ReadSymbolicLinkAbsolute()\ may\ be\ the\ better\ choice.}}
+\DoxyCodeLine{00353\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ReadSymbolicLink(\textcolor{keyword}{const}\ FilePath\&\ symlink,\ FilePath*\ target);}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \textcolor{comment}{//\ Same\ as\ ReadSymbolicLink(),\ but\ properly\ converts\ it\ into\ an\ absolute\ path\ if}}
+\DoxyCodeLine{00356\ \textcolor{comment}{//\ the\ link\ is\ relative.}}
+\DoxyCodeLine{00357\ \textcolor{comment}{//\ Can\ fail\ if\ readlink()\ fails,\ or\ if}}
+\DoxyCodeLine{00358\ \textcolor{comment}{//\ MakeAbsoluteFilePathNoResolveSymbolicLinks()\ fails\ on\ the\ resulting\ absolute}}
+\DoxyCodeLine{00359\ \textcolor{comment}{//\ path.}}
+\DoxyCodeLine{00360\ BASE\_EXPORT\ std::optional<FilePath>\ ReadSymbolicLinkAbsolute(}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ symlink);}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \textcolor{comment}{//\ Bits\ and\ masks\ of\ the\ file\ permission.}}
+\DoxyCodeLine{00364\ \textcolor{keyword}{enum}\ FilePermissionBits\ \{}
+\DoxyCodeLine{00365\ \ \ \textcolor{comment}{//\ clang-\/format\ off}}
+\DoxyCodeLine{00366\ \ \ FILE\_PERMISSION\_MASK\ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ S\_IRWXU\ |\ S\_IRWXG\ |\ S\_IRWXO,}
+\DoxyCodeLine{00367\ \ \ FILE\_PERMISSION\_USER\_MASK\ \ \ \ \ \ \ \ \ =\ S\_IRWXU,}
+\DoxyCodeLine{00368\ \ \ FILE\_PERMISSION\_GROUP\_MASK\ \ \ \ \ \ \ \ =\ S\_IRWXG,}
+\DoxyCodeLine{00369\ \ \ FILE\_PERMISSION\_OTHERS\_MASK\ \ \ \ \ \ \ =\ S\_IRWXO,}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \ \ FILE\_PERMISSION\_READ\_BY\_USER\ \ \ \ \ \ =\ S\_IRUSR,}
+\DoxyCodeLine{00372\ \ \ FILE\_PERMISSION\_WRITE\_BY\_USER\ \ \ \ \ =\ S\_IWUSR,}
+\DoxyCodeLine{00373\ \ \ FILE\_PERMISSION\_EXECUTE\_BY\_USER\ \ \ =\ S\_IXUSR,}
+\DoxyCodeLine{00374\ \ \ FILE\_PERMISSION\_READ\_BY\_GROUP\ \ \ \ \ =\ S\_IRGRP,}
+\DoxyCodeLine{00375\ \ \ FILE\_PERMISSION\_WRITE\_BY\_GROUP\ \ \ \ =\ S\_IWGRP,}
+\DoxyCodeLine{00376\ \ \ FILE\_PERMISSION\_EXECUTE\_BY\_GROUP\ \ =\ S\_IXGRP,}
+\DoxyCodeLine{00377\ \ \ FILE\_PERMISSION\_READ\_BY\_OTHERS\ \ \ \ =\ S\_IROTH,}
+\DoxyCodeLine{00378\ \ \ FILE\_PERMISSION\_WRITE\_BY\_OTHERS\ \ \ =\ S\_IWOTH,}
+\DoxyCodeLine{00379\ \ \ FILE\_PERMISSION\_EXECUTE\_BY\_OTHERS\ =\ S\_IXOTH,}
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{//\ clang-\/format\ on}}
+\DoxyCodeLine{00381\ \};}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \textcolor{comment}{//\ Reads\ the\ permission\ of\ the\ given\ |path|,\ storing\ the\ file\ permission}}
+\DoxyCodeLine{00384\ \textcolor{comment}{//\ bits\ in\ |mode|.\ If\ |path|\ is\ symbolic\ link,\ |mode|\ is\ the\ permission\ of}}
+\DoxyCodeLine{00385\ \textcolor{comment}{//\ a\ file\ which\ the\ symlink\ points\ to.}}
+\DoxyCodeLine{00386\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ GetPosixFilePermissions(\textcolor{keyword}{const}\ FilePath\&\ path,\ \textcolor{keywordtype}{int}*\ mode);}
+\DoxyCodeLine{00387\ \textcolor{comment}{//\ Sets\ the\ permission\ of\ the\ given\ |path|.\ If\ |path|\ is\ symbolic\ link,\ sets}}
+\DoxyCodeLine{00388\ \textcolor{comment}{//\ the\ permission\ of\ a\ file\ which\ the\ symlink\ points\ to.}}
+\DoxyCodeLine{00389\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ SetPosixFilePermissions(\textcolor{keyword}{const}\ FilePath\&\ path,\ \textcolor{keywordtype}{int}\ mode);}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \textcolor{comment}{//\ Returns\ true\ iff\ |executable|\ can\ be\ found\ in\ any\ directory\ specified\ by\ the}}
+\DoxyCodeLine{00392\ \textcolor{comment}{//\ environment\ variable\ in\ |env|.}}
+\DoxyCodeLine{00393\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ ExecutableExistsInPath(Environment*\ env,}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ executable);}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_LINUX)\ ||\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_AIX)}}
+\DoxyCodeLine{00397\ \textcolor{comment}{//\ Determine\ if\ files\ under\ a\ given\ |path|\ can\ be\ mapped\ and\ then\ mprotect'd}}
+\DoxyCodeLine{00398\ \textcolor{comment}{//\ PROT\_EXEC.\ This\ depends\ on\ the\ mount\ options\ used\ for\ |path|,\ which\ vary}}
+\DoxyCodeLine{00399\ \textcolor{comment}{//\ among\ different\ Linux\ distributions\ and\ possibly\ local\ configuration.\ It\ also}}
+\DoxyCodeLine{00400\ \textcolor{comment}{//\ depends\ on\ details\ of\ kernel-\/-\/ChromeOS\ uses\ the\ noexec\ option\ for\ /dev/shm}}
+\DoxyCodeLine{00401\ \textcolor{comment}{//\ but\ its\ kernel\ allows\ mprotect\ with\ PROT\_EXEC\ anyway.}}
+\DoxyCodeLine{00402\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsPathExecutable(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00403\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_LINUX)\ ||\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_AIX)}}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_POSIX)}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ directory\ is\ empty}}
+\DoxyCodeLine{00408\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsDirectoryEmpty(\textcolor{keyword}{const}\ FilePath\&\ dir\_path);}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \textcolor{comment}{//\ Get\ the\ temporary\ directory\ provided\ by\ the\ system.}}
+\DoxyCodeLine{00411\ \textcolor{comment}{//}}
+\DoxyCodeLine{00412\ \textcolor{comment}{//\ WARNING:\ In\ general,\ you\ should\ use\ CreateTemporaryFile\ variants\ below}}
+\DoxyCodeLine{00413\ \textcolor{comment}{//\ instead\ of\ this\ function.\ Those\ variants\ will\ ensure\ that\ the\ proper}}
+\DoxyCodeLine{00414\ \textcolor{comment}{//\ permissions\ are\ set\ so\ that\ other\ users\ on\ the\ system\ can't\ edit\ them\ while}}
+\DoxyCodeLine{00415\ \textcolor{comment}{//\ they're\ open\ (which\ can\ lead\ to\ security\ issues).}}
+\DoxyCodeLine{00416\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ GetTempDir(FilePath*\ path);}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \textcolor{comment}{//\ Get\ the\ home\ directory.\ This\ is\ more\ complicated\ than\ just\ getenv("{}HOME"{})}}
+\DoxyCodeLine{00419\ \textcolor{comment}{//\ as\ it\ knows\ to\ fall\ back\ on\ getpwent()\ etc.}}
+\DoxyCodeLine{00420\ \textcolor{comment}{//}}
+\DoxyCodeLine{00421\ \textcolor{comment}{//\ You\ should\ not\ generally\ call\ this\ directly.\ Instead\ use\ DIR\_HOME\ with\ the}}
+\DoxyCodeLine{00422\ \textcolor{comment}{//\ path\ service\ which\ will\ use\ this\ function\ but\ cache\ the\ value.}}
+\DoxyCodeLine{00423\ \textcolor{comment}{//\ Path\ service\ may\ also\ override\ DIR\_HOME.}}
+\DoxyCodeLine{00424\ BASE\_EXPORT\ FilePath\ GetHomeDir();}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00426\ \textcolor{comment}{//\ Returns\ a\ new\ temporary\ file\ in\ |dir|\ with\ a\ unique\ name.\ The\ file\ is\ opened}}
+\DoxyCodeLine{00427\ \textcolor{comment}{//\ for\ exclusive\ read,\ write,\ and\ delete\ access.}}
+\DoxyCodeLine{00428\ \textcolor{comment}{//\ On\ success,\ |temp\_file|\ is\ populated\ with\ the\ full\ path\ to\ the\ created\ file.}}
+\DoxyCodeLine{00429\ \textcolor{comment}{//}}
+\DoxyCodeLine{00430\ \textcolor{comment}{//\ NOTE:\ Exclusivity\ is\ unique\ to\ Windows.\ On\ Windows,\ the\ returned\ file}}
+\DoxyCodeLine{00431\ \textcolor{comment}{//\ supports\ File::DeleteOnClose.\ On\ other\ platforms,\ the\ caller\ is\ responsible}}
+\DoxyCodeLine{00432\ \textcolor{comment}{//\ for\ deleting\ the\ file\ \`{}temp\_file`\ points\ to,\ if\ appropriate.}}
+\DoxyCodeLine{00433\ BASE\_EXPORT\ File\ CreateAndOpenTemporaryFileInDir(\textcolor{keyword}{const}\ FilePath\&\ dir,}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ temp\_file);}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \textcolor{comment}{//\ Creates\ a\ temporary\ file.\ The\ full\ path\ is\ placed\ in\ \`{}path`,\ and\ the}}
+\DoxyCodeLine{00437\ \textcolor{comment}{//\ function\ returns\ true\ if\ was\ successful\ in\ creating\ the\ file.\ The\ file\ will}}
+\DoxyCodeLine{00438\ \textcolor{comment}{//\ be\ empty\ and\ all\ handles\ closed\ after\ this\ function\ returns.}}
+\DoxyCodeLine{00439\ \textcolor{comment}{//\ The\ caller\ is\ responsible\ for\ deleting\ the\ file\ \`{}path`\ points\ to,\ if}}
+\DoxyCodeLine{00440\ \textcolor{comment}{//\ appropriate.}}
+\DoxyCodeLine{00441\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateTemporaryFile(FilePath*\ path);}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \textcolor{comment}{//\ Same\ as\ CreateTemporaryFile()\ but\ the\ file\ is\ created\ in\ \`{}dir`.}}
+\DoxyCodeLine{00444\ \textcolor{comment}{//\ The\ caller\ is\ responsible\ for\ deleting\ the\ file\ \`{}temp\_file`\ points\ to,\ if}}
+\DoxyCodeLine{00445\ \textcolor{comment}{//\ appropriate.}}
+\DoxyCodeLine{00446\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateTemporaryFileInDir(\textcolor{keyword}{const}\ FilePath\&\ dir,}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ temp\_file);}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \textcolor{comment}{//\ Returns\ the\ file\ name\ for\ a\ temporary\ file\ by\ using\ a\ platform-\/specific}}
+\DoxyCodeLine{00450\ \textcolor{comment}{//\ naming\ scheme\ that\ incorporates\ |identifier|.}}
+\DoxyCodeLine{00451\ BASE\_EXPORT\ FilePath}
+\DoxyCodeLine{00452\ FormatTemporaryFileName(FilePath::StringViewType\ identifier);}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ \textcolor{comment}{//\ Create\ and\ open\ a\ temporary\ file\ stream\ for\ exclusive\ read,\ write,\ and\ delete}}
+\DoxyCodeLine{00455\ \textcolor{comment}{//\ access.\ The\ full\ path\ is\ placed\ in\ \`{}path`.\ Returns\ the\ opened\ file\ stream,\ or}}
+\DoxyCodeLine{00456\ \textcolor{comment}{//\ null\ in\ case\ of\ error.}}
+\DoxyCodeLine{00457\ \textcolor{comment}{//\ NOTE:\ Exclusivity\ is\ unique\ to\ Windows.\ On\ Windows,\ the\ returned\ file}}
+\DoxyCodeLine{00458\ \textcolor{comment}{//\ supports\ File::DeleteOnClose.\ On\ other\ platforms,\ the\ caller\ is\ responsible}}
+\DoxyCodeLine{00459\ \textcolor{comment}{//\ for\ deleting\ the\ file\ \`{}path`\ points\ to,\ if\ appropriate.}}
+\DoxyCodeLine{00460\ BASE\_EXPORT\ ScopedFILE\ CreateAndOpenTemporaryStream(FilePath*\ path);}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00462\ \textcolor{comment}{//\ Similar\ to\ CreateAndOpenTemporaryStream(),\ but\ the\ file\ is\ created\ in\ \`{}dir`.}}
+\DoxyCodeLine{00463\ BASE\_EXPORT\ ScopedFILE\ CreateAndOpenTemporaryStreamInDir(\textcolor{keyword}{const}\ FilePath\&\ dir,}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ path);}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \textcolor{comment}{//\ Do\ NOT\ USE\ in\ new\ code.\ Use\ ScopedTempDir\ instead.}}
+\DoxyCodeLine{00467\ \textcolor{comment}{//\ TODO(crbug.com/40446440)\ Remove\ existing\ usage\ and\ make\ this\ an}}
+\DoxyCodeLine{00468\ \textcolor{comment}{//\ implementation\ detail\ inside\ ScopedTempDir.}}
+\DoxyCodeLine{00469\ \textcolor{comment}{//}}
+\DoxyCodeLine{00470\ \textcolor{comment}{//\ Create\ a\ new\ directory.\ If\ prefix\ is\ provided,\ the\ new\ directory\ name\ is\ in}}
+\DoxyCodeLine{00471\ \textcolor{comment}{//\ the\ format\ of\ prefixyyyy.}}
+\DoxyCodeLine{00472\ \textcolor{comment}{//\ NOTE:\ prefix\ is\ ignored\ in\ the\ POSIX\ implementation.}}
+\DoxyCodeLine{00473\ \textcolor{comment}{//\ If\ success,\ return\ true\ and\ output\ the\ full\ path\ of\ the\ directory\ created.}}
+\DoxyCodeLine{00474\ \textcolor{comment}{//}}
+\DoxyCodeLine{00475\ \textcolor{comment}{//\ For\ Windows,\ this\ directory\ is\ usually\ created\ in\ a\ secure\ location\ if\ the}}
+\DoxyCodeLine{00476\ \textcolor{comment}{//\ caller\ is\ admin.\ This\ is\ because\ the\ default\ \%TEMP\%\ folder\ for\ Windows\ is}}
+\DoxyCodeLine{00477\ \textcolor{comment}{//\ insecure,\ since\ low\ privilege\ users\ can\ get\ the\ path\ of\ folders\ under\ \%TEMP\%}}
+\DoxyCodeLine{00478\ \textcolor{comment}{//\ after\ creation\ and\ are\ able\ to\ create\ subfolders\ and\ files\ within\ these}}
+\DoxyCodeLine{00479\ \textcolor{comment}{//\ folders\ which\ can\ lead\ to\ privilege\ escalation.}}
+\DoxyCodeLine{00480\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateNewTempDirectory(\textcolor{keyword}{const}\ FilePath::StringType\&\ prefix,}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ new\_temp\_path);}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \textcolor{comment}{//\ Create\ a\ directory\ within\ another\ directory.}}
+\DoxyCodeLine{00484\ \textcolor{comment}{//\ Extra\ characters\ will\ be\ appended\ to\ |prefix|\ to\ ensure\ that\ the}}
+\DoxyCodeLine{00485\ \textcolor{comment}{//\ new\ directory\ does\ not\ have\ the\ same\ name\ as\ an\ existing\ directory.}}
+\DoxyCodeLine{00486\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateTemporaryDirInDir(\textcolor{keyword}{const}\ FilePath\&\ base\_dir,}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath::StringViewType\ prefix,}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ new\_dir);}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \textcolor{comment}{//\ Ensures\ a\ directory\ exists,\ if\ necessary,\ creating\ it\ and\ parent\ directories.}}
+\DoxyCodeLine{00491\ \textcolor{comment}{//\ Returns\ true\ if\ the\ directory\ already\ existed\ or\ was\ created,\ leaving\ *error}}
+\DoxyCodeLine{00492\ \textcolor{comment}{//\ unchanged.}}
+\DoxyCodeLine{00493\ \textcolor{comment}{//\ Returns\ false\ on\ failure\ and\ sets\ *error\ appropriately\ if\ it\ is\ non-\/NULL.}}
+\DoxyCodeLine{00494\ \textcolor{comment}{//}}
+\DoxyCodeLine{00495\ \textcolor{comment}{//\ The\ created\ directories\ can\ only\ be\ accessed\ by\ the\ current\ user,\ except\ on}}
+\DoxyCodeLine{00496\ \textcolor{comment}{//\ ChromeOS,\ where\ the\ directories\ created\ under\ \`{}\string~/MyFiles`\ or\ \`{}/media`\ can}}
+\DoxyCodeLine{00497\ \textcolor{comment}{//\ also\ be\ accessed\ by\ ChromeOS\ services.}}
+\DoxyCodeLine{00498\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateDirectoryAndGetError(\textcolor{keyword}{const}\ FilePath\&\ full\_path,}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ File::Error*\ error);}
+\DoxyCodeLine{00500\ }
+\DoxyCodeLine{00501\ \textcolor{comment}{//\ Backward-\/compatible\ convenience\ method\ for\ the\ above.}}
+\DoxyCodeLine{00502\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateDirectory(\textcolor{keyword}{const}\ FilePath\&\ full\_path);}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \textcolor{comment}{//\ Returns\ the\ file\ size,\ or\ std::nullopt\ on\ failure.}}
+\DoxyCodeLine{00505\ BASE\_EXPORT\ std::optional<int64\_t>\ GetFileSize(\textcolor{keyword}{const}\ FilePath\&\ file\_path);}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \textcolor{comment}{//\ Same\ as\ above,\ but\ as\ an\ OnceCallback.}}
+\DoxyCodeLine{00508\ BASE\_EXPORT\ OnceCallback<std::optional<int64\_t>()>\ GetFileSizeCallback(}
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00511\ \textcolor{comment}{//\ Sets\ |real\_path|\ to\ |path|\ with\ symbolic\ links\ and\ junctions\ expanded.}}
+\DoxyCodeLine{00512\ \textcolor{comment}{//\ On\ Windows,\ the\ function\ ensures\ that\ the\ resulting\ |real\_path|\ starts\ with\ a}}
+\DoxyCodeLine{00513\ \textcolor{comment}{//\ drive\ letter.}}
+\DoxyCodeLine{00514\ \textcolor{comment}{//}}
+\DoxyCodeLine{00515\ \textcolor{comment}{//\ The\ |path|\ parameter\ can\ reference\ either\ a\ file\ or\ a\ directory.\ The\ function}}
+\DoxyCodeLine{00516\ \textcolor{comment}{//\ will\ fail\ if\ |path|\ points\ to\ a\ nonexistent\ path\ or\ to\ a\ volume\ that\ isn't}}
+\DoxyCodeLine{00517\ \textcolor{comment}{//\ mapped\ to\ a\ drive\ letter\ on\ Windows.}}
+\DoxyCodeLine{00518\ \textcolor{comment}{//}}
+\DoxyCodeLine{00519\ \textcolor{comment}{//\ In\ addition,\ on\ Windows\ this\ function\ will\ fail\ if\ the\ resulting\ |real\_path|}}
+\DoxyCodeLine{00520\ \textcolor{comment}{//\ would\ exceed\ 'MAX\_PATH'\ characters\ in\ length.}}
+\DoxyCodeLine{00521\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ NormalizeFilePath(\textcolor{keyword}{const}\ FilePath\&\ path,\ FilePath*\ real\_path);}
+\DoxyCodeLine{00522\ }
+\DoxyCodeLine{00523\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00525\ \textcolor{comment}{//\ Given\ a\ path\ in\ NT\ native\ form\ ("{}\(\backslash\)Device\(\backslash\)HarddiskVolumeXX\(\backslash\)..."{}),}}
+\DoxyCodeLine{00526\ \textcolor{comment}{//\ return\ in\ |drive\_letter\_path|\ the\ equivalent\ path\ that\ starts\ with}}
+\DoxyCodeLine{00527\ \textcolor{comment}{//\ a\ drive\ letter\ ("{}C:\(\backslash\)..."{}).\ \ Return\ false\ if\ no\ such\ path\ exists.}}
+\DoxyCodeLine{00528\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ DevicePathToDriveLetterPath(\textcolor{keyword}{const}\ FilePath\&\ device\_path,}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FilePath*\ drive\_letter\_path);}
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00531\ \textcolor{comment}{//\ Method\ that\ wraps\ the\ win32\ GetLongPathName\ API,\ normalizing\ the\ specified}}
+\DoxyCodeLine{00532\ \textcolor{comment}{//\ path\ to\ its\ long\ form.\ An\ example\ where\ this\ is\ needed\ is\ when\ comparing}}
+\DoxyCodeLine{00533\ \textcolor{comment}{//\ temp\ file\ paths.\ If\ a\ username\ isn't\ a\ valid\ 8.3\ short\ file\ name\ (even\ just\ a}}
+\DoxyCodeLine{00534\ \textcolor{comment}{//\ lengthy\ name\ like\ "{}user\ with\ long\ name"{}),\ Windows\ will\ set\ the\ TMP\ and\ TEMP}}
+\DoxyCodeLine{00535\ \textcolor{comment}{//\ environment\ variables\ to\ be\ 8.3\ paths.\ ::GetTempPath\ (called\ in}}
+\DoxyCodeLine{00536\ \textcolor{comment}{//\ base::GetTempDir)\ just\ uses\ the\ value\ specified\ by\ TMP\ or\ TEMP,\ and\ so\ can}}
+\DoxyCodeLine{00537\ \textcolor{comment}{//\ return\ a\ short\ path.\ Returns\ an\ empty\ path\ on\ error.}}
+\DoxyCodeLine{00538\ BASE\_EXPORT\ FilePath\ MakeLongFilePath(\textcolor{keyword}{const}\ FilePath\&\ input);}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \textcolor{comment}{//\ Creates\ a\ hard\ link\ named\ |to\_file|\ to\ the\ file\ |from\_file|.\ Both\ paths}}
+\DoxyCodeLine{00541\ \textcolor{comment}{//\ must\ be\ on\ the\ same\ volume,\ and\ |from\_file|\ may\ not\ name\ a\ directory.}}
+\DoxyCodeLine{00542\ \textcolor{comment}{//\ Returns\ true\ if\ the\ hard\ link\ is\ created,\ false\ if\ it\ fails.}}
+\DoxyCodeLine{00543\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateWinHardLink(\textcolor{keyword}{const}\ FilePath\&\ to\_file,}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ from\_file);}
+\DoxyCodeLine{00545\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00546\ }
+\DoxyCodeLine{00547\ \textcolor{comment}{//\ This\ function\ will\ return\ if\ the\ given\ file\ is\ a\ symlink\ or\ not.}}
+\DoxyCodeLine{00548\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsLink(\textcolor{keyword}{const}\ FilePath\&\ file\_path);}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00550\ \textcolor{comment}{//\ Returns\ information\ about\ the\ given\ file\ path.\ Also\ see\ |File::GetInfo|.}}
+\DoxyCodeLine{00551\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ GetFileInfo(\textcolor{keyword}{const}\ FilePath\&\ file\_path,\ File::Info*\ info);}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \textcolor{comment}{//\ Sets\ the\ time\ of\ the\ last\ access\ and\ the\ time\ of\ the\ last\ modification.}}
+\DoxyCodeLine{00554\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ TouchFile(\textcolor{keyword}{const}\ FilePath\&\ path,\ \textcolor{keyword}{const}\ Time\&\ last\_accessed,}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Time\&\ last\_modified);}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00557\ \textcolor{comment}{//\ Wrapper\ for\ fopen-\/like\ calls.\ Returns\ non-\/NULL\ FILE*\ on\ success.\ The}}
+\DoxyCodeLine{00558\ \textcolor{comment}{//\ underlying\ file\ descriptor\ (POSIX)\ or\ handle\ (Windows)\ is\ unconditionally}}
+\DoxyCodeLine{00559\ \textcolor{comment}{//\ configured\ to\ not\ be\ propagated\ to\ child\ processes.}}
+\DoxyCodeLine{00560\ BASE\_EXPORT\ FILE*\ OpenFile(\textcolor{keyword}{const}\ FilePath\&\ filename,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ mode);}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{comment}{//\ Closes\ file\ opened\ by\ OpenFile.\ Returns\ true\ on\ success.}}
+\DoxyCodeLine{00563\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CloseFile(FILE*\ file);}
+\DoxyCodeLine{00564\ }
+\DoxyCodeLine{00565\ \textcolor{comment}{//\ Associates\ a\ standard\ FILE\ stream\ with\ an\ existing\ File.\ Note\ that\ this}}
+\DoxyCodeLine{00566\ \textcolor{comment}{//\ functions\ take\ ownership\ of\ the\ existing\ File.}}
+\DoxyCodeLine{00567\ BASE\_EXPORT\ FILE*\ FileToFILE(File\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ mode);}
+\DoxyCodeLine{00568\ }
+\DoxyCodeLine{00569\ \textcolor{comment}{//\ Returns\ a\ new\ handle\ to\ the\ file\ underlying\ |file\_stream|.}}
+\DoxyCodeLine{00570\ BASE\_EXPORT\ File\ FILEToFile(FILE*\ file\_stream);}
+\DoxyCodeLine{00571\ }
+\DoxyCodeLine{00572\ \textcolor{comment}{//\ Truncates\ an\ open\ file\ to\ end\ at\ the\ location\ of\ the\ current\ file\ pointer.}}
+\DoxyCodeLine{00573\ \textcolor{comment}{//\ This\ is\ a\ cross-\/platform\ analog\ to\ Windows'\ SetEndOfFile()\ function.}}
+\DoxyCodeLine{00574\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ TruncateFile(FILE*\ file);}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \textcolor{comment}{//\ Reads\ from\ the\ file\ into\ \`{}buffer`.\ This\ will\ read\ at\ most\ as\ many\ bytes\ as}}
+\DoxyCodeLine{00577\ \textcolor{comment}{//\ \`{}buffer`\ can\ hold,\ but\ may\ not\ always\ fill\ \`{}buffer`\ entirely.}}
+\DoxyCodeLine{00578\ \textcolor{comment}{//\ Returns\ the\ number\ of\ bytes\ read,\ or\ nullopt\ on\ error.}}
+\DoxyCodeLine{00579\ \textcolor{comment}{//\ TODO(crbug.com/40227936):\ Despite\ the\ 64-\/bit\ return\ value,\ this\ only\ supports}}
+\DoxyCodeLine{00580\ \textcolor{comment}{//\ reading\ at\ most\ INT\_MAX\ bytes.\ The\ program\ will\ crash\ if\ a\ buffer\ is\ passed}}
+\DoxyCodeLine{00581\ \textcolor{comment}{//\ whose\ length\ exceeds\ INT\_MAX.}}
+\DoxyCodeLine{00582\ BASE\_EXPORT\ std::optional<uint64\_t>\ ReadFile(\textcolor{keyword}{const}\ FilePath\&\ filename,}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ span<char>\ buffer);}
+\DoxyCodeLine{00584\ BASE\_EXPORT\ std::optional<uint64\_t>\ ReadFile(\textcolor{keyword}{const}\ FilePath\&\ filename,}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ span<uint8\_t>\ buffer);}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00587\ \textcolor{comment}{//\ Same\ as\ above,\ but\ returns\ -\/1\ on\ error.}}
+\DoxyCodeLine{00588\ \textcolor{comment}{//\ TODO(crbug.com/40284755):\ Migrate\ callers\ to\ the\ span\ variant.}}
+\DoxyCodeLine{00589\ BASE\_EXPORT\ \textcolor{keywordtype}{int}\ ReadFile(\textcolor{keyword}{const}\ FilePath\&\ filename,\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{int}\ max\_size);}
+\DoxyCodeLine{00590\ }
+\DoxyCodeLine{00591\ \textcolor{comment}{//\ Writes\ |data|\ into\ the\ file,\ overwriting\ any\ data\ that\ was\ previously\ there.}}
+\DoxyCodeLine{00592\ \textcolor{comment}{//\ Returns\ true\ if\ and\ only\ if\ all\ of\ |data|\ was\ written.\ If\ the\ file\ does\ not}}
+\DoxyCodeLine{00593\ \textcolor{comment}{//\ exist,\ it\ gets\ created\ with\ read/write\ permissions\ for\ all.}}
+\DoxyCodeLine{00594\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ WriteFile(\textcolor{keyword}{const}\ FilePath\&\ filename,\ span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00595\ }
+\DoxyCodeLine{00596\ \textcolor{comment}{//\ Another\ WriteFile()\ variant\ that\ takes\ a\ std::string\_view\ so\ callers\ don't}}
+\DoxyCodeLine{00597\ \textcolor{comment}{//\ have\ to\ do\ manual\ conversions\ from\ a\ char\ span\ to\ a\ uint8\_t\ span.}}
+\DoxyCodeLine{00598\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ WriteFile(\textcolor{keyword}{const}\ FilePath\&\ filename,\ std::string\_view\ data);}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00601\ \textcolor{comment}{//\ Appends\ |data|\ to\ |fd|.\ Does\ not\ close\ |fd|\ when\ done.\ \ Returns\ true\ iff\ all}}
+\DoxyCodeLine{00602\ \textcolor{comment}{//\ of\ |data|\ were\ written\ to\ |fd|.}}
+\DoxyCodeLine{00603\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ WriteFileDescriptor(\textcolor{keywordtype}{int}\ fd,\ span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \textcolor{comment}{//\ WriteFileDescriptor()\ variant\ that\ takes\ a\ std::string\_view\ so\ callers\ don't}}
+\DoxyCodeLine{00606\ \textcolor{comment}{//\ have\ to\ do\ manual\ conversions\ from\ a\ char\ span\ to\ a\ uint8\_t\ span.}}
+\DoxyCodeLine{00607\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ WriteFileDescriptor(\textcolor{keywordtype}{int}\ fd,\ std::string\_view\ data);}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00609\ \textcolor{comment}{//\ Allocates\ disk\ space\ for\ the\ file\ referred\ to\ by\ |fd|\ for\ the\ byte\ range}}
+\DoxyCodeLine{00610\ \textcolor{comment}{//\ starting\ at\ |offset|\ and\ continuing\ for\ |size|\ bytes.\ The\ file\ size\ will\ be}}
+\DoxyCodeLine{00611\ \textcolor{comment}{//\ changed\ if\ |offset|+|len|\ is\ greater\ than\ the\ file\ size.\ Zeros\ will\ fill\ the}}
+\DoxyCodeLine{00612\ \textcolor{comment}{//\ new\ space.}}
+\DoxyCodeLine{00613\ \textcolor{comment}{//\ After\ a\ successful\ call,\ subsequent\ writes\ into\ the\ specified\ range\ are}}
+\DoxyCodeLine{00614\ \textcolor{comment}{//\ guaranteed\ not\ to\ fail\ because\ of\ lack\ of\ disk\ space.}}
+\DoxyCodeLine{00615\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ AllocateFileRegion(File*\ file,\ int64\_t\ offset,\ \textcolor{keywordtype}{size\_t}\ size);}
+\DoxyCodeLine{00616\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00618\ \textcolor{comment}{//\ Appends\ |data|\ to\ |filename|.\ \ Returns\ true\ iff\ |data|\ were\ written\ to}}
+\DoxyCodeLine{00619\ \textcolor{comment}{//\ |filename|.}}
+\DoxyCodeLine{00620\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ AppendToFile(\textcolor{keyword}{const}\ FilePath\&\ filename,}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ span<const\ uint8\_t>\ data);}
+\DoxyCodeLine{00622\ }
+\DoxyCodeLine{00623\ \textcolor{comment}{//\ AppendToFile()\ variant\ that\ takes\ a\ std::string\_view\ so\ callers\ don't\ have\ to}}
+\DoxyCodeLine{00624\ \textcolor{comment}{//\ do\ manual\ conversions\ from\ a\ char\ span\ to\ a\ uint8\_t\ span.}}
+\DoxyCodeLine{00625\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ AppendToFile(\textcolor{keyword}{const}\ FilePath\&\ filename,\ std::string\_view\ data);}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \textcolor{comment}{//\ Gets\ the\ current\ working\ directory\ for\ the\ process.}}
+\DoxyCodeLine{00628\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ GetCurrentDirectory(FilePath*\ path);}
+\DoxyCodeLine{00629\ }
+\DoxyCodeLine{00630\ \textcolor{comment}{//\ Sets\ the\ current\ working\ directory\ for\ the\ process.}}
+\DoxyCodeLine{00631\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ SetCurrentDirectory(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00633\ \textcolor{comment}{//\ The\ largest\ value\ attempted\ by\ GetUniquePath.}}
+\DoxyCodeLine{00634\ \textcolor{keyword}{enum}\ \{\ kMaxUniqueFiles\ =\ 100\ \};}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \textcolor{comment}{//\ Returns\ |path|\ if\ it\ does\ not\ exist.\ Otherwise,\ returns\ |path|\ with\ the}}
+\DoxyCodeLine{00637\ \textcolor{comment}{//\ suffix\ "{}\ (N)"{}\ appended\ to\ its\ basename\ before\ any\ file\ extension,\ where\ N\ is}}
+\DoxyCodeLine{00638\ \textcolor{comment}{//\ a\ number\ between\ 1\ and\ 100\ (inclusive).\ Returns\ an\ empty\ path\ if\ no\ such}}
+\DoxyCodeLine{00639\ \textcolor{comment}{//\ number\ can\ be\ found.}}
+\DoxyCodeLine{00640\ BASE\_EXPORT\ FilePath\ GetUniquePath(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \textcolor{comment}{//\ Same\ as\ \`{}GetUniquePath()`,\ except\ this\ method\ allows\ specifying\ a\ custom}}
+\DoxyCodeLine{00643\ \textcolor{comment}{//\ suffix\ printf\ format\ string\ in\ cases\ where\ the\ default\ format\ doesn't\ work}}
+\DoxyCodeLine{00644\ \textcolor{comment}{//\ (for\ example\ because\ you\ need\ a\ filename\ without\ spaces\ in\ it).\ Passing}}
+\DoxyCodeLine{00645\ \textcolor{comment}{//\ "{}\ (\%d)"{}\ as\ \`{}suffix\_format`\ makes\ this\ behave\ identical\ to\ \`{}GetUniquePath()`.}}
+\DoxyCodeLine{00646\ BASE\_EXPORT\ FilePath\ GetUniquePathWithSuffixFormat(}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path,\ base::cstring\_view\ suffix\_format);}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \textcolor{comment}{//\ Sets\ the\ given\ |fd|\ to\ non-\/blocking\ mode.}}
+\DoxyCodeLine{00650\ \textcolor{comment}{//\ Returns\ true\ if\ it\ was\ able\ to\ set\ it\ in\ the\ non-\/blocking\ mode,\ otherwise}}
+\DoxyCodeLine{00651\ \textcolor{comment}{//\ false.}}
+\DoxyCodeLine{00652\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ SetNonBlocking(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00653\ }
+\DoxyCodeLine{00654\ \textcolor{comment}{//\ Hints\ the\ OS\ to\ prefetch\ the\ first\ |max\_bytes|\ of\ |file\_path|\ into\ its\ cache.}}
+\DoxyCodeLine{00655\ \textcolor{comment}{//}}
+\DoxyCodeLine{00656\ \textcolor{comment}{//\ If\ called\ at\ the\ appropriate\ time,\ this\ can\ reduce\ the\ latency\ incurred\ by}}
+\DoxyCodeLine{00657\ \textcolor{comment}{//\ feature\ code\ that\ needs\ to\ read\ the\ file.}}
+\DoxyCodeLine{00658\ \textcolor{comment}{//}}
+\DoxyCodeLine{00659\ \textcolor{comment}{//\ |max\_bytes|\ specifies\ how\ many\ bytes\ should\ be\ pre-\/fetched.\ It\ may\ exceed\ the}}
+\DoxyCodeLine{00660\ \textcolor{comment}{//\ file's\ size.\ Passing\ in\ std::numeric\_limits<int64\_t>::max()\ is\ a\ convenient}}
+\DoxyCodeLine{00661\ \textcolor{comment}{//\ way\ to\ get\ the\ entire\ file\ pre-\/fetched.}}
+\DoxyCodeLine{00662\ \textcolor{comment}{//}}
+\DoxyCodeLine{00663\ \textcolor{comment}{//\ |is\_executable|\ specifies\ whether\ the\ file\ is\ to\ be\ prefetched\ as}}
+\DoxyCodeLine{00664\ \textcolor{comment}{//\ executable\ code\ or\ as\ data.\ Windows\ treats\ the\ file\ backed\ pages\ in\ RAM}}
+\DoxyCodeLine{00665\ \textcolor{comment}{//\ differently,\ and\ specifying\ the\ wrong\ value\ results\ in\ two\ copies\ in\ RAM.}}
+\DoxyCodeLine{00666\ \textcolor{comment}{//}}
+\DoxyCodeLine{00667\ \textcolor{comment}{//\ |sequential|\ hints\ that\ the\ file\ will\ be\ read\ sequentially\ in\ the\ future.}}
+\DoxyCodeLine{00668\ \textcolor{comment}{//\ This\ has\ the\ affect\ of\ using\ POSIX\_FADV\_SEQUENTIAL\ on\ supported\ POSIX}}
+\DoxyCodeLine{00669\ \textcolor{comment}{//\ systems.}}
+\DoxyCodeLine{00670\ \textcolor{comment}{//}}
+\DoxyCodeLine{00671\ \textcolor{comment}{//\ Returns\ true\ if\ at\ least\ part\ of\ the\ requested\ range\ was\ successfully}}
+\DoxyCodeLine{00672\ \textcolor{comment}{//\ prefetched.}}
+\DoxyCodeLine{00673\ \textcolor{comment}{//}}
+\DoxyCodeLine{00674\ \textcolor{comment}{//\ Calling\ this\ before\ using\ ::LoadLibrary()\ on\ Windows\ is\ more\ efficient\ memory}}
+\DoxyCodeLine{00675\ \textcolor{comment}{//\ wise,\ but\ we\ must\ be\ sure\ no\ other\ threads\ try\ to\ LoadLibrary()\ the\ file}}
+\DoxyCodeLine{00676\ \textcolor{comment}{//\ while\ we\ are\ doing\ the\ mapping\ and\ prefetching,\ or\ the\ process\ will\ get\ a}}
+\DoxyCodeLine{00677\ \textcolor{comment}{//\ private\ copy\ of\ the\ DLL\ via\ COW.}}
+\DoxyCodeLine{00678\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ PreReadFile(}
+\DoxyCodeLine{00679\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ file\_path,\ \textcolor{keywordtype}{bool}\ is\_executable,\ \textcolor{keywordtype}{bool}\ sequential,}
+\DoxyCodeLine{00680\ \ \ \ \ int64\_t\ max\_bytes\ =\ std::numeric\_limits<int64\_t>::max());}
+\DoxyCodeLine{00681\ }
+\DoxyCodeLine{00682\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \textcolor{comment}{//\ Creates\ a\ pipe.\ Returns\ true\ on\ success,\ otherwise\ false.}}
+\DoxyCodeLine{00685\ \textcolor{comment}{//\ On\ success,\ |read\_fd|\ will\ be\ set\ to\ the\ fd\ of\ the\ read\ side,\ and}}
+\DoxyCodeLine{00686\ \textcolor{comment}{//\ |write\_fd|\ will\ be\ set\ to\ the\ one\ of\ write\ side.\ If\ |non\_blocking|}}
+\DoxyCodeLine{00687\ \textcolor{comment}{//\ is\ set\ the\ pipe\ will\ be\ created\ with\ O\_NONBLOCK|O\_CLOEXEC\ flags\ set}}
+\DoxyCodeLine{00688\ \textcolor{comment}{//\ otherwise\ flag\ is\ set\ to\ zero\ (default).}}
+\DoxyCodeLine{00689\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreatePipe(ScopedFD*\ read\_fd,\ ScopedFD*\ write\_fd,}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ non\_blocking\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00691\ }
+\DoxyCodeLine{00692\ \textcolor{comment}{//\ Creates\ a\ non-\/blocking,\ close-\/on-\/exec\ pipe.}}
+\DoxyCodeLine{00693\ \textcolor{comment}{//\ This\ creates\ a\ non-\/blocking\ pipe\ that\ is\ not\ intended\ to\ be\ shared\ with\ any}}
+\DoxyCodeLine{00694\ \textcolor{comment}{//\ child\ process.\ This\ will\ be\ done\ atomically\ if\ the\ operating\ system\ supports}}
+\DoxyCodeLine{00695\ \textcolor{comment}{//\ it.\ Returns\ true\ if\ it\ was\ able\ to\ create\ the\ pipe,\ otherwise\ false.}}
+\DoxyCodeLine{00696\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CreateLocalNonBlockingPipe(span<int,\ 2u>\ fds);}
+\DoxyCodeLine{00697\ }
+\DoxyCodeLine{00698\ \textcolor{comment}{//\ Sets\ the\ given\ |fd|\ to\ close-\/on-\/exec\ mode.}}
+\DoxyCodeLine{00699\ \textcolor{comment}{//\ Returns\ true\ if\ it\ was\ able\ to\ set\ it\ in\ the\ close-\/on-\/exec\ mode,\ otherwise}}
+\DoxyCodeLine{00700\ \textcolor{comment}{//\ false.}}
+\DoxyCodeLine{00701\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ SetCloseOnExec(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00702\ }
+\DoxyCodeLine{00703\ \textcolor{comment}{//\ Removes\ close-\/on-\/exec\ flag\ from\ the\ given\ |fd|.}}
+\DoxyCodeLine{00704\ \textcolor{comment}{//\ Returns\ true\ if\ it\ was\ able\ to\ remove\ the\ close-\/on-\/exec\ flag,\ otherwise}}
+\DoxyCodeLine{00705\ \textcolor{comment}{//\ false.}}
+\DoxyCodeLine{00706\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ RemoveCloseOnExec(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00707\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00708\ }
+\DoxyCodeLine{00709\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_MAC)}}
+\DoxyCodeLine{00710\ \textcolor{comment}{//\ Test\ that\ |path|\ can\ only\ be\ changed\ by\ a\ given\ user\ and\ members\ of}}
+\DoxyCodeLine{00711\ \textcolor{comment}{//\ a\ given\ set\ of\ groups.}}
+\DoxyCodeLine{00712\ \textcolor{comment}{//\ Specifically,\ test\ that\ all\ parts\ of\ |path|\ under\ (and\ including)\ |base|:}}
+\DoxyCodeLine{00713\ \textcolor{comment}{//\ *\ Exist.}}
+\DoxyCodeLine{00714\ \textcolor{comment}{//\ *\ Are\ owned\ by\ a\ specific\ user.}}
+\DoxyCodeLine{00715\ \textcolor{comment}{//\ *\ Are\ not\ writable\ by\ all\ users.}}
+\DoxyCodeLine{00716\ \textcolor{comment}{//\ *\ Are\ owned\ by\ a\ member\ of\ a\ given\ set\ of\ groups,\ or\ are\ not\ writable\ by}}
+\DoxyCodeLine{00717\ \textcolor{comment}{//\ \ \ their\ group.}}
+\DoxyCodeLine{00718\ \textcolor{comment}{//\ *\ Are\ not\ symbolic\ links.}}
+\DoxyCodeLine{00719\ \textcolor{comment}{//\ This\ is\ useful\ for\ checking\ that\ a\ config\ file\ is\ administrator-\/controlled.}}
+\DoxyCodeLine{00720\ \textcolor{comment}{//\ |base|\ must\ contain\ |path|.}}
+\DoxyCodeLine{00721\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ VerifyPathControlledByUser(\textcolor{keyword}{const}\ base::FilePath\&\ base,}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ base::FilePath\&\ path,}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uid\_t\ owner\_uid,}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::set<gid\_t>\&\ group\_gids);}
+\DoxyCodeLine{00725\ }
+\DoxyCodeLine{00726\ \textcolor{comment}{//\ Is\ |path|\ writable\ only\ by\ a\ user\ with\ administrator\ privileges?}}
+\DoxyCodeLine{00727\ \textcolor{comment}{//\ This\ function\ uses\ Mac\ OS\ conventions.\ \ The\ super\ user\ is\ assumed\ to\ have}}
+\DoxyCodeLine{00728\ \textcolor{comment}{//\ uid\ 0,\ and\ the\ administrator\ group\ is\ assumed\ to\ be\ named\ "{}admin"{}.}}
+\DoxyCodeLine{00729\ \textcolor{comment}{//\ Testing\ that\ |path|,\ and\ every\ parent\ directory\ including\ the\ root\ of}}
+\DoxyCodeLine{00730\ \textcolor{comment}{//\ the\ filesystem,\ are\ owned\ by\ the\ superuser,\ controlled\ by\ the\ group}}
+\DoxyCodeLine{00731\ \textcolor{comment}{//\ "{}admin"{},\ are\ not\ writable\ by\ all\ users,\ and\ contain\ no\ symbolic\ links.}}
+\DoxyCodeLine{00732\ \textcolor{comment}{//\ Will\ return\ false\ if\ |path|\ does\ not\ exist.}}
+\DoxyCodeLine{00733\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ VerifyPathControlledByAdmin(\textcolor{keyword}{const}\ base::FilePath\&\ path);}
+\DoxyCodeLine{00734\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_MAC)}}
+\DoxyCodeLine{00735\ }
+\DoxyCodeLine{00736\ \textcolor{comment}{//\ Returns\ the\ maximum\ length\ of\ path\ component\ on\ the\ volume\ containing}}
+\DoxyCodeLine{00737\ \textcolor{comment}{//\ the\ directory\ |path|,\ in\ the\ number\ of\ FilePath::CharType,\ or\ -\/1\ on\ failure.}}
+\DoxyCodeLine{00738\ BASE\_EXPORT\ \textcolor{keywordtype}{int}\ GetMaximumPathComponentLength(\textcolor{keyword}{const}\ base::FilePath\&\ path);}
+\DoxyCodeLine{00739\ }
+\DoxyCodeLine{00740\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00741\ \textcolor{comment}{//\ Get\ a\ temporary\ directory\ for\ shared\ memory\ files.\ The\ directory\ may\ depend}}
+\DoxyCodeLine{00742\ \textcolor{comment}{//\ on\ whether\ the\ destination\ is\ intended\ for\ executable\ files,\ which\ in\ turn}}
+\DoxyCodeLine{00743\ \textcolor{comment}{//\ depends\ on\ how\ /dev/shmem\ was\ mounted.\ As\ a\ result,\ you\ must\ supply\ whether}}
+\DoxyCodeLine{00744\ \textcolor{comment}{//\ you\ intend\ to\ create\ executable\ shmem\ segments\ so\ this\ function\ can\ find}}
+\DoxyCodeLine{00745\ \textcolor{comment}{//\ an\ appropriate\ location.}}
+\DoxyCodeLine{00746\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ GetShmemTempDir(\textcolor{keywordtype}{bool}\ executable,\ FilePath*\ path);}
+\DoxyCodeLine{00747\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00748\ }
+\DoxyCodeLine{00749\ \textcolor{comment}{//\ Internal\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00751\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00752\ }
+\DoxyCodeLine{00753\ \textcolor{comment}{//\ Same\ as\ Move\ but\ allows\ paths\ with\ traversal\ components.}}
+\DoxyCodeLine{00754\ \textcolor{comment}{//\ Use\ only\ with\ extreme\ care.}}
+\DoxyCodeLine{00755\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ MoveUnsafe(\textcolor{keyword}{const}\ FilePath\&\ from\_path,\ \textcolor{keyword}{const}\ FilePath\&\ to\_path);}
+\DoxyCodeLine{00756\ }
+\DoxyCodeLine{00757\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00758\ \textcolor{comment}{//\ Copy\ from\_path\ to\ to\_path\ recursively\ and\ then\ delete\ from\_path\ recursively.}}
+\DoxyCodeLine{00759\ \textcolor{comment}{//\ Returns\ true\ if\ all\ operations\ succeed.}}
+\DoxyCodeLine{00760\ \textcolor{comment}{//\ This\ function\ simulates\ Move(),\ but\ unlike\ Move()\ it\ works\ across\ volumes.}}
+\DoxyCodeLine{00761\ \textcolor{comment}{//\ This\ function\ is\ not\ transactional.}}
+\DoxyCodeLine{00762\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CopyAndDeleteDirectory(\textcolor{keyword}{const}\ FilePath\&\ from\_path,}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ to\_path);}
+\DoxyCodeLine{00764\ }
+\DoxyCodeLine{00765\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00766\ }
+\DoxyCodeLine{00767\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_LINUX)\ ||\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00768\ \textcolor{comment}{//\ CopyFileContentsWithSendfile\ will\ use\ the\ sendfile(2)\ syscall\ to\ perform\ a}}
+\DoxyCodeLine{00769\ \textcolor{comment}{//\ file\ copy\ without\ moving\ the\ data\ between\ kernel\ and\ userspace.\ This\ is\ much}}
+\DoxyCodeLine{00770\ \textcolor{comment}{//\ more\ efficient\ than\ sequences\ of\ read(2)/write(2)\ calls.\ The\ |retry\_slow|}}
+\DoxyCodeLine{00771\ \textcolor{comment}{//\ parameter\ instructs\ the\ caller\ that\ it\ should\ try\ to\ fall\ back\ to\ a\ normal}}
+\DoxyCodeLine{00772\ \textcolor{comment}{//\ sequences\ of\ read(2)/write(2)\ syscalls.}}
+\DoxyCodeLine{00773\ \textcolor{comment}{//}}
+\DoxyCodeLine{00774\ \textcolor{comment}{//\ The\ input\ file\ |infile|\ must\ be\ opened\ for\ reading\ and\ the\ output\ file}}
+\DoxyCodeLine{00775\ \textcolor{comment}{//\ |outfile|\ must\ be\ opened\ for\ writing.}}
+\DoxyCodeLine{00776\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ CopyFileContentsWithSendfile(File\&\ infile,\ File\&\ outfile,}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\&\ retry\_slow);}
+\DoxyCodeLine{00778\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_LINUX)\ ||\ BUILDFLAG(IS\_CHROMEOS)\ ||}}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00780\ }
+\DoxyCodeLine{00781\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00782\ \}\ \ \textcolor{comment}{//\ namespace\ base}}
+
+\end{DoxyCode}

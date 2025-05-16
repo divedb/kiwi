@@ -182,10 +182,7 @@ $(function(){initNavTree('safe__conversions__impl_8hh_source.html',''); initResi
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kEnableAsmCode = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">// Forces a crash, like a NOTREACHED(). Used for numeric boundary errors.</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">// Also used in a constexpr template to trigger a compilation failure on</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// an error condition.</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span></div>
 <div class="foldopen" id="foldopen00082" data-start="{" data-end="};">
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_check_on_failure.html">   82</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_check_on_failure.html">CheckOnFailure</a> {</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
@@ -203,12 +200,7 @@ $(function(){initNavTree('safe__conversions__impl_8hh_source.html',''); initResi
 </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keyword">enum class</span> IntegerRepresentation { kUnsigned, kSigned };</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// A range for a given nunmeric Src type is contained for a given numeric Dst</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">// type if both numeric_limits&lt;Src&gt;::max() &lt;= numeric_limits&lt;Dst&gt;::max() and</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">// numeric_limits&lt;Src&gt;::lowest() &gt;= numeric_limits&lt;Dst&gt;::lowest() are true.</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// We implement this as template specializations rather than simple static</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">// comparisons to ensure type correctness in our comparisons.</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">enum class</span> NumericRangeRepresentation { kNotContained, kContained };</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// Helper templates to statically determine if our destination type can contain</span></div>
@@ -653,223 +645,227 @@ $(function(){initNavTree('safe__conversions__impl_8hh_source.html',''); initResi
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>  <span class="keyword">using </span>type = ArithmeticOrUnderlyingEnum&lt;T&gt;;</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>};</div>
 </div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00518" data-start="{" data-end="};">
-<div class="line"><a id="l00518" name="l00518"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_underlying_type_impl_3_01_checked_numeric_3_01_t_01_4_01_4.html">  518</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_underlying_type_impl.html">UnderlyingTypeImpl</a>&lt;<a class="code hl_class" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt;T&gt;&gt; {</div>
-<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>  <span class="keyword">using </span>type = T;</div>
-<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>};</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span> </div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00519" data-start="{" data-end="};">
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_underlying_type_impl_3_01_checked_numeric_3_01_t_01_4_01_4.html">  519</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_underlying_type_impl.html">UnderlyingTypeImpl</a>&lt;<a class="code hl_class" href="classkiwi_1_1internal_1_1_checked_numeric.html">CheckedNumeric</a>&lt;T&gt;&gt; {</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>  <span class="keyword">using </span>type = T;</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>};</div>
 </div>
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00522" data-start="{" data-end="};">
-<div class="line"><a id="l00522" name="l00522"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_underlying_type_impl_3_01_clamped_numeric_3_01_t_01_4_01_4.html">  522</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_underlying_type_impl.html">UnderlyingTypeImpl</a>&lt;<a class="code hl_class" href="classkiwi_1_1internal_1_1_clamped_numeric.html">ClampedNumeric</a>&lt;T&gt;&gt; {</div>
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>  <span class="keyword">using </span>type = T;</div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>};</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span> </div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00524" data-start="{" data-end="};">
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_underlying_type_impl_3_01_clamped_numeric_3_01_t_01_4_01_4.html">  524</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_underlying_type_impl.html">UnderlyingTypeImpl</a>&lt;<a class="code hl_class" href="classkiwi_1_1internal_1_1_clamped_numeric.html">ClampedNumeric</a>&lt;T&gt;&gt; {</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>  <span class="keyword">using </span>type = T;</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>};</div>
 </div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00526" data-start="{" data-end="};">
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_underlying_type_impl_3_01_strict_numeric_3_01_t_01_4_01_4.html">  526</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_underlying_type_impl.html">UnderlyingTypeImpl</a>&lt;<a class="code hl_class" href="classkiwi_1_1internal_1_1_strict_numeric.html">StrictNumeric</a>&lt;T&gt;&gt; {</div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>  <span class="keyword">using </span>type = T;</div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>};</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span> </div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00529" data-start="{" data-end="};">
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_underlying_type_impl_3_01_strict_numeric_3_01_t_01_4_01_4.html">  529</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_underlying_type_impl.html">UnderlyingTypeImpl</a>&lt;<a class="code hl_class" href="classkiwi_1_1internal_1_1_strict_numeric.html">StrictNumeric</a>&lt;T&gt;&gt; {</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>  <span class="keyword">using </span>type = T;</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>};</div>
 </div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span><span class="keyword">using </span>UnderlyingType = <span class="keyword">typename</span> UnderlyingTypeImpl&lt;T&gt;::type;</div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span> </div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsNumeric = std::is_arithmetic_v&lt;UnderlyingType&lt;T&gt;&gt;;</div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>  <span class="keyword">requires</span>(<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">IsCheckedNumeric&lt;T&gt;</a> || <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">IsClampedNumeric&lt;T&gt;</a> || <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">IsStrictNumeric&lt;T&gt;</a>)</div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsNumeric&lt;T&gt; = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_numeric.html">  538</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric</a> = kIsNumeric&lt;T&gt;;</div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span> </div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">  541</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">IsCheckedOp</a> = (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">IsCheckedNumeric&lt;L&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;R&gt;</a>) ||</div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>                      (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">IsCheckedNumeric&lt;R&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;L&gt;</a>);</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span> </div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span><span class="keyword">using </span>UnderlyingType = <span class="keyword">typename</span> UnderlyingTypeImpl&lt;T&gt;::type;</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span> </div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsNumeric = std::is_arithmetic_v&lt;UnderlyingType&lt;T&gt;&gt;;</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>  <span class="keyword">requires</span>(<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">IsCheckedNumeric&lt;T&gt;</a> || <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">IsClampedNumeric&lt;T&gt;</a> || <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">IsStrictNumeric&lt;T&gt;</a>)</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsNumeric&lt;T&gt; = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_numeric.html">  542</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric</a> = kIsNumeric&lt;T&gt;;</div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span> </div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">  545</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">IsClampedOp</a> =</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>    !<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">IsCheckedOp&lt;L, R&gt;</a> &amp;&amp; ((<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">IsClampedNumeric&lt;L&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;R&gt;</a>) ||</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>                           (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">IsClampedNumeric&lt;R&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;L&gt;</a>));</div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span> </div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_strict_op.html">  550</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_op.html">IsStrictOp</a> = !<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">IsCheckedOp&lt;L, R&gt;</a> &amp;&amp; !<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">IsClampedOp&lt;L, R&gt;</a> &amp;&amp;</div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>                     ((<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">IsStrictNumeric&lt;L&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;R&gt;</a>) ||</div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>                      (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">IsStrictNumeric&lt;R&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;L&gt;</a>));</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span> </div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span><span class="comment">// as_signed&lt;&gt; returns the supplied integral value (or integral castable</span></div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span><span class="comment">// Numeric template) cast as a signed integral of equivalent precision.</span></div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span><span class="comment">// I.e. it&#39;s mostly an alias for: static_cast&lt;std::make_signed&lt;T&gt;::type&gt;(t)</span></div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Src, <span class="keyword">typename</span> Dst = std::make_<span class="keywordtype">signed</span>_t&lt;UnderlyingType&lt;Src&gt;&gt;&gt;</div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>  <span class="keyword">requires</span> std::integral&lt;Dst&gt;</div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> as_signed(Src value) {</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(value);</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>}</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span> </div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="comment">// as_unsigned&lt;&gt; returns the supplied integral value (or integral castable</span></div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span><span class="comment">// Numeric template) cast as an unsigned integral of equivalent precision.</span></div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span><span class="comment">// I.e. it&#39;s mostly an alias for: static_cast&lt;std::make_unsigned&lt;T&gt;::type&gt;(t)</span></div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Src,</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>          <span class="keyword">typename</span> Dst = std::make_unsigned_t&lt;UnderlyingType&lt;Src&gt;&gt;&gt;</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>  <span class="keyword">requires</span> std::integral&lt;Dst&gt;</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> as_unsigned(Src value) {</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(value);</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>}</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span> </div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="foldopen" id="foldopen00575" data-start="{" data-end="};">
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_less.html">  575</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_less.html">IsLess</a> {</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="keywordflow">return</span> l_range.IsUnderflow() || r_range.IsOverflow() ||</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>           (l_range == r_range &amp;&amp;</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &lt; <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>  }</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>};</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">  545</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">IsCheckedOp</a> = (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">IsCheckedNumeric&lt;L&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;R&gt;</a>) ||</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                      (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">IsCheckedNumeric&lt;R&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;L&gt;</a>);</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span> </div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">  549</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">IsClampedOp</a> =</div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>    !<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">IsCheckedOp&lt;L, R&gt;</a> &amp;&amp; ((<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">IsClampedNumeric&lt;L&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;R&gt;</a>) ||</div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>                           (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">IsClampedNumeric&lt;R&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;L&gt;</a>));</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span> </div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno"><a class="line" href="conceptkiwi_1_1internal_1_1_is_strict_op.html">  554</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_op.html">IsStrictOp</a> = !<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_checked_op.html">IsCheckedOp&lt;L, R&gt;</a> &amp;&amp; !<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">IsClampedOp&lt;L, R&gt;</a> &amp;&amp;</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>                     ((<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">IsStrictNumeric&lt;L&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;R&gt;</a>) ||</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>                      (<a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">IsStrictNumeric&lt;R&gt;</a> &amp;&amp; <a class="code hl_concept" href="conceptkiwi_1_1internal_1_1_is_numeric.html">IsNumeric&lt;L&gt;</a>));</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span> </div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span><span class="comment">// as_signed&lt;&gt; returns the supplied integral value (or integral castable</span></div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span><span class="comment">// Numeric template) cast as a signed integral of equivalent precision.</span></div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span><span class="comment">// I.e. it&#39;s mostly an alias for: static_cast&lt;std::make_signed&lt;T&gt;::type&gt;(t)</span></div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Src, <span class="keyword">typename</span> Dst = std::make_<span class="keywordtype">signed</span>_t&lt;UnderlyingType&lt;Src&gt;&gt;&gt;</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>  <span class="keyword">requires</span> std::integral&lt;Dst&gt;</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> as_signed(Src value) {</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(value);</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>}</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span> </div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span><span class="comment">// as_unsigned&lt;&gt; returns the supplied integral value (or integral castable</span></div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span><span class="comment">// Numeric template) cast as an unsigned integral of equivalent precision.</span></div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span><span class="comment">// I.e. it&#39;s mostly an alias for: static_cast&lt;std::make_unsigned&lt;T&gt;::type&gt;(t)</span></div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Src,</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>          <span class="keyword">typename</span> Dst = std::make_unsigned_t&lt;UnderlyingType&lt;Src&gt;&gt;&gt;</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>  <span class="keyword">requires</span> std::integral&lt;Dst&gt;</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> as_unsigned(Src value) {</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(value);</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>}</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span> </div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="foldopen" id="foldopen00579" data-start="{" data-end="};">
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_less.html">  579</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_less.html">IsLess</a> {</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <span class="keywordflow">return</span> l_range.IsUnderflow() || r_range.IsOverflow() ||</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>           (l_range == r_range &amp;&amp;</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &lt; <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>  }</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>};</div>
 </div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span> </div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="foldopen" id="foldopen00588" data-start="{" data-end="};">
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_less_or_equal.html">  588</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_less_or_equal.html">IsLessOrEqual</a> {</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>    <span class="keywordflow">return</span> l_range.IsUnderflow() || r_range.IsOverflow() ||</div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>           (l_range == r_range &amp;&amp;</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &lt;= <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>  }</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>};</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span> </div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="foldopen" id="foldopen00592" data-start="{" data-end="};">
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_less_or_equal.html">  592</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_less_or_equal.html">IsLessOrEqual</a> {</div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>    <span class="keywordflow">return</span> l_range.IsUnderflow() || r_range.IsOverflow() ||</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>           (l_range == r_range &amp;&amp;</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &lt;= <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>  }</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>};</div>
 </div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span> </div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="foldopen" id="foldopen00601" data-start="{" data-end="};">
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_greater.html">  601</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_greater.html">IsGreater</a> {</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>    <span class="keywordflow">return</span> l_range.IsOverflow() || r_range.IsUnderflow() ||</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>           (l_range == r_range &amp;&amp;</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &gt; <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>  }</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>};</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span> </div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="foldopen" id="foldopen00605" data-start="{" data-end="};">
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_greater.html">  605</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_greater.html">IsGreater</a> {</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    <span class="keywordflow">return</span> l_range.IsOverflow() || r_range.IsUnderflow() ||</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>           (l_range == r_range &amp;&amp;</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &gt; <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>  }</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>};</div>
 </div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span> </div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="foldopen" id="foldopen00614" data-start="{" data-end="};">
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_greater_or_equal.html">  614</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_greater_or_equal.html">IsGreaterOrEqual</a> {</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>    <span class="keywordflow">return</span> l_range.IsOverflow() || r_range.IsUnderflow() ||</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>           (l_range == r_range &amp;&amp;</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &gt;= <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>  }</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>};</div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span> </div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="foldopen" id="foldopen00618" data-start="{" data-end="};">
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_greater_or_equal.html">  618</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_greater_or_equal.html">IsGreaterOrEqual</a> {</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> l_range = DstRangeRelationToSrcRange&lt;R&gt;(lhs);</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1internal_1_1_range_check.html">RangeCheck</a> r_range = DstRangeRelationToSrcRange&lt;L&gt;(rhs);</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    <span class="keywordflow">return</span> l_range.IsOverflow() || r_range.IsUnderflow() ||</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>           (l_range == r_range &amp;&amp;</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>            <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) &gt;= <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs));</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>  }</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>};</div>
 </div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span> </div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="foldopen" id="foldopen00627" data-start="{" data-end="};">
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_equal.html">  627</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_equal.html">IsEqual</a> {</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    <span class="keywordflow">return</span> DstRangeRelationToSrcRange&lt;R&gt;(lhs) ==</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>               DstRangeRelationToSrcRange&lt;L&gt;(rhs) &amp;&amp;</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>           <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) == <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs);</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>  }</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>};</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="foldopen" id="foldopen00631" data-start="{" data-end="};">
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_equal.html">  631</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_equal.html">IsEqual</a> {</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    <span class="keywordflow">return</span> DstRangeRelationToSrcRange&lt;R&gt;(lhs) ==</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>               DstRangeRelationToSrcRange&lt;L&gt;(rhs) &amp;&amp;</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>           <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) == <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs);</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>  }</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>};</div>
 </div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> </div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="foldopen" id="foldopen00638" data-start="{" data-end="};">
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_not_equal.html">  638</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_not_equal.html">IsNotEqual</a> {</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>    <span class="keywordflow">return</span> DstRangeRelationToSrcRange&lt;R&gt;(lhs) !=</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>               DstRangeRelationToSrcRange&lt;L&gt;(rhs) ||</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>           <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) != <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs);</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>  }</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>};</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span> </div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="foldopen" id="foldopen00642" data-start="{" data-end="};">
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno"><a class="line" href="structkiwi_1_1internal_1_1_is_not_equal.html">  642</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structkiwi_1_1internal_1_1_is_not_equal.html">IsNotEqual</a> {</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>  <span class="keyword">using </span>SumT = <span class="keyword">decltype</span>(std::declval&lt;L&gt;() + std::declval&lt;R&gt;());</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> Test(L lhs, R rhs) {</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    <span class="keywordflow">return</span> DstRangeRelationToSrcRange&lt;R&gt;(lhs) !=</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>               DstRangeRelationToSrcRange&lt;L&gt;(rhs) ||</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>           <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(lhs) != <span class="keyword">static_cast&lt;</span>SumT<span class="keyword">&gt;</span>(rhs);</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>  }</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>};</div>
 </div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="comment">// These perform the actual math operations on the CheckedNumerics.</span></div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span><span class="comment">// Binary arithmetic operations.</span></div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>, <span class="keyword">typename</span>&gt; <span class="keyword">typename</span> C, <span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> SafeCompare(L lhs, R rhs) {</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>  <span class="keyword">using </span>BigType = BigEnoughPromotion&lt;L, R&gt;;</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>  <span class="keywordflow">return</span> kIsBigEnoughPromotionContained&lt;L, R&gt;</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>             <span class="comment">// Force to a larger type for speed if both are contained.</span></div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>             ? C&lt;BigType, BigType&gt;::Test(<span class="keyword">static_cast&lt;</span>BigType<span class="keyword">&gt;</span>(lhs),</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>                                         <span class="keyword">static_cast&lt;</span>BigType<span class="keyword">&gt;</span>(rhs))</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>             <span class="comment">// Let the template functions figure it out for mixed types.</span></div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>             : C&lt;L, R&gt;::Test(lhs, rhs);</div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>}</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsMaxInRangeForNumericType =</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>    IsGreaterOrEqual&lt;Dst, Src&gt;::Test(std::numeric_limits&lt;Dst&gt;::max(),</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>                                     std::numeric_limits&lt;Src&gt;::max());</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span> </div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsMinInRangeForNumericType =</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>    IsLessOrEqual&lt;Dst, Src&gt;::Test(std::numeric_limits&lt;Dst&gt;::lowest(),</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>                                  std::numeric_limits&lt;Src&gt;::lowest());</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span> </div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> Dst kCommonMax =</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>    kIsMaxInRangeForNumericType&lt;Dst, Src&gt;</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>        ? <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(std::numeric_limits&lt;Src&gt;::max())</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        : std::numeric_limits&lt;Dst&gt;::max();</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span> </div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> Dst kCommonMin =</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>    kIsMinInRangeForNumericType&lt;Dst, Src&gt;</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        ? <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(std::numeric_limits&lt;Src&gt;::lowest())</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        : std::numeric_limits&lt;Dst&gt;::lowest();</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span> </div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span><span class="comment">// This is a wrapper to generate return the max or min for a supplied type.</span></div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span><span class="comment">// If the argument is false, the returned value is the maximum. If true the</span></div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span><span class="comment">// returned value is the minimum.</span></div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src = Dst&gt;</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span><span class="keyword">constexpr</span> Dst CommonMaxOrMin(<span class="keywordtype">bool</span> is_min) {</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>  <span class="keywordflow">return</span> is_min ? kCommonMin&lt;Dst, Src&gt; : kCommonMax&lt;Dst, Src&gt;;</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>}</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>}  <span class="comment">// namespace kiwi::internal</span></div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="comment">// These perform the actual math operations on the CheckedNumerics.</span></div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span><span class="comment">// Binary arithmetic operations.</span></div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span><span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>, <span class="keyword">typename</span>&gt; <span class="keyword">typename</span> C, <span class="keyword">typename</span> L, <span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>  <span class="keyword">requires</span> std::is_arithmetic_v&lt;L&gt; &amp;&amp; std::is_arithmetic_v&lt;R&gt;</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> SafeCompare(L lhs, R rhs) {</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>  <span class="keyword">using </span>BigType = BigEnoughPromotion&lt;L, R&gt;;</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>  <span class="keywordflow">return</span> kIsBigEnoughPromotionContained&lt;L, R&gt;</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>             <span class="comment">// Force to a larger type for speed if both are contained.</span></div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>             ? C&lt;BigType, BigType&gt;::Test(<span class="keyword">static_cast&lt;</span>BigType<span class="keyword">&gt;</span>(lhs),</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>                                         <span class="keyword">static_cast&lt;</span>BigType<span class="keyword">&gt;</span>(rhs))</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>             <span class="comment">// Let the template functions figure it out for mixed types.</span></div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>             : C&lt;L, R&gt;::Test(lhs, rhs);</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>}</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span> </div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsMaxInRangeForNumericType =</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>    IsGreaterOrEqual&lt;Dst, Src&gt;::Test(std::numeric_limits&lt;Dst&gt;::max(),</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>                                     std::numeric_limits&lt;Src&gt;::max());</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span> </div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> kIsMinInRangeForNumericType =</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>    IsLessOrEqual&lt;Dst, Src&gt;::Test(std::numeric_limits&lt;Dst&gt;::lowest(),</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>                                  std::numeric_limits&lt;Src&gt;::lowest());</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span> </div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> Dst kCommonMax =</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>    kIsMaxInRangeForNumericType&lt;Dst, Src&gt;</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        ? <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(std::numeric_limits&lt;Src&gt;::max())</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        : std::numeric_limits&lt;Dst&gt;::max();</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src&gt;</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> Dst kCommonMin =</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>    kIsMinInRangeForNumericType&lt;Dst, Src&gt;</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>        ? <span class="keyword">static_cast&lt;</span>Dst<span class="keyword">&gt;</span>(std::numeric_limits&lt;Src&gt;::lowest())</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        : std::numeric_limits&lt;Dst&gt;::lowest();</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span> </div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span><span class="comment">// This is a wrapper to generate return the max or min for a supplied type.</span></div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span><span class="comment">// If the argument is false, the returned value is the maximum. If true the</span></div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span><span class="comment">// returned value is the minimum.</span></div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Dst, <span class="keyword">typename</span> Src = Dst&gt;</div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span><span class="keyword">constexpr</span> Dst CommonMaxOrMin(<span class="keywordtype">bool</span> is_min) {</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>  <span class="keywordflow">return</span> is_min ? kCommonMin&lt;Dst, Src&gt; : kCommonMax&lt;Dst, Src&gt;;</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>}</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span> </div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>}  <span class="comment">// namespace kiwi::internal</span></div>
 <div class="ttc" id="aclasskiwi_1_1internal_1_1_checked_numeric_html"><div class="ttname"><a href="classkiwi_1_1internal_1_1_checked_numeric.html">kiwi::internal::CheckedNumeric</a></div><div class="ttdef"><b>Definition</b> checked_math.hh:22</div></div>
 <div class="ttc" id="aclasskiwi_1_1internal_1_1_clamped_numeric_html"><div class="ttname"><a href="classkiwi_1_1internal_1_1_clamped_numeric.html">kiwi::internal::ClampedNumeric</a></div><div class="ttdef"><b>Definition</b> clamped_math.hh:19</div></div>
 <div class="ttc" id="aclasskiwi_1_1internal_1_1_range_check_html"><div class="ttname"><a href="classkiwi_1_1internal_1_1_range_check.html">kiwi::internal::RangeCheck</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:140</div></div>
-<div class="ttc" id="aclasskiwi_1_1internal_1_1_strict_numeric_html"><div class="ttname"><a href="classkiwi_1_1internal_1_1_strict_numeric.html">kiwi::internal::StrictNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions.hh:254</div></div>
+<div class="ttc" id="aclasskiwi_1_1internal_1_1_strict_numeric_html"><div class="ttname"><a href="classkiwi_1_1internal_1_1_strict_numeric.html">kiwi::internal::StrictNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions.hh:257</div></div>
 <div class="ttc" id="aconceptkiwi_1_1_integral_constant_like_html"><div class="ttname"><a href="conceptkiwi_1_1_integral_constant_like.html">kiwi::IntegralConstantLike</a></div><div class="ttdoc">Exposition-only concept from [span.syn].</div><div class="ttdef"><b>Definition</b> integral_constant_like.hh:14</div></div>
 <div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_checked_numeric_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_checked_numeric.html">kiwi::internal::IsCheckedNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:497</div></div>
-<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_checked_op_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_checked_op.html">kiwi::internal::IsCheckedOp</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:541</div></div>
+<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_checked_op_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_checked_op.html">kiwi::internal::IsCheckedOp</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:545</div></div>
 <div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_clamped_numeric_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_clamped_numeric.html">kiwi::internal::IsClampedNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:504</div></div>
-<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_clamped_op_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">kiwi::internal::IsClampedOp</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:545</div></div>
-<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_numeric_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_numeric.html">kiwi::internal::IsNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:538</div></div>
+<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_clamped_op_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_clamped_op.html">kiwi::internal::IsClampedOp</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:549</div></div>
+<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_numeric_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_numeric.html">kiwi::internal::IsNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:542</div></div>
 <div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_strict_numeric_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_strict_numeric.html">kiwi::internal::IsStrictNumeric</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:511</div></div>
-<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_strict_op_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_strict_op.html">kiwi::internal::IsStrictOp</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:550</div></div>
+<div class="ttc" id="aconceptkiwi_1_1internal_1_1_is_strict_op_html"><div class="ttname"><a href="conceptkiwi_1_1internal_1_1_is_strict_op.html">kiwi::internal::IsStrictOp</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:554</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_arithmetic_or_integral_constant_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_arithmetic_or_integral_constant.html">kiwi::internal::ArithmeticOrIntegralConstant</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:462</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_big_enough_promotion_impl_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_big_enough_promotion_impl.html">kiwi::internal::BigEnoughPromotionImpl</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:391</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_check_on_failure_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_check_on_failure.html">kiwi::internal::CheckOnFailure</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:82</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl.html">kiwi::internal::DstRangeRelationToSrcRangeImpl</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:231</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl.html">kiwi::internal::FastIntegerArithmeticPromotionImpl</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:435</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_integer_for_digits_and_sign_impl_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_integer_for_digits_and_sign_impl.html">kiwi::internal::IntegerForDigitsAndSignImpl</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:331</div></div>
-<div class="ttc" id="astructkiwi_1_1internal_1_1_is_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_equal.html">kiwi::internal::IsEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:627</div></div>
-<div class="ttc" id="astructkiwi_1_1internal_1_1_is_greater_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_greater.html">kiwi::internal::IsGreater</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:601</div></div>
-<div class="ttc" id="astructkiwi_1_1internal_1_1_is_greater_or_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_greater_or_equal.html">kiwi::internal::IsGreaterOrEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:614</div></div>
-<div class="ttc" id="astructkiwi_1_1internal_1_1_is_less_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_less.html">kiwi::internal::IsLess</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:575</div></div>
-<div class="ttc" id="astructkiwi_1_1internal_1_1_is_less_or_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_less_or_equal.html">kiwi::internal::IsLessOrEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:588</div></div>
-<div class="ttc" id="astructkiwi_1_1internal_1_1_is_not_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_not_equal.html">kiwi::internal::IsNotEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:638</div></div>
+<div class="ttc" id="astructkiwi_1_1internal_1_1_is_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_equal.html">kiwi::internal::IsEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:631</div></div>
+<div class="ttc" id="astructkiwi_1_1internal_1_1_is_greater_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_greater.html">kiwi::internal::IsGreater</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:605</div></div>
+<div class="ttc" id="astructkiwi_1_1internal_1_1_is_greater_or_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_greater_or_equal.html">kiwi::internal::IsGreaterOrEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:618</div></div>
+<div class="ttc" id="astructkiwi_1_1internal_1_1_is_less_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_less.html">kiwi::internal::IsLess</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:579</div></div>
+<div class="ttc" id="astructkiwi_1_1internal_1_1_is_less_or_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_less_or_equal.html">kiwi::internal::IsLessOrEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:592</div></div>
+<div class="ttc" id="astructkiwi_1_1internal_1_1_is_not_equal_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_is_not_equal.html">kiwi::internal::IsNotEqual</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:642</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_narrowing_range_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_narrowing_range.html">kiwi::internal::NarrowingRange</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:184</div></div>
 <div class="ttc" id="astructkiwi_1_1internal_1_1_underlying_type_impl_html"><div class="ttname"><a href="structkiwi_1_1internal_1_1_underlying_type_impl.html">kiwi::internal::UnderlyingTypeImpl</a></div><div class="ttdef"><b>Definition</b> safe_conversions_impl.hh:514</div></div>
 </div><!-- fragment --></div><!-- contents -->

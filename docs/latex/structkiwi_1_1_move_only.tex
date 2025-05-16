@@ -1,0 +1,29 @@
+\doxysection{kiwi\+::Move\+Only Struct Reference}
+\hypertarget{structkiwi_1_1_move_only}{}\label{structkiwi_1_1_move_only}\index{kiwi::MoveOnly@{kiwi::MoveOnly}}
+
+
+{\ttfamily \#include $<$utility.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1_move_only_a31bdf94f4ab1963d62afbbe31a9e1f22}\label{structkiwi_1_1_move_only_a31bdf94f4ab1963d62afbbe31a9e1f22} 
+{\bfseries Move\+Only} (\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{Move\+Only}} \&\&) noexcept=default
+\item 
+\Hypertarget{structkiwi_1_1_move_only_aaeeda3153e39badcfe7a84d385b37e23}\label{structkiwi_1_1_move_only_aaeeda3153e39badcfe7a84d385b37e23} 
+{\bfseries Move\+Only} (const \mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{Move\+Only}} \&)=delete
+\item 
+\Hypertarget{structkiwi_1_1_move_only_ae85393c41b2e0967dc49836bb929cb38}\label{structkiwi_1_1_move_only_ae85393c41b2e0967dc49836bb929cb38} 
+\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{Move\+Only}} \& {\bfseries operator=} (\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{Move\+Only}} \&\&) noexcept=default
+\item 
+\Hypertarget{structkiwi_1_1_move_only_a29af93ec9190c7bf8af3342b0dba8e0c}\label{structkiwi_1_1_move_only_a29af93ec9190c7bf8af3342b0dba8e0c} 
+\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{Move\+Only}} \& {\bfseries operator=} (const \mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{Move\+Only}} \&)=delete
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Disallow copy but not move in derived types. This is essentially boost\+::noncopyable (the implementation is almost identical), except\+: 1) It doesn\textquotesingle{}t delete move constructor and move assignment. 2) It has public methods, enabling aggregate initialization. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/utility.\+hh\end{DoxyCompactItemize}

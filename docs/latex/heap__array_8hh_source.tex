@@ -1,0 +1,251 @@
+\doxysection{heap\+\_\+array.\+hh}
+\hypertarget{heap__array_8hh_source}{}\label{heap__array_8hh_source}\index{include/kiwi/containers/heap\_array.hh@{include/kiwi/containers/heap\_array.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2024\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/logging.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ HeapArray<T>\ is\ a\ replacement\ for\ std::unique\_ptr<T[]>\ that\ keeps\ track}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ of\ its\ size.\ It\ is\ intended\ to\ provide\ easy\ conversion\ to\ span<T>\ for\ most}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ usage,\ but\ it\ also\ provides\ bounds-\/checked\ indexing.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ By\ default,\ elements\ in\ the\ array\ are\ either\ value-\/initialized\ (i.e.\ zeroed}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ for\ primitive\ types)\ when\ the\ array\ is\ created\ using\ the\ WithSize()}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ static\ method,\ or\ uninitialized\ when\ the\ array\ is\ created\ via\ the\ Uninit()}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ static\ method.}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ Deleter\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }TRIVIAL\_ABI\ GSL\_OWNER\ HeapArray\ \{}
+\DoxyCodeLine{00029\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static\_assert}(!std::is\_const\_v<T>,\ \textcolor{stringliteral}{"{}HeapArray\ cannot\ hold\ const\ types"{}});}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static\_assert}(!std::is\_reference\_v<T>,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}HeapArray\ cannot\ hold\ reference\ types"{}});}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{using\ }iterator\ =\ kiwi::span<T>::iterator;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ kiwi::span<const\ T>::iterator;}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ We\ don't\ put\ this\ default\ value\ in\ the\ template\ parameter\ list\ to\ allow\ the}}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ static\_assert\ on\ is\_reference\_v\ to\ give\ a\ nicer\ error\ message.}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{using\ }deleter\_type\ =\ std::conditional\_t<std::is\_void\_v<Deleter>,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::default\_delete<T[]>,\ Deleter>;}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ Allocates\ initialized\ memory\ capable\ of\ holding\ \`{}size`\ elements.\ No\ memory}}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ is\ allocated\ for\ zero-\/sized\ arrays.}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ HeapArray\ WithSize(\textcolor{keywordtype}{size\_t}\ size)}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{requires}(std::constructible\_from<T>)}
+\DoxyCodeLine{00045\ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (!size)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ HeapArray();}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ HeapArray(std::unique\_ptr<T[],\ deleter\_type>(\textcolor{keyword}{new}\ T[size]()),\ size);}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ Allocates\ uninitialized\ memory\ capable\ of\ holding\ \`{}size`\ elements.\ T\ must}}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ be\ trivially\ constructible\ and\ destructible.\ No\ memory\ is\ allocated\ for}}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ zero-\/sized\ arrays.}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ HeapArray\ Uninit(\textcolor{keywordtype}{size\_t}\ size)}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{requires}(std::is\_trivially\_constructible\_v<T>\ \&\&}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_trivially\_destructible\_v<T>)}
+\DoxyCodeLine{00058\ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{if}\ (!size)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ HeapArray();}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ HeapArray(std::unique\_ptr<T[],\ deleter\_type>(\textcolor{keyword}{new}\ T[size]),\ size);}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ HeapArray\ CopiedFrom(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ that)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{auto}\ result\ =\ HeapArray::Uninit(that.size());}
+\DoxyCodeLine{00068\ \ \ \ \ result.copy\_from(that);}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//\ Constructs\ a\ HeapArray\ from\ an\ existing\ pointer,\ taking\ ownership\ of\ the}}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ pointer.}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ \#\ Safety}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ The\ pointer\ must\ be\ correctly\ aligned\ for\ type\ \`{}T`\ and\ able\ to\ be\ deleted}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ through\ the\ \`{}deleter\_type`,\ which\ defaults\ to\ the\ \`{}delete[]`\ operation.\ The}}
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//\ \`{}ptr`\ must\ point\ to\ an\ array\ of\ at\ least\ \`{}size`\ many\ elements.\ If\ these\ are}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ not\ met,\ then\ Undefined\ Behaviour\ can\ result.}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ \#\ Checks}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//\ When\ the\ \`{}size`\ is\ zero,\ the\ \`{}ptr`\ must\ be\ null.}}
+\DoxyCodeLine{00083\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{static}\ HeapArray\ FromOwningPointer(T*\ ptr,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{if}\ (!size)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ CHECK\_EQ(ptr,\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ HeapArray();}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ HeapArray(std::unique\_ptr<T[],\ deleter\_type>(ptr),\ size);}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ Constructs\ an\ empty\ array\ and\ does\ not\ allocate\ any\ memory.}}
+\DoxyCodeLine{00092\ \ \ HeapArray()}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{requires}(std::constructible\_from<T>)}
+\DoxyCodeLine{00094\ \ \ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{//\ Move-\/only\ type\ since\ the\ memory\ is\ owned.}}
+\DoxyCodeLine{00097\ \ \ HeapArray(\textcolor{keyword}{const}\ HeapArray\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00098\ \ \ HeapArray\&\ operator=(\textcolor{keyword}{const}\ HeapArray\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ Move-\/construction\ leaves\ the\ moved-\/from\ object\ empty\ and\ containing}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ no\ allocated\ memory.}}
+\DoxyCodeLine{00102\ \ \ HeapArray(HeapArray\&\&\ that)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ :\ data\_(std::move(that.data\_)),\ size\_(std::exchange(that.size\_,\ 0u))\ \{\}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ Move-\/assigment\ leaves\ the\ moved-\/from\ object\ empty\ and\ containing}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ no\ allocated\ memory.}}
+\DoxyCodeLine{00107\ \ \ HeapArray\&\ operator=(HeapArray\&\&\ that)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ data\_\ =\ std::move(that.data\_);}
+\DoxyCodeLine{00109\ \ \ \ \ size\_\ =\ std::exchange(that.size\_,\ 0u);}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \string~HeapArray()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{bool}\ empty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ size\_\ ==\ 0u;\ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{size\_t}\ size()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ size\_;\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//\ Prefer\ span-\/based\ methods\ below\ over\ data()\ where\ possible.\ The\ data()}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ method\ exists\ primarily\ to\ allow\ implicit\ constructions\ of\ spans.}}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{//\ Returns\ nullptr\ for\ a\ zero-\/sized\ (or\ moved-\/from)\ array.}}
+\DoxyCodeLine{00120\ \ \ T*\ data()\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ data\_.get();\ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{const}\ T*\ data()\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ data\_.get();\ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ iterator\ begin()\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ as\_span().begin();\ \}}
+\DoxyCodeLine{00124\ \ \ const\_iterator\ begin()\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ as\_span().begin();\ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ iterator\ end()\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ as\_span().end();\ \}}
+\DoxyCodeLine{00127\ \ \ const\_iterator\ end()\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{\ \textcolor{keywordflow}{return}\ as\_span().end();\ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ KIWI\_ALWAYS\_INLINE\ T\&\ operator[](\textcolor{keywordtype}{size\_t}\ idx)\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ CHECK\_LT(idx,\ size\_);}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ bounds\ checked\ above.}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(data\_.get()[idx]);}
+\DoxyCodeLine{00133\ \ \ \}}
+\DoxyCodeLine{00134\ \ \ KIWI\_ALWAYS\_INLINE\ \textcolor{keyword}{const}\ T\&\ operator[](\textcolor{keywordtype}{size\_t}\ idx)\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ CHECK\_LT(idx,\ size\_);}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ bounds\ checked\ above.}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(data\_.get()[idx]);}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{comment}{//\ Access\ the\ HeapArray\ via\ spans.\ Note\ that\ span<T>\ is\ implicilty}}
+\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//\ constructible\ from\ HeapArray<T>,\ so\ an\ explicit\ call\ to\ .as\_span()\ is}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ most\ useful,\ say,\ when\ the\ compiler\ can't\ deduce\ a\ template}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//\ argument\ type.}}
+\DoxyCodeLine{00144\ \ \ KIWI\_ALWAYS\_INLINE\ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}\ as\_span()\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}size\_`\ is\ the\ number\ of\ elements\ in\ the\ \`{}data\_`\ allocation`\ at}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ all\ times.}}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}(data\_.get(),\ size\_));}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \ \ KIWI\_ALWAYS\_INLINE\ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ as\_span()\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}size\_`\ is\ the\ number\ of\ elements\ in\ the\ \`{}data\_`\ allocation`\ at}}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{comment}{//\ all\ times.}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}(data\_.get(),\ size\_));}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ Convenience\ method\ to\ copy\ the\ contents\ of\ a\ span<>\ into\ the\ entire\ array.}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ Hard\ CHECK\ occurs\ in\ span<>::copy\_from()\ if\ the\ HeapArray\ and\ the\ span}}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ have\ different\ sizes.}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{void}\ copy\_from(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ other)\ \{\ as\_span().copy\_from(other);\ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ Convenience\ method\ to\ copy\ the\ contents\ of\ a\ span<>\ into\ the\ start\ of\ the}}
+\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//\ array.\ Hard\ CHECK\ occurs\ in\ span<>::copy\_prefix\_from()\ if\ the\ HeapArray}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ isn't\ large\ enough\ to\ contain\ the\ entire\ span.}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{void}\ copy\_prefix\_from(\mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ other)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ as\_span().copy\_prefix\_from(other);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ Convenience\ methods\ to\ slice\ the\ vector\ into\ spans.}}
+\DoxyCodeLine{00168\ \ \ \textcolor{comment}{//\ Returns\ a\ span\ over\ the\ HeapArray\ starting\ at\ \`{}offset`\ of\ \`{}count`\ elements.}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ If\ \`{}count`\ is\ unspecified,\ all\ remaining\ elements\ are\ included.\ A\ CHECK()}}
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ occurs\ if\ any\ of\ the\ parameters\ results\ in\ an\ out-\/of-\/range\ position\ in}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ the\ HeapArray.}}
+\DoxyCodeLine{00172\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}\ subspan(\textcolor{keywordtype}{size\_t}\ offset)\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().subspan(offset);}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ subspan(\textcolor{keywordtype}{size\_t}\ offset)\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().subspan(offset);}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}\ subspan(\textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ count)\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().subspan(offset,\ count);}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ subspan(\textcolor{keywordtype}{size\_t}\ offset,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ count)\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().subspan(offset,\ count);}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{comment}{//\ Returns\ a\ span\ over\ the\ first\ \`{}count`\ elements\ of\ the\ HeapArray.\ A\ CHECK()}}
+\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//\ occurs\ if\ the\ \`{}count`\ is\ larger\ than\ size\ of\ the\ HeapArray.}}
+\DoxyCodeLine{00188\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}\ first(\textcolor{keywordtype}{size\_t}\ count)\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().first(count);}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ first(\textcolor{keywordtype}{size\_t}\ count)\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().first(count);}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{//\ Returns\ a\ span\ over\ the\ last\ \`{}count`\ elements\ of\ the\ HeapArray.\ A\ CHECK()}}
+\DoxyCodeLine{00196\ \ \ \textcolor{comment}{//\ occurs\ if\ the\ \`{}count`\ is\ larger\ than\ size\ of\ the\ HeapArray.}}
+\DoxyCodeLine{00197\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}\ last(\textcolor{keywordtype}{size\_t}\ count)\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().last(count);}
+\DoxyCodeLine{00199\ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<const\ T>}}\ last(\textcolor{keywordtype}{size\_t}\ count)\ \textcolor{keyword}{const}\ KIWI\_LIFETIME\_BOUND\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_span().last(count);}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ Leaks\ the\ memory\ in\ the\ HeapArray\ so\ that\ it\ will\ never\ be\ freed,\ and}}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ consumes\ the\ HeapArray,\ returning\ an\ unowning\ span\ that\ points\ to\ the}}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ memory.}}
+\DoxyCodeLine{00207\ \ \ \mbox{\hyperlink{classkiwi_1_1span}{kiwi::span<T>}}\ leak()\ \&\&\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ HeapArray<T>\ dropped\ =\ std::move(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00209\ \ \ \ \ T*\ leaked\ =\ dropped.data\_.release();}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ \`{}size\_`\ is\ the\ number\ of\ elements\ in\ the\ allocation\ in}}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{comment}{//\ \`{}data\_`\ at\ all\ times,\ which\ is\ renamed\ as\ \`{}leaked`\ here.}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(\mbox{\hyperlink{classkiwi_1_1span}{span}}(leaked,\ dropped.size\_));}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ Allows\ construction\ of\ a\ smaller\ HeapArray\ from\ an\ existing\ HeapArray\ w/o}}
+\DoxyCodeLine{00216\ \ \ \textcolor{comment}{//\ reallocations\ or\ copies.\ Note:\ The\ original\ allocation\ is\ preserved,\ so}}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ CopiedFrom()\ should\ be\ preferred\ for\ significant\ size\ reductions.}}
+\DoxyCodeLine{00218\ \ \ \mbox{\hyperlink{classkiwi_1_1_heap_array}{kiwi::HeapArray<T>}}\ take\_first(\textcolor{keywordtype}{size\_t}\ reduced\_size)\ \&\&\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ CHECK\_LE(reduced\_size,\ size\_);}
+\DoxyCodeLine{00220\ \ \ \ \ size\_\ =\ 0u;}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{if}\ (!reduced\_size)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ data\_.reset();}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1_heap_array}{kiwi::HeapArray}}(std::move(data\_),\ reduced\_size);}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//\ Delete\ the\ memory\ previously\ obtained\ from\ leak().\ Argument\ is\ a\ pointer}}
+\DoxyCodeLine{00228\ \ \ \textcolor{comment}{//\ rather\ than\ a\ span\ to\ facilitate\ use\ by\ callers\ that\ have\ lost\ track\ of}}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//\ size\ information,\ as\ may\ happen\ when\ being\ passed\ through\ a\ C-\/style}}
+\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ function\ callback.\ The\ void*\ argument\ type\ makes\ its\ signature\ compatible}}
+\DoxyCodeLine{00231\ \ \ \textcolor{comment}{//\ with\ typical\ void\ (*cb)(void*)\ C-\/style\ deletion\ callback.}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DeleteLeakedData(\textcolor{keywordtype}{void}*\ ptr)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{comment}{//\ Memory\ is\ freed\ by\ unique\ ptr\ going\ out\ of\ scope.}}
+\DoxyCodeLine{00234\ \ \ \ \ std::unique\_ptr<T[],\ deleter\_type>\ deleter(\textcolor{keyword}{static\_cast<}T*\textcolor{keyword}{>}(ptr));}
+\DoxyCodeLine{00235\ \ \ \}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00238\ \ \ HeapArray(std::unique\_ptr<T[],\ deleter\_type>\ data,\ \textcolor{keywordtype}{size\_t}\ size)}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ :\ data\_(std::move(data)),\ size\_(size)\ \{\}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ std::unique\_ptr<T[],\ deleter\_type>\ data\_;}
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordtype}{size\_t}\ size\_\ =\ 0u;}
+\DoxyCodeLine{00243\ \};}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

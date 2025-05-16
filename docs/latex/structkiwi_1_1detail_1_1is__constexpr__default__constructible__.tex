@@ -1,0 +1,40 @@
+\doxysection{kiwi\+::detail\+::is\+\_\+constexpr\+\_\+default\+\_\+constructible\+\_\+ Struct Reference}
+\hypertarget{structkiwi_1_1detail_1_1is__constexpr__default__constructible__}{}\label{structkiwi_1_1detail_1_1is__constexpr__default__constructible__}\index{kiwi::detail::is\_constexpr\_default\_constructible\_@{kiwi::detail::is\_constexpr\_default\_constructible\_}}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a248bf88e2fe827b0b33129c2f6629458}\label{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a248bf88e2fe827b0b33129c2f6629458} 
+{\footnotesize template$<$typename T$>$ }\\static constexpr auto {\bfseries make} (\mbox{\hyperlink{structkiwi_1_1tag__t}{tag\+\_\+t}}$<$ T $>$) -\/$>$ decltype(void(T()), 0)
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1is__constexpr__default__constructible___aab638e3958419dbf4d0c51ffa9d5890f}\label{structkiwi_1_1detail_1_1is__constexpr__default__constructible___aab638e3958419dbf4d0c51ffa9d5890f} 
+{\footnotesize template$<$typename T, int = make(tag$<$\+T$>$)$>$ }\\static std\+::true\+\_\+type {\bfseries sfinae} (T \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a960127aaacfec85f9e11a2868551c2b0}\label{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a960127aaacfec85f9e11a2868551c2b0} 
+static std\+::false\+\_\+type {\bfseries sfinae} (void \texorpdfstring{$\ast$}{*})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T$>$ }\\static constexpr bool \mbox{\hyperlink{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a108bc80f123055a6fae9c8a51b8f5fe5}{apply}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a108bc80f123055a6fae9c8a51b8f5fe5}\index{kiwi::detail::is\_constexpr\_default\_constructible\_@{kiwi::detail::is\_constexpr\_default\_constructible\_}!apply@{apply}}
+\index{apply@{apply}!kiwi::detail::is\_constexpr\_default\_constructible\_@{kiwi::detail::is\_constexpr\_default\_constructible\_}}
+\doxysubsubsection{\texorpdfstring{apply}{apply}}
+{\footnotesize\ttfamily \label{structkiwi_1_1detail_1_1is__constexpr__default__constructible___a108bc80f123055a6fae9c8a51b8f5fe5} 
+template$<$typename T$>$ \\
+bool kiwi\+::detail\+::is\+\_\+constexpr\+\_\+default\+\_\+constructible\+\_\+\+::apply\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ !require\_sizeof<T>\ ||\ \textcolor{keyword}{decltype}(sfinae(\textcolor{keyword}{static\_cast<}T*\textcolor{keyword}{>}(\textcolor{keyword}{nullptr})))::value}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/traits.\+hh\end{DoxyCompactItemize}

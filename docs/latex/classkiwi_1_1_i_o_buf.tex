@@ -133,7 +133,7 @@ void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aff66dd7c31c9340d6b9a64b4026d1b5f}{A
 \item 
 void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adc048704e057d61e58e09367661d2454}{Retreat}} (std\+::size\+\_\+t amount)
 \item 
-void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}{prepend}} (std\+::size\+\_\+t amount)
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4f0412a09fd45d6c4092363c4da2cd89}{Prepend}} (std\+::size\+\_\+t amount)
 \item 
 void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a984449ddf4541eca038b1b4f7b93dd97}{Append}} (std\+::size\+\_\+t amount)
 \item 
@@ -227,11 +227,11 @@ void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a55d8e92a27d6269fc75ec508ff9f4239}{C
 \item 
 {\footnotesize template$<$typename Container$>$ }\\Container \mbox{\hyperlink{classkiwi_1_1_i_o_buf_abe51f49dc01310e4cb457238b0a2ffe8}{To}} () const
 \item 
-std\+::vector$<$ struct \mbox{\hyperlink{structiovec}{iovec}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa1043b2a24a4e29dcb30d36b1d414b1d}{Get\+Iov}} () const
+std\+::vector$<$ struct iovec $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa1043b2a24a4e29dcb30d36b1d414b1d}{Get\+Iov}} () const
 \item 
-void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ade1a210c55ee26805bffbd0f672f7be0}{Append\+To\+Iov}} (std\+::vector$<$ struct \mbox{\hyperlink{structiovec}{iovec}} $>$ \texorpdfstring{$\ast$}{*}iov) const
+void \mbox{\hyperlink{classkiwi_1_1_i_o_buf_ade1a210c55ee26805bffbd0f672f7be0}{Append\+To\+Iov}} (std\+::vector$<$ struct iovec $>$ \texorpdfstring{$\ast$}{*}iov) const
 \item 
-\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{Fill\+Iov\+Result}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adf0a26330fc206a4f85b079061731413}{Fill\+Iov}} (struct \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}iov, size\+\_\+t len) const
+\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{Fill\+Iov\+Result}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adf0a26330fc206a4f85b079061731413}{Fill\+Iov}} (struct iovec \texorpdfstring{$\ast$}{*}iov, size\+\_\+t len) const
 \item 
 void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aecfe95dfc5c8c960b180839fe6b0dd56}{operator new}} (size\+\_\+t size)
 \item 
@@ -272,9 +272,9 @@ static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}
 \item 
 {\footnotesize template$<$typename Unique\+Ptr$>$ }\\static std\+::enable\+\_\+if$<$ \mbox{\hyperlink{structkiwi_1_1detail_1_1_is_unique_ptr_to_s_l}{detail\+::\+Is\+Unique\+Ptr\+To\+SL}}$<$ Unique\+Ptr $>$\+::value, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ $>$\+::type \mbox{\hyperlink{classkiwi_1_1_i_o_buf_aa3bc3d9fb02f907170cf4d0dd956bdb2}{Take\+Ownership}} (Unique\+Ptr \&\&buf, size\+\_\+t count=1)
 \item 
-static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_abdc8d5735bb6eaf1b4560c884068313c}{Wrap\+Iov}} (const \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}vec, size\+\_\+t count)
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_abdc8d5735bb6eaf1b4560c884068313c}{Wrap\+Iov}} (const iovec \texorpdfstring{$\ast$}{*}vec, size\+\_\+t count)
 \item 
-static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0208699d0a3c686e028a160205ed226a}{Take\+Ownership\+Iov}} (const \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}vec, size\+\_\+t count, Free\+Function free\+\_\+fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+\_\+data=nullptr, bool free\+\_\+on\+\_\+error=true)
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a0208699d0a3c686e028a160205ed226a}{Take\+Ownership\+Iov}} (const iovec \texorpdfstring{$\ast$}{*}vec, size\+\_\+t count, Free\+Function free\+\_\+fn=nullptr, void \texorpdfstring{$\ast$}{*}user\+\_\+data=nullptr, bool free\+\_\+on\+\_\+error=true)
 \item 
 static \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a64afb5aeb32475087026e7fa44ef37e8}{Wrap\+Buffer\+As\+Value}} (const void \texorpdfstring{$\ast$}{*}buf, std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a6adefcda03cb041c68d4341ef4eec966}{capacity}}) noexcept
 \item 
@@ -909,7 +909,7 @@ For example, if there are two \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} chains (A,
 \index{AppendToIov@{AppendToIov}!kiwi::IOBuf@{kiwi::IOBuf}}
 \doxysubsubsection{\texorpdfstring{AppendToIov()}{AppendToIov()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_ade1a210c55ee26805bffbd0f672f7be0} 
-void kiwi\+::\+IOBuf\+::\+Append\+To\+Iov (\begin{DoxyParamCaption}\item[{std\+::vector$<$ struct \mbox{\hyperlink{structiovec}{iovec}} $>$ \texorpdfstring{$\ast$}{*}}]{iov}{}\end{DoxyParamCaption}) const}
+void kiwi\+::\+IOBuf\+::\+Append\+To\+Iov (\begin{DoxyParamCaption}\item[{std\+::vector$<$ struct iovec $>$ \texorpdfstring{$\ast$}{*}}]{iov}{}\end{DoxyParamCaption}) const}
 
 Update an existing iovec array with the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} data.
 
@@ -1607,7 +1607,7 @@ The iterators dereference to a Byte\+Range.
 \index{FillIov@{FillIov}!kiwi::IOBuf@{kiwi::IOBuf}}
 \doxysubsubsection{\texorpdfstring{FillIov()}{FillIov()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_adf0a26330fc206a4f85b079061731413} 
-\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{IOBuf\+::\+Fill\+Iov\+Result}} kiwi\+::\+IOBuf\+::\+Fill\+Iov (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}}]{iov}{, }\item[{size\+\_\+t}]{len}{}\end{DoxyParamCaption}) const}
+\mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{IOBuf\+::\+Fill\+Iov\+Result}} kiwi\+::\+IOBuf\+::\+Fill\+Iov (\begin{DoxyParamCaption}\item[{struct iovec \texorpdfstring{$\ast$}{*}}]{iov}{, }\item[{size\+\_\+t}]{len}{}\end{DoxyParamCaption}) const}
 
 Fill an iovec array with the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} data.
 
@@ -1661,7 +1661,7 @@ A non-\/owning pointer to free\+Fn if set, else nullptr.
 \index{GetIov@{GetIov}!kiwi::IOBuf@{kiwi::IOBuf}}
 \doxysubsubsection{\texorpdfstring{GetIov()}{GetIov()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_aa1043b2a24a4e29dcb30d36b1d414b1d} 
-std\+::vector$<$ struct \mbox{\hyperlink{structiovec}{iovec}} $>$ kiwi\+::\+IOBuf\+::\+Get\+Iov (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+std\+::vector$<$ struct iovec $>$ kiwi\+::\+IOBuf\+::\+Get\+Iov (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
 
 Get an iovector suitable for e.\+g. writev().
 
@@ -1993,11 +1993,11 @@ Since \doxylink{classkiwi_1_1_i_o_buf_afc8005e47b46e804cf63c89614a2ff2b}{pop()} 
 \begin{DoxyReturn}{Returns}
 A new unique\+\_\+ptr pointing to the rest of the chain; nullptr if this \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} was the only chain element. 
 \end{DoxyReturn}
-\Hypertarget{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}\index{kiwi::IOBuf@{kiwi::IOBuf}!prepend@{prepend}}
-\index{prepend@{prepend}!kiwi::IOBuf@{kiwi::IOBuf}}
-\doxysubsubsection{\texorpdfstring{prepend()}{prepend()}}
-{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405} 
-void kiwi\+::\+IOBuf\+::prepend (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\Hypertarget{classkiwi_1_1_i_o_buf_a4f0412a09fd45d6c4092363c4da2cd89}\index{kiwi::IOBuf@{kiwi::IOBuf}!Prepend@{Prepend}}
+\index{Prepend@{Prepend}!kiwi::IOBuf@{kiwi::IOBuf}}
+\doxysubsubsection{\texorpdfstring{Prepend()}{Prepend()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a4f0412a09fd45d6c4092363c4da2cd89} 
+void kiwi\+::\+IOBuf\+::\+Prepend (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Adjust the data pointer to include more valid data at the beginning.
 
@@ -2281,7 +2281,7 @@ A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBu
 \index{TakeOwnershipIov@{TakeOwnershipIov}!kiwi::IOBuf@{kiwi::IOBuf}}
 \doxysubsubsection{\texorpdfstring{TakeOwnershipIov()}{TakeOwnershipIov()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_a0208699d0a3c686e028a160205ed226a} 
-std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Take\+Ownership\+Iov (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}}]{vec}{, }\item[{size\+\_\+t}]{count}{, }\item[{Free\+Function}]{free\+\_\+fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+\_\+data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+\_\+on\+\_\+error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Take\+Ownership\+Iov (\begin{DoxyParamCaption}\item[{const iovec \texorpdfstring{$\ast$}{*}}]{vec}{, }\item[{size\+\_\+t}]{count}{, }\item[{Free\+Function}]{free\+\_\+fn}{ = {\ttfamily nullptr}, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+\_\+data}{ = {\ttfamily nullptr}, }\item[{bool}]{free\+\_\+on\+\_\+error}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 Take ownership of an iovec, turning it into an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
 
@@ -2445,6 +2445,34 @@ static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}}
 
 
 
+Create an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} pointing to a buffer, without taking ownership.
+
+This should only be used when the caller knows the lifetime of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} object ahead of time and can ensure that all \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} objects that will point to this buffer will be destroyed before the buffer itself is destroyed. The buffer will not be freed automatically when the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} referencing it is destroyed. It is the caller\textquotesingle{}s responsibility to free the buffer after the last \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} has been destroyed.
+
+An \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} created using \doxylink{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}{Wrap\+Buffer()} will always be reported as shared. \doxylink{classkiwi_1_1_i_o_buf_a02310eb3c6cfac120d0b7d962097e6ab}{Unshare()} may be used to create a writable copy of the buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & The pointer to the buffer \\
+\hline
+{\em capacity} & The size of the buffer \\
+\hline
+{\em br} & Can pass a Byte\+Range instead of \{buf, capacity\}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+\doxylink{classkiwi_1_1_i_o_buf_a708944d0de466a93fda5102be9ceb938}{data()} points to buf. 
+
+\doxylink{classkiwi_1_1_i_o_buf_a73808ff60c3bdbd250e0a4dbf556dd45}{Length()} == capacity.    
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::bad\+\_\+alloc} & on error (the allocation of the \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} may throw). \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A unique\+\_\+ptr to a newly-\/constructed \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}. @methodset Makers    
+\end{DoxyReturn}
 \Hypertarget{classkiwi_1_1_i_o_buf_a607437c3b69268f69e8f9e1bc91732ba}\index{kiwi::IOBuf@{kiwi::IOBuf}!WrapBuffer@{WrapBuffer}}
 \index{WrapBuffer@{WrapBuffer}!kiwi::IOBuf@{kiwi::IOBuf}}
 \doxysubsubsection{\texorpdfstring{WrapBuffer()}{WrapBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -2532,7 +2560,7 @@ A stack-\/allocated \doxylink{classkiwi_1_1_i_o_buf}{IOBuf} \textbackslash{}meth
 \index{WrapIov@{WrapIov}!kiwi::IOBuf@{kiwi::IOBuf}}
 \doxysubsubsection{\texorpdfstring{WrapIov()}{WrapIov()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_i_o_buf_abdc8d5735bb6eaf1b4560c884068313c} 
-unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Wrap\+Iov (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structiovec}{iovec}} \texorpdfstring{$\ast$}{*}}]{vec}{, }\item[{size\+\_\+t}]{count}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+unique\+\_\+ptr$<$ \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{IOBuf}} $>$ kiwi\+::\+IOBuf\+::\+Wrap\+Iov (\begin{DoxyParamCaption}\item[{const iovec \texorpdfstring{$\ast$}{*}}]{vec}{, }\item[{size\+\_\+t}]{count}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 Convert an iovec array into an \doxylink{classkiwi_1_1_i_o_buf}{IOBuf}.
 

@@ -1,0 +1,617 @@
+\doxysection{utility.\+hh}
+\hypertarget{utility_8hh_source}{}\label{utility_8hh_source}\index{include/kiwi/common/utility.hh@{include/kiwi/common/utility.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/traits.hh"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ KIWI\_DECLVAL(...)\ static\_cast<\_\_VA\_ARGS\_\_\ (*)()\ noexcept>(nullptr)()}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00050\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00051\ T\ decay\_1\_(T\ \textcolor{keyword}{const}\ \textcolor{keyword}{volatile}\&\&);}
+\DoxyCodeLine{00052\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00053\ T\ decay\_1\_(T\ \textcolor{keyword}{const}\&);}
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00055\ T*\ decay\_1\_(T*);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00058\ \textcolor{keyword}{auto}\ decay\_0\_(\textcolor{keywordtype}{int})\ -\/>\ \textcolor{keyword}{decltype}(detail::decay\_1\_(KIWI\_DECLVAL(T\&\&)));}
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{auto}\ decay\_0\_(\textcolor{keywordtype}{short})\ -\/>\ void;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00063\ \textcolor{keyword}{using\ }decay\_t\ =\ \textcolor{keyword}{decltype}(detail::decay\_0\_<T>(0));}
+\DoxyCodeLine{00064\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ \ decay\_t}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \ Like\ std::decay\_t\ but\ possibly\ faster\ to\ compile.}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ \ mimic:\ std::decay\_t,\ C++14}}
+\DoxyCodeLine{00071\ \textcolor{keyword}{using\ }detail::decay\_t;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00116\ \textcolor{keyword}{constexpr}\ detail::decay\_t<T>\ \mbox{\hyperlink{namespacekiwi_af0d9ea63159f8a9f92646fcae1bf3956}{copy}}(T\&\&\ value)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{noexcept}(detail::decay\_t<T>(\textcolor{keyword}{static\_cast<}T\&\&\textcolor{keyword}{>}(value))))\ \{}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\&\&\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00119\ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ \ mimic:\ forward\_like,\ p0847r0}}
+\DoxyCodeLine{00122\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00123\ \textcolor{keyword}{constexpr}\ like\_t<Src,\ Dst>\&\&\ forward\_like(Dst\&\&\ dst)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordflow}{return}\ std::forward<like\_t<Src,\ Dst>>(\textcolor{keyword}{static\_cast<}Dst\&\&\textcolor{keyword}{>}(dst));}
+\DoxyCodeLine{00125\ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00169\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1initlist__construct__t}{initlist\_construct\_t}}\ \{\};}
+\DoxyCodeLine{00170\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1initlist__construct__t}{initlist\_construct\_t}}\ initlist\_construct\{\};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ \ sorted\_unique\_t,\ sorted\_unique}}
+\DoxyCodeLine{00173\ \textcolor{comment}{//}}
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ \ A\ generic\ tag\ type\ and\ value\ to\ indicate\ that\ some\ constructor\ or\ method}}
+\DoxyCodeLine{00175\ \textcolor{comment}{//\ \ accepts\ a\ container\ in\ which\ the\ values\ are\ sorted\ and\ unique.}}
+\DoxyCodeLine{00176\ \textcolor{comment}{//}}
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ \ Example:}}
+\DoxyCodeLine{00178\ \textcolor{comment}{//}}
+\DoxyCodeLine{00179\ \textcolor{comment}{//\ \ \ \ void\ takes\_numbers(folly::sorted\_unique\_t,\ std::vector<int>\ alist)\ \{}}
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ \ \ \ \ \ assert(std::is\_sorted(alist.begin(),\ alist.end()));}}
+\DoxyCodeLine{00181\ \textcolor{comment}{//\ \ \ \ \ \ assert(std::unique(alist.begin(),\ alist.end())\ ==\ alist.end());}}
+\DoxyCodeLine{00182\ \textcolor{comment}{//\ \ \ \ \ \ for\ (i\ :\ alist)\ \{}}
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ \ \ \ \ \ \ \ //\ some\ behavior\ which\ safe\ only\ when\ alist\ is\ sorted\ and\ unique}}
+\DoxyCodeLine{00184\ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00185\ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00186\ \textcolor{comment}{//\ \ \ \ void\ takes\_numbers(std::vector<int>\ alist)\ \{}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//\ \ \ \ \ \ std::sort(alist.begin(),\ alist.end());}}
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ \ \ \ \ \ alist.erase(std::unique(alist.begin(),\ alist.end()),\ alist.end());}}
+\DoxyCodeLine{00189\ \textcolor{comment}{//\ \ \ \ \ \ takes\_numbers(folly::sorted\_unique,\ alist);}}
+\DoxyCodeLine{00190\ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00191\ \textcolor{comment}{//}}
+\DoxyCodeLine{00192\ \textcolor{comment}{//\ \ mimic:\ std::sorted\_unique\_t,\ std::sorted\_unique,\ p0429r6}}
+\DoxyCodeLine{00193\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\_unique\_t}}\ \{\};}
+\DoxyCodeLine{00194\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\_unique\_t}}\ sorted\_unique\{\};}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ \ sorted\_equivalent\_t,\ sorted\_equivalent}}
+\DoxyCodeLine{00197\ \textcolor{comment}{//}}
+\DoxyCodeLine{00198\ \textcolor{comment}{//\ \ A\ generic\ tag\ type\ and\ value\ to\ indicate\ that\ some\ constructor\ or\ method}}
+\DoxyCodeLine{00199\ \textcolor{comment}{//\ \ accepts\ a\ container\ in\ which\ the\ values\ are\ sorted\ but\ not\ necessarily}}
+\DoxyCodeLine{00200\ \textcolor{comment}{//\ \ unique.}}
+\DoxyCodeLine{00201\ \textcolor{comment}{//}}
+\DoxyCodeLine{00202\ \textcolor{comment}{//\ \ Example:}}
+\DoxyCodeLine{00203\ \textcolor{comment}{//}}
+\DoxyCodeLine{00204\ \textcolor{comment}{//\ \ \ \ void\ takes\_numbers(folly::sorted\_equivalent\_t,\ std::vector<int>\ alist)\ \{}}
+\DoxyCodeLine{00205\ \textcolor{comment}{//\ \ \ \ \ \ assert(std::is\_sorted(alist.begin(),\ alist.end()));}}
+\DoxyCodeLine{00206\ \textcolor{comment}{//\ \ \ \ \ \ for\ (i\ :\ alist)\ \{}}
+\DoxyCodeLine{00207\ \textcolor{comment}{//\ \ \ \ \ \ \ \ //\ some\ behavior\ which\ safe\ only\ when\ alist\ is\ sorted}}
+\DoxyCodeLine{00208\ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00209\ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00210\ \textcolor{comment}{//\ \ \ \ void\ takes\_numbers(std::vector<int>\ alist)\ \{}}
+\DoxyCodeLine{00211\ \textcolor{comment}{//\ \ \ \ \ \ std::sort(alist.begin(),\ alist.end());}}
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ \ \ \ \ \ takes\_numbers(folly::sorted\_equivalent,\ alist);}}
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00214\ \textcolor{comment}{//}}
+\DoxyCodeLine{00215\ \textcolor{comment}{//\ \ mimic:\ std::sorted\_equivalent\_t,\ std::sorted\_equivalent,\ p0429r6}}
+\DoxyCodeLine{00216\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1sorted__equivalent__t}{sorted\_equivalent\_t}}\ \{\};}
+\DoxyCodeLine{00217\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1sorted__equivalent__t}{sorted\_equivalent\_t}}\ sorted\_equivalent\{\};}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00220\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1transparent}{transparent}}\ :\ T\ \{}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{using\ }is\_transparent\ =\ void;}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{using\ }T::T;}
+\DoxyCodeLine{00223\ \};}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00244\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1identity__fn}{identity\_fn}}\ \{}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{constexpr}\ T\&\&\ operator()(T\&\&\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\&\&\textcolor{keyword}{>}(x);}
+\DoxyCodeLine{00248\ \ \ \}}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ \textcolor{keyword}{using\ }Identity\ =\ \mbox{\hyperlink{structkiwi_1_1identity__fn}{identity\_fn}};}
+\DoxyCodeLine{00251\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1identity__fn}{identity\_fn}}\ identity\{\};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00256\ \textcolor{keyword}{struct\ }inheritable\_inherit\_\ :\ T\ \{}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{using\ }T::T;}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ A,}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_constructible<T,\ A...>::value,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00260\ \ \ \textcolor{comment}{/*\ implicit\ */}\ KIWI\_ERASE\ inheritable\_inherit\_(A\&\&...\ a)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(T(\textcolor{keyword}{static\_cast<}A\&\&\textcolor{keyword}{>}(a)...)))}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ :\ T(\textcolor{keyword}{static\_cast<}A\&\&\textcolor{keyword}{>}(a)...)\ \{\}}
+\DoxyCodeLine{00263\ \};}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00266\ \textcolor{keyword}{struct\ }inheritable\_contain\_\ \{}
+\DoxyCodeLine{00267\ \ \ T\ v;}
+\DoxyCodeLine{00268\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ A,}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_constructible<T,\ A...>::value,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00270\ \ \ \textcolor{comment}{/*\ implicit\ */}\ KIWI\_ERASE\ inheritable\_contain\_(A\&\&...\ a)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(T(\textcolor{keyword}{static\_cast<}A\&\&\textcolor{keyword}{>}(a)...)))}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ :\ v(\textcolor{keyword}{static\_cast<}A\&\&\textcolor{keyword}{>}(a)...)\ \{\}}
+\DoxyCodeLine{00273\ \ \ KIWI\_ERASE\ \textcolor{keyword}{operator}\ T\&()\ \&\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ v;\ \}}
+\DoxyCodeLine{00274\ \ \ KIWI\_ERASE\ \textcolor{keyword}{operator}\ T\&\&()\ \&\&\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\&\&\textcolor{keyword}{>}(v);\ \}}
+\DoxyCodeLine{00275\ \ \ KIWI\_ERASE\ \textcolor{keyword}{operator}\ T\ \textcolor{keyword}{const}\&()\ \textcolor{keyword}{const}\&\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ v;\ \}}
+\DoxyCodeLine{00276\ \ \ KIWI\_ERASE\ \textcolor{keyword}{operator}\ T\ \textcolor{keyword}{const}\&\&()\ \textcolor{keyword}{const}\&\&\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}T\ const\&\&\textcolor{keyword}{>}(v);}
+\DoxyCodeLine{00278\ \ \ \}}
+\DoxyCodeLine{00279\ \};}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{bool}>}
+\DoxyCodeLine{00282\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1inheritable__}{inheritable\_}};}
+\DoxyCodeLine{00283\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00284\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1inheritable__}{inheritable\_<false>}}\ \{}
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{using\ }apply\ =\ \mbox{\hyperlink{structkiwi_1_1detail_1_1inheritable__inherit__}{inheritable\_inherit\_<T>}};}
+\DoxyCodeLine{00287\ \};}
+\DoxyCodeLine{00288\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00289\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1inheritable__}{inheritable\_<true>}}\ \{}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00291\ \ \ \textcolor{keyword}{using\ }apply\ =\ \mbox{\hyperlink{structkiwi_1_1detail_1_1inheritable__contain__}{inheritable\_contain\_<T>}};}
+\DoxyCodeLine{00292\ \};}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \textcolor{comment}{//\ \ inheritable}}
+\DoxyCodeLine{00295\ \textcolor{comment}{//}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ \ A\ class\ wrapping\ an\ arbitrary\ type\ T\ which\ is\ always\ inheritable,\ and\ which}}
+\DoxyCodeLine{00297\ \textcolor{comment}{//\ \ enables\ empty-\/base-\/optimization\ when\ possible.}}
+\DoxyCodeLine{00298\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00299\ \textcolor{keyword}{using\ }inheritable\ =}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structkiwi_1_1detail_1_1inheritable__}{inheritable\_<std::is\_final<T>::value}}>::template\ apply<T>;}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \textcolor{comment}{//\ Prevent\ child\ classes\ from\ finding\ anything\ in\ folly::\ by\ ADL.}}
+\DoxyCodeLine{00305\ \textcolor{keyword}{namespace\ }moveonly\_\ \{}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00313\ \textcolor{keyword}{struct\ }MoveOnly\ \{}
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{constexpr}\ MoveOnly()\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00315\ \ \ \string~MoveOnly()\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ MoveOnly(MoveOnly\&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00318\ \ \ MoveOnly\&\ operator=(MoveOnly\&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00319\ \ \ MoveOnly(\textcolor{keyword}{const}\ MoveOnly\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00320\ \ \ MoveOnly\&\ operator=(\textcolor{keyword}{const}\ MoveOnly\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00321\ \};}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00328\ \textcolor{keyword}{struct\ }NonCopyableNonMovable\ \{}
+\DoxyCodeLine{00329\ \ \ \textcolor{keyword}{constexpr}\ NonCopyableNonMovable()\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00330\ \ \ \string~NonCopyableNonMovable()\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ NonCopyableNonMovable(NonCopyableNonMovable\&\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00333\ \ \ NonCopyableNonMovable\&\ operator=(NonCopyableNonMovable\&\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00334\ \ \ NonCopyableNonMovable(\textcolor{keyword}{const}\ NonCopyableNonMovable\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00335\ \ \ NonCopyableNonMovable\&\ operator=(\textcolor{keyword}{const}\ NonCopyableNonMovable\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00336\ \};}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_default}{Default}}\ \{\};}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{bool}\ Copy,\ \textcolor{keywordtype}{bool}\ Move>}
+\DoxyCodeLine{00341\ \textcolor{keyword}{using\ }EnableCopyMove\ =\ std::conditional\_t<}
+\DoxyCodeLine{00342\ \ \ \ \ Copy,\ \mbox{\hyperlink{structkiwi_1_1moveonly___1_1_default}{Default}},\ std::conditional\_t<Move,\ MoveOnly,\ NonCopyableNonMovable>>;}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \}\ \ \textcolor{comment}{//\ namespace\ moveonly\_}}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_move_only}{moveonly\_::MoveOnly}};}
+\DoxyCodeLine{00347\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structkiwi_1_1moveonly___1_1_non_copyable_non_movable}{moveonly\_::NonCopyableNonMovable}};}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00357\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1variadic__noop__fn}{variadic\_noop\_fn}}\ \{}
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ A>}
+\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{void}\ operator()(A\&\&...)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\}}
+\DoxyCodeLine{00360\ \};}
+\DoxyCodeLine{00361\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1variadic__noop__fn}{variadic\_noop\_fn}}\ variadic\_noop;}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00369\ \textcolor{keyword}{template}\ <auto\ Value>}
+\DoxyCodeLine{00370\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1variadic__constant__of__fn}{variadic\_constant\_of\_fn}}\ \{}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ \textcolor{keyword}{decltype}(Value);}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ value\_type\ value\ =\ Value;}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ A>}
+\DoxyCodeLine{00374\ \ \ \textcolor{keyword}{constexpr}\ value\_type\ operator()(A\&\&...)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00376\ \ \ \}}
+\DoxyCodeLine{00377\ \};}
+\DoxyCodeLine{00378\ \textcolor{keyword}{template}\ <auto\ Value>}
+\DoxyCodeLine{00379\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1variadic__constant__of__fn}{variadic\_constant\_of\_fn<Value>}}\ variadic\_constant\_of;}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \textcolor{comment}{//\ \ unsafe\_default\_initialized}}
+\DoxyCodeLine{00382\ \textcolor{comment}{//\ \ unsafe\_default\_initialized\_cv}}
+\DoxyCodeLine{00383\ \textcolor{comment}{//}}
+\DoxyCodeLine{00384\ \textcolor{comment}{//\ \ An\ object\ which\ is\ explicitly\ convertible\ to\ any\ default-\/constructible\ type}}
+\DoxyCodeLine{00385\ \textcolor{comment}{//\ \ and\ which,\ upon\ conversion,\ yields\ a\ default-\/initialized\ value\ of\ that\ type.}}
+\DoxyCodeLine{00386\ \textcolor{comment}{//}}
+\DoxyCodeLine{00387\ \textcolor{comment}{//\ \ https://en.cppreference.com/w/cpp/language/default\_initialization}}
+\DoxyCodeLine{00388\ \textcolor{comment}{//}}
+\DoxyCodeLine{00389\ \textcolor{comment}{//\ \ For\ fundamental\ types,\ a\ default-\/initialized\ instance\ may\ have\ indeterminate}}
+\DoxyCodeLine{00390\ \textcolor{comment}{//\ \ value.\ Reading\ an\ indeterminate\ value\ is\ undefined\ behavior\ but\ may\ offer\ a}}
+\DoxyCodeLine{00391\ \textcolor{comment}{//\ \ performance\ optimization.\ When\ using\ an\ indeterminate\ value\ as\ a\ performance}}
+\DoxyCodeLine{00392\ \textcolor{comment}{//\ \ optimization,\ it\ is\ best\ to\ be\ explicit.}}
+\DoxyCodeLine{00393\ \textcolor{comment}{//}}
+\DoxyCodeLine{00394\ \textcolor{comment}{//\ \ Useful\ as\ an\ escape\ hatch\ when\ enabling\ warnings\ or\ errors:}}
+\DoxyCodeLine{00395\ \textcolor{comment}{//\ \ *\ gcc:}}
+\DoxyCodeLine{00396\ \textcolor{comment}{//\ \ \ \ *\ uninitialized}}
+\DoxyCodeLine{00397\ \textcolor{comment}{//\ \ \ \ *\ maybe-\/uninitialized}}
+\DoxyCodeLine{00398\ \textcolor{comment}{//\ \ *\ clang:}}
+\DoxyCodeLine{00399\ \textcolor{comment}{//\ \ \ \ *\ uninitialized}}
+\DoxyCodeLine{00400\ \textcolor{comment}{//\ \ \ \ *\ conditional-\/uninitialized}}
+\DoxyCodeLine{00401\ \textcolor{comment}{//\ \ \ \ *\ sometimes-\/uninitialized}}
+\DoxyCodeLine{00402\ \textcolor{comment}{//\ \ \ \ *\ uninitialized-\/const-\/reference}}
+\DoxyCodeLine{00403\ \textcolor{comment}{//\ \ *\ msvc:}}
+\DoxyCodeLine{00404\ \textcolor{comment}{//\ \ \ \ *\ C4701:\ potentially\ uninitialized\ local\ variable\ used}}
+\DoxyCodeLine{00405\ \textcolor{comment}{//\ \ \ \ *\ C4703:\ potentially\ uninitialized\ local\ pointer\ variable\ used}}
+\DoxyCodeLine{00406\ \textcolor{comment}{//}}
+\DoxyCodeLine{00407\ \textcolor{comment}{//\ \ Example:}}
+\DoxyCodeLine{00408\ \textcolor{comment}{//}}
+\DoxyCodeLine{00409\ \textcolor{comment}{//\ \ \ \ \ \ int\ local\ =\ folly::unsafe\_default\_initialized;}}
+\DoxyCodeLine{00410\ \textcolor{comment}{//\ \ \ \ \ \ store\_value\_into\_int\_ptr(\&value);\ //\ suppresses\ possible\ warning}}
+\DoxyCodeLine{00411\ \textcolor{comment}{//\ \ \ \ \ \ use\_value(value);\ //\ suppresses\ possible\ warning}}
+\DoxyCodeLine{00412\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1unsafe__default__initialized__cv}{unsafe\_default\_initialized\_cv}}\ \{}
+\DoxyCodeLine{00413\ \ \ KIWI\_PUSH\_WARNING}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//\ MSVC\ requires\ warning\ disables\ to\ be\ outside\ of\ function\ definition}}
+\DoxyCodeLine{00415\ \ \ \textcolor{comment}{//\ Uninitialized\ local\ variable\ 'uninit'\ used}}
+\DoxyCodeLine{00416\ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4700)}
+\DoxyCodeLine{00417\ \ \ \textcolor{comment}{//\ Potentially\ uninitialized\ local\ variable\ 'uninit'\ used}}
+\DoxyCodeLine{00418\ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4701)}
+\DoxyCodeLine{00419\ \ \ \textcolor{comment}{//\ Potentially\ uninitialized\ local\ pointer\ variable\ 'uninit'\ used}}
+\DoxyCodeLine{00420\ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4703)}
+\DoxyCodeLine{00421\ \ \ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wuninitialized"{}})}
+\DoxyCodeLine{00422\ \ \ \textcolor{comment}{//\ Clang\ doesn't\ implement\ -\/Wmaybe-\/uninitialized\ and\ warns\ about\ it}}
+\DoxyCodeLine{00423\ \ \ KIWI\_GCC\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wmaybe-\/uninitialized"{}})}
+\DoxyCodeLine{00424\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00425\ \ \ KIWI\_ERASE\ \textcolor{keyword}{constexpr}\ \textcolor{comment}{/*\ implicit\ */}\ \textcolor{keyword}{operator}\ T()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\#if\ defined(\_\_cpp\_lib\_is\_constant\_evaluated)}}
+\DoxyCodeLine{00427\ \textcolor{preprocessor}{\#if\ \_\_cpp\_lib\_is\_constant\_evaluated\ >=\ 201811L}}
+\DoxyCodeLine{00428\ \textcolor{preprocessor}{\#if\ !defined(\_\_MSVC\_RUNTIME\_CHECKS)}}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordflow}{if}\ (!std::is\_constant\_evaluated())\ \{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ T\ uninit;}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ uninit;}
+\DoxyCodeLine{00432\ \ \ \ \ \}}
+\DoxyCodeLine{00433\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ !defined(\_\_MSVC\_RUNTIME\_CHECKS)}}
+\DoxyCodeLine{00434\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00435\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keywordflow}{return}\ T();}
+\DoxyCodeLine{00437\ \ \ \}}
+\DoxyCodeLine{00438\ \ \ KIWI\_POP\_WARNING}
+\DoxyCodeLine{00439\ \};}
+\DoxyCodeLine{00440\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1unsafe__default__initialized__cv}{unsafe\_default\_initialized\_cv}}\ unsafe\_default\_initialized\{\};}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1to__signed__fn}{to\_signed\_fn}}\ \{}
+\DoxyCodeLine{00443\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ operator()(T\ \textcolor{keyword}{const}\&\ t)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ -\/>}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::make\_signed<T>::type\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keyword}{using\ }S\ =\ \textcolor{keyword}{typename}\ std::make\_signed<T>::type;}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{comment}{//\ note:\ static\_cast<S>(t)\ would\ be\ more\ straightforward,\ but\ it\ would\ also}}
+\DoxyCodeLine{00448\ \ \ \ \ \textcolor{comment}{//\ be\ implementation-\/defined\ behavior\ and\ that\ is\ typically\ to\ be\ avoided;}}
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{comment}{//\ the\ following\ code\ optimized\ into\ the\ same\ thing,\ though}}
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ m\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(std::numeric\_limits<S>::max());}
+\DoxyCodeLine{00451\ \ \ \ \ \textcolor{keywordflow}{return}\ m\ <\ t\ ?\ -\/\textcolor{keyword}{static\_cast<}S\textcolor{keyword}{>}(\string~t)\ +\ S\{-\/1\}\ :\ \textcolor{keyword}{static\_cast<}S\textcolor{keyword}{>}(t);}
+\DoxyCodeLine{00452\ \ \ \}}
+\DoxyCodeLine{00453\ \};}
+\DoxyCodeLine{00454\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1to__signed__fn}{to\_signed\_fn}}\ to\_signed\{\};}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1to__unsigned__fn}{to\_unsigned\_fn}}\ \{}
+\DoxyCodeLine{00457\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00458\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ operator()(T\ \textcolor{keyword}{const}\&\ t)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ -\/>}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type\ \{}
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keyword}{using\ }U\ =\ \textcolor{keyword}{typename}\ std::make\_unsigned<T>::type;}
+\DoxyCodeLine{00461\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(t);}
+\DoxyCodeLine{00462\ \ \ \}}
+\DoxyCodeLine{00463\ \};}
+\DoxyCodeLine{00464\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1to__unsigned__fn}{to\_unsigned\_fn}}\ to\_unsigned\{\};}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00467\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00468\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_to\_narrow\_convertible\_v\ =}
+\DoxyCodeLine{00469\ \ \ \ \ (std::is\_integral<Dst>::value)\ \&\&}
+\DoxyCodeLine{00470\ \ \ \ \ (std::is\_signed<Dst>::value\ ==\ std::is\_signed<Src>::value);}
+\DoxyCodeLine{00471\ \}}
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00473\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00474\ \textcolor{keyword}{class\ }to\_narrow\_convertible\ \{}
+\DoxyCodeLine{00475\ \ \ \textcolor{keyword}{static\_assert}(std::is\_integral<Src>::value,\ \textcolor{stringliteral}{"{}not\ an\ integer"{}});}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00478\ \ \ \textcolor{keyword}{struct\ }to\_}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ :\ std::bool\_constant<detail::is\_to\_narrow\_convertible\_v<Src,\ Dst>>\ \{\};}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ to\_narrow\_convertible(Src\ \textcolor{keyword}{const}\&\ value)\ noexcept}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ :\ value\_(value)\ \{\}}
+\DoxyCodeLine{00484\ \ \ \textcolor{keyword}{explicit}\ to\_narrow\_convertible(to\_narrow\_convertible\ \textcolor{keyword}{const}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00485\ \ \ \textcolor{keyword}{explicit}\ to\_narrow\_convertible(to\_narrow\_convertible\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00486\ \ \ to\_narrow\_convertible\&\ operator=(to\_narrow\_convertible\ \textcolor{keyword}{const}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00487\ \ \ to\_narrow\_convertible\&\ operator=(to\_narrow\_convertible\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00488\ }
+\DoxyCodeLine{00489\ \ \ template\ <typename\ Dst,\ std::enable\_if\_t<to\_<Dst>::value,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00490\ \ \ \textcolor{comment}{/*\ implicit\ */}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ Dst()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00491\ \ \ \ \ KIWI\_PUSH\_WARNING}
+\DoxyCodeLine{00492\ \ \ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4244)\ \ \textcolor{comment}{//\ lossy\ conversion:\ arguments}}
+\DoxyCodeLine{00493\ \ \ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4267)\ \ \textcolor{comment}{//\ lossy\ conversion:\ variables}}
+\DoxyCodeLine{00494\ \ \ \ \ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wconversion"{}})}
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{keywordflow}{return}\ value\_;}
+\DoxyCodeLine{00496\ \ \ \ \ KIWI\_POP\_WARNING}
+\DoxyCodeLine{00497\ \ \ \}}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00500\ \ \ Src\ value\_;}
+\DoxyCodeLine{00501\ \};}
+\DoxyCodeLine{00502\ }
+\DoxyCodeLine{00503\ \textcolor{comment}{//\ \ to\_narrow}}
+\DoxyCodeLine{00504\ \textcolor{comment}{//}}
+\DoxyCodeLine{00505\ \textcolor{comment}{//\ \ A\ utility\ for\ performing\ explicit\ possibly-\/narrowing\ integral\ conversion}}
+\DoxyCodeLine{00506\ \textcolor{comment}{//\ \ without\ specifying\ the\ destination\ type.\ Does\ not\ permit\ changing\ signs.}}
+\DoxyCodeLine{00507\ \textcolor{comment}{//\ \ Sometimes\ preferable\ to\ static\_cast<Dst>(src)\ to\ document\ the\ intended}}
+\DoxyCodeLine{00508\ \textcolor{comment}{//\ \ semantics\ of\ the\ cast.}}
+\DoxyCodeLine{00509\ \textcolor{comment}{//}}
+\DoxyCodeLine{00510\ \textcolor{comment}{//\ \ Models\ explicit\ conversion\ with\ an\ elided\ destination\ type.\ Sits\ in\ between}}
+\DoxyCodeLine{00511\ \textcolor{comment}{//\ \ a\ stricter\ explicit\ conversion\ with\ a\ named\ destination\ type\ and\ a\ more}}
+\DoxyCodeLine{00512\ \textcolor{comment}{//\ \ lenient\ implicit\ conversion.\ Implemented\ with\ implicit\ conversion\ in\ order}}
+\DoxyCodeLine{00513\ \textcolor{comment}{//\ \ to\ take\ advantage\ of\ the\ undefined-\/behavior\ sanitizer's\ inspection\ of\ all}}
+\DoxyCodeLine{00514\ \textcolor{comment}{//\ \ implicit\ conversions\ -\/\ it\ checks\ for\ truncation,\ with\ suppressions\ in\ place}}
+\DoxyCodeLine{00515\ \textcolor{comment}{//\ \ for\ warnings\ which\ guard\ against\ narrowing\ implicit\ conversions.}}
+\DoxyCodeLine{00516\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1to__narrow__fn}{to\_narrow\_fn}}\ \{}
+\DoxyCodeLine{00517\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00518\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ operator()(Src\ \textcolor{keyword}{const}\&\ src)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ -\/>\ \mbox{\hyperlink{classkiwi_1_1to__narrow__convertible}{to\_narrow\_convertible<Src>}}\ \{}
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1to__narrow__convertible}{to\_narrow\_convertible<Src>}}\{src\};}
+\DoxyCodeLine{00521\ \ \ \}}
+\DoxyCodeLine{00522\ \};}
+\DoxyCodeLine{00523\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1to__narrow__fn}{to\_narrow\_fn}}\ to\_narrow\{\};}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00525\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00526\ \textcolor{keyword}{class\ }to\_integral\_convertible\ \{}
+\DoxyCodeLine{00527\ \ \ \textcolor{keyword}{static\_assert}(std::is\_floating\_point<Src>::value,\ \textcolor{stringliteral}{"{}not\ a\ floating-\/point"{}});}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00530\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ to\_\ =\ std::is\_integral<Dst>::value;}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00533\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ to\_integral\_convertible(Src\ \textcolor{keyword}{const}\&\ value)\ noexcept}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ :\ value\_(value)\ \{\}}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \ \ \textcolor{keyword}{explicit}\ to\_integral\_convertible(to\_integral\_convertible\ \textcolor{keyword}{const}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00537\ \ \ \textcolor{keyword}{explicit}\ to\_integral\_convertible(to\_integral\_convertible\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00538\ \ \ to\_integral\_convertible\&\ operator=(to\_integral\_convertible\ \textcolor{keyword}{const}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00539\ \ \ to\_integral\_convertible\&\ operator=(to\_integral\_convertible\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ std::enable\_if\_t<to\_<Dst>,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00542\ \ \ \textcolor{comment}{/*\ implicit\ */}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ Dst()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00543\ \ \ \ \ KIWI\_PUSH\_WARNING}
+\DoxyCodeLine{00544\ \ \ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4244)\ \ \textcolor{comment}{//\ lossy\ conversion:\ arguments}}
+\DoxyCodeLine{00545\ \ \ \ \ KIWI\_MSVC\_DISABLE\_WARNING(4267)\ \ \textcolor{comment}{//\ lossy\ conversion:\ variables}}
+\DoxyCodeLine{00546\ \ \ \ \ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wconversion"{}})}
+\DoxyCodeLine{00547\ \ \ \ \ \textcolor{keywordflow}{return}\ value\_;}
+\DoxyCodeLine{00548\ \ \ \ \ KIWI\_POP\_WARNING}
+\DoxyCodeLine{00549\ \ \ \}}
+\DoxyCodeLine{00550\ }
+\DoxyCodeLine{00551\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00552\ \ \ Src\ value\_;}
+\DoxyCodeLine{00553\ \};}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \textcolor{comment}{//\ \ to\_integral}}
+\DoxyCodeLine{00556\ \textcolor{comment}{//}}
+\DoxyCodeLine{00557\ \textcolor{comment}{//\ \ A\ utility\ for\ performing\ explicit\ floating-\/point-\/to-\/integral\ conversion}}
+\DoxyCodeLine{00558\ \textcolor{comment}{//\ \ without\ specifying\ the\ destination\ type.\ Sometimes\ preferable\ to}}
+\DoxyCodeLine{00559\ \textcolor{comment}{//\ \ static\_cast<Dst>(src)\ to\ document\ the\ intended\ semantics\ of\ the\ cast.}}
+\DoxyCodeLine{00560\ \textcolor{comment}{//}}
+\DoxyCodeLine{00561\ \textcolor{comment}{//\ \ Models\ explicit\ conversion\ with\ an\ elided\ destination\ type.\ Sits\ in\ between}}
+\DoxyCodeLine{00562\ \textcolor{comment}{//\ \ a\ stricter\ explicit\ conversion\ with\ a\ named\ destination\ type\ and\ a\ more}}
+\DoxyCodeLine{00563\ \textcolor{comment}{//\ \ lenient\ implicit\ conversion.\ Implemented\ with\ implicit\ conversion\ in\ order}}
+\DoxyCodeLine{00564\ \textcolor{comment}{//\ \ to\ take\ advantage\ of\ the\ undefined-\/behavior\ sanitizer's\ inspection\ of\ all}}
+\DoxyCodeLine{00565\ \textcolor{comment}{//\ \ implicit\ conversions.}}
+\DoxyCodeLine{00566\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1to__integral__fn}{to\_integral\_fn}}\ \{}
+\DoxyCodeLine{00567\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00568\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ operator()(Src\ \textcolor{keyword}{const}\&\ src)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ -\/>\ \mbox{\hyperlink{classkiwi_1_1to__integral__convertible}{to\_integral\_convertible<Src>}}\ \{}
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1to__integral__convertible}{to\_integral\_convertible<Src>}}\{src\};}
+\DoxyCodeLine{00571\ \ \ \}}
+\DoxyCodeLine{00572\ \};}
+\DoxyCodeLine{00573\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1to__integral__fn}{to\_integral\_fn}}\ to\_integral\{\};}
+\DoxyCodeLine{00574\ }
+\DoxyCodeLine{00575\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00576\ \textcolor{keyword}{class\ }to\_floating\_point\_convertible\ \{}
+\DoxyCodeLine{00577\ \ \ \textcolor{keyword}{static\_assert}(std::is\_integral<Src>::value,\ \textcolor{stringliteral}{"{}not\ a\ floating-\/point"{}});}
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00580\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ to\_\ =\ std::is\_floating\_point<Dst>::value;}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00583\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ to\_floating\_point\_convertible(Src\ \textcolor{keyword}{const}\&\ value)\ noexcept}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ :\ value\_(value)\ \{\}}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \ \ \textcolor{keyword}{explicit}\ to\_floating\_point\_convertible(to\_floating\_point\_convertible\ \textcolor{keyword}{const}\&)\ =}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00588\ \ \ \textcolor{keyword}{explicit}\ to\_floating\_point\_convertible(to\_floating\_point\_convertible\&\&)\ =}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00590\ \ \ to\_floating\_point\_convertible\&\ operator=(}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ to\_floating\_point\_convertible\ \textcolor{keyword}{const}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00592\ \ \ to\_floating\_point\_convertible\&\ operator=(to\_floating\_point\_convertible\&\&)\ =}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ std::enable\_if\_t<to\_<Dst>,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00596\ \ \ \textcolor{comment}{/*\ implicit\ */}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ Dst()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00597\ \ \ \ \ KIWI\_PUSH\_WARNING}
+\DoxyCodeLine{00598\ \ \ \ \ KIWI\_GNU\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wconversion"{}})}
+\DoxyCodeLine{00599\ \ \ \ \ \textcolor{keywordflow}{return}\ value\_;}
+\DoxyCodeLine{00600\ \ \ \ \ KIWI\_POP\_WARNING}
+\DoxyCodeLine{00601\ \ \ \}}
+\DoxyCodeLine{00602\ }
+\DoxyCodeLine{00603\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00604\ \ \ Src\ value\_;}
+\DoxyCodeLine{00605\ \};}
+\DoxyCodeLine{00606\ }
+\DoxyCodeLine{00607\ \textcolor{comment}{//\ \ to\_floating\_point}}
+\DoxyCodeLine{00608\ \textcolor{comment}{//}}
+\DoxyCodeLine{00609\ \textcolor{comment}{//\ \ A\ utility\ for\ performing\ explicit\ integral-\/to-\/floating-\/point\ conversion}}
+\DoxyCodeLine{00610\ \textcolor{comment}{//\ \ without\ specifying\ the\ destination\ type.\ Sometimes\ preferable\ to}}
+\DoxyCodeLine{00611\ \textcolor{comment}{//\ \ static\_cast<Dst>(src)\ to\ document\ the\ intended\ semantics\ of\ the\ cast.}}
+\DoxyCodeLine{00612\ \textcolor{comment}{//}}
+\DoxyCodeLine{00613\ \textcolor{comment}{//\ \ Models\ explicit\ conversion\ with\ an\ elided\ destination\ type.\ Sits\ in\ between}}
+\DoxyCodeLine{00614\ \textcolor{comment}{//\ \ a\ stricter\ explicit\ conversion\ with\ a\ named\ destination\ type\ and\ a\ more}}
+\DoxyCodeLine{00615\ \textcolor{comment}{//\ \ lenient\ implicit\ conversion.\ Implemented\ with\ implicit\ conversion\ in\ order}}
+\DoxyCodeLine{00616\ \textcolor{comment}{//\ \ to\ take\ advantage\ of\ the\ undefined-\/behavior\ sanitizer's\ inspection\ of\ all}}
+\DoxyCodeLine{00617\ \textcolor{comment}{//\ \ implicit\ conversions.}}
+\DoxyCodeLine{00618\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1to__floating__point__fn}{to\_floating\_point\_fn}}\ \{}
+\DoxyCodeLine{00619\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00620\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ operator()(Src\ \textcolor{keyword}{const}\&\ src)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ -\/>\ \mbox{\hyperlink{classkiwi_1_1to__floating__point__convertible}{to\_floating\_point\_convertible<Src>}}\ \{}
+\DoxyCodeLine{00622\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1to__floating__point__convertible}{to\_floating\_point\_convertible<Src>}}\{src\};}
+\DoxyCodeLine{00623\ \ \ \}}
+\DoxyCodeLine{00624\ \};}
+\DoxyCodeLine{00625\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1to__floating__point__fn}{to\_floating\_point\_fn}}\ to\_floating\_point\{\};}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1to__underlying__fn}{to\_underlying\_fn}}\ \{}
+\DoxyCodeLine{00628\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{class\ }E>}
+\DoxyCodeLine{00629\ \ \ \textcolor{keyword}{constexpr}\ std::underlying\_type\_t<E>\ operator()(E\ e)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00630\ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_enum<E>::value,\ \textcolor{stringliteral}{"{}not\ an\ enum\ type"{}});}
+\DoxyCodeLine{00631\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}std::underlying\_type\_t<E>\textcolor{keyword}{>}(e);}
+\DoxyCodeLine{00632\ \ \ \}}
+\DoxyCodeLine{00633\ \};}
+\DoxyCodeLine{00634\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1to__underlying__fn}{to\_underlying\_fn}}\ to\_underlying\{\};}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00637\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00638\ \textcolor{keyword}{using\ }invocable\_to\_detect\ =\ \textcolor{keyword}{decltype}(KIWI\_DECLVAL(R)());}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \textcolor{keyword}{template}\ <}
+\DoxyCodeLine{00641\ \ \ \ \ \textcolor{keyword}{typename}\ F,}
+\DoxyCodeLine{00642\ \ \ \ \ \textcolor{comment}{//\ \ MSVC\ 14.16.27023\ does\ not\ permit\ these\ to\ be\ in\ the\ class\ body:}}
+\DoxyCodeLine{00643\ \ \ \ \ \textcolor{comment}{//\ \ \ \ error\ C2833:\ 'operator\ decltype'\ is\ not\ a\ recognized\ operator\ or\ type}}
+\DoxyCodeLine{00644\ \ \ \ \ \textcolor{comment}{//\ \ TODO:\ return\ these\ to\ the\ class\ body\ and\ remove\ the\ static\ assertions}}
+\DoxyCodeLine{00645\ \ \ \ \ \textcolor{keyword}{typename}\ TML\ =\ detected\_t<invocable\_to\_detect,\ F\&>,}
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{keyword}{typename}\ TCL\ =\ detected\_t<invocable\_to\_detect,\ F\ const\&>,}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{keyword}{typename}\ TMR\ =\ detected\_t<invocable\_to\_detect,\ F\&\&>,}
+\DoxyCodeLine{00648\ \ \ \ \ \textcolor{keyword}{typename}\ TCR\ =\ detected\_t<invocable\_to\_detect,\ F\ const\&\&>>}
+\DoxyCodeLine{00649\ \textcolor{keyword}{class\ }invocable\_to\_convertible\ :\ \textcolor{keyword}{private}\ inheritable<F>\ \{}
+\DoxyCodeLine{00650\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00651\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<F,\ decay\_t<F>>::value,\ \textcolor{stringliteral}{"{}mismatch"{}});}
+\DoxyCodeLine{00652\ }
+\DoxyCodeLine{00653\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00654\ \ \ \textcolor{keyword}{using\ }result\_t\ =\ detected\_t<invocable\_to\_detect,\ R>;}
+\DoxyCodeLine{00655\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00656\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ detected\_v\ =\ is\_detected\_v<invocable\_to\_detect,\ R>;}
+\DoxyCodeLine{00657\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00658\ \ \ \textcolor{keyword}{using\ }if\_invocable\_as\_v\ =\ std::enable\_if\_t<detected\_v<R>,\ \textcolor{keywordtype}{int}>;}
+\DoxyCodeLine{00659\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R>}
+\DoxyCodeLine{00660\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ nx\_v\ =\ \textcolor{keyword}{noexcept}(KIWI\_DECLVAL(R)());}
+\DoxyCodeLine{00661\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ G>}
+\DoxyCodeLine{00662\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ constructible\_v\ =\ std::is\_constructible<F,\ G\&\&>::value;}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00664\ \ \ \textcolor{keyword}{using\ }FML\ =\ F\&;}
+\DoxyCodeLine{00665\ \ \ \textcolor{keyword}{using\ }FCL\ =\ F\ \textcolor{keyword}{const}\&;}
+\DoxyCodeLine{00666\ \ \ \textcolor{keyword}{using\ }FMR\ =\ F\&\&;}
+\DoxyCodeLine{00667\ \ \ \textcolor{keyword}{using\ }FCR\ =\ F\ \textcolor{keyword}{const}\&\&;}
+\DoxyCodeLine{00668\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<TML,\ result\_t<FML>>::value,\ \textcolor{stringliteral}{"{}mismatch"{}});}
+\DoxyCodeLine{00669\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<TCL,\ result\_t<FCL>>::value,\ \textcolor{stringliteral}{"{}mismatch"{}});}
+\DoxyCodeLine{00670\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<TMR,\ result\_t<FMR>>::value,\ \textcolor{stringliteral}{"{}mismatch"{}});}
+\DoxyCodeLine{00671\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<TCR,\ result\_t<FCR>>::value,\ \textcolor{stringliteral}{"{}mismatch"{}});}
+\DoxyCodeLine{00672\ }
+\DoxyCodeLine{00673\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00674\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ G,\ std::enable\_if\_t<constructible\_v<G\&\&>,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00675\ \ \ KIWI\_ERASE\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ invocable\_to\_convertible(G\&\&\ g)\ \textcolor{keyword}{noexcept}(}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(F(\textcolor{keyword}{static\_cast<}G\&\&\textcolor{keyword}{>}(g))))}
+\DoxyCodeLine{00677\ \ \ \ \ \ \ :\ inheritable<F>(\textcolor{keyword}{static\_cast<}G\&\&\textcolor{keyword}{>}(g))\ \{\}}
+\DoxyCodeLine{00678\ }
+\DoxyCodeLine{00679\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ R\ =\ FML,\ if\_invocable\_as\_v<R>\ =\ 0>}
+\DoxyCodeLine{00680\ \ \ KIWI\_ERASE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ TML()\ \&\ \textcolor{keyword}{noexcept}(nx\_v<R>)\ \{}
+\DoxyCodeLine{00681\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}FML\textcolor{keyword}{>}(*this)();}
+\DoxyCodeLine{00682\ \ \ \}}
+\DoxyCodeLine{00683\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ R\ =\ FCL,\ if\_invocable\_as\_v<R>\ =\ 0>}
+\DoxyCodeLine{00684\ \ \ KIWI\_ERASE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ TCL()\ \textcolor{keyword}{const}\&\ \textcolor{keyword}{noexcept}(nx\_v<R>)\ \{}
+\DoxyCodeLine{00685\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}FCL\textcolor{keyword}{>}(*this)();}
+\DoxyCodeLine{00686\ \ \ \}}
+\DoxyCodeLine{00687\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ R\ =\ FMR,\ if\_invocable\_as\_v<R>\ =\ 0>}
+\DoxyCodeLine{00688\ \ \ KIWI\_ERASE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ TMR()\ \&\&\ \textcolor{keyword}{noexcept}(nx\_v<R>)\ \{}
+\DoxyCodeLine{00689\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}FMR\textcolor{keyword}{>}(*this)();}
+\DoxyCodeLine{00690\ \ \ \}}
+\DoxyCodeLine{00691\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ R\ =\ FCR,\ if\_invocable\_as\_v<R>\ =\ 0>}
+\DoxyCodeLine{00692\ \ \ KIWI\_ERASE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ TCR()\ \textcolor{keyword}{const}\&\&\ \textcolor{keyword}{noexcept}(nx\_v<R>)\ \{}
+\DoxyCodeLine{00693\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}FCR\textcolor{keyword}{>}(*this)();}
+\DoxyCodeLine{00694\ \ \ \}}
+\DoxyCodeLine{00695\ \};}
+\DoxyCodeLine{00696\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00697\ }
+\DoxyCodeLine{00698\ \textcolor{comment}{//\ \ invocable\_to}}
+\DoxyCodeLine{00699\ \textcolor{comment}{//\ \ invocable\_to\_fn}}
+\DoxyCodeLine{00700\ \textcolor{comment}{//}}
+\DoxyCodeLine{00701\ \textcolor{comment}{//\ \ Given\ an\ invocable,\ returns\ an\ object\ which\ is\ implicitly\ convertible\ to\ the}}
+\DoxyCodeLine{00702\ \textcolor{comment}{//\ \ type\ which\ the\ invocable\ returns\ when\ invoked\ with\ no\ arguments.\ Conversion}}
+\DoxyCodeLine{00703\ \textcolor{comment}{//\ \ invokes\ the\ invocables\ and\ returns\ the\ value.}}
+\DoxyCodeLine{00704\ \textcolor{comment}{//}}
+\DoxyCodeLine{00705\ \textcolor{comment}{//\ \ The\ return\ object\ has\ unspecified\ type\ with\ the\ following\ semantics:}}
+\DoxyCodeLine{00706\ \textcolor{comment}{//\ \ *\ It\ stores\ a\ decay-\/copy\ of\ the\ passed\ invocable.}}
+\DoxyCodeLine{00707\ \textcolor{comment}{//\ \ *\ It\ defines\ four-\/way\ conversion\ operators.\ Each\ conversion\ operator\ purely}}
+\DoxyCodeLine{00708\ \textcolor{comment}{//\ \ \ \ forwards\ to\ the\ invocable\ as\ forwarded-\/like\ the\ convertible,\ and\ has\ the}}
+\DoxyCodeLine{00709\ \textcolor{comment}{//\ \ \ \ same\ exception\ specification\ and\ the\ same\ participation\ in\ overload}}
+\DoxyCodeLine{00710\ \textcolor{comment}{//\ \ \ \ resolution\ as\ invocation\ of\ the\ invocable.}}
+\DoxyCodeLine{00711\ \textcolor{comment}{//}}
+\DoxyCodeLine{00712\ \textcolor{comment}{//\ \ Example:}}
+\DoxyCodeLine{00713\ \textcolor{comment}{//}}
+\DoxyCodeLine{00714\ \textcolor{comment}{//\ \ \ \ Given\ a\ setup:}}
+\DoxyCodeLine{00715\ \textcolor{comment}{//}}
+\DoxyCodeLine{00716\ \textcolor{comment}{//\ \ \ \ \ \ struct\ stable\ \{}}
+\DoxyCodeLine{00717\ \textcolor{comment}{//\ \ \ \ \ \ \ \ int\ value\ =\ 0;}}
+\DoxyCodeLine{00718\ \textcolor{comment}{//\ \ \ \ \ \ \ \ stable()\ =\ default;}}
+\DoxyCodeLine{00719\ \textcolor{comment}{//\ \ \ \ \ \ \ \ stable(stable\ const\&);\ //\ expensive!}}
+\DoxyCodeLine{00720\ \textcolor{comment}{//\ \ \ \ \ \ \};}}
+\DoxyCodeLine{00721\ \textcolor{comment}{//\ \ \ \ \ \ std::list<stable\ const>\ list;}}
+\DoxyCodeLine{00722\ \textcolor{comment}{//}}
+\DoxyCodeLine{00723\ \textcolor{comment}{//\ \ \ \ The\ goal\ is\ to\ insert\ a\ stable\ with\ a\ value\ of\ 7\ to\ the\ back\ of\ the\ list.}}
+\DoxyCodeLine{00724\ \textcolor{comment}{//}}
+\DoxyCodeLine{00725\ \textcolor{comment}{//\ \ \ \ The\ obvious\ ways\ are\ expensive:}}
+\DoxyCodeLine{00726\ \textcolor{comment}{//}}
+\DoxyCodeLine{00727\ \textcolor{comment}{//\ \ \ \ \ \ stable\ obj;}}
+\DoxyCodeLine{00728\ \textcolor{comment}{//\ \ \ \ \ \ obj.value\ =\ 7;}}
+\DoxyCodeLine{00729\ \textcolor{comment}{//\ \ \ \ \ \ list.push\_back(obj);\ //\ or\ variations\ with\ emplace\_back\ or\ std::move}}
+\DoxyCodeLine{00730\ \textcolor{comment}{//}}
+\DoxyCodeLine{00731\ \textcolor{comment}{//\ \ \ \ With\ a\ lambda\ and\ copy\ elision\ optimization\ (NRVO),\ the\ expense\ remains:}}
+\DoxyCodeLine{00732\ \textcolor{comment}{//}}
+\DoxyCodeLine{00733\ \textcolor{comment}{//\ \ \ \ \ \ list.push\_back(std::invoke([]\ \{}}
+\DoxyCodeLine{00734\ \textcolor{comment}{//\ \ \ \ \ \ \ \ stable\ obj;}}
+\DoxyCodeLine{00735\ \textcolor{comment}{//\ \ \ \ \ \ \ \ obj.value\ =\ 7;}}
+\DoxyCodeLine{00736\ \textcolor{comment}{//\ \ \ \ \ \ \ \ return\ obj;}}
+\DoxyCodeLine{00737\ \textcolor{comment}{//\ \ \ \ \ \ \}));}}
+\DoxyCodeLine{00738\ \textcolor{comment}{//}}
+\DoxyCodeLine{00739\ \textcolor{comment}{//\ \ \ \ But\ conversion,\ as\ done\ with\ this\ utility,\ makes\ this\ goal\ achievable.}}
+\DoxyCodeLine{00740\ \textcolor{comment}{//}}
+\DoxyCodeLine{00741\ \textcolor{comment}{//\ \ \ \ \ \ list.emplace\_back(folly::invocable\_to([]\ \{}}
+\DoxyCodeLine{00742\ \textcolor{comment}{//\ \ \ \ \ \ \ \ stable\ obj;}}
+\DoxyCodeLine{00743\ \textcolor{comment}{//\ \ \ \ \ \ \ \ obj.value\ =\ 7;}}
+\DoxyCodeLine{00744\ \textcolor{comment}{//\ \ \ \ \ \ \ \ return\ obj;}}
+\DoxyCodeLine{00745\ \textcolor{comment}{//\ \ \ \ \ \ \}));}}
+\DoxyCodeLine{00746\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1invocable__to__fn}{invocable\_to\_fn}}\ \{}
+\DoxyCodeLine{00747\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F,\ \textcolor{keyword}{typename}...,\ \textcolor{keyword}{typename}\ D\ =\ detail::decay\_t<F>,}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ R\ =\ \mbox{\hyperlink{classkiwi_1_1detail_1_1invocable__to__convertible}{detail::invocable\_to\_convertible<D>}},}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \ \ \ \ \ \ std::enable\_if\_t<std::is\_constructible<D,\ F\&\&>::value,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00750\ \ \ KIWI\_ERASE\ \textcolor{keyword}{constexpr}\ R\ operator()(F\&\&\ f)\ \textcolor{keyword}{const}}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \textcolor{keyword}{noexcept}(\textcolor{keyword}{noexcept}(R(\textcolor{keyword}{static\_cast<}F\&\&\textcolor{keyword}{>}(f))))\ \{}
+\DoxyCodeLine{00752\ \ \ \ \ \textcolor{keywordflow}{return}\ R(\textcolor{keyword}{static\_cast<}F\&\&\textcolor{keyword}{>}(f));}
+\DoxyCodeLine{00753\ \ \ \}}
+\DoxyCodeLine{00754\ \};}
+\DoxyCodeLine{00755\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1invocable__to__fn}{invocable\_to\_fn}}\ invocable\_to\{\};}
+\DoxyCodeLine{00756\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

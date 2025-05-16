@@ -1,0 +1,40 @@
+\doxysection{kiwi\+::detail\+::function\+::Dispatch\+Big\+Trivial Struct Reference}
+\hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial}{}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial}\index{kiwi::detail::function::DispatchBigTrivial@{kiwi::detail::function::DispatchBigTrivial}}
+Inheritance diagram for kiwi\+::detail\+::function\+::Dispatch\+Big\+Trivial\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a277dc30d86eba0165f2d4362aa05f2e6}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a277dc30d86eba0165f2d4362aa05f2e6} 
+static constexpr bool {\bfseries is\+\_\+align\+\_\+large} (size\+\_\+t align)
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a2ecbebddd10866e781c2925f70f684c7}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a2ecbebddd10866e781c2925f70f684c7} 
+{\footnotesize template$<$bool Is\+Align\+Large$>$ }\\static std\+::size\+\_\+t {\bfseries exec\+\_\+} (Op o, \mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}} \texorpdfstring{$\ast$}{*}src, \mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}} \texorpdfstring{$\ast$}{*}dst) noexcept
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a831f0068bd71c965a9ab0e7d36febb9e}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a831f0068bd71c965a9ab0e7d36febb9e} 
+static KIWI\+\_\+\+ALWAYS\+\_\+\+INLINE void {\bfseries ctor} (\mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}} \&data, void const \texorpdfstring{$\ast$}{*}fun, std\+::size\+\_\+t size, std\+::size\+\_\+t align) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_af78909f31411939c16aa18af7e23e089}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_af78909f31411939c16aa18af7e23e089} 
+static constexpr bool {\bfseries is\+\_\+in\+\_\+situ} = false
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a2e83bb86cae47ab260e156fc50c86a30}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a2e83bb86cae47ab260e156fc50c86a30} 
+static constexpr bool {\bfseries is\+\_\+trivial} = true
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_ad9343b8e998f95ff2bb0e9d4967828fc}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_ad9343b8e998f95ff2bb0e9d4967828fc} 
+{\footnotesize template$<$typename Fun, typename Base$>$ }\\static constexpr auto {\bfseries call} = Base\+::template call\+Big$<$Fun$>$
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a88b4f08fb7850850681218a4dbdaed50}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_big_trivial_a88b4f08fb7850850681218a4dbdaed50} 
+{\footnotesize template$<$typename T$>$ }\\static constexpr auto {\bfseries exec} = exec\+\_\+$<$is\+\_\+align\+\_\+large(alignof(T))$>$
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

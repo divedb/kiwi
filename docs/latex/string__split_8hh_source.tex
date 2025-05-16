@@ -1,0 +1,165 @@
+\doxysection{string\+\_\+split.\+hh}
+\hypertarget{string__split_8hh_source}{}\label{string__split_8hh_source}\index{include/kiwi/strings/string\_split.hh@{include/kiwi/strings/string\_split.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#ifndef\ BASE\_STRINGS\_STRING\_SPLIT\_H\_}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ BASE\_STRINGS\_STRING\_SPLIT\_H\_}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ Splits\ a\ string\ at\ the\ first\ instance\ of\ \`{}separator`,\ returning\ a\ pair\ of}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \`{}std::string\_view`:\ \`{}first`\ is\ the\ (potentially\ empty)\ part\ that\ comes\ before}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ the\ separator,\ and\ \`{}second`\ is\ the\ (potentially\ empty)\ part\ that\ comes\ after.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ If\ \`{}separator`\ is\ not\ in\ \`{}input`,\ returns\ \`{}std::nullopt`.}}
+\DoxyCodeLine{00023\ BASE\_EXPORT\ std::optional<std::pair<std::string\_view,\ std::string\_view>>}
+\DoxyCodeLine{00024\ SplitStringOnce(std::string\_view\ input\ KIWI\_LIFETIME\_BOUND,\ \textcolor{keywordtype}{char}\ separator);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ Similar\ to\ the\ above,\ but\ splits\ the\ string\ at\ the\ first\ instance\ of\ any}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ separator\ in\ \`{}separators`.}}
+\DoxyCodeLine{00028\ BASE\_EXPORT\ std::optional<std::pair<std::string\_view,\ std::string\_view>>}
+\DoxyCodeLine{00029\ SplitStringOnce(std::string\_view\ input\ KIWI\_LIFETIME\_BOUND,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ separators);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ Splits\ a\ string\ at\ the\ last\ instance\ of\ \`{}separator`,\ returning\ a\ pair\ of}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \`{}std::string\_view`:\ \`{}first`\ is\ the\ (potentially\ empty)\ part\ that\ comes\ before}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ the\ separator,\ and\ \`{}second`\ is\ the\ (potentially\ empty)\ part\ that\ comes\ after.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ If\ \`{}separator`\ is\ not\ in\ \`{}input`,\ returns\ \`{}std::nullopt`.}}
+\DoxyCodeLine{00036\ BASE\_EXPORT\ std::optional<std::pair<std::string\_view,\ std::string\_view>>}
+\DoxyCodeLine{00037\ RSplitStringOnce(std::string\_view\ input\ KIWI\_LIFETIME\_BOUND,\ \textcolor{keywordtype}{char}\ separator);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ Similar\ to\ the\ above,\ but\ splits\ the\ string\ at\ the\ last\ instance\ of\ any}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ separator\ in\ \`{}separators`.}}
+\DoxyCodeLine{00041\ BASE\_EXPORT\ std::optional<std::pair<std::string\_view,\ std::string\_view>>}
+\DoxyCodeLine{00042\ RSplitStringOnce(std::string\_view\ input\ KIWI\_LIFETIME\_BOUND,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ separators);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{enum}\ WhitespaceHandling\ \{}
+\DoxyCodeLine{00046\ \ \ KEEP\_WHITESPACE,}
+\DoxyCodeLine{00047\ \ \ TRIM\_WHITESPACE,}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{enum}\ SplitResult\ \{}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ Strictly\ return\ all\ results.}}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ If\ the\ input\ is\ "{},,"{}\ and\ the\ separator\ is\ ','\ this\ will\ return\ a}}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ vector\ of\ three\ empty\ strings.}}
+\DoxyCodeLine{00055\ \ \ SPLIT\_WANT\_ALL,}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ Only\ nonempty\ results\ will\ be\ added\ to\ the\ results.\ Multiple\ separators}}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ will\ be\ coalesced.\ Separators\ at\ the\ beginning\ and\ end\ of\ the\ input\ will}}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ be\ ignored.\ With\ TRIM\_WHITESPACE,\ whitespace-\/only\ results\ will\ be\ dropped.}}
+\DoxyCodeLine{00060\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//\ If\ the\ input\ is\ "{},,"{}\ and\ the\ separator\ is\ ',',\ this\ will\ return\ an\ empty}}
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//\ vector.}}
+\DoxyCodeLine{00063\ \ \ SPLIT\_WANT\_NONEMPTY,}
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ Split\ the\ given\ string\ on\ ANY\ of\ the\ given\ separators,\ returning\ copies\ of}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ the\ result.}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ Note\ this\ is\ inverse\ of\ JoinString()\ defined\ in\ string\_util.h.}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ To\ split\ on\ either\ commas\ or\ semicolons,\ keeping\ all\ whitespace:}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ \ std::vector<std::string>\ tokens\ =\ base::SplitString(}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ \ \ \ \ \ \ input,\ "{},;"{},\ base::KEEP\_WHITESPACE,\ base::SPLIT\_WANT\_ALL);}}
+\DoxyCodeLine{00075\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::string>\ SplitString(}
+\DoxyCodeLine{00076\ \ \ \ \ std::string\_view\ input,\ std::string\_view\ separators,}
+\DoxyCodeLine{00077\ \ \ \ \ WhitespaceHandling\ whitespace,\ SplitResult\ result\_type);}
+\DoxyCodeLine{00078\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::u16string>\ SplitString(}
+\DoxyCodeLine{00079\ \ \ \ \ std::u16string\_view\ input,\ std::u16string\_view\ separators,}
+\DoxyCodeLine{00080\ \ \ \ \ WhitespaceHandling\ whitespace,\ SplitResult\ result\_type);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ Like\ SplitString\ above\ except\ it\ returns\ a\ vector\ of\ StringPieces\ which}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ reference\ the\ original\ buffer\ without\ copying.\ Although\ you\ have\ to\ be}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ careful\ to\ keep\ the\ original\ string\ unmodified,\ this\ provides\ an\ efficient}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ way\ to\ iterate\ through\ tokens\ in\ a\ string.}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ Note\ this\ is\ inverse\ of\ JoinString()\ defined\ in\ string\_util.h.}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ To\ iterate\ through\ all\ whitespace-\/separated\ tokens\ in\ an\ input\ string:}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ \ \ for\ (const\ auto\&\ cur\ :}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ \ \ \ \ \ \ \ base::SplitStringPiece(input,\ base::kWhitespaceASCII,}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base::KEEP\_WHITESPACE,}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base::SPLIT\_WANT\_NONEMPTY))\ \{}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ \ \ \ ...}}
+\DoxyCodeLine{00096\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::string\_view>\ SplitStringPiece(}
+\DoxyCodeLine{00097\ \ \ \ \ std::string\_view\ input\ KIWI\_LIFETIME\_BOUND,\ std::string\_view\ separators,}
+\DoxyCodeLine{00098\ \ \ \ \ WhitespaceHandling\ whitespace,\ SplitResult\ result\_type);}
+\DoxyCodeLine{00099\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::u16string\_view>\ SplitStringPiece(}
+\DoxyCodeLine{00100\ \ \ \ \ std::u16string\_view\ input\ KIWI\_LIFETIME\_BOUND,}
+\DoxyCodeLine{00101\ \ \ \ \ std::u16string\_view\ separators,\ WhitespaceHandling\ whitespace,}
+\DoxyCodeLine{00102\ \ \ \ \ SplitResult\ result\_type);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{using\ }StringPairs\ =\ std::vector<std::pair<std::string,\ std::string>>;}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ Splits\ |line|\ into\ key\ value\ pairs\ according\ to\ the\ given\ delimiters\ and}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ removes\ whitespace\ leading\ each\ key\ and\ trailing\ each\ value.\ Returns\ true}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ only\ if\ each\ pair\ has\ a\ non-\/empty\ key\ and\ value.\ |key\_value\_pairs|\ will}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ include\ ("{}"{},"{}"{})\ pairs\ for\ entries\ without\ |key\_value\_delimiter|.}}
+\DoxyCodeLine{00110\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ SplitStringIntoKeyValuePairs(std::string\_view\ input,}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ key\_value\_delimiter,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ key\_value\_pair\_delimiter,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ StringPairs*\ key\_value\_pairs);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ Similar\ to\ SplitStringIntoKeyValuePairs,\ but\ use\ a\ substring}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ |key\_value\_pair\_delimiter|\ instead\ of\ a\ single\ char.}}
+\DoxyCodeLine{00117\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ SplitStringIntoKeyValuePairsUsingSubstr(}
+\DoxyCodeLine{00118\ \ \ \ \ std::string\_view\ input,\ \textcolor{keywordtype}{char}\ key\_value\_delimiter,}
+\DoxyCodeLine{00119\ \ \ \ \ std::string\_view\ key\_value\_pair\_delimiter,\ StringPairs*\ key\_value\_pairs);}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ Similar\ to\ SplitString,\ but\ use\ a\ substring\ delimiter\ instead\ of\ a\ list\ of}}
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ characters\ that\ are\ all\ possible\ delimiters.}}
+\DoxyCodeLine{00123\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::u16string>\ SplitStringUsingSubstr(}
+\DoxyCodeLine{00124\ \ \ \ \ std::u16string\_view\ input,\ std::u16string\_view\ delimiter,}
+\DoxyCodeLine{00125\ \ \ \ \ WhitespaceHandling\ whitespace,\ SplitResult\ result\_type);}
+\DoxyCodeLine{00126\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::string>\ SplitStringUsingSubstr(}
+\DoxyCodeLine{00127\ \ \ \ \ std::string\_view\ input,\ std::string\_view\ delimiter,}
+\DoxyCodeLine{00128\ \ \ \ \ WhitespaceHandling\ whitespace,\ SplitResult\ result\_type);}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ Like\ SplitStringUsingSubstr\ above\ except\ it\ returns\ a\ vector\ of\ StringPieces}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ which\ reference\ the\ original\ buffer\ without\ copying.\ Although\ you\ have\ to\ be}}
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ careful\ to\ keep\ the\ original\ string\ unmodified,\ this\ provides\ an\ efficient}}
+\DoxyCodeLine{00133\ \textcolor{comment}{//\ way\ to\ iterate\ through\ tokens\ in\ a\ string.}}
+\DoxyCodeLine{00134\ \textcolor{comment}{//}}
+\DoxyCodeLine{00135\ \textcolor{comment}{//\ To\ iterate\ through\ all\ newline-\/separated\ tokens\ in\ an\ input\ string:}}
+\DoxyCodeLine{00136\ \textcolor{comment}{//}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\ \ \ for\ (const\ auto\&\ cur\ :}}
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ \ \ \ \ \ \ \ base::SplitStringUsingSubstr(input,\ "{}\(\backslash\)r\(\backslash\)n"{},}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base::KEEP\_WHITESPACE,}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ base::SPLIT\_WANT\_NONEMPTY))\ \{}}
+\DoxyCodeLine{00141\ \textcolor{comment}{//\ \ \ \ \ ...}}
+\DoxyCodeLine{00142\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::u16string\_view>}
+\DoxyCodeLine{00143\ SplitStringPieceUsingSubstr(std::u16string\_view\ input\ KIWI\_LIFETIME\_BOUND,}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::u16string\_view\ delimiter,}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WhitespaceHandling\ whitespace,}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SplitResult\ result\_type);}
+\DoxyCodeLine{00147\ [[nodiscard]]\ BASE\_EXPORT\ std::vector<std::string\_view>}
+\DoxyCodeLine{00148\ SplitStringPieceUsingSubstr(std::string\_view\ input\ KIWI\_LIFETIME\_BOUND,}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\_view\ delimiter,}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WhitespaceHandling\ whitespace,}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SplitResult\ result\_type);}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#include\ "{}base/strings/string\_split\_win.h"{}}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_STRINGS\_STRING\_SPLIT\_H\_}}
+
+\end{DoxyCode}

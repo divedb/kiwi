@@ -191,7 +191,7 @@ constexpr initlist_construct_t initlist_construct{};
 //
 //  mimic: std::sorted_unique_t, std::sorted_unique, p0429r6
 struct sorted_unique_t {};
-constexpr sorted_unique_t sorted_unique{};
+inline constexpr sorted_unique_t sorted_unique{};
 
 //  sorted_equivalent_t, sorted_equivalent
 //

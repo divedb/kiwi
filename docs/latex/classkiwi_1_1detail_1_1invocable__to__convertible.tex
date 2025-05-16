@@ -1,0 +1,31 @@
+\doxysection{kiwi\+::detail\+::invocable\+\_\+to\+\_\+convertible\texorpdfstring{$<$}{<} F, TML, TCL, TMR, TCR \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1detail_1_1invocable__to__convertible}{}\label{classkiwi_1_1detail_1_1invocable__to__convertible}\index{kiwi::detail::invocable\_to\_convertible$<$ F, TML, TCL, TMR, TCR $>$@{kiwi::detail::invocable\_to\_convertible$<$ F, TML, TCL, TMR, TCR $>$}}
+Inheritance diagram for kiwi\+::detail\+::invocable\+\_\+to\+\_\+convertible\texorpdfstring{$<$}{<} F, TML, TCL, TMR, TCR \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1detail_1_1invocable__to__convertible}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1invocable__to__convertible_ac83150910d363ab569265038a8140a20}\label{classkiwi_1_1detail_1_1invocable__to__convertible_ac83150910d363ab569265038a8140a20} 
+{\footnotesize template$<$typename G, std\+::enable\+\_\+if\+\_\+t$<$ constructible\+\_\+v$<$ G \&\& $>$, int $>$ = 0$>$ }\\KIWI\+\_\+\+ERASE constexpr {\bfseries invocable\+\_\+to\+\_\+convertible} (G \&\&g) noexcept(noexcept(F(static\+\_\+cast$<$ G \&\& $>$(g))))
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1invocable__to__convertible_a1cdb13f77f2347468cef40fbf5069963}\label{classkiwi_1_1detail_1_1invocable__to__convertible_a1cdb13f77f2347468cef40fbf5069963} 
+{\footnotesize template$<$typename..., typename R = FML, if\+\_\+invocable\+\_\+as\+\_\+v$<$ R $>$ = 0$>$ }\\KIWI\+\_\+\+ERASE constexpr {\bfseries operator TML} () \&noexcept(nx\+\_\+v$<$ R $>$)
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1invocable__to__convertible_ada8e6e73c228b4120b4668d33f5deb59}\label{classkiwi_1_1detail_1_1invocable__to__convertible_ada8e6e73c228b4120b4668d33f5deb59} 
+{\footnotesize template$<$typename..., typename R = FCL, if\+\_\+invocable\+\_\+as\+\_\+v$<$ R $>$ = 0$>$ }\\KIWI\+\_\+\+ERASE constexpr {\bfseries operator TCL} () const \&noexcept(nx\+\_\+v$<$ R $>$)
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1invocable__to__convertible_a62439685f57beaa795783997da43f81b}\label{classkiwi_1_1detail_1_1invocable__to__convertible_a62439685f57beaa795783997da43f81b} 
+{\footnotesize template$<$typename..., typename R = FMR, if\+\_\+invocable\+\_\+as\+\_\+v$<$ R $>$ = 0$>$ }\\KIWI\+\_\+\+ERASE constexpr {\bfseries operator TMR} () \&\&noexcept(nx\+\_\+v$<$ R $>$)
+\item 
+\Hypertarget{classkiwi_1_1detail_1_1invocable__to__convertible_a472c7c540b5c50f0fa591486b698edd8}\label{classkiwi_1_1detail_1_1invocable__to__convertible_a472c7c540b5c50f0fa591486b698edd8} 
+{\footnotesize template$<$typename..., typename R = FCR, if\+\_\+invocable\+\_\+as\+\_\+v$<$ R $>$ = 0$>$ }\\KIWI\+\_\+\+ERASE constexpr {\bfseries operator TCR} () const \&\&noexcept(nx\+\_\+v$<$ R $>$)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/utility.\+hh\end{DoxyCompactItemize}

@@ -1,0 +1,18 @@
+\doxysection{Function\+Ref Class Reference}
+\hypertarget{classfolly_1_1_function_ref}{}\label{classfolly_1_1_function_ref}\index{FunctionRef@{FunctionRef}}
+
+
+{\ttfamily \#include $<$function.\+hh$>$}
+
+
+
+\doxysubsection{Detailed Description}
+A reference wrapper for callable objects
+
+\doxylink{classfolly_1_1_function_ref}{Function\+Ref} is similar to std\+::reference\+\_\+wrapper, but the template parameter is the function signature type rather than the type of the referenced object. A \doxylink{classfolly_1_1_function_ref}{folly\+::\+Function\+Ref} is cheap to construct as it contains only a pointer to the referenced callable and a pointer to a function which invokes the callable.
+
+The user of \doxylink{classfolly_1_1_function_ref}{Function\+Ref} must be aware of the reference semantics\+: storing a copy of a \doxylink{classfolly_1_1_function_ref}{Function\+Ref} is potentially dangerous and should be avoided unless the referenced object definitely outlives the \doxylink{classfolly_1_1_function_ref}{Function\+Ref} object. Thus any function that accepts a \doxylink{classfolly_1_1_function_ref}{Function\+Ref} parameter should only use it to invoke the referenced function and not store a copy of it. Knowing that \doxylink{classfolly_1_1_function_ref}{Function\+Ref} itself has reference semantics, it is generally okay to use it to reference lambdas that capture by reference. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

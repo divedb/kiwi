@@ -44,8 +44,8 @@
 \DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/function\_ref.hh"{}}}
 \DoxyCodeLine{00041\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/iterators.hh"{}}}
 \DoxyCodeLine{00042\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
-\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
-\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ "{}kiwi/sys/uio.hh"{}}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/uio.hh"{}}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
 \DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ "{}kiwi/util/checked\_math.hh"{}}}
 \DoxyCodeLine{00046\ }
 \DoxyCodeLine{00047\ KIWI\_PUSH\_WARNING}
@@ -299,9 +299,9 @@
 \DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<IOBuf>>::type}
 \DoxyCodeLine{00604\ \ \ TakeOwnership(UniquePtr\&\&\ buf,\ \textcolor{keywordtype}{size\_t}\ count\ =\ 1);}
 \DoxyCodeLine{00605\ }
-\DoxyCodeLine{00616\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ WrapIov(\textcolor{keyword}{const}\ \mbox{\hyperlink{structiovec}{iovec}}*\ vec,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{00616\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ WrapIov(\textcolor{keyword}{const}\ iovec*\ vec,\ \textcolor{keywordtype}{size\_t}\ count);}
 \DoxyCodeLine{00617\ }
-\DoxyCodeLine{00633\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ TakeOwnershipIov(\textcolor{keyword}{const}\ \mbox{\hyperlink{structiovec}{iovec}}*\ vec,\ \textcolor{keywordtype}{size\_t}\ count,}
+\DoxyCodeLine{00633\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<IOBuf>\ TakeOwnershipIov(\textcolor{keyword}{const}\ iovec*\ vec,\ \textcolor{keywordtype}{size\_t}\ count,}
 \DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FreeFunction\ free\_fn\ =\ \textcolor{keyword}{nullptr},}
 \DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ user\_data\ =\ \textcolor{keyword}{nullptr},}
 \DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ free\_on\_error\ =\ \textcolor{keyword}{true});}
@@ -439,7 +439,7 @@
 \DoxyCodeLine{01057\ \ \ \ \ data\_\ -\/=\ amount;}
 \DoxyCodeLine{01058\ \ \ \}}
 \DoxyCodeLine{01059\ }
-\DoxyCodeLine{01073\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a756590a6a2922b5aa48dc77d45f93405}{prepend}}(std::size\_t\ amount)\ \{}
+\DoxyCodeLine{01073\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a4f0412a09fd45d6c4092363c4da2cd89}{Prepend}}(std::size\_t\ amount)\ \{}
 \DoxyCodeLine{01074\ \ \ \ \ DCHECK\_LE(amount,\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_a9f9c776ad615d21567b831945c1529d5}{HeadRoom}}());}
 \DoxyCodeLine{01075\ }
 \DoxyCodeLine{01076\ \ \ \ \ data\_\ -\/=\ amount;}
@@ -748,7 +748,7 @@
 \DoxyCodeLine{01858\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result_a7812a5e1834aa535994285c077485746}{total\_length}};}
 \DoxyCodeLine{01859\ \ \ \};}
 \DoxyCodeLine{01860\ }
-\DoxyCodeLine{01875\ \ \ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{FillIovResult}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adf0a26330fc206a4f85b079061731413}{FillIov}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structiovec}{iovec}}*\ iov,\ \textcolor{keywordtype}{size\_t}\ len)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{01875\ \ \ \mbox{\hyperlink{structkiwi_1_1_i_o_buf_1_1_fill_iov_result}{FillIovResult}}\ \mbox{\hyperlink{classkiwi_1_1_i_o_buf_adf0a26330fc206a4f85b079061731413}{FillIov}}(\textcolor{keyword}{struct}\ iovec*\ iov,\ \textcolor{keywordtype}{size\_t}\ len)\ \textcolor{keyword}{const};}
 \DoxyCodeLine{01876\ }
 \DoxyCodeLine{01884\ \ \ \textcolor{keywordtype}{void}*\ \textcolor{keyword}{operator}\ \textcolor{keyword}{new}(\textcolor{keywordtype}{size\_t}\ size);}
 \DoxyCodeLine{01885\ }

@@ -191,9 +191,17 @@ $(function(){initNavTree('exception_8hh_source.html',''); initResizable(true); }
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <span class="keyword">static_cast&lt;</span>Args&amp;&amp;<span class="keyword">&gt;</span>(args)...);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
 </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}  <span class="comment">// namespace kiwi</span></div>
-<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> file.cc:21</div></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ex, <span class="keyword">typename</span>... Args&gt;</div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="namespacekiwi.html#abe1c845321d89a77e6e93a48d3dce006">  101</a></span>[[noreturn]] KIWI_ERASE <span class="keywordtype">void</span> <a class="code hl_function" href="namespacekiwi.html#af132070951b2a07a01af8a189a3aed0a">terminate_with</a>(Args&amp;&amp;... args) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  detail::terminate_with_&lt;Ex, detail::throw_exception_arg_t&lt;Args&amp;&amp;&gt;...&gt;(</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keyword">static_cast&lt;</span>Args&amp;&amp;<span class="keyword">&gt;</span>(args)...);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}  <span class="comment">// namespace kiwi</span></div>
+<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> time_conversion_posix.cc:15</div></div>
 <div class="ttc" id="anamespacekiwi_html_abe3cc88b10ffe4cc4b1796c4bf782900"><div class="ttname"><a href="namespacekiwi.html#abe3cc88b10ffe4cc4b1796c4bf782900">kiwi::throw_exception</a></div><div class="ttdeci">KIWI_NOINLINE void throw_exception(Ex &amp;&amp;ex)</div><div class="ttdef"><b>Definition</b> exception.hh:14</div></div>
 <div class="ttc" id="anamespacekiwi_html_af132070951b2a07a01af8a189a3aed0a"><div class="ttname"><a href="namespacekiwi.html#af132070951b2a07a01af8a189a3aed0a">kiwi::terminate_with</a></div><div class="ttdeci">KIWI_NOINLINE void terminate_with(Ex &amp;&amp;ex) noexcept</div><div class="ttdef"><b>Definition</b> exception.hh:27</div></div>
 <div class="ttc" id="astructkiwi_1_1detail_1_1throw__exception__arg__array___html"><div class="ttname"><a href="structkiwi_1_1detail_1_1throw__exception__arg__array__.html">kiwi::detail::throw_exception_arg_array_</a></div><div class="ttdef"><b>Definition</b> exception.hh:34</div></div>

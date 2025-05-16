@@ -1,0 +1,41 @@
+\doxysection{folly\+::netops\+::Msgheader Class Reference}
+\hypertarget{classfolly_1_1netops_1_1_msgheader}{}\label{classfolly_1_1netops_1_1_msgheader}\index{folly::netops::Msgheader@{folly::netops::Msgheader}}
+
+
+{\ttfamily \#include $<$ops.\+hh$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_a47d347414e2041f8391e3d19986cc4a9}\label{classfolly_1_1netops_1_1_msgheader_a47d347414e2041f8391e3d19986cc4a9} 
+void {\bfseries set\+Name} (sockaddr\+\_\+storage \texorpdfstring{$\ast$}{*}addr\+Storage, size\+\_\+t len)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_a85e92cce98d2d664bc54f6677a5680d3}\label{classfolly_1_1netops_1_1_msgheader_a85e92cce98d2d664bc54f6677a5680d3} 
+void {\bfseries set\+Iovecs} (const struct iovec \texorpdfstring{$\ast$}{*}vec, size\+\_\+t iovec\+\_\+len)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_a67798db00e23694b1708a3a62ca1080e}\label{classfolly_1_1netops_1_1_msgheader_a67798db00e23694b1708a3a62ca1080e} 
+void {\bfseries set\+Cmsg\+Ptr} (char \texorpdfstring{$\ast$}{*}ctrl\+Buf)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_af60cc9a6ce7332892303e5c929bcbd61}\label{classfolly_1_1netops_1_1_msgheader_af60cc9a6ce7332892303e5c929bcbd61} 
+void {\bfseries set\+Cmsg\+Len} (size\+\_\+t len)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_a5d3c0ce316e341dba382b57466a3e154}\label{classfolly_1_1netops_1_1_msgheader_a5d3c0ce316e341dba382b57466a3e154} 
+void {\bfseries set\+Flags} (int flags)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_a0b676394c0424502de36242b1d948f48}\label{classfolly_1_1netops_1_1_msgheader_a0b676394c0424502de36242b1d948f48} 
+void {\bfseries incr\+Cmsg\+Len} (size\+\_\+t val)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_a705eaf1055d4374f8ea616e57d494ad5}\label{classfolly_1_1netops_1_1_msgheader_a705eaf1055d4374f8ea616e57d494ad5} 
+XPLAT\+\_\+\+CMSGHDR \texorpdfstring{$\ast$}{*} {\bfseries get\+First\+Or\+Next\+Cmsg\+Header} (XPLAT\+\_\+\+CMSGHDR \texorpdfstring{$\ast$}{*}cm)
+\item 
+\Hypertarget{classfolly_1_1netops_1_1_msgheader_adfce0e44fdb9b4a3f41e1424d1f103e5}\label{classfolly_1_1netops_1_1_msgheader_adfce0e44fdb9b4a3f41e1424d1f103e5} 
+XPLAT\+\_\+\+MSGHDR \texorpdfstring{$\ast$}{*} {\bfseries get\+Msg} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A msghdr/\+WSAMSG struct wrapper for cross-\/platform use. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/net/ops.\+hh\end{DoxyCompactItemize}

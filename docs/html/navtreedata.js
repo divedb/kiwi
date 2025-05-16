@@ -30,6 +30,7 @@ var NAVTREE =
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ]
       ] ]
@@ -57,10 +58,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "adl_8hh_source.html",
-"classkiwi_1_1_file_path.html#a9710b8e4137152bfd74e0ca1cb8a34e3",
-"classkiwi_1_1_safe_base_name.html",
-"conceptkiwi_1_1internal_1_1_span_constructible_from.html",
-"structkiwi_1_1_i_o_buf_1_1_heap_full_storage.html"
+"classkiwi_1_1_file_path.html#a1e985818282ead9557ac2e6bfffd6244",
+"classkiwi_1_1_i_o_buf.html#ab4c768ff0dfc147881a75afc1fe403ea",
+"classkiwi_1_1_string_ref.html#ad091e81efa5eade0a0f455ee3a11d231",
+"namespacekiwi.html#aa1f580a9057866d2f501f3cc0acc4c07",
+"structkiwi_1_1detail_1_1require__sizeof__.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

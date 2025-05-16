@@ -1,0 +1,37 @@
+\doxysection{kiwi\+::remove\+\_\+cvref\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1remove__cvref}{}\label{structkiwi_1_1remove__cvref}\index{kiwi::remove\_cvref$<$ T $>$@{kiwi::remove\_cvref$<$ T $>$}}
+
+
+{\ttfamily \#include $<$traits.\+hh$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structkiwi_1_1remove__cvref_a841b78f2f100c95b1eb81cb844a0cd84}{type}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct kiwi\+::remove\+\_\+cvref$<$ T $>$}
+A type trait to remove all const volatile and reference qualifiers on a type T 
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{structkiwi_1_1remove__cvref_a841b78f2f100c95b1eb81cb844a0cd84}\index{kiwi::remove\_cvref$<$ T $>$@{kiwi::remove\_cvref$<$ T $>$}!type@{type}}
+\index{type@{type}!kiwi::remove\_cvref$<$ T $>$@{kiwi::remove\_cvref$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily \label{structkiwi_1_1remove__cvref_a841b78f2f100c95b1eb81cb844a0cd84} 
+template$<$typename T$>$ \\
+using \mbox{\hyperlink{structkiwi_1_1remove__cvref}{kiwi\+::remove\+\_\+cvref}}$<$ T $>$\+::type}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \textcolor{keyword}{typename}\ std::remove\_cv<typename\ std::remove\_reference<T>::type>::type}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/traits.\+hh\end{DoxyCompactItemize}

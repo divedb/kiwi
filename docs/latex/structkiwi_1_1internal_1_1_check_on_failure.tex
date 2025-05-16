@@ -1,5 +1,9 @@
 \doxysection{kiwi\+::internal\+::Check\+On\+Failure Struct Reference}
 \hypertarget{structkiwi_1_1internal_1_1_check_on_failure}{}\label{structkiwi_1_1internal_1_1_check_on_failure}\index{kiwi::internal::CheckOnFailure@{kiwi::internal::CheckOnFailure}}
+
+
+{\ttfamily \#include $<$safe\+\_\+conversions\+\_\+impl.\+hh$>$}
+
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -7,6 +11,9 @@
 {\footnotesize template$<$typename T$>$ }\\static T {\bfseries Handle\+Failure} ()
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Forces a crash, like a NOTREACHED(). Used for numeric boundary errors. Also used in a constexpr template to trigger a compilation failure on an error condition. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

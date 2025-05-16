@@ -1,0 +1,47 @@
+\doxysection{features.\+hh}
+\hypertarget{features_8hh_source}{}\label{features_8hh_source}\index{include/kiwi/portability/features.hh@{include/kiwi/portability/features.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Reference:}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ \ https://en.cppreference.com/w/cpp/feature\_test}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ KIWI\_CPLUSPLUS\ \_MSVC\_LANG}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ KIWI\_CPLUSPLUS\ \_\_cplusplus}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ C++20\ permits\ more\ cases\ to\ be\ marked\ constexpr,\ including\ constructors\ that}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ leave\ members\ uninitialized\ and\ virtual\ functions.}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#if\ KIWI\_CPLUSPLUS\ >=\ 202002L}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ KIWI\_CXX20\_CONSTEXPR\ constexpr}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ KIWI\_CXX20\_CONSTEXPR}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ C++23\ permits\ more\ cases\ to\ be\ marked\ constexpr,\ including\ definitions\ of}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ variables\ of\ non-\/literal\ type\ in\ constexpr\ function\ as\ long\ as\ they\ are\ not}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ constant-\/evaluated.}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#if\ KIWI\_CPLUSPLUS\ >=\ 202302L}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ KIWI\_CXX23\_CONSTEXPR\ constexpr}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ KIWI\_CXX23\_CONSTEXPR}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ C++20\ constinit.}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#if\ defined(\_\_cpp\_constinit)\ \&\&\ \_\_cpp\_constinit\ >=\ 201907L}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ KIWI\_CONSTINIT\ constinit}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ KIWI\_CONSTINIT}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ C++20\ consteval.}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#if\ KIWI\_CPLUSPLUS\ >=\ 202002L}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ KIWI\_CONSTEVAL\ consteval}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ KIWI\_CONSTEVAL\ constexpr}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,121 @@
+\doxysection{kiwi\+::traits\+\_\+detail Namespace Reference}
+\hypertarget{namespacekiwi_1_1traits__detail}{}\label{namespacekiwi_1_1traits__detail}\index{kiwi::traits\_detail@{kiwi::traits\_detail}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__pack__element__indexed__type}{type\+\_\+pack\+\_\+element\+\_\+indexed\+\_\+type}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__pack__element__set}{type\+\_\+pack\+\_\+element\+\_\+set}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__pack__element__set_3_01std_1_1index__sequence_3_01_i_8_8_8_01_4_00_01_t_8_8_8_01_4}{type\+\_\+pack\+\_\+element\+\_\+set$<$ std\+::index\+\_\+sequence$<$ I... $>$, T... $>$}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__pack__element__test}{type\+\_\+pack\+\_\+element\+\_\+test}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__t__}{type\+\_\+t\+\_\+}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1uint__bits__t__}{uint\+\_\+bits\+\_\+t\+\_\+}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1uint__bits__t___3_0116_01_4}{uint\+\_\+bits\+\_\+t\+\_\+$<$ 16 $>$}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1uint__bits__t___3_0132_01_4}{uint\+\_\+bits\+\_\+t\+\_\+$<$ 32 $>$}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1uint__bits__t___3_0164_01_4}{uint\+\_\+bits\+\_\+t\+\_\+$<$ 64 $>$}}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1uint__bits__t___3_018_01_4}{uint\+\_\+bits\+\_\+t\+\_\+$<$ 8 $>$}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename... T$>$ }\\using \mbox{\hyperlink{namespacekiwi_1_1traits__detail_a3a86834e076f41e58ffad708afa8e074}{type\+\_\+pack\+\_\+element\+\_\+set\+\_\+t}}
+\item 
+{\footnotesize template$<$std\+::size\+\_\+t I, typename... Ts$>$ }\\using \mbox{\hyperlink{namespacekiwi_1_1traits__detail_a217aae1e4ea3a1d82845121e1b4f3ef6}{type\+\_\+pack\+\_\+element\+\_\+fallback}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacekiwi_1_1traits__detail_ad5d966947ff71c52fa4d562f71b23f0e}\label{namespacekiwi_1_1traits__detail_ad5d966947ff71c52fa4d562f71b23f0e} 
+{\bfseries KIWI\+\_\+\+HAS\+\_\+\+TRUE\+\_\+\+XXX} (\mbox{\hyperlink{structkiwi_1_1_is_relocatable}{Is\+Relocatable}})
+\item 
+\Hypertarget{namespacekiwi_1_1traits__detail_afaf9479aa0346d1a4f564388735b8d1e}\label{namespacekiwi_1_1traits__detail_afaf9479aa0346d1a4f564388735b8d1e} 
+{\bfseries KIWI\+\_\+\+HAS\+\_\+\+TRUE\+\_\+\+XXX} (\mbox{\hyperlink{structkiwi_1_1_is_zero_initializable}{Is\+Zero\+Initializable}})
+\item 
+\Hypertarget{namespacekiwi_1_1traits__detail_ab745e655cf8277aa46c5f9e940f71d0f}\label{namespacekiwi_1_1traits__detail_ab745e655cf8277aa46c5f9e940f71d0f} 
+{\footnotesize template$<$std\+::size\+\_\+t I, template$<$ typename... $>$ class List, typename... T$>$ }\\\mbox{\hyperlink{structkiwi_1_1type__identity}{type\+\_\+identity}}$<$ type\+\_\+pack\+\_\+element\+\_\+t$<$ I, T... $>$ $>$ {\bfseries type\+\_\+list\+\_\+element\+\_\+} (List$<$ T... $>$ const \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{namespacekiwi_1_1traits__detail_a89a425df97b0292345e4f9f69e4db85a}\label{namespacekiwi_1_1traits__detail_a89a425df97b0292345e4f9f69e4db85a} 
+{\footnotesize template$<$template$<$ typename... $>$ class List, typename... T$>$ }\\index\+\_\+constant$<$ sizeof...(T)$>$ {\bfseries type\+\_\+list\+\_\+size\+\_\+} (List$<$ T... $>$ const \texorpdfstring{$\ast$}{*})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+type\+\_\+t
+
+A type alias for the first template type argument. {\ttfamily type\+\_\+t} is useful for controlling class-\/template and function-\/template partial specialization.
+
+Example\+:
+
+template $<$typename Value$>$ class Container \{ public\+: template \texorpdfstring{$<$}{<}typename... Args\texorpdfstring{$>$}{>} Container( type\+\_\+t\texorpdfstring{$<$}{<}in\+\_\+place\+\_\+t, decltype(Value(std\+::declval$<$\+Args$>$()...))\texorpdfstring{$>$}{>}, Args\&\&...); \};
+
+void\+\_\+t
+
+A type alias for {\ttfamily void}. {\ttfamily void\+\_\+t} is useful for controling class-\/template and function-\/template partial specialization.
+
+Example\+:
+
+// has\+\_\+value\+\_\+type$<$\+T$>$\+::value is true if T has a nested type {\ttfamily value\+\_\+type} template \texorpdfstring{$<$}{<}class T, class = void\texorpdfstring{$>$}{>} struct has\+\_\+value\+\_\+type \+: std\+::false\+\_\+type \{\};
+
+template $<$class T$>$ struct has\+\_\+value\+\_\+type$<$\+T, folly\+::void\+\_\+t$<$typename T\+::value\+\_\+type$>$$>$ \+: std\+::true\+\_\+type \{\}; There is a bug in libstdc++, libc++, and MSVC\textquotesingle{}s STL that causes it to ignore unused template parameter arguments in template aliases and does not cause substitution failures. This defect has been recorded here\+: \href{http://open-std.org/JTC1/SC22/WG21/docs/cwg_defects.html\#1558}{\texttt{ http\+://open-\/std.\+org/\+JTC1/\+SC22/\+WG21/docs/cwg\+\_\+defects.\+html\#1558}}.
+
+This causes the implementation of std\+::void\+\_\+t to be buggy, as it is likely defined as something like the following\+:
+
+template \texorpdfstring{$<$}{<}typename...\texorpdfstring{$>$}{>} using void\+\_\+t = void;
+
+This causes the compiler to ignore all the template arguments and does not help when one wants to cause substitution failures. Rather declarations which have void\+\_\+t in orthogonal specializations are treated as the same. For example, assuming the possible {\ttfamily T} types are only allowed to have either the alias {\ttfamily one} or {\ttfamily two} and never both or none\+:
+
+template \texorpdfstring{$<$}{<}typename T, typename std\+::void\+\_\+t\texorpdfstring{$<$}{<}std\+::decay\+\_\+t$<$\+T$>$\+::one\texorpdfstring{$>$}{>}\texorpdfstring{$\ast$}{*} = nullptr\texorpdfstring{$>$}{>} void foo(\+T\&\&) \{\} template \texorpdfstring{$<$}{<}typename T, typename std\+::void\+\_\+t\texorpdfstring{$<$}{<}std\+::decay\+\_\+t$<$\+T$>$\+::two\texorpdfstring{$>$}{>}\texorpdfstring{$\ast$}{*} = nullptr\texorpdfstring{$>$}{>} void foo(\+T\&\&) \{\}
+
+The second foo() will be a redefinition because it conflicts with the first one; void\+\_\+t does not cause substitution failures -\/ the template types are just ignored.
+
+Is\+Relocatable$<$\+T$>$\+::value describes the ability of moving around memory a value of type T by using memcpy (as opposed to the conservative approach of calling the copy constructor and then destroying the old temporary. Essentially for a relocatable type, the following two sequences of code should be semantically equivalent\+:
+
+void move1(\+T \texorpdfstring{$\ast$}{*} from, T \texorpdfstring{$\ast$}{*} to) \{ new(to) T(from); (\texorpdfstring{$\ast$}{*}from).\texorpdfstring{$\sim$}{\string~}\+T(); \}
+
+void move2(\+T \texorpdfstring{$\ast$}{*} from, T \texorpdfstring{$\ast$}{*} to) \{ memcpy(to, from, sizeof(\+T)); \}
+
+Most C++ types are relocatable; the ones that aren\textquotesingle{}t would include internal pointers or (very rarely) would need to update remote pointers to pointers tracking them. All C++ primitive types and type constructors are relocatable.
+
+This property can be used in a variety of optimizations. Currently fbvector uses this property intensively.
+
+The default conservatively assumes the type is not relocatable. Several specializations are defined for known types. You may want to add your own specializations. Do so in namespace kiwi and make sure you keep the specialization of \doxylink{structkiwi_1_1_is_relocatable}{Is\+Relocatable$<$\+Some\+Struct$>$} in the same header as Some\+Struct.
+
+You may also declare a type to be relocatable by including {\ttfamily typedef std\+::true\+\_\+type \doxylink{structkiwi_1_1_is_relocatable}{Is\+Relocatable};} in the class header.
+
+It may be unset in a base class by overriding the typedef to false\+\_\+type. 
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{namespacekiwi_1_1traits__detail_a217aae1e4ea3a1d82845121e1b4f3ef6}\index{kiwi::traits\_detail@{kiwi::traits\_detail}!type\_pack\_element\_fallback@{type\_pack\_element\_fallback}}
+\index{type\_pack\_element\_fallback@{type\_pack\_element\_fallback}!kiwi::traits\_detail@{kiwi::traits\_detail}}
+\doxysubsubsection{\texorpdfstring{type\_pack\_element\_fallback}{type\_pack\_element\_fallback}}
+{\footnotesize\ttfamily \label{namespacekiwi_1_1traits__detail_a217aae1e4ea3a1d82845121e1b4f3ef6} 
+template$<$std\+::size\+\_\+t I, typename... Ts$>$ \\
+using kiwi\+::traits\+\_\+detail\+::type\+\_\+pack\+\_\+element\+\_\+fallback}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \_t<\textcolor{keyword}{decltype}(type\_pack\_element\_test<I>::impl(}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{static\_cast<}type\_pack\_element\_set\_t<Ts...\textcolor{keyword}{>}*>(\textcolor{keyword}{nullptr})))>}
+
+\end{DoxyCode}
+\Hypertarget{namespacekiwi_1_1traits__detail_a3a86834e076f41e58ffad708afa8e074}\index{kiwi::traits\_detail@{kiwi::traits\_detail}!type\_pack\_element\_set\_t@{type\_pack\_element\_set\_t}}
+\index{type\_pack\_element\_set\_t@{type\_pack\_element\_set\_t}!kiwi::traits\_detail@{kiwi::traits\_detail}}
+\doxysubsubsection{\texorpdfstring{type\_pack\_element\_set\_t}{type\_pack\_element\_set\_t}}
+{\footnotesize\ttfamily \label{namespacekiwi_1_1traits__detail_a3a86834e076f41e58ffad708afa8e074} 
+template$<$typename... T$>$ \\
+using \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__pack__element__set}{kiwi\+::traits\+\_\+detail\+::type\+\_\+pack\+\_\+element\+\_\+set\+\_\+t}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{structkiwi_1_1traits__detail_1_1type__pack__element__set}{type\_pack\_element\_set}}<std::index\_sequence\_for<T...>,\ T...>}
+
+\end{DoxyCode}

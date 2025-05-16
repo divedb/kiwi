@@ -55,7 +55,7 @@
 \DoxyCodeLine{00051\ }
 \DoxyCodeLine{00052\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_flag.hh"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_flag.hh"{}}}
 \DoxyCodeLine{00055\ }
 \DoxyCodeLine{00056\ \textcolor{comment}{//\ Clangd\ does\ not\ detect\ BUILDFLAG\_INTERNAL\_*\ indirect\ usage,\ so\ mark\ the}}
 \DoxyCodeLine{00057\ \textcolor{comment}{//\ header\ as\ "{}always\_keep"{}\ to\ avoid\ "{}unused\ include"{}\ warning.}}
@@ -287,7 +287,7 @@
 \DoxyCodeLine{00283\ \textcolor{preprocessor}{\#elif\ defined(\_MSC\_VER)}}
 \DoxyCodeLine{00284\ \textcolor{preprocessor}{\#define\ COMPILER\_MSVC\ 1}}
 \DoxyCodeLine{00285\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ compiler\ in\ build/build\_config.h}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ compiler\ in\ portability/build\_config.hh}}
 \DoxyCodeLine{00287\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00288\ }
 \DoxyCodeLine{00289\ \textcolor{comment}{//\ Processor\ architecture\ detection.\ \ For\ more\ info\ on\ what's\ defined,\ see:}}
@@ -377,7 +377,7 @@
 \DoxyCodeLine{00373\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_64\_BITS\ 1}}
 \DoxyCodeLine{00374\ \textcolor{preprocessor}{\#define\ ARCH\_CPU\_LITTLE\_ENDIAN\ 1}}
 \DoxyCodeLine{00375\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{00376\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ architecture\ in\ build/build\_config.h}}
+\DoxyCodeLine{00376\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ architecture\ in\ portability/build\_config.hh}}
 \DoxyCodeLine{00377\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00378\ }
 \DoxyCodeLine{00379\ \textcolor{comment}{//\ Type\ detection\ for\ wchar\_t.}}
@@ -396,7 +396,7 @@
 \DoxyCodeLine{00392\ \textcolor{comment}{//\ short\ wchar\ works\ for\ them.}}
 \DoxyCodeLine{00393\ \textcolor{preprocessor}{\#define\ WCHAR\_T\_IS\_16\_BIT}}
 \DoxyCodeLine{00394\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ compiler\ in\ build/build\_config.h}}
+\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#error\ Please\ add\ support\ for\ your\ compiler\ in\ portability/build\_config.hh}}
 \DoxyCodeLine{00396\ \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{00397\ }
 \DoxyCodeLine{00398\ \textcolor{preprocessor}{\#if\ defined(OS\_ANDROID)}}

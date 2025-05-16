@@ -1,5 +1,9 @@
 \doxysection{kiwi\+::internal\+::Is\+Value\+In\+Range\+Fast\+Op\texorpdfstring{$<$}{<} Dst, Src \texorpdfstring{$>$}{>} Struct Template Reference}
 \hypertarget{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{}\label{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}\index{kiwi::internal::IsValueInRangeFastOp$<$ Dst, Src $>$@{kiwi::internal::IsValueInRangeFastOp$<$ Dst, Src $>$}}
+
+
+{\ttfamily \#include $<$safe\+\_\+conversions.\+hh$>$}
+
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -13,6 +17,11 @@ static constexpr bool {\bfseries Do} (Src)
 static constexpr bool {\bfseries is\+\_\+supported} = false
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Dst, typename Src$>$\newline
+struct kiwi\+::internal\+::\+Is\+Value\+In\+Range\+Fast\+Op$<$ Dst, Src $>$}
+The following special case a few specific integer conversions where we can eke out better performance than range checking. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

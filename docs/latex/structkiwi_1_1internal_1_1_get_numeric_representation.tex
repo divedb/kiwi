@@ -1,0 +1,31 @@
+\doxysection{kiwi\+::internal\+::Get\+Numeric\+Representation\texorpdfstring{$<$}{<} Numeric\+Type \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1internal_1_1_get_numeric_representation}{}\label{structkiwi_1_1internal_1_1_get_numeric_representation}\index{kiwi::internal::GetNumericRepresentation$<$ NumericType $>$@{kiwi::internal::GetNumericRepresentation$<$ NumericType $>$}}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const Numeric\+Representation \mbox{\hyperlink{structkiwi_1_1internal_1_1_get_numeric_representation_a8d03bd35b488323645f6923f6125817b}{value}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1internal_1_1_get_numeric_representation_a8d03bd35b488323645f6923f6125817b}\index{kiwi::internal::GetNumericRepresentation$<$ NumericType $>$@{kiwi::internal::GetNumericRepresentation$<$ NumericType $>$}!value@{value}}
+\index{value@{value}!kiwi::internal::GetNumericRepresentation$<$ NumericType $>$@{kiwi::internal::GetNumericRepresentation$<$ NumericType $>$}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily \label{structkiwi_1_1internal_1_1_get_numeric_representation_a8d03bd35b488323645f6923f6125817b} 
+template$<$typename Numeric\+Type$>$ \\
+const Numeric\+Representation \mbox{\hyperlink{structkiwi_1_1internal_1_1_get_numeric_representation}{kiwi\+::internal\+::\+Get\+Numeric\+Representation}}$<$ Numeric\+Type $>$\+::value\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ std::integral<NumericType>}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ ?\ NUMERIC\_INTEGER}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ :\ (std::floating\_point<NumericType>\ ?\ NUMERIC\_FLOATING}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ NUMERIC\_UNKNOWN)}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/numerics/checked\+\_\+math\+\_\+impl.\+hh\end{DoxyCompactItemize}

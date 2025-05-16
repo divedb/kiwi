@@ -1,0 +1,139 @@
+\doxysection{kiwi\+::Heap\+Array\texorpdfstring{$<$}{<} T, Deleter \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_heap_array}{}\label{classkiwi_1_1_heap_array}\index{kiwi::HeapArray$<$ T, Deleter $>$@{kiwi::HeapArray$<$ T, Deleter $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a7c68a0d6247b77f2b1047a8b07d23d72}\label{classkiwi_1_1_heap_array_a7c68a0d6247b77f2b1047a8b07d23d72} 
+using {\bfseries iterator} = \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$T$>$\+::iterator
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a51e2c98bb0781af899c470b99494f08f}\label{classkiwi_1_1_heap_array_a51e2c98bb0781af899c470b99494f08f} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$const T$>$\+::iterator
+\item 
+using \mbox{\hyperlink{classkiwi_1_1_heap_array_ac4740d07b07dd168333a3eb003b3694c}{deleter\+\_\+type}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_aca6963c3c0bbada0ce079bafe760027c}\label{classkiwi_1_1_heap_array_aca6963c3c0bbada0ce079bafe760027c} 
+{\bfseries Heap\+Array} (const \mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_af3dcad0ece9d3e53ffd6f916bd9370d7}\label{classkiwi_1_1_heap_array_af3dcad0ece9d3e53ffd6f916bd9370d7} 
+\mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a5c384c903756e0a4e6990a3ccd5289ad}\label{classkiwi_1_1_heap_array_a5c384c903756e0a4e6990a3ccd5289ad} 
+{\bfseries Heap\+Array} (\mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} \&\&that)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_aa7a0d4ab57357d904c480fb304e6e0bc}\label{classkiwi_1_1_heap_array_aa7a0d4ab57357d904c480fb304e6e0bc} 
+\mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} \&\&that)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a85fb855a59b51cdd4abf8e8981ab20fe}\label{classkiwi_1_1_heap_array_a85fb855a59b51cdd4abf8e8981ab20fe} 
+bool {\bfseries empty} () const
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a8a8a010843517595699be663a20f9bf5}\label{classkiwi_1_1_heap_array_a8a8a010843517595699be663a20f9bf5} 
+size\+\_\+t {\bfseries size} () const
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a1d8617313d5cdcb0671d40f589cfc1ef}\label{classkiwi_1_1_heap_array_a1d8617313d5cdcb0671d40f589cfc1ef} 
+T \texorpdfstring{$\ast$}{*} {\bfseries data} () KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a2f23b5f561401e1568114d984c3652b9}\label{classkiwi_1_1_heap_array_a2f23b5f561401e1568114d984c3652b9} 
+const T \texorpdfstring{$\ast$}{*} {\bfseries data} () const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a5ef89ecb8073781026c037127f4abdf5}\label{classkiwi_1_1_heap_array_a5ef89ecb8073781026c037127f4abdf5} 
+\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries begin} () KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a72fa7e7439f79ed1590e886ef447dc84}\label{classkiwi_1_1_heap_array_a72fa7e7439f79ed1590e886ef447dc84} 
+\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries begin} () const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_aacea60824de172002b959873d7434ebd}\label{classkiwi_1_1_heap_array_aacea60824de172002b959873d7434ebd} 
+\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{iterator}} {\bfseries end} () KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a1600007029deaa1796b4a2e636f99f69}\label{classkiwi_1_1_heap_array_a1600007029deaa1796b4a2e636f99f69} 
+\mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{const\+\_\+iterator}} {\bfseries end} () const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a980db0c66048af2fd91d05d0fdae368f}\label{classkiwi_1_1_heap_array_a980db0c66048af2fd91d05d0fdae368f} 
+KIWI\+\_\+\+ALWAYS\+\_\+\+INLINE T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t idx) KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a57826f58c0e9475dd7575e4996556556}\label{classkiwi_1_1_heap_array_a57826f58c0e9475dd7575e4996556556} 
+KIWI\+\_\+\+ALWAYS\+\_\+\+INLINE const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t idx) const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a58489d9b8ad1f250a8316c366c884b44}\label{classkiwi_1_1_heap_array_a58489d9b8ad1f250a8316c366c884b44} 
+KIWI\+\_\+\+ALWAYS\+\_\+\+INLINE \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ T $>$ {\bfseries as\+\_\+span} () KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_ad2a187986622036ac950e88dfa9cf61c}\label{classkiwi_1_1_heap_array_ad2a187986622036ac950e88dfa9cf61c} 
+KIWI\+\_\+\+ALWAYS\+\_\+\+INLINE \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ {\bfseries as\+\_\+span} () const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a5530003cca83859276083c3d90b7d287}\label{classkiwi_1_1_heap_array_a5530003cca83859276083c3d90b7d287} 
+void {\bfseries copy\+\_\+from} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a25dd2cf0049de4a64c7a15969640fd1c}\label{classkiwi_1_1_heap_array_a25dd2cf0049de4a64c7a15969640fd1c} 
+void {\bfseries copy\+\_\+prefix\+\_\+from} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ other)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_ab6ea12c25c433450a9904f8eeb82b6be}\label{classkiwi_1_1_heap_array_ab6ea12c25c433450a9904f8eeb82b6be} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ T $>$ {\bfseries subspan} (size\+\_\+t offset) KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a3b3709463ae3a2a1d84edcdb59d83f9a}\label{classkiwi_1_1_heap_array_a3b3709463ae3a2a1d84edcdb59d83f9a} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ {\bfseries subspan} (size\+\_\+t offset) const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a0cab13bd63d02e1a4d786ab57c551df6}\label{classkiwi_1_1_heap_array_a0cab13bd63d02e1a4d786ab57c551df6} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ T $>$ {\bfseries subspan} (size\+\_\+t offset, size\+\_\+t count) KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a583091e91892274cd04369a7e26648f7}\label{classkiwi_1_1_heap_array_a583091e91892274cd04369a7e26648f7} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ {\bfseries subspan} (size\+\_\+t offset, size\+\_\+t count) const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a422d4d73551b8c77bdbfbfda961a0675}\label{classkiwi_1_1_heap_array_a422d4d73551b8c77bdbfbfda961a0675} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ T $>$ {\bfseries first} (size\+\_\+t count) KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a76a8489b188140ca4eac5cd5c3fb9235}\label{classkiwi_1_1_heap_array_a76a8489b188140ca4eac5cd5c3fb9235} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ {\bfseries first} (size\+\_\+t count) const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a9266b25f2d8978d7e6c4b5c0692eb432}\label{classkiwi_1_1_heap_array_a9266b25f2d8978d7e6c4b5c0692eb432} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ T $>$ {\bfseries last} (size\+\_\+t count) KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_aae4a95958581efe02aa27a5c87297fcc}\label{classkiwi_1_1_heap_array_aae4a95958581efe02aa27a5c87297fcc} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ {\bfseries last} (size\+\_\+t count) const KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_aeef7528cc7f03f711860be2e5528a9ec}\label{classkiwi_1_1_heap_array_aeef7528cc7f03f711860be2e5528a9ec} 
+\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ T $>$ {\bfseries leak} () \&\&
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_af53c38f455d0e765a4d74c5030836824}\label{classkiwi_1_1_heap_array_af53c38f455d0e765a4d74c5030836824} 
+\mbox{\hyperlink{classkiwi_1_1_heap_array}{kiwi\+::\+Heap\+Array}}$<$ T $>$ {\bfseries take\+\_\+first} (size\+\_\+t reduced\+\_\+size) \&\&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a79d44c60a90f658831791043bf756fb3}\label{classkiwi_1_1_heap_array_a79d44c60a90f658831791043bf756fb3} 
+static \mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} {\bfseries With\+Size} (size\+\_\+t size)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a75edcbca04eeeb08ade403a4d9641015}\label{classkiwi_1_1_heap_array_a75edcbca04eeeb08ade403a4d9641015} 
+static \mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} {\bfseries Uninit} (size\+\_\+t size)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a052833b822868a8219e04d119adf5371}\label{classkiwi_1_1_heap_array_a052833b822868a8219e04d119adf5371} 
+static \mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} {\bfseries Copied\+From} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const T $>$ that)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_acea9cf70b884cebdcf7e8eb38ad5ed7e}\label{classkiwi_1_1_heap_array_acea9cf70b884cebdcf7e8eb38ad5ed7e} 
+static UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE \mbox{\hyperlink{classkiwi_1_1_heap_array}{Heap\+Array}} {\bfseries From\+Owning\+Pointer} (T \texorpdfstring{$\ast$}{*}ptr, size\+\_\+t size)
+\item 
+\Hypertarget{classkiwi_1_1_heap_array_a1d131edfed303aacf389f46443d1ea5a}\label{classkiwi_1_1_heap_array_a1d131edfed303aacf389f46443d1ea5a} 
+static void {\bfseries Delete\+Leaked\+Data} (void \texorpdfstring{$\ast$}{*}ptr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classkiwi_1_1_heap_array_ac4740d07b07dd168333a3eb003b3694c}\index{kiwi::HeapArray$<$ T, Deleter $>$@{kiwi::HeapArray$<$ T, Deleter $>$}!deleter\_type@{deleter\_type}}
+\index{deleter\_type@{deleter\_type}!kiwi::HeapArray$<$ T, Deleter $>$@{kiwi::HeapArray$<$ T, Deleter $>$}}
+\doxysubsubsection{\texorpdfstring{deleter\_type}{deleter\_type}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_heap_array_ac4740d07b07dd168333a3eb003b3694c} 
+template$<$typename T, typename Deleter = void$>$ \\
+using \mbox{\hyperlink{classkiwi_1_1_heap_array}{kiwi\+::\+Heap\+Array}}$<$ T, Deleter $>$\+::deleter\+\_\+type}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ std::conditional\_t<std::is\_void\_v<Deleter>,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::default\_delete<T[]>,\ Deleter>}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/containers/heap\+\_\+array.\+hh\end{DoxyCompactItemize}

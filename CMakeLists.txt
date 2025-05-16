@@ -6,6 +6,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(KIWI_TEST_COPTS -std=c++20 -Wall -Wextra)
 set(KIWI_LIB_COPTS  -std=c++20 -Wall -Wextra)
 set(KIWI_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+set(KIWI_TESTS_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/tests/include")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 

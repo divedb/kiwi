@@ -29,7 +29,7 @@
 \DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fd);}
 \DoxyCodeLine{00032\ \};}
 \DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)}}
 \DoxyCodeLine{00035\ }
 \DoxyCodeLine{00036\ \textcolor{keyword}{struct\ }BASE\_EXPORT\ ScopedFDCloseTraits\ \{}
 \DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ InvalidValue()\ \{\ \textcolor{keywordflow}{return}\ -\/1;\ \}}
@@ -88,7 +88,7 @@
 \DoxyCodeLine{00090\ }
 \DoxyCodeLine{00091\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{00092\ }
-\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)}}
 \DoxyCodeLine{00094\ \textcolor{comment}{//\ A\ low-\/level\ Posix\ file\ descriptor\ closer\ class.\ Use\ this\ when\ writing}}
 \DoxyCodeLine{00095\ \textcolor{comment}{//\ platform-\/specific\ code,\ especially\ that\ does\ non-\/file-\/like\ things\ with\ the}}
 \DoxyCodeLine{00096\ \textcolor{comment}{//\ FD\ (like\ sockets).}}
@@ -106,12 +106,13 @@
 \DoxyCodeLine{00108\ \textcolor{comment}{//\ Automatically\ closes\ \`{}FILE*`s.}}
 \DoxyCodeLine{00109\ \textcolor{keyword}{using\ }ScopedFILE\ =\ std::unique\_ptr<FILE,\ internal::ScopedFILECloser>;}
 \DoxyCodeLine{00110\ }
-\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_LINUX)}}
 \DoxyCodeLine{00112\ \textcolor{comment}{//\ Queries\ the\ ownership\ status\ of\ an\ FD,\ i.e.\ whether\ it\ is\ currently\ owned\ by}}
 \DoxyCodeLine{00113\ \textcolor{comment}{//\ a\ ScopedFD\ in\ the\ calling\ process.}}
 \DoxyCodeLine{00114\ \textcolor{keywordtype}{bool}\ BASE\_EXPORT\ IsFDOwned(\textcolor{keywordtype}{int}\ fd);}
-\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_CHROMEOS)\ ||\ BUILDFLAG(IS\_LINUX)}}
-\DoxyCodeLine{00116\ }
-\DoxyCodeLine{00117\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

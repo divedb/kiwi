@@ -105,18 +105,21 @@ $(function(){initNavTree('scope__exit_8hh.html',''); initResizable(true); });
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">scope_exit.hh File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
+<code>#include &quot;kiwi/portability/preprocessor.hh&quot;</code><br />
 </div>
 <p><a href="scope__exit_8hh_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkiwi_1_1detail_1_1scope__exit.html">kiwi::detail::scope_exit&lt; Callable &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkiwi_1_1detail_1_1_scope_exit.html">kiwi::detail::ScopeExit&lt; Callable &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -124,15 +127,46 @@ Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacekiwi.html">kiwi</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a175c354c3e38222bc00ce5df5e6d431d" id="r_a175c354c3e38222bc00ce5df5e6d431d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a175c354c3e38222bc00ce5df5e6d431d">SCOPE_EXIT</a></td></tr>
+<tr class="separator:a175c354c3e38222bc00ce5df5e6d431d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a6f75c3a10d1c33df25fa5eab1cec0007" id="r_a6f75c3a10d1c33df25fa5eab1cec0007"><td class="memItemLeft" align="right" valign="top"><a id="a6f75c3a10d1c33df25fa5eab1cec0007" name="a6f75c3a10d1c33df25fa5eab1cec0007"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>ScopeExitTag</b> </td></tr>
+<tr class="separator:a6f75c3a10d1c33df25fa5eab1cec0007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a851bea1bb4a936e7446e8fc1ab579231" id="r_a851bea1bb4a936e7446e8fc1ab579231"><td class="memTemplParams" colspan="2">template&lt;typename Callable&gt; </td></tr>
-<tr class="memitem:a851bea1bb4a936e7446e8fc1ab579231"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classkiwi_1_1detail_1_1scope__exit.html">detail::scope_exit</a>&lt; std::decay_t&lt; Callable &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacekiwi.html#a851bea1bb4a936e7446e8fc1ab579231">kiwi::make_scope_exit</a> (Callable &amp;&amp;fp)</td></tr>
-<tr class="separator:a851bea1bb4a936e7446e8fc1ab579231"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f08f6f93fa42280d07db0f3c4723df7" id="r_a0f08f6f93fa42280d07db0f3c4723df7"><td class="memTemplParams" colspan="2">template&lt;typename Callable&gt; </td></tr>
+<tr class="memitem:a0f08f6f93fa42280d07db0f3c4723df7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classkiwi_1_1detail_1_1_scope_exit.html">detail::ScopeExit</a>&lt; std::decay_t&lt; Callable &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacekiwi.html#a0f08f6f93fa42280d07db0f3c4723df7">kiwi::make_scope_exit</a> (Callable &amp;&amp;fp)</td></tr>
+<tr class="separator:a0f08f6f93fa42280d07db0f3c4723df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf64cadeb42e4ab874c0a6ebcc2e1be" id="r_adcf64cadeb42e4ab874c0a6ebcc2e1be"><td class="memTemplParams" colspan="2"><a id="adcf64cadeb42e4ab874c0a6ebcc2e1be" name="adcf64cadeb42e4ab874c0a6ebcc2e1be"></a>
+template&lt;typename FunctionType&gt; </td></tr>
+<tr class="memitem:adcf64cadeb42e4ab874c0a6ebcc2e1be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classkiwi_1_1detail_1_1_scope_exit.html">detail::ScopeExit</a>&lt; typename std::decay&lt; FunctionType &gt;::type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>kiwi::operator+</b> (detail::ScopeExitTag, FunctionType &amp;&amp;fn)</td></tr>
+<tr class="separator:adcf64cadeb42e4ab874c0a6ebcc2e1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file defines the make_scope_exit function, which executes user-defined cleanup logic at scope exit. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>This file defines the make_ScopeExit function, which executes user-defined cleanup logic at scope exit. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a175c354c3e38222bc00ce5df5e6d431d" name="a175c354c3e38222bc00ce5df5e6d431d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175c354c3e38222bc00ce5df5e6d431d">&#9670;&#160;</a></span>SCOPE_EXIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SCOPE_EXIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">auto</span> KIWI_ANONYMOUS_VARIABLE(SCOPE_EXIT_STATE) = \</div>
+<div class="line">      ::kiwi::detail::ScopeExitTag() + [&amp;]() noexcept</div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

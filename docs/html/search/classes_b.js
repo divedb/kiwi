@@ -1,11 +1,14 @@
 var searchData=
 [
-  ['pointer_5ftraits_3c_3a_3akiwi_3a_3acheckedcontiguousiterator_3c_20t_20_3e_20_3e_0',['pointer_traits&lt;::kiwi::CheckedContiguousIterator&lt; T &gt; &gt;',['../structstd_1_1pointer__traits_3_1_1kiwi_1_1_checked_contiguous_iterator_3_01_t_01_4_01_4.html',1,'std']]],
-  ['pointerliketypetraits_1',['PointerLikeTypeTraits',['../structkiwi_1_1_pointer_like_type_traits.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20const_20t_20_2a_20_3e_2',['PointerLikeTypeTraits&lt; const T * &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_5_01_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20const_20t_20_3e_3',['PointerLikeTypeTraits&lt; const T &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20returnt_28_2a_29_28paramts_2e_2e_2e_29_3e_4',['PointerLikeTypeTraits&lt; ReturnT(*)(ParamTs...)&gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01_return_t_07_5_08_07_param_ts_8_8_8_08_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20uintptr_5ft_20_3e_5',['PointerLikeTypeTraits&lt; uintptr_t &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01uintptr__t_01_4.html',1,'kiwi']]],
-  ['pointerliketypetraits_3c_20void_20_2a_20_3e_6',['PointerLikeTypeTraits&lt; void * &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4.html',1,'kiwi']]],
-  ['provider_7',['Provider',['../classkiwi_1_1_file_tracing_1_1_provider.html',1,'kiwi::FileTracing']]]
+  ['narrowingrange_0',['NarrowingRange',['../structkiwi_1_1internal_1_1_narrowing_range.html',1,'kiwi::internal']]],
+  ['negation_1',['Negation',['../structkiwi_1_1_negation.html',1,'kiwi']]],
+  ['negation_3c_20std_3a_3ais_5fsame_3c_20bools_3c_20ts_3a_3avalue_2e_2e_2e_20_3e_2c_20bools_3c_28ts_3a_3avalue_20_26_26false_29_2e_2e_2e_20_3e_20_3e_20_3e_2',['Negation&lt; std::is_same&lt; Bools&lt; Ts::value... &gt;, Bools&lt;(Ts::value &amp;&amp;false)... &gt; &gt; &gt;',['../structkiwi_1_1_negation.html',1,'kiwi']]],
+  ['nodestructor_3',['NoDestructor',['../classkiwi_1_1_no_destructor.html',1,'kiwi']]],
+  ['noncopyablenonmovable_4',['NonCopyableNonMovable',['../structkiwi_1_1moveonly___1_1_non_copyable_non_movable.html',1,'kiwi::moveonly_::NonCopyableNonMovable'],['../structkiwi_1_1_non_copyable_non_movable.html',1,'kiwi::NonCopyableNonMovable']]],
+  ['nonesuch_5',['nonesuch',['../structkiwi_1_1nonesuch.html',1,'kiwi']]],
+  ['notnull_6',['NotNull',['../classkiwi_1_1_not_null.html',1,'kiwi']]],
+  ['notnullhash_7',['NotNullHash',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20kiwi_3a_3anotnull_3c_20t_20_3e_20_3e_8',['NotNullHash&lt; kiwi::NotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20kiwi_3a_3astrictnotnull_3c_20t_20_3e_20_3e_9',['NotNullHash&lt; kiwi::StrictNotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
+  ['notnullhash_3c_20t_2c_20u_2c_20false_20_3e_10',['NotNullHash&lt; T, U, false &gt;',['../structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4.html',1,'kiwi']]]
 ];

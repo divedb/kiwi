@@ -8,5 +8,6 @@ var searchData=
   ['endswithseparator_5',['EndsWithSeparator',['../classkiwi_1_1_file_path.html#a673b30597f9ea337be99d6e13e54a705',1,'kiwi::FilePath']]],
   ['equals_5finsensitive_6',['equals_insensitive',['../classkiwi_1_1_string_ref.html#ac8358d88240ae38511a984e107bd16a1',1,'kiwi::StringRef']]],
   ['errordetails_7',['ErrorDetails',['../classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831',1,'kiwi::File']]],
-  ['extension_8',['Extension',['../classkiwi_1_1_file_path.html#ae4db75fe363d7316cd6b72b7e2bf88aa',1,'kiwi::FilePath']]]
+  ['errortostring_8',['ErrorToString',['../classkiwi_1_1_file.html#ab5187b304515a8f2b0c73a15f6c023ae',1,'kiwi::File']]],
+  ['extension_9',['Extension',['../classkiwi_1_1_file_path.html#ae4db75fe363d7316cd6b72b7e2bf88aa',1,'kiwi::FilePath']]]
 ];

@@ -77,6 +77,12 @@
 \DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Args\&\&\textcolor{keyword}{>}(args)...);}
 \DoxyCodeLine{00095\ \}}
 \DoxyCodeLine{00096\ }
-\DoxyCodeLine{00097\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00100\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ex,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00101\ [[noreturn]]\ KIWI\_ERASE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacekiwi_af132070951b2a07a01af8a189a3aed0a}{terminate\_with}}(Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00102\ \ \ detail::terminate\_with\_<Ex,\ detail::throw\_exception\_arg\_t<Args\&\&>...>(}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}Args\&\&\textcolor{keyword}{>}(args)...);}
+\DoxyCodeLine{00104\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

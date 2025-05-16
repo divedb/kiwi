@@ -1,0 +1,34 @@
+\doxysection{kiwi\+::detail\+::function\+::Dispatch\+Small\+Trivial Struct Reference}
+\hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial}{}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial}\index{kiwi::detail::function::DispatchSmallTrivial@{kiwi::detail::function::DispatchSmallTrivial}}
+Inheritance diagram for kiwi\+::detail\+::function\+::Dispatch\+Small\+Trivial\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_a1ef58713c45d0afb4b26985afa1731e7}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_a1ef58713c45d0afb4b26985afa1731e7} 
+{\footnotesize template$<$std\+::size\+\_\+t Size$>$ }\\static std\+::size\+\_\+t {\bfseries exec\+\_\+} (Op o, \mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}} \texorpdfstring{$\ast$}{*}src, \mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}} \texorpdfstring{$\ast$}{*}dst) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_ad43678bf315d621e12cd1cf6b9453b57}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_ad43678bf315d621e12cd1cf6b9453b57} 
+static constexpr bool {\bfseries is\+\_\+in\+\_\+situ} = true
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_aabbee20f78209f5271bb14146e4dbc4b}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_aabbee20f78209f5271bb14146e4dbc4b} 
+static constexpr bool {\bfseries is\+\_\+trivial} = true
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_a45ee7ec75d5aa0e6bf0ddec9f3319330}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_a45ee7ec75d5aa0e6bf0ddec9f3319330} 
+{\footnotesize template$<$std\+::size\+\_\+t size, std\+::size\+\_\+t adjust = alignof(\+Data) -\/ 1$>$ }\\static constexpr std\+::size\+\_\+t {\bfseries size\+\_\+} = (size + adjust) \& \texorpdfstring{$\sim$}{\string~}adjust
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_af7ed499281cf54017efbcd4b11e1add9}\label{structkiwi_1_1detail_1_1function_1_1_dispatch_small_trivial_af7ed499281cf54017efbcd4b11e1add9} 
+{\footnotesize template$<$typename Fun$>$ }\\static constexpr auto {\bfseries exec} = exec\+\_\+$<$size\+\_\+$<$sizeof(Fun)$>$$>$
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

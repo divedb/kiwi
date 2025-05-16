@@ -1,0 +1,106 @@
+\doxysection{align.\+hh}
+\hypertarget{align_8hh_source}{}\label{align_8hh_source}\index{include/kiwi/common/align.hh@{include/kiwi/common/align.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_aa378f7b72cef68ec405b8829e4cc1c90}{kRegisterPassMaxSize}}\ =\ 8u;}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_aa378f7b72cef68ec405b8829e4cc1c90}{kRegisterPassMaxSize}}\ =\ 16u;}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00048\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a2b176d48adf1606f62920fe3cc7e8225}{is\_register\_pass\_v}}\ =}
+\DoxyCodeLine{00049\ \ \ \ \ (\textcolor{keyword}{sizeof}(T)\ <=\ \mbox{\hyperlink{namespacekiwi_aa378f7b72cef68ec405b8829e4cc1c90}{kRegisterPassMaxSize}})\ \&\&\ std::is\_trivially\_copyable\_v<T>;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a2b176d48adf1606f62920fe3cc7e8225}{is\_register\_pass\_v<T\&>}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00055\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacekiwi_a2b176d48adf1606f62920fe3cc7e8225}{is\_register\_pass\_v<T\&\&>}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ \ True\ if\ it\ may\ be\ presumed\ that\ the\ platform\ has\ static\ extended\ alignment;}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ \ false\ if\ it\ may\ not\ be\ so\ presumed,\ even\ when\ the\ platform\ might\ actually}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ \ have\ it.\ Static\ extended\ alignment\ refers\ to\ extended\ alignment\ of\ objects}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ \ with\ automatic,\ static,\ or\ thread\ storage.\ Whether\ the\ there\ is\ support\ for}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ \ dynamic\ extended\ alignment\ is\ a\ property\ of\ the\ allocator\ which\ is\ used\ for}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ each\ given\ dynamic\ allocation.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ \ Currently,\ very\ heuristical\ -\/\ only\ non-\/mobile\ 64-\/bit\ linux\ gets\ the\ extended}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ \ alignment\ treatment.\ Theoretically,\ this\ could\ be\ tuned\ better.}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{00067\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kHasExtendedAlignment\ =}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{void}*)\ >=\ \textcolor{keyword}{sizeof}(std::uint64\_t);}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00070\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kHasExtendedAlignment\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00077\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}...\ Ts>}
+\DoxyCodeLine{00078\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1detail_1_1max__align__t__}{max\_align\_t\_}}\ \{}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ std::size\_t\ value()\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ std::size\_t\ \textcolor{keyword}{const}\ values[]\ =\ \{0u,\ \textcolor{keyword}{alignof}(Ts)...\};}
+\DoxyCodeLine{00081\ \ \ \ \ std::size\_t\ r\ =\ 0u;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \textcolor{keyword}{const}\ v\ :\ values)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ r\ =\ r\ <\ v\ ?\ v\ :\ r;}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{using\ }max\_align\_v\_\ =}
+\DoxyCodeLine{00092\ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1detail_1_1max__align__t__}{max\_align\_t\_}}<\textcolor{keywordtype}{long}\ double,\ double,\ float,\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ int,\ \textcolor{keywordtype}{long}\ int,\ int,}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{short}\ int,\ bool,\ char,\ char16\_t,\ char32\_t,\ wchar\_t,\ \textcolor{keywordtype}{void}*,}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::max\_align\_t>;}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_a6e27a3836ba7f1fac20061739130f62d}{kMaxAlign}}\ =\ detail::max\_align\_v\_::value();}
+\DoxyCodeLine{00129\ \textcolor{keyword}{struct\ }alignas(kMaxAlign)\ \mbox{\hyperlink{structkiwi_1_1_max_align_type}{MaxAlignType}}\ \{\};}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#if\ defined(ARCH\_CPU\_S390\_FAMILY)\ ||\ defined(ARCH\_CPU\_ARM\_FAMILY)}}
+\DoxyCodeLine{00146\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_ab62e9348a9aa9fee4c3ad6e41b995c61}{kHardwareDestructiveInterferenceSize}}\ =\ 64;}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00148\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_ab62e9348a9aa9fee4c3ad6e41b995c61}{kHardwareDestructiveInterferenceSize}}\ =\ 128;}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{static\_assert}(\mbox{\hyperlink{namespacekiwi_ab62e9348a9aa9fee4c3ad6e41b995c61}{kHardwareDestructiveInterferenceSize}}\ >=\ \mbox{\hyperlink{namespacekiwi_a6e27a3836ba7f1fac20061739130f62d}{kMaxAlign}},\ \textcolor{stringliteral}{"{}math?"{}});}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00160\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_a6c19e808322b20a2c60d3e99bd308c3c}{kHardwareConstructiveInterferenceSize}}\ =\ 64;}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{keyword}{static\_assert}(\mbox{\hyperlink{namespacekiwi_a6c19e808322b20a2c60d3e99bd308c3c}{kHardwareConstructiveInterferenceSize}}\ >=\ \mbox{\hyperlink{namespacekiwi_a6e27a3836ba7f1fac20061739130f62d}{kMaxAlign}},\ \textcolor{stringliteral}{"{}math?"{}});}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00167\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacekiwi_ad3fe1166d4a0f7930b0db3f844fbcb40}{kCacheLineAlign}}\ =}
+\DoxyCodeLine{00168\ \ \ \ \ kHasExtendedAlignment\ ?\ \mbox{\hyperlink{namespacekiwi_a6c19e808322b20a2c60d3e99bd308c3c}{kHardwareConstructiveInterferenceSize}}\ :\ \mbox{\hyperlink{namespacekiwi_a6e27a3836ba7f1fac20061739130f62d}{kMaxAlign}};}
+\DoxyCodeLine{00169\ \textcolor{keyword}{struct\ }alignas(kCacheLineAlign)\ \mbox{\hyperlink{structkiwi_1_1_cache_line_align_type}{CacheLineAlignType}}\ \{\};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

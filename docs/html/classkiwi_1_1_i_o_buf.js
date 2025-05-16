@@ -78,7 +78,7 @@ var classkiwi_1_1_i_o_buf =
     [ "operator=", "classkiwi_1_1_i_o_buf.html#ae17f40ce23314a50600522d1fa78a485", null ],
     [ "operator=", "classkiwi_1_1_i_o_buf.html#a3ebf9feefdc07aa06d61ca2c58f81fa4", null ],
     [ "pop", "classkiwi_1_1_i_o_buf.html#afc8005e47b46e804cf63c89614a2ff2b", null ],
-    [ "prepend", "classkiwi_1_1_i_o_buf.html#a756590a6a2922b5aa48dc77d45f93405", null ],
+    [ "Prepend", "classkiwi_1_1_i_o_buf.html#a4f0412a09fd45d6c4092363c4da2cd89", null ],
     [ "PrependChain", "classkiwi_1_1_i_o_buf.html#a8c15c5b8a4558580586e7b01940c48d6", null ],
     [ "Prev", "classkiwi_1_1_i_o_buf.html#a6e6cfe3b15ad1c481d93926b3c0337a4", null ],
     [ "Prev", "classkiwi_1_1_i_o_buf.html#ad34fb6470113b215c11dc1b84296ac50", null ],

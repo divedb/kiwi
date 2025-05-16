@@ -1,0 +1,76 @@
+\doxysection{kiwi\+::Function\+Ref\texorpdfstring{$<$}{<} Return\+Type(Args...)\texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4}{}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4}\index{kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ab6cd34d5ba80504b1e87a890bcf28ff5}{Function\+Ref}} ()=default
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a02776cb3bce68f642ec7303c7e1e11c4}{Function\+Ref}} (std\+::nullptr\+\_\+t) noexcept
+\item 
+{\footnotesize template$<$typename Fun, std\+::enable\+\_\+if\+\_\+t$<$ \mbox{\hyperlink{structkiwi_1_1_conjunction}{Conjunction}}$<$ \mbox{\hyperlink{structkiwi_1_1_negation}{Negation}}$<$ std\+::is\+\_\+same$<$ \mbox{\hyperlink{classkiwi_1_1_function_ref}{Function\+Ref}}, std\+::decay\+\_\+t$<$ Fun $>$ $>$ $>$, std\+::is\+\_\+invocable\+\_\+r$<$ Return\+Type, Fun \&\&, Args \&\&... $>$ $>$\+::value, int $>$ = 0$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a8c57b2ed926872bed15ee7400cbbe7fe}{Function\+Ref}} (Fun \&\&fun) noexcept
+\item 
+{\footnotesize template$<$typename Fun, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+function$<$ Fun $>$\+::value, int $>$ = 0, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+invocable\+\_\+r\+\_\+v$<$ Return\+Type, Fun \&, Args \&\&... $>$, int $>$ = 0$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a8a4496f2286716f11edad52710dc0861}{Function\+Ref}} (Fun \texorpdfstring{$\ast$}{*}fun) noexcept
+\item 
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a454638f6c3a0fbd926b27a6f96181fec}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a454638f6c3a0fbd926b27a6f96181fec} 
+Return\+Type {\bfseries operator()} (Args... args) const
+\item 
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a415a2806ec15aedeb77af15703c4a1d0}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a415a2806ec15aedeb77af15703c4a1d0} 
+constexpr {\bfseries operator bool} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a52294b420c0e25883bb4585914c4b315}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a52294b420c0e25883bb4585914c4b315} 
+constexpr friend bool {\bfseries operator==} (\mbox{\hyperlink{classkiwi_1_1_function_ref}{Function\+Ref}}$<$ Return\+Type(Args...)$>$ ref, std\+::nullptr\+\_\+t) noexcept
+\item 
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ac966e0b4e897e2057c279fc037dfd01a}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ac966e0b4e897e2057c279fc037dfd01a} 
+constexpr friend bool {\bfseries operator!=} (\mbox{\hyperlink{classkiwi_1_1_function_ref}{Function\+Ref}}$<$ Return\+Type(Args...)$>$ ref, std\+::nullptr\+\_\+t) noexcept
+\item 
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ad7479c301819ccc0847a57db7cf9608b}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ad7479c301819ccc0847a57db7cf9608b} 
+constexpr friend bool {\bfseries operator==} (std\+::nullptr\+\_\+t, \mbox{\hyperlink{classkiwi_1_1_function_ref}{Function\+Ref}}$<$ Return\+Type(Args...)$>$ ref) noexcept
+\item 
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ad6262075d61836e70e20c4e73c9fea7c}\label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ad6262075d61836e70e20c4e73c9fea7c} 
+constexpr friend bool {\bfseries operator!=} (std\+::nullptr\+\_\+t, \mbox{\hyperlink{classkiwi_1_1_function_ref}{Function\+Ref}}$<$ Return\+Type(Args...)$>$ ref) noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ab6cd34d5ba80504b1e87a890bcf28ff5}\index{kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}!FunctionRef@{FunctionRef}}
+\index{FunctionRef@{FunctionRef}!kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{FunctionRef()}{FunctionRef()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_ab6cd34d5ba80504b1e87a890bcf28ff5} 
+template$<$typename Return\+Type, typename... Args$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function_ref}{kiwi\+::\+Function\+Ref}}$<$ Return\+Type(Args...)$>$\mbox{\hyperlink{classfolly_1_1_function_ref}{\+::\+Function\+Ref}} (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [default]}}
+
+Default constructor. Constructs an empty \doxylink{classkiwi_1_1_function_ref}{Function\+Ref}.
+
+Invoking it will throw std\+::bad\+\_\+function\+\_\+call. \Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a02776cb3bce68f642ec7303c7e1e11c4}\index{kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}!FunctionRef@{FunctionRef}}
+\index{FunctionRef@{FunctionRef}!kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{FunctionRef()}{FunctionRef()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a02776cb3bce68f642ec7303c7e1e11c4} 
+template$<$typename Return\+Type, typename... Args$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function_ref}{kiwi\+::\+Function\+Ref}}$<$ Return\+Type(Args...)$>$\mbox{\hyperlink{classfolly_1_1_function_ref}{\+::\+Function\+Ref}} (\begin{DoxyParamCaption}\item[{std\+::nullptr\+\_\+t}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Like default constructor. Constructs an empty \doxylink{classkiwi_1_1_function_ref}{Function\+Ref}.
+
+Invoking it will throw std\+::bad\+\_\+function\+\_\+call. \Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a8c57b2ed926872bed15ee7400cbbe7fe}\index{kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}!FunctionRef@{FunctionRef}}
+\index{FunctionRef@{FunctionRef}!kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{FunctionRef()}{FunctionRef()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a8c57b2ed926872bed15ee7400cbbe7fe} 
+template$<$typename Return\+Type, typename... Args$>$ \\
+template$<$typename Fun, std\+::enable\+\_\+if\+\_\+t$<$ \mbox{\hyperlink{structkiwi_1_1_conjunction}{Conjunction}}$<$ \mbox{\hyperlink{structkiwi_1_1_negation}{Negation}}$<$ std\+::is\+\_\+same$<$ \mbox{\hyperlink{classkiwi_1_1_function_ref}{Function\+Ref}}, std\+::decay\+\_\+t$<$ Fun $>$ $>$ $>$, std\+::is\+\_\+invocable\+\_\+r$<$ Return\+Type, Fun \&\&, Args \&\&... $>$ $>$\+::value, int $>$ = 0$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function_ref}{kiwi\+::\+Function\+Ref}}$<$ Return\+Type(Args...)$>$\mbox{\hyperlink{classfolly_1_1_function_ref}{\+::\+Function\+Ref}} (\begin{DoxyParamCaption}\item[{Fun \&\&}]{fun}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Construct a \doxylink{classkiwi_1_1_function_ref}{Function\+Ref} from a reference to a callable object. If the callable is considered to be an empty callable, the \doxylink{classkiwi_1_1_function_ref}{Function\+Ref} will be empty. \Hypertarget{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a8a4496f2286716f11edad52710dc0861}\index{kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}!FunctionRef@{FunctionRef}}
+\index{FunctionRef@{FunctionRef}!kiwi::FunctionRef$<$ ReturnType(Args...)$>$@{kiwi::FunctionRef$<$ ReturnType(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{FunctionRef()}{FunctionRef()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ref_3_01_return_type_07_args_8_8_8_08_4_a8a4496f2286716f11edad52710dc0861} 
+template$<$typename Return\+Type, typename... Args$>$ \\
+template$<$typename Fun, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+function$<$ Fun $>$\+::value, int $>$ = 0, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+invocable\+\_\+r\+\_\+v$<$ Return\+Type, Fun \&, Args \&\&... $>$, int $>$ = 0$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function_ref}{kiwi\+::\+Function\+Ref}}$<$ Return\+Type(Args...)$>$\mbox{\hyperlink{classfolly_1_1_function_ref}{\+::\+Function\+Ref}} (\begin{DoxyParamCaption}\item[{Fun \texorpdfstring{$\ast$}{*}}]{fun}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Constructs a \doxylink{classkiwi_1_1_function_ref}{Function\+Ref} from a pointer to a function. If the pointer is nullptr, the \doxylink{classkiwi_1_1_function_ref}{Function\+Ref} will be empty. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

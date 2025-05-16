@@ -1,0 +1,1276 @@
+\doxysection{circular\+\_\+deque.\+hh}
+\hypertarget{circular__deque_8hh_source}{}\label{circular__deque_8hh_source}\index{include/kiwi/containers/circular\_deque.hh@{include/kiwi/containers/circular\_deque.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/vector\_buffer.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/checked\_math.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions.hh"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/types/cxx23\_from\_range.hh"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <ostream>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ base::circular\_deque\ is\ similar\ to\ std::deque.\ Unlike\ std::deque,\ the}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ storage\ is\ provided\ in\ a\ flat\ circular\ buffer\ conceptually\ similar\ to\ a}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ vector.\ The\ beginning\ and\ end\ will\ wrap\ around\ as\ necessary\ so\ that}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ pushes\ and\ pops\ will\ be\ constant\ time\ as\ long\ as\ a\ capacity\ expansion\ is}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ not\ required.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ The\ API\ should\ be\ identical\ to\ std::deque\ with\ the\ following\ differences:}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ -\/\ ITERATORS\ ARE\ NOT\ STABLE.\ Mutating\ the\ container\ will\ invalidate\ all}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ \ \ iterators.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \ -\/\ Insertions\ may\ resize\ the\ vector\ and\ so\ are\ not\ constant\ time\ (std::deque}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ \ \ \ guarantees\ constant\ time\ for\ insertions\ at\ the\ ends).}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ -\/\ Container-\/wide\ comparisons\ are\ not\ implemented.\ If\ you\ want\ to\ compare}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ \ \ two\ containers,\ use\ an\ algorithm\ so\ the\ expensive\ iteration\ is\ explicit.}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ If\ you\ want\ a\ similar\ container\ with\ only\ a\ queue\ API,\ use\ base::queue\ in}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ base/containers/queue.h.}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Constructors:}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ circular\_deque();}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ circular\_deque(size\_t\ count);}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ circular\_deque(size\_t\ count,\ const\ T\&\ value);}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ \ \ circular\_deque(InputIterator\ first,\ InputIterator\ last);}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ circular\_deque(base::from\_range\_t,\ Range\ range);}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ circular\_deque(const\ circular\_deque\&);}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ circular\_deque(circular\_deque\&\&);}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ \ \ circular\_deque(std::initializer\_list<value\_type>);}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ Assignment\ functions:}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ circular\_deque\&\ operator=(const\ circular\_deque\&);}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ \ \ circular\_deque\&\ operator=(circular\_deque\&\&);}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ \ \ circular\_deque\&\ operator=(std::initializer\_list<T>);}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ \ \ void\ assign(size\_t\ count,\ const\ T\&\ value);}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ \ \ void\ assign(InputIterator\ first,\ InputIterator\ last);}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ \ \ void\ assign(std::initializer\_list<T>\ value);}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ \ \ void\ assign\_range(Range\ range);}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ Random\ accessors:}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ \ T\&\ at(size\_t);}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ \ \ const\ T\&\ at(size\_t)\ const;}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ \ \ T\&\ operator[](size\_t);}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ \ \ const\ T\&\ operator[](size\_t)\ const;}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ End\ accessors:}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \ \ T\&\ front();}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ \ \ const\ T\&\ front()\ const;}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ \ \ T\&\ back();}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ \ \ const\ T\&\ back()\ const;}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ Iterator\ functions:}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ begin();}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ begin()\ const;}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ cbegin()\ const;}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ end();}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ end()\ const;}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ cend()\ const;}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ \ \ reverse\_iterator\ \ \ \ \ \ \ rbegin();}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ rbegin()\ const;}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ crbegin()\ const;}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ \ \ reverse\_iterator\ \ \ \ \ \ \ rend();}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ rend()\ const;}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ crend()\ const;}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ Memory\ management:}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ \ \ void\ reserve(size\_t);\ \ //\ SEE\ IMPLEMENTATION\ FOR\ SOME\ GOTCHAS.}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ \ \ size\_t\ capacity()\ const;}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ \ \ void\ shrink\_to\_fit();}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ Size\ management:}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ \ \ void\ clear();}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ bool\ empty()\ const;}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ \ size\_t\ size()\ const;}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \ \ void\ resize(size\_t);}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ \ void\ resize(size\_t\ count,\ const\ T\&\ value);}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ Positional\ insert\ and\ erase:}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ \ void\ insert(const\_iterator\ pos,\ size\_type\ count,\ const\ T\&\ value);}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ \ \ void\ insert(const\_iterator\ pos,}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ InputIterator\ first,\ InputIterator\ last);}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ \ \ iterator\ insert(const\_iterator\ pos,\ const\ T\&\ value);}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ \ \ iterator\ insert(const\_iterator\ pos,\ T\&\&\ value);}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ \ \ iterator\ emplace(const\_iterator\ pos,\ Args\&\&...\ args);}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ \ \ iterator\ erase(const\_iterator\ pos);}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ \ \ iterator\ erase(const\_iterator\ first,\ const\_iterator\ last);}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ End\ insert\ and\ erase:}}
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ \ \ void\ push\_front(const\ T\&);}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ \ \ void\ push\_front(T\&\&);}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//\ \ \ void\ push\_back(const\ T\&);}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ \ \ void\ push\_back(T\&\&);}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//\ \ \ T\&\ emplace\_front(Args\&\&...);}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ \ \ T\&\ emplace\_back(Args\&\&...);}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ \ \ void\ pop\_front();}}
+\DoxyCodeLine{00117\ \textcolor{comment}{//\ \ \ void\ pop\_back();}}
+\DoxyCodeLine{00118\ \textcolor{comment}{//}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//\ General:}}
+\DoxyCodeLine{00120\ \textcolor{comment}{//\ \ \ void\ swap(circular\_deque\&);}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00125\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque}};}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{comment}{//\ Start\ allocating\ nonempty\ buffers\ with\ this\ many\ entries.\ This\ is\ the}}
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ external\ capacity\ so\ the\ internal\ buffer\ will\ be\ one\ larger\ (=\ 4)\ which\ is}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ more\ even\ for\ the\ allocator.\ See\ the\ descriptions\ of\ internal\ vs.\ external}}
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ capacity\ on\ the\ comment\ above\ the\ buffer\_\ variable\ below.}}
+\DoxyCodeLine{00133\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kCircularBufferInitialCapacity\ =\ 3;}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00136\ \textcolor{keyword}{class\ }circular\_deque\_const\_iterator\ \{}
+\DoxyCodeLine{00137\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ ptrdiff\_t;}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ T;}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{using\ }pointer\ =\ \textcolor{keyword}{const}\ T*;}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{using\ }reference\ =\ \textcolor{keyword}{const}\ T\&;}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ std::random\_access\_iterator\_tag;}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ circular\_deque\_const\_iterator()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//\ Dereferencing.}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{const}\ T\&\ operator*()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00148\ \ \ \ \ CHECK\_NE(index\_,\ end\_);}
+\DoxyCodeLine{00149\ \ \ \ \ CheckUnstableUsage();}
+\DoxyCodeLine{00150\ \ \ \ \ CheckValidIndex(index\_);}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ Increment()\ and\ Decrement()\ and\ Add()\ operations\ ensure\ that}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{comment}{//\ \`{}index\_`\ stays\ inside\ [begin\_,\ end\_]\ (while\ supporting\ wrap\ around\ for}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{comment}{//\ the\ structure.\ This\ maintains\ that\ \`{}index\_`\ always\ points\ at\ a}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{comment}{//\ valid\ position\ for\ the\ \`{}buffer\_`.\ We\ also\ CHECK\ above\ that\ \`{}index\_`\ is}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{comment}{//\ not\ \`{}end\_`\ making\ it\ a\ valid\ pointer\ to\ dereference.}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ UNSAFE\_BUFFERS(buffer\_[index\_]);}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{const}\ T*\ operator-\/>()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ CHECK\_NE(index\_,\ end\_);}
+\DoxyCodeLine{00160\ \ \ \ \ CheckUnstableUsage();}
+\DoxyCodeLine{00161\ \ \ \ \ CheckValidIndex(index\_);}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ Increment()\ and\ Decrement()\ and\ Add()\ operations\ ensure\ that}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{comment}{//\ \`{}index\_`\ stays\ inside\ [begin\_,\ end\_]\ while\ supporting\ wrap\ around\ for}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{comment}{//\ the\ structure.\ This\ maintains\ that\ \`{}index\_`\ always\ points\ at\ a}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{//\ valid\ position\ for\ the\ \`{}buffer\_`.\ We\ also\ CHECK\ above\ that\ \`{}index\_`\ is}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{comment}{//\ not\ \`{}end\_`\ making\ it\ a\ valid\ pointer\ to\ dereference.}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ \&UNSAFE\_BUFFERS(buffer\_[index\_]);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{const}\ value\_type\&\ operator[](difference\_type\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *(*\textcolor{keyword}{this}\ +\ i);\ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ Increment\ and\ decrement.}}
+\DoxyCodeLine{00172\ \ \ circular\_deque\_const\_iterator\&\ operator++()\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ Increment();}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \ \ circular\_deque\_const\_iterator\ operator++(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ circular\_deque\_const\_iterator\ ret\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00178\ \ \ \ \ Increment();}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ circular\_deque\_const\_iterator\&\ operator-\/-\/()\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ Decrement();}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ \ \ circular\_deque\_const\_iterator\ operator-\/-\/(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ circular\_deque\_const\_iterator\ ret\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00187\ \ \ \ \ Decrement();}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00189\ \ \ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ Random\ access\ mutation.}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{friend}\ circular\_deque\_const\_iterator\ operator+(}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ iter,\ difference\_type\ offset)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ circular\_deque\_const\_iterator\ ret\ =\ iter;}
+\DoxyCodeLine{00195\ \ \ \ \ ret.Add(offset);}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ \ \ circular\_deque\_const\_iterator\&\ operator+=(difference\_type\ offset)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ Add(offset);}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00201\ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{friend}\ circular\_deque\_const\_iterator\ operator-\/(}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ iter,\ difference\_type\ offset)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ circular\_deque\_const\_iterator\ ret\ =\ iter;}
+\DoxyCodeLine{00205\ \ \ \ \ ret.Add(-\/offset);}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00207\ \ \ \}}
+\DoxyCodeLine{00208\ \ \ circular\_deque\_const\_iterator\&\ operator-\/=(difference\_type\ offset)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ Add(-\/offset);}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{friend}\ std::ptrdiff\_t\ operator-\/(\textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ lhs,}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ rhs)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ lhs.CheckComparable(rhs);}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}std::ptrdiff\_t\textcolor{keyword}{>}(lhs.OffsetFromBegin()\ -\/}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rhs.OffsetFromBegin());}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//\ Comparisons.}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ lhs,}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ rhs)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ lhs.CheckComparable(rhs);}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.index\_\ ==\ rhs.index\_;}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{friend}\ std::strong\_ordering\ operator<=>(}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ lhs,}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ rhs)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ lhs.CheckComparable(rhs);}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{comment}{//\ The\ order\ is\ based\ on\ the\ position\ of\ the\ element\ in\ the\ circular\_dequeue}}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{comment}{//\ rather\ than\ \`{}index\_`\ at\ which\ the\ element\ is\ stored\ in\ the\ ring\ buffer.}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.OffsetFromBegin()\ <=>\ rhs.OffsetFromBegin();}
+\DoxyCodeLine{00233\ \ \ \}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque}}<T>;}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ circular\_deque\_const\_iterator(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque<T>}}*\ parent,\ \textcolor{keywordtype}{size\_t}\ index)}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ :\ buffer\_(parent-\/>buffer\_.data()),}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ cap\_(parent-\/>buffer\_.capacity()),}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ begin\_(parent-\/>begin\_),}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ end\_(parent-\/>end\_),}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ index\_(index)\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ <=\ end\_)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ CHECK\_GE(index\_,\ begin\_);}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ CHECK\_LE(index\_,\ end\_);}
+\DoxyCodeLine{00247\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (index\_\ >=\ begin\_)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ CHECK(index\_\ <\ cap\_);}
+\DoxyCodeLine{00249\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ CHECK(index\_\ <=\ end\_);}
+\DoxyCodeLine{00251\ \ \ \ \ \}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00253\ \ \ \ \ parent\_deque\_\ =\ parent;}
+\DoxyCodeLine{00254\ \ \ \ \ created\_generation\_\ =\ parent-\/>generation\_;}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00256\ \ \ \}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \textcolor{comment}{//\ Returns\ the\ offset\ from\ the\ beginning\ index\ of\ the\ buffer\ to\ the\ current}}
+\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//\ item.}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{size\_t}\ OffsetFromBegin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\_\ >=\ begin\_)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ index\_\ -\/\ begin\_;\ \ \textcolor{comment}{//\ On\ the\ same\ side\ as\ begin.}}
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{return}\ cap\_\ -\/\ begin\_\ +\ index\_;}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//\ The\ size\ of\ the\ deque,\ ie.\ the\ number\ of\ elements\ in\ it.}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{size\_t}\ Size()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ <=\ end\_)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ end\_\ -\/\ begin\_;}
+\DoxyCodeLine{00271\ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ cap\_\ -\/\ begin\_\ +\ end\_;}
+\DoxyCodeLine{00273\ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \textcolor{comment}{//\ Most\ uses\ will\ be\ ++\ and\ -\/-\/\ so\ use\ a\ simplified\ implementation.}}
+\DoxyCodeLine{00276\ \ \ \textcolor{keywordtype}{void}\ Increment()\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ CheckUnstableUsage();}
+\DoxyCodeLine{00278\ \ \ \ \ CheckValidIndex(index\_);}
+\DoxyCodeLine{00279\ \ \ \ \ CHECK\_NE(index\_,\ end\_);}
+\DoxyCodeLine{00280\ \ \ \ \ index\_++;}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\_\ ==\ cap\_)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ index\_\ =\ 0u;}
+\DoxyCodeLine{00283\ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{keywordtype}{void}\ Decrement()\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ CheckUnstableUsage();}
+\DoxyCodeLine{00287\ \ \ \ \ CheckValidIndexOrEnd(index\_);}
+\DoxyCodeLine{00288\ \ \ \ \ CHECK\_NE(index\_,\ begin\_);}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\_\ ==\ 0u)\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ index\_\ =\ cap\_\ -\/\ 1u;}
+\DoxyCodeLine{00291\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ index\_-\/-\/;}
+\DoxyCodeLine{00293\ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \textcolor{keywordtype}{void}\ Add(difference\_type\ delta)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ CheckUnstableUsage();}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keywordflow}{if}\ (delta\ <=\ 0)\ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ CheckValidIndexOrEnd(index\_);}
+\DoxyCodeLine{00300\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ CheckValidIndex(index\_);}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{comment}{//\ It\ should\ be\ valid\ to\ add\ 0\ to\ any\ iterator,\ even\ if\ the\ container\ is}}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{comment}{//\ empty\ and\ the\ iterator\ points\ to\ end().\ The\ modulo\ below\ will\ divide}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{comment}{//\ by\ 0\ if\ the\ buffer\ capacity\ is\ empty,\ so\ it's\ important\ to\ check\ for}}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{comment}{//\ this\ case\ explicitly.}}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{if}\ (delta\ ==\ 0)\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00310\ \ \ \ \ \}}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ offset\_from\_begin\ =}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ max\ allocation\ size\ is\ PTRDIFF\_MAX,\ so\ this\ value\ can't\ be\ larger}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ than\ fits\ in\ ptrdiff\_t.}}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}difference\_type\textcolor{keyword}{>}(OffsetFromBegin());}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ deque\_size\ =}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ max\ allocation\ size\ is\ PTRDIFF\_MAX,\ so\ this\ value\ can't\ be\ larger}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ than\ fits\ in\ ptrdiff\_t.}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}difference\_type\textcolor{keyword}{>}(Size());}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keywordflow}{if}\ (delta\ >=\ 0)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ \`{}offset\_from\_begin\ +\ delta\ <=\ deque\_size`\ without\ overflowing.}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ CHECK\_LE(delta,\ deque\_size\ -\/\ offset\_from\_begin);}
+\DoxyCodeLine{00323\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ \`{}offset\_from\_begin\ +\ delta\ >=\ 0`\ without\ overflowing.\ We\ avoid}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{comment}{//\ negating\ a\ negative\ \`{}delta`\ which\ can\ overflow.\ Instead\ negate\ the}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{comment}{//\ positive\ number\ which\ can\ not.}}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ CHECK\_GE(delta,\ -\/offset\_from\_begin)\ <<\ offset\_from\_begin;}
+\DoxyCodeLine{00328\ \ \ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ new\_offset\ =}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ above\ checks\ verify\ that\ \`{}offset\_from\_begin\ +\ delta`\ is\ in\ the}}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ range\ [0,\ deque\_size]\ and\ does\ not\ overflow,\ so\ it\ also\ fits\ in}}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \`{}size\_t`.}}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(offset\_from\_begin\ +\ delta);}
+\DoxyCodeLine{00334\ \ \ \ \ index\_\ =\ (new\_offset\ +\ begin\_)\ \%\ cap\_;}
+\DoxyCodeLine{00335\ \ \ \}}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndexOrEnd(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00339\ \ \ \ \ parent\_deque\_-\/>CheckValidIndexOrEnd(index\_);}
+\DoxyCodeLine{00340\ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndex(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ parent\_deque\_-\/>CheckValidIndex(index\_);}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \textcolor{keywordtype}{void}\ CheckUnstableUsage()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00345\ \ \ \ \ DCHECK(parent\_deque\_);}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{comment}{//\ Since\ circular\_deque\ doesn't\ guarantee\ stability,\ any\ attempt\ to}}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{comment}{//\ dereference\ this\ iterator\ after\ a\ mutation\ (i.e.\ the\ generation\ doesn't}}
+\DoxyCodeLine{00348\ \ \ \ \ \textcolor{comment}{//\ match\ the\ original)\ in\ the\ container\ is\ illegal.}}
+\DoxyCodeLine{00349\ \ \ \ \ DCHECK\_EQ(created\_generation\_,\ parent\_deque\_-\/>generation\_)}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}circular\_deque\ iterator\ dereferenced\ after\ mutation."{}};}
+\DoxyCodeLine{00351\ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \textcolor{keywordtype}{void}\ CheckComparable(\textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00353\ \ \ \ \ DCHECK\_EQ(parent\_deque\_,\ other.parent\_deque\_);}
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{comment}{//\ Since\ circular\_deque\ doesn't\ guarantee\ stability,\ two\ iterators\ that}}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{comment}{//\ are\ compared\ must\ have\ been\ generated\ without\ mutating\ the\ container.}}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{comment}{//\ If\ this\ fires,\ the\ container\ was\ mutated\ between\ generating\ the\ two}}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{comment}{//\ iterators\ being\ compared.}}
+\DoxyCodeLine{00358\ \ \ \ \ DCHECK\_EQ(created\_generation\_,\ other.created\_generation\_);}
+\DoxyCodeLine{00359\ \ \ \}}
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00361\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ CheckUnstableUsage()\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{00362\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ CheckComparable(\textcolor{keyword}{const}\ circular\_deque\_const\_iterator\&)\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{00363\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndexOrEnd(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{00364\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndex(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{00365\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ \textcolor{comment}{//\ \`{}buffer\_`\ is\ not\ a\ raw\_ptr<...>\ for\ performance\ reasons:\ Usually}}
+\DoxyCodeLine{00368\ \ \ \textcolor{comment}{//\ on-\/stack\ pointer,\ pointing\ back\ to\ the\ collection\ being\ iterated,\ owned\ by}}
+\DoxyCodeLine{00369\ \ \ \textcolor{comment}{//\ object\ that\ iterates\ over\ it.\ \ Additionally\ this\ is\ supported\ by\ the}}
+\DoxyCodeLine{00370\ \ \ \textcolor{comment}{//\ analysis\ of\ sampling\ profiler\ data\ and\ tab\_search:top100:2020.}}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{const}\ T*\ buffer\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00373\ \ \ \textcolor{keywordtype}{size\_t}\ cap\_\ =\ 0u;}
+\DoxyCodeLine{00374\ \ \ \textcolor{keywordtype}{size\_t}\ begin\_\ =\ 0u;}
+\DoxyCodeLine{00375\ \ \ \textcolor{keywordtype}{size\_t}\ end\_\ =\ 0u;}
+\DoxyCodeLine{00376\ \ \ \textcolor{keywordtype}{size\_t}\ index\_\ =\ 0u;}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque<T>}}*\ parent\_deque\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{//\ The\ generation\ of\ the\ parent\ deque\ when\ this\ iterator\ was\ created.\ The}}
+\DoxyCodeLine{00381\ \ \ \textcolor{comment}{//\ container\ will\ update\ the\ generation\ for\ every\ modification\ so\ we\ can}}
+\DoxyCodeLine{00382\ \ \ \textcolor{comment}{//\ test\ if\ the\ container\ was\ modified\ by\ comparing\ them.}}
+\DoxyCodeLine{00383\ \ \ uint64\_t\ created\_generation\_\ =\ 0u;}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{00385\ \};}
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00387\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00388\ \textcolor{keyword}{class\ }circular\_deque\_iterator\ :\ \textcolor{keyword}{public}\ circular\_deque\_const\_iterator<T>\ \{}
+\DoxyCodeLine{00389\ \ \ \textcolor{keyword}{using\ }base\ =\ circular\_deque\_const\_iterator<T>;}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque}}<T>;}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ std::ptrdiff\_t;}
+\DoxyCodeLine{00395\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ T;}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{using\ }pointer\ =\ T*;}
+\DoxyCodeLine{00397\ \ \ \textcolor{keyword}{using\ }reference\ =\ T\&;}
+\DoxyCodeLine{00398\ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ std::random\_access\_iterator\_tag;}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \ \ \textcolor{comment}{//\ Expose\ the\ base\ class'\ constructor.}}
+\DoxyCodeLine{00401\ \ \ circular\_deque\_iterator()\ :\ circular\_deque\_const\_iterator<T>()\ \{\}}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \ \ \textcolor{comment}{//\ Dereferencing.}}
+\DoxyCodeLine{00404\ \ \ T\&\ operator*()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}T\&\textcolor{keyword}{>}(base::operator*());\ \}}
+\DoxyCodeLine{00405\ \ \ T*\ operator-\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}T*\textcolor{keyword}{>}(base::operator-\/>());\ \}}
+\DoxyCodeLine{00406\ \ \ T\&\ operator[](difference\_type\ i)\ \{}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}T\&\textcolor{keyword}{>}(base::operator[](i));}
+\DoxyCodeLine{00408\ \ \ \}}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \ \ \textcolor{comment}{//\ Random\ access\ mutation.}}
+\DoxyCodeLine{00411\ \ \ \textcolor{keyword}{friend}\ circular\_deque\_iterator\ operator+(\textcolor{keyword}{const}\ circular\_deque\_iterator\&\ iter,}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ difference\_type\ offset)\ \{}
+\DoxyCodeLine{00413\ \ \ \ \ circular\_deque\_iterator\ ret\ =\ iter;}
+\DoxyCodeLine{00414\ \ \ \ \ ret.Add(offset);}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00416\ \ \ \}}
+\DoxyCodeLine{00417\ \ \ circular\_deque\_iterator\&\ operator+=(difference\_type\ offset)\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ base::Add(offset);}
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00420\ \ \ \}}
+\DoxyCodeLine{00421\ \ \ \textcolor{keyword}{friend}\ circular\_deque\_iterator\ operator-\/(\textcolor{keyword}{const}\ circular\_deque\_iterator\&\ iter,}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ difference\_type\ offset)\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ circular\_deque\_iterator\ ret\ =\ iter;}
+\DoxyCodeLine{00424\ \ \ \ \ ret.Add(-\/offset);}
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00426\ \ \ \}}
+\DoxyCodeLine{00427\ \ \ circular\_deque\_iterator\&\ operator-\/=(difference\_type\ offset)\ \{}
+\DoxyCodeLine{00428\ \ \ \ \ base::Add(-\/offset);}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00430\ \ \ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \textcolor{comment}{//\ Increment\ and\ decrement.}}
+\DoxyCodeLine{00433\ \ \ circular\_deque\_iterator\&\ operator++()\ \{}
+\DoxyCodeLine{00434\ \ \ \ \ base::Increment();}
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00436\ \ \ \}}
+\DoxyCodeLine{00437\ \ \ circular\_deque\_iterator\ operator++(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00438\ \ \ \ \ circular\_deque\_iterator\ ret\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00439\ \ \ \ \ base::Increment();}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ \ \ circular\_deque\_iterator\&\ operator-\/-\/()\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ base::Decrement();}
+\DoxyCodeLine{00444\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00445\ \ \ \}}
+\DoxyCodeLine{00446\ \ \ circular\_deque\_iterator\ operator-\/-\/(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ circular\_deque\_iterator\ ret\ =\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00448\ \ \ \ \ base::Decrement();}
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00450\ \ \ \}}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00453\ \ \ circular\_deque\_iterator(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque<T>}}*\ parent,\ \textcolor{keywordtype}{size\_t}\ index)}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ :\ circular\_deque\_const\_iterator<T>(parent,\ index)\ \{\}}
+\DoxyCodeLine{00455\ \};}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00458\ }
+\DoxyCodeLine{00459\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00460\ \textcolor{keyword}{class\ }circular\_deque\ \{}
+\DoxyCodeLine{00461\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{using\ }VectorBuffer\ =\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{internal::VectorBuffer<T>}};}
+\DoxyCodeLine{00463\ }
+\DoxyCodeLine{00464\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ T;}
+\DoxyCodeLine{00466\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ size\_t;}
+\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ std::ptrdiff\_t;}
+\DoxyCodeLine{00468\ \ \ \textcolor{keyword}{using\ }reference\ =\ value\_type\&;}
+\DoxyCodeLine{00469\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{const}\ value\_type\&;}
+\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{using\ }pointer\ =\ value\_type*;}
+\DoxyCodeLine{00471\ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ \textcolor{keyword}{const}\ value\_type*;}
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00473\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{internal::circular\_deque\_iterator<T>}};}
+\DoxyCodeLine{00474\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{internal::circular\_deque\_const\_iterator<T>}};}
+\DoxyCodeLine{00475\ \ \ \textcolor{keyword}{using\ }reverse\_iterator\ =\ std::reverse\_iterator<iterator>;}
+\DoxyCodeLine{00476\ \ \ \textcolor{keyword}{using\ }const\_reverse\_iterator\ =\ std::reverse\_iterator<const\_iterator>;}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00479\ \ \ \textcolor{comment}{//\ Constructor}}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ \textcolor{comment}{//\ Constructs\ an\ empty\ deque.}}
+\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{constexpr}\ circular\_deque()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \textcolor{comment}{//\ Constructs\ with\ \`{}count`\ copies\ of\ a\ default-\/constructed\ T.}}
+\DoxyCodeLine{00485\ \ \ \textcolor{keyword}{explicit}\ circular\_deque(size\_type\ count)\ \{\ resize(count);\ \}}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \ \ \textcolor{comment}{//\ Constructs\ with\ \`{}count`\ copies\ of\ \`{}value`.}}
+\DoxyCodeLine{00488\ \ \ circular\_deque(size\_type\ count,\ \textcolor{keyword}{const}\ T\&\ value)\ \{\ resize(count,\ value);\ \}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ \textcolor{comment}{//\ Construct\ a\ deque\ by\ constructing\ its\ elements\ from\ each\ element\ in}}
+\DoxyCodeLine{00491\ \ \ \textcolor{comment}{//\ \`{}[first,\ last)`.}}
+\DoxyCodeLine{00492\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00493\ \ \ \textcolor{comment}{//\ Prefer\ using\ the\ \`{}from\_range\_t`\ constructor,\ which\ builds\ a\ deque\ from\ a}}
+\DoxyCodeLine{00494\ \ \ \textcolor{comment}{//\ range,\ instead\ of\ from\ problematic\ iterator\ pairs.}}
+\DoxyCodeLine{00495\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00496\ \ \ \textcolor{comment}{//\ \#\ Safety}}
+\DoxyCodeLine{00497\ \ \ \textcolor{comment}{//\ The\ \`{}first`\ and\ \`{}last`\ iterators\ must\ be\ from\ the\ same\ container,\ with}}
+\DoxyCodeLine{00498\ \ \ \textcolor{comment}{//\ \`{}first\ <=\ last`.}}
+\DoxyCodeLine{00499\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keyword}{requires}(std::input\_iterator<InputIterator>)}
+\DoxyCodeLine{00501\ \ \ UNSAFE\_BUFFER\_USAGE\ circular\_deque(InputIterator\ first,\ InputIterator\ last)}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ :\ circular\_deque()\ \{}
+\DoxyCodeLine{00503\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ caller\ is\ responsible\ for\ giving\ iterator\ from\ the\ same}}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{comment}{//\ container.}}
+\DoxyCodeLine{00505\ \ \ \ \ UNSAFE\_BUFFERS(assign(first,\ last));}
+\DoxyCodeLine{00506\ \ \ \}}
+\DoxyCodeLine{00507\ }
+\DoxyCodeLine{00508\ \ \ \textcolor{comment}{//\ Constructs\ a\ deque\ from\ the\ elements\ in\ a\ range\ (a\ container\ or\ span),}}
+\DoxyCodeLine{00509\ \ \ \textcolor{comment}{//\ typically\ by\ copy-\/constructing\ if\ the\ range\ also\ holds\ objects\ of\ type}}
+\DoxyCodeLine{00510\ \ \ \textcolor{comment}{//\ \`{}T`.}}
+\DoxyCodeLine{00511\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00512\ \ \ \textcolor{comment}{//\ Example:}}
+\DoxyCodeLine{00513\ \ \ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00514\ \ \ \textcolor{comment}{//\ int\ values[]\ =\ \{1,\ 3\};}}
+\DoxyCodeLine{00515\ \ \ \textcolor{comment}{//\ circular\_deque<int>\ deq(base::from\_range,\ values);}}
+\DoxyCodeLine{00516\ \ \ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00517\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00518\ \ \ \ \ \textcolor{keyword}{requires}(std::ranges::input\_range<Range>)}
+\DoxyCodeLine{00519\ \ \ circular\_deque(\mbox{\hyperlink{structbase_1_1from__range__t}{base::from\_range\_t}},\ Range\&\&\ value)\ :\ circular\_deque()\ \{}
+\DoxyCodeLine{00520\ \ \ \ \ assign\_range(std::forward<Range>(value));}
+\DoxyCodeLine{00521\ \ \ \}}
+\DoxyCodeLine{00522\ }
+\DoxyCodeLine{00523\ \ \ \textcolor{comment}{//\ Copy/move.}}
+\DoxyCodeLine{00524\ \ \ circular\_deque(\textcolor{keyword}{const}\ circular\_deque\&\ other)\ :\ buffer\_(other.size()\ +\ 1)\ \{}
+\DoxyCodeLine{00525\ \ \ \ \ assign\_range(other);}
+\DoxyCodeLine{00526\ \ \ \}}
+\DoxyCodeLine{00527\ \ \ circular\_deque(circular\_deque\&\&\ other)\ noexcept}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ :\ buffer\_(std::move(other.buffer\_)),}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ begin\_(std::exchange(other.begin\_,\ 0u)),}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ end\_(std::exchange(other.end\_,\ 0u))\ \{\}}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \ circular\_deque(std::initializer\_list<value\_type>\ init)\ \{\ assign(init);\ \}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \ \ \string~circular\_deque()\ \{\ DestructRange(begin\_,\ end\_);\ \}}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00537\ \ \ \textcolor{comment}{//\ Assignments.}}
+\DoxyCodeLine{00538\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00539\ \ \ \textcolor{comment}{//\ All\ of\ these\ may\ invalidate\ iterators\ and\ references.}}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ \ \ circular\_deque\&\ operator=(\textcolor{keyword}{const}\ circular\_deque\&\ other)\ \{}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&other\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00544\ \ \ \ \ \}}
+\DoxyCodeLine{00545\ }
+\DoxyCodeLine{00546\ \ \ \ \ reserve(other.size());}
+\DoxyCodeLine{00547\ \ \ \ \ assign\_range(other);}
+\DoxyCodeLine{00548\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00549\ \ \ \}}
+\DoxyCodeLine{00550\ \ \ circular\_deque\&\ operator=(circular\_deque\&\&\ other)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00551\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&other\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00553\ \ \ \ \ \}}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \ \ \ \ \textcolor{comment}{//\ We're\ about\ to\ overwrite\ the\ buffer,\ so\ don't\ free\ it\ in\ clear\ to}}
+\DoxyCodeLine{00556\ \ \ \ \ \textcolor{comment}{//\ avoid\ doing\ it\ twice.}}
+\DoxyCodeLine{00557\ \ \ \ \ ClearRetainCapacity();}
+\DoxyCodeLine{00558\ \ \ \ \ buffer\_\ =\ std::move(other.buffer\_);}
+\DoxyCodeLine{00559\ \ \ \ \ begin\_\ =\ std::exchange(other.begin\_,\ 0u);}
+\DoxyCodeLine{00560\ \ \ \ \ end\_\ =\ std::exchange(other.end\_,\ 0u);}
+\DoxyCodeLine{00561\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00562\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00563\ \ \ \}}
+\DoxyCodeLine{00564\ \ \ circular\_deque\&\ operator=(std::initializer\_list<value\_type>\ ilist)\ \{}
+\DoxyCodeLine{00565\ \ \ \ \ reserve(ilist.size());}
+\DoxyCodeLine{00566\ \ \ \ \ assign\_range(ilist);}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00568\ \ \ \}}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \ \ \textcolor{keywordtype}{void}\ assign(size\_type\ count,\ \textcolor{keyword}{const}\ value\_type\&\ value)\ \{}
+\DoxyCodeLine{00571\ \ \ \ \ ClearRetainCapacity();}
+\DoxyCodeLine{00572\ \ \ \ \ reserve(count);}
+\DoxyCodeLine{00573\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ count;\ i++)\ \{}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ emplace\_back(value);}
+\DoxyCodeLine{00575\ \ \ \ \ \}}
+\DoxyCodeLine{00576\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00577\ \ \ \}}
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \ \ \textcolor{comment}{//\ Constructs\ and\ appends\ new\ elements\ into\ the\ container\ from\ each\ element\ in}}
+\DoxyCodeLine{00580\ \ \ \textcolor{comment}{//\ \`{}[first,\ last)`,\ typically\ by\ copy-\/constructing\ if\ the\ iterators\ are\ also}}
+\DoxyCodeLine{00581\ \ \ \textcolor{comment}{//\ over\ objects\ of\ type\ \`{}T`.}}
+\DoxyCodeLine{00582\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00583\ \ \ \textcolor{comment}{//\ \#\ Safety}}
+\DoxyCodeLine{00584\ \ \ \textcolor{comment}{//\ Requires\ that\ \`{}first`\ and\ \`{}last`\ are\ valid\ iterators\ into\ a\ container,\ with}}
+\DoxyCodeLine{00585\ \ \ \textcolor{comment}{//\ \`{}first\ <=\ last`.}}
+\DoxyCodeLine{00586\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ InputIterator>}
+\DoxyCodeLine{00587\ \ \ \ \ \textcolor{keyword}{requires}(std::forward\_iterator<InputIterator>)}
+\DoxyCodeLine{00588\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{void}\ assign(InputIterator\ first,\ InputIterator\ last)\ \{}
+\DoxyCodeLine{00589\ \ \ \ \ \textcolor{comment}{//\ Possible\ future\ enhancement,\ dispatch\ on\ iterator\ tag\ type.\ For\ forward}}
+\DoxyCodeLine{00590\ \ \ \ \ \textcolor{comment}{//\ iterators\ we\ can\ use\ std::difference\ to\ preallocate\ the\ space\ required}}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{comment}{//\ and\ only\ do\ one\ copy.}}
+\DoxyCodeLine{00592\ \ \ \ \ ClearRetainCapacity();}
+\DoxyCodeLine{00593\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ Pointers\ are\ iterators,\ so\ \`{}first`\ may\ be\ a\ pointer.\ We\ require}}
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{comment}{//\ the\ caller\ to\ provide\ valid\ pointers\ such\ that\ \`{}last`\ is\ for\ the\ same}}
+\DoxyCodeLine{00595\ \ \ \ \ \textcolor{comment}{//\ allocation\ and\ \`{}first\ <=\ last`,\ and\ we've\ checked\ in\ the\ loop\ condition}}
+\DoxyCodeLine{00596\ \ \ \ \ \textcolor{comment}{//\ that\ \`{}first\ !=\ last`\ so\ incrementing\ will\ stay\ a\ valid\ pointer\ for\ the}}
+\DoxyCodeLine{00597\ \ \ \ \ \textcolor{comment}{//\ allocation.}}
+\DoxyCodeLine{00598\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ first\ !=\ last;\ UNSAFE\_BUFFERS(++first))\ \{}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ emplace\_back(*first);}
+\DoxyCodeLine{00600\ \ \ \ \ \}}
+\DoxyCodeLine{00601\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00602\ \ \ \}}
+\DoxyCodeLine{00603\ }
+\DoxyCodeLine{00604\ \ \ \textcolor{comment}{//\ Copies\ and\ appends\ new\ elements\ into\ the\ container\ from\ each\ element\ in}}
+\DoxyCodeLine{00605\ \ \ \textcolor{comment}{//\ the\ initializer\ list.}}
+\DoxyCodeLine{00606\ \ \ \textcolor{keywordtype}{void}\ assign(std::initializer\_list<value\_type>\ value)\ \{\ assign\_range(value);\ \}}
+\DoxyCodeLine{00607\ }
+\DoxyCodeLine{00608\ \ \ \textcolor{comment}{//\ Constructs\ and\ appends\ new\ elements\ into\ the\ container\ from\ each\ element\ in}}
+\DoxyCodeLine{00609\ \ \ \textcolor{comment}{//\ a\ range\ (a\ container\ or\ span),\ typically\ by\ copy-\/constructing\ if}}
+\DoxyCodeLine{00610\ \ \ \textcolor{comment}{//\ the\ range\ also\ holds\ objects\ of\ type\ \`{}T`.}}
+\DoxyCodeLine{00611\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keyword}{requires}(std::ranges::input\_range<Range>)}
+\DoxyCodeLine{00613\ \ \ \textcolor{keywordtype}{void}\ assign\_range(Range\&\&\ range)\ \{}
+\DoxyCodeLine{00614\ \ \ \ \ reserve(std::ranges::distance(range));}
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ begin()\ and\ end()\ produce\ iterators\ from\ the\ same\ container\ with}}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{comment}{//\ begin\ <=\ end.}}
+\DoxyCodeLine{00617\ \ \ \ \ UNSAFE\_BUFFERS(assign(std::ranges::begin(range),\ std::ranges::end(range)));}
+\DoxyCodeLine{00618\ \ \ \}}
+\DoxyCodeLine{00619\ }
+\DoxyCodeLine{00620\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00621\ \ \ \textcolor{comment}{//\ Accessors.}}
+\DoxyCodeLine{00622\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00623\ \ \ \textcolor{comment}{//\ Since\ this\ class\ assumes\ no\ exceptions,\ at()\ and\ operator[]\ are\ equivalent.}}
+\DoxyCodeLine{00624\ }
+\DoxyCodeLine{00625\ \ \ \textcolor{keyword}{const}\ value\_type\&\ at(size\_type\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00626\ \ \ \ \ CHECK\_LT(i,\ size());}
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ right\_size\ =\ buffer\_.capacity()\ -\/\ begin\_;}
+\DoxyCodeLine{00628\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ <=\ end\_\ ||\ i\ <\ right\_size)\ \{}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_[begin\_\ +\ i];}
+\DoxyCodeLine{00630\ \ \ \ \ \}}
+\DoxyCodeLine{00631\ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_[i\ -\/\ right\_size];}
+\DoxyCodeLine{00632\ \ \ \}}
+\DoxyCodeLine{00633\ \ \ value\_type\&\ at(size\_type\ i)\ \{}
+\DoxyCodeLine{00634\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}value\_type\&\textcolor{keyword}{>}(std::as\_const(*this).at(i));}
+\DoxyCodeLine{00635\ \ \ \}}
+\DoxyCodeLine{00636\ }
+\DoxyCodeLine{00637\ \ \ \textcolor{keyword}{const}\ value\_type\&\ operator[](size\_type\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ at(i);\ \}}
+\DoxyCodeLine{00638\ \ \ value\_type\&\ operator[](size\_type\ i)\ \{\ \textcolor{keywordflow}{return}\ at(i);\ \}}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ value\_type\&\ front()\ \{}
+\DoxyCodeLine{00641\ \ \ \ \ CHECK(!empty());}
+\DoxyCodeLine{00642\ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_[begin\_];}
+\DoxyCodeLine{00643\ \ \ \}}
+\DoxyCodeLine{00644\ \ \ \textcolor{keyword}{const}\ value\_type\&\ front()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00645\ \ \ \ \ CHECK(!empty());}
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_[begin\_];}
+\DoxyCodeLine{00647\ \ \ \}}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \ \ value\_type\&\ back()\ \{}
+\DoxyCodeLine{00650\ \ \ \ \ CHECK(!empty());}
+\DoxyCodeLine{00651\ \ \ \ \ \textcolor{keywordflow}{return}\ *(end()\ -\/\ 1);}
+\DoxyCodeLine{00652\ \ \ \}}
+\DoxyCodeLine{00653\ \ \ \textcolor{keyword}{const}\ value\_type\&\ back()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00654\ \ \ \ \ CHECK(!empty());}
+\DoxyCodeLine{00655\ \ \ \ \ \textcolor{keywordflow}{return}\ *(end()\ -\/\ 1);}
+\DoxyCodeLine{00656\ \ \ \}}
+\DoxyCodeLine{00657\ }
+\DoxyCodeLine{00658\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00659\ \ \ \textcolor{comment}{//\ Iterators.}}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ \ \ iterator\ begin()\ \{\ \textcolor{keywordflow}{return}\ iterator(\textcolor{keyword}{this},\ begin\_);\ \}}
+\DoxyCodeLine{00662\ \ \ const\_iterator\ begin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ const\_iterator(\textcolor{keyword}{this},\ begin\_);\ \}}
+\DoxyCodeLine{00663\ \ \ const\_iterator\ cbegin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ const\_iterator(\textcolor{keyword}{this},\ begin\_);\ \}}
+\DoxyCodeLine{00664\ }
+\DoxyCodeLine{00665\ \ \ iterator\ end()\ \{\ \textcolor{keywordflow}{return}\ iterator(\textcolor{keyword}{this},\ end\_);\ \}}
+\DoxyCodeLine{00666\ \ \ const\_iterator\ end()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ const\_iterator(\textcolor{keyword}{this},\ end\_);\ \}}
+\DoxyCodeLine{00667\ \ \ const\_iterator\ cend()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ const\_iterator(\textcolor{keyword}{this},\ end\_);\ \}}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \ \ reverse\_iterator\ rbegin()\ \{\ \textcolor{keywordflow}{return}\ reverse\_iterator(end());\ \}}
+\DoxyCodeLine{00670\ \ \ const\_reverse\_iterator\ rbegin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00671\ \ \ \ \ \textcolor{keywordflow}{return}\ const\_reverse\_iterator(end());}
+\DoxyCodeLine{00672\ \ \ \}}
+\DoxyCodeLine{00673\ \ \ const\_reverse\_iterator\ crbegin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ rbegin();\ \}}
+\DoxyCodeLine{00674\ }
+\DoxyCodeLine{00675\ \ \ reverse\_iterator\ rend()\ \{\ \textcolor{keywordflow}{return}\ reverse\_iterator(begin());\ \}}
+\DoxyCodeLine{00676\ \ \ const\_reverse\_iterator\ rend()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00677\ \ \ \ \ \textcolor{keywordflow}{return}\ const\_reverse\_iterator(begin());}
+\DoxyCodeLine{00678\ \ \ \}}
+\DoxyCodeLine{00679\ \ \ const\_reverse\_iterator\ crend()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ rend();\ \}}
+\DoxyCodeLine{00680\ }
+\DoxyCodeLine{00681\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00682\ \ \ \textcolor{comment}{//\ Memory\ management.}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \ \ \textcolor{comment}{//\ IMPORTANT\ NOTE\ ON\ reserve(...):\ This\ class\ implements\ auto-\/shrinking\ of}}
+\DoxyCodeLine{00685\ \ \ \textcolor{comment}{//\ the\ buffer\ when\ elements\ are\ deleted\ and\ there\ is\ "{}too\ much"{}\ wasted\ space.}}
+\DoxyCodeLine{00686\ \ \ \textcolor{comment}{//\ So\ if\ you\ call\ reserve()\ with\ a\ large\ size\ in\ anticipation\ of\ pushing\ many}}
+\DoxyCodeLine{00687\ \ \ \textcolor{comment}{//\ elements,\ but\ pop\ an\ element\ before\ the\ queue\ is\ full,\ the\ capacity\ you}}
+\DoxyCodeLine{00688\ \ \ \textcolor{comment}{//\ reserved\ may\ be\ lost.}}
+\DoxyCodeLine{00689\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00690\ \ \ \textcolor{comment}{//\ As\ a\ result,\ it's\ only\ worthwhile\ to\ call\ reserve()\ when\ you're\ adding}}
+\DoxyCodeLine{00691\ \ \ \textcolor{comment}{//\ many\ things\ at\ once\ with\ no\ intermediate\ operations.}}
+\DoxyCodeLine{00692\ \ \ \textcolor{keywordtype}{void}\ reserve(size\_type\ new\_capacity)\ \{}
+\DoxyCodeLine{00693\ \ \ \ \ \textcolor{keywordflow}{if}\ (new\_capacity\ >\ capacity())\ \{}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ SetCapacityTo(new\_capacity);}
+\DoxyCodeLine{00695\ \ \ \ \ \}}
+\DoxyCodeLine{00696\ \ \ \}}
+\DoxyCodeLine{00697\ }
+\DoxyCodeLine{00698\ \ \ size\_type\ capacity()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00699\ \ \ \ \ \textcolor{comment}{//\ One\ item\ is\ wasted\ to\ indicate\ end().}}
+\DoxyCodeLine{00700\ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_.capacity()\ ==\ 0\ ?\ 0\ :\ buffer\_.capacity()\ -\/\ 1;}
+\DoxyCodeLine{00701\ \ \ \}}
+\DoxyCodeLine{00702\ }
+\DoxyCodeLine{00703\ \ \ \textcolor{keywordtype}{void}\ shrink\_to\_fit()\ \{}
+\DoxyCodeLine{00704\ \ \ \ \ \textcolor{keywordflow}{if}\ (empty())\ \{}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \textcolor{comment}{//\ Optimize\ empty\ case\ to\ really\ delete\ everything\ if\ there\ was}}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ \textcolor{comment}{//\ something.}}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_.capacity())\ \{}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ buffer\_\ =\ VectorBuffer();}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00710\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ SetCapacityTo(size());}
+\DoxyCodeLine{00712\ \ \ \ \ \}}
+\DoxyCodeLine{00713\ \ \ \}}
+\DoxyCodeLine{00714\ }
+\DoxyCodeLine{00715\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00716\ \ \ \textcolor{comment}{//\ Size\ management.}}
+\DoxyCodeLine{00717\ }
+\DoxyCodeLine{00718\ \ \ \textcolor{comment}{//\ This\ will\ additionally\ reset\ the\ capacity()\ to\ 0.}}
+\DoxyCodeLine{00719\ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00720\ \ \ \ \ \textcolor{comment}{//\ This\ can't\ resize(0)\ because\ that\ requires\ a\ default\ constructor\ to}}
+\DoxyCodeLine{00721\ \ \ \ \ \textcolor{comment}{//\ compile,\ which\ not\ all\ contained\ classes\ may\ implement.}}
+\DoxyCodeLine{00722\ \ \ \ \ ClearRetainCapacity();}
+\DoxyCodeLine{00723\ \ \ \ \ buffer\_\ =\ VectorBuffer();}
+\DoxyCodeLine{00724\ \ \ \}}
+\DoxyCodeLine{00725\ }
+\DoxyCodeLine{00726\ \ \ \textcolor{keywordtype}{bool}\ empty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ begin\_\ ==\ end\_;\ \}}
+\DoxyCodeLine{00727\ }
+\DoxyCodeLine{00728\ \ \ size\_type\ size()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00729\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ <=\ end\_)\ \{}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ end\_\ -\/\ begin\_;}
+\DoxyCodeLine{00731\ \ \ \ \ \}}
+\DoxyCodeLine{00732\ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_.capacity()\ -\/\ begin\_\ +\ end\_;}
+\DoxyCodeLine{00733\ \ \ \}}
+\DoxyCodeLine{00734\ }
+\DoxyCodeLine{00735\ \ \ \textcolor{comment}{//\ When\ reducing\ size,\ the\ elements\ are\ deleted\ from\ the\ end.\ When\ expanding}}
+\DoxyCodeLine{00736\ \ \ \textcolor{comment}{//\ size,\ elements\ are\ added\ to\ the\ end\ with\ |value|\ or\ the\ default}}
+\DoxyCodeLine{00737\ \ \ \textcolor{comment}{//\ constructed\ version.\ Even\ when\ using\ resize(count)\ to\ shrink,\ a\ default}}
+\DoxyCodeLine{00738\ \ \ \textcolor{comment}{//\ constructor\ is\ required\ for\ the\ code\ to\ compile,\ even\ though\ it\ will\ not}}
+\DoxyCodeLine{00739\ \ \ \textcolor{comment}{//\ be\ called.}}
+\DoxyCodeLine{00740\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00741\ \ \ \textcolor{comment}{//\ There\ are\ two\ versions\ rather\ than\ using\ a\ default\ value\ to\ avoid}}
+\DoxyCodeLine{00742\ \ \ \textcolor{comment}{//\ creating\ a\ temporary\ when\ shrinking\ (when\ it's\ not\ needed).\ Plus\ if}}
+\DoxyCodeLine{00743\ \ \ \textcolor{comment}{//\ the\ default\ constructor\ is\ desired\ when\ expanding\ usually\ just\ calling\ it}}
+\DoxyCodeLine{00744\ \ \ \textcolor{comment}{//\ for\ each\ element\ is\ faster\ than\ making\ a\ default-\/constructed\ temporary\ and}}
+\DoxyCodeLine{00745\ \ \ \textcolor{comment}{//\ copying\ it.}}
+\DoxyCodeLine{00746\ \ \ \textcolor{keywordtype}{void}\ resize(size\_type\ count)\ \{}
+\DoxyCodeLine{00747\ \ \ \ \ \textcolor{comment}{//\ SEE\ BELOW\ VERSION\ if\ you\ change\ this.\ The\ code\ is\ mostly\ the\ same.}}
+\DoxyCodeLine{00748\ \ \ \ \ \textcolor{keywordflow}{if}\ (count\ >\ size())\ \{}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \textcolor{comment}{//\ This\ could\ be\ slighly\ more\ efficient\ but\ expanding\ a\ queue\ with}}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ \textcolor{comment}{//\ identical\ elements\ is\ unusual\ and\ the\ extra\ computations\ of\ emplacing}}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \textcolor{comment}{//\ one-\/by-\/one\ will\ typically\ be\ small\ relative\ to\ calling\ the\ constructor}}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \textcolor{comment}{//\ for\ every\ item.}}
+\DoxyCodeLine{00753\ \ \ \ \ \ \ ExpandCapacityIfNecessary(count\ -\/\ size());}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (size()\ <\ count)\ \{}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \ \ emplace\_back();}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00757\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (count\ <\ size())\ \{}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ new\_end\ =\ (begin\_\ +\ count)\ \%\ buffer\_.capacity();}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ DestructRange(new\_end,\ end\_);}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ end\_\ =\ new\_end;}
+\DoxyCodeLine{00761\ }
+\DoxyCodeLine{00762\ \ \ \ \ \ \ ShrinkCapacityIfNecessary();}
+\DoxyCodeLine{00763\ \ \ \ \ \}}
+\DoxyCodeLine{00764\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00765\ \ \ \}}
+\DoxyCodeLine{00766\ \ \ \textcolor{keywordtype}{void}\ resize(size\_type\ count,\ \textcolor{keyword}{const}\ value\_type\&\ value)\ \{}
+\DoxyCodeLine{00767\ \ \ \ \ \textcolor{comment}{//\ SEE\ ABOVE\ VERSION\ if\ you\ change\ this.\ The\ code\ is\ mostly\ the\ same.}}
+\DoxyCodeLine{00768\ \ \ \ \ \textcolor{keywordflow}{if}\ (count\ >\ size())\ \{}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ ExpandCapacityIfNecessary(count\ -\/\ size());}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (size()\ <\ count)\ \{}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ emplace\_back(value);}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00773\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (count\ <\ size())\ \{}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ new\_end\ =\ (begin\_\ +\ count)\ \%\ buffer\_.capacity();}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ DestructRange(new\_end,\ end\_);}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ end\_\ =\ new\_end;}
+\DoxyCodeLine{00777\ }
+\DoxyCodeLine{00778\ \ \ \ \ \ \ ShrinkCapacityIfNecessary();}
+\DoxyCodeLine{00779\ \ \ \ \ \}}
+\DoxyCodeLine{00780\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00781\ \ \ \}}
+\DoxyCodeLine{00782\ }
+\DoxyCodeLine{00783\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00784\ \ \ \textcolor{comment}{//\ Insert\ and\ erase.}}
+\DoxyCodeLine{00785\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00786\ \ \ \textcolor{comment}{//\ Insertion\ and\ deletion\ in\ the\ middle\ is\ O(n)\ and\ invalidates\ all\ existing}}
+\DoxyCodeLine{00787\ \ \ \textcolor{comment}{//\ iterators.}}
+\DoxyCodeLine{00788\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00789\ \ \ \textcolor{comment}{//\ The\ implementation\ of\ insert\ isn't\ optimized\ as\ much\ as\ it\ could\ be.\ If}}
+\DoxyCodeLine{00790\ \ \ \textcolor{comment}{//\ the\ insertion\ requires\ that\ the\ buffer\ be\ grown,\ it\ will\ first\ be\ grown}}
+\DoxyCodeLine{00791\ \ \ \textcolor{comment}{//\ and\ everything\ moved,\ and\ then\ the\ items\ will\ be\ inserted,\ potentially}}
+\DoxyCodeLine{00792\ \ \ \textcolor{comment}{//\ moving\ some\ items\ twice.\ This\ simplifies\ the\ implemntation\ substantially}}
+\DoxyCodeLine{00793\ \ \ \textcolor{comment}{//\ and\ means\ less\ generated\ templatized\ code.\ Since\ this\ is\ an\ uncommon}}
+\DoxyCodeLine{00794\ \ \ \textcolor{comment}{//\ operation\ for\ deques,\ and\ already\ relatively\ slow,\ it\ doesn't\ seem\ worth}}
+\DoxyCodeLine{00795\ \ \ \textcolor{comment}{//\ the\ benefit\ to\ optimize\ this.}}
+\DoxyCodeLine{00796\ }
+\DoxyCodeLine{00797\ \ \ \textcolor{keywordtype}{void}\ insert(const\_iterator\ pos,\ size\_type\ count,\ \textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00798\ \ \ \ \ ValidateIterator(pos);}
+\DoxyCodeLine{00799\ }
+\DoxyCodeLine{00800\ \ \ \ \ \textcolor{comment}{//\ Optimize\ insert\ at\ the\ beginning.}}
+\DoxyCodeLine{00801\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ ==\ begin())\ \{}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ ExpandCapacityIfNecessary(count);}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ count;\ i++)\ \{}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ push\_front(value);}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00807\ \ \ \ \ \}}
+\DoxyCodeLine{00808\ }
+\DoxyCodeLine{00809\ \ \ \ \ CHECK\_LT(pos.index\_,\ buffer\_.capacity());}
+\DoxyCodeLine{00810\ \ \ \ \ iterator\ insert\_cur(\textcolor{keyword}{this},\ pos.index\_);}
+\DoxyCodeLine{00811\ \ \ \ \ iterator\ insert\_end;}
+\DoxyCodeLine{00812\ \ \ \ \ MakeRoomFor(count,\ \&insert\_cur,\ \&insert\_end);}
+\DoxyCodeLine{00813\ \ \ \ \ \textcolor{keywordflow}{while}\ (insert\_cur\ <\ insert\_end)\ \{}
+\DoxyCodeLine{00814\ \ \ \ \ \ \ std::construct\_at(buffer\_.get\_at(insert\_cur.index\_),\ value);}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ ++insert\_cur;}
+\DoxyCodeLine{00816\ \ \ \ \ \}}
+\DoxyCodeLine{00817\ }
+\DoxyCodeLine{00818\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00819\ \ \ \}}
+\DoxyCodeLine{00820\ }
+\DoxyCodeLine{00821\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00822\ \ \ \ \ \textcolor{keyword}{requires}(std::forward\_iterator<InputIterator>)}
+\DoxyCodeLine{00823\ \ \ \textcolor{keywordtype}{void}\ insert(const\_iterator\ pos,\ InputIterator\ first,\ InputIterator\ last)\ \{}
+\DoxyCodeLine{00824\ \ \ \ \ ValidateIterator(pos);}
+\DoxyCodeLine{00825\ }
+\DoxyCodeLine{00826\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ inserted\_items\ =}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ checked\_cast<size\_t>(std::distance(first,\ last));}
+\DoxyCodeLine{00828\ \ \ \ \ \textcolor{keywordflow}{if}\ (inserted\_items\ ==\ 0u)\ \{}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \ \textcolor{comment}{//\ Can\ divide\ by\ 0\ when\ doing\ modulo\ below,\ so\ return\ early.}}
+\DoxyCodeLine{00830\ \ \ \ \ \}}
+\DoxyCodeLine{00831\ }
+\DoxyCodeLine{00832\ \ \ \ \ \textcolor{comment}{//\ Make\ a\ hole\ to\ copy\ the\ items\ into.}}
+\DoxyCodeLine{00833\ \ \ \ \ iterator\ insert\_cur;}
+\DoxyCodeLine{00834\ \ \ \ \ iterator\ insert\_end;}
+\DoxyCodeLine{00835\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ ==\ begin())\ \{}
+\DoxyCodeLine{00836\ \ \ \ \ \ \ \textcolor{comment}{//\ Optimize\ insert\ at\ the\ beginning,\ nothing\ needs\ to\ be\ shifted\ and\ the}}
+\DoxyCodeLine{00837\ \ \ \ \ \ \ \textcolor{comment}{//\ hole\ is\ the\ |inserted\_items|\ block\ immediately\ before\ |begin\_|.}}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ ExpandCapacityIfNecessary(inserted\_items);}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ old\_begin\ =\ begin\_;}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ begin\_\ =\ (old\_begin\ +\ buffer\_.capacity()\ -\/\ inserted\_items)\ \%}
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.capacity();}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ insert\_cur\ =\ begin();}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ insert\_end\ =\ iterator(\textcolor{keyword}{this},\ old\_begin);}
+\DoxyCodeLine{00844\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ CHECK\_LT(pos.index\_,\ buffer\_.capacity());}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ insert\_cur\ =\ iterator(\textcolor{keyword}{this},\ pos.index\_);}
+\DoxyCodeLine{00847\ \ \ \ \ \ \ MakeRoomFor(inserted\_items,\ \&insert\_cur,\ \&insert\_end);}
+\DoxyCodeLine{00848\ \ \ \ \ \}}
+\DoxyCodeLine{00849\ }
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{comment}{//\ Copy\ the\ items.}}
+\DoxyCodeLine{00851\ \ \ \ \ \textcolor{keywordflow}{while}\ (insert\_cur\ <\ insert\_end)\ \{}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ std::construct\_at(buffer\_.get\_at(insert\_cur.index\_),\ *first);}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ ++insert\_cur;}
+\DoxyCodeLine{00854\ \ \ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ The\ input\ iterator\ may\ be\ a\ pointer,\ in\ which\ case\ we\ will}}
+\DoxyCodeLine{00855\ \ \ \ \ \ \ \textcolor{comment}{//\ produce\ UB\ if\ \`{}first`\ is\ incremented\ past\ \`{}last`.\ We\ use\ checked\_cast}}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \textcolor{comment}{//\ of\ std::distance\ to\ an\ unsigned\ value\ above,\ which\ ensures\ that\ \`{}last}}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ \textcolor{comment}{//\ >=\ first`.\ Then\ we\ need\ that\ \`{}insert\_end\ -\/\ insert\_cur\ <=\ last\ -\/\ first`:}}
+\DoxyCodeLine{00858\ \ \ \ \ \ \ \textcolor{comment}{//\ -\/\ If\ inserting\ at\ the\ start,\ pos\ ==\ begin()\ and\ \`{}insert\_cur`\ is}}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ positioned\ at\ \`{}begin\_\ -\/\ (last\ -\/\ first)`,\ and\ \`{}insert\_end`\ is}}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ positioned\ at\ \`{}begin\_`\ so\ we\ have}}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \`{}insert\_end\ -\/\ insert\_cur\ ==\ last\ -\/\ first`.}}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \textcolor{comment}{//\ -\/\ If\ inserting\ elsewhere,\ \`{}MakeRoomFor(last\ -\/\ first,\ ...)`\ returns\ an}}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \textcolor{comment}{//\ iterator}}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ pair\ with\ distance\ of\ \`{}last\ -\/\ first`,\ so\ we\ have}}
+\DoxyCodeLine{00865\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \`{}insert\_end\ -\/\ insert\_cur\ ==\ last\ -\/\ first`.}}
+\DoxyCodeLine{00866\ \ \ \ \ \ \ UNSAFE\_BUFFERS(++first);}
+\DoxyCodeLine{00867\ \ \ \ \ \}}
+\DoxyCodeLine{00868\ }
+\DoxyCodeLine{00869\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00870\ \ \ \}}
+\DoxyCodeLine{00871\ }
+\DoxyCodeLine{00872\ \ \ \textcolor{comment}{//\ These\ all\ return\ an\ iterator\ to\ the\ inserted\ item.\ Existing\ iterators\ will}}
+\DoxyCodeLine{00873\ \ \ \textcolor{comment}{//\ be\ invalidated.}}
+\DoxyCodeLine{00874\ \ \ iterator\ insert(const\_iterator\ pos,\ \textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00875\ \ \ \ \ \textcolor{keywordflow}{return}\ emplace(pos,\ value);}
+\DoxyCodeLine{00876\ \ \ \}}
+\DoxyCodeLine{00877\ \ \ iterator\ insert(const\_iterator\ pos,\ T\&\&\ value)\ \{}
+\DoxyCodeLine{00878\ \ \ \ \ \textcolor{keywordflow}{return}\ emplace(pos,\ std::move(value));}
+\DoxyCodeLine{00879\ \ \ \}}
+\DoxyCodeLine{00880\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00881\ \ \ iterator\ emplace(const\_iterator\ pos,\ Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00882\ \ \ \ \ ValidateIterator(pos);}
+\DoxyCodeLine{00883\ }
+\DoxyCodeLine{00884\ \ \ \ \ \textcolor{comment}{//\ Optimize\ insert\ at\ beginning\ which\ doesn't\ require\ shifting.}}
+\DoxyCodeLine{00885\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ ==\ cbegin())\ \{}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ emplace\_front(std::forward<Args>(args)...);}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ begin();}
+\DoxyCodeLine{00888\ \ \ \ \ \}}
+\DoxyCodeLine{00889\ }
+\DoxyCodeLine{00890\ \ \ \ \ \textcolor{comment}{//\ Do\ this\ before\ we\ make\ the\ new\ iterators\ we\ return.}}
+\DoxyCodeLine{00891\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00892\ }
+\DoxyCodeLine{00893\ \ \ \ \ CHECK\_LT(pos.index\_,\ buffer\_.capacity());}
+\DoxyCodeLine{00894\ \ \ \ \ iterator\ insert\_begin(\textcolor{keyword}{this},\ pos.index\_);}
+\DoxyCodeLine{00895\ \ \ \ \ iterator\ insert\_end;}
+\DoxyCodeLine{00896\ \ \ \ \ MakeRoomFor(1,\ \&insert\_begin,\ \&insert\_end);}
+\DoxyCodeLine{00897\ \ \ \ \ std::construct\_at(buffer\_.get\_at(insert\_begin.index\_),}
+\DoxyCodeLine{00898\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::forward<Args>(args)...);}
+\DoxyCodeLine{00899\ }
+\DoxyCodeLine{00900\ \ \ \ \ \textcolor{keywordflow}{return}\ insert\_begin;}
+\DoxyCodeLine{00901\ \ \ \}}
+\DoxyCodeLine{00902\ }
+\DoxyCodeLine{00903\ \ \ \textcolor{comment}{//\ Calling\ erase()\ won't\ automatically\ resize\ the\ buffer\ smaller\ like\ resize}}
+\DoxyCodeLine{00904\ \ \ \textcolor{comment}{//\ or\ the\ pop\ functions.\ Erase\ is\ slow\ and\ relatively\ uncommon,\ and\ for}}
+\DoxyCodeLine{00905\ \ \ \textcolor{comment}{//\ normal\ deque\ usage\ a\ pop\ will\ normally\ be\ done\ on\ a\ regular\ basis\ that}}
+\DoxyCodeLine{00906\ \ \ \textcolor{comment}{//\ will\ prevent\ excessive\ buffer\ usage\ over\ long\ periods\ of\ time.\ It's\ not}}
+\DoxyCodeLine{00907\ \ \ \textcolor{comment}{//\ worth\ having\ the\ extra\ code\ for\ every\ template\ instantiation\ of\ erase()}}
+\DoxyCodeLine{00908\ \ \ \textcolor{comment}{//\ to\ resize\ capacity\ downward\ to\ a\ new\ buffer.}}
+\DoxyCodeLine{00909\ \ \ iterator\ erase(const\_iterator\ pos)\ \{\ \textcolor{keywordflow}{return}\ erase(pos,\ pos\ +\ 1);\ \}}
+\DoxyCodeLine{00910\ \ \ iterator\ erase(const\_iterator\ pos\_begin,\ const\_iterator\ pos\_end)\ \{}
+\DoxyCodeLine{00911\ \ \ \ \ ValidateIterator(pos\_begin);}
+\DoxyCodeLine{00912\ \ \ \ \ ValidateIterator(pos\_end);}
+\DoxyCodeLine{00913\ }
+\DoxyCodeLine{00914\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00915\ }
+\DoxyCodeLine{00916\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_begin.index\_\ ==\ pos\_end.index\_)\ \{}
+\DoxyCodeLine{00917\ \ \ \ \ \ \ \textcolor{comment}{//\ Nothing\ deleted.\ Need\ to\ return\ early\ to\ avoid\ falling\ through\ to}}
+\DoxyCodeLine{00918\ \ \ \ \ \ \ \textcolor{comment}{//\ moving\ items\ on\ top\ of\ themselves.}}
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ iterator(\textcolor{keyword}{this},\ pos\_begin.index\_);}
+\DoxyCodeLine{00920\ \ \ \ \ \}}
+\DoxyCodeLine{00921\ }
+\DoxyCodeLine{00922\ \ \ \ \ \textcolor{comment}{//\ First,\ call\ the\ destructor\ on\ the\ deleted\ items.}}
+\DoxyCodeLine{00923\ \ \ \ \ DestructRange(pos\_begin.index\_,\ pos\_end.index\_);}
+\DoxyCodeLine{00924\ }
+\DoxyCodeLine{00925\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\_begin.index\_\ ==\ begin\_)\ \{}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \textcolor{comment}{//\ This\ deletion\ is\ from\ the\ beginning.\ Nothing\ needs\ to\ be\ copied,\ only}}
+\DoxyCodeLine{00927\ \ \ \ \ \ \ \textcolor{comment}{//\ begin\_\ needs\ to\ be\ updated.}}
+\DoxyCodeLine{00928\ \ \ \ \ \ \ begin\_\ =\ pos\_end.index\_;}
+\DoxyCodeLine{00929\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ iterator(\textcolor{keyword}{this},\ pos\_end.index\_);}
+\DoxyCodeLine{00930\ \ \ \ \ \}}
+\DoxyCodeLine{00931\ }
+\DoxyCodeLine{00932\ \ \ \ \ \textcolor{comment}{//\ In\ an\ erase\ operation,\ the\ shifted\ items\ all\ move\ logically\ to\ the\ left,}}
+\DoxyCodeLine{00933\ \ \ \ \ \textcolor{comment}{//\ so\ move\ them\ from\ left-\/to-\/right.}}
+\DoxyCodeLine{00934\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00935\ \ \ \ \ \textcolor{comment}{//\ The\ elements\ are\ being\ moved\ to\ memory\ where\ the\ T\ objects\ were}}
+\DoxyCodeLine{00936\ \ \ \ \ \textcolor{comment}{//\ previously\ destroyed.}}
+\DoxyCodeLine{00937\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00938\ \ \ \ \ \textcolor{comment}{//\ TODO(danakj):\ We\ could\ skip\ destruction\ and\ do\ MoveAssignRange\ here,\ for}}
+\DoxyCodeLine{00939\ \ \ \ \ \textcolor{comment}{//\ the\ elements\ that\ are\ being\ replaced.}}
+\DoxyCodeLine{00940\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ move\_src\ =\ pos\_end.index\_;}
+\DoxyCodeLine{00941\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ move\_src\_end\ =\ end\_;}
+\DoxyCodeLine{00942\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ move\_dest\ =\ pos\_begin.index\_;}
+\DoxyCodeLine{00943\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cap\ =\ buffer\_.capacity();}
+\DoxyCodeLine{00944\ \ \ \ \ \textcolor{keywordflow}{while}\ (move\_src\ !=\ move\_src\_end)\ \{}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ VectorBuffer::MoveConstructRange(buffer\_.subspan(move\_src,\ 1u),}
+\DoxyCodeLine{00946\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.subspan(move\_dest,\ 1u));}
+\DoxyCodeLine{00947\ \ \ \ \ \ \ move\_src\ =\ (move\_src\ +\ 1u)\ \%\ cap;}
+\DoxyCodeLine{00948\ \ \ \ \ \ \ move\_dest\ =\ (move\_dest\ +\ 1u)\ \%\ cap;}
+\DoxyCodeLine{00949\ \ \ \ \ \}}
+\DoxyCodeLine{00950\ }
+\DoxyCodeLine{00951\ \ \ \ \ end\_\ =\ move\_dest;}
+\DoxyCodeLine{00952\ }
+\DoxyCodeLine{00953\ \ \ \ \ \textcolor{comment}{//\ Since\ we\ did\ not\ reallocate\ and\ only\ changed\ things\ after\ the\ erase}}
+\DoxyCodeLine{00954\ \ \ \ \ \textcolor{comment}{//\ element(s),\ the\ input\ iterator's\ index\ points\ to\ the\ thing\ following\ the}}
+\DoxyCodeLine{00955\ \ \ \ \ \textcolor{comment}{//\ deletion.}}
+\DoxyCodeLine{00956\ \ \ \ \ \textcolor{keywordflow}{return}\ iterator(\textcolor{keyword}{this},\ pos\_begin.index\_);}
+\DoxyCodeLine{00957\ \ \ \}}
+\DoxyCodeLine{00958\ }
+\DoxyCodeLine{00959\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00960\ \ \ \textcolor{comment}{//\ Begin/end\ operations.}}
+\DoxyCodeLine{00961\ }
+\DoxyCodeLine{00962\ \ \ \textcolor{keywordtype}{void}\ push\_front(\textcolor{keyword}{const}\ T\&\ value)\ \{\ emplace\_front(value);\ \}}
+\DoxyCodeLine{00963\ \ \ \textcolor{keywordtype}{void}\ push\_front(T\&\&\ value)\ \{\ emplace\_front(std::move(value));\ \}}
+\DoxyCodeLine{00964\ }
+\DoxyCodeLine{00965\ \ \ \textcolor{keywordtype}{void}\ push\_back(\textcolor{keyword}{const}\ T\&\ value)\ \{\ emplace\_back(value);\ \}}
+\DoxyCodeLine{00966\ \ \ \textcolor{keywordtype}{void}\ push\_back(T\&\&\ value)\ \{\ emplace\_back(std::move(value));\ \}}
+\DoxyCodeLine{00967\ }
+\DoxyCodeLine{00968\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00969\ \ \ reference\ emplace\_front(Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00970\ \ \ \ \ ExpandCapacityIfNecessary(1);}
+\DoxyCodeLine{00971\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ ==\ 0)\ \{}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ begin\_\ =\ buffer\_.capacity()\ -\/\ 1;}
+\DoxyCodeLine{00973\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ begin\_-\/-\/;}
+\DoxyCodeLine{00975\ \ \ \ \ \}}
+\DoxyCodeLine{00976\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00977\ \ \ \ \ std::construct\_at(buffer\_.get\_at(begin\_),\ std::forward<Args>(args)...);}
+\DoxyCodeLine{00978\ \ \ \ \ \textcolor{keywordflow}{return}\ front();}
+\DoxyCodeLine{00979\ \ \ \}}
+\DoxyCodeLine{00980\ }
+\DoxyCodeLine{00981\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00982\ \ \ reference\ emplace\_back(Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00983\ \ \ \ \ ExpandCapacityIfNecessary(1);}
+\DoxyCodeLine{00984\ \ \ \ \ std::construct\_at(buffer\_.get\_at(end\_),\ std::forward<Args>(args)...);}
+\DoxyCodeLine{00985\ \ \ \ \ \textcolor{keywordflow}{if}\ (end\_\ ==\ buffer\_.capacity()\ -\/\ 1)\ \{}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ end\_\ =\ 0;}
+\DoxyCodeLine{00987\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00988\ \ \ \ \ \ \ end\_++;}
+\DoxyCodeLine{00989\ \ \ \ \ \}}
+\DoxyCodeLine{00990\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{00991\ \ \ \ \ \textcolor{keywordflow}{return}\ back();}
+\DoxyCodeLine{00992\ \ \ \}}
+\DoxyCodeLine{00993\ }
+\DoxyCodeLine{00994\ \ \ \textcolor{keywordtype}{void}\ pop\_front()\ \{}
+\DoxyCodeLine{00995\ \ \ \ \ CHECK(!empty());}
+\DoxyCodeLine{00996\ \ \ \ \ DestructRange(begin\_,\ begin\_\ +\ 1u);}
+\DoxyCodeLine{00997\ \ \ \ \ begin\_++;}
+\DoxyCodeLine{00998\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ ==\ buffer\_.capacity())\ \{}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ begin\_\ =\ 0;}
+\DoxyCodeLine{01000\ \ \ \ \ \}}
+\DoxyCodeLine{01001\ }
+\DoxyCodeLine{01002\ \ \ \ \ ShrinkCapacityIfNecessary();}
+\DoxyCodeLine{01003\ }
+\DoxyCodeLine{01004\ \ \ \ \ \textcolor{comment}{//\ Technically\ popping\ will\ not\ invalidate\ any\ iterators\ since\ the}}
+\DoxyCodeLine{01005\ \ \ \ \ \textcolor{comment}{//\ underlying\ buffer\ will\ be\ stable.\ But\ in\ the\ future\ we\ may\ want\ to\ add\ a}}
+\DoxyCodeLine{01006\ \ \ \ \ \textcolor{comment}{//\ feature\ that\ resizes\ the\ buffer\ smaller\ if\ there\ is\ too\ much\ wasted}}
+\DoxyCodeLine{01007\ \ \ \ \ \textcolor{comment}{//\ space.\ This\ ensures\ we\ can\ make\ such\ a\ change\ safely.}}
+\DoxyCodeLine{01008\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{01009\ \ \ \}}
+\DoxyCodeLine{01010\ \ \ \textcolor{keywordtype}{void}\ pop\_back()\ \{}
+\DoxyCodeLine{01011\ \ \ \ \ CHECK(!empty());}
+\DoxyCodeLine{01012\ \ \ \ \ \textcolor{keywordflow}{if}\ (end\_\ ==\ 0)\ \{}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ end\_\ =\ buffer\_.capacity()\ -\/\ 1;}
+\DoxyCodeLine{01014\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ end\_-\/-\/;}
+\DoxyCodeLine{01016\ \ \ \ \ \}}
+\DoxyCodeLine{01017\ \ \ \ \ DestructRange(end\_,\ end\_\ +\ 1u);}
+\DoxyCodeLine{01018\ }
+\DoxyCodeLine{01019\ \ \ \ \ ShrinkCapacityIfNecessary();}
+\DoxyCodeLine{01020\ }
+\DoxyCodeLine{01021\ \ \ \ \ \textcolor{comment}{//\ See\ pop\_front\ comment\ about\ why\ this\ is\ here.}}
+\DoxyCodeLine{01022\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{01023\ \ \ \}}
+\DoxyCodeLine{01024\ }
+\DoxyCodeLine{01025\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01026\ \ \ \textcolor{comment}{//\ General\ operations.}}
+\DoxyCodeLine{01027\ }
+\DoxyCodeLine{01028\ \ \ \textcolor{keywordtype}{void}\ swap(circular\_deque\&\ other)\ \{}
+\DoxyCodeLine{01029\ \ \ \ \ std::swap(buffer\_,\ other.buffer\_);}
+\DoxyCodeLine{01030\ \ \ \ \ std::swap(begin\_,\ other.begin\_);}
+\DoxyCodeLine{01031\ \ \ \ \ std::swap(end\_,\ other.end\_);}
+\DoxyCodeLine{01032\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{01033\ \ \ \}}
+\DoxyCodeLine{01034\ }
+\DoxyCodeLine{01035\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(circular\_deque\&\ lhs,\ circular\_deque\&\ rhs)\ \{\ lhs.swap(rhs);\ \}}
+\DoxyCodeLine{01036\ }
+\DoxyCodeLine{01037\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01038\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{internal::circular\_deque\_iterator<T>}};}
+\DoxyCodeLine{01039\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{internal::circular\_deque\_const\_iterator<T>}};}
+\DoxyCodeLine{01040\ }
+\DoxyCodeLine{01041\ \ \ \textcolor{comment}{//\ Moves\ the\ items\ in\ the\ given\ circular\ buffer\ to\ the\ current\ one.\ The\ source}}
+\DoxyCodeLine{01042\ \ \ \textcolor{comment}{//\ is\ moved\ from\ so\ will\ become\ invalid.\ The\ destination\ buffer\ must\ have}}
+\DoxyCodeLine{01043\ \ \ \textcolor{comment}{//\ already\ been\ allocated\ with\ enough\ size.}}
+\DoxyCodeLine{01044\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{01045\ \ \ \textcolor{comment}{//\ \#\ Safety}}
+\DoxyCodeLine{01046\ \ \ \textcolor{comment}{//\ \`{}from\_begin`\ and\ \`{}from\_end`\ must\ be\ less-\/than\ and\ less-\/than-\/or-\/equal-\/to\ the}}
+\DoxyCodeLine{01047\ \ \ \textcolor{comment}{//\ capacity\ of\ \`{}from\_buf`\ respectively,\ with\ \`{}from\_begin\ <=\ from\_end`,\ or}}
+\DoxyCodeLine{01048\ \ \ \textcolor{comment}{//\ Undefined\ Behaviour\ may\ result.}}
+\DoxyCodeLine{01049\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MoveBuffer(VectorBuffer\&\ from\_buf,}
+\DoxyCodeLine{01050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\_begin,\ \textcolor{keywordtype}{size\_t}\ from\_end,}
+\DoxyCodeLine{01051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ VectorBuffer\&\ to\_buf,}
+\DoxyCodeLine{01052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ to\_begin,\ \textcolor{keywordtype}{size\_t}*\ to\_end)\ \{}
+\DoxyCodeLine{01053\ \ \ \ \ *to\_begin\ =\ 0;}
+\DoxyCodeLine{01054\ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_begin\ <\ from\_end)\ \{}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ \textcolor{comment}{//\ Contiguous.}}
+\DoxyCodeLine{01056\ \ \ \ \ \ \ VectorBuffer::MoveConstructRange(}
+\DoxyCodeLine{01057\ \ \ \ \ \ \ \ \ \ \ from\_buf.subspan(from\_begin,\ from\_end\ -\/\ from\_begin),}
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \ \ to\_buf.subspan(0u,\ from\_end\ -\/\ from\_begin));}
+\DoxyCodeLine{01059\ \ \ \ \ \ \ *to\_end\ =\ from\_end\ -\/\ from\_begin;}
+\DoxyCodeLine{01060\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (from\_begin\ >\ from\_end)\ \{}
+\DoxyCodeLine{01061\ \ \ \ \ \ \ \textcolor{comment}{//\ Discontiguous,\ copy\ the\ right\ side\ to\ the\ beginning\ of\ the\ new\ buffer.}}
+\DoxyCodeLine{01062\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<T>}}\ right\_side\ =\ from\_buf.subspan(from\_begin);}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ VectorBuffer::MoveConstructRange(right\_side,}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ to\_buf.subspan(0u,\ right\_side.size()));}
+\DoxyCodeLine{01065\ \ \ \ \ \ \ \textcolor{comment}{//\ Append\ the\ left\ side.}}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1span}{span<T>}}\ left\_side\ =\ from\_buf.subspan(0u,\ from\_end);}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ VectorBuffer::MoveConstructRange(}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ left\_side,\ to\_buf.subspan(right\_side.size(),\ left\_side.size()));}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ *to\_end\ =\ left\_side.size()\ +\ right\_side.size();}
+\DoxyCodeLine{01070\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \textcolor{comment}{//\ No\ items.}}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ *to\_end\ =\ 0;}
+\DoxyCodeLine{01073\ \ \ \ \ \}}
+\DoxyCodeLine{01074\ \ \ \}}
+\DoxyCodeLine{01075\ }
+\DoxyCodeLine{01076\ \ \ \textcolor{comment}{//\ Expands\ the\ buffer\ size.\ This\ assumes\ the\ size\ is\ larger\ than\ the}}
+\DoxyCodeLine{01077\ \ \ \textcolor{comment}{//\ number\ of\ elements\ in\ the\ vector\ (it\ won't\ call\ delete\ on\ anything).}}
+\DoxyCodeLine{01078\ \ \ \textcolor{keywordtype}{void}\ SetCapacityTo(\textcolor{keywordtype}{size\_t}\ new\_capacity)\ \{}
+\DoxyCodeLine{01079\ \ \ \ \ \textcolor{comment}{//\ Use\ the\ capacity\ +\ 1\ as\ the\ internal\ buffer\ size\ to\ differentiate}}
+\DoxyCodeLine{01080\ \ \ \ \ \textcolor{comment}{//\ empty\ and\ full\ (see\ definition\ of\ buffer\_\ below).}}
+\DoxyCodeLine{01081\ \ \ \ \ VectorBuffer\ new\_buffer(new\_capacity\ +\ 1u);}
+\DoxyCodeLine{01082\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ This\ class\ maintains\ an\ invariant\ that\ \`{}begin\_`\ and\ \`{}end\_`\ are}}
+\DoxyCodeLine{01083\ \ \ \ \ \textcolor{comment}{//\ less\ than\ \`{}buffer\_`'s\ capacity.}}
+\DoxyCodeLine{01084\ \ \ \ \ UNSAFE\_BUFFERS(}
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ MoveBuffer(buffer\_,\ begin\_,\ end\_,\ new\_buffer,\ \&begin\_,\ \&end\_));}
+\DoxyCodeLine{01086\ \ \ \ \ buffer\_\ =\ std::move(new\_buffer);}
+\DoxyCodeLine{01087\ \ \ \}}
+\DoxyCodeLine{01088\ \ \ \textcolor{keywordtype}{void}\ ExpandCapacityIfNecessary(\textcolor{keywordtype}{size\_t}\ additional\_elts)\ \{}
+\DoxyCodeLine{01089\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cur\_size\ =\ size();}
+\DoxyCodeLine{01090\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cur\_capacity\ =\ capacity();}
+\DoxyCodeLine{01091\ }
+\DoxyCodeLine{01092\ \ \ \ \ \textcolor{comment}{//\ Protect\ against\ overflow\ when\ adding\ \`{}additional\_elts`,\ and\ exceeding\ the}}
+\DoxyCodeLine{01093\ \ \ \ \ \textcolor{comment}{//\ max\ allocation\ size.}}
+\DoxyCodeLine{01094\ \ \ \ \ CHECK\_LE(additional\_elts,\ PTRDIFF\_MAX\ -\/\ cur\_size);}
+\DoxyCodeLine{01095\ }
+\DoxyCodeLine{01096\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ min\_new\_capacity\ =\ cur\_size\ +\ additional\_elts;}
+\DoxyCodeLine{01097\ \ \ \ \ \textcolor{keywordflow}{if}\ (cur\_capacity\ >=\ min\_new\_capacity)\ \{}
+\DoxyCodeLine{01098\ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \ \textcolor{comment}{//\ Already\ enough\ room.}}
+\DoxyCodeLine{01099\ \ \ \ \ \}}
+\DoxyCodeLine{01100\ }
+\DoxyCodeLine{01101\ \ \ \ \ min\_new\_capacity\ =}
+\DoxyCodeLine{01102\ \ \ \ \ \ \ \ \ std::max(min\_new\_capacity,\ internal::kCircularBufferInitialCapacity);}
+\DoxyCodeLine{01103\ }
+\DoxyCodeLine{01104\ \ \ \ \ \textcolor{comment}{//\ std::vector\ always\ grows\ by\ at\ least\ 50\%.\ WTF::Deque\ grows\ by\ at\ least}}
+\DoxyCodeLine{01105\ \ \ \ \ \textcolor{comment}{//\ 25\%.\ We\ expect\ queue\ workloads\ to\ generally\ stay\ at\ a\ similar\ size\ and}}
+\DoxyCodeLine{01106\ \ \ \ \ \textcolor{comment}{//\ grow\ less\ than\ a\ vector\ might,\ so\ use\ 25\%.}}
+\DoxyCodeLine{01107\ \ \ \ \ SetCapacityTo(std::max(min\_new\_capacity,\ cur\_capacity\ +\ cur\_capacity\ /\ 4u));}
+\DoxyCodeLine{01108\ \ \ \}}
+\DoxyCodeLine{01109\ }
+\DoxyCodeLine{01110\ \ \ \textcolor{keywordtype}{void}\ ShrinkCapacityIfNecessary()\ \{}
+\DoxyCodeLine{01111\ \ \ \ \ \textcolor{comment}{//\ Don't\ auto-\/shrink\ below\ this\ size.}}
+\DoxyCodeLine{01112\ \ \ \ \ \textcolor{keywordflow}{if}\ (capacity()\ <=\ internal::kCircularBufferInitialCapacity)\ \{}
+\DoxyCodeLine{01113\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01114\ \ \ \ \ \}}
+\DoxyCodeLine{01115\ }
+\DoxyCodeLine{01116\ \ \ \ \ \textcolor{comment}{//\ Shrink\ when\ 100\%\ of\ the\ size()\ is\ wasted.}}
+\DoxyCodeLine{01117\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sz\ =\ size();}
+\DoxyCodeLine{01118\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ empty\_spaces\ =\ capacity()\ -\/\ sz;}
+\DoxyCodeLine{01119\ \ \ \ \ \textcolor{keywordflow}{if}\ (empty\_spaces\ <\ sz)\ \{}
+\DoxyCodeLine{01120\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01121\ \ \ \ \ \}}
+\DoxyCodeLine{01122\ }
+\DoxyCodeLine{01123\ \ \ \ \ \textcolor{comment}{//\ Leave\ 1/4\ the\ size\ as\ free\ capacity,\ not\ going\ below\ the\ initial}}
+\DoxyCodeLine{01124\ \ \ \ \ \textcolor{comment}{//\ capacity.}}
+\DoxyCodeLine{01125\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ new\_capacity\ =}
+\DoxyCodeLine{01126\ \ \ \ \ \ \ \ \ std::max(internal::kCircularBufferInitialCapacity,\ sz\ +\ sz\ /\ 4);}
+\DoxyCodeLine{01127\ \ \ \ \ \textcolor{keywordflow}{if}\ (new\_capacity\ <\ capacity())\ \{}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ \textcolor{comment}{//\ Count\ extra\ item\ to\ convert\ to\ internal\ capacity.}}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ SetCapacityTo(new\_capacity);}
+\DoxyCodeLine{01130\ \ \ \ \ \}}
+\DoxyCodeLine{01131\ \ \ \}}
+\DoxyCodeLine{01132\ }
+\DoxyCodeLine{01133\ \ \ \textcolor{comment}{//\ Backend\ for\ clear()\ but\ does\ not\ resize\ the\ internal\ buffer.}}
+\DoxyCodeLine{01134\ \ \ \textcolor{keywordtype}{void}\ ClearRetainCapacity()\ \{}
+\DoxyCodeLine{01135\ \ \ \ \ \textcolor{comment}{//\ This\ can't\ resize(0)\ because\ that\ requires\ a\ default\ constructor\ to}}
+\DoxyCodeLine{01136\ \ \ \ \ \textcolor{comment}{//\ compile,\ which\ not\ all\ contained\ classes\ may\ implement.}}
+\DoxyCodeLine{01137\ }
+\DoxyCodeLine{01138\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ This\ class\ maintains\ an\ invariant\ that\ \`{}begin\_`\ and\ \`{}end\_`\ are}}
+\DoxyCodeLine{01139\ \ \ \ \ \textcolor{comment}{//\ less\ than\ \`{}buffer\_`'s\ capacity.\ \`{}new\_end`\ is\ computed\ modulo\ the\ capacity}}
+\DoxyCodeLine{01140\ \ \ \ \ \textcolor{comment}{//\ so\ it\ is\ in\ range.}}
+\DoxyCodeLine{01141\ \ \ \ \ DestructRange(begin\_,\ end\_);}
+\DoxyCodeLine{01142\ \ \ \ \ begin\_\ =\ 0;}
+\DoxyCodeLine{01143\ \ \ \ \ end\_\ =\ 0;}
+\DoxyCodeLine{01144\ \ \ \ \ IncrementGeneration();}
+\DoxyCodeLine{01145\ \ \ \}}
+\DoxyCodeLine{01146\ }
+\DoxyCodeLine{01147\ \ \ \textcolor{comment}{//\ Calls\ destructors\ for\ the\ given\ begin-\/>end\ indices.\ The\ indices\ may\ wrap}}
+\DoxyCodeLine{01148\ \ \ \textcolor{comment}{//\ around.\ The\ buffer\ is\ not\ resized,\ and\ the\ begin\_\ and\ end\_\ members\ are}}
+\DoxyCodeLine{01149\ \ \ \textcolor{comment}{//\ not\ changed.}}
+\DoxyCodeLine{01150\ \ \ \textcolor{keywordtype}{void}\ DestructRange(\textcolor{keywordtype}{size\_t}\ begin,\ \textcolor{keywordtype}{size\_t}\ end)\ \{}
+\DoxyCodeLine{01151\ \ \ \ \ \textcolor{keywordflow}{if}\ (end\ ==\ begin)\ \{}
+\DoxyCodeLine{01152\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01153\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (end\ >\ begin)\ \{}
+\DoxyCodeLine{01154\ \ \ \ \ \ \ VectorBuffer::DestructRange(buffer\_.subspan(begin,\ end\ -\/\ begin));}
+\DoxyCodeLine{01155\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01156\ \ \ \ \ \ \ VectorBuffer::DestructRange(buffer\_.subspan(begin));}
+\DoxyCodeLine{01157\ \ \ \ \ \ \ VectorBuffer::DestructRange(buffer\_.subspan(0u,\ end));}
+\DoxyCodeLine{01158\ \ \ \ \ \}}
+\DoxyCodeLine{01159\ \ \ \}}
+\DoxyCodeLine{01160\ }
+\DoxyCodeLine{01161\ \ \ \textcolor{comment}{//\ Makes\ room\ for\ |count|\ items\ starting\ at\ |*insert\_begin|.\ Since\ iterators}}
+\DoxyCodeLine{01162\ \ \ \textcolor{comment}{//\ are\ not\ stable\ across\ buffer\ resizes,\ |*insert\_begin|\ will\ be\ updated\ to}}
+\DoxyCodeLine{01163\ \ \ \textcolor{comment}{//\ point\ to\ the\ beginning\ of\ the\ newly\ opened\ position\ in\ the\ new\ array\ (it's}}
+\DoxyCodeLine{01164\ \ \ \textcolor{comment}{//\ in/out),\ and\ the\ end\ of\ the\ newly\ opened\ position\ (it's\ out-\/only).}}
+\DoxyCodeLine{01165\ \ \ \textcolor{keywordtype}{void}\ MakeRoomFor(\textcolor{keywordtype}{size\_t}\ count,\ iterator*\ insert\_begin,\ iterator*\ insert\_end)\ \{}
+\DoxyCodeLine{01166\ \ \ \ \ \textcolor{keywordflow}{if}\ (count\ ==\ 0)\ \{}
+\DoxyCodeLine{01167\ \ \ \ \ \ \ *insert\_end\ =\ *insert\_begin;}
+\DoxyCodeLine{01168\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01169\ \ \ \ \ \}}
+\DoxyCodeLine{01170\ }
+\DoxyCodeLine{01171\ \ \ \ \ \textcolor{comment}{//\ The\ offset\ from\ the\ beginning\ will\ be\ stable\ across\ reallocations.}}
+\DoxyCodeLine{01172\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ begin\_offset\ =\ insert\_begin-\/>OffsetFromBegin();}
+\DoxyCodeLine{01173\ \ \ \ \ ExpandCapacityIfNecessary(count);}
+\DoxyCodeLine{01174\ }
+\DoxyCodeLine{01175\ \ \ \ \ \textcolor{comment}{//\ Update\ the\ new\ end\ and\ prepare\ the\ iterators\ for\ copying.\ The\ newly}}
+\DoxyCodeLine{01176\ \ \ \ \ \textcolor{comment}{//\ used\ space\ contains\ uninitialized\ memory.}}
+\DoxyCodeLine{01177\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cap\ =\ buffer\_.capacity();}
+\DoxyCodeLine{01178\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ src\ =\ end\_;}
+\DoxyCodeLine{01179\ \ \ \ \ end\_\ =\ (end\_\ +\ count)\ \%\ cap;}
+\DoxyCodeLine{01180\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ dest\ =\ end\_;}
+\DoxyCodeLine{01181\ }
+\DoxyCodeLine{01182\ \ \ \ \ *insert\_begin\ =\ iterator(\textcolor{keyword}{this},\ (begin\_\ +\ begin\_offset)\ \%\ cap);}
+\DoxyCodeLine{01183\ \ \ \ \ *insert\_end\ =\ iterator(\textcolor{keyword}{this},\ (insert\_begin-\/>index\_\ +\ count)\ \%\ cap);}
+\DoxyCodeLine{01184\ }
+\DoxyCodeLine{01185\ \ \ \ \ \textcolor{comment}{//\ Move\ the\ elements.\ This\ will\ always\ involve\ shifting\ logically\ to\ the}}
+\DoxyCodeLine{01186\ \ \ \ \ \textcolor{comment}{//\ right,\ so\ move\ in\ a\ right-\/to-\/left\ order.}}
+\DoxyCodeLine{01187\ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{01188\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (src\ ==\ insert\_begin-\/>index\_)\ \{}
+\DoxyCodeLine{01189\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01191\ \ \ \ \ \ \ src\ =\ (src\ +\ cap\ -\/\ 1u)\ \%\ cap;}
+\DoxyCodeLine{01192\ \ \ \ \ \ \ dest\ =\ (dest\ +\ cap\ -\/\ 1u)\ \%\ cap;}
+\DoxyCodeLine{01193\ \ \ \ \ \ \ VectorBuffer::MoveConstructRange(buffer\_.subspan(src,\ 1u),}
+\DoxyCodeLine{01194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.subspan(dest,\ 1u));}
+\DoxyCodeLine{01195\ \ \ \ \ \}}
+\DoxyCodeLine{01196\ \ \ \}}
+\DoxyCodeLine{01197\ }
+\DoxyCodeLine{01198\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{01199\ \ \ \textcolor{comment}{//\ Asserts\ the\ given\ index\ is\ dereferencable.\ The\ index\ is\ an\ index\ into\ the}}
+\DoxyCodeLine{01200\ \ \ \textcolor{comment}{//\ buffer,\ not\ an\ index\ used\ by\ operator[]\ or\ at()\ which\ will\ be\ offsets\ from}}
+\DoxyCodeLine{01201\ \ \ \textcolor{comment}{//\ begin.}}
+\DoxyCodeLine{01202\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndex(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01203\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\_\ <=\ end\_)\ \{}
+\DoxyCodeLine{01204\ \ \ \ \ \ \ DCHECK(i\ >=\ begin\_\ \&\&\ i\ <\ end\_);}
+\DoxyCodeLine{01205\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01206\ \ \ \ \ \ \ DCHECK((i\ >=\ begin\_\ \&\&\ i\ <\ buffer\_.capacity())\ ||\ i\ <\ end\_);}
+\DoxyCodeLine{01207\ \ \ \ \ \}}
+\DoxyCodeLine{01208\ \ \ \}}
+\DoxyCodeLine{01209\ }
+\DoxyCodeLine{01210\ \ \ \textcolor{comment}{//\ Asserts\ the\ given\ index\ is\ either\ dereferencable\ or\ points\ to\ end().}}
+\DoxyCodeLine{01211\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndexOrEnd(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01212\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ end\_)\ \{}
+\DoxyCodeLine{01213\ \ \ \ \ \ \ CheckValidIndex(i);}
+\DoxyCodeLine{01214\ \ \ \ \ \}}
+\DoxyCodeLine{01215\ \ \ \}}
+\DoxyCodeLine{01216\ }
+\DoxyCodeLine{01217\ \ \ \textcolor{keywordtype}{void}\ ValidateIterator(\textcolor{keyword}{const}\ const\_iterator\&\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01218\ \ \ \ \ DCHECK(i.parent\_deque\_\ ==\ \textcolor{keyword}{this});}
+\DoxyCodeLine{01219\ \ \ \ \ i.CheckUnstableUsage();}
+\DoxyCodeLine{01220\ \ \ \}}
+\DoxyCodeLine{01221\ }
+\DoxyCodeLine{01222\ \ \ \textcolor{comment}{//\ See\ generation\_\ below.}}
+\DoxyCodeLine{01223\ \ \ \textcolor{keywordtype}{void}\ IncrementGeneration()\ \{\ generation\_++;\ \}}
+\DoxyCodeLine{01224\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01225\ \ \ \textcolor{comment}{//\ No-\/op\ versions\ of\ these\ functions\ for\ release\ builds.}}
+\DoxyCodeLine{01226\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndex(\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{01227\ \ \ \textcolor{keywordtype}{void}\ CheckValidIndexOrEnd(\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{01228\ \ \ \textcolor{keywordtype}{void}\ ValidateIterator(\textcolor{keyword}{const}\ const\_iterator\&\ i)\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{01229\ \ \ \textcolor{keywordtype}{void}\ IncrementGeneration()\ \{\}}
+\DoxyCodeLine{01230\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01231\ }
+\DoxyCodeLine{01232\ \ \ \textcolor{comment}{//\ Danger,\ the\ buffer\_.capacity()\ is\ the\ "{}internal\ capacity"{}\ which\ is}}
+\DoxyCodeLine{01233\ \ \ \textcolor{comment}{//\ capacity()\ +\ 1\ since\ there\ is\ an\ extra\ item\ to\ indicate\ the\ end.\ Otherwise}}
+\DoxyCodeLine{01234\ \ \ \textcolor{comment}{//\ being\ completely\ empty\ and\ completely\ full\ are\ indistinguishable\ (begin\ ==}}
+\DoxyCodeLine{01235\ \ \ \textcolor{comment}{//\ end).\ We\ could\ add\ a\ separate\ flag\ to\ avoid\ it,\ but\ that\ adds\ significant}}
+\DoxyCodeLine{01236\ \ \ \textcolor{comment}{//\ extra\ complexity\ since\ every\ computation\ will\ have\ to\ check\ for\ it.\ Always}}
+\DoxyCodeLine{01237\ \ \ \textcolor{comment}{//\ keeping\ one\ extra\ unused\ element\ in\ the\ buffer\ makes\ iterator\ computations}}
+\DoxyCodeLine{01238\ \ \ \textcolor{comment}{//\ much\ simpler.}}
+\DoxyCodeLine{01239\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{01240\ \ \ \textcolor{comment}{//\ Container\ internal\ code\ will\ want\ to\ use\ buffer\_.capacity()\ for\ offset}}
+\DoxyCodeLine{01241\ \ \ \textcolor{comment}{//\ computations\ rather\ than\ capacity().}}
+\DoxyCodeLine{01242\ \ \ VectorBuffer\ buffer\_;}
+\DoxyCodeLine{01243\ \ \ size\_type\ begin\_\ =\ 0;}
+\DoxyCodeLine{01244\ \ \ size\_type\ end\_\ =\ 0;}
+\DoxyCodeLine{01245\ }
+\DoxyCodeLine{01246\ \textcolor{preprocessor}{\#if\ DCHECK\_IS\_ON()}}
+\DoxyCodeLine{01247\ \ \ \textcolor{comment}{//\ Incremented\ every\ time\ a\ modification\ is\ made\ that\ could\ affect\ iterator}}
+\DoxyCodeLine{01248\ \ \ \textcolor{comment}{//\ invalidations.}}
+\DoxyCodeLine{01249\ \ \ uint64\_t\ generation\_\ =\ 0;}
+\DoxyCodeLine{01250\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01251\ \};}
+\DoxyCodeLine{01252\ }
+\DoxyCodeLine{01253\ \textcolor{comment}{//\ Implementations\ of\ base::Erase[If]\ (see\ base/stl\_util.h).}}
+\DoxyCodeLine{01254\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Value>}
+\DoxyCodeLine{01255\ \textcolor{keywordtype}{size\_t}\ Erase(\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\_deque<T>}}\&\ container,\ \textcolor{keyword}{const}\ Value\&\ value)\ \{}
+\DoxyCodeLine{01256\ \ \ \textcolor{keyword}{auto}\ removed\ =\ std::ranges::remove(container,\ value);}
+\DoxyCodeLine{01257\ \ \ \textcolor{keywordtype}{size\_t}\ num\_removed\ =\ removed.size();}
+\DoxyCodeLine{01258\ \ \ container.erase(removed.begin(),\ removed.end());}
+\DoxyCodeLine{01259\ \ \ \textcolor{keywordflow}{return}\ num\_removed;}
+\DoxyCodeLine{01260\ \}}
+\DoxyCodeLine{01261\ }
+\DoxyCodeLine{01262\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Predicate>}
+\DoxyCodeLine{01263\ \textcolor{keywordtype}{size\_t}\ EraseIf(circular\_deque<T>\&\ container,\ Predicate\ pred)\ \{}
+\DoxyCodeLine{01264\ \ \ \textcolor{keyword}{auto}\ removed\ =\ std::ranges::remove\_if(container,\ pred);}
+\DoxyCodeLine{01265\ \ \ \textcolor{keywordtype}{size\_t}\ num\_removed\ =\ removed.size();}
+\DoxyCodeLine{01266\ \ \ container.erase(removed.begin(),\ removed.end());}
+\DoxyCodeLine{01267\ \ \ \textcolor{keywordflow}{return}\ num\_removed;}
+\DoxyCodeLine{01268\ \}}
+\DoxyCodeLine{01269\ }
+\DoxyCodeLine{01270\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

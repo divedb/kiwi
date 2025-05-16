@@ -6,6 +6,8 @@ var dir_6897175fab85123da6916a4372c58e6f =
     [ "strcat.hh", "strcat_8hh_source.html", null ],
     [ "strcat_internal.hh", "strcat__internal_8hh_source.html", null ],
     [ "string_ref.hh", "string__ref_8hh_source.html", null ],
+    [ "string_split.hh", "string__split_8hh_source.html", null ],
+    [ "string_split_internal.hh", "string__split__internal_8hh_source.html", null ],
     [ "string_util.hh", "string__util_8hh_source.html", null ],
     [ "string_util_impl_helpers.hh", "string__util__impl__helpers_8hh_source.html", null ],
     [ "string_util_internal.hh", "string__util__internal_8hh_source.html", null ],

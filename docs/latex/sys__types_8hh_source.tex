@@ -1,0 +1,50 @@
+\doxysection{sys\+\_\+types.\+hh}
+\hypertarget{sys__types_8hh_source}{}\label{sys__types_8hh_source}\index{include/kiwi/portability/sys\_types.hh@{include/kiwi/portability/sys\_types.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <basetsd.h>}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ This\ is\ a\ massive\ pain\ to\ have\ be\ an\ \`{}int`\ due\ to\ the\ pthread\ implementation}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ we\ support,\ but\ it's\ far\ more\ compatible\ with\ the\ rest\ of\ the\ windows\ world}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ as\ an\ \`{}int`\ than\ it\ would\ be\ as\ a\ \`{}void*`}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{using\ }pid\_t\ =\ int;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{using\ }uid\_t\ =\ int;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{using\ }gid\_t\ =\ int;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ This\ isn't\ actually\ supposed\ to\ be\ defined\ here,\ but\ it's\ the\ most}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ appropriate\ place\ without\ defining\ a\ portability\ header\ for\ stdint.h}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ with\ just\ this\ single\ typedef.}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{using\ }ssize\_t\ =\ SSIZE\_T;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#ifndef\ HAVE\_MODE\_T}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ HAVE\_MODE\_T\ 1}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ The\ Windows\ headers\ don't\ define\ this\ anywhere.}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{using\ }mode\_t\ =\ \textcolor{keywordtype}{unsigned}\ int;}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

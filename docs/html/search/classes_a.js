@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['narrowingrange_0',['NarrowingRange',['../structkiwi_1_1internal_1_1_narrowing_range.html',1,'kiwi::internal']]],
-  ['nodestructor_1',['NoDestructor',['../classkiwi_1_1_no_destructor.html',1,'kiwi']]],
-  ['notnull_2',['NotNull',['../classkiwi_1_1_not_null.html',1,'kiwi']]],
-  ['notnullhash_3',['NotNullHash',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
-  ['notnullhash_3c_20kiwi_3a_3anotnull_3c_20t_20_3e_20_3e_4',['NotNullHash&lt; kiwi::NotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
-  ['notnullhash_3c_20kiwi_3a_3astrictnotnull_3c_20t_20_3e_20_3e_5',['NotNullHash&lt; kiwi::StrictNotNull&lt; T &gt; &gt;',['../structkiwi_1_1_not_null_hash.html',1,'kiwi']]],
-  ['notnullhash_3c_20t_2c_20u_2c_20false_20_3e_6',['NotNullHash&lt; T, U, false &gt;',['../structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4.html',1,'kiwi']]]
+  ['make_5fsigned_0',['make_signed',['../structkiwi_1_1make__signed.html',1,'kiwi']]],
+  ['make_5funsigned_1',['make_unsigned',['../structkiwi_1_1make__unsigned.html',1,'kiwi']]],
+  ['mathwrapper_2',['MathWrapper',['../structkiwi_1_1internal_1_1_math_wrapper.html',1,'kiwi::internal']]],
+  ['max_5falign_5ft_5f_3',['max_align_t_',['../structkiwi_1_1detail_1_1max__align__t__.html',1,'kiwi::detail']]],
+  ['max_5falign_5ft_5f_3c_20long_20double_2c_20double_2c_20float_2c_20long_20long_20int_2c_20long_20int_2c_20int_2c_20short_20int_2c_20bool_2c_20char_2c_20char16_5ft_2c_20char32_5ft_2c_20wchar_5ft_2c_20void_20_2a_2c_20std_3a_3amax_5falign_5ft_20_3e_4',['max_align_t_&lt; long double, double, float, long long int, long int, int, short int, bool, char, char16_t, char32_t, wchar_t, void *, std::max_align_t &gt;',['../structkiwi_1_1detail_1_1max__align__t__.html',1,'kiwi::detail']]],
+  ['maxaligntype_5',['MaxAlignType',['../structkiwi_1_1_max_align_type.html',1,'kiwi']]],
+  ['member_5fpointer_5ftraits_6',['member_pointer_traits',['../structkiwi_1_1member__pointer__traits.html',1,'kiwi']]],
+  ['member_5fpointer_5ftraits_3c_20m_20o_3a_3a_2a_20_3e_7',['member_pointer_traits&lt; M O::* &gt;',['../structkiwi_1_1member__pointer__traits_3_01_m_01_o_1_1_5_01_4.html',1,'kiwi']]],
+  ['mmsghdr_8',['mmsghdr',['../structmmsghdr.html',1,'']]],
+  ['moveonly_9',['MoveOnly',['../structkiwi_1_1_move_only.html',1,'kiwi::MoveOnly'],['../structkiwi_1_1moveonly___1_1_move_only.html',1,'kiwi::moveonly_::MoveOnly']]],
+  ['msgheader_10',['Msgheader',['../classfolly_1_1netops_1_1_msgheader.html',1,'folly::netops']]]
 ];

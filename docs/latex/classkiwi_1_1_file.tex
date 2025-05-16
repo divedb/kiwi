@@ -12,6 +12,11 @@ struct \mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}}
 \doxysubsubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
+\Hypertarget{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482}\label{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482} 
+enum class {\bfseries Lock\+Mode} \{ {\bfseries k\+Shared}
+, {\bfseries k\+Exclusive}
+ \}
+\item 
 enum \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619}{Flags}} \+: uint32\+\_\+t \{ \newline
 \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a4e16a64165c384e054584c79a8d5b29a}{k\+Flag\+Open}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
 , \mbox{\hyperlink{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d}{k\+Flag\+Create}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
@@ -63,7 +68,7 @@ enum \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Erro
 , {\bfseries k\+File\+Error\+Not\+Empty} = -\/14
 , {\bfseries k\+File\+Error\+Invalid\+Url} = -\/15
 , \newline
-{\bfseries k\+File\+Error\+Io} = -\/16
+{\bfseries k\+File\+Error\+IO} = -\/16
 , \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82}{k\+File\+Error\+Max}} = -\/17
  \}
 \item 
@@ -72,12 +77,7 @@ enum \mbox{\hyperlink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{When
 , {\bfseries k\+From\+Current} = 1
 , {\bfseries k\+From\+End} = 2
  \}
-\begin{DoxyCompactList}\small\item\em This explicit mapping matches both FILE\+\_\+ on Windows and SEEK\+\_\+ on Linux. \end{DoxyCompactList}\item 
-\Hypertarget{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482}\label{classkiwi_1_1_file_a77bf09945b7f1a76b28ad14eba76f482} 
-enum class {\bfseries Lock\+Mode} \{ {\bfseries k\+Shared}
-, {\bfseries k\+Exclusive}
- \}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This explicit mapping matches both FILE\+\_\+ on Windows and SEEK\+\_\+ on Linux. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -127,66 +127,63 @@ bool \mbox{\hyperlink{classkiwi_1_1_file_a3606ad7fb26e2a27ec681f3060028eb0}{Read
 \Hypertarget{classkiwi_1_1_file_afcea20f07715ff9cf0092f599d290872}\label{classkiwi_1_1_file_afcea20f07715ff9cf0092f599d290872} 
 bool {\bfseries Read\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}\label{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int \mbox{\hyperlink{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}{Read}} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a5240f205ddd91d6b7f59d0b960a282d5}\label{classkiwi_1_1_file_a5240f205ddd91d6b7f59d0b960a282d5} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067}\label{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+At\+Current\+Pos} (char \texorpdfstring{$\ast$}{*}data, int size)
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int \mbox{\hyperlink{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067}{Read\+At\+Current\+Pos}} (char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a6145138e263aadb88303a921ee7e262f}\label{classkiwi_1_1_file_a6145138e263aadb88303a921ee7e262f} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+At\+Current\+Pos} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79}\label{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+No\+Best\+Effort} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int \mbox{\hyperlink{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79}{Read\+No\+Best\+Effort}} (int64\+\_\+t offset, char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a472be55b66f6891c066143e0aa4491c9}\label{classkiwi_1_1_file_a472be55b66f6891c066143e0aa4491c9} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+No\+Best\+Effort} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a}\label{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Read\+At\+Current\+Pos\+No\+Best\+Effort} (char \texorpdfstring{$\ast$}{*}data, int size)
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int \mbox{\hyperlink{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a}{Read\+At\+Current\+Pos\+No\+Best\+Effort}} (char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_acb20fbb8d9357641363478587996eee3}\label{classkiwi_1_1_file_acb20fbb8d9357641363478587996eee3} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Read\+At\+Current\+Pos\+No\+Best\+Effort} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e}\label{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e} 
-bool {\bfseries Write\+And\+Check} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
+bool \mbox{\hyperlink{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e}{Write\+And\+Check}} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
 \Hypertarget{classkiwi_1_1_file_a4f07a8790ebdf12c0da72d7fb7ee6bf1}\label{classkiwi_1_1_file_a4f07a8790ebdf12c0da72d7fb7ee6bf1} 
 bool {\bfseries Write\+At\+Current\+Pos\+And\+Check} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9}\label{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write} (int64\+\_\+t offset, const char \texorpdfstring{$\ast$}{*}data, int size)
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int \mbox{\hyperlink{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9}{Write}} (int64\+\_\+t offset, const char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a6ca850368f70477f71e8a2b2f02efacd}\label{classkiwi_1_1_file_a6ca850368f70477f71e8a2b2f02efacd} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write} (int64\+\_\+t offset, \mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
 \Hypertarget{classkiwi_1_1_file_a699deb00efeb73849eef5324477aa1b6}\label{classkiwi_1_1_file_a699deb00efeb73849eef5324477aa1b6} 
 UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write\+At\+Current\+Pos} (const char \texorpdfstring{$\ast$}{*}data, int size)
-\item 
+\begin{DoxyCompactList}\small\item\em Save as above but without seek. \end{DoxyCompactList}\item 
 \Hypertarget{classkiwi_1_1_file_afae6ec38532e1c29a237a2890b925772}\label{classkiwi_1_1_file_afae6ec38532e1c29a237a2890b925772} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write\+At\+Current\+Pos} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab}\label{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab} 
-UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int {\bfseries Write\+At\+Current\+Pos\+No\+Best\+Effort} (const char \texorpdfstring{$\ast$}{*}data, int size)
+\Hypertarget{classkiwi_1_1_file_a0bd3da12e20809f30b9caccea76f03ed}\label{classkiwi_1_1_file_a0bd3da12e20809f30b9caccea76f03ed} 
+ssize\+\_\+t {\bfseries Write\+IOBuf\+At\+Current\+Pos} (const \mbox{\hyperlink{classkiwi_1_1_i_o_buf}{kiwi\+::\+IOBuf}} \&iobuf)
+\item 
+UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE int \mbox{\hyperlink{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab}{Write\+At\+Current\+Pos\+No\+Best\+Effort}} (const char \texorpdfstring{$\ast$}{*}data, int size)
 \item 
 \Hypertarget{classkiwi_1_1_file_a813d31de9d083a53ee8e4b500a4f3486}\label{classkiwi_1_1_file_a813d31de9d083a53ee8e4b500a4f3486} 
 std\+::optional$<$ size\+\_\+t $>$ {\bfseries Write\+At\+Current\+Pos\+No\+Best\+Effort} (\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
 \Hypertarget{classkiwi_1_1_file_abd19c022f7bb41f90cdc1e23d82297ab}\label{classkiwi_1_1_file_abd19c022f7bb41f90cdc1e23d82297ab} 
 int64\+\_\+t {\bfseries Get\+Length} () const
+\begin{DoxyCompactList}\small\item\em Returns the current size of this file, or a negative number on failure. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classkiwi_1_1_file_ab89787d024e791c80649b8e61a326526}{Truncate}} (int64\+\_\+t length)
 \item 
-\Hypertarget{classkiwi_1_1_file_a9a73ffd32434c4ee55f22e6793dfe511}\label{classkiwi_1_1_file_a9a73ffd32434c4ee55f22e6793dfe511} 
-bool {\bfseries Set\+Length} (int64\+\_\+t length)
+bool \mbox{\hyperlink{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}{Flush}} ()
 \item 
-\Hypertarget{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}\label{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3} 
-bool {\bfseries Flush} ()
-\item 
+\Hypertarget{classkiwi_1_1_file_a53e0cfca3ed88ad9ea3131fded44beb0}\label{classkiwi_1_1_file_a53e0cfca3ed88ad9ea3131fded44beb0} 
+bool {\bfseries Set\+Times} (\mbox{\hyperlink{classkiwi_1_1_time}{Time}} last\+\_\+access\+\_\+time, \mbox{\hyperlink{classkiwi_1_1_time}{Time}} last\+\_\+modified\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Updates the file times. \end{DoxyCompactList}\item 
 \Hypertarget{classkiwi_1_1_file_a11ac8cb486c052c627b4fdefaabb18bf}\label{classkiwi_1_1_file_a11ac8cb486c052c627b4fdefaabb18bf} 
 bool {\bfseries Get\+Info} (\mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}} \texorpdfstring{$\ast$}{*}info) const
-\item 
+\begin{DoxyCompactList}\small\item\em Returns some basic information for the given file. \end{DoxyCompactList}\item 
 \Hypertarget{classkiwi_1_1_file_af3ec6fc05cec4e47af152742dc68b813}\label{classkiwi_1_1_file_af3ec6fc05cec4e47af152742dc68b813} 
 \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} {\bfseries Lock} (Lock\+Mode mode)
 \item 
@@ -196,20 +193,18 @@ bool {\bfseries Get\+Info} (\mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}
 \Hypertarget{classkiwi_1_1_file_af84dfd24529df2f4f029b9ebb911edbb}\label{classkiwi_1_1_file_af84dfd24529df2f4f029b9ebb911edbb} 
 \mbox{\hyperlink{classkiwi_1_1_file}{File}} {\bfseries Duplicate} () const
 \item 
-\Hypertarget{classkiwi_1_1_file_a9f7fd2c79ebce1de2d1d4b81a3331a85}\label{classkiwi_1_1_file_a9f7fd2c79ebce1de2d1d4b81a3331a85} 
-bool {\bfseries async} () const
+\Hypertarget{classkiwi_1_1_file_af9caf46549b6e03a532fdc64146302b8}\label{classkiwi_1_1_file_af9caf46549b6e03a532fdc64146302b8} 
+bool {\bfseries Is\+Async} () const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084}\label{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084} 
-static \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} {\bfseries Get\+Last\+File\+Error} ()
+static \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} \mbox{\hyperlink{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084}{Get\+Last\+File\+Error}} ()
 \item 
 \Hypertarget{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae}\label{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae} 
 static std\+::string {\bfseries Error\+To\+String} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error)
-\item 
-\Hypertarget{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8}\label{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8} 
-static constexpr uint32\+\_\+t {\bfseries Add\+Flags\+For\+Passing\+To\+Untrusted\+Process} (uint32\+\_\+t flags)
+\begin{DoxyCompactList}\small\item\em Converts an error value to a human-\/readable form. Used for logging. \end{DoxyCompactList}\item 
+static constexpr uint32\+\_\+t \mbox{\hyperlink{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8}{Add\+Flags\+For\+Passing\+To\+Untrusted\+Process}} (uint32\+\_\+t flags)
 \end{DoxyCompactItemize}
 
 
@@ -279,7 +274,7 @@ k\+Flag\+Win\+Hidden&Windows only. \\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWriteAttributes@{kFlagWriteAttributes}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWriteAttributes@{kFlagWriteAttributes}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694} 
-k\+Flag\+Write\+Attributes&Allows writing attributes, e.\+g., Set\+Times(). \\
+k\+Flag\+Write\+Attributes&Allows writing attributes, e.\+g., \doxylink{classkiwi_1_1_file_a53e0cfca3ed88ad9ea3131fded44beb0}{Set\+Times()}. \\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{kFlagWinShareDelete@{kFlagWinShareDelete}!kiwi::File@{kiwi::File}}\index{kiwi::File@{kiwi::File}!kFlagWinShareDelete@{kFlagWinShareDelete}}}\Hypertarget{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52}\label{classkiwi_1_1_file_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52} 
@@ -367,7 +362,13 @@ Takes ownership of {\ttfamily platform\+\_\+file} and sets async to the given va
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831}\index{kiwi::File@{kiwi::File}!ErrorDetails@{ErrorDetails}}
+\Hypertarget{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8}\index{kiwi::File@{kiwi::File}!AddFlagsForPassingToUntrustedProcess@{AddFlagsForPassingToUntrustedProcess}}
+\index{AddFlagsForPassingToUntrustedProcess@{AddFlagsForPassingToUntrustedProcess}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{AddFlagsForPassingToUntrustedProcess()}{AddFlagsForPassingToUntrustedProcess()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8} 
+static constexpr uint32\+\_\+t kiwi\+::\+File\+::\+Add\+Flags\+For\+Passing\+To\+Untrusted\+Process (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{flags}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+This function can be used to augment {\ttfamily flags} with the correct flags required to create a \doxylink{classkiwi_1_1_file}{File} that can be safely passed to an untrusted process. It must be called if the \doxylink{classkiwi_1_1_file}{File} is intended to be transferred to an untrusted process, but can still be safely called even if the \doxylink{classkiwi_1_1_file}{File} is not intended to be transferred. \Hypertarget{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831}\index{kiwi::File@{kiwi::File}!ErrorDetails@{ErrorDetails}}
 \index{ErrorDetails@{ErrorDetails}!kiwi::File@{kiwi::File}}
 \doxysubsubsection{\texorpdfstring{ErrorDetails()}{ErrorDetails()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_afbaf995f649310cc94a327d64b7f0831} 
@@ -387,7 +388,23 @@ Note that the way to verify the success of the operation is to use \doxylink{cla
 \begin{DoxyReturn}{Returns}
 The OS result of opening this file. 
 \end{DoxyReturn}
-\Hypertarget{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7}\index{kiwi::File@{kiwi::File}!IsCreated@{IsCreated}}
+\Hypertarget{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}\index{kiwi::File@{kiwi::File}!Flush@{Flush}}
+\index{Flush@{Flush}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Flush()}{Flush()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3} 
+bool kiwi\+::\+File\+::\+Flush (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Instructs the filesystem to flush the file to disk. (POSIX\+: fsync, Windows\+: Flush\+File\+Buffers). Calling \doxylink{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}{Flush()} does not guarantee file integrity and thus is not a valid substitute for file integrity checks and recovery codepaths for malformed files. It can also be {\itshape really} slow, so avoid blocking on \doxylink{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}{Flush()}, especially please don\textquotesingle{}t block shutdown on \doxylink{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}{Flush()}.
+
+Latency percentiles of \doxylink{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}{Flush()} across all platforms as of July 2016\+:
+
+50 \% \texorpdfstring{$>$}{>} 5 ms 10 \% \texorpdfstring{$>$}{>} 58 ms 1 \% \texorpdfstring{$>$}{>} 357 ms 0.\+1 \% \texorpdfstring{$>$}{>} 1.\+8 seconds 0.\+01 \% \texorpdfstring{$>$}{>} 7.\+6 seconds \Hypertarget{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084}\index{kiwi::File@{kiwi::File}!GetLastFileError@{GetLastFileError}}
+\index{GetLastFileError@{GetLastFileError}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{GetLastFileError()}{GetLastFileError()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084} 
+\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{File\+::\+Error}} kiwi\+::\+File\+::\+Get\+Last\+File\+Error (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Gets the last global error (errno or Get\+Last\+Error()) and converts it to the closest base\+::\+File\+::\+Error equivalent via OSError\+To\+File\+Error(). It should therefore only be called immediately after another base\+::\+File method fails. base\+::\+File never resets the global error to zero. \Hypertarget{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7}\index{kiwi::File@{kiwi::File}!IsCreated@{IsCreated}}
 \index{IsCreated@{IsCreated}!kiwi::File@{kiwi::File}}
 \doxysubsubsection{\texorpdfstring{IsCreated()}{IsCreated()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7} 
@@ -405,13 +422,35 @@ bool kiwi\+::\+File\+::\+Is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCa
 \begin{DoxyReturn}{Returns}
 true if the handle or fd wrapped by this object is valid. This method doesn\textquotesingle{}t interact with the file system and is thus safe to be called from threads that disallow blocking. 
 \end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}\index{kiwi::File@{kiwi::File}!Read@{Read}}
+\index{Read@{Read}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129} 
+int kiwi\+::\+File\+::\+Read (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{offset}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+Reads the given number of bytes (or until EOF is reached) starting with the given offset.
+
+Note that this function makes a best effort to read all data on all platforms, so it is not intended for stream oriented files but instead for cases when the normal expectation is that actually {\ttfamily size} bytes are read unless there is an error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset} & The byte offset in the file from which to start reading. \\
+\hline
+{\em data} & A pointer to buffer. \\
+\hline
+{\em size} & The number of bytes to read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read, or -\/1 on error. 
+\end{DoxyReturn}
 \Hypertarget{classkiwi_1_1_file_a3606ad7fb26e2a27ec681f3060028eb0}\index{kiwi::File@{kiwi::File}!ReadAndCheck@{ReadAndCheck}}
 \index{ReadAndCheck@{ReadAndCheck}!kiwi::File@{kiwi::File}}
 \doxysubsubsection{\texorpdfstring{ReadAndCheck()}{ReadAndCheck()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_a3606ad7fb26e2a27ec681f3060028eb0} 
 bool kiwi\+::\+File\+::\+Read\+And\+Check (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{offset}{, }\item[{\mbox{\hyperlink{classkiwi_1_1span}{kiwi\+::span}}$<$ uint8\+\_\+t $>$}]{data}{}\end{DoxyParamCaption})}
 
-Simplified versions of Read() and friends (see below) that check the return value and just return a boolean.
+Simplified versions of \doxylink{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}{Read()} and friends (see below) that check the return value and just return a boolean.
 
 
 \begin{DoxyParams}{Parameters}
@@ -423,7 +462,31 @@ Simplified versions of Read() and friends (see below) that check the return valu
 \begin{DoxyReturn}{Returns}
 true iff the function read in exactly {\ttfamily data.\+size()} bytes of data. 
 \end{DoxyReturn}
-\Hypertarget{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4}\index{kiwi::File@{kiwi::File}!Seek@{Seek}}
+\Hypertarget{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067}\index{kiwi::File@{kiwi::File}!ReadAtCurrentPos@{ReadAtCurrentPos}}
+\index{ReadAtCurrentPos@{ReadAtCurrentPos}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{ReadAtCurrentPos()}{ReadAtCurrentPos()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_af47b5d7b4e7db08bcf5c8942e6a61067} 
+int kiwi\+::\+File\+::\+Read\+At\+Current\+Pos (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+Same as above but without seek.
+
+\doxylink{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}{Read(int64\+\_\+t offset, char\texorpdfstring{$\ast$}{*} data, int size)};
+
+\doxylink{classkiwi_1_1_file_aab4f8c0526aedb8b5f97c2e10f12f129}{Read(int64\+\_\+t offset, char\texorpdfstring{$\ast$}{*} data, int size)}; \Hypertarget{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a}\index{kiwi::File@{kiwi::File}!ReadAtCurrentPosNoBestEffort@{ReadAtCurrentPosNoBestEffort}}
+\index{ReadAtCurrentPosNoBestEffort@{ReadAtCurrentPosNoBestEffort}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{ReadAtCurrentPosNoBestEffort()}{ReadAtCurrentPosNoBestEffort()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a8d7c466844c2f368c108976f84b4fa7a} 
+int kiwi\+::\+File\+::\+Read\+At\+Current\+Pos\+No\+Best\+Effort (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+Same as above but without seek. \doxylink{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79}{Read\+No\+Best\+Effort(int64\+\_\+t offset, char\texorpdfstring{$\ast$}{*} data, int size)};
+
+\doxylink{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79}{Read\+No\+Best\+Effort(int64\+\_\+t offset, char\texorpdfstring{$\ast$}{*} data, int size)}; \Hypertarget{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79}\index{kiwi::File@{kiwi::File}!ReadNoBestEffort@{ReadNoBestEffort}}
+\index{ReadNoBestEffort@{ReadNoBestEffort}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{ReadNoBestEffort()}{ReadNoBestEffort()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ae8f3f6380a232f5ca19d916dc33ada79} 
+int kiwi\+::\+File\+::\+Read\+No\+Best\+Effort (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{offset}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+Reads the given number of bytes (or until EOF is reached) starting with the given offset, but does not make any effort to read all data on all platforms. Returns the number of bytes read, or -\/1/std\+::nullopt on error. \Hypertarget{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4}\index{kiwi::File@{kiwi::File}!Seek@{Seek}}
 \index{Seek@{Seek}!kiwi::File@{kiwi::File}}
 \doxysubsubsection{\texorpdfstring{Seek()}{Seek()}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_a67118e2790c56e70ed927a9e5f6a43b4} 
@@ -447,7 +510,31 @@ Changes current position in the file to an {\ttfamily offset} relative to an ori
 \begin{DoxyReturn}{Returns}
 The new offset from the beginning of the file, or -\/1 on error. 
 \end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_ab89787d024e791c80649b8e61a326526}\index{kiwi::File@{kiwi::File}!Truncate@{Truncate}}
+\index{Truncate@{Truncate}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Truncate()}{Truncate()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ab89787d024e791c80649b8e61a326526} 
+bool kiwi\+::\+File\+::\+Truncate (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{length}{}\end{DoxyParamCaption})}
 
+Truncates the file to the given length. If \texorpdfstring{$\vert$}{|}length\texorpdfstring{$\vert$}{|} is greater than the current size of the file, the file is extended with zeros. If the file doesn\textquotesingle{}t exist, \texorpdfstring{$\vert$}{|}false\texorpdfstring{$\vert$}{|} is returned. \Hypertarget{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9}\index{kiwi::File@{kiwi::File}!Write@{Write}}
+\index{Write@{Write}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9} 
+int kiwi\+::\+File\+::\+Write (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{offset}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+Writes the given buffer into the file at the given offset, overwritting any data that was previously there. Returns the number of bytes written, or -\/1 on error. Note that this function makes a best effort to write all data on all platforms. \texorpdfstring{$\vert$}{|}data\texorpdfstring{$\vert$}{|} can be nullptr when \texorpdfstring{$\vert$}{|}size\texorpdfstring{$\vert$}{|} is 0. Ignores the offset and writes to the end of the file if the file was opened with FLAG\+\_\+\+APPEND. \Hypertarget{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e}\index{kiwi::File@{kiwi::File}!WriteAndCheck@{WriteAndCheck}}
+\index{WriteAndCheck@{WriteAndCheck}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{WriteAndCheck()}{WriteAndCheck()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a798cf360c989d91deddd333d1c67b68e} 
+bool kiwi\+::\+File\+::\+Write\+And\+Check (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{offset}{, }\item[{\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$}]{data}{}\end{DoxyParamCaption})}
+
+Simplified versions of \doxylink{classkiwi_1_1_file_ae052bbc98ce6ea22c9d24af14a6a9af9}{Write()} and friends (see below) that check the return value and just return a boolean. They return true if and only if the function wrote out exactly \texorpdfstring{$\vert$}{|}data.size()\texorpdfstring{$\vert$}{|} bytes of data. \Hypertarget{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab}\index{kiwi::File@{kiwi::File}!WriteAtCurrentPosNoBestEffort@{WriteAtCurrentPosNoBestEffort}}
+\index{WriteAtCurrentPosNoBestEffort@{WriteAtCurrentPosNoBestEffort}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{WriteAtCurrentPosNoBestEffort()}{WriteAtCurrentPosNoBestEffort()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a9b9bd59c3bc48a35ad1b0e732daceeab} 
+int kiwi\+::\+File\+::\+Write\+At\+Current\+Pos\+No\+Best\+Effort (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+Save as above but does not make any effort to write all data on all platforms. Returns the number of bytes written, or -\/1/std\+::nullopt on error. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

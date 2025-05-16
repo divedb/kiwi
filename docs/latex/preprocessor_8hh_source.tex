@@ -1,0 +1,184 @@
+\doxysection{preprocessor.\+hh}
+\hypertarget{preprocessor_8hh_source}{}\label{preprocessor_8hh_source}\index{include/kiwi/portability/preprocessor.hh@{include/kiwi/portability/preprocessor.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ MSVC's\ preprocessor\ is\ a\ pain,\ so\ we\ have\ to\ forcefully\ expand\ the\ VA\ args\ in}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ some\ places.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ Reference:}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ https://stackoverflow.com/questions/5134523/msvc-\/doesnt-\/expand-\/va-\/args-\/correctly}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ KIWI\_VA\_GLUE(a,\ b)\ a\ b}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ KIWI\_ONE\_OR\_NONE(hello,\ world)\ expands\ to\ hello.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ KIWI\_ONE\_OR\_NONE(hello)\ expands\ to\ nothing.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ This\ macro\ is\ used\ to\ insert\ or\ eliminate\ text\ based\ on\ the\ presence\ of}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ another\ argument.}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ KIWI\_ONE\_OR\_NONE(a,\ ...)\ KIWI\_VA\_GLUE(KIWI\_THIRD,\ (a,\ \#\#\_\_VA\_ARGS\_\_,\ a))}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ KIWI\_THIRD(a,\ b,\ ...)\ \_\_VA\_ARGS\_\_}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ Helper\ macro\ that\ extracts\ the\ first\ argument\ out\ of\ a\ list\ of\ any\ number\ of}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ arguments.}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ KIWI\_ARG\_1(a,\ ...)\ a}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Helper\ macro\ that\ extracts\ the\ second\ argument\ out\ of\ a\ list\ of\ any\ number\ of}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ arguments.\ If\ only\ one\ argument\ is\ given,\ it\ returns\ that.}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ GCC\ refuses\ to\ expand\ this\ correctly\ if\ this\ macro\ itself\ was}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ called\ with\ KIWI\_VA\_GLUE\ :(}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ KIWI\_ARG\_2\_OR\_1(...)\ \(\backslash\)}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\ \ KIWI\_VA\_GLUE(KIWI\_ARG\_2\_OR\_1\_IMPL,\ (\_\_VA\_ARGS\_\_,\ \_\_VA\_ARGS\_\_))}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ KIWI\_ARG\_2\_OR\_1(...)\ KIWI\_ARG\_2\_OR\_1\_IMPL(\_\_VA\_ARGS\_\_,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ Support\ macro\ for\ the\ above}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ KIWI\_ARG\_2\_OR\_1\_IMPL(a,\ b,\ ...)\ b}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ Helper\ macro\ that\ provides\ a\ way\ to\ pass\ argument\ with\ commas\ in\ it\ to}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ some\ other\ macro\ whose\ syntax\ doesn't\ allow\ using\ extra\ parentheses.}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ Example:}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ \ \ \#define\ MACRO(type,\ name)\ type\ name}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ \ \ MACRO(KIWI\_SINGLE\_ARG(std::pair<size\_t,\ size\_t>),\ x);}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ KIWI\_SINGLE\_ARG(...)\ \_\_VA\_ARGS\_\_}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_APPEND\_VA\_ARG(...)\ ,\ \#\#\_\_VA\_ARGS\_\_}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ Helper\ macro\ that\ just\ ignores\ its\ parameters.}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ KIWI\_IGNORE(...)}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ Helper\ macro\ that\ just\ ignores\ its\ parameters\ and\ inserts\ a\ semicolon.}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ KIWI\_SEMICOLON(...)\ ;}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ KIWI\_ANONYMOUS\_VARIABLE(str)\ introduces\ an\ identifier\ starting\ with}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ str\ and\ ending\ with\ a\ number\ that\ varies\ with\ the\ line.}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#ifndef\ KIWI\_ANONYMOUS\_VARIABLE}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ KIWI\_CONCATENATE\_IMPL(s1,\ s2)\ s1\#\#s2}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ KIWI\_CONCATENATE(s1,\ s2)\ KIWI\_CONCATENATE\_IMPL(s1,\ s2)}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#ifdef\ \_\_COUNTER\_\_}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ Modular\ builds\ build\ each\ module\ with\ its\ own\ preprocessor\ state,\ meaning}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ \`{}\_\_COUNTER\_\_`\ no\ longer\ provides\ a\ unique\ number\ across\ a\ TU.\ \ Instead\ of}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ calling\ back\ to\ just\ \`{}\_\_LINE\_\_`,\ use\ a\ mix\ of\ \`{}\_\_COUNTER\_\_`\ and\ \`{}\_\_LINE\_\_`}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ to\ try\ provide\ as\ much\ uniqueness\ as\ possible.}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_FEATURE(modules)}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ KIWI\_ANONYMOUS\_VARIABLE(str)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\ \ KIWI\_CONCATENATE(KIWI\_CONCATENATE(KIWI\_CONCATENATE(str,\ \_\_COUNTER\_\_),\ \_),\ \(\backslash\)}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_LINE\_\_)}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ KIWI\_ANONYMOUS\_VARIABLE(str)\ KIWI\_CONCATENATE(str,\ \_\_COUNTER\_\_)}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ KIWI\_ANONYMOUS\_VARIABLE(str)\ KIWI\_CONCATENATE(str,\ \_\_LINE\_\_)}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ Use\ KIWI\_PP\_STRINGIZE(x)\ when\ you'd\ want\ to\ do\ what\ \#x\ does\ inside}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ another\ macro\ expansion.}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_STRINGIZE(x)\ \#x}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_NARGS\_1(dummy,\ \_15,\ \_14,\ \_13,\ \_12,\ \_11,\ \_10,\ \_9,\ \_8,\ \(\backslash\)}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_7,\ \_6,\ \_5,\ \_4,\ \_3,\ \_2,\ \_1,\ \_0,\ ...)\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\ \ \_0}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_NARGS(...)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\ \ KIWI\_PP\_DETAIL\_NARGS\_1(dummy,\ \#\#\_\_VA\_ARGS\_\_,\ 15,\ 14,\ 13,\ 12,\ 11,\ 10,\ 9,\ 8,\ \(\backslash\)}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 7,\ 6,\ 5,\ 4,\ 3,\ 2,\ 1,\ 0)}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_0(fn,\ ...)}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_1(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_0(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_2(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_1(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_3(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_2(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_4(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_3(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_5(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_4(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_6(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_5(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_7(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_6(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_8(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_7(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_9(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_8(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_10(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_9(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_11(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_10(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_12(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_11(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_13(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_12(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_14(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_13(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_15(fn,\ a,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\ \ fn(a)\ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_14(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_2(fn,\ n,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\ \ KIWI\_PP\_DETAIL\_FOR\_EACH\_REC\_\#\#n(fn,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_DETAIL\_FOR\_EACH\_1(fn,\ n,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\ \ KIWI\_PP\_DETAIL\_FOR\_EACH\_2(fn,\ n,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ KIWI\_PP\_FOR\_EACH}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//\ Used\ to\ invoke\ a\ preprocessor\ macro,\ the\ name\ of\ which\ is\ passed\ as\ the}}
+\DoxyCodeLine{00141\ \textcolor{comment}{//\ first\ argument,\ once\ for\ each\ subsequent\ variadic\ argument.}}
+\DoxyCodeLine{00142\ \textcolor{comment}{//}}
+\DoxyCodeLine{00143\ \textcolor{comment}{//\ At\ present,\ supports\ [0,\ 16)\ arguments.}}
+\DoxyCodeLine{00144\ \textcolor{comment}{//}}
+\DoxyCodeLine{00145\ \textcolor{comment}{//\ This\ input:}}
+\DoxyCodeLine{00146\ \textcolor{comment}{//}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//\ \ \ \#define\ DOIT(a)\ go\_do\_it(a);}}
+\DoxyCodeLine{00148\ \textcolor{comment}{//\ \ \ KIWI\_PP\_FOR\_EACH(DOIT,\ 3,\ 5,\ 7)}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//\ \ \ \#undef\ DOIT}}
+\DoxyCodeLine{00150\ \textcolor{comment}{//}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ Expands\ to\ this\ output\ (with\ whitespace\ adjusted\ for\ clarity):}}
+\DoxyCodeLine{00152\ \textcolor{comment}{//}}
+\DoxyCodeLine{00153\ \textcolor{comment}{//\ \ \ go\_do\_it(3);}}
+\DoxyCodeLine{00154\ \textcolor{comment}{//\ \ \ go\_do\_it(5);}}
+\DoxyCodeLine{00155\ \textcolor{comment}{//\ \ \ go\_do\_it(7);}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_FOR\_EACH(fn,\ ...)\ \(\backslash\)}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\ \ KIWI\_PP\_DETAIL\_FOR\_EACH\_1(fn,\ KIWI\_PP\_DETAIL\_NARGS(\_\_VA\_ARGS\_\_),\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#if\ defined(U)}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#error\ defined(U)\ }\textcolor{comment}{//\ literal\ U\ is\ used\ below}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{comment}{//\ KIWI\_PP\_CONSTINIT\_LINE\_UNSIGNED}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//}}
+\DoxyCodeLine{00165\ \textcolor{comment}{//\ MSVC\ with\ /ZI\ has\ a\ special\ backing\ variable\ for\ \_\_LINE\_\_\ which\ is\ not\ a}}
+\DoxyCodeLine{00166\ \textcolor{comment}{//\ literal\ -\/\ but\ token-\/pasting\ \_\_LINE\_\_\ suppresses\ this\ backing\ variable.\ This}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//\ is\ done\ in\ MSVC\ to\ support\ its\ edit-\/and-\/continue\ feature.}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//}}
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ This\ macro\ evaluates\ to:}}
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ \ \ \_\_LINE\_\_\ \#\#\ U}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ So\ this\ macro\ may\ be\ ill-\/suited\ to\ cases\ which\ need\ exactly\ \_\_LINE\_\_.}}
+\DoxyCodeLine{00173\ \textcolor{comment}{//}}
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ Documentation:}}
+\DoxyCodeLine{00175\ \textcolor{comment}{//\ \ \ https://docs.microsoft.com/en-\/us/cpp/build/reference/z7-\/zi-\/zi-\/debug-\/information-\/format?view=msvc-\/170\#zi-\/1}}
+\DoxyCodeLine{00176\ \textcolor{comment}{//\ Workaround:}}
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ \ \ https://stackoverflow.com/questions/57137351/line-\/is-\/not-\/constexpr-\/in-\/msvc}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#define\ KIWI\_PP\_CONSTINIT\_LINE\_UNSIGNED\ KIWI\_CONCATENATE(\_\_LINE\_\_,\ U)}}
+
+\end{DoxyCode}

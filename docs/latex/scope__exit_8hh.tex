@@ -2,22 +2,51 @@
 \hypertarget{scope__exit_8hh}{}\label{scope__exit_8hh}\index{include/kiwi/common/scope\_exit.hh@{include/kiwi/common/scope\_exit.hh}}
 {\ttfamily \#include $<$type\+\_\+traits$>$}\newline
 {\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include "{}kiwi/portability/preprocessor.\+hh"{}}\newline
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{kiwi\+::detail\+::scope\+\_\+exit$<$ Callable $>$}}
+class \mbox{\hyperlink{classkiwi_1_1detail_1_1_scope_exit}{kiwi\+::detail\+::\+Scope\+Exit$<$ Callable $>$}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacekiwi}{kiwi}}
 \end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scope__exit_8hh_a175c354c3e38222bc00ce5df5e6d431d}{SCOPE\+\_\+\+EXIT}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{scope__exit_8hh_a6f75c3a10d1c33df25fa5eab1cec0007}\label{scope__exit_8hh_a6f75c3a10d1c33df25fa5eab1cec0007} 
+enum class {\bfseries Scope\+Exit\+Tag} 
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename Callable$>$ }\\\mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{detail\+::scope\+\_\+exit}}$<$ std\+::decay\+\_\+t$<$ Callable $>$ $>$ \mbox{\hyperlink{namespacekiwi_a851bea1bb4a936e7446e8fc1ab579231}{kiwi\+::make\+\_\+scope\+\_\+exit}} (Callable \&\&fp)
+{\footnotesize template$<$typename Callable$>$ }\\\mbox{\hyperlink{classkiwi_1_1detail_1_1_scope_exit}{detail\+::\+Scope\+Exit}}$<$ std\+::decay\+\_\+t$<$ Callable $>$ $>$ \mbox{\hyperlink{namespacekiwi_a0f08f6f93fa42280d07db0f3c4723df7}{kiwi\+::make\+\_\+scope\+\_\+exit}} (Callable \&\&fp)
+\item 
+\Hypertarget{namespacekiwi_adcf64cadeb42e4ab874c0a6ebcc2e1be}\label{namespacekiwi_adcf64cadeb42e4ab874c0a6ebcc2e1be} 
+{\footnotesize template$<$typename Function\+Type$>$ }\\\mbox{\hyperlink{classkiwi_1_1detail_1_1_scope_exit}{detail\+::\+Scope\+Exit}}$<$ typename std\+::decay$<$ Function\+Type $>$\+::type $>$ {\bfseries kiwi\+::operator+} (detail\+::\+Scope\+Exit\+Tag, Function\+Type \&\&fn)
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-This file defines the make\+\_\+scope\+\_\+exit function, which executes user-\/defined cleanup logic at scope exit. 
+This file defines the make\+\_\+\+Scope\+Exit function, which executes user-\/defined cleanup logic at scope exit. 
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{scope__exit_8hh_a175c354c3e38222bc00ce5df5e6d431d}\index{scope\_exit.hh@{scope\_exit.hh}!SCOPE\_EXIT@{SCOPE\_EXIT}}
+\index{SCOPE\_EXIT@{SCOPE\_EXIT}!scope\_exit.hh@{scope\_exit.hh}}
+\doxysubsubsection{\texorpdfstring{SCOPE\_EXIT}{SCOPE\_EXIT}}
+{\footnotesize\ttfamily \label{scope__exit_8hh_a175c354c3e38222bc00ce5df5e6d431d} 
+\#define SCOPE\+\_\+\+EXIT}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ KIWI\_ANONYMOUS\_VARIABLE(SCOPE\_EXIT\_STATE)\ =\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ ::kiwi::detail::ScopeExitTag()\ +\ [\&]()\ noexcept}
+
+\end{DoxyCode}

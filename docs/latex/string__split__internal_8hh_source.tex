@@ -1,0 +1,105 @@
+\doxysection{string\+\_\+split\+\_\+internal.\+hh}
+\hypertarget{string__split__internal_8hh_source}{}\label{string__split__internal_8hh_source}\index{include/kiwi/strings/string\_split\_internal.hh@{include/kiwi/strings/string\_split\_internal.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2020\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/string\_util.hh"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Returns\ either\ the\ ASCII\ or\ UTF-\/16\ whitespace.}}
+\DoxyCodeLine{00016\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{00017\ std::basic\_string\_view<CharT>\ WhitespaceForType();}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00020\ \textcolor{keyword}{inline}\ std::u16string\_view\ WhitespaceForType<char16\_t>()\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordflow}{return}\ kWhitespaceUTF16;}
+\DoxyCodeLine{00022\ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00025\ \textcolor{keyword}{inline}\ std::string\_view\ WhitespaceForType<char>()\ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{return}\ kWhitespaceASCII;}
+\DoxyCodeLine{00027\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ General\ string\ splitter\ template.\ Can\ take\ 8-\/\ or\ 16-\/bit\ input,\ can\ produce}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ the\ corresponding\ string\ or\ std::string\_view\ output.}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OutputStringType,\ \textcolor{keyword}{typename}\ T,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{static}\ std::vector<OutputStringType>\ SplitStringT(T\ str,\ T\ delimiter,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WhitespaceHandling\ whitespace,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SplitResult\ result\_type)\ \{}
+\DoxyCodeLine{00036\ \ \ std::vector<OutputStringType>\ result;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordflow}{if}\ (str.empty())\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordflow}{while}\ (start\ !=\ std::basic\_string<CharT>::npos)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ end\ =\ str.find\_first\_of(delimiter,\ start);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ std::basic\_string\_view<CharT>\ piece;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (end\ ==\ std::basic\_string<CharT>::npos)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ piece\ =\ str.substr(start);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ start\ =\ std::basic\_string<CharT>::npos;}
+\DoxyCodeLine{00049\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ piece\ =\ str.substr(start,\ end\ -\/\ start);}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ start\ =\ end\ +\ 1;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (whitespace\ ==\ TRIM\_WHITESPACE)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ piece\ =\ TrimString(piece,\ WhitespaceForType<CharT>(),\ TRIM\_ALL);}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\_type\ ==\ SPLIT\_WANT\_ALL\ ||\ !piece.empty())\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ result.emplace\_back(piece);}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00063\ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ OutputStringType,\ \textcolor{keyword}{typename}\ T,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00067\ std::vector<OutputStringType>\ SplitStringUsingSubstrT(}
+\DoxyCodeLine{00068\ \ \ \ \ T\ input,\ T\ delimiter,\ WhitespaceHandling\ whitespace,}
+\DoxyCodeLine{00069\ \ \ \ \ SplitResult\ result\_type)\ \{}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{using\ }Piece\ =\ std::basic\_string\_view<CharT>;}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ \textcolor{keyword}{typename}\ Piece::size\_type;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ std::vector<OutputStringType>\ result;}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordflow}{if}\ (delimiter.size()\ ==\ 0)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ result.emplace\_back(input);}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordflow}{for}\ (size\_type\ begin\_index\ =\ 0,\ end\_index\ =\ 0;\ end\_index\ !=\ Piece::npos;}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ begin\_index\ =\ end\_index\ +\ delimiter.size())\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ end\_index\ =\ input.find(delimiter,\ begin\_index);}
+\DoxyCodeLine{00082\ \ \ \ \ Piece\ term\ =\ end\_index\ ==\ Piece::npos}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ input.substr(begin\_index)}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ input.substr(begin\_index,\ end\_index\ -\/\ begin\_index);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (whitespace\ ==\ TRIM\_WHITESPACE)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ term\ =\ TrimString(term,\ WhitespaceForType<CharT>(),\ TRIM\_ALL);}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\_type\ ==\ SPLIT\_WANT\_ALL\ ||\ !term.empty())\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ result.emplace\_back(term);}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00096\ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00099\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

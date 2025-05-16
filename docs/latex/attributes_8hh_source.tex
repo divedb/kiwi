@@ -1,0 +1,963 @@
+\doxysection{attributes.\+hh}
+\hypertarget{attributes_8hh_source}{}\label{attributes_8hh_source}\index{include/kiwi/portability/attributes.hh@{include/kiwi/portability/attributes.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_\_has\_attribute}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_ATTRIBUTE(x)\ 0}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_ATTRIBUTE(x)\ \_\_has\_attribute(x)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#ifndef\ \_\_has\_cpp\_attribute}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_CPP\_ATTRIBUTE(x)\ 0}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_CPP\_ATTRIBUTE(x)\ \_\_has\_cpp\_attribute(x)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#ifndef\ \_\_has\_extension}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_EXTENSION(x)\ 0}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ KIWI\_HAS\_EXTENSION(x)\ \_\_has\_extension(x)}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(clang::noinline)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ KIWI\_NOINLINE\ [[clang::noinline]]}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#elif\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::noinline)}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ KIWI\_NOINLINE\ [[gnu::noinline]]}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#elif\ KIWI\_HAS\_CPP\_ATTRIBUTE(msvc::noinline)}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ KIWI\_NOINLINE\ [[msvc::noinline]]}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ KIWI\_NOINLINE}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(clang::optnone)}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ KIWI\_NOOPT\ [[clang::optnone]]}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#elif\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::optimize)}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ KIWI\_NOOPT\ [[gnu::optimize(0)]]}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ KIWI\_NOOPT}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ it\ should\ always\ be\ inlined.}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#always-\/inline-\/force-\/inline}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ \ \ KIWI\_ALWAYS\_INLINE\ void\ Func()\ \{}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ \ \ \ \ //\ This\ body\ will\ be\ inlined\ into\ callers\ whenever\ possible.}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ Since\ \`{}KIWI\_ALWAYS\_INLINE`\ is\ performance-\/oriented\ but\ can\ hamper\ debugging,}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ ignore\ it\ in\ debug\ mode.}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#if\ defined(NDEBUG)}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(clang::always\_inline)}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ KIWI\_ALWAYS\_INLINE\ [[clang::always\_inline]]\ inline}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#elif\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::always\_inline)}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ KIWI\_ALWAYS\_INLINE\ [[gnu::always\_inline]]\ inline}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#elif\ defined(COMPILER\_MSVC)}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ KIWI\_ALWAYS\_INLINE\ \_\_forceinline}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#if\ !defined(KIWI\_ALWAYS\_INLINE)}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ KIWI\_ALWAYS\_INLINE\ inline}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_EXTENSION(nullability)}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ KIWI\_NULLABLE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\ \ KIWI\_PUSH\_WARNING\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\ \ KIWI\_CLANG\_DISABLE\_WARNING("{}-\/Wnullability-\/extension"{})\ \(\backslash\)}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\ \ \_Nullable\ KIWI\_POP\_WARNING}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#define\ KIWI\_NONNULL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\ \ KIWI\_PUSH\_WARNING\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\ \ KIWI\_CLANG\_DISABLE\_WARNING("{}-\/Wnullability-\/extension"{})\ \(\backslash\)}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\ \ \_Nonnull\ KIWI\_POP\_WARNING}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#define\ KIWI\_NULLABLE}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#define\ KIWI\_NONNULL}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::cold)}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_COLD\ gnu::cold}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_COLD}}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#if\ defined(NDEBUG)}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_MAYBE\_UNUSED\_IF\_NDEBUG\ [[maybe\_unused]]}}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_MAYBE\_UNUSED\_IF\_NDEBUG}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(no\_unique\_address)}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_NO\_UNIQUE\_ADDRESS\ [[no\_unique\_address]]}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_NO\_UNIQUE\_ADDRESS}}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(clang::no\_destroy)}}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_CLANG\_NO\_DESTROY\ clang::no\_destroy}}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_CLANG\_NO\_DESTROY}}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::may\_alias)}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_MAY\_ALIAS\ gnu::may\_alias}}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_MAY\_ALIAS}}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::pure)}}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_PURE\ gnu::pure}}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_PURE}}
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(clang::preserve\_most)}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_CLANG\_PRESERVE\_MOST\ clang::preserve\_most}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_CLANG\_PRESERVE\_MOST}}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(clang::preserve\_all)}}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_CLANG\_PRESERVE\_ALL\ clang::preserve\_all}}
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_CLANG\_PRESERVE\_ALL}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_CPP\_ATTRIBUTE(gnu::used)}}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_USED\ gnu::used}}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_USED}}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00242\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_VISIBILITY\_HIDDEN}}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#elif\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_VISIBILITY\_HIDDEN\ \_\_attribute\_\_((\_\_visibility\_\_("{}hidden"{})))}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_VISIBILITY\_HIDDEN}}
+\DoxyCodeLine{00247\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{comment}{//\ A\ conceptual\ attribute/syntax\ combo\ for\ erasing\ a\ function\ from\ the\ build}}
+\DoxyCodeLine{00250\ \textcolor{comment}{//\ artifacts\ and\ forcing\ all\ call-\/sites\ to\ inline\ the\ callee,\ at\ least\ as\ far}}
+\DoxyCodeLine{00251\ \textcolor{comment}{//\ as\ each\ compiler\ supports.}}
+\DoxyCodeLine{00252\ \textcolor{comment}{//}}
+\DoxyCodeLine{00253\ \textcolor{comment}{//\ Semantically\ includes\ the\ inline\ specifier.}}
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#define\ KIWI\_ERASE\ KIWI\_ALWAYS\_INLINE\ KIWI\_ATTR\_VISIBILITY\_HIDDEN}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{comment}{//\ Annotates\ a\ call\ site\ indicating\ the\ calee\ should\ always\ be\ inlined.}}
+\DoxyCodeLine{00257\ \textcolor{comment}{//}}
+\DoxyCodeLine{00258\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00259\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#always-\/inline-\/force-\/inline}}
+\DoxyCodeLine{00260\ \textcolor{comment}{//}}
+\DoxyCodeLine{00261\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00262\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00263\ \textcolor{comment}{//\ \ \ void\ Func()\ \{}}
+\DoxyCodeLine{00264\ \textcolor{comment}{//\ \ \ \ \ //\ This\ specific\ call\ will\ be\ inlined\ if\ possible.}}
+\DoxyCodeLine{00265\ \textcolor{comment}{//\ \ \ \ \ ALWAYS\_INLINE\_CALL\ DoSomething();}}
+\DoxyCodeLine{00266\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00267\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00268\ \textcolor{comment}{//}}
+\DoxyCodeLine{00269\ \textcolor{comment}{//\ Since\ \`{}ALWAYS\_INLINE\_CALL`\ is\ performance-\/oriented\ but\ can\ hamper\ debugging,}}
+\DoxyCodeLine{00270\ \textcolor{comment}{//\ ignore\ it\ in\ debug\ mode.}}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#if\ defined(NDEBUG)}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::always\_inline)}}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#define\ ALWAYS\_INLINE\_CALL\ [[clang::always\_inline]]}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#if\ !defined(ALWAYS\_INLINE\_CALL)}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#define\ ALWAYS\_INLINE\_CALL}}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ it\ should\ never\ be\ tail\ called.\ Useful\ to}}
+\DoxyCodeLine{00281\ \textcolor{comment}{//\ make\ sure\ callers\ of\ the\ annotated\ function\ are\ never\ omitted\ from\ call}}
+\DoxyCodeLine{00282\ \textcolor{comment}{//\ stacks.\ Often\ useful\ with\ \`{}NOINLINE`\ to\ make\ sure\ the\ function\ itself\ is\ also}}
+\DoxyCodeLine{00283\ \textcolor{comment}{//\ not\ omitted\ from\ call\ stacks.\ Note:\ this\ does\ not\ prevent\ code\ folding\ of}}
+\DoxyCodeLine{00284\ \textcolor{comment}{//\ multiple\ identical\ callers\ into\ a\ single\ signature;\ to\ do\ that,\ see}}
+\DoxyCodeLine{00285\ \textcolor{comment}{//\ \`{}NO\_CODE\_FOLDING()`\ in\ base/debug/alias.h.}}
+\DoxyCodeLine{00286\ \textcolor{comment}{//}}
+\DoxyCodeLine{00287\ \textcolor{comment}{//\ For\ a\ caller-\/side\ version\ of\ this,\ see\ \`{}DISABLE\_TAIL\_CALLS`.}}
+\DoxyCodeLine{00288\ \textcolor{comment}{//}}
+\DoxyCodeLine{00289\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00290\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#not-\/tail-\/called}}
+\DoxyCodeLine{00291\ \textcolor{comment}{//}}
+\DoxyCodeLine{00292\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00293\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00294\ \textcolor{comment}{//\ \ \ //\ Calls\ to\ this\ function\ will\ not\ be\ tail\ calls.}}
+\DoxyCodeLine{00295\ \textcolor{comment}{//\ \ \ NOT\_TAIL\_CALLED\ void\ Func();}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::not\_tail\_called)}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#define\ NOT\_TAIL\_CALLED\ [[clang::not\_tail\_called]]}}
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#define\ NOT\_TAIL\_CALLED}}
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \textcolor{comment}{//\ Annotates\ a\ return\ statement\ indicating\ the\ compiler\ must\ convert\ it\ to\ a}}
+\DoxyCodeLine{00304\ \textcolor{comment}{//\ tail\ call.\ Can\ be\ used\ only\ on\ return\ statements,\ even\ for\ functions}}
+\DoxyCodeLine{00305\ \textcolor{comment}{//\ returning\ void.\ Caller\ and\ callee\ must\ have\ the\ same\ number\ of\ arguments\ and}}
+\DoxyCodeLine{00306\ \textcolor{comment}{//\ the\ argument\ types\ must\ be\ "{}similar"{}.\ While\ the\ compiler\ may\ automatically}}
+\DoxyCodeLine{00307\ \textcolor{comment}{//\ convert\ compatible\ calls\ to\ tail\ calls\ when\ optimizing,\ this\ annotation}}
+\DoxyCodeLine{00308\ \textcolor{comment}{//\ requires\ it\ to\ occur\ if\ doing\ so\ is\ valid,\ and\ will\ not\ compile\ otherwise.}}
+\DoxyCodeLine{00309\ \textcolor{comment}{//}}
+\DoxyCodeLine{00310\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00311\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#musttail}}
+\DoxyCodeLine{00312\ \textcolor{comment}{//}}
+\DoxyCodeLine{00313\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00314\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00315\ \textcolor{comment}{//\ \ \ int\ Func1(double);}}
+\DoxyCodeLine{00316\ \textcolor{comment}{//\ \ \ int\ Func2(double\ d)\ \{}}
+\DoxyCodeLine{00317\ \textcolor{comment}{//\ \ \ \ \ MUSTTAIL\ return\ Func1(d\ +\ 1);\ \ //\ \`{}Func1()`\ will\ be\ tail-\/called.}}
+\DoxyCodeLine{00318\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00319\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::musttail)}}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#define\ MUSTTAIL\ [[clang::musttail]]}}
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\#define\ MUSTTAIL}}
+\DoxyCodeLine{00324\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \textcolor{comment}{//\ Annotates\ a\ data\ member\ indicating\ it\ need\ not\ have\ an\ address\ distinct\ from}}
+\DoxyCodeLine{00327\ \textcolor{comment}{//\ all\ other\ non-\/static\ data\ members\ of\ the\ class,\ and\ its\ tail\ padding\ may\ be}}
+\DoxyCodeLine{00328\ \textcolor{comment}{//\ used\ for\ other\ objects'\ storage.\ This\ can\ have\ subtle\ and\ dangerous\ effects,}}
+\DoxyCodeLine{00329\ \textcolor{comment}{//\ including\ on\ containing\ objects;\ use\ with\ caution.}}
+\DoxyCodeLine{00330\ \textcolor{comment}{//}}
+\DoxyCodeLine{00331\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00332\ \textcolor{comment}{//\ \ \ https://en.cppreference.com/w/cpp/language/attributes/no\_unique\_address}}
+\DoxyCodeLine{00333\ \textcolor{comment}{//\ \ \ https://wg21.link/dcl.attr.nouniqueaddr}}
+\DoxyCodeLine{00334\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00335\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00336\ \textcolor{comment}{//\ \ \ //\ In\ the\ following\ struct,\ \`{}t`\ might\ not\ have\ a\ unique\ address\ from\ \`{}i`,}}
+\DoxyCodeLine{00337\ \textcolor{comment}{//\ \ \ //\ and\ \`{}t`'s\ tail\ padding\ (if\ any)\ may\ be\ reused\ by\ subsequent\ objects.}}
+\DoxyCodeLine{00338\ \textcolor{comment}{//\ \ \ struct\ S\ \{}}
+\DoxyCodeLine{00339\ \textcolor{comment}{//\ \ \ \ \ int\ i;}}
+\DoxyCodeLine{00340\ \textcolor{comment}{//\ \ \ \ \ NO\_UNIQUE\_ADDRESS\ T\ t;}}
+\DoxyCodeLine{00341\ \textcolor{comment}{//\ \ \ \};}}
+\DoxyCodeLine{00342\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00343\ \textcolor{comment}{//}}
+\DoxyCodeLine{00344\ \textcolor{comment}{//\ Unfortunately\ MSVC\ ignores\ [[no\_unique\_address]]\ (see}}
+\DoxyCodeLine{00345\ \textcolor{comment}{//\ https://devblogs.microsoft.com/cppblog/msvc-\/cpp20-\/and-\/the-\/std-\/cpp20-\/switch/\#msvc-\/extensions-\/and-\/abi),}}
+\DoxyCodeLine{00346\ \textcolor{comment}{//\ and\ clang-\/cl\ matches\ it\ for\ ABI\ compatibility\ reasons.\ We\ need\ to\ prefer}}
+\DoxyCodeLine{00347\ \textcolor{comment}{//\ [[msvc::no\_unique\_address]]\ when\ available\ if\ we\ actually\ want\ any\ effect.}}
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(msvc::no\_unique\_address)}}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#define\ NO\_UNIQUE\_ADDRESS\ [[msvc::no\_unique\_address]]}}
+\DoxyCodeLine{00350\ \textcolor{preprocessor}{\#elif\ \_\_has\_cpp\_attribute(no\_unique\_address)}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\#define\ NO\_UNIQUE\_ADDRESS\ [[no\_unique\_address]]}}
+\DoxyCodeLine{00352\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00353\ \textcolor{preprocessor}{\#define\ NO\_UNIQUE\_ADDRESS}}
+\DoxyCodeLine{00354\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ it\ takes\ a\ \`{}printf()`-\/style\ format\ string.}}
+\DoxyCodeLine{00357\ \textcolor{comment}{//\ The\ compiler\ will\ check\ that\ the\ provided\ arguments\ match\ the\ type\ specifiers}}
+\DoxyCodeLine{00358\ \textcolor{comment}{//\ in\ the\ format\ string.\ Useful\ to\ detect\ mismatched\ format\ strings/args.}}
+\DoxyCodeLine{00359\ \textcolor{comment}{//}}
+\DoxyCodeLine{00360\ \textcolor{comment}{//\ \`{}format\_param`\ is\ the\ one-\/based\ index\ of\ the\ format\ string\ parameter;}}
+\DoxyCodeLine{00361\ \textcolor{comment}{//\ \`{}dots\_param`\ is\ the\ one-\/based\ index\ of\ the\ "{}..."{}\ parameter.}}
+\DoxyCodeLine{00362\ \textcolor{comment}{//\ For\ \`{}v*printf()`\ functions\ (which\ take\ a\ \`{}va\_list`),\ \`{}dots\_param`\ should\ be}}
+\DoxyCodeLine{00363\ \textcolor{comment}{//\ 0.\ For\ member\ functions,\ the\ implicit\ \`{}this`\ parameter\ is\ at\ index\ 1.}}
+\DoxyCodeLine{00364\ \textcolor{comment}{//}}
+\DoxyCodeLine{00365\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00366\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#format}}
+\DoxyCodeLine{00367\ \textcolor{comment}{//\ \ \ https://gcc.gnu.org/onlinedocs/gcc/Common-\/Function-\/Attributes.html\#index-\/format-\/function-\/attribute}}
+\DoxyCodeLine{00368\ \textcolor{comment}{//}}
+\DoxyCodeLine{00369\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00370\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00371\ \textcolor{comment}{//\ \ \ PRINTF\_FORMAT(1,\ 2)}}
+\DoxyCodeLine{00372\ \textcolor{comment}{//\ \ \ void\ Print(const\ char*\ format,\ ...);}}
+\DoxyCodeLine{00373\ \textcolor{comment}{//\ \ \ void\ Func()\ \{}}
+\DoxyCodeLine{00374\ \textcolor{comment}{//\ \ \ \ \ //\ The\ following\ call\ will\ not\ compile;\ diagnosed\ as\ format\ and\ argument}}
+\DoxyCodeLine{00375\ \textcolor{comment}{//\ \ \ \ \ //\ types\ mismatching.}}
+\DoxyCodeLine{00376\ \textcolor{comment}{//\ \ \ \ \ Print("{}\%s"{},\ 1);}}
+\DoxyCodeLine{00377\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00378\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00379\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::format)}}
+\DoxyCodeLine{00380\ \textcolor{preprocessor}{\#define\ PRINTF\_FORMAT(format\_param,\ dots\_param)\ \(\backslash\)}}
+\DoxyCodeLine{00381\ \textcolor{preprocessor}{\ \ [[gnu::format(printf,\ format\_param,\ dots\_param)]]}}
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00383\ \textcolor{preprocessor}{\#define\ PRINTF\_FORMAT(format\_param,\ dots\_param)}}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \textcolor{comment}{//\ Annotates\ a\ function\ disabling\ the\ named\ sanitizer\ within\ its\ body.}}
+\DoxyCodeLine{00387\ \textcolor{comment}{//}}
+\DoxyCodeLine{00388\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00389\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#no-\/sanitize}}
+\DoxyCodeLine{00390\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/UsersManual.html\#controlling-\/code-\/generation}}
+\DoxyCodeLine{00391\ \textcolor{comment}{//}}
+\DoxyCodeLine{00392\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00393\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00394\ \textcolor{comment}{//\ \ \ NO\_SANITIZE("{}cfi-\/icall"{})\ void\ Func()\ \{}}
+\DoxyCodeLine{00395\ \textcolor{comment}{//\ \ \ \ \ //\ CFI\ indirect\ call\ checks\ will\ not\ be\ performed\ in\ this\ body.}}
+\DoxyCodeLine{00396\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00397\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00398\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::no\_sanitize)}}
+\DoxyCodeLine{00399\ \textcolor{preprocessor}{\#define\ NO\_SANITIZE(sanitizer)\ [[clang::no\_sanitize(sanitizer)]]}}
+\DoxyCodeLine{00400\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00401\ \textcolor{preprocessor}{\#define\ NO\_SANITIZE(sanitizer)}}
+\DoxyCodeLine{00402\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \textcolor{comment}{//\ Annotates\ a\ variable\ indicating\ that\ its\ storage\ should\ not\ be\ filled\ with\ a}}
+\DoxyCodeLine{00405\ \textcolor{comment}{//\ fixed\ pattern\ when\ uninitialized.}}
+\DoxyCodeLine{00406\ \textcolor{comment}{//}}
+\DoxyCodeLine{00407\ \textcolor{comment}{//\ The\ \`{}init\_stack\_vars`\ gn\ arg\ (enabled\ on\ most\ build\ configs)\ causes\ the}}
+\DoxyCodeLine{00408\ \textcolor{comment}{//\ compiler\ to\ generate\ code\ that\ writes\ a\ fixed\ pattern\ into\ uninitialized}}
+\DoxyCodeLine{00409\ \textcolor{comment}{//\ parts\ of\ all\ local\ variables,\ to\ mitigate\ security\ risks.\ In\ most\ cases,\ e.g.}}
+\DoxyCodeLine{00410\ \textcolor{comment}{//\ when\ such\ memory\ is\ either\ never\ accessed\ or\ will\ be\ initialized\ later\ before}}
+\DoxyCodeLine{00411\ \textcolor{comment}{//\ reading,\ the\ compiler\ is\ able\ to\ remove\ the\ additional\ stores,\ and\ any}}
+\DoxyCodeLine{00412\ \textcolor{comment}{//\ remaining\ stores\ are\ unlikely\ to\ affect\ program\ performance.}}
+\DoxyCodeLine{00413\ \textcolor{comment}{//}}
+\DoxyCodeLine{00414\ \textcolor{comment}{//\ If\ hot\ code\ suffers\ unavoidable\ perf\ penalties,\ this\ can\ disable\ the}}
+\DoxyCodeLine{00415\ \textcolor{comment}{//\ pattern-\/filling\ there.\ This\ should\ only\ be\ done\ when\ necessary,\ since\ reads}}
+\DoxyCodeLine{00416\ \textcolor{comment}{//\ from\ uninitialized\ variables\ are\ not\ only\ UB,\ they\ can\ in\ practice\ allow}}
+\DoxyCodeLine{00417\ \textcolor{comment}{//\ attackers\ to\ control\ logic\ by\ pre-\/filling\ the\ variable's\ memory\ with\ a}}
+\DoxyCodeLine{00418\ \textcolor{comment}{//\ desirable\ value.}}
+\DoxyCodeLine{00419\ \textcolor{comment}{//}}
+\DoxyCodeLine{00420\ \textcolor{comment}{//\ NOTE:\ This\ behavior\ also\ increases\ the\ likelihood\ the\ compiler\ will\ generate}}
+\DoxyCodeLine{00421\ \textcolor{comment}{//\ \`{}memcpy()`/`memset()`\ calls\ to\ init\ variables.\ If\ this\ causes\ link\ errors\ for}}
+\DoxyCodeLine{00422\ \textcolor{comment}{//\ targets\ that\ don't\ link\ against\ the\ CRT,\ this\ macro\ can\ help;\ you\ may\ instead}}
+\DoxyCodeLine{00423\ \textcolor{comment}{//\ want\ 'configs\ -\/=\ [\ "{}//build/config/compiler:default\_init\_stack\_vars"{}\ ]'\ in}}
+\DoxyCodeLine{00424\ \textcolor{comment}{//\ the\ relevant\ .gn\ file\ to\ disable\ this\ on\ the\ whole\ target.}}
+\DoxyCodeLine{00425\ \textcolor{comment}{//}}
+\DoxyCodeLine{00426\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00427\ \textcolor{comment}{//\ \ \ https://source.chromium.org/chromium/chromium/src/+/main:build/config/compiler/BUILD.gn;l=3088;drc=24ccaf63ff5b1883be1ebe5f979d917ce28b0131}}
+\DoxyCodeLine{00428\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/ClangCommandLineReference.html\#cmdoption-\/clang-\/ftrivial-\/auto-\/var-\/init}}
+\DoxyCodeLine{00429\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#uninitialized}}
+\DoxyCodeLine{00430\ \textcolor{comment}{//}}
+\DoxyCodeLine{00431\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00432\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00433\ \textcolor{comment}{//\ \ \ //\ The\ following\ line\ declares\ \`{}i`\ without\ ensuring\ it\ initially\ contains}}
+\DoxyCodeLine{00434\ \textcolor{comment}{//\ \ \ //\ any\ particular\ pattern.}}
+\DoxyCodeLine{00435\ \textcolor{comment}{//\ \ \ STACK\_UNINITIALIZED\ int\ i;}}
+\DoxyCodeLine{00436\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00437\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::uninitialized)}}
+\DoxyCodeLine{00438\ \textcolor{preprocessor}{\#define\ STACK\_UNINITIALIZED\ [[clang::uninitialized]]}}
+\DoxyCodeLine{00439\ \textcolor{preprocessor}{\#elif\ \_\_has\_cpp\_attribute(gnu::uninitialized)}}
+\DoxyCodeLine{00440\ \textcolor{preprocessor}{\#define\ STACK\_UNINITIALIZED\ [[gnu::uninitialized]]}}
+\DoxyCodeLine{00441\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00442\ \textcolor{preprocessor}{\#define\ STACK\_UNINITIALIZED}}
+\DoxyCodeLine{00443\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \textcolor{comment}{//\ Annotates\ a\ function\ disabling\ stack\ canary\ checks.}}
+\DoxyCodeLine{00446\ \textcolor{comment}{//}}
+\DoxyCodeLine{00447\ \textcolor{comment}{//\ The\ \`{}-\/fstack-\/protector`\ compiler\ flag\ (passed\ on\ most\ non-\/Windows\ builds)}}
+\DoxyCodeLine{00448\ \textcolor{comment}{//\ causes\ the\ compiler\ to\ extend\ some\ function\ prologues\ and\ epilogues\ to\ set}}
+\DoxyCodeLine{00449\ \textcolor{comment}{//\ and\ check\ a\ canary\ value,\ to\ detect\ stack\ buffer\ overflows\ and\ crash\ in}}
+\DoxyCodeLine{00450\ \textcolor{comment}{//\ response.\ If\ hot\ code\ suffers\ unavoidable\ perf\ penalties,\ or\ intentionally}}
+\DoxyCodeLine{00451\ \textcolor{comment}{//\ modifies\ the\ canary\ value,\ this\ can\ disable\ the\ behavior\ there.}}
+\DoxyCodeLine{00452\ \textcolor{comment}{//}}
+\DoxyCodeLine{00453\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00454\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/ClangCommandLineReference.html\#cmdoption-\/clang-\/fstack-\/protector}}
+\DoxyCodeLine{00455\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#no-\/stack-\/protector-\/safebuffers}}
+\DoxyCodeLine{00456\ \textcolor{comment}{//}}
+\DoxyCodeLine{00457\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00458\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00459\ \textcolor{comment}{//\ \ \ NO\_STACK\_PROTECTOR\ void\ Func()\ \{}}
+\DoxyCodeLine{00460\ \textcolor{comment}{//\ \ \ \ \ //\ Stack\ canary\ checks\ will\ not\ be\ performed\ in\ this\ body.}}
+\DoxyCodeLine{00461\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00462\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00463\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::no\_stack\_protector)}}
+\DoxyCodeLine{00464\ \textcolor{preprocessor}{\#define\ NO\_STACK\_PROTECTOR\ [[gnu::no\_stack\_protector]]}}
+\DoxyCodeLine{00465\ \textcolor{preprocessor}{\#elif\ \_\_has\_cpp\_attribute(gnu::optimize)}}
+\DoxyCodeLine{00466\ \textcolor{preprocessor}{\#define\ NO\_STACK\_PROTECTOR\ [[gnu::optimize("{}-\/fno-\/stack-\/protector"{})]]}}
+\DoxyCodeLine{00467\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00468\ \textcolor{preprocessor}{\#define\ NO\_STACK\_PROTECTOR}}
+\DoxyCodeLine{00469\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00470\ }
+\DoxyCodeLine{00471\ \textcolor{comment}{//\ Annotates\ a\ function,\ function\ pointer,\ or\ statement\ to\ disallow}}
+\DoxyCodeLine{00472\ \textcolor{comment}{//\ optimizations\ that\ merge\ calls.\ Useful\ to\ ensure\ the\ source\ locations\ of\ such}}
+\DoxyCodeLine{00473\ \textcolor{comment}{//\ calls\ are\ not\ obscured.}}
+\DoxyCodeLine{00474\ \textcolor{comment}{//}}
+\DoxyCodeLine{00475\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00476\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#nomerge}}
+\DoxyCodeLine{00477\ \textcolor{comment}{//}}
+\DoxyCodeLine{00478\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00479\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00480\ \textcolor{comment}{//\ \ \ NOMERGE\ void\ Func();\ \ //\ No\ direct\ calls\ to\ \`{}Func()`\ will\ be\ merged.}}
+\DoxyCodeLine{00481\ \textcolor{comment}{//}}
+\DoxyCodeLine{00482\ \textcolor{comment}{//\ \ \ using\ Ptr\ =\ decltype(\&Func);}}
+\DoxyCodeLine{00483\ \textcolor{comment}{//\ \ \ NOMERGE\ Ptr\ ptr\ =\ \&Func;\ \ //\ No\ calls\ through\ \`{}ptr`\ will\ be\ merged.}}
+\DoxyCodeLine{00484\ \textcolor{comment}{//}}
+\DoxyCodeLine{00485\ \textcolor{comment}{//\ \ \ NOMERGE\ if\ (cond)\ \{}}
+\DoxyCodeLine{00486\ \textcolor{comment}{//\ \ \ \ \ //\ No\ calls\ in\ this\ block\ will\ be\ merged.}}
+\DoxyCodeLine{00487\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00488\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00489\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::nomerge)}}
+\DoxyCodeLine{00490\ \textcolor{preprocessor}{\#define\ NOMERGE\ [[clang::nomerge]]}}
+\DoxyCodeLine{00491\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00492\ \textcolor{preprocessor}{\#define\ NOMERGE}}
+\DoxyCodeLine{00493\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00494\ }
+\DoxyCodeLine{00495\ \textcolor{comment}{//\ Annotates\ a\ type\ as\ being\ suitable\ for\ passing\ in\ registers\ despite\ having\ a}}
+\DoxyCodeLine{00496\ \textcolor{comment}{//\ non-\/trivial\ copy\ or\ move\ constructor\ or\ destructor.\ This\ requires\ the\ type}}
+\DoxyCodeLine{00497\ \textcolor{comment}{//\ not\ be\ concerned\ about\ its\ address\ remaining\ constant,\ be\ safely\ usable\ after}}
+\DoxyCodeLine{00498\ \textcolor{comment}{//\ copying\ its\ memory,\ and\ have\ a\ destructor\ that\ may\ be\ safely\ omitted\ on}}
+\DoxyCodeLine{00499\ \textcolor{comment}{//\ moved-\/from\ instances;\ an\ example\ is\ \`{}std::unique\_ptr`.\ Unnecessary\ if\ the}}
+\DoxyCodeLine{00500\ \textcolor{comment}{//\ copy/move\ constructor(s)\ and\ destructor\ are\ unconditionally\ trivial;\ likely}}
+\DoxyCodeLine{00501\ \textcolor{comment}{//\ ineffective\ if\ the\ type\ is\ too\ large\ to\ be\ passed\ in\ one\ or\ two\ registers}}
+\DoxyCodeLine{00502\ \textcolor{comment}{//\ with\ the\ target\ ABI.\ However,\ annotating\ a\ type\ this\ way\ will\ also\ cause}}
+\DoxyCodeLine{00503\ \textcolor{comment}{//\ \`{}IS\_TRIVIALLY\_RELOCATABLE()`\ to\ return\ true\ for\ that\ type,\ and\ so\ may\ be}}
+\DoxyCodeLine{00504\ \textcolor{comment}{//\ desirable\ even\ for\ large\ types,\ if\ they\ are\ placed\ in\ containers\ that}}
+\DoxyCodeLine{00505\ \textcolor{comment}{//\ optimize\ based\ on\ that\ check.}}
+\DoxyCodeLine{00506\ \textcolor{comment}{//}}
+\DoxyCodeLine{00507\ \textcolor{comment}{//\ NOTE:\ Use\ with\ caution;\ this\ has\ subtle\ effects\ on\ constructor/destructor}}
+\DoxyCodeLine{00508\ \textcolor{comment}{//\ ordering.\ When\ used\ with\ types\ passed\ or\ returned\ by\ value,\ values\ may\ be}}
+\DoxyCodeLine{00509\ \textcolor{comment}{//\ constructed\ in\ the\ source\ stack\ frame,\ passed\ in\ a\ register,\ and\ then\ used}}
+\DoxyCodeLine{00510\ \textcolor{comment}{//\ and\ destroyed\ in\ the\ target\ stack\ frame.}}
+\DoxyCodeLine{00511\ \textcolor{comment}{//}}
+\DoxyCodeLine{00512\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00513\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#trivial-\/abi}}
+\DoxyCodeLine{00514\ \textcolor{comment}{//\ \ \ https://libcxx.llvm.org/docs/DesignDocs/UniquePtrTrivialAbi.html}}
+\DoxyCodeLine{00515\ \textcolor{comment}{//}}
+\DoxyCodeLine{00516\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00517\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00518\ \textcolor{comment}{//\ \ \ //\ Instances\ of\ type\ \`{}S`\ will\ be\ eligible\ to\ be\ passed\ in\ registers\ despite}}
+\DoxyCodeLine{00519\ \textcolor{comment}{//\ \ \ //\ \`{}S`'s\ nontrivial\ destructor.}}
+\DoxyCodeLine{00520\ \textcolor{comment}{//\ \ \ struct\ TRIVIAL\_ABI\ S\ \{\ \string~S();\ \}}}
+\DoxyCodeLine{00521\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00522\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::trivial\_abi)}}
+\DoxyCodeLine{00523\ \textcolor{preprocessor}{\#define\ TRIVIAL\_ABI\ [[clang::trivial\_abi]]}}
+\DoxyCodeLine{00524\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00525\ \textcolor{preprocessor}{\#define\ TRIVIAL\_ABI}}
+\DoxyCodeLine{00526\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00528\ \textcolor{comment}{//\ Annotates\ a\ member\ function\ as\ safe\ to\ call\ on\ a\ moved-\/from\ object,\ which\ it}}
+\DoxyCodeLine{00529\ \textcolor{comment}{//\ will\ reinitialize.}}
+\DoxyCodeLine{00530\ \textcolor{comment}{//}}
+\DoxyCodeLine{00531\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00532\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/extra/clang-\/tidy/checks/bugprone/use-\/after-\/move.html\#reinitialization}}
+\DoxyCodeLine{00533\ \textcolor{comment}{//}}
+\DoxyCodeLine{00534\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00535\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00536\ \textcolor{comment}{//\ \ \ struct\ S\ \{}}
+\DoxyCodeLine{00537\ \textcolor{comment}{//\ \ \ \ \ REINITIALIZES\_AFTER\_MOVE\ void\ Reset();}}
+\DoxyCodeLine{00538\ \textcolor{comment}{//\ \ \ \};}}
+\DoxyCodeLine{00539\ \textcolor{comment}{//\ \ \ void\ Func1(const\ S\&);}}
+\DoxyCodeLine{00540\ \textcolor{comment}{//\ \ \ void\ Func2()\ \{}}
+\DoxyCodeLine{00541\ \textcolor{comment}{//\ \ \ \ \ S\ s1;}}
+\DoxyCodeLine{00542\ \textcolor{comment}{//\ \ \ \ \ S\ s2\ =\ std::move(s1);}}
+\DoxyCodeLine{00543\ \textcolor{comment}{//\ \ \ \ \ s1.Reset();}}
+\DoxyCodeLine{00544\ \textcolor{comment}{//\ \ \ \ \ //\ clang-\/tidy's\ \`{}bugprone-\/use-\/after-\/move`\ check\ will\ not\ flag\ the}}
+\DoxyCodeLine{00545\ \textcolor{comment}{//\ \ \ \ \ //\ following\ call\ as\ a\ use-\/after-\/move,\ due\ to\ the\ intervening\ \`{}Reset()`.}}
+\DoxyCodeLine{00546\ \textcolor{comment}{//\ \ \ \ \ Func1(s1);}}
+\DoxyCodeLine{00547\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00548\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00549\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::reinitializes)}}
+\DoxyCodeLine{00550\ \textcolor{preprocessor}{\#define\ REINITIALIZES\_AFTER\_MOVE\ [[clang::reinitializes]]}}
+\DoxyCodeLine{00551\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00552\ \textcolor{preprocessor}{\#define\ REINITIALIZES\_AFTER\_MOVE}}
+\DoxyCodeLine{00553\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \textcolor{comment}{//\ Annotates\ a\ type\ as\ owning\ an\ object\ or\ memory\ region\ whose\ address\ may\ be}}
+\DoxyCodeLine{00556\ \textcolor{comment}{//\ vended\ to\ or\ stored\ by\ other\ objects.\ For\ example,\ \`{}std::unique\_ptr<T>`\ owns}}
+\DoxyCodeLine{00557\ \textcolor{comment}{//\ a\ \`{}T`\ and\ vends\ its\ address\ via\ \`{}.get()`,\ and\ \`{}std::string`\ owns\ a\ block\ of}}
+\DoxyCodeLine{00558\ \textcolor{comment}{//\ \`{}char`\ and\ vends\ its\ address\ via\ \`{}.data()`.\ Used\ to\ detect\ lifetime\ errors\ in}}
+\DoxyCodeLine{00559\ \textcolor{comment}{//\ conjunction\ with\ \`{}GSL\_POINTER`;\ see\ documentation\ there.}}
+\DoxyCodeLine{00560\ \textcolor{comment}{//}}
+\DoxyCodeLine{00561\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00562\ \textcolor{comment}{//\ \ \ https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines\#SS-\/ownership}}
+\DoxyCodeLine{00563\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#owner}}
+\DoxyCodeLine{00564\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/DiagnosticsReference.html\#wdangling-\/gsl}}
+\DoxyCodeLine{00565\ \textcolor{comment}{//}}
+\DoxyCodeLine{00566\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00567\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00568\ \textcolor{comment}{//\ \ \ //\ Marking\ \`{}S`\ as\ \`{}GSL\_OWNER`\ enables\ \`{}-\/Wdangling-\/gsl`\ to\ detect\ misuse\ by}}
+\DoxyCodeLine{00569\ \textcolor{comment}{//\ \ \ //\ types\ annotated\ as\ \`{}GSL\_POINTER`.}}
+\DoxyCodeLine{00570\ \textcolor{comment}{//\ \ \ struct\ GSL\_OWNER\ S;}}
+\DoxyCodeLine{00571\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00572\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gsl::Owner)}}
+\DoxyCodeLine{00573\ \textcolor{preprocessor}{\#define\ GSL\_OWNER\ [[gsl::Owner]]}}
+\DoxyCodeLine{00574\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00575\ \textcolor{preprocessor}{\#define\ GSL\_OWNER}}
+\DoxyCodeLine{00576\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00577\ }
+\DoxyCodeLine{00578\ \textcolor{comment}{//\ Annotates\ a\ type\ as\ holding\ a\ pointer\ into\ an\ owner\ object\ (an\ appropriate}}
+\DoxyCodeLine{00579\ \textcolor{comment}{//\ STL\ or\ \`{}GSL\_OWNER`-\/annotated\ type).\ If\ an\ instance\ of\ the\ pointer\ type\ is}}
+\DoxyCodeLine{00580\ \textcolor{comment}{//\ constructed\ from\ an\ instance\ of\ the\ owner\ type,\ and\ the\ owner\ instance\ is}}
+\DoxyCodeLine{00581\ \textcolor{comment}{//\ destroyed,\ the\ pointer\ instance\ is\ considered\ to\ be\ dangling.\ Useful\ to}}
+\DoxyCodeLine{00582\ \textcolor{comment}{//\ diagnose\ some\ cases\ of\ lifetime\ errors.}}
+\DoxyCodeLine{00583\ \textcolor{comment}{//}}
+\DoxyCodeLine{00584\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00585\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#pointer}}
+\DoxyCodeLine{00586\ \textcolor{comment}{//}}
+\DoxyCodeLine{00587\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00588\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00589\ \textcolor{comment}{//\ \ struct\ GSL\_OWNER\ T\ \{\};}}
+\DoxyCodeLine{00590\ \textcolor{comment}{//\ \ struct\ GSL\_POINTER\ S\ \{}}
+\DoxyCodeLine{00591\ \textcolor{comment}{//\ \ \ \ S(const\ T\&);}}
+\DoxyCodeLine{00592\ \textcolor{comment}{//\ \ \};}}
+\DoxyCodeLine{00593\ \textcolor{comment}{//\ \ S\ Func()\ \{}}
+\DoxyCodeLine{00594\ \textcolor{comment}{//\ \ \ \ //\ The\ following\ return\ will\ not\ compile;\ diagnosed\ as\ returning\ address}}
+\DoxyCodeLine{00595\ \textcolor{comment}{//\ \ \ \ //\ of\ local\ temporary.}}
+\DoxyCodeLine{00596\ \textcolor{comment}{//\ \ \ \ return\ S(T());}}
+\DoxyCodeLine{00597\ \textcolor{comment}{//\ \ \}}}
+\DoxyCodeLine{00598\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00599\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gsl::Pointer)}}
+\DoxyCodeLine{00600\ \textcolor{preprocessor}{\#define\ GSL\_POINTER\ [[gsl::Pointer]]}}
+\DoxyCodeLine{00601\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00602\ \textcolor{preprocessor}{\#define\ GSL\_POINTER}}
+\DoxyCodeLine{00603\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \textcolor{comment}{//\ Annotates\ a\ type\ or\ variable\ to\ add\ a\ "{}logically\_const"{}\ ABI\ tag\ to\ any}}
+\DoxyCodeLine{00606\ \textcolor{comment}{//\ corresponding\ mangled\ symbol\ name(s).\ Useful\ to\ suppress\ warnings\ from\ the}}
+\DoxyCodeLine{00607\ \textcolor{comment}{//\ "{}Mutable\ Constants"{}\ trybot\ check\ [1]\ when\ logically\ const\ instances\ are\ named}}
+\DoxyCodeLine{00608\ \textcolor{comment}{//\ like\ \`{}kConstants`\ but\ for\ some\ reason\ should\ not\ be\ marked\ \`{}const`.}}
+\DoxyCodeLine{00609\ \textcolor{comment}{//}}
+\DoxyCodeLine{00610\ \textcolor{comment}{//\ [1]:}}
+\DoxyCodeLine{00611\ \textcolor{comment}{//\ https://chromium.googlesource.com/chromium/src/+/main/docs/speed/binary\_size/android\_binary\_size\_trybot.md\#Mutable-\/Constants}}
+\DoxyCodeLine{00612\ \textcolor{comment}{//}}
+\DoxyCodeLine{00613\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00614\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00615\ \textcolor{comment}{//\ \ \ struct\ S\ \{\};}}
+\DoxyCodeLine{00616\ \textcolor{comment}{//\ \ \ S\ kConstS;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ Fails\ on\ some\ trybots.}}
+\DoxyCodeLine{00617\ \textcolor{comment}{//\ \ \ LOGICALLY\_CONST\ S\ kAlsoConstS;\ \ //\ OK}}
+\DoxyCodeLine{00618\ \textcolor{comment}{//}}
+\DoxyCodeLine{00619\ \textcolor{comment}{//\ \ \ struct\ LOGICALLY\_CONST\ T\ \{\};}}
+\DoxyCodeLine{00620\ \textcolor{comment}{//\ \ \ T\ kConstT;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ OK}}
+\DoxyCodeLine{00621\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00622\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::abi\_tag)}}
+\DoxyCodeLine{00623\ \textcolor{preprocessor}{\#define\ LOGICALLY\_CONST\ [[gnu::abi\_tag("{}logically\_const"{})]]}}
+\DoxyCodeLine{00624\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00625\ \textcolor{preprocessor}{\#define\ LOGICALLY\_CONST}}
+\DoxyCodeLine{00626\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00627\ }
+\DoxyCodeLine{00628\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ it\ is\ cold,\ but\ called\ from\ hot\ functions.}}
+\DoxyCodeLine{00629\ \textcolor{comment}{//\ Useful\ when\ a\ performance-\/sensitive\ function\ is\ usually\ simple,\ but\ in\ edge}}
+\DoxyCodeLine{00630\ \textcolor{comment}{//\ cases\ must\ fall\ back\ to\ a\ more\ complex\ handler.}}
+\DoxyCodeLine{00631\ \textcolor{comment}{//}}
+\DoxyCodeLine{00632\ \textcolor{comment}{//\ On\ X86-\/64\ and\ AArch64,\ this\ changes\ the\ calling\ convention\ so\ most\ registers}}
+\DoxyCodeLine{00633\ \textcolor{comment}{//\ are\ callee-\/saved,\ reducing\ register\ spills\ in\ the\ caller.\ This\ can\ improve}}
+\DoxyCodeLine{00634\ \textcolor{comment}{//\ caller\ performance\ in\ the\ common\ case,\ at\ the\ cost\ of\ pessimizing\ the\ callee.}}
+\DoxyCodeLine{00635\ \textcolor{comment}{//\ On\ other\ platforms,\ this\ attribute\ has\ no\ effect\ as\ of\ Clang\ 20.}}
+\DoxyCodeLine{00636\ \textcolor{comment}{//}}
+\DoxyCodeLine{00637\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00638\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#preserve-\/most}}
+\DoxyCodeLine{00639\ \textcolor{comment}{//}}
+\DoxyCodeLine{00640\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00641\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00642\ \textcolor{comment}{//\ \ \ //\ Calls\ to\ this\ function\ will\ not\ require\ most\ registers\ to\ be\ saved.}}
+\DoxyCodeLine{00643\ \textcolor{comment}{//\ \ \ PRESERVE\_MOST\ void\ Func();}}
+\DoxyCodeLine{00644\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00645\ \textcolor{comment}{//}}
+\DoxyCodeLine{00646\ \textcolor{comment}{//\ Disable\ \`{}PRESERVE\_MOST`\ in\ component\ builds,\ since\ \`{}\_dl\_runtime\_resolve()`}}
+\DoxyCodeLine{00647\ \textcolor{comment}{//\ clobbers\ registers\ on\ platforms\ where\ it's\ used,\ and\ the\ component\ build\ is}}
+\DoxyCodeLine{00648\ \textcolor{comment}{//\ not\ perf-\/critical\ anyway;\ see}}
+\DoxyCodeLine{00649\ \textcolor{comment}{//\ https://github.com/llvm/llvm-\/project/issues/105588.}}
+\DoxyCodeLine{00650\ \textcolor{comment}{//}}
+\DoxyCodeLine{00651\ \textcolor{comment}{//\ Also\ disable\ for\ Win\ ARM64\ due\ to\ as-\/yet-\/uninvestigated\ crashes.}}
+\DoxyCodeLine{00652\ \textcolor{comment}{//\ TODO(crbug.com/42204008):\ Investigate,\ fix,\ and\ re-\/enable.}}
+\DoxyCodeLine{00653\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::preserve\_most)\ \&\&\ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00654\ \textcolor{preprocessor}{\ \ \ \ (defined(ARCH\_CPU\_ARM64)\ ||\ defined(ARCH\_CPU\_X86\_64))\ \&\&\ \(\backslash\)}}
+\DoxyCodeLine{00655\ \textcolor{preprocessor}{\ \ \ \ !defined(COMPONENT\_BUILD)\ \&\&\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00656\ \textcolor{preprocessor}{\ \ \ \ !(BUILDFLAG(IS\_WIN)\ \&\&\ defined(ARCH\_CPU\_ARM64))}}
+\DoxyCodeLine{00657\ \textcolor{preprocessor}{\#define\ PRESERVE\_MOST\ [[clang::preserve\_most]]}}
+\DoxyCodeLine{00658\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00659\ \textcolor{preprocessor}{\#define\ PRESERVE\_MOST}}
+\DoxyCodeLine{00660\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00661\ }
+\DoxyCodeLine{00662\ \textcolor{comment}{//\ "{}Cold"{}\ indicates\ to\ the\ compiler\ that\ a\ function\ is\ only\ expected\ to\ be}}
+\DoxyCodeLine{00663\ \textcolor{comment}{//\ called\ from\ unlikely\ code\ paths.\ It\ can\ affect\ decisions\ made\ by\ the}}
+\DoxyCodeLine{00664\ \textcolor{comment}{//\ optimizer\ both\ when\ processing\ the\ function\ body\ and\ when\ analyzing}}
+\DoxyCodeLine{00665\ \textcolor{comment}{//\ call-\/sites.}}
+\DoxyCodeLine{00666\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::cold)}}
+\DoxyCodeLine{00667\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_COLD\ gnu::cold}}
+\DoxyCodeLine{00668\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00669\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_GNU\_COLD}}
+\DoxyCodeLine{00670\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00671\ }
+\DoxyCodeLine{00672\ \textcolor{comment}{//\ Annotates\ a\ pointer\ or\ reference\ parameter\ or\ return\ value\ for\ a\ member}}
+\DoxyCodeLine{00673\ \textcolor{comment}{//\ function\ as\ having\ lifetime\ intertwined\ with\ the\ instance\ on\ which\ the}}
+\DoxyCodeLine{00674\ \textcolor{comment}{//\ function\ is\ called.\ For\ parameters,\ the\ function\ is\ assumed\ to\ store\ the}}
+\DoxyCodeLine{00675\ \textcolor{comment}{//\ value\ into\ the\ called-\/on\ object,\ so\ if\ the\ referred-\/to\ object\ is\ later}}
+\DoxyCodeLine{00676\ \textcolor{comment}{//\ destroyed,\ the\ called-\/on\ object\ is\ also\ considered\ to\ be\ dangling.\ For\ return}}
+\DoxyCodeLine{00677\ \textcolor{comment}{//\ values,\ the\ value\ is\ assumed\ to\ point\ into\ the\ called-\/on\ object,\ so\ if\ that}}
+\DoxyCodeLine{00678\ \textcolor{comment}{//\ object\ is\ destroyed,\ the\ returned\ value\ is\ also\ considered\ to\ be\ dangling.}}
+\DoxyCodeLine{00679\ \textcolor{comment}{//\ Useful\ to\ diagnose\ some\ cases\ of\ lifetime\ errors.}}
+\DoxyCodeLine{00680\ \textcolor{comment}{//}}
+\DoxyCodeLine{00681\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00682\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#lifetimebound}}
+\DoxyCodeLine{00683\ \textcolor{comment}{//}}
+\DoxyCodeLine{00684\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00685\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00686\ \textcolor{comment}{//\ \ \ struct\ S\ \{}}
+\DoxyCodeLine{00687\ \textcolor{comment}{//\ \ \ \ \ \ S(int*\ p\ KIWI\_LIFETIME\_BOUND);}}
+\DoxyCodeLine{00688\ \textcolor{comment}{//\ \ \ \ \ \ int*\ Get()\ KIWI\_-\/BOUND;}}
+\DoxyCodeLine{00689\ \textcolor{comment}{//\ \ \ \};}}
+\DoxyCodeLine{00690\ \textcolor{comment}{//\ \ \ S\ Func1()\ \{}}
+\DoxyCodeLine{00691\ \textcolor{comment}{//\ \ \ \ \ int\ i\ =\ 0;}}
+\DoxyCodeLine{00692\ \textcolor{comment}{//\ \ \ \ \ //\ The\ following\ return\ will\ not\ compile;\ diagnosed\ as\ returning\ address}}
+\DoxyCodeLine{00693\ \textcolor{comment}{//\ \ \ \ \ //\ of\ a\ stack\ object.}}
+\DoxyCodeLine{00694\ \textcolor{comment}{//\ \ \ \ \ return\ S(\&i);}}
+\DoxyCodeLine{00695\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00696\ \textcolor{comment}{//\ \ \ int*\ Func2(int*\ p)\ \{}}
+\DoxyCodeLine{00697\ \textcolor{comment}{//\ \ \ \ \ //\ The\ following\ return\ will\ not\ compile;\ diagnosed\ as\ returning\ address}}
+\DoxyCodeLine{00698\ \textcolor{comment}{//\ \ \ \ \ //\ of\ a\ local\ temporary.}}
+\DoxyCodeLine{00699\ \textcolor{comment}{//\ \ \ \ \ return\ S(p).Get();}}
+\DoxyCodeLine{00700\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00701\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00702\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::lifetimebound)}}
+\DoxyCodeLine{00703\ \textcolor{preprocessor}{\#define\ KIWI\_LIFETIME\_BOUND\ [[clang::lifetimebound]]}}
+\DoxyCodeLine{00704\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00705\ \textcolor{preprocessor}{\#define\ KIWI\_LIFETIME\_BOUND}}
+\DoxyCodeLine{00706\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00707\ }
+\DoxyCodeLine{00708\ \textcolor{comment}{//\ Annotates\ a\ function\ or\ variable\ to\ indicate\ that\ it\ should\ have\ weak}}
+\DoxyCodeLine{00709\ \textcolor{comment}{//\ linkage.\ Useful\ for\ library\ code\ that\ wants\ code\ linking\ against\ it\ to\ be}}
+\DoxyCodeLine{00710\ \textcolor{comment}{//\ able\ to\ override\ its\ functionality;\ inside\ a\ single\ target,\ this\ is\ better}}
+\DoxyCodeLine{00711\ \textcolor{comment}{//\ accomplished\ via\ virtual\ methods\ and\ other\ more\ standard\ mechanisms.}}
+\DoxyCodeLine{00712\ \textcolor{comment}{//}}
+\DoxyCodeLine{00713\ \textcolor{comment}{//\ Any\ weak\ definition\ of\ a\ symbol\ will\ be\ overridden\ at\ link\ time\ by\ a\ non-\/weak}}
+\DoxyCodeLine{00714\ \textcolor{comment}{//\ definition.\ Marking\ a\ \`{}const`\ or\ \`{}constexpr`\ variable\ weak\ makes\ it\ no\ longer}}
+\DoxyCodeLine{00715\ \textcolor{comment}{//\ be\ considered\ a\ compile-\/time\ constant,\ since\ its\ value\ may\ be\ different\ after}}
+\DoxyCodeLine{00716\ \textcolor{comment}{//\ linking.}}
+\DoxyCodeLine{00717\ \textcolor{comment}{//}}
+\DoxyCodeLine{00718\ \textcolor{comment}{//\ Multiple\ weak\ definitions\ of\ a\ symbol\ may\ exist,\ in\ which\ case\ the\ linker\ is}}
+\DoxyCodeLine{00719\ \textcolor{comment}{//\ free\ to\ select\ any\ when\ there\ are\ no\ non-\/weak\ definitions.\ Like\ with\ symbols}}
+\DoxyCodeLine{00720\ \textcolor{comment}{//\ marked\ \`{}inline`,\ this\ can\ lead\ to\ subtle,\ difficult-\/to-\/diagnose\ bugs\ if\ not}}
+\DoxyCodeLine{00721\ \textcolor{comment}{//\ all\ definitions\ are\ identical.}}
+\DoxyCodeLine{00722\ \textcolor{comment}{//}}
+\DoxyCodeLine{00723\ \textcolor{comment}{//\ A\ weak\ declaration\ that\ has\ no\ definitions\ at\ link\ time\ will\ be\ linked\ as\ if}}
+\DoxyCodeLine{00724\ \textcolor{comment}{//\ the\ corresponding\ address\ is\ null.\ Therefore\ library\ code\ can\ use\ weak}}
+\DoxyCodeLine{00725\ \textcolor{comment}{//\ declarations\ and\ conditionals\ to\ allow\ consumers\ to\ provide\ optional}}
+\DoxyCodeLine{00726\ \textcolor{comment}{//\ customizations.}}
+\DoxyCodeLine{00727\ \textcolor{comment}{//}}
+\DoxyCodeLine{00728\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00729\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#weak}}
+\DoxyCodeLine{00730\ \textcolor{comment}{//}}
+\DoxyCodeLine{00731\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00732\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00733\ \textcolor{comment}{//\ \ \ //\ The\ following\ definition\ defaults\ \`{}x`\ to\ 10,\ but\ allows\ other\ object}}
+\DoxyCodeLine{00734\ \textcolor{comment}{//\ \ \ //\ files\ to\ override\ its\ value.\ Thus,\ despite\ \`{}constexpr`,\ \`{}x`\ is\ not}}
+\DoxyCodeLine{00735\ \textcolor{comment}{//\ \ \ //\ considered\ a\ compile-\/time\ constant\ (and\ cannot\ be\ used\ in\ a\ \`{}constexpr`}}
+\DoxyCodeLine{00736\ \textcolor{comment}{//\ \ \ //\ context).}}
+\DoxyCodeLine{00737\ \textcolor{comment}{//\ \ \ extern\ const\ int\ x;}}
+\DoxyCodeLine{00738\ \textcolor{comment}{//\ \ \ WEAK\_SYMBOL\ constexpr\ int\ x\ =\ 10;}}
+\DoxyCodeLine{00739\ \textcolor{comment}{//}}
+\DoxyCodeLine{00740\ \textcolor{comment}{//\ \ \ //\ The\ following\ declaration\ allows\ linking\ to\ occur\ whether\ a\ definition}}
+\DoxyCodeLine{00741\ \textcolor{comment}{//\ \ \ //\ of\ \`{}Func()`\ is\ provided\ or\ not;\ if\ none\ is\ present,\ \`{}\&Func`\ will}}
+\DoxyCodeLine{00742\ \textcolor{comment}{//\ \ \ //\ evaluate\ to\ \`{}nullptr`\ at\ runtime.}}
+\DoxyCodeLine{00743\ \textcolor{comment}{//\ \ \ WEAK\_SYMBOL\ void\ Func();}}
+\DoxyCodeLine{00744\ \textcolor{comment}{//}}
+\DoxyCodeLine{00745\ \textcolor{comment}{//\ \ \ //\ The\ following\ definition\ provides\ a\ default\ implementation\ of\ \`{}Func2()`,}}
+\DoxyCodeLine{00746\ \textcolor{comment}{//\ \ \ //\ but\ allows\ other\ object\ files\ to\ override.}}
+\DoxyCodeLine{00747\ \textcolor{comment}{//\ \ \ WEAK\_SYMBOL\ void\ Func2()\ \{\ ...\ \}}}
+\DoxyCodeLine{00748\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00749\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::weak)}}
+\DoxyCodeLine{00750\ \textcolor{preprocessor}{\#define\ WEAK\_SYMBOL\ [[gnu::weak]]}}
+\DoxyCodeLine{00751\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00752\ \textcolor{preprocessor}{\#define\ WEAK\_SYMBOL}}
+\DoxyCodeLine{00753\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00754\ }
+\DoxyCodeLine{00755\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ that\ the\ compiler\ should\ not\ convert\ calls}}
+\DoxyCodeLine{00756\ \textcolor{comment}{//\ within\ it\ to\ tail\ calls.}}
+\DoxyCodeLine{00757\ \textcolor{comment}{//}}
+\DoxyCodeLine{00758\ \textcolor{comment}{//\ For\ a\ callee-\/side\ version\ of\ this,\ see\ \`{}NOT\_TAIL\_CALLED`.}}
+\DoxyCodeLine{00759\ \textcolor{comment}{//}}
+\DoxyCodeLine{00760\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00761\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#disable-\/tail-\/calls}}
+\DoxyCodeLine{00762\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00763\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00764\ \textcolor{comment}{//\ \ \ DISABLE\_TAIL\_CALLS\ void\ Func()\ \{}}
+\DoxyCodeLine{00765\ \textcolor{comment}{//\ \ \ \ \ //\ Function\ calls\ in\ this\ body\ will\ not\ be\ tail\ calls.}}
+\DoxyCodeLine{00766\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00767\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00768\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::disable\_tail\_calls)}}
+\DoxyCodeLine{00769\ \textcolor{preprocessor}{\#define\ DISABLE\_TAIL\_CALLS\ [[clang::disable\_tail\_calls]]}}
+\DoxyCodeLine{00770\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00771\ \textcolor{preprocessor}{\#define\ DISABLE\_TAIL\_CALLS}}
+\DoxyCodeLine{00772\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00773\ }
+\DoxyCodeLine{00774\ \textcolor{comment}{//\ Annotates\ a\ type\ or\ member\ indicating\ the\ minimum\ possible\ alignment\ (one\ bit}}
+\DoxyCodeLine{00775\ \textcolor{comment}{//\ for\ bitfields,\ one\ byte\ otherwise)\ should\ be\ used.\ This\ can\ be\ used\ to}}
+\DoxyCodeLine{00776\ \textcolor{comment}{//\ eliminate\ padding\ inside\ objects,\ at\ the\ cost\ of\ potentially\ pessimizing}}
+\DoxyCodeLine{00777\ \textcolor{comment}{//\ code,\ or\ even\ generating\ invalid\ code\ (depending\ on\ platform\ restrictions)\ if}}
+\DoxyCodeLine{00778\ \textcolor{comment}{//\ underaligned\ objects\ have\ their\ addresses\ taken\ and\ passed\ elsewhere.}}
+\DoxyCodeLine{00779\ \textcolor{comment}{//}}
+\DoxyCodeLine{00780\ \textcolor{comment}{//\ This\ is\ similar\ to\ the\ more-\/broadly-\/supported\ \`{}\#pragma\ pack(1)`.}}
+\DoxyCodeLine{00781\ \textcolor{comment}{//}}
+\DoxyCodeLine{00782\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00783\ \textcolor{comment}{//\ \ \ https://gcc.gnu.org/onlinedocs/gcc/Common-\/Variable-\/Attributes.html\#index-\/packed-\/variable-\/attribute}}
+\DoxyCodeLine{00784\ \textcolor{comment}{//}}
+\DoxyCodeLine{00785\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00786\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00787\ \textcolor{comment}{//\ \ \ struct\ PACKED\_OBJ\ S1\ \{}}
+\DoxyCodeLine{00788\ \textcolor{comment}{//\ \ \ \ \ int8\_t\ a;\ \ \ //\ Alignment\ 1,\ offset\ 0,\ size\ 1}}
+\DoxyCodeLine{00789\ \textcolor{comment}{//\ \ \ \ \ int32\_t\ b;\ \ //\ Alignment\ 1,\ offset\ 1\ (0\ bytes\ padding),\ size\ 4}}
+\DoxyCodeLine{00790\ \textcolor{comment}{//\ \ \ \};\ \ //\ Overall\ alignment\ 1,\ 0\ bytes\ trailing\ padding,\ overall\ size\ 5}}
+\DoxyCodeLine{00791\ \textcolor{comment}{//}}
+\DoxyCodeLine{00792\ \textcolor{comment}{//\ \ \ struct\ S2\ \{}}
+\DoxyCodeLine{00793\ \textcolor{comment}{//\ \ \ \ \ int8\_t\ a;\ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ Alignment\ 1,\ offset\ 0,\ size\ 1}}
+\DoxyCodeLine{00794\ \textcolor{comment}{//\ \ \ \ \ int32\_t\ b;\ \ \ \ \ \ \ \ \ \ \ \ \ //\ Alignment\ 4,\ offset\ 4\ (3\ bytes\ padding),\ size\ 4}}
+\DoxyCodeLine{00795\ \textcolor{comment}{//\ \ \ \ \ int8\_t\ c;\ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ Alignment\ 1,\ offset\ 8\ (0\ bytes\ padding),\ size\ 1}}
+\DoxyCodeLine{00796\ \textcolor{comment}{//\ \ \ \ \ PACKED\_OBJ\ int32\_t\ d;\ \ //\ Alignment\ 1,\ offset\ 9\ (0\ bytes\ padding),\ size\ 4}}
+\DoxyCodeLine{00797\ \textcolor{comment}{//\ \ \ \};\ \ //\ Overall\ alignment\ 4,\ 3\ bytes\ trailing\ padding,\ overall\ size\ 16}}
+\DoxyCodeLine{00798\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00799\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::packed)}}
+\DoxyCodeLine{00800\ \textcolor{preprocessor}{\#define\ PACKED\_OBJ\ [[gnu::packed]]}}
+\DoxyCodeLine{00801\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00802\ \textcolor{preprocessor}{\#define\ PACKED\_OBJ}}
+\DoxyCodeLine{00803\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00804\ }
+\DoxyCodeLine{00805\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ that\ the\ returned\ pointer\ will\ never\ be\ null.}}
+\DoxyCodeLine{00806\ \textcolor{comment}{//\ This\ may\ allow\ the\ compiler\ to\ assume\ null\ checks\ on\ the\ caller\ side\ are}}
+\DoxyCodeLine{00807\ \textcolor{comment}{//\ unnecessary.}}
+\DoxyCodeLine{00808\ \textcolor{comment}{//}}
+\DoxyCodeLine{00809\ \textcolor{comment}{//\ In\ practice,\ this\ is\ usually\ better-\/handled\ by\ returning\ a\ value\ or}}
+\DoxyCodeLine{00810\ \textcolor{comment}{//\ reference,\ which\ enforce\ such\ guarantees\ at\ the\ type\ level.}}
+\DoxyCodeLine{00811\ \textcolor{comment}{//}}
+\DoxyCodeLine{00812\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00813\ \textcolor{comment}{//\ \ \ https://gcc.gnu.org/onlinedocs/gcc/Common-\/Function-\/Attributes.html\#index-\/returns\_005fnonnull-\/function-\/attribute}}
+\DoxyCodeLine{00814\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#nullability-\/attributes}}
+\DoxyCodeLine{00815\ \textcolor{comment}{//}}
+\DoxyCodeLine{00816\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00817\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00818\ \textcolor{comment}{//\ \ \ //\ The\ following\ function\ will\ never\ return\ \`{}nullptr`.}}
+\DoxyCodeLine{00819\ \textcolor{comment}{//\ \ \ RETURNS\_NONNULL\ int*\ Func();}}
+\DoxyCodeLine{00820\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00821\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::returns\_nonnull)}}
+\DoxyCodeLine{00822\ \textcolor{preprocessor}{\#define\ RETURNS\_NONNULL\ [[gnu::returns\_nonnull]]}}
+\DoxyCodeLine{00823\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00824\ \textcolor{preprocessor}{\#define\ RETURNS\_NONNULL}}
+\DoxyCodeLine{00825\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00826\ }
+\DoxyCodeLine{00827\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ it\ is\ const,\ meaning\ that\ it\ has\ no}}
+\DoxyCodeLine{00828\ \textcolor{comment}{//\ observable\ side\ effects\ and\ its\ return\ value\ depends\ only\ on\ its\ arguments.}}
+\DoxyCodeLine{00829\ \textcolor{comment}{//\ Const\ functions\ may\ not\ read\ external\ memory\ other\ than\ unchanging\ objects}}
+\DoxyCodeLine{00830\ \textcolor{comment}{//\ (e.g.\ non-\/volatile\ constants),\ and\ the\ compiler\ is\ free\ to\ replace\ calls\ to}}
+\DoxyCodeLine{00831\ \textcolor{comment}{//\ them\ with\ the\ return\ values\ of\ earlier\ calls\ with\ the\ same\ arguments\ no}}
+\DoxyCodeLine{00832\ \textcolor{comment}{//\ matter\ what\ other\ state\ might\ have\ changed\ in\ the\ meantime.}}
+\DoxyCodeLine{00833\ \textcolor{comment}{//}}
+\DoxyCodeLine{00834\ \textcolor{comment}{//\ This\ is\ a\ much\ stronger\ restriction\ than\ \`{}const`-\/qualified\ functions,\ and\ is}}
+\DoxyCodeLine{00835\ \textcolor{comment}{//\ rarely\ appropriate\ outside\ small\ local\ helpers,\ which\ are\ frequently}}
+\DoxyCodeLine{00836\ \textcolor{comment}{//\ inlineable\ anyway\ and\ would\ not\ really\ benefit.}}
+\DoxyCodeLine{00837\ \textcolor{comment}{//}}
+\DoxyCodeLine{00838\ \textcolor{comment}{//\ WARNING:\ Misusing\ this\ attribute\ can\ lead\ to\ silent\ miscompilation,\ UB,\ and}}
+\DoxyCodeLine{00839\ \textcolor{comment}{//\ difficult-\/to-\/diagnose\ bugs.\ For\ this\ and\ the\ above\ reason,\ usage\ should\ be}}
+\DoxyCodeLine{00840\ \textcolor{comment}{//\ very\ rare.}}
+\DoxyCodeLine{00841\ \textcolor{comment}{//}}
+\DoxyCodeLine{00842\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00843\ \textcolor{comment}{//\ \ \ https://gcc.gnu.org/onlinedocs/gcc/Common-\/Function-\/Attributes.html\#index-\/const-\/function-\/attribute}}
+\DoxyCodeLine{00844\ \textcolor{comment}{//}}
+\DoxyCodeLine{00845\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00846\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00847\ \textcolor{comment}{//\ \ \ //\ The\ compiler\ may\ replace\ calls\ to\ this\ function\ with\ values\ returned}}
+\DoxyCodeLine{00848\ \textcolor{comment}{//\ \ \ //\ from\ earlier\ calls,\ assuming\ the\ args\ match.}}
+\DoxyCodeLine{00849\ \textcolor{comment}{//\ \ \ CONST\_FUNCTION\ int\ Func(int);}}
+\DoxyCodeLine{00850\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00851\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::const)}}
+\DoxyCodeLine{00852\ \textcolor{preprocessor}{\#define\ CONST\_FUNCTION\ [[gnu::const]]}}
+\DoxyCodeLine{00853\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00854\ \textcolor{preprocessor}{\#define\ CONST\_FUNCTION}}
+\DoxyCodeLine{00855\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00856\ }
+\DoxyCodeLine{00857\ \textcolor{comment}{//\ Annotates\ a\ function\ indicating\ it\ is\ pure,\ meaning\ that\ it\ has\ no\ observable}}
+\DoxyCodeLine{00858\ \textcolor{comment}{//\ side\ effects.\ Unlike\ functions\ annotated\ \`{}CONST\_FUNCTION`,\ pure\ functions\ may}}
+\DoxyCodeLine{00859\ \textcolor{comment}{//\ still\ read\ external\ memory,\ and\ thus\ their\ return\ values\ may\ change\ between}}
+\DoxyCodeLine{00860\ \textcolor{comment}{//\ calls.\ \`{}strlen()`\ and\ \`{}memcmp()`\ are\ examples\ of\ pure\ functions.\ Useful\ to}}
+\DoxyCodeLine{00861\ \textcolor{comment}{//\ allow\ folding/reordering\ calls\ for\ optimization\ purposes.}}
+\DoxyCodeLine{00862\ \textcolor{comment}{//}}
+\DoxyCodeLine{00863\ \textcolor{comment}{//\ WARNING:\ Misusing\ this\ attribute\ can\ lead\ to\ silent\ miscompilation,\ UB,\ and}}
+\DoxyCodeLine{00864\ \textcolor{comment}{//\ difficult-\/to-\/diagnose\ bugs.\ Because\ apparently-\/safe\ invocations\ can\ sometimes}}
+\DoxyCodeLine{00865\ \textcolor{comment}{//\ have\ side\ effects\ (especially\ when\ invoking\ "{}overridable"{}\ functionality\ like}}
+\DoxyCodeLine{00866\ \textcolor{comment}{//\ virtual\ or\ templated\ methods),\ such\ misuse\ is\ far\ more\ likely\ than\ it\ seems.}}
+\DoxyCodeLine{00867\ \textcolor{comment}{//\ Therefore,\ this\ macro\ should\ generally\ be\ used\ only\ in\ key\ vocabulary\ types,}}
+\DoxyCodeLine{00868\ \textcolor{comment}{//\ where\ the\ perf\ and\ ergonomic\ benefits\ of\ callers\ not\ needing\ to\ worry\ about}}
+\DoxyCodeLine{00869\ \textcolor{comment}{//\ caching\ results\ in\ local\ variables\ in\ hot\ code\ outweighs\ the\ risks.}}
+\DoxyCodeLine{00870\ \textcolor{comment}{//}}
+\DoxyCodeLine{00871\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00872\ \textcolor{comment}{//\ \ \ https://gcc.gnu.org/onlinedocs/gcc/Common-\/Function-\/Attributes.html\#index-\/pure-\/function-\/attribute}}
+\DoxyCodeLine{00873\ \textcolor{comment}{//}}
+\DoxyCodeLine{00874\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00875\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00876\ \textcolor{comment}{//\ \ \ //\ Calls\ to\ this\ function\ may\ be\ subject\ to\ more\ aggressive\ common}}
+\DoxyCodeLine{00877\ \textcolor{comment}{//\ \ \ //\ subexpression\ (CSE)\ optimization.}}
+\DoxyCodeLine{00878\ \textcolor{comment}{//\ \ \ PURE\_FUNCTION\ int\ Func(int);}}
+\DoxyCodeLine{00879\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00880\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(gnu::pure)}}
+\DoxyCodeLine{00881\ \textcolor{preprocessor}{\#define\ PURE\_FUNCTION\ [[gnu::pure]]}}
+\DoxyCodeLine{00882\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00883\ \textcolor{preprocessor}{\#define\ PURE\_FUNCTION}}
+\DoxyCodeLine{00884\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00885\ }
+\DoxyCodeLine{00886\ \textcolor{comment}{//\ Annotates\ a\ function\ or\ class\ data\ member\ indicating\ it\ can\ lead\ to}}
+\DoxyCodeLine{00887\ \textcolor{comment}{//\ out-\/of-\/bounds\ accesses\ (OOB)\ if\ given\ incorrect\ inputs.}}
+\DoxyCodeLine{00888\ \textcolor{comment}{//}}
+\DoxyCodeLine{00889\ \textcolor{comment}{//\ For\ functions,\ this\ commonly\ includes\ functions\ which\ take\ pointers,\ sizes,}}
+\DoxyCodeLine{00890\ \textcolor{comment}{//\ iterators,\ sentinels,\ etc.\ and\ cannot\ fully\ check\ their\ preconditions\ (e.g.}}
+\DoxyCodeLine{00891\ \textcolor{comment}{//\ that\ the\ provided\ pointer\ actually\ points\ to\ an\ allocation\ of\ at\ least\ the}}
+\DoxyCodeLine{00892\ \textcolor{comment}{//\ provided\ size).\ Useful\ to\ diagnose\ potential\ misuse\ via}}
+\DoxyCodeLine{00893\ \textcolor{comment}{//\ \`{}-\/Wunsafe-\/buffer-\/usage`,\ as\ well\ as\ to\ mark\ functions\ potentially\ in\ need\ of}}
+\DoxyCodeLine{00894\ \textcolor{comment}{//\ safer\ alternatives.}}
+\DoxyCodeLine{00895\ \textcolor{comment}{//}}
+\DoxyCodeLine{00896\ \textcolor{comment}{//\ For\ fields,\ this\ would\ be\ used\ to\ annotate\ both\ pointer\ and\ size\ fields\ that}}
+\DoxyCodeLine{00897\ \textcolor{comment}{//\ have\ not\ yet\ been\ converted\ to\ a\ span.}}
+\DoxyCodeLine{00898\ \textcolor{comment}{//}}
+\DoxyCodeLine{00899\ \textcolor{comment}{//\ All\ functions\ or\ fields\ annotated\ with\ this\ macro\ should\ come\ with\ a\ \`{}\#}}
+\DoxyCodeLine{00900\ \textcolor{comment}{//\ Safety`\ comment\ that\ explains\ what\ the\ caller\ must\ guarantee\ to\ prevent\ OOB.}}
+\DoxyCodeLine{00901\ \textcolor{comment}{//\ Ideally,\ unsafe\ functions\ should\ also\ be\ paired\ with\ a\ safer\ version,\ e.g.}}
+\DoxyCodeLine{00902\ \textcolor{comment}{//\ one\ that\ replaces\ pointer\ parameters\ with\ \`{}span`s;\ otherwise,\ document\ safer}}
+\DoxyCodeLine{00903\ \textcolor{comment}{//\ replacement\ coding\ patterns\ callers\ can\ migrate\ to.}}
+\DoxyCodeLine{00904\ \textcolor{comment}{//}}
+\DoxyCodeLine{00905\ \textcolor{comment}{//\ Annotating\ a\ function\ \`{}UNSAFE\_BUFFER\_USAGE`\ means\ all\ call\ sites\ (that\ do\ not}}
+\DoxyCodeLine{00906\ \textcolor{comment}{//\ disable\ the\ warning)\ must\ wrap\ calls\ in\ \`{}UNSAFE\_BUFFERS()`;\ see\ documentation}}
+\DoxyCodeLine{00907\ \textcolor{comment}{//\ there.\ Annotating\ a\ field\ \`{}UNSAFE\_BUFFER\_USAGE`\ means\ that\ \`{}UNSAFE\_BUFFERS()`}}
+\DoxyCodeLine{00908\ \textcolor{comment}{//\ must\ wrap\ expressions\ that\ mutate\ of\ the\ field.}}
+\DoxyCodeLine{00909\ \textcolor{comment}{//}}
+\DoxyCodeLine{00910\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00911\ \textcolor{comment}{//\ \ \ https://chromium.googlesource.com/chromium/src/+/main/docs/unsafe\_buffers.md}}
+\DoxyCodeLine{00912\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/SafeBuffers.html}}
+\DoxyCodeLine{00913\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/DiagnosticsReference.html\#wunsafe-\/buffer-\/usage}}
+\DoxyCodeLine{00914\ \textcolor{comment}{//}}
+\DoxyCodeLine{00915\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00916\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00917\ \textcolor{comment}{//\ \ \ //\ Calls\ to\ this\ function\ must\ be\ wrapped\ in\ \`{}UNSAFE\_BUFFERS()`.}}
+\DoxyCodeLine{00918\ \textcolor{comment}{//\ \ \ UNSAFE\_BUFFER\_USAGE\ void\ Func(T*\ input,\ T*\ end);}}
+\DoxyCodeLine{00919\ \textcolor{comment}{//}}
+\DoxyCodeLine{00920\ \textcolor{comment}{//\ \ \ struct\ S\ \{}}
+\DoxyCodeLine{00921\ \textcolor{comment}{//\ \ \ \ \ //\ Changing\ this\ pointer\ requires\ \`{}UNSAFE\_BUFFERS()`.}}
+\DoxyCodeLine{00922\ \textcolor{comment}{//\ \ \ \ \ UNSAFE\_BUFFER\_USAGE\ int*\ p;}}
+\DoxyCodeLine{00923\ \textcolor{comment}{//\ \ \ \};}}
+\DoxyCodeLine{00924\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00925\ \textcolor{preprocessor}{\#if\ \_\_has\_cpp\_attribute(clang::unsafe\_buffer\_usage)}}
+\DoxyCodeLine{00926\ \textcolor{preprocessor}{\#define\ UNSAFE\_BUFFER\_USAGE\ [[clang::unsafe\_buffer\_usage]]}}
+\DoxyCodeLine{00927\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00928\ \textcolor{preprocessor}{\#define\ UNSAFE\_BUFFER\_USAGE}}
+\DoxyCodeLine{00929\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00930\ }
+\DoxyCodeLine{00931\ \textcolor{comment}{//\ Annotates\ a\ function\ restricting\ its\ availability\ based\ on\ compile-\/time}}
+\DoxyCodeLine{00932\ \textcolor{comment}{//\ information\ in\ the\ evaluated\ context.\ Useful\ to\ convert\ runtime\ errors\ to}}
+\DoxyCodeLine{00933\ \textcolor{comment}{//\ compile-\/time\ errors\ if\ functions'\ arguments\ are\ always\ known\ at\ compile\ time.}}
+\DoxyCodeLine{00934\ \textcolor{comment}{//}}
+\DoxyCodeLine{00935\ \textcolor{comment}{//\ SFINAE\ and\ \`{}requires`\ clauses\ can\ restrict\ function\ availability\ based\ on\ the}}
+\DoxyCodeLine{00936\ \textcolor{comment}{//\ unevaluated\ context\ (type\ information\ and\ syntactic\ correctness).\ This}}
+\DoxyCodeLine{00937\ \textcolor{comment}{//\ provides\ a\ similar\ capability\ based\ on\ the\ evaluated\ context\ (variable}}
+\DoxyCodeLine{00938\ \textcolor{comment}{//\ values).\ If\ the\ condition\ fails,\ or\ cannot\ be\ determined\ at\ compile\ time,\ the}}
+\DoxyCodeLine{00939\ \textcolor{comment}{//\ function\ is\ excluded\ from\ the\ overload\ set.}}
+\DoxyCodeLine{00940\ \textcolor{comment}{//}}
+\DoxyCodeLine{00941\ \textcolor{comment}{//\ Some\ use\ cases\ could\ be\ satisfied\ without\ this\ by\ marking\ the\ function}}
+\DoxyCodeLine{00942\ \textcolor{comment}{//\ \`{}consteval`\ and\ breaking\ compile\ when\ the\ condition\ fails\ (e.g.\ via}}
+\DoxyCodeLine{00943\ \textcolor{comment}{//\ \`{}CHECK()`/`assert()`).\ However,\ \`{}ENABLE\_IF\_ATTR()`\ is\ generally\ superior:}}
+\DoxyCodeLine{00944\ \textcolor{comment}{//\ \ \ -\/\ Not\ all\ desired\ functions\ can\ be\ made\ \`{}consteval`;\ e.g.\ most}}
+\DoxyCodeLine{00945\ \textcolor{comment}{//\ \ \ \ \ constructors.}}
+\DoxyCodeLine{00946\ \textcolor{comment}{//\ \ \ -\/\ The\ error\ message\ in\ the\ macro\ case\ is\ clearer\ and\ more\ actionable.}}
+\DoxyCodeLine{00947\ \textcolor{comment}{//\ \ \ -\/\ \`{}ENABLE\_IF\_ATTR()`\ interacts\ better\ with\ template\ metaprogramming.}}
+\DoxyCodeLine{00948\ \textcolor{comment}{//}}
+\DoxyCodeLine{00949\ \textcolor{comment}{//\ See\ also:}}
+\DoxyCodeLine{00950\ \textcolor{comment}{//\ \ \ https://clang.llvm.org/docs/AttributeReference.html\#enable-\/if}}
+\DoxyCodeLine{00951\ \textcolor{comment}{//\ \ \ https://github.com/chromium/subspace/issues/266}}
+\DoxyCodeLine{00952\ \textcolor{comment}{//}}
+\DoxyCodeLine{00953\ \textcolor{comment}{//\ Usage:}}
+\DoxyCodeLine{00954\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00955\ \textcolor{comment}{//\ \ \ void\ NotConsteval(int\ a)\ \{}}
+\DoxyCodeLine{00956\ \textcolor{comment}{//\ \ \ \ \ assert(a\ >\ 0);}}
+\DoxyCodeLine{00957\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00958\ \textcolor{comment}{//\ \ \ consteval\ void\ WithoutEnableIf(int\ a)\ \{}}
+\DoxyCodeLine{00959\ \textcolor{comment}{//\ \ \ \ \ assert(a\ >\ 0);}}
+\DoxyCodeLine{00960\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00961\ \textcolor{comment}{//\ \ \ void\ WithEnableIf(int\ a)\ ENABLE\_IF\_ATTR(a\ >\ 0,\ "{}arg\ must\ be\ positive"{})\ \{\}}}
+\DoxyCodeLine{00962\ \textcolor{comment}{//\ \ \ void\ Func(int\ i)\ \{}}
+\DoxyCodeLine{00963\ \textcolor{comment}{//\ \ \ \ \ //\ Compiles;\ assertion\ fails\ at\ runtime.}}
+\DoxyCodeLine{00964\ \textcolor{comment}{//\ \ \ \ \ NotConsteval(-\/1);}}
+\DoxyCodeLine{00965\ \textcolor{comment}{//}}
+\DoxyCodeLine{00966\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile;\ diagnosed\ as\ not\ a\ constant\ expression.}}
+\DoxyCodeLine{00967\ \textcolor{comment}{//\ \ \ \ \ WithoutEnableIf(-\/1);}}
+\DoxyCodeLine{00968\ \textcolor{comment}{//}}
+\DoxyCodeLine{00969\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile;\ diagnosed\ as\ no\ matching\ function\ call\ with}}
+\DoxyCodeLine{00970\ \textcolor{comment}{//\ \ \ \ \ //\ "{}note:\ candidate\ disabled:\ arg\ must\ be\ positive"{}.}}
+\DoxyCodeLine{00971\ \textcolor{comment}{//\ \ \ \ \ WithEnableIf(-\/1);}}
+\DoxyCodeLine{00972\ \textcolor{comment}{//}}
+\DoxyCodeLine{00973\ \textcolor{comment}{//\ \ \ \ \ //\ Will\ not\ compile\ (same\ reason).\ Marking\ \`{}Func()`\ as}}
+\DoxyCodeLine{00974\ \textcolor{comment}{//\ \ \ \ \ //\ \`{}ENABLE\_IF\_ATTR(i\ >\ 0,\ ...)`\ will\ not\ help;\ the\ compiler's\ analysis\ is}}
+\DoxyCodeLine{00975\ \textcolor{comment}{//\ \ \ \ \ //\ not\ sufficiently\ sophisticated\ to\ propagate\ this\ constraint.}}
+\DoxyCodeLine{00976\ \textcolor{comment}{//\ \ \ \ \ WithEnableIf(i);}}
+\DoxyCodeLine{00977\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00978\ \textcolor{comment}{//\ \`{}\`{}\`{}}}
+\DoxyCodeLine{00979\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_ATTRIBUTE(enable\_if)}}
+\DoxyCodeLine{00980\ \textcolor{preprocessor}{\#define\ ENABLE\_IF\_ATTR(cond,\ msg)\ \_\_attribute\_\_((enable\_if(cond,\ msg)))}}
+\DoxyCodeLine{00981\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00982\ \textcolor{preprocessor}{\#define\ ENABLE\_IF\_ATTR(cond,\ msg)}}
+\DoxyCodeLine{00983\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00984\ }
+\DoxyCodeLine{00985\ \textcolor{comment}{//\ \ KIWI\_KEEP}}
+\DoxyCodeLine{00986\ \textcolor{comment}{//}}
+\DoxyCodeLine{00987\ \textcolor{comment}{//\ \ When\ applied\ to\ a\ function,\ prevents\ removal\ of\ the\ function.\ Useful\ for}}
+\DoxyCodeLine{00988\ \textcolor{comment}{//\ \ marking\ functions\ which\ it\ is\ desirable\ to\ keep.}}
+\DoxyCodeLine{00989\ \textcolor{comment}{//}}
+\DoxyCodeLine{00990\ \textcolor{comment}{//\ \ A\ common\ use-\/case\ is\ for\ keeping\ unused\ functions\ in\ test\ or\ benchmark}}
+\DoxyCodeLine{00991\ \textcolor{comment}{//\ \ programs\ which\ serve\ as\ convenient\ targets\ for\ inspecting\ how\ the\ compiler}}
+\DoxyCodeLine{00992\ \textcolor{comment}{//\ \ translates\ source\ code\ to\ machine\ code.\ Such\ functions\ may\ be\ disassembled}}
+\DoxyCodeLine{00993\ \textcolor{comment}{//\ \ for\ inspection\ in\ the\ debugger\ of\ with\ the\ objdump\ tool,\ and\ are\ often,\ for}}
+\DoxyCodeLine{00994\ \textcolor{comment}{//\ \ lack\ of\ imagination,\ called\ check\ functions\ in\ test\ and\ benchmark\ programs.}}
+\DoxyCodeLine{00995\ \textcolor{comment}{//}}
+\DoxyCodeLine{00996\ \textcolor{comment}{//\ \ Example:}}
+\DoxyCodeLine{00997\ \textcolor{comment}{//}}
+\DoxyCodeLine{00998\ \textcolor{comment}{//\ \ \ \ \ \ extern\ "{}C"{}\ KIWI\_KEEP\ void\ check\_throw\_int\_0()\ \{}}
+\DoxyCodeLine{00999\ \textcolor{comment}{//\ \ \ \ \ \ \ \ throw\ 0;}}
+\DoxyCodeLine{01000\ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{01001\ \textcolor{comment}{//}}
+\DoxyCodeLine{01002\ \textcolor{comment}{//\ \ \ \ \ \ \$\ objdump\ -\/dCM\ intel-\/mnemonic\ path/to/binary\ |\ less}}
+\DoxyCodeLine{01003\ \textcolor{comment}{//\ \ \ \ \ \ \#\ less\ permits\ searching\ for\ check\_throw\_int\_0}}
+\DoxyCodeLine{01004\ \textcolor{comment}{//}}
+\DoxyCodeLine{01005\ \textcolor{comment}{//\ \ \ \ \ \ \$\ gdb\ path/to/binary\ -\/q\ -\/batch\ -\/ex\ 'disassemble\ check\_throw\_int\_0'}}
+\DoxyCodeLine{01006\ \textcolor{comment}{//}}
+\DoxyCodeLine{01007\ \textcolor{comment}{//\ \ Functions\ may\ be\ removed\ when\ building\ with\ both\ function-\/sections\ and}}
+\DoxyCodeLine{01008\ \textcolor{comment}{//\ \ gc-\/sections.\ It\ is\ tricky\ to\ keep\ them;\ this\ utility\ captures\ the\ steps}}
+\DoxyCodeLine{01009\ \textcolor{comment}{//\ \ required.}}
+\DoxyCodeLine{01010\ \textcolor{comment}{//}}
+\DoxyCodeLine{01011\ \textcolor{comment}{//\ \ In\ order\ for\ this\ mechanism\ to\ work,\ this\ header\ must\ be\ included.\ This}}
+\DoxyCodeLine{01012\ \textcolor{comment}{//\ \ mechanism\ relies\ on\ the\ hidden\ global\ variable\ below.}}
+\DoxyCodeLine{01013\ \textcolor{comment}{//}}
+\DoxyCodeLine{01014\ \textcolor{comment}{//\ \ The\ linker,\ when\ asked\ to\ with\ -\/-\/gc-\/sections,\ may\ throw\ out\ unreferenced}}
+\DoxyCodeLine{01015\ \textcolor{comment}{//\ \ sections.\ When\ the\ compiler\ emits\ each\ function\ into\ its\ own\ section,\ as\ it}}
+\DoxyCodeLine{01016\ \textcolor{comment}{//\ \ does\ when\ asked\ to\ with\ -\/ffunction-\/sections,\ the\ linker\ will\ throw\ out}}
+\DoxyCodeLine{01017\ \textcolor{comment}{//\ \ unreferenced\ functions.\ The\ key\ is\ to\ move\ all\ kept\ functions\ into\ a\ single}}
+\DoxyCodeLine{01018\ \textcolor{comment}{//\ \ section,\ avoiding\ the\ behavior\ of\ -\/ffunction-\/sections,\ and\ then\ force\ the}}
+\DoxyCodeLine{01019\ \textcolor{comment}{//\ \ compiler\ to\ emit\ some\ reference\ to\ at\ least\ one\ function\ in\ that\ section.}}
+\DoxyCodeLine{01020\ \textcolor{comment}{//\ \ This\ way,\ the\ linker\ will\ see\ at\ least\ one\ reference\ to\ the\ kept\ section,}}
+\DoxyCodeLine{01021\ \textcolor{comment}{//\ \ and\ so\ will\ not\ throw\ it\ out.}}
+\DoxyCodeLine{01022\ \textcolor{preprocessor}{\#if\ COMPILER\_GCC\ \&\&\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{01023\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP\ [[gnu::section("{}.text.kiwi.keep"{})]]}}
+\DoxyCodeLine{01024\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01025\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP}}
+\DoxyCodeLine{01026\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01027\ }
+\DoxyCodeLine{01028\ \textcolor{preprocessor}{\#if\ COMPILER\_GCC\ \&\&\ BUILDFLAG(IS\_LINUX)}}
+\DoxyCodeLine{01029\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)\ ||\ KIWI\_ARM\ ||\ KIWI\_AARCH64}}
+\DoxyCodeLine{01030\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP\_DETAIL\_ATTR\_NAKED\ [[gnu::naked]]}}
+\DoxyCodeLine{01031\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01032\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP\_DETAIL\_ATTR\_NAKED}}
+\DoxyCodeLine{01033\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01034\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP\_DETAIL\_ATTR\_NOINLINE\ [[gnu::noinline]]}}
+\DoxyCodeLine{01035\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01036\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP\_DETAIL\_ATTR\_NAKED}}
+\DoxyCodeLine{01037\ \textcolor{preprocessor}{\#define\ KIWI\_KEEP\_DETAIL\_ATTR\_NOINLINE}}
+\DoxyCodeLine{01038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01039\ }
+\DoxyCodeLine{01040\ \textcolor{comment}{//\ An\ attribute\ for\ marking\ symbols\ as\ weak,\ if\ supported.}}
+\DoxyCodeLine{01041\ \textcolor{preprocessor}{\#if\ KIWI\_HAVE\_WEAK\_SYMBOLS}}
+\DoxyCodeLine{01042\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_WEAK\ \_\_attribute\_\_((\_\_weak\_\_))}}
+\DoxyCodeLine{01043\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01044\ \textcolor{preprocessor}{\#define\ KIWI\_ATTR\_WEAK}}
+\DoxyCodeLine{01045\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

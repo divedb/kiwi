@@ -67,6 +67,7 @@ endforeach()
 set(CONTAINERS_TEST_TARGETS
   checked_iterators_test  
   circular_deque_test
+  flat_tree_test
   heap_array_test
 )
 
@@ -77,6 +78,7 @@ foreach(target ${CONTAINERS_TEST_TARGETS})
     HDRS
       ${GTEST_INCLUDE_DIR}
       ${KIWI_INCLUDE_DIR}
+      ${KIWI_TESTS_INCLUDE_DIR}
     SRCS
       "containers/${target}.cc"
     COPTS

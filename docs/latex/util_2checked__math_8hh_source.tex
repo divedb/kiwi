@@ -148,7 +148,7 @@
 \DoxyCodeLine{00144\ }
 \DoxyCodeLine{00145\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ =\ std::enable\_if\_t<std::is\_\textcolor{keywordtype}{int}egral\_v<T>>>}
 \DoxyCodeLine{00146\ \textcolor{keywordtype}{bool}\ checked\_add(T*\ result,\ T\ a,\ T\ b)\ \{}
-\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#if\ HAS\_BUILTIN(\_\_builtin\_add\_overflow)}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_BUILTIN(\_\_builtin\_add\_overflow)}}
 \DoxyCodeLine{00148\ \ \ \textcolor{keywordflow}{if}\ (!\_\_builtin\_add\_overflow(a,\ b,\ result))\ [[likely]]\ \{}
 \DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
 \DoxyCodeLine{00150\ \ \ \}}
@@ -237,7 +237,7 @@
 \DoxyCodeLine{00233\ template\ <typename\ T,\ typename\ =\ std::enable\_if\_t<std::is\_unsigned<T>::value>>}
 \DoxyCodeLine{00234\ \textcolor{keywordtype}{bool}\ checked\_mul(T*\ result,\ T\ a,\ T\ b)\ \{}
 \DoxyCodeLine{00235\ \ \ assert(result\ !=\ \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#if\ HAS\_BUILTIN(\_\_builtin\_mul\_overflow)}}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#if\ KIWI\_HAS\_BUILTIN(\_\_builtin\_mul\_overflow)}}
 \DoxyCodeLine{00237\ \ \ \textcolor{keywordflow}{if}\ (!\_\_builtin\_mul\_overflow(a,\ b,\ result))\ [[likely]]\ \{}
 \DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
 \DoxyCodeLine{00239\ \ \ \}}

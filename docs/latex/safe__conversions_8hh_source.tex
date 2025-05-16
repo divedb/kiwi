@@ -15,10 +15,10 @@
 \DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <limits>}}
 \DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
 \DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions\_impl.hh"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions\_impl.hh"{}}}
 \DoxyCodeLine{00015\ }
 \DoxyCodeLine{00016\ \textcolor{preprocessor}{\#if\ defined(\_\_ARMEL\_\_)\ \&\&\ !defined(\_\_native\_client\_\_)}}
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions\_arm\_impl.h"{}}\ \ \textcolor{comment}{//\ IWYU\ pragma:\ export}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_conversions\_arm\_impl.h"{}}}
 \DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_OPTIMIZED\_SAFE\_CONVERSIONS\ (1)}}
 \DoxyCodeLine{00019\ \textcolor{preprocessor}{\#else}}
 \DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ BASE\_HAS\_OPTIMIZED\_SAFE\_CONVERSIONS\ (0)}}
@@ -31,359 +31,359 @@
 \DoxyCodeLine{00027\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
 \DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_asm_op}{SaturateFastAsmOp}}\ \{}
 \DoxyCodeLine{00029\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src)\ \{}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
-\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<Dst>();}
-\DoxyCodeLine{00033\ \ \ \}}
-\DoxyCodeLine{00034\ \};}
-\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_HAS\_OPTIMIZED\_SAFE\_CONVERSIONS}}
-\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#undef\ BASE\_HAS\_OPTIMIZED\_SAFE\_CONVERSIONS}}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \textcolor{comment}{//\ The\ following\ special\ case\ a\ few\ specific\ integer\ conversions\ where\ we\ can}}
-\DoxyCodeLine{00039\ \textcolor{comment}{//\ eke\ out\ better\ performance\ than\ range\ checking.}}
-\DoxyCodeLine{00040\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00041\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{IsValueInRangeFastOp}}\ \{}
-\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(Src)\ \{}
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<bool>();}
-\DoxyCodeLine{00046\ \ \ \}}
-\DoxyCodeLine{00047\ \};}
-\DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ \textcolor{comment}{//\ Signed\ to\ signed\ range\ comparison.}}
-\DoxyCodeLine{00050\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{requires}(std::signed\_integral<Dst>\ \&\&\ std::signed\_integral<Src>\ \&\&}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ !kIsTypeInRangeForNumericType<Dst,\ Src>)}
-\DoxyCodeLine{00053\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{IsValueInRangeFastOp<Dst,\ Src>}}\ \{}
-\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(Src\ value)\ \{}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ Just\ downcast\ to\ the\ smaller\ type,\ sign\ extend\ it\ back\ to\ the\ original}}
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ type,\ and\ then\ see\ if\ it\ matches\ the\ original\ value.}}
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ value\ ==\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value);}
-\DoxyCodeLine{00060\ \ \ \}}
-\DoxyCodeLine{00061\ \};}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \textcolor{comment}{//\ Signed\ to\ unsigned\ range\ comparison.}}
-\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{requires}(std::unsigned\_integral<Dst>\ \&\&\ std::signed\_integral<Src>\ \&\&}
-\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ !kIsTypeInRangeForNumericType<Dst,\ Src>)}
-\DoxyCodeLine{00067\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{IsValueInRangeFastOp<Dst,\ Src>}}\ \{}
-\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(Src\ value)\ \{}
-\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ We\ cast\ a\ signed\ as\ unsigned\ to\ overflow\ negative\ values\ to\ the\ top,}}
-\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ then\ compare\ against\ whichever\ maximum\ is\ smaller,\ as\ our\ upper\ bound.}}
-\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_unsigned(value)\ <=\ as\_unsigned(kCommonMax<Src,\ Dst>);}
-\DoxyCodeLine{00074\ \ \ \}}
-\DoxyCodeLine{00075\ \};}
-\DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ \textcolor{comment}{//\ Convenience\ function\ that\ returns\ true\ if\ the\ supplied\ value\ is\ in\ range}}
-\DoxyCodeLine{00078\ \textcolor{comment}{//\ for\ the\ destination\ type.}}
-\DoxyCodeLine{00079\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{requires}(IsNumeric<Src>\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<Dst>::lowest()\ <\ std::numeric\_limits<Dst>::max())}
-\DoxyCodeLine{00082\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsValueInRangeForNumericType(Src\ value)\ \{}
-\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{using\ }SrcType\ =\ UnderlyingType<Src>;}
-\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ underlying\_value\ =\ \textcolor{keyword}{static\_cast<}SrcType\textcolor{keyword}{>}(value);}
-\DoxyCodeLine{00085\ \ \ \textcolor{keywordflow}{return}\ internal::IsValueInRangeFastOp<Dst,\ SrcType>::is\_supported}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ internal::IsValueInRangeFastOp<Dst,\ SrcType>::Do(}
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ underlying\_value)}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ internal::DstRangeRelationToSrcRange<Dst>(underlying\_value)}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .IsValid();}
-\DoxyCodeLine{00090\ \}}
-\DoxyCodeLine{00091\ }
-\DoxyCodeLine{00092\ \textcolor{comment}{//\ checked\_cast<>\ is\ analogous\ to\ static\_cast<>\ for\ numeric\ types,}}
-\DoxyCodeLine{00093\ \textcolor{comment}{//\ except\ that\ it\ CHECKs\ that\ the\ specified\ numeric\ conversion\ will\ not}}
-\DoxyCodeLine{00094\ \textcolor{comment}{//\ overflow\ or\ underflow.\ NaN\ source\ will\ always\ trigger\ a\ CHECK.}}
-\DoxyCodeLine{00095\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{class\ }CheckHandler\ =\ internal::CheckOnFailure,}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<Src>}}\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<Dst>::lowest()\ <\ std::numeric\_limits<Dst>::max())}
-\DoxyCodeLine{00099\ \textcolor{keyword}{constexpr}\ Dst\ checked\_cast(Src\ value)\ \{}
-\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ This\ throws\ a\ compile-\/time\ error\ on\ evaluating\ the\ constexpr\ if\ it\ can\ be}}
-\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ determined\ at\ compile-\/time\ as\ failing,\ otherwise\ it\ will\ CHECK\ at\ runtime.}}
-\DoxyCodeLine{00102\ \ \ \textcolor{keywordflow}{if}\ (IsValueInRangeForNumericType<Dst>(value))\ [[likely]]\ \{}
-\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}UnderlyingType<Src>\textcolor{keyword}{>}(value));}
-\DoxyCodeLine{00104\ \ \ \}}
-\DoxyCodeLine{00105\ \ \ \textcolor{keywordflow}{return}\ CheckHandler::template\ HandleFailure<Dst>();}
-\DoxyCodeLine{00106\ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<Dst>();}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_HAS\_OPTIMIZED\_SAFE\_CONVERSIONS}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#undef\ BASE\_HAS\_OPTIMIZED\_SAFE\_CONVERSIONS}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00042\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{IsValueInRangeFastOp}}\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(Src)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<bool>();}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{requires}(std::signed\_integral<Dst>\ \&\&\ std::signed\_integral<Src>\ \&\&}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ !kIsTypeInRangeForNumericType<Dst,\ Src>)}
+\DoxyCodeLine{00055\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{IsValueInRangeFastOp<Dst,\ Src>}}\ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(Src\ value)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ Just\ downcast\ to\ the\ smaller\ type,\ sign\ extend\ it\ back\ to\ the\ original}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//\ type,\ and\ then\ see\ if\ it\ matches\ the\ original\ value.}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ value\ ==\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ Signed\ to\ unsigned\ range\ comparison.}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{requires}(std::unsigned\_integral<Dst>\ \&\&\ std::signed\_integral<Src>\ \&\&}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ !kIsTypeInRangeForNumericType<Dst,\ Src>)}
+\DoxyCodeLine{00069\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_is_value_in_range_fast_op}{IsValueInRangeFastOp<Dst,\ Src>}}\ \{}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Do(Src\ value)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ We\ cast\ a\ signed\ as\ unsigned\ to\ overflow\ negative\ values\ to\ the\ top,}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ then\ compare\ against\ whichever\ maximum\ is\ smaller,\ as\ our\ upper\ bound.}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ as\_unsigned(value)\ <=\ as\_unsigned(kCommonMax<Src,\ Dst>);}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ Convenience\ function\ that\ returns\ true\ if\ the\ supplied\ value\ is\ in\ range}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ for\ the\ destination\ type.}}
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{requires}(IsNumeric<Src>\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<Dst>::lowest()\ <\ std::numeric\_limits<Dst>::max())}
+\DoxyCodeLine{00084\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ IsValueInRangeForNumericType(Src\ value)\ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{using\ }SrcType\ =\ UnderlyingType<Src>;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ underlying\_value\ =\ \textcolor{keyword}{static\_cast<}SrcType\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{return}\ internal::IsValueInRangeFastOp<Dst,\ SrcType>::is\_supported}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ internal::IsValueInRangeFastOp<Dst,\ SrcType>::Do(}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ underlying\_value)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ internal::DstRangeRelationToSrcRange<Dst>(underlying\_value)}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .IsValid();}
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ checked\_cast<>\ is\ analogous\ to\ static\_cast<>\ for\ numeric\ types,}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ except\ that\ it\ CHECKs\ that\ the\ specified\ numeric\ conversion\ will\ not}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ overflow\ or\ underflow.\ NaN\ source\ will\ always\ trigger\ a\ CHECK.}}
+\DoxyCodeLine{00097\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{class\ }CheckHandler\ =\ internal::CheckOnFailure,}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{requires}(\mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<Src>}}\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<Dst>::lowest()\ <\ std::numeric\_limits<Dst>::max())}
+\DoxyCodeLine{00101\ \textcolor{keyword}{constexpr}\ Dst\ checked\_cast(Src\ value)\ \{}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ This\ throws\ a\ compile-\/time\ error\ on\ evaluating\ the\ constexpr\ if\ it\ can\ be}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ determined\ at\ compile-\/time\ as\ failing,\ otherwise\ it\ will\ CHECK\ at\ runtime.}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordflow}{if}\ (IsValueInRangeForNumericType<Dst>(value))\ [[likely]]\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}UnderlyingType<Src>\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00106\ \ \ \}}
 \DoxyCodeLine{00107\ }
-\DoxyCodeLine{00108\ \textcolor{comment}{//\ Default\ boundaries\ for\ integral/float:\ max/infinity,\ lowest/-\/infinity,\ 0/NaN.}}
-\DoxyCodeLine{00109\ \textcolor{comment}{//\ You\ may\ provide\ your\ own\ limits\ (e.g.\ to\ saturated\_cast)\ so\ long\ as\ you}}
-\DoxyCodeLine{00110\ \textcolor{comment}{//\ implement\ all\ of\ the\ static\ constexpr\ member\ functions\ in\ the\ class\ below.}}
-\DoxyCodeLine{00111\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00112\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_saturation_default_limits}{SaturationDefaultLimits}}\ :\ \textcolor{keyword}{public}\ std::numeric\_limits<T>\ \{}
-\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ NaN()\ \{}
-\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::numeric\_limits<T>::has\_quiet\_NaN)\ \{}
-\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::quiet\_NaN();}
-\DoxyCodeLine{00116\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ T();}
-\DoxyCodeLine{00118\ \ \ \ \ \}}
-\DoxyCodeLine{00119\ \ \ \}}
-\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{using\ }std::numeric\_limits<T>::max;}
-\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ Overflow()\ \{}
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::numeric\_limits<T>::has\_infinity)\ \{}
-\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::infinity();}
-\DoxyCodeLine{00124\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::max();}
-\DoxyCodeLine{00126\ \ \ \ \ \}}
-\DoxyCodeLine{00127\ \ \ \}}
-\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{using\ }std::numeric\_limits<T>::lowest;}
-\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ Underflow()\ \{}
-\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::numeric\_limits<T>::has\_infinity)\ \{}
-\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::infinity()\ *\ -\/1;}
-\DoxyCodeLine{00132\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::lowest();}
-\DoxyCodeLine{00134\ \ \ \ \ \}}
-\DoxyCodeLine{00135\ \ \ \}}
-\DoxyCodeLine{00136\ \};}
-\DoxyCodeLine{00137\ }
-\DoxyCodeLine{00138\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }S,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00139\ \textcolor{keyword}{constexpr}\ Dst\ saturated\_cast\_impl(Src\ value,\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ constraint)\ \{}
-\DoxyCodeLine{00140\ \ \ \textcolor{comment}{//\ For\ some\ reason\ clang\ generates\ much\ better\ code\ when\ the\ branch\ is}}
-\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//\ structured\ exactly\ this\ way,\ rather\ than\ a\ sequence\ of\ checks.}}
-\DoxyCodeLine{00142\ \ \ \textcolor{keywordflow}{return}\ !constraint.IsOverflowFlagSet()}
-\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (!constraint.IsUnderflowFlagSet()\ ?\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value)}
-\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ S<Dst>::Underflow())}
-\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Skip\ this\ check\ for\ integral\ Src,\ which\ cannot\ be\ NaN.}}
-\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (std::is\_integral\_v<Src>\ ||\ !constraint.IsUnderflowFlagSet()}
-\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ S<Dst>::Overflow()}
-\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ S<Dst>::NaN());}
-\DoxyCodeLine{00149\ \}}
-\DoxyCodeLine{00150\ }
-\DoxyCodeLine{00151\ \textcolor{comment}{//\ We\ can\ reduce\ the\ number\ of\ conditions\ and\ get\ slightly\ better\ performance}}
-\DoxyCodeLine{00152\ \textcolor{comment}{//\ for\ normal\ signed\ and\ unsigned\ integer\ ranges.\ And\ in\ the\ specific\ case\ of}}
-\DoxyCodeLine{00153\ \textcolor{comment}{//\ Arm,\ we\ can\ use\ the\ optimized\ saturation\ instructions.}}
-\DoxyCodeLine{00154\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00155\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_op}{SaturateFastOp}}\ \{}
-\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src)\ \{}
-\DoxyCodeLine{00158\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
-\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<Dst>();}
-\DoxyCodeLine{00160\ \ \ \}}
-\DoxyCodeLine{00161\ \};}
-\DoxyCodeLine{00162\ }
-\DoxyCodeLine{00163\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{requires}(std::integral<Src>\ \&\&\ std::integral<Dst>\ \&\&}
-\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ SaturateFastAsmOp<Dst,\ Src>::is\_supported)}
-\DoxyCodeLine{00166\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_op}{SaturateFastOp<Dst,\ Src>}}\ \{}
-\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src\ value)\ \{}
-\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ SaturateFastAsmOp<Dst,\ Src>::Do(value);}
-\DoxyCodeLine{00170\ \ \ \}}
-\DoxyCodeLine{00171\ \};}
-\DoxyCodeLine{00172\ }
-\DoxyCodeLine{00173\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{requires}(std::integral<Src>\ \&\&\ std::integral<Dst>\ \&\&}
-\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ !SaturateFastAsmOp<Dst,\ Src>::is\_supported)}
-\DoxyCodeLine{00176\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_op}{SaturateFastOp<Dst,\ Src>}}\ \{}
-\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src\ value)\ \{}
-\DoxyCodeLine{00179\ \ \ \ \ \textcolor{comment}{//\ The\ exact\ order\ of\ the\ following\ is\ structured\ to\ hit\ the\ correct}}
-\DoxyCodeLine{00180\ \ \ \ \ \textcolor{comment}{//\ optimization\ heuristics\ across\ compilers.\ Do\ not\ change\ without}}
-\DoxyCodeLine{00181\ \ \ \ \ \textcolor{comment}{//\ checking\ the\ emitted\ code.}}
-\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{const}\ Dst\ saturated\ =\ CommonMaxOrMin<Dst,\ Src>(}
-\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ kIsMaxInRangeForNumericType<Dst,\ Src>\ ||}
-\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ (!kIsMinInRangeForNumericType<Dst,\ Src>\ \&\&\ IsValueNegative(value)));}
-\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsValueInRangeForNumericType<Dst>(value))\ [[likely]]\ \{}
-\DoxyCodeLine{00186\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value);}
-\DoxyCodeLine{00187\ \ \ \ \ \}}
-\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ saturated;}
-\DoxyCodeLine{00189\ \ \ \}}
-\DoxyCodeLine{00190\ \};}
-\DoxyCodeLine{00191\ }
-\DoxyCodeLine{00192\ \textcolor{comment}{//\ saturated\_cast<>\ is\ analogous\ to\ static\_cast<>\ for\ numeric\ types,\ except}}
-\DoxyCodeLine{00193\ \textcolor{comment}{//\ that\ the\ specified\ numeric\ conversion\ will\ saturate\ by\ default\ rather\ than}}
-\DoxyCodeLine{00194\ \textcolor{comment}{//\ overflow\ or\ underflow,\ and\ NaN\ assignment\ to\ an\ integral\ will\ return\ 0.}}
-\DoxyCodeLine{00195\ \textcolor{comment}{//\ All\ boundary\ condition\ behaviors\ can\ be\ overridden\ with\ a\ custom\ handler.}}
-\DoxyCodeLine{00196\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,}
-\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }SaturationHandler\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturation_default_limits}{SaturationDefaultLimits}},}
-\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00199\ \textcolor{keyword}{constexpr}\ Dst\ saturated\_cast(Src\ value)\ \{}
-\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{using\ }SrcType\ =\ UnderlyingType<Src>;}
-\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ underlying\_value\ =\ \textcolor{keyword}{static\_cast<}SrcType\textcolor{keyword}{>}(value);}
-\DoxyCodeLine{00202\ \ \ \textcolor{keywordflow}{return}\ !std::is\_constant\_evaluated()\ \&\&}
-\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SaturateFastOp<Dst,\ SrcType>::is\_supported\ \&\&}
-\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_same\_v<SaturationHandler<Dst>,}
-\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturation_default_limits}{SaturationDefaultLimits<Dst>}}>}
-\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ SaturateFastOp<Dst,\ SrcType>::Do(underlying\_value)}
-\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ saturated\_cast\_impl<Dst,\ SaturationHandler,\ SrcType>(}
-\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ underlying\_value,}
-\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DstRangeRelationToSrcRange<Dst,\ SaturationHandler,\ SrcType>(}
-\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ underlying\_value));}
-\DoxyCodeLine{00211\ \}}
-\DoxyCodeLine{00212\ }
-\DoxyCodeLine{00213\ \textcolor{comment}{//\ strict\_cast<>\ is\ analogous\ to\ static\_cast<>\ for\ numeric\ types,\ except\ that}}
-\DoxyCodeLine{00214\ \textcolor{comment}{//\ it\ will\ cause\ a\ compile\ failure\ if\ the\ destination\ type\ is\ not\ large\ enough}}
-\DoxyCodeLine{00215\ \textcolor{comment}{//\ to\ contain\ any\ value\ in\ the\ source\ type.\ It\ performs\ no\ runtime\ checking.}}
-\DoxyCodeLine{00216\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ SrcType\ =\ UnderlyingType<Src>>}
-\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{requires}(}
-\DoxyCodeLine{00218\ \ \ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<Src>}}\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
-\DoxyCodeLine{00219\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ you\ got\ here\ from\ a\ compiler\ error,\ it's\ because\ you\ tried\ to\ assign}}
-\DoxyCodeLine{00220\ \ \ \ \ \ \ \textcolor{comment}{//\ from\ a\ source\ type\ to\ a\ destination\ type\ that\ has\ insufficient\ range.}}
-\DoxyCodeLine{00221\ \ \ \ \ \ \ \textcolor{comment}{//\ The\ solution\ may\ be\ to\ change\ the\ destination\ type\ you're\ assigning\ to,}}
-\DoxyCodeLine{00222\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ use\ one\ large\ enough\ to\ represent\ the\ source.}}
-\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{comment}{//\ Alternatively,\ you\ may\ be\ better\ served\ with\ the\ checked\_cast<>\ or}}
-\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{comment}{//\ saturated\_cast<>\ template\ functions\ for\ your\ particular\ use\ case.}}
-\DoxyCodeLine{00225\ \ \ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ SrcType>\ ==}
-\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ NumericRangeRepresentation::kContained)}
-\DoxyCodeLine{00227\ \textcolor{keyword}{constexpr}\ Dst\ strict\_cast(Src\ value)\ \{}
-\DoxyCodeLine{00228\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}SrcType\textcolor{keyword}{>}(value));}
-\DoxyCodeLine{00229\ \}}
-\DoxyCodeLine{00230\ }
-\DoxyCodeLine{00231\ \textcolor{comment}{//\ Some\ wrappers\ to\ statically\ check\ that\ a\ type\ is\ in\ range.}}
-\DoxyCodeLine{00232\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00233\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsNumericRangeContained\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordflow}{return}\ CheckHandler::template\ HandleFailure<Dst>();}
+\DoxyCodeLine{00109\ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ Default\ boundaries\ for\ integral/float:\ max/infinity,\ lowest/-\/infinity,\ 0/NaN.}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//\ You\ may\ provide\ your\ own\ limits\ (e.g.\ to\ saturated\_cast)\ so\ long\ as\ you}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ implement\ all\ of\ the\ static\ constexpr\ member\ functions\ in\ the\ class\ below.}}
+\DoxyCodeLine{00114\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00115\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_saturation_default_limits}{SaturationDefaultLimits}}\ :\ \textcolor{keyword}{public}\ std::numeric\_limits<T>\ \{}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ NaN()\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::numeric\_limits<T>::has\_quiet\_NaN)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::quiet\_NaN();}
+\DoxyCodeLine{00119\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ T();}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{using\ }std::numeric\_limits<T>::max;}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ Overflow()\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::numeric\_limits<T>::has\_infinity)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::infinity();}
+\DoxyCodeLine{00127\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::max();}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{using\ }std::numeric\_limits<T>::lowest;}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ T\ Underflow()\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::numeric\_limits<T>::has\_infinity)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::infinity()\ *\ -\/1;}
+\DoxyCodeLine{00135\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::lowest();}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }S,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00142\ \textcolor{keyword}{constexpr}\ Dst\ saturated\_cast\_impl(Src\ value,\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_check}{RangeCheck}}\ constraint)\ \{}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//\ For\ some\ reason\ clang\ generates\ much\ better\ code\ when\ the\ branch\ is}}
+\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//\ structured\ exactly\ this\ way,\ rather\ than\ a\ sequence\ of\ checks.}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordflow}{return}\ !constraint.IsOverflowFlagSet()}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (!constraint.IsUnderflowFlagSet()\ ?\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value)}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ S<Dst>::Underflow())}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Skip\ this\ check\ for\ integral\ Src,\ which\ cannot\ be\ NaN.}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (std::is\_integral\_v<Src>\ ||\ !constraint.IsUnderflowFlagSet()}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ S<Dst>::Overflow()}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ S<Dst>::NaN());}
+\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{comment}{//\ We\ can\ reduce\ the\ number\ of\ conditions\ and\ get\ slightly\ better\ performance}}
+\DoxyCodeLine{00155\ \textcolor{comment}{//\ for\ normal\ signed\ and\ unsigned\ integer\ ranges.\ And\ in\ the\ specific\ case\ of}}
+\DoxyCodeLine{00156\ \textcolor{comment}{//\ Arm,\ we\ can\ use\ the\ optimized\ saturation\ instructions.}}
+\DoxyCodeLine{00157\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00158\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_op}{SaturateFastOp}}\ \{}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{comment}{//\ Force\ a\ compile\ failure\ if\ instantiated.}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckOnFailure::template\ HandleFailure<Dst>();}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ \};}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{requires}(std::integral<Src>\ \&\&\ std::integral<Dst>\ \&\&}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ SaturateFastAsmOp<Dst,\ Src>::is\_supported)}
+\DoxyCodeLine{00169\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_op}{SaturateFastOp<Dst,\ Src>}}\ \{}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src\ value)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ SaturateFastAsmOp<Dst,\ Src>::Do(value);}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \};}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{requires}(std::integral<Src>\ \&\&\ std::integral<Dst>\ \&\&}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ !SaturateFastAsmOp<Dst,\ Src>::is\_supported)}
+\DoxyCodeLine{00179\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturate_fast_op}{SaturateFastOp<Dst,\ Src>}}\ \{}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_supported\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Dst\ Do(Src\ value)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{comment}{//\ The\ exact\ order\ of\ the\ following\ is\ structured\ to\ hit\ the\ correct}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ optimization\ heuristics\ across\ compilers.\ Do\ not\ change\ without}}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{comment}{//\ checking\ the\ emitted\ code.}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{const}\ Dst\ saturated\ =\ CommonMaxOrMin<Dst,\ Src>(}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ kIsMaxInRangeForNumericType<Dst,\ Src>\ ||}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ (!kIsMinInRangeForNumericType<Dst,\ Src>\ \&\&\ IsValueNegative(value)));}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsValueInRangeForNumericType<Dst>(value))\ [[likely]]\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{return}\ saturated;}
+\DoxyCodeLine{00192\ \ \ \}}
+\DoxyCodeLine{00193\ \};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \textcolor{comment}{//\ saturated\_cast<>\ is\ analogous\ to\ static\_cast<>\ for\ numeric\ types,\ except}}
+\DoxyCodeLine{00196\ \textcolor{comment}{//\ that\ the\ specified\ numeric\ conversion\ will\ saturate\ by\ default\ rather\ than}}
+\DoxyCodeLine{00197\ \textcolor{comment}{//\ overflow\ or\ underflow,\ and\ NaN\ assignment\ to\ an\ integral\ will\ return\ 0.}}
+\DoxyCodeLine{00198\ \textcolor{comment}{//\ All\ boundary\ condition\ behaviors\ can\ be\ overridden\ with\ a\ custom\ handler.}}
+\DoxyCodeLine{00199\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }SaturationHandler\ =\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturation_default_limits}{SaturationDefaultLimits}},}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00202\ \textcolor{keyword}{constexpr}\ Dst\ saturated\_cast(Src\ value)\ \{}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{using\ }SrcType\ =\ UnderlyingType<Src>;}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ underlying\_value\ =\ \textcolor{keyword}{static\_cast<}SrcType\textcolor{keyword}{>}(value);}
+\DoxyCodeLine{00205\ \ \ \textcolor{keywordflow}{return}\ !std::is\_constant\_evaluated()\ \&\&}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SaturateFastOp<Dst,\ SrcType>::is\_supported\ \&\&}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_same\_v<SaturationHandler<Dst>,}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1internal_1_1_saturation_default_limits}{SaturationDefaultLimits<Dst>}}>}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ SaturateFastOp<Dst,\ SrcType>::Do(underlying\_value)}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ saturated\_cast\_impl<Dst,\ SaturationHandler,\ SrcType>(}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ underlying\_value,}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DstRangeRelationToSrcRange<Dst,\ SaturationHandler,\ SrcType>(}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ underlying\_value));}
+\DoxyCodeLine{00214\ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \textcolor{comment}{//\ strict\_cast<>\ is\ analogous\ to\ static\_cast<>\ for\ numeric\ types,\ except\ that}}
+\DoxyCodeLine{00217\ \textcolor{comment}{//\ it\ will\ cause\ a\ compile\ failure\ if\ the\ destination\ type\ is\ not\ large\ enough}}
+\DoxyCodeLine{00218\ \textcolor{comment}{//\ to\ contain\ any\ value\ in\ the\ source\ type.\ It\ performs\ no\ runtime\ checking.}}
+\DoxyCodeLine{00219\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ SrcType\ =\ UnderlyingType<Src>>}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{requires}(}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \mbox{\hyperlink{conceptkiwi_1_1internal_1_1_is_numeric}{IsNumeric<Src>}}\ \&\&\ std::is\_arithmetic\_v<Dst>\ \&\&}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \textcolor{comment}{//\ If\ you\ got\ here\ from\ a\ compiler\ error,\ it's\ because\ you\ tried\ to\ assign}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{comment}{//\ from\ a\ source\ type\ to\ a\ destination\ type\ that\ has\ insufficient\ range.}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{comment}{//\ The\ solution\ may\ be\ to\ change\ the\ destination\ type\ you're\ assigning\ to,}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ use\ one\ large\ enough\ to\ represent\ the\ source.}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{comment}{//\ Alternatively,\ you\ may\ be\ better\ served\ with\ the\ checked\_cast<>\ or}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{comment}{//\ saturated\_cast<>\ template\ functions\ for\ your\ particular\ use\ case.}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ SrcType>\ ==}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ NumericRangeRepresentation::kContained)}
+\DoxyCodeLine{00230\ \textcolor{keyword}{constexpr}\ Dst\ strict\_cast(Src\ value)\ \{}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Dst\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}SrcType\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00232\ \}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \textcolor{comment}{//\ Some\ wrappers\ to\ statically\ check\ that\ a\ type\ is\ in\ range.}}
 \DoxyCodeLine{00235\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<ArithmeticOrUnderlyingEnum<Dst>>\ \&\&}
-\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ std::is\_arithmetic\_v<ArithmeticOrUnderlyingEnum<Src>>)}
-\DoxyCodeLine{00238\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsNumericRangeContained<Dst,\ Src>\ =}
-\DoxyCodeLine{00239\ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ Src>\ ==}
-\DoxyCodeLine{00240\ \ \ \ \ NumericRangeRepresentation::kContained;}
-\DoxyCodeLine{00241\ }
-\DoxyCodeLine{00242\ \textcolor{comment}{//\ StrictNumeric\ implements\ compile\ time\ range\ checking\ between\ numeric\ types\ by}}
-\DoxyCodeLine{00243\ \textcolor{comment}{//\ wrapping\ assignment\ operations\ in\ a\ strict\_cast.\ This\ class\ is\ intended\ to\ be}}
-\DoxyCodeLine{00244\ \textcolor{comment}{//\ used\ for\ function\ arguments\ and\ return\ types,\ to\ ensure\ the\ destination\ type}}
-\DoxyCodeLine{00245\ \textcolor{comment}{//\ can\ always\ contain\ the\ source\ type.\ This\ is\ essentially\ the\ same\ as\ enforcing}}
-\DoxyCodeLine{00246\ \textcolor{comment}{//\ -\/Wconversion\ in\ gcc\ and\ C4302\ warnings\ on\ MSVC,\ but\ it\ can\ be\ applied}}
-\DoxyCodeLine{00247\ \textcolor{comment}{//\ incrementally\ at\ API\ boundaries,\ making\ it\ easier\ to\ convert\ code\ so\ that\ it}}
-\DoxyCodeLine{00248\ \textcolor{comment}{//\ compiles\ cleanly\ with\ truncation\ warnings\ enabled.}}
-\DoxyCodeLine{00249\ \textcolor{comment}{//\ This\ template\ should\ introduce\ no\ runtime\ overhead,\ but\ it\ also\ provides\ no}}
-\DoxyCodeLine{00250\ \textcolor{comment}{//\ runtime\ checking\ of\ any\ of\ the\ associated\ mathematical\ operations.\ Use}}
-\DoxyCodeLine{00251\ \textcolor{comment}{//\ CheckedNumeric\ for\ runtime\ range\ checks\ of\ the\ actual\ value\ being\ assigned.}}
-\DoxyCodeLine{00252\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
-\DoxyCodeLine{00254\ \textcolor{keyword}{class\ }StrictNumeric\ \{}
-\DoxyCodeLine{00255\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
-\DoxyCodeLine{00257\ }
-\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{constexpr}\ StrictNumeric()\ :\ value\_(0)\ \{\}}
-\DoxyCodeLine{00259\ }
-\DoxyCodeLine{00260\ \ \ \textcolor{comment}{//\ Copy\ constructor.}}
-\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{constexpr}\ StrictNumeric(\textcolor{keyword}{const}\ StrictNumeric<Src>\&\ rhs)}
-\DoxyCodeLine{00263\ \ \ \ \ \ \ :\ value\_(strict\_cast<T>(rhs.value\_))\ \{\}}
-\DoxyCodeLine{00264\ }
-\DoxyCodeLine{00265\ \ \ \textcolor{comment}{//\ This\ is\ not\ an\ explicit\ constructor\ because\ we\ implicitly\ upgrade\ regular}}
-\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//\ numerics\ to\ StrictNumerics\ to\ make\ them\ easier\ to\ use.}}
-\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00269\ \ \ \textcolor{keyword}{constexpr}\ StrictNumeric(Src\ value)\ :\ value\_(strict\_cast<T>(value))\ \{\}}
-\DoxyCodeLine{00270\ }
-\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ If\ you\ got\ here\ from\ a\ compiler\ error,\ it's\ because\ you\ tried\ to\ assign}}
-\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//\ from\ a\ source\ type\ to\ a\ destination\ type\ that\ has\ insufficient\ range.}}
-\DoxyCodeLine{00273\ \ \ \textcolor{comment}{//\ The\ solution\ may\ be\ to\ change\ the\ destination\ type\ you're\ assigning\ to,}}
-\DoxyCodeLine{00274\ \ \ \textcolor{comment}{//\ and\ use\ one\ large\ enough\ to\ represent\ the\ source.}}
-\DoxyCodeLine{00275\ \ \ \textcolor{comment}{//\ If\ you're\ assigning\ from\ a\ CheckedNumeric<>\ class,\ you\ may\ be\ able\ to\ use}}
-\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//\ the\ AssignIfValid()\ member\ function,\ specify\ a\ narrower\ destination\ type\ to}}
-\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//\ the\ member\ value\ functions\ (e.g.\ val.template\ ValueOrDie<Dst>()),\ use\ one}}
-\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//\ of\ the\ value\ helper\ functions\ (e.g.\ ValueOrDieForType<Dst>(val)).}}
-\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ If\ you've\ encountered\ an\ \_ambiguous\ overload\_\ you\ can\ use\ a\ static\_cast<>}}
-\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ to\ explicitly\ cast\ the\ result\ to\ the\ destination\ type.}}
-\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ If\ none\ of\ that\ works,\ you\ may\ be\ better\ served\ with\ the\ checked\_cast<>\ or}}
-\DoxyCodeLine{00282\ \ \ \textcolor{comment}{//\ saturated\_cast<>\ template\ functions\ for\ your\ particular\ use\ case.}}
-\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
-\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keyword}{requires}(kIsNumericRangeContained<Dst,\ T>)}
-\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ Dst()\ \textcolor{keyword}{const}\ \{\ \ \textcolor{comment}{//\ NOLINT(google-\/explicit-\/constructor)}}
-\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}ArithmeticOrUnderlyingEnum<Dst>\textcolor{keyword}{>}(value\_);}
-\DoxyCodeLine{00287\ \ \ \}}
-\DoxyCodeLine{00288\ }
-\DoxyCodeLine{00289\ \ \ \textcolor{comment}{//\ Unary\ negation\ does\ not\ require\ any\ conversions.}}
-\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator!()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !value\_;\ \}}
+\DoxyCodeLine{00236\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsNumericRangeContained\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{requires}(std::is\_arithmetic\_v<ArithmeticOrUnderlyingEnum<Dst>>\ \&\&}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ std::is\_arithmetic\_v<ArithmeticOrUnderlyingEnum<Src>>)}
+\DoxyCodeLine{00241\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ kIsNumericRangeContained<Dst,\ Src>\ =}
+\DoxyCodeLine{00242\ \ \ \ \ kStaticDstRangeRelationToSrcRange<Dst,\ Src>\ ==}
+\DoxyCodeLine{00243\ \ \ \ \ NumericRangeRepresentation::kContained;}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \textcolor{comment}{//\ StrictNumeric\ implements\ compile\ time\ range\ checking\ between\ numeric\ types\ by}}
+\DoxyCodeLine{00246\ \textcolor{comment}{//\ wrapping\ assignment\ operations\ in\ a\ strict\_cast.\ This\ class\ is\ intended\ to\ be}}
+\DoxyCodeLine{00247\ \textcolor{comment}{//\ used\ for\ function\ arguments\ and\ return\ types,\ to\ ensure\ the\ destination\ type}}
+\DoxyCodeLine{00248\ \textcolor{comment}{//\ can\ always\ contain\ the\ source\ type.\ This\ is\ essentially\ the\ same\ as\ enforcing}}
+\DoxyCodeLine{00249\ \textcolor{comment}{//\ -\/Wconversion\ in\ gcc\ and\ C4302\ warnings\ on\ MSVC,\ but\ it\ can\ be\ applied}}
+\DoxyCodeLine{00250\ \textcolor{comment}{//\ incrementally\ at\ API\ boundaries,\ making\ it\ easier\ to\ convert\ code\ so\ that\ it}}
+\DoxyCodeLine{00251\ \textcolor{comment}{//\ compiles\ cleanly\ with\ truncation\ warnings\ enabled.}}
+\DoxyCodeLine{00252\ \textcolor{comment}{//\ This\ template\ should\ introduce\ no\ runtime\ overhead,\ but\ it\ also\ provides\ no}}
+\DoxyCodeLine{00253\ \textcolor{comment}{//\ runtime\ checking\ of\ any\ of\ the\ associated\ mathematical\ operations.\ Use}}
+\DoxyCodeLine{00254\ \textcolor{comment}{//\ CheckedNumeric\ for\ runtime\ range\ checks\ of\ the\ actual\ value\ being\ assigned.}}
+\DoxyCodeLine{00255\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<T>}
+\DoxyCodeLine{00257\ \textcolor{keyword}{class\ }StrictNumeric\ \{}
+\DoxyCodeLine{00258\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{using\ }type\ =\ T;}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{constexpr}\ StrictNumeric()\ :\ value\_(0)\ \{\}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \textcolor{comment}{//\ Copy\ constructor.}}
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{constexpr}\ StrictNumeric(\textcolor{keyword}{const}\ StrictNumeric<Src>\&\ rhs)}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ :\ value\_(strict\_cast<T>(rhs.value\_))\ \{\}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ This\ is\ not\ an\ explicit\ constructor\ because\ we\ implicitly\ upgrade\ regular}}
+\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//\ numerics\ to\ StrictNumerics\ to\ make\ them\ easier\ to\ use.}}
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{constexpr}\ StrictNumeric(Src\ value)\ :\ value\_(strict\_cast<T>(value))\ \{\}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{//\ If\ you\ got\ here\ from\ a\ compiler\ error,\ it's\ because\ you\ tried\ to\ assign}}
+\DoxyCodeLine{00275\ \ \ \textcolor{comment}{//\ from\ a\ source\ type\ to\ a\ destination\ type\ that\ has\ insufficient\ range.}}
+\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//\ The\ solution\ may\ be\ to\ change\ the\ destination\ type\ you're\ assigning\ to,}}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//\ and\ use\ one\ large\ enough\ to\ represent\ the\ source.}}
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//\ If\ you're\ assigning\ from\ a\ CheckedNumeric<>\ class,\ you\ may\ be\ able\ to\ use}}
+\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ the\ AssignIfValid()\ member\ function,\ specify\ a\ narrower\ destination\ type\ to}}
+\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ the\ member\ value\ functions\ (e.g.\ val.template\ ValueOrDie<Dst>()),\ use\ one}}
+\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ of\ the\ value\ helper\ functions\ (e.g.\ ValueOrDieForType<Dst>(val)).}}
+\DoxyCodeLine{00282\ \ \ \textcolor{comment}{//\ If\ you've\ encountered\ an\ \_ambiguous\ overload\_\ you\ can\ use\ a\ static\_cast<>}}
+\DoxyCodeLine{00283\ \ \ \textcolor{comment}{//\ to\ explicitly\ cast\ the\ result\ to\ the\ destination\ type.}}
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ If\ none\ of\ that\ works,\ you\ may\ be\ better\ served\ with\ the\ checked\_cast<>\ or}}
+\DoxyCodeLine{00285\ \ \ \textcolor{comment}{//\ saturated\_cast<>\ template\ functions\ for\ your\ particular\ use\ case.}}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst>}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keyword}{requires}(kIsNumericRangeContained<Dst,\ T>)}
+\DoxyCodeLine{00288\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{operator}\ Dst()\ \textcolor{keyword}{const}\ \{\ \ \textcolor{comment}{//\ NOLINT(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}ArithmeticOrUnderlyingEnum<Dst>\textcolor{keyword}{>}(value\_);}
+\DoxyCodeLine{00290\ \ \ \}}
 \DoxyCodeLine{00291\ }
-\DoxyCodeLine{00292\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
-\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<U>}
-\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }StrictNumeric;}
-\DoxyCodeLine{00296\ }
-\DoxyCodeLine{00297\ \ \ T\ value\_;}
-\DoxyCodeLine{00298\ \};}
+\DoxyCodeLine{00292\ \ \ \textcolor{comment}{//\ Unary\ negation\ does\ not\ require\ any\ conversions.}}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator!()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !value\_;\ \}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keyword}{requires}\ std::is\_arithmetic\_v<U>}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }StrictNumeric;}
 \DoxyCodeLine{00299\ }
-\DoxyCodeLine{00300\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00301\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}(T)\ -\/>\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<T>}};}
+\DoxyCodeLine{00300\ \ \ T\ value\_;}
+\DoxyCodeLine{00301\ \};}
 \DoxyCodeLine{00302\ }
-\DoxyCodeLine{00303\ \textcolor{comment}{//\ Convenience\ wrapper\ returns\ a\ StrictNumeric\ from\ the\ provided\ arithmetic}}
-\DoxyCodeLine{00304\ \textcolor{comment}{//\ type.}}
-\DoxyCodeLine{00305\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00306\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<UnderlyingType<T>}}>\ MakeStrictNum(\textcolor{keyword}{const}\ T\ value)\ \{}
-\DoxyCodeLine{00307\ \ \ \textcolor{keywordflow}{return}\ value;}
-\DoxyCodeLine{00308\ \}}
-\DoxyCodeLine{00309\ }
-\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#define\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(CLASS,\ NAME,\ OP)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{00311\ \textcolor{preprocessor}{\ \ template\ <typename\ L,\ typename\ R>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{00312\ \textcolor{preprocessor}{\ \ \ \ requires(internal::Is\#\#CLASS\#\#Op<L,\ R>)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{00313\ \textcolor{preprocessor}{\ \ constexpr\ bool\ operator\ OP(L\ lhs,\ R\ rhs)\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
-\DoxyCodeLine{00314\ \textcolor{preprocessor}{\ \ \ \ return\ SafeCompare<NAME,\ UnderlyingType<L>,\ UnderlyingType<R>>(lhs,\ rhs);\ \(\backslash\)}}
-\DoxyCodeLine{00315\ \textcolor{preprocessor}{\ \ \}}}
-\DoxyCodeLine{00316\ }
-\DoxyCodeLine{00317\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsLess,\ <)}
-\DoxyCodeLine{00318\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsLessOrEqual,\ <=)}
-\DoxyCodeLine{00319\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsGreater,\ >)}
-\DoxyCodeLine{00320\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsGreaterOrEqual,\ >=)}
-\DoxyCodeLine{00321\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsEqual,\ ==)}
-\DoxyCodeLine{00322\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsNotEqual,\ !=)}
-\DoxyCodeLine{00323\ }
-\DoxyCodeLine{00324\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
-\DoxyCodeLine{00325\ }
-\DoxyCodeLine{00326\ using\ internal::as\_signed;}
-\DoxyCodeLine{00327\ using\ internal::as\_unsigned;}
-\DoxyCodeLine{00328\ using\ internal::checked\_cast;}
-\DoxyCodeLine{00329\ using\ internal::IsValueInRangeForNumericType;}
-\DoxyCodeLine{00330\ using\ internal::IsValueNegative;}
-\DoxyCodeLine{00331\ using\ internal::kIsTypeInRangeForNumericType;}
-\DoxyCodeLine{00332\ using\ internal::MakeStrictNum;}
-\DoxyCodeLine{00333\ using\ internal::SafeUnsignedAbs;}
-\DoxyCodeLine{00334\ using\ internal::saturated\_cast;}
-\DoxyCodeLine{00335\ using\ internal::strict\_cast;}
-\DoxyCodeLine{00336\ using\ internal::\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}};}
-\DoxyCodeLine{00337\ }
-\DoxyCodeLine{00338\ \textcolor{comment}{//\ Explicitly\ make\ a\ shorter\ size\_t\ alias\ for\ convenience.}}
-\DoxyCodeLine{00339\ using\ SizeT\ =\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}<\textcolor{keywordtype}{size\_t}>;}
+\DoxyCodeLine{00303\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00304\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}(T)\ -\/>\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<T>}};}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \textcolor{comment}{//\ Convenience\ wrapper\ returns\ a\ StrictNumeric\ from\ the\ provided\ arithmetic}}
+\DoxyCodeLine{00307\ \textcolor{comment}{//\ type.}}
+\DoxyCodeLine{00308\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00309\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric<UnderlyingType<T>}}>\ MakeStrictNum(\textcolor{keyword}{const}\ T\ value)\ \{}
+\DoxyCodeLine{00310\ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00311\ \}}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#define\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(CLASS,\ NAME,\ OP)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{\ \ template\ <typename\ L,\ typename\ R>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{\ \ \ \ requires(internal::Is\#\#CLASS\#\#Op<L,\ R>)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\ \ constexpr\ bool\ operator\ OP(L\ lhs,\ R\ rhs)\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\ \ \ \ return\ SafeCompare<NAME,\ UnderlyingType<L>,\ UnderlyingType<R>>(lhs,\ rhs);\ \(\backslash\)}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsLess,\ <)}
+\DoxyCodeLine{00321\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsLessOrEqual,\ <=)}
+\DoxyCodeLine{00322\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsGreater,\ >)}
+\DoxyCodeLine{00323\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsGreaterOrEqual,\ >=)}
+\DoxyCodeLine{00324\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsEqual,\ ==)}
+\DoxyCodeLine{00325\ BASE\_NUMERIC\_COMPARISON\_OPERATORS(Strict,\ IsNotEqual,\ !=)}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ using\ internal::as\_signed;}
+\DoxyCodeLine{00330\ using\ internal::as\_unsigned;}
+\DoxyCodeLine{00331\ using\ internal::checked\_cast;}
+\DoxyCodeLine{00332\ using\ internal::IsValueInRangeForNumericType;}
+\DoxyCodeLine{00333\ using\ internal::IsValueNegative;}
+\DoxyCodeLine{00334\ using\ internal::kIsTypeInRangeForNumericType;}
+\DoxyCodeLine{00335\ using\ internal::MakeStrictNum;}
+\DoxyCodeLine{00336\ using\ internal::SafeUnsignedAbs;}
+\DoxyCodeLine{00337\ using\ internal::saturated\_cast;}
+\DoxyCodeLine{00338\ using\ internal::strict\_cast;}
+\DoxyCodeLine{00339\ using\ internal::\mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}};}
 \DoxyCodeLine{00340\ }
-\DoxyCodeLine{00341\ \textcolor{comment}{//\ floating\ -\/>\ integral\ conversions\ that\ saturate\ and\ thus\ can\ actually\ return}}
-\DoxyCodeLine{00342\ \textcolor{comment}{//\ an\ integral\ type.}}
-\DoxyCodeLine{00343\ \textcolor{comment}{//}}
-\DoxyCodeLine{00344\ \textcolor{comment}{//\ Generally,\ what\ you\ want\ is\ saturated\_cast<Dst>(std::nearbyint(x)),\ which}}
-\DoxyCodeLine{00345\ \textcolor{comment}{//\ rounds\ correctly\ according\ to\ IEEE-\/754\ (round\ to\ nearest,\ ties\ go\ to\ nearest}}
-\DoxyCodeLine{00346\ \textcolor{comment}{//\ even\ number;\ this\ avoids\ bias).\ If\ your\ code\ is\ performance-\/critical}}
-\DoxyCodeLine{00347\ \textcolor{comment}{//\ and\ you\ are\ sure\ that\ you\ will\ never\ overflow,\ you\ can\ use\ std::lrint()}}
-\DoxyCodeLine{00348\ \textcolor{comment}{//\ or\ std::llrint(),\ which\ return\ a\ long\ or\ long\ long\ directly.}}
-\DoxyCodeLine{00349\ \textcolor{comment}{//}}
-\DoxyCodeLine{00350\ \textcolor{comment}{//\ Below\ are\ convenience\ functions\ around\ similar\ patterns,\ except\ that}}
-\DoxyCodeLine{00351\ \textcolor{comment}{//\ they\ round\ in\ nonstandard\ directions\ and\ will\ generally\ be\ slower.}}
-\DoxyCodeLine{00352\ }
-\DoxyCodeLine{00353\ \textcolor{comment}{//\ Rounds\ towards\ negative\ infinity\ (i.e.,\ down).}}
-\DoxyCodeLine{00354\ template\ <typename\ Dst\ =\ \textcolor{keywordtype}{int},\ typename\ Src>}
-\DoxyCodeLine{00355\ \ \ requires(std::integral<Dst>\ \&\&\ std::floating\_point<Src>)}
-\DoxyCodeLine{00356\ Dst\ ClampFloor(Src\ value)\ \{}
-\DoxyCodeLine{00357\ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<Dst>(std::floor(value));}
-\DoxyCodeLine{00358\ \}}
-\DoxyCodeLine{00359\ }
-\DoxyCodeLine{00360\ \textcolor{comment}{//\ Rounds\ towards\ positive\ infinity\ (i.e.,\ up).}}
-\DoxyCodeLine{00361\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ \textcolor{keywordtype}{int},\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00362\ \ \ \textcolor{keyword}{requires}(std::integral<Dst>\ \&\&\ std::floating\_point<Src>)}
-\DoxyCodeLine{00363\ Dst\ ClampCeil(Src\ value)\ \{}
-\DoxyCodeLine{00364\ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<Dst>(std::ceil(value));}
-\DoxyCodeLine{00365\ \}}
-\DoxyCodeLine{00366\ }
-\DoxyCodeLine{00367\ \textcolor{comment}{//\ Rounds\ towards\ nearest\ integer,\ with\ ties\ away\ from\ zero.}}
-\DoxyCodeLine{00368\ \textcolor{comment}{//\ This\ means\ that\ 0.5\ will\ be\ rounded\ to\ 1\ and\ 1.5\ will\ be\ rounded\ to\ 2.}}
-\DoxyCodeLine{00369\ \textcolor{comment}{//\ Similarly,\ -\/0.5\ will\ be\ rounded\ to\ -\/1\ and\ -\/1.5\ will\ be\ rounded\ to\ -\/2.}}
-\DoxyCodeLine{00370\ \textcolor{comment}{//}}
-\DoxyCodeLine{00371\ \textcolor{comment}{//\ This\ is\ normally\ not\ what\ you\ want\ accuracy-\/wise\ (it\ introduces\ a\ small\ bias}}
-\DoxyCodeLine{00372\ \textcolor{comment}{//\ away\ from\ zero),\ and\ it\ is\ not\ the\ fastest\ option,\ but\ it\ is\ frequently\ what}}
-\DoxyCodeLine{00373\ \textcolor{comment}{//\ existing\ code\ expects.\ Compare\ with\ saturated\_cast<Dst>(std::nearbyint(x))}}
-\DoxyCodeLine{00374\ \textcolor{comment}{//\ or\ std::lrint(x),\ which\ would\ round\ 0.5\ and\ -\/0.5\ to\ 0\ but\ 1.5\ to\ 2\ and}}
-\DoxyCodeLine{00375\ \textcolor{comment}{//\ -\/1.5\ to\ -\/2.}}
-\DoxyCodeLine{00376\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ \textcolor{keywordtype}{int},\ \textcolor{keyword}{typename}\ Src>}
-\DoxyCodeLine{00377\ \ \ \textcolor{keyword}{requires}(std::integral<Dst>\ \&\&\ std::floating\_point<Src>)}
-\DoxyCodeLine{00378\ Dst\ ClampRound(Src\ value)\ \{}
-\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{const}\ Src\ rounded\ =\ std::round(value);}
-\DoxyCodeLine{00380\ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<Dst>(rounded);}
-\DoxyCodeLine{00381\ \}}
-\DoxyCodeLine{00382\ }
-\DoxyCodeLine{00383\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00341\ \textcolor{comment}{//\ Explicitly\ make\ a\ shorter\ size\_t\ alias\ for\ convenience.}}
+\DoxyCodeLine{00342\ using\ SizeT\ =\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_strict_numeric}{StrictNumeric}}<\textcolor{keywordtype}{size\_t}>;}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \textcolor{comment}{//\ floating\ -\/>\ integral\ conversions\ that\ saturate\ and\ thus\ can\ actually\ return}}
+\DoxyCodeLine{00345\ \textcolor{comment}{//\ an\ integral\ type.}}
+\DoxyCodeLine{00346\ \textcolor{comment}{//}}
+\DoxyCodeLine{00347\ \textcolor{comment}{//\ Generally,\ what\ you\ want\ is\ saturated\_cast<Dst>(std::nearbyint(x)),\ which}}
+\DoxyCodeLine{00348\ \textcolor{comment}{//\ rounds\ correctly\ according\ to\ IEEE-\/754\ (round\ to\ nearest,\ ties\ go\ to\ nearest}}
+\DoxyCodeLine{00349\ \textcolor{comment}{//\ even\ number;\ this\ avoids\ bias).\ If\ your\ code\ is\ performance-\/critical}}
+\DoxyCodeLine{00350\ \textcolor{comment}{//\ and\ you\ are\ sure\ that\ you\ will\ never\ overflow,\ you\ can\ use\ std::lrint()}}
+\DoxyCodeLine{00351\ \textcolor{comment}{//\ or\ std::llrint(),\ which\ return\ a\ long\ or\ long\ long\ directly.}}
+\DoxyCodeLine{00352\ \textcolor{comment}{//}}
+\DoxyCodeLine{00353\ \textcolor{comment}{//\ Below\ are\ convenience\ functions\ around\ similar\ patterns,\ except\ that}}
+\DoxyCodeLine{00354\ \textcolor{comment}{//\ they\ round\ in\ nonstandard\ directions\ and\ will\ generally\ be\ slower.}}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \textcolor{comment}{//\ Rounds\ towards\ negative\ infinity\ (i.e.,\ down).}}
+\DoxyCodeLine{00357\ template\ <typename\ Dst\ =\ \textcolor{keywordtype}{int},\ typename\ Src>}
+\DoxyCodeLine{00358\ \ \ requires(std::integral<Dst>\ \&\&\ std::floating\_point<Src>)}
+\DoxyCodeLine{00359\ Dst\ ClampFloor(Src\ value)\ \{}
+\DoxyCodeLine{00360\ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<Dst>(std::floor(value));}
+\DoxyCodeLine{00361\ \}}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \textcolor{comment}{//\ Rounds\ towards\ positive\ infinity\ (i.e.,\ up).}}
+\DoxyCodeLine{00364\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ \textcolor{keywordtype}{int},\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00365\ \ \ \textcolor{keyword}{requires}(std::integral<Dst>\ \&\&\ std::floating\_point<Src>)}
+\DoxyCodeLine{00366\ Dst\ ClampCeil(Src\ value)\ \{}
+\DoxyCodeLine{00367\ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<Dst>(std::ceil(value));}
+\DoxyCodeLine{00368\ \}}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \textcolor{comment}{//\ Rounds\ towards\ nearest\ integer,\ with\ ties\ away\ from\ zero.}}
+\DoxyCodeLine{00371\ \textcolor{comment}{//\ This\ means\ that\ 0.5\ will\ be\ rounded\ to\ 1\ and\ 1.5\ will\ be\ rounded\ to\ 2.}}
+\DoxyCodeLine{00372\ \textcolor{comment}{//\ Similarly,\ -\/0.5\ will\ be\ rounded\ to\ -\/1\ and\ -\/1.5\ will\ be\ rounded\ to\ -\/2.}}
+\DoxyCodeLine{00373\ \textcolor{comment}{//}}
+\DoxyCodeLine{00374\ \textcolor{comment}{//\ This\ is\ normally\ not\ what\ you\ want\ accuracy-\/wise\ (it\ introduces\ a\ small\ bias}}
+\DoxyCodeLine{00375\ \textcolor{comment}{//\ away\ from\ zero),\ and\ it\ is\ not\ the\ fastest\ option,\ but\ it\ is\ frequently\ what}}
+\DoxyCodeLine{00376\ \textcolor{comment}{//\ existing\ code\ expects.\ Compare\ with\ saturated\_cast<Dst>(std::nearbyint(x))}}
+\DoxyCodeLine{00377\ \textcolor{comment}{//\ or\ std::lrint(x),\ which\ would\ round\ 0.5\ and\ -\/0.5\ to\ 0\ but\ 1.5\ to\ 2\ and}}
+\DoxyCodeLine{00378\ \textcolor{comment}{//\ -\/1.5\ to\ -\/2.}}
+\DoxyCodeLine{00379\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Dst\ =\ \textcolor{keywordtype}{int},\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{requires}(std::integral<Dst>\ \&\&\ std::floating\_point<Src>)}
+\DoxyCodeLine{00381\ Dst\ ClampRound(Src\ value)\ \{}
+\DoxyCodeLine{00382\ \ \ \textcolor{keyword}{const}\ Src\ rounded\ =\ std::round(value);}
+\DoxyCodeLine{00383\ \ \ \textcolor{keywordflow}{return}\ saturated\_cast<Dst>(rounded);}
+\DoxyCodeLine{00384\ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

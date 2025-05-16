@@ -1,0 +1,26 @@
+\doxysection{stack.\+hh}
+\hypertarget{stack_8hh_source}{}\label{stack_8hh_source}\index{include/kiwi/containers/stack.hh@{include/kiwi/containers/stack.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stack>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}base/containers/circular\_deque.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }base\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ Provides\ a\ definition\ of\ base::stack\ that's\ like\ std::stack\ but\ uses\ a}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ base::circular\_deque\ instead\ of\ std::deque.\ Since\ std::stack\ is\ just\ a}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ wrapper\ for\ an\ underlying\ type,\ we\ can\ just\ provide\ a\ typedef\ for\ it\ that}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ defaults\ to\ the\ base\ circular\_deque.}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Container\ =\ circular\_deque<T>>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{using\ }stack\ =\ std::stack<T,\ Container>;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \}\ \ \textcolor{comment}{//\ namespace\ base}}
+
+\end{DoxyCode}

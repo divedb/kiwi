@@ -81,7 +81,7 @@
 \DoxyCodeLine{00077\ \ \ \ \ \}}
 \DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{const}\ V\ saturated\ =\ CommonMaxOrMin<V>(IsValueNegative(y));}
 \DoxyCodeLine{00079\ \ \ \ \ V\ result\ =\ \{\};}
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (CheckedAddOp<T,\ U>::Do(x,\ y,\ \&result))\ [[likely]]\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_add_op}{CheckedAddOp<T,\ U>::Do}}(x,\ y,\ \&result))\ [[likely]]\ \{}
 \DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00082\ \ \ \ \ \}}
 \DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ saturated;}
@@ -103,7 +103,7 @@
 \DoxyCodeLine{00099\ \ \ \ \ \}}
 \DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{const}\ V\ saturated\ =\ CommonMaxOrMin<V>(!IsValueNegative(y));}
 \DoxyCodeLine{00101\ \ \ \ \ V\ result\ =\ \{\};}
-\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (CheckedSubOp<T,\ U>::Do(x,\ y,\ \&result))\ [[likely]]\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_sub_op}{CheckedSubOp<T,\ U>::Do}}(x,\ y,\ \&result))\ [[likely]]\ \{}
 \DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00104\ \ \ \ \ \}}
 \DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ saturated;}
@@ -125,7 +125,7 @@
 \DoxyCodeLine{00121\ \ \ \ \ V\ result\ =\ \{\};}
 \DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ V\ saturated\ =}
 \DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ CommonMaxOrMin<V>(IsValueNegative(x)\ \string^\ IsValueNegative(y));}
-\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{if}\ (CheckedMulOp<T,\ U>::Do(x,\ y,\ \&result))\ [[likely]]\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mul_op}{CheckedMulOp<T,\ U>::Do}}(x,\ y,\ \&result))\ [[likely]]\ \{}
 \DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00126\ \ \ \ \ \}}
 \DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ saturated;}
@@ -142,7 +142,7 @@
 \DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V\ =\ result\_type>}
 \DoxyCodeLine{00139\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T\ x,\ U\ y)\ \{}
 \DoxyCodeLine{00140\ \ \ \ \ V\ result\ =\ \{\};}
-\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{if}\ ((CheckedDivOp<T,\ U>::Do(x,\ y,\ \&result)))\ [[likely]]\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{if}\ ((\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_div_op}{CheckedDivOp<T,\ U>::Do}}(x,\ y,\ \&result)))\ [[likely]]\ \{}
 \DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00143\ \ \ \ \ \}}
 \DoxyCodeLine{00144\ \ \ \ \ \textcolor{comment}{//\ Saturation\ goes\ to\ max,\ min,\ or\ NaN\ (if\ x\ is\ zero).}}
@@ -161,7 +161,7 @@
 \DoxyCodeLine{00157\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ V\ =\ result\_type>}
 \DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ V\ Do(T\ x,\ U\ y)\ \{}
 \DoxyCodeLine{00159\ \ \ \ \ V\ result\ =\ \{\};}
-\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (CheckedModOp<T,\ U>::Do(x,\ y,\ \&result))\ [[likely]]\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structkiwi_1_1internal_1_1_checked_mod_op}{CheckedModOp<T,\ U>::Do}}(x,\ y,\ \&result))\ [[likely]]\ \{}
 \DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
 \DoxyCodeLine{00162\ \ \ \ \ \}}
 \DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ x;}

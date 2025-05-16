@@ -1,0 +1,132 @@
+\doxysection{Function Class Reference}
+\hypertarget{classfolly_1_1_function}{}\label{classfolly_1_1_function}\index{Function@{Function}}
+
+
+{\ttfamily \#include $<$function.\+hh$>$}
+
+
+
+\doxysubsection{Detailed Description}
+@refcode folly/docs/examples/folly/\+Function.\+cpp
+
+A polymorphic function wrapper that is not copyable and does not require the wrapped function to be copy constructible.
+
+{\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} is a polymorphic function wrapper, similar to {\ttfamily std\+::function}. The template parameters of the {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} define the parameter signature of the wrapped callable, but not the specific type of the embedded callable. E.\+g. a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}\texorpdfstring{$<$}{<}int(int)\texorpdfstring{$>$}{>}} can wrap callables that return an {\ttfamily int} when passed an {\ttfamily int}. This can be a function pointer or any class object implementing one or both of \begin{DoxyVerb}int operator(int);
+int operator(int) const;
+\end{DoxyVerb}
+
+
+If both are defined, the non-\/const one takes precedence.
+
+Unlike {\ttfamily std\+::function}, a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} can wrap objects that are not copy constructible. As a consequence of this, {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} itself is not copyable, either.
+
+Another difference is that, unlike {\ttfamily std\+::function}, {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} treats const-\/ness of methods correctly. While a {\ttfamily std\+::function} allows to wrap an object that only implements a non-\/const {\ttfamily operator()} and invoke a const-\/reference of the {\ttfamily std\+::function}, {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} requires you to declare a function type as const in order to be able to execute it on a const-\/reference.
+
+For example\+: \begin{DoxyVerb}class Foo {
+ public:
+  void operator()() {
+    // mutates the Foo object
+  }
+};
+
+class Bar {
+  std::function<void(void)> foo_; // wraps a Foo object
+ public:
+  void mutateFoo() const
+  {
+    foo_();
+  }
+};
+\end{DoxyVerb}
+
+
+Even though {\ttfamily mutate\+Foo} is a const-\/method, so it can only reference {\ttfamily foo\+\_\+} as const, it is able to call the non-\/const {\ttfamily operator()} of the Foo object that is embedded in the foo\+\_\+ function.
+
+{\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} will not allow you to do that. You will have to decide whether you need to invoke your wrapped callable from a const reference (like in the example above), in which case it will only wrap a {\ttfamily operator() const}. If your functor does not implement that, compilation will fail. If you do not require to be able to invoke the wrapped function in a const context, you can wrap any functor that implements either or both of const and non-\/const {\ttfamily operator()}.
+
+The template parameter of {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}}, the {\ttfamily Function\+Type}, can be const-\/qualified. Be aware that the const is part of the function signature. It does not mean that the function type is a const type.
+
+using Function\+Type = R(\+Args...); using Const\+Function\+Type = R(\+Args...) const;
+
+In this example, {\ttfamily Function\+Type} and {\ttfamily Const\+Function\+Type} are different types. {\ttfamily Const\+Function\+Type} is not the same as {\ttfamily const Function\+Type}. As a matter of fact, trying to use the latter should emit a compiler warning or error, because it has no defined meaning. \begin{DoxyVerb}// This will not compile:
+folly::Function<void(void) const> func = Foo();
+// because Foo does not have a member function of the form:
+//   void operator()() const;
+
+// This will compile just fine:
+folly::Function<void(void)> func = Foo();
+// and it will wrap the existing member function:
+//   void operator()();
+\end{DoxyVerb}
+
+
+When should a const function type be used? As a matter of fact, you will probably not need to use const function types very often. See the following example\+: \begin{DoxyVerb}class Bar {
+  folly::Function<void()> func_;
+  folly::Function<void() const> constFunc_;
+
+  void someMethod() {
+    // Can call func_.
+    func_();
+    // Can call constFunc_.
+    constFunc_();
+  }
+
+  void someConstMethod() const {
+    // Can call constFunc_.
+    constFunc_();
+    // However, cannot call func_ because a non-const method cannot
+    // be called from a const one.
+  }
+};
+\end{DoxyVerb}
+
+
+As you can see, whether the {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}}\textquotesingle{}s function type should be declared const or not is identical to whether a corresponding method would be declared const or not.
+
+You only require a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} to hold a const function type, if you intend to invoke it from within a const context. This is to ensure that you cannot mutate its inner state when calling in a const context.
+
+This is how the const/non-\/const choice relates to lambda functions\+: \begin{DoxyVerb}// Non-mutable lambdas: can be stored in a non-const...
+folly::Function<void(int)> print_number =
+  [] (int number) { std::cout << number << std::endl; };
+
+// ...as well as in a const folly::Function
+folly::Function<void(int) const> print_number_const =
+  [] (int number) { std::cout << number << std::endl; };
+
+// Mutable lambda: can only be stored in a non-const folly::Function:
+int number = 0;
+folly::Function<void()> print_number =
+  [number] () mutable { std::cout << ++number << std::endl; };
+// Trying to store the above mutable lambda in a
+// `folly::Function<void() const>` would lead to a compiler error:
+// error: no viable conversion from '(lambda at ...)' to
+// 'folly::Function<void () const>'
+\end{DoxyVerb}
+
+
+Casting between const and non-\/const {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}}s\+: conversion from const to non-\/const signatures happens implicitly. Any function that takes a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}\texorpdfstring{$<$}{<}R(\+Args...)\texorpdfstring{$>$}{>}} can be passed a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}\texorpdfstring{$<$}{<}R(\+Args...) const\texorpdfstring{$>$}{>}} without explicit conversion. This is safe, because casting from const to non-\/const only entails giving up the ability to invoke the function from a const context. Casting from a non-\/const to a const signature is potentially dangerous, as it means that a function that may change its inner state when invoked is made possible to call from a const context. Therefore this cast does not happen implicitly. The function {\ttfamily folly\+::const\+\_\+cast\+\_\+function} can be used to perform the cast. \begin{DoxyVerb}// Mutable lambda: can only be stored in a non-const folly::Function:
+int number = 0;
+folly::Function<void()> print_number =
+  [number] () mutable { std::cout << ++number << std::endl; };
+
+// const-cast to a const folly::Function:
+folly::Function<void() const> print_number_const =
+  const_cast_function(std::move(print_number));
+\end{DoxyVerb}
+
+
+When to use const function types? Generally, only when you need them. When you use a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} as a member of a struct or class, only use a const function signature when you need to invoke the function from const context. When passing a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} to a function, the function should accept a non-\/const {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} whenever possible, i.\+e. when it does not need to pass on or store a const {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}}. This is the least possible constraint\+: you can always pass a const {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} when the function accepts a non-\/const one.
+
+How does the const behaviour compare to {\ttfamily std\+::function}? {\ttfamily std\+::function} can wrap object with non-\/const invocation behaviour but exposes them as const. The equivalent behaviour can be achieved with {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} like so\+: \begin{DoxyVerb}std::function<void(void)> stdfunc = someCallable;
+
+folly::Function<void(void) const> uniqfunc = const_cast_function(
+  folly::Function<void(void)>(someCallable)
+);
+\end{DoxyVerb}
+
+
+You need to wrap the callable first in a non-\/const {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} to select a non-\/const invoke operator (or the const one if no non-\/const one is present), and then move it into a const {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}} using {\ttfamily const\+\_\+cast\+\_\+function}. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

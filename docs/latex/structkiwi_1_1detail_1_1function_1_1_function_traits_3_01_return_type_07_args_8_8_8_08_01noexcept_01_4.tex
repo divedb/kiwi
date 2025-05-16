@@ -1,0 +1,77 @@
+\doxysection{kiwi\+::detail\+::function\+::Function\+Traits\texorpdfstring{$<$}{<} Return\+Type(Args...) noexcept \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4}{}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4}\index{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$@{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a3558db32b4aeb28cf516f8fd2b956f26}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a3558db32b4aeb28cf516f8fd2b956f26} 
+using {\bfseries Call} = Return\+Type (\texorpdfstring{$\ast$}{*})(Call\+Arg$<$Args$>$..., \mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}}\&) noexcept
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a96dcf2bdd1071fd793beabe829e5b0d6}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a96dcf2bdd1071fd793beabe829e5b0d6} 
+using {\bfseries Const\+Signature} = Return\+Type(Args...) const noexcept
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a421f3333c2eb1f40fba57b47d73fd8f0}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a421f3333c2eb1f40fba57b47d73fd8f0} 
+using {\bfseries Non\+Const\+Signature} = Return\+Type(Args...) noexcept
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a608b0a49673229a97de216ba31af5900}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a608b0a49673229a97de216ba31af5900} 
+using {\bfseries Other\+Signature} = Const\+Signature
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a79ab1606b4c55d582ffec14d64ab622a}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a79ab1606b4c55d582ffec14d64ab622a} 
+{\footnotesize template$<$typename F, typename R = Callable\+Result$<$\+F\&, Args...$>$, std\+::enable\+\_\+if\+\_\+t$<$ Callable\+Noexcept$<$ F \&, Args... $>$, int $>$ = 0$>$ }\\using {\bfseries If\+Safe\+Result} = If\+Safe\+Result\+Impl$<$R, Return\+Type$>$
+\item 
+using \mbox{\hyperlink{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a17f7b4727df7bf62ecceb8210657cad1}{Shared\+Proxy}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_ae6e99435c81746f07e24b43781e94fbf}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_ae6e99435c81746f07e24b43781e94fbf} 
+Return\+Type {\bfseries operator()} (Args... args) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_aeacd045e8e9ef0c642b8fcd2ae39fadb}\label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_aeacd045e8e9ef0c642b8fcd2ae39fadb} 
+static Return\+Type {\bfseries uninit\+Call} (Call\+Arg$<$ Args $>$..., \mbox{\hyperlink{unionkiwi_1_1detail_1_1function_1_1_data}{Data}} \&) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Fun, bool Small$>$ }\\static constexpr Call \mbox{\hyperlink{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_ab54c09abe44e8678245e89df52898818}{call}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a17f7b4727df7bf62ecceb8210657cad1}\index{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$@{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$}!SharedProxy@{SharedProxy}}
+\index{SharedProxy@{SharedProxy}!kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$@{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$}}
+\doxysubsubsection{\texorpdfstring{SharedProxy}{SharedProxy}}
+{\footnotesize\ttfamily \label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_a17f7b4727df7bf62ecceb8210657cad1} 
+template$<$typename Return\+Type, typename... Args$>$ \\
+using \mbox{\hyperlink{structkiwi_1_1detail_1_1function_1_1_function_traits}{kiwi\+::detail\+::function\+::\+Function\+Traits}}$<$ Return\+Type(Args...) noexcept $>$\+::\+Shared\+Proxy}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1detail_1_1function_1_1_function_traits_shared_proxy}{FunctionTraitsSharedProxy}}<NonConstSignature,\ \textcolor{keyword}{true},\ ReturnType,\ Args...>}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_ab54c09abe44e8678245e89df52898818}\index{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$@{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$}!call@{call}}
+\index{call@{call}!kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$@{kiwi::detail::function::FunctionTraits$<$ ReturnType(Args...) noexcept $>$}}
+\doxysubsubsection{\texorpdfstring{call}{call}}
+{\footnotesize\ttfamily \label{structkiwi_1_1detail_1_1function_1_1_function_traits_3_01_return_type_07_args_8_8_8_08_01noexcept_01_4_ab54c09abe44e8678245e89df52898818} 
+template$<$typename Return\+Type, typename... Args$>$ \\
+template$<$typename Fun, bool Small$>$ \\
+Call \mbox{\hyperlink{structkiwi_1_1detail_1_1function_1_1_function_traits}{kiwi\+::detail\+::function\+::\+Function\+Traits}}$<$ Return\+Type(Args...) noexcept $>$\+::call\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ call\_<Fun,\ Small,\ true,\ ReturnType,\ CallArg<Args>...>}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

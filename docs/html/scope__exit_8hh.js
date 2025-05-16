@@ -1,5 +1,5 @@
 var scope__exit_8hh =
 [
-    [ "kiwi::detail::scope_exit< Callable >", "classkiwi_1_1detail_1_1scope__exit.html", null ],
-    [ "kiwi::make_scope_exit", "namespacekiwi.html#a851bea1bb4a936e7446e8fc1ab579231", null ]
+    [ "kiwi::detail::ScopeExit< Callable >", "classkiwi_1_1detail_1_1_scope_exit.html", null ],
+    [ "kiwi::make_scope_exit", "namespacekiwi.html#a0f08f6f93fa42280d07db0f3c4723df7", null ]
 ];

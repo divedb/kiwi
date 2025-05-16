@@ -1,0 +1,28 @@
+\doxysection{cxx23\+\_\+from\+\_\+range.\+hh}
+\hypertarget{cxx23__from__range_8hh_source}{}\label{cxx23__from__range_8hh_source}\index{include/kiwi/types/cxx23\_from\_range.hh@{include/kiwi/types/cxx23\_from\_range.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2024\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }base\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ A\ marker\ type\ for\ constructors\ from\ a\ range.\ This\ is\ a\ backport\ of}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \`{}std::from\_range\_t`\ in\ C++23,\ and\ will\ be\ relaced\ with\ the\ std\ version\ one}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ day.}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ https://en.cppreference.com/w/cpp/ranges/from\_range}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{struct\ }from\_range\_t\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{explicit}\ from\_range\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00016\ \};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ The\ instantiation\ of\ \`{}from\_range\_t`,\ to\ be\ passed\ to\ constructors\ taking\ the}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ marker\ type\ \`{}from\_range\_t`.}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structbase_1_1from__range__t}{from\_range\_t}}\ from\_range;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \}\ \ \textcolor{comment}{//\ namespace\ base}}
+
+\end{DoxyCode}

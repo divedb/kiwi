@@ -18,7 +18,7 @@ var classkiwi_1_1_file =
       [ "kFileErrorNotAFile", "classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609aa5f157cd15f70593fcf51d32dcee35b7", null ],
       [ "kFileErrorNotEmpty", "classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609a2ed855790c664f4c51a8946313452ff2", null ],
       [ "kFileErrorInvalidUrl", "classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609af3da0dfa5224eb79640bd62a5cd59c28", null ],
-      [ "kFileErrorIo", "classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609a2e302ef3c21f0e763f5ad37cfbdce01e", null ],
+      [ "kFileErrorIO", "classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609a54bc22025f9825af13d9337fa87b75cc", null ],
       [ "kFileErrorMax", "classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82", null ]
     ] ],
     [ "Flags", "classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619", [
@@ -56,8 +56,21 @@ var classkiwi_1_1_file =
     [ "File", "classkiwi_1_1_file.html#acb3d77177d6e0785dc4ad3b1f36023a4", null ],
     [ "Close", "classkiwi_1_1_file.html#a5632f8ac891e6c3a2353aab99fb19791", null ],
     [ "ErrorDetails", "classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831", null ],
+    [ "Flush", "classkiwi_1_1_file.html#a013f9c9d01ee3c46494a9a80e9fba8b3", null ],
+    [ "GetInfo", "classkiwi_1_1_file.html#a11ac8cb486c052c627b4fdefaabb18bf", null ],
+    [ "GetLength", "classkiwi_1_1_file.html#abd19c022f7bb41f90cdc1e23d82297ab", null ],
     [ "IsCreated", "classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7", null ],
     [ "IsValid", "classkiwi_1_1_file.html#a71faf3633bb71e0af623c1bd2a978940", null ],
+    [ "Read", "classkiwi_1_1_file.html#aab4f8c0526aedb8b5f97c2e10f12f129", null ],
     [ "ReadAndCheck", "classkiwi_1_1_file.html#a3606ad7fb26e2a27ec681f3060028eb0", null ],
-    [ "Seek", "classkiwi_1_1_file.html#a67118e2790c56e70ed927a9e5f6a43b4", null ]
+    [ "ReadAtCurrentPos", "classkiwi_1_1_file.html#af47b5d7b4e7db08bcf5c8942e6a61067", null ],
+    [ "ReadAtCurrentPosNoBestEffort", "classkiwi_1_1_file.html#a8d7c466844c2f368c108976f84b4fa7a", null ],
+    [ "ReadNoBestEffort", "classkiwi_1_1_file.html#ae8f3f6380a232f5ca19d916dc33ada79", null ],
+    [ "Seek", "classkiwi_1_1_file.html#a67118e2790c56e70ed927a9e5f6a43b4", null ],
+    [ "SetTimes", "classkiwi_1_1_file.html#a53e0cfca3ed88ad9ea3131fded44beb0", null ],
+    [ "Truncate", "classkiwi_1_1_file.html#ab89787d024e791c80649b8e61a326526", null ],
+    [ "Write", "classkiwi_1_1_file.html#ae052bbc98ce6ea22c9d24af14a6a9af9", null ],
+    [ "WriteAndCheck", "classkiwi_1_1_file.html#a798cf360c989d91deddd333d1c67b68e", null ],
+    [ "WriteAtCurrentPos", "classkiwi_1_1_file.html#a699deb00efeb73849eef5324477aa1b6", null ],
+    [ "WriteAtCurrentPosNoBestEffort", "classkiwi_1_1_file.html#a9b9bd59c3bc48a35ad1b0e732daceeab", null ]
 ];

@@ -1,0 +1,349 @@
+\doxysection{ops.\+hh}
+\hypertarget{ops_8hh_source}{}\label{ops_8hh_source}\index{include/kiwi/net/ops.hh@{include/kiwi/net/ops.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <folly/net/NetworkSocket.h>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <folly/portability/IOVec.h>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <folly/portability/SysTypes.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <folly/portability/Time.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <folly/portability/Windows.h>}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <WS2tcpip.h>}\ \ \textcolor{comment}{//\ @manual}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{using\ }nfds\_t\ =\ int;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{using\ }sa\_family\_t\ =\ ADDRESS\_FAMILY;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ these\ are\ not\ supported}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ SO\_EE\_ORIGIN\_ZEROCOPY\ 0}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ SO\_ZEROCOPY\ 0}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ SO\_TXTIME\ 0}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ MSG\_ZEROCOPY\ 0x0}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ SOL\_UDP\ 0x0}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ UDP\_SEGMENT\ 0x0}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ IP\_BIND\_ADDRESS\_NO\_PORT\ 0}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ TCP\_ZEROCOPY\_RECEIVE\ 0}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ We\ don't\ actually\ support\ either\ of\ these\ flags}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ currently.}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ MSG\_DONTWAIT\ 0x1000}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ MSG\_EOR\ 0}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }msghdr\ \{}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}*\ msg\_name;}
+\DoxyCodeLine{00050\ \ \ socklen\_t\ msg\_namelen;}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{struct\ }iovec*\ msg\_iov;}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{size\_t}\ msg\_iovlen;}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}*\ msg\_control;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{size\_t}\ msg\_controllen;}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{int}\ msg\_flags;}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmmsghdr}{mmsghdr}}\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{struct\ }msghdr\ msg\_hdr;}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ msg\_len;}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{struct\ }sockaddr\_un\ \{}
+\DoxyCodeLine{00064\ \ \ sa\_family\_t\ sun\_family;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{char}\ sun\_path[108];}
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ SHUT\_RD\ SD\_RECEIVE}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ SHUT\_WR\ SD\_SEND}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ SHUT\_RDWR\ SD\_BOTH}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ These\ are\ the\ same,\ but\ PF\_LOCAL}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ isn't\ defined\ by\ WinSock.}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ AF\_LOCAL\ PF\_UNIX}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ PF\_LOCAL\ PF\_UNIX}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ This\ isn't\ defined\ by\ Windows,\ and\ we\ need\ to}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ distinguish\ it\ from\ SO\_REUSEADDR}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ SO\_REUSEPORT\ 0x7001}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ Someone\ thought\ it\ would\ be\ a\ good\ idea}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ to\ define\ a\ field\ via\ a\ macro...}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#undef\ s\_host}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#include\ <arpa/inet.h>}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#include\ <netdb.h>}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#include\ <netinet/in.h>}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#include\ <netinet/tcp.h>}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#include\ <netinet/udp.h>}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#include\ <poll.h>}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#include\ <sys/socket.h>}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#include\ <sys/un.h>}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#if\ !defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#ifdef\ MSG\_ERRQUEUE}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ FOLLY\_HAVE\_MSG\_ERRQUEUE\ 1}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#ifdef\ SCM\_TIMESTAMPING}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#ifndef\ FOLLY\_HAVE\_SO\_TIMESTAMPING}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ FOLLY\_HAVE\_SO\_TIMESTAMPING\ 1}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#ifndef\ TCP\_ZEROCOPY\_RECEIVE}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ TCP\_ZEROCOPY\_RECEIVE\ 35}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#ifndef\ TCP\_ZEROCOPY\_RECEIVE}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ TCP\_ZEROCOPY\_RECEIVE\ 0}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00114\ \textcolor{comment}{/*\ for\ struct\ sock\_extended\_err*/}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#include\ <linux/errqueue.h>}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#ifndef\ SO\_EE\_ORIGIN\_ZEROCOPY}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ SO\_EE\_ORIGIN\_ZEROCOPY\ 5}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#ifndef\ SO\_EE\_CODE\_ZEROCOPY\_COPIED}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ SO\_EE\_CODE\_ZEROCOPY\_COPIED\ 1}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#ifndef\ SO\_ZEROCOPY}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ SO\_ZEROCOPY\ 60}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#ifndef\ SO\_TXTIME}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#define\ SO\_TXTIME\ 61}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ SCM\_TXTIME\ SO\_TXTIME}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#ifdef\ FOLLY\_HAVE\_MSG\_ERRQUEUE}}
+\DoxyCodeLine{00137\ \textcolor{keyword}{namespace\ }folly\ \{}
+\DoxyCodeLine{00138\ \textcolor{keyword}{namespace\ }netops\ \{}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \textcolor{comment}{/*\ Copied\ from\ uapi/linux/net\_tstamp.h\ */}}
+\DoxyCodeLine{00141\ \textcolor{keyword}{enum}\ txtime\_flags\ \{}
+\DoxyCodeLine{00142\ \ \ SOF\_TXTIME\_DEADLINE\_MODE\ =\ (1\ <<\ 0),}
+\DoxyCodeLine{00143\ \ \ SOF\_TXTIME\_REPORT\_ERRORS\ =\ (1\ <<\ 1),}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ SOF\_TXTIME\_FLAGS\_LAST\ =\ SOF\_TXTIME\_REPORT\_ERRORS,}
+\DoxyCodeLine{00146\ \ \ SOF\_TXTIME\_FLAGS\_MASK\ =\ (SOF\_TXTIME\_FLAGS\_LAST\ -\/\ 1)\ |\ SOF\_TXTIME\_FLAGS\_LAST}
+\DoxyCodeLine{00147\ \};}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \textcolor{comment}{/*\ Copied\ from\ uapi/linux/net\_tstamp.h\ */}}
+\DoxyCodeLine{00150\ \textcolor{keyword}{enum}\ timestamping\_flags\ \{}
+\DoxyCodeLine{00151\ \ \ SOF\_TIMESTAMPING\_TX\_HARDWARE\ =\ (1\ <<\ 0),}
+\DoxyCodeLine{00152\ \ \ SOF\_TIMESTAMPING\_TX\_SOFTWARE\ =\ (1\ <<\ 1),}
+\DoxyCodeLine{00153\ \ \ SOF\_TIMESTAMPING\_RX\_HARDWARE\ =\ (1\ <<\ 2),}
+\DoxyCodeLine{00154\ \ \ SOF\_TIMESTAMPING\_RX\_SOFTWARE\ =\ (1\ <<\ 3),}
+\DoxyCodeLine{00155\ \ \ SOF\_TIMESTAMPING\_SOFTWARE\ =\ (1\ <<\ 4),}
+\DoxyCodeLine{00156\ \ \ SOF\_TIMESTAMPING\_SYS\_HARDWARE\ =\ (1\ <<\ 5),}
+\DoxyCodeLine{00157\ \ \ SOF\_TIMESTAMPING\_RAW\_HARDWARE\ =\ (1\ <<\ 6),}
+\DoxyCodeLine{00158\ \ \ SOF\_TIMESTAMPING\_OPT\_ID\ =\ (1\ <<\ 7),}
+\DoxyCodeLine{00159\ \ \ SOF\_TIMESTAMPING\_TX\_SCHED\ =\ (1\ <<\ 8),}
+\DoxyCodeLine{00160\ \ \ SOF\_TIMESTAMPING\_TX\_ACK\ =\ (1\ <<\ 9),}
+\DoxyCodeLine{00161\ \ \ SOF\_TIMESTAMPING\_OPT\_CMSG\ =\ (1\ <<\ 10),}
+\DoxyCodeLine{00162\ \ \ SOF\_TIMESTAMPING\_OPT\_TSONLY\ =\ (1\ <<\ 11),}
+\DoxyCodeLine{00163\ \ \ SOF\_TIMESTAMPING\_OPT\_STATS\ =\ (1\ <<\ 12),}
+\DoxyCodeLine{00164\ \ \ SOF\_TIMESTAMPING\_OPT\_PKTINFO\ =\ (1\ <<\ 13),}
+\DoxyCodeLine{00165\ \ \ SOF\_TIMESTAMPING\_OPT\_TX\_SWHW\ =\ (1\ <<\ 14),}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ SOF\_TIMESTAMPING\_LAST\ =\ SOF\_TIMESTAMPING\_OPT\_TX\_SWHW,}
+\DoxyCodeLine{00168\ \ \ SOF\_TIMESTAMPING\_MASK\ =\ (SOF\_TIMESTAMPING\_LAST\ -\/\ 1)\ |\ SOF\_TIMESTAMPING\_LAST}
+\DoxyCodeLine{00169\ \};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{comment}{/*\ Copied\ from\ uapi/linux/net\_tstamp.h\ */}}
+\DoxyCodeLine{00172\ \textcolor{keyword}{enum}\ tstamp\_flags\ \{}
+\DoxyCodeLine{00173\ \ \ SCM\_TSTAMP\_SND,\ \ \ \textcolor{comment}{/*\ driver\ passed\ skb\ to\ NIC,\ or\ HW\ */}}
+\DoxyCodeLine{00174\ \ \ SCM\_TSTAMP\_SCHED,\ \textcolor{comment}{/*\ data\ entered\ the\ packet\ scheduler\ */}}
+\DoxyCodeLine{00175\ \ \ SCM\_TSTAMP\_ACK,\ \ \ \textcolor{comment}{/*\ data\ acknowledged\ by\ peer\ */}}
+\DoxyCodeLine{00176\ \};}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{keyword}{struct\ }sock\_txtime\ \{}
+\DoxyCodeLine{00179\ \ \ \_\_kernel\_clockid\_t\ clockid;\ \textcolor{comment}{/*\ reference\ clockid\ */}}
+\DoxyCodeLine{00180\ \ \ \_\_u32\ flags;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ as\ defined\ by\ enum\ txtime\_flags\ */}}
+\DoxyCodeLine{00181\ \};}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{comment}{/*\ Copied\ from\ uapi/linux/tcp.h\ */}}
+\DoxyCodeLine{00184\ \textcolor{comment}{/*\ setsockopt(fd,\ IPPROTO\_TCP,\ TCP\_ZEROCOPY\_RECEIVE,\ ...)\ */}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \textcolor{keyword}{struct\ }tcp\_zerocopy\_receive\ \{}
+\DoxyCodeLine{00187\ \ \ \_\_u64\ address;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ in:\ address\ of\ mapping\ */}}
+\DoxyCodeLine{00188\ \ \ \_\_u32\ length;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ in/out:\ number\ of\ bytes\ to\ map/mapped\ */}}
+\DoxyCodeLine{00189\ \ \ \_\_u32\ recv\_skip\_hint;\ \ \textcolor{comment}{/*\ out:\ amount\ of\ bytes\ to\ skip\ */}}
+\DoxyCodeLine{00190\ \ \ \_\_u32\ inq;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ out:\ amount\ of\ bytes\ in\ read\ queue\ */}}
+\DoxyCodeLine{00191\ \ \ \_\_s32\ err;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ out:\ socket\ error\ */}}
+\DoxyCodeLine{00192\ \ \ \_\_u64\ copybuf\_address;\ \textcolor{comment}{/*\ in:\ copybuf\ address\ (small\ reads)\ */}}
+\DoxyCodeLine{00193\ \ \ \_\_s32\ copybuf\_len;\ \ \ \ \ \textcolor{comment}{/*\ in/out:\ copybuf\ bytes\ avail/used\ or\ error\ */}}
+\DoxyCodeLine{00194\ \ \ \_\_u32\ flags;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ in:\ flags\ */}}
+\DoxyCodeLine{00195\ \ \ \_\_u64\ msg\_control;\ \ \ \ \ \textcolor{comment}{/*\ ancillary\ data\ */}}
+\DoxyCodeLine{00196\ \ \ \_\_u64\ msg\_controllen;}
+\DoxyCodeLine{00197\ \ \ \_\_u32\ msg\_flags;}
+\DoxyCodeLine{00198\ \ \ \_\_u32\ reserved;\ \textcolor{comment}{/*\ set\ to\ 0\ for\ now\ */}}
+\DoxyCodeLine{00199\ \};}
+\DoxyCodeLine{00200\ \}\ \ \textcolor{comment}{//\ namespace\ netops}}
+\DoxyCodeLine{00201\ \}\ \ \textcolor{comment}{//\ namespace\ folly}}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#ifndef\ MSG\_ZEROCOPY}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#define\ MSG\_ZEROCOPY\ 0x4000000}}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#ifndef\ SOL\_UDP}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#define\ SOL\_UDP\ 17}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#ifndef\ ETH\_MAX\_MTU}}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#define\ ETH\_MAX\_MTU\ 0xFFFFU}}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#ifndef\ UDP\_NO\_CHECK6\_TX}}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#define\ UDP\_NO\_CHECK6\_TX\ 101\ }\textcolor{comment}{/*\ Disable\ sending\ checksum\ for\ UDP6X\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#ifndef\ UDP\_NO\_CHECK6\_RX}}
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#define\ UDP\_NO\_CHECK6\_RX\ 102\ }\textcolor{comment}{/*\ Disable\ accpeting\ checksum\ for\ UDP6\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#ifndef\ UDP\_SEGMENT}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#define\ UDP\_SEGMENT\ 103}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#ifndef\ UDP\_GRO}}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#define\ UDP\_GRO\ 104}}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#ifndef\ UDP\_MAX\_SEGMENTS}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#define\ UDP\_MAX\_SEGMENTS\ (1\ <<\ 6UL)}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#if\ !defined(MSG\_WAITFORONE)\ \&\&\ !defined(\_\_wasm32\_\_)}}
+\DoxyCodeLine{00237\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmmsghdr}{mmsghdr}}\ \{}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{struct\ }msghdr\ msg\_hdr;}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ msg\_len;}
+\DoxyCodeLine{00240\ \};}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#ifndef\ IP\_BIND\_ADDRESS\_NO\_PORT}}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#define\ IP\_BIND\_ADDRESS\_NO\_PORT\ 24}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{comment}{//\ Various\ sendmsg\ structs\ and\ ops.}}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#define\ XPLAT\_MSGHDR\ WSAMSG}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#define\ XPLAT\_CMSGHDR\ WSACMSGHDR}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#define\ F\_CMSG\_LEN\ WSA\_CMSG\_LEN}}
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#define\ F\_COPY\_CMSG\_INT\_DATA(cm,\ val,\ len)\ *(PDWORD)WSA\_CMSG\_DATA(cm)\ =\ *(val)}}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{/*\ !\_WIN32\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00256\ \textcolor{preprocessor}{\#define\ XPLAT\_MSGHDR\ struct\ msghdr}}
+\DoxyCodeLine{00257\ \textcolor{preprocessor}{\#define\ XPLAT\_CMSGHDR\ struct\ cmsghdr}}
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#define\ F\_CMSG\_LEN\ CMSG\_LEN}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#define\ F\_COPY\_CMSG\_INT\_DATA(cm,\ val,\ len)\ memcpy(CMSG\_DATA(cm),\ val,\ len)}}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_WIN32\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{keyword}{namespace\ }folly\ \{}
+\DoxyCodeLine{00263\ \textcolor{keyword}{namespace\ }netops\ \{}
+\DoxyCodeLine{00264\ \textcolor{comment}{//\ Poll\ descriptor\ is\ intended\ to\ be\ byte-\/for-\/byte\ identical\ to\ pollfd,}}
+\DoxyCodeLine{00265\ \textcolor{comment}{//\ except\ that\ it\ is\ typed\ as\ containing\ a\ NetworkSocket\ for\ sane\ interactions.}}
+\DoxyCodeLine{00266\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structfolly_1_1netops_1_1_poll_descriptor}{PollDescriptor}}\ \{}
+\DoxyCodeLine{00267\ \ \ NetworkSocket\ fd;}
+\DoxyCodeLine{00268\ \ \ int16\_t\ events;}
+\DoxyCodeLine{00269\ \ \ int16\_t\ revents;}
+\DoxyCodeLine{00270\ \};}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00275\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfolly_1_1netops_1_1_msgheader}{Msgheader}}\ \{}
+\DoxyCodeLine{00276\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00277\ \ \ \textcolor{keywordtype}{void}\ setName(sockaddr\_storage*\ addrStorage,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordtype}{void}\ setIovecs(\textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ iovec*\ vec,\ \textcolor{keywordtype}{size\_t}\ iovec\_len);}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{void}\ setCmsgPtr(\textcolor{keywordtype}{char}*\ ctrlBuf);}
+\DoxyCodeLine{00280\ \ \ \textcolor{keywordtype}{void}\ setCmsgLen(\textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{00281\ \ \ \textcolor{keywordtype}{void}\ setFlags(\textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{void}\ incrCmsgLen(\textcolor{keywordtype}{size\_t}\ val);}
+\DoxyCodeLine{00283\ \ \ XPLAT\_CMSGHDR*\ getFirstOrNextCmsgHeader(XPLAT\_CMSGHDR*\ cm);}
+\DoxyCodeLine{00284\ \ \ XPLAT\_MSGHDR*\ getMsg();}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00287\ \ \ XPLAT\_MSGHDR\ msg\_;}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00289\ \ \ std::unique\_ptr<WSABUF[]>\ wsaBufs\_;}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ XPLAT\_CMSGHDR*\ cmsgNextHrd(XPLAT\_CMSGHDR*\ cm);}
+\DoxyCodeLine{00293\ \ \ XPLAT\_CMSGHDR*\ cmsgFirstHrd();}
+\DoxyCodeLine{00294\ \};}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ NetworkSocket\ accept(NetworkSocket\ s,\ sockaddr*\ addr,\ socklen\_t*\ addrlen);}
+\DoxyCodeLine{00297\ \textcolor{keywordtype}{int}\ bind(NetworkSocket\ s,\ \textcolor{keyword}{const}\ sockaddr*\ name,\ socklen\_t\ namelen);}
+\DoxyCodeLine{00298\ \textcolor{keywordtype}{int}\ close(NetworkSocket\ s);}
+\DoxyCodeLine{00299\ \textcolor{keywordtype}{int}\ connect(NetworkSocket\ s,\ \textcolor{keyword}{const}\ sockaddr*\ name,\ socklen\_t\ namelen);}
+\DoxyCodeLine{00300\ \textcolor{keywordtype}{int}\ getpeername(NetworkSocket\ s,\ sockaddr*\ name,\ socklen\_t*\ namelen);}
+\DoxyCodeLine{00301\ \textcolor{keywordtype}{int}\ getsockname(NetworkSocket\ s,\ sockaddr*\ name,\ socklen\_t*\ namelen);}
+\DoxyCodeLine{00302\ \textcolor{keywordtype}{int}\ getsockopt(NetworkSocket\ s,\ \textcolor{keywordtype}{int}\ level,\ \textcolor{keywordtype}{int}\ optname,\ \textcolor{keywordtype}{void}*\ optval,}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t*\ optlen);}
+\DoxyCodeLine{00304\ \textcolor{keywordtype}{int}\ inet\_aton(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ cp,\ in\_addr*\ inp);}
+\DoxyCodeLine{00305\ \textcolor{keywordtype}{int}\ listen(NetworkSocket\ s,\ \textcolor{keywordtype}{int}\ backlog);}
+\DoxyCodeLine{00306\ \textcolor{keywordtype}{int}\ poll(\mbox{\hyperlink{structfolly_1_1netops_1_1_poll_descriptor}{PollDescriptor}}\ fds[],\ nfds\_t\ nfds,\ \textcolor{keywordtype}{int}\ timeout);}
+\DoxyCodeLine{00307\ ssize\_t\ recv(NetworkSocket\ s,\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00308\ ssize\_t\ recvfrom(NetworkSocket\ s,\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags,}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sockaddr*\ from,\ socklen\_t*\ fromlen);}
+\DoxyCodeLine{00310\ ssize\_t\ recvmsg(NetworkSocket\ s,\ msghdr*\ message,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00311\ \textcolor{keywordtype}{int}\ recvmmsg(NetworkSocket\ s,\ \mbox{\hyperlink{structmmsghdr}{mmsghdr}}*\ msgvec,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ vlen,}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ flags,\ timespec*\ timeout);}
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00314\ ssize\_t\ wsaRecvMesg(NetworkSocket\ s,\ WSAMSG*\ wsaMsg);}
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00316\ ssize\_t\ send(NetworkSocket\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00317\ ssize\_t\ sendto(NetworkSocket\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags,}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ sockaddr*\ to,\ socklen\_t\ tolen);}
+\DoxyCodeLine{00319\ ssize\_t\ sendmsg(NetworkSocket\ socket,\ \textcolor{keyword}{const}\ msghdr*\ message,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00321\ ssize\_t\ wsaSendMsgDirect(NetworkSocket\ socket,\ WSAMSG*\ msg);}
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \textcolor{keywordtype}{int}\ sendmmsg(NetworkSocket\ socket,\ \mbox{\hyperlink{structmmsghdr}{mmsghdr}}*\ msgvec,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ vlen,}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00326\ \textcolor{keywordtype}{int}\ setsockopt(NetworkSocket\ s,\ \textcolor{keywordtype}{int}\ level,\ \textcolor{keywordtype}{int}\ optname,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ optval,}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t\ optlen);}
+\DoxyCodeLine{00328\ \textcolor{keywordtype}{int}\ shutdown(NetworkSocket\ s,\ \textcolor{keywordtype}{int}\ how);}
+\DoxyCodeLine{00329\ NetworkSocket\ socket(\textcolor{keywordtype}{int}\ af,\ \textcolor{keywordtype}{int}\ type,\ \textcolor{keywordtype}{int}\ protocol);}
+\DoxyCodeLine{00330\ \textcolor{keywordtype}{int}\ socketpair(\textcolor{keywordtype}{int}\ domain,\ \textcolor{keywordtype}{int}\ type,\ \textcolor{keywordtype}{int}\ protocol,\ NetworkSocket\ sv[2]);}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \textcolor{comment}{//\ And\ now\ we\ diverge\ from\ the\ Posix\ way\ of\ doing\ things\ and\ just\ do\ things}}
+\DoxyCodeLine{00333\ \textcolor{comment}{//\ our\ own\ way.}}
+\DoxyCodeLine{00334\ \textcolor{keywordtype}{int}\ set\_socket\_non\_blocking(NetworkSocket\ s);}
+\DoxyCodeLine{00335\ \textcolor{keywordtype}{int}\ set\_socket\_close\_on\_exec(NetworkSocket\ s);}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00338\ \textcolor{comment}{//\ Allow\ override\ for\ translation\ of\ WSA\ errors\ with\ analytics/tracking.}}
+\DoxyCodeLine{00339\ \textcolor{keyword}{typedef}\ int\ (*wsa\_error\_translator\_ptr)(NetworkSocket\ socket,\ intptr\_t\ api,}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ intptr\_t\ ret,\ \textcolor{keywordtype}{int}\ wsa\_error);}
+\DoxyCodeLine{00341\ \textcolor{keywordtype}{void}\ set\_wsa\_error\_translator(wsa\_error\_translator\_ptr\ translator,}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ wsa\_error\_translator\_ptr*\ previousOut);}
+\DoxyCodeLine{00343\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \}\ \ \textcolor{comment}{//\ namespace\ netops}}
+\DoxyCodeLine{00346\ \}\ \ \textcolor{comment}{//\ namespace\ folly}}
+
+\end{DoxyCode}

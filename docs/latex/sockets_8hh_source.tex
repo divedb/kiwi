@@ -1,0 +1,127 @@
+\doxysection{sockets.\+hh}
+\hypertarget{sockets_8hh_source}{}\label{sockets_8hh_source}\index{include/kiwi/net/sockets.hh@{include/kiwi/net/sockets.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ Meta\ Platforms,\ Inc.\ and\ affiliates.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ "{}License"{});}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ you\ may\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ BASIS,}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ WITHOUT\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }net\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ Some\ Windows\ specific\ helper\ functions.}}
+\DoxyCodeLine{00027\ \textcolor{keywordtype}{bool}\ is\_fh\_socket(\textcolor{keywordtype}{int}\ fh);}
+\DoxyCodeLine{00028\ SOCKET\ fd\_to\_socket(\textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{int}\ socket\_to\_fd(SOCKET\ s);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ These\ aren't\ additional\ overloads,\ but\ rather\ other\ functions\ that}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ are\ referenced\ that\ we\ need\ to\ wrap,\ or,\ in\ the\ case\ of\ inet\_aton,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ implement.}}
+\DoxyCodeLine{00034\ \textcolor{keywordtype}{int}\ accept(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{struct}\ sockaddr*\ addr,\ socklen\_t*\ addrlen);}
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{int}\ inet\_aton(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ cp,\ \textcolor{keyword}{struct}\ in\_addr*\ inp);}
+\DoxyCodeLine{00036\ \textcolor{keywordtype}{int}\ socketpair(\textcolor{keywordtype}{int}\ domain,\ \textcolor{keywordtype}{int}\ type,\ \textcolor{keywordtype}{int}\ protocol,\ \textcolor{keywordtype}{int}\ sv[2]);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Unless\ you\ have\ a\ case\ where\ you\ would\ normally\ have}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ to\ reference\ the\ function\ as\ being\ explicitly\ in\ the}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ global\ scope,\ then\ you\ shouldn't\ be\ calling\ these\ directly.}}
+\DoxyCodeLine{00041\ \textcolor{keywordtype}{int}\ bind(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ sockaddr*\ name,\ socklen\_t\ namelen);}
+\DoxyCodeLine{00042\ \textcolor{keywordtype}{int}\ connect(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ sockaddr*\ name,\ socklen\_t\ namelen);}
+\DoxyCodeLine{00043\ \textcolor{keywordtype}{int}\ getpeername(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{struct}\ sockaddr*\ name,\ socklen\_t*\ namelen);}
+\DoxyCodeLine{00044\ \textcolor{keywordtype}{int}\ getsockname(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{struct}\ sockaddr*\ name,\ socklen\_t*\ namelen);}
+\DoxyCodeLine{00045\ \textcolor{keywordtype}{int}\ getsockopt(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ level,\ \textcolor{keywordtype}{int}\ optname,\ \textcolor{keywordtype}{void}*\ optval,\ socklen\_t*\ optlen);}
+\DoxyCodeLine{00046\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ inet\_ntop(\textcolor{keywordtype}{int}\ af,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ src,\ \textcolor{keywordtype}{char}*\ dst,\ socklen\_t\ size);}
+\DoxyCodeLine{00047\ \textcolor{keywordtype}{int}\ listen(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ backlog);}
+\DoxyCodeLine{00048\ \textcolor{keywordtype}{int}\ poll(\textcolor{keyword}{struct}\ pollfd\ fds[],\ nfds\_t\ nfds,\ \textcolor{keywordtype}{int}\ timeout);}
+\DoxyCodeLine{00049\ ssize\_t\ recv(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00050\ ssize\_t\ recvfrom(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags,\ \textcolor{keyword}{struct}\ sockaddr*\ from,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t*\ fromlen);}
+\DoxyCodeLine{00052\ ssize\_t\ send(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00053\ ssize\_t\ sendto(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{int}\ flags,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ sockaddr*\ to,\ socklen\_t\ tolen);}
+\DoxyCodeLine{00055\ ssize\_t\ sendmsg(\textcolor{keywordtype}{int}\ socket,\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ msghdr*\ message,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00056\ \textcolor{keywordtype}{int}\ setsockopt(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ level,\ \textcolor{keywordtype}{int}\ optname,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ optval,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t\ optlen);}
+\DoxyCodeLine{00058\ \textcolor{keywordtype}{int}\ shutdown(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ how);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ This\ is\ the\ only\ function\ that\ \_must\_\ be\ referenced\ via\ the\ namespace}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ because\ there\ is\ no\ difference\ in\ parameter\ types\ to\ overload}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ on.}}
+\DoxyCodeLine{00063\ \textcolor{keywordtype}{int}\ socket(\textcolor{keywordtype}{int}\ af,\ \textcolor{keywordtype}{int}\ type,\ \textcolor{keywordtype}{int}\ protocol);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ Windows\ needs\ a\ few\ extra\ overloads\ of\ some\ of\ the\ functions\ in\ order\ to}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ resolve\ to\ our\ portability\ functions\ rather\ than\ the\ SOCKET\ accepting}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ ones.}}
+\DoxyCodeLine{00068\ \textcolor{keywordtype}{int}\ getsockopt(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ level,\ \textcolor{keywordtype}{int}\ optname,\ \textcolor{keywordtype}{char}*\ optval,\ socklen\_t*\ optlen);}
+\DoxyCodeLine{00069\ ssize\_t\ recv(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{char}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00070\ ssize\_t\ recv(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00071\ ssize\_t\ recvfrom(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{char}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags,\ \textcolor{keyword}{struct}\ sockaddr*\ from,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t*\ fromlen);}
+\DoxyCodeLine{00073\ ssize\_t\ recvfrom(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags,\ \textcolor{keyword}{struct}\ sockaddr*\ from,}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t*\ fromlen);}
+\DoxyCodeLine{00075\ ssize\_t\ recvmsg(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{struct}\ msghdr*\ message,\ \textcolor{keywordtype}{int}\ fl);}
+\DoxyCodeLine{00076\ ssize\_t\ send(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00077\ ssize\_t\ send(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00078\ ssize\_t\ sendto(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags,\ \textcolor{keyword}{const}\ sockaddr*\ to,}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t\ tolen);}
+\DoxyCodeLine{00080\ ssize\_t\ sendto(\textcolor{keywordtype}{int}\ s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ buf,\ \textcolor{keywordtype}{int}\ len,\ \textcolor{keywordtype}{int}\ flags,\ \textcolor{keyword}{const}\ sockaddr*\ to,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t\ tolen);}
+\DoxyCodeLine{00082\ \textcolor{keywordtype}{int}\ setsockopt(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ level,\ \textcolor{keywordtype}{int}\ optname,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ optval,}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ socklen\_t\ optlen);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#elif\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ None\ of\ these\ are\ implemented\ or\ referenced\ right\ now.}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{using\ }::accept;}
+\DoxyCodeLine{00092\ \textcolor{keyword}{using\ }::bind;}
+\DoxyCodeLine{00093\ \textcolor{keyword}{using\ }::connect;}
+\DoxyCodeLine{00094\ \textcolor{keyword}{using\ }::getpeername;}
+\DoxyCodeLine{00095\ \textcolor{keyword}{using\ }::getsockname;}
+\DoxyCodeLine{00096\ \textcolor{keyword}{using\ }::getsockopt;}
+\DoxyCodeLine{00097\ \textcolor{keyword}{using\ }::inet\_ntop;}
+\DoxyCodeLine{00098\ \textcolor{keyword}{using\ }::listen;}
+\DoxyCodeLine{00099\ \textcolor{keyword}{using\ }::poll;}
+\DoxyCodeLine{00100\ \textcolor{keyword}{using\ }::recv;}
+\DoxyCodeLine{00101\ \textcolor{keyword}{using\ }::recvfrom;}
+\DoxyCodeLine{00102\ \textcolor{keyword}{using\ }::send;}
+\DoxyCodeLine{00103\ \textcolor{keyword}{using\ }::sendmsg;}
+\DoxyCodeLine{00104\ \textcolor{keyword}{using\ }::sendto;}
+\DoxyCodeLine{00105\ \textcolor{keyword}{using\ }::setsockopt;}
+\DoxyCodeLine{00106\ \textcolor{keyword}{using\ }::shutdown;}
+\DoxyCodeLine{00107\ \textcolor{keyword}{using\ }::socket;}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \}\ \ \textcolor{comment}{//\ namespace\ net}}
+\DoxyCodeLine{00112\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ Add\ our\ helpers\ to\ the\ overload\ set.}}
+\DoxyCodeLine{00116\ KIWI\_PUSH\_WARNING}
+\DoxyCodeLine{00117\ KIWI\_CLANG\_DISABLE\_WARNING(\textcolor{stringliteral}{"{}-\/Wheader-\/hygiene"{}})}
+\DoxyCodeLine{00118\ \textcolor{comment}{/*\ using\ override\ */}}
+\DoxyCodeLine{00119\ using\ namespace\ folly::portability::sockets;}
+\DoxyCodeLine{00120\ KIWI\_POP\_WARNING}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

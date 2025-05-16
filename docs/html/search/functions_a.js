@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['make_5fscope_5fexit_0',['make_scope_exit',['../namespacekiwi.html#a851bea1bb4a936e7446e8fc1ab579231',1,'kiwi']]],
+  ['make_5fscope_5fexit_0',['make_scope_exit',['../namespacekiwi.html#a0f08f6f93fa42280d07db0f3c4723df7',1,'kiwi']]],
   ['makemanaged_1',['MakeManaged',['../classkiwi_1_1_i_o_buf.html#a2c24eab145eaf298ac70d02eee0baa3d',1,'kiwi::IOBuf']]],
   ['makemanagedone_2',['MakeManagedOne',['../classkiwi_1_1_i_o_buf.html#a102404f55b2abc56d44bdcd10a5e4f08',1,'kiwi::IOBuf']]],
   ['markexternallyshared_3',['MarkExternallyShared',['../classkiwi_1_1_i_o_buf.html#aa3d64b8e2e59d867eb7d73db6a0500c3',1,'kiwi::IOBuf']]],

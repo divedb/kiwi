@@ -32,17 +32,17 @@
 #include "base/base_switches.h"
 #include "base/bits.h"
 #include "base/command_line.h"
-#include "base/containers/adapters.h"
-#include "base/containers/contains.h"
-#include "base/containers/heap_array.h"
 #include "base/environment.h"
-#include "base/files/file_enumerator.h"
 #include "base/memory/singleton.h"
 #include "base/path_service.h"
 #include "base/system/sys_info.h"
 #include "build/branding_buildflags.h"
 #include "kiwi/chrono/time.hh"
+#include "kiwi/containers/adapters.hh"
+#include "kiwi/containers/contains.hh"
+#include "kiwi/containers/heap_array.hh"
 #include "kiwi/containers/stack.hh"
+#include "kiwi/io/file_enumerator.hh"
 #include "kiwi/io/file_path.hh"
 #include "kiwi/io/file_util.hh"
 #include "kiwi/io/scoped_file.hh"
@@ -116,7 +116,7 @@ bool VerifySpecificPathControlledByUser(const FilePath& path, uid_t owner_uid,
 }
 #endif
 
-base::FilePath GetTempTemplate() { return FormatTemporaryFileName("XXXXXX"); }
+kiwi::FilePath GetTempTemplate() { return FormatTemporaryFileName("XXXXXX"); }
 
 bool AdvanceEnumeratorWithStat(FileEnumerator* traversal,
                                FilePath* out_next_path,
@@ -253,7 +253,7 @@ bool DoCopyDirectory(const FilePath& from_path, const FilePath& to_path,
     // Each platform has different default file opening modes for CopyFile which
     // we want to replicate here. On OS X, we use copyfile(3) which takes the
     // source file's permissions into account. On the other platforms, we just
-    // use the base::File constructor. On Chrome OS, base::File uses a different
+    // use the kiwi::File constructor. On Chrome OS, kiwi::File uses a different
     // set of permissions than it does on other POSIX platforms.
 #if BUILDFLAG(IS_APPLE)
     mode_t mode = 0600 | (stat_at_use.st_mode & 0177);
@@ -397,10 +397,10 @@ bool PreReadFileSlow(const FilePath& file_path, int64_t max_bytes) {
   }
 
   constexpr size_t kBufferSize = 1024 * 1024;
-  auto buffer = base::HeapArray<uint8_t>::Uninit(kBufferSize);
+  auto buffer = kiwi::HeapArray<uint8_t>::Uninit(kBufferSize);
 
   while (max_bytes > 0) {
-    const size_t read_size = base::checked_cast<size_t>(
+    const size_t read_size = kiwi::checked_cast<size_t>(
         std::min<uint64_t>(static_cast<uint64_t>(max_bytes), buffer.size()));
     std::optional<size_t> read_bytes =
         file.ReadAtCurrentPos(buffer.first(read_size));
@@ -468,7 +468,7 @@ std::optional<FilePath> MakeAbsoluteFilePathNoResolveSymbolicLinks(
 
   FilePath collapsed_path;
   std::vector<FilePath::StringType> components = input.GetComponents();
-  base::span<FilePath::StringType> components_span(components);
+  kiwi::span<FilePath::StringType> components_span(components);
   // Start with root for absolute |input| and the current working directory for
   // a relative |input|.
   if (input.IsAbsolute()) {
@@ -848,7 +848,7 @@ bool CreateTemporaryFileInDir(const FilePath& dir, FilePath* temp_file) {
 
 FilePath FormatTemporaryFileName(FilePath::StringViewType identifier) {
 #if BUILDFLAG(IS_APPLE)
-  std::string_view prefix = base::apple::BaseBundleID();
+  std::string_view prefix = kiwi::apple::BaseBundleID();
 #elif BUILDFLAG(GOOGLE_CHROME_BRANDING)
   std::string_view prefix = "com.google.Chrome";
 #else
@@ -935,7 +935,7 @@ bool CreateDirectoryAndGetError(const FilePath& full_path, File::Error* error) {
   }
 
   // Iterate through the missing directories and create.
-  for (const FilePath& subpath : base::Reversed(missing_subpaths)) {
+  for (const FilePath& subpath : kiwi::Reversed(missing_subpaths)) {
     mode_t mode = S_IRWXU;
 
 #if BUILDFLAG(IS_CHROMEOS)
@@ -970,12 +970,12 @@ bool CreateDirectoryAndGetError(const FilePath& full_path, File::Error* error) {
 // the file read until EOF and it will return false otherwise, errno will remain
 // set on error conditions. |ret| will be populated with the contents of the
 // file.
-bool ReadFileToStringNonBlocking(const base::FilePath& file, std::string* ret) {
+bool ReadFileToStringNonBlocking(const kiwi::FilePath& file, std::string* ret) {
   DCHECK(ret);
   ret->clear();
 
   const int flags = O_CLOEXEC | O_NONBLOCK | O_RDONLY | O_NOCTTY;
-  base::ScopedFD fd(HANDLE_EINTR(open(file.MaybeAsASCII().c_str(), flags)));
+  kiwi::ScopedFD fd(HANDLE_EINTR(open(file.MaybeAsASCII().c_str(), flags)));
   if (!fd.is_valid()) {
     return false;
   }
@@ -1192,12 +1192,12 @@ bool AllocateFileRegion(File* file, int64_t offset, size_t size) {
   stat_wrapper_t statbuf;
   if (File::Fstat(file->GetPlatformFile(), &statbuf) == 0 &&
       statbuf.st_blksize > 0 &&
-      std::has_single_bit(base::checked_cast<uint64_t>(statbuf.st_blksize))) {
+      std::has_single_bit(kiwi::checked_cast<uint64_t>(statbuf.st_blksize))) {
     block_size = static_cast<blksize_t>(statbuf.st_blksize);
   }
 
   // Write starting at the next block boundary after the old file length.
-  const int64_t extension_start = checked_cast<int64_t>(base::bits::AlignUp(
+  const int64_t extension_start = checked_cast<int64_t>(kiwi::bits::AlignUp(
       static_cast<size_t>(original_file_len), static_cast<size_t>(block_size)));
   for (int64_t i = extension_start; i < new_file_len; i += block_size) {
     char existing_byte;
@@ -1279,7 +1279,7 @@ bool VerifyPathControlledByUser(const FilePath& base, const FilePath& path,
     // |base| must be a subpath of |path|, so all components should match.
     // If these CHECKs fail, look at the test that base is a parent of
     // path at the top of this function.
-    CHECK(ip != path_components.end(), base::NotFatalUntil::M125);
+    CHECK(ip != path_components.end(), kiwi::NotFatalUntil::M125);
     DCHECK(*ip == *ib);
   }
 
@@ -1398,7 +1398,7 @@ bool PreReadFile(const FilePath& file_path, bool is_executable, bool sequential,
   }
 
   const PlatformFile fd = file.GetPlatformFile();
-  const ::off_t len = base::saturated_cast<::off_t>(max_bytes);
+  const ::off_t len = kiwi::saturated_cast<::off_t>(max_bytes);
   const int advice = sequential ? POSIX_FADV_SEQUENTIAL : POSIX_FADV_WILLNEED;
   return posix_fadvise(fd, /*offset=*/0, len, advice) == 0;
 #elif BUILDFLAG(IS_APPLE)
@@ -1414,7 +1414,7 @@ bool PreReadFile(const FilePath& file_path, bool is_executable, bool sequential,
 
   const PlatformFile fd = file.GetPlatformFile();
   ::radvisory read_advise_data = {
-      .ra_offset = 0, .ra_count = base::saturated_cast<int>(max_bytes)};
+      .ra_offset = 0, .ra_count = kiwi::saturated_cast<int>(max_bytes)};
   return fcntl(fd, F_RDADVISE, &read_advise_data) != -1;
 #else
   return PreReadFileSlow(file_path, max_bytes);
@@ -1461,7 +1461,7 @@ bool CopyFileContentsWithSendfile(File& infile, File& outfile,
   stat_wrapper_t in_file_info;
   retry_slow = false;
 
-  if (base::File::Fstat(infile.GetPlatformFile(), &in_file_info)) {
+  if (kiwi::File::Fstat(infile.GetPlatformFile(), &in_file_info)) {
     return false;
   }
 

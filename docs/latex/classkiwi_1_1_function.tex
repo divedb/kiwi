@@ -1,0 +1,218 @@
+\doxysection{kiwi\+::Function\texorpdfstring{$<$}{<} Function\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1_function}{}\label{classkiwi_1_1_function}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+Inheritance diagram for kiwi\+::Function\texorpdfstring{$<$}{<} Function\+Type \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classkiwi_1_1_function}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_function_ada9f1820dd08eaae6ba5fa9f7f5de09e}{Function}} ()=default
+\item 
+\Hypertarget{classkiwi_1_1_function_a5640c4c820f1d6cc49b782b21d86575b}\label{classkiwi_1_1_function_a5640c4c820f1d6cc49b782b21d86575b} 
+{\bfseries Function} (const \mbox{\hyperlink{classkiwi_1_1_function}{Function}} \&)=delete
+\item 
+\mbox{\hyperlink{classkiwi_1_1_function_ab9657f6601911996250253e22ade291d}{Function}} (\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \&\&that) noexcept
+\item 
+constexpr \mbox{\hyperlink{classkiwi_1_1_function_af41c1c18f7c605820aa3141b96cfe884}{Function}} (std\+::nullptr\+\_\+t) noexcept
+\item 
+{\footnotesize template$<$typename Fun, typename = std\+::enable\+\_\+if\+\_\+t$<$                !detail\+::is\+\_\+similar\+\_\+instantiation\+\_\+v$<$\+Function, Fun$>$$>$, typename = typename Traits\+::template If\+Safe\+Result$<$\+Fun$>$$>$ }\\constexpr \mbox{\hyperlink{classkiwi_1_1_function_a20d58a56d4085ef465c23dbf63fcd3c8}{Function}} (Fun fun) noexcept(\mbox{\hyperlink{structkiwi_1_1detail_1_1function_1_1_dispatch}{detail\+::function\+::\+Dispatch\+Of}}$<$ Fun $>$\+::is\+\_\+in\+\_\+situ)
+\item 
+{\footnotesize template$<$typename Signature, typename Fun = Function$<$\+Signature$>$, typename = std\+::enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+same$<$\+Function, Fun$>$\+::value$>$, typename = typename Traits\+::template If\+Safe\+Result$<$\+Fun$>$$>$ }\\\mbox{\hyperlink{classkiwi_1_1_function_ada5c9795b8e7300df73e9fd529283d48}{Function}} (\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Signature $>$ \&\&that) noexcept(noexcept(\mbox{\hyperlink{classkiwi_1_1_function}{Function}}(std\+::move(that), \mbox{\hyperlink{structkiwi_1_1detail_1_1function_1_1_coerce_tag}{Coerce\+Tag}}\{\})))
+\item 
+{\footnotesize template$<$typename Member, typename Class, typename = decltype(\+Function(std\+::mem\+\_\+fn((\+Member Class\+::\texorpdfstring{$\ast$}{*})0)))$>$ }\\\mbox{\hyperlink{classkiwi_1_1_function_a2f208091ca28fcca6cf6aeb470ee598d}{Function}} (Member Class\+::\texorpdfstring{$\ast$}{*}ptr) noexcept
+\item 
+\Hypertarget{classkiwi_1_1_function_ae063735d485b127b46a74db530f7129c}\label{classkiwi_1_1_function_ae063735d485b127b46a74db530f7129c} 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1_function}{Function}} \&)=delete
+\item 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function_a3ed1986e2ac79471b862bee0dcea0225}{operator=}} (\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \&\&that) noexcept
+\item 
+{\footnotesize template$<$typename Fun, typename..., bool Nx = noexcept(\+Function(\+KIWI\+\_\+\+DECLVAL(\+Fun\&\&)))$>$ }\\\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function_ae4507c8d4c1533d1fbd411d465364bc2}{operator=}} (Fun fun) noexcept(Nx)
+\item 
+{\footnotesize template$<$typename Signature, typename..., typename = typename Traits\+::template If\+Safe\+Result$<$\+Function$<$\+Signature$>$$>$$>$ }\\\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function_a88c8bcdb02871b681d6b5dc47ea65b0f}{operator=}} (\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Signature $>$ \&\&that) noexcept(noexcept(\mbox{\hyperlink{classkiwi_1_1_function}{Function}}(std\+::move(that))))
+\item 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function_a9cb7f678ef4c3392e4414d8665ee9ac7}{operator=}} (std\+::nullptr\+\_\+t) noexcept
+\item 
+{\footnotesize template$<$typename Member, typename Class$>$ }\\auto \mbox{\hyperlink{classkiwi_1_1_function_a6a53a249f312673fa5b0f52e907540fc}{operator=}} (Member Class\+::\texorpdfstring{$\ast$}{*}ptr) noexcept -\/$>$ decltype(operator=(std\+::mem\+\_\+fn(ptr)))
+\item 
+void \mbox{\hyperlink{classkiwi_1_1_function_ae97d666e3b988b198076f153211f0177}{swap}} (\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \&that) noexcept
+\item 
+\mbox{\hyperlink{classkiwi_1_1_function_af7766b2686f8224b50b89a89e578f0a6}{operator bool}} () const noexcept
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_function_ad9df3f77f7cc84fb3cbd4ca433453b72}{heap\+Allocated\+Memory}} () const noexcept
+\item 
+Shared\+Proxy \mbox{\hyperlink{classkiwi_1_1_function_aa38361ed9f93441cca372c24759def28}{as\+Shared\+Proxy}} () \&\&
+\item 
+std\+::function$<$ typename Traits\+::\+Non\+Const\+Signature $>$ \mbox{\hyperlink{classkiwi_1_1_function_a33a82344bd4a4aec0243ba1974b8a79a}{as\+Std\+Function}} () \&\&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1_function_a70664fc67c9fc517224c6b6b1e909c1c}\label{classkiwi_1_1_function_a70664fc67c9fc517224c6b6b1e909c1c} 
+class {\bfseries Function$<$ typename Traits\+::\+Other\+Signature $>$}
+\item 
+\Hypertarget{classkiwi_1_1_function_ac3f55c8884be2448b0b24cbc42e4ce57}\label{classkiwi_1_1_function_ac3f55c8884be2448b0b24cbc42e4ce57} 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ typename Traits\+::\+Const\+Signature $>$ {\bfseries kiwi\+::const\+\_\+cast\+\_\+function} (\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ typename Traits\+::\+Non\+Const\+Signature $>$ \&\&) noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classkiwi_1_1_function_ada9f1820dd08eaae6ba5fa9f7f5de09e}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!Function@{Function}}
+\index{Function@{Function}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{Function()}{Function()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ada9f1820dd08eaae6ba5fa9f7f5de09e} 
+template$<$typename Function\+Type$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\mbox{\hyperlink{classfolly_1_1_function}{\+::\+Function}} (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [default]}}
+
+Default constructor. Constructs an empty \doxylink{classkiwi_1_1_function}{Function}. \Hypertarget{classkiwi_1_1_function_ab9657f6601911996250253e22ade291d}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!Function@{Function}}
+\index{Function@{Function}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{Function()}{Function()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ab9657f6601911996250253e22ade291d} 
+template$<$typename Function\+Type$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\mbox{\hyperlink{classfolly_1_1_function}{\+::\+Function}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Function\+Type $>$ \&\&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Move constructor \Hypertarget{classkiwi_1_1_function_af41c1c18f7c605820aa3141b96cfe884}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!Function@{Function}}
+\index{Function@{Function}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{Function()}{Function()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_af41c1c18f7c605820aa3141b96cfe884} 
+template$<$typename Function\+Type$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\mbox{\hyperlink{classfolly_1_1_function}{\+::\+Function}} (\begin{DoxyParamCaption}\item[{std\+::nullptr\+\_\+t}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Constructs an empty {\ttfamily \doxylink{classkiwi_1_1_function}{Function}}. \Hypertarget{classkiwi_1_1_function_a20d58a56d4085ef465c23dbf63fcd3c8}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!Function@{Function}}
+\index{Function@{Function}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{Function()}{Function()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a20d58a56d4085ef465c23dbf63fcd3c8} 
+template$<$typename Function\+Type$>$ \\
+template$<$typename Fun, typename = std\+::enable\+\_\+if\+\_\+t$<$                !detail\+::is\+\_\+similar\+\_\+instantiation\+\_\+v$<$\+Function, Fun$>$$>$, typename = typename Traits\+::template If\+Safe\+Result$<$\+Fun$>$$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\mbox{\hyperlink{classfolly_1_1_function}{\+::\+Function}} (\begin{DoxyParamCaption}\item[{Fun}]{fun}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Constructs a new {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} from any callable object that is {\itshape not} a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}}.
+
+\begin{DoxyNote}{Note}
+{\ttfamily typename Traits\+::template If\+Safe\+Result\texorpdfstring{$<$}{<}Fun\texorpdfstring{$>$}{>}} prevents this overload from being selected by overload resolution when {\ttfamily fun} is not a compatible function.
+
+The noexcept requires some explanation. {\ttfamily is\+\_\+in\+\_\+situ} is true when the decayed type fits within the internal buffer and is noexcept-\/movable. But this ctor might copy, not move. What we need here, if this ctor does a copy, is that this ctor be noexcept when the copy is noexcept. That is not checked in {\ttfamily is\+\_\+in\+\_\+situ}, and shouldn\textquotesingle{}t be, because once the {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} is constructed, the contained object is never copied. This check is for this ctor only, in the case that this ctor does a copy.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em fun} & function pointers, pointers to static member functions, {\ttfamily std\+::reference\+\_\+wrapper} objects, {\ttfamily std\+::function} objects, and arbitrary objects that implement {\ttfamily operator()} if the parameter signature matches (i.\+e. it returns an object convertible to {\ttfamily R} when called with {\ttfamily Args...}). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_function_ada5c9795b8e7300df73e9fd529283d48}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!Function@{Function}}
+\index{Function@{Function}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{Function()}{Function()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ada5c9795b8e7300df73e9fd529283d48} 
+template$<$typename Function\+Type$>$ \\
+template$<$typename Signature, typename Fun = Function$<$\+Signature$>$, typename = std\+::enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+same$<$\+Function, Fun$>$\+::value$>$, typename = typename Traits\+::template If\+Safe\+Result$<$\+Fun$>$$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\mbox{\hyperlink{classfolly_1_1_function}{\+::\+Function}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Signature $>$ \&\&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+For move-\/constructing from a {\ttfamily \doxylink{classfolly_1_1_function}{folly\+::\+Function}\texorpdfstring{$<$}{<}X(\+Ys...) \mbox{[}const?\mbox{]}\texorpdfstring{$>$}{>}}.
+
+For a {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} with a {\ttfamily const} function type, the object must be callable from a {\ttfamily const}-\/reference, i.\+e. implement {\ttfamily operator() const}. For a {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} with a non-\/{\ttfamily const} function type, the object will be called from a non-\/const reference, which means that it will execute a non-\/const {\ttfamily operator()} if it is defined, and falls back to {\ttfamily operator() const} otherwise. \Hypertarget{classkiwi_1_1_function_a2f208091ca28fcca6cf6aeb470ee598d}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!Function@{Function}}
+\index{Function@{Function}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{Function()}{Function()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a2f208091ca28fcca6cf6aeb470ee598d} 
+template$<$typename Function\+Type$>$ \\
+template$<$typename Member, typename Class, typename = decltype(\+Function(std\+::mem\+\_\+fn((\+Member Class\+::\texorpdfstring{$\ast$}{*})0)))$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\mbox{\hyperlink{classfolly_1_1_function}{\+::\+Function}} (\begin{DoxyParamCaption}\item[{Member Class\+::\texorpdfstring{$\ast$}{*}}]{ptr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+If {\ttfamily ptr} is null, constructs an empty {\ttfamily \doxylink{classkiwi_1_1_function}{Function}}. Otherwise, this constructor is equivalent to {\ttfamily Function(std\+::mem\+\_\+fn(ptr))}. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classkiwi_1_1_function_aa38361ed9f93441cca372c24759def28}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!asSharedProxy@{asSharedProxy}}
+\index{asSharedProxy@{asSharedProxy}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{asSharedProxy()}{asSharedProxy()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_aa38361ed9f93441cca372c24759def28} 
+template$<$typename Function\+Type$>$ \\
+Shared\+Proxy \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::as\+Shared\+Proxy (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) \&\&\hspace{0.3cm}{\ttfamily [inline]}}
+
+Move this {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} into a copyable callable object, of which all copies share the state. \Hypertarget{classkiwi_1_1_function_a33a82344bd4a4aec0243ba1974b8a79a}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!asStdFunction@{asStdFunction}}
+\index{asStdFunction@{asStdFunction}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{asStdFunction()}{asStdFunction()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a33a82344bd4a4aec0243ba1974b8a79a} 
+template$<$typename Function\+Type$>$ \\
+std\+::function$<$ typename Traits\+::\+Non\+Const\+Signature $>$ \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::as\+Std\+Function (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) \&\&\hspace{0.3cm}{\ttfamily [inline]}}
+
+Construct a {\ttfamily std\+::function} by moving in the contents of this {\ttfamily \doxylink{classkiwi_1_1_function}{Function}}. Note that the returned {\ttfamily std\+::function} will share its state (i.\+e. captured data) across all copies you make of it, so be very careful when copying. \Hypertarget{classkiwi_1_1_function_ad9df3f77f7cc84fb3cbd4ca433453b72}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!heapAllocatedMemory@{heapAllocatedMemory}}
+\index{heapAllocatedMemory@{heapAllocatedMemory}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{heapAllocatedMemory()}{heapAllocatedMemory()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ad9df3f77f7cc84fb3cbd4ca433453b72} 
+template$<$typename Function\+Type$>$ \\
+std\+::size\+\_\+t \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::heap\+Allocated\+Memory (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Returns the size of the allocation made to store the callable on the heap. If {\ttfamily 0} is returned, there has been no additional memory allocation because the callable is stored within the {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} object. \Hypertarget{classkiwi_1_1_function_af7766b2686f8224b50b89a89e578f0a6}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!operator bool@{operator bool}}
+\index{operator bool@{operator bool}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{operator bool()}{operator bool()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_af7766b2686f8224b50b89a89e578f0a6} 
+template$<$typename Function\+Type$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::operator bool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+
+Returns {\ttfamily true} if this {\ttfamily \doxylink{classkiwi_1_1_function}{Function}} contains a callable, i.\+e. is non-\/empty. \Hypertarget{classkiwi_1_1_function_ae4507c8d4c1533d1fbd411d465364bc2}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ae4507c8d4c1533d1fbd411d465364bc2} 
+template$<$typename Function\+Type$>$ \\
+template$<$typename Fun, typename..., bool Nx = noexcept(\+Function(\+KIWI\+\_\+\+DECLVAL(\+Fun\&\&)))$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::operator= (\begin{DoxyParamCaption}\item[{Fun}]{fun}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Assigns a callable object to this {\ttfamily \doxylink{classkiwi_1_1_function}{Function}}. If the operation fails, {\ttfamily \texorpdfstring{$\ast$}{*}this} is left unmodified.
+
+\begin{DoxyNote}{Note}
+{\ttfamily typename = decltype(\doxylink{classkiwi_1_1_function}{Function}(KIWI\+\_\+\+DECLVAL(Fun\&\&)))} prevents this overload from being selected by overload resolution when {\ttfamily fun} is not a compatible function. 
+\end{DoxyNote}
+\Hypertarget{classkiwi_1_1_function_a3ed1986e2ac79471b862bee0dcea0225}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a3ed1986e2ac79471b862bee0dcea0225} 
+template$<$typename Function\+Type$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Function\+Type $>$ \&\&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Move assignment operator
+
+\begin{DoxyNote}{Note}
+Leaves {\ttfamily that} in a valid but unspecified state. If {\ttfamily \&that == this} then {\ttfamily \texorpdfstring{$\ast$}{*}this} is left in a valid but unspecified state. 
+\end{DoxyNote}
+\Hypertarget{classkiwi_1_1_function_a88c8bcdb02871b681d6b5dc47ea65b0f}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a88c8bcdb02871b681d6b5dc47ea65b0f} 
+template$<$typename Function\+Type$>$ \\
+template$<$typename Signature, typename..., typename = typename Traits\+::template If\+Safe\+Result$<$\+Function$<$\+Signature$>$$>$$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Signature $>$ \&\&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+For assigning from a {\ttfamily \doxylink{classkiwi_1_1_function}{Function}\texorpdfstring{$<$}{<}X(Ys..) \mbox{[}const?\mbox{]}\texorpdfstring{$>$}{>}}. \Hypertarget{classkiwi_1_1_function_a6a53a249f312673fa5b0f52e907540fc}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a6a53a249f312673fa5b0f52e907540fc} 
+template$<$typename Function\+Type$>$ \\
+template$<$typename Member, typename Class$>$ \\
+auto \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::operator= (\begin{DoxyParamCaption}\item[{Member Class\+::\texorpdfstring{$\ast$}{*}}]{ptr}{}\end{DoxyParamCaption}) -\/$>$ decltype(operator=(std\+::mem\+\_\+fn(ptr))) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+If {\ttfamily ptr} is null, clears this {\ttfamily \doxylink{classkiwi_1_1_function}{Function}}. Otherwise, this assignment operator is equivalent to {\ttfamily \texorpdfstring{$\ast$}{*}this = std\+::mem\+\_\+fn(ptr)}. \Hypertarget{classkiwi_1_1_function_a9cb7f678ef4c3392e4414d8665ee9ac7}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_a9cb7f678ef4c3392e4414d8665ee9ac7} 
+template$<$typename Function\+Type$>$ \\
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}} \& \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::operator= (\begin{DoxyParamCaption}\item[{std\+::nullptr\+\_\+t}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Clears this {\ttfamily \doxylink{classkiwi_1_1_function}{Function}}. \Hypertarget{classkiwi_1_1_function_ae97d666e3b988b198076f153211f0177}\index{kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}!swap@{swap}}
+\index{swap@{swap}!kiwi::Function$<$ FunctionType $>$@{kiwi::Function$<$ FunctionType $>$}}
+\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_function_ae97d666e3b988b198076f153211f0177} 
+template$<$typename Function\+Type$>$ \\
+void \mbox{\hyperlink{classkiwi_1_1_function}{kiwi\+::\+Function}}$<$ Function\+Type $>$\+::swap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ Function\+Type $>$ \&}]{that}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Exchanges the callable objects of {\ttfamily \texorpdfstring{$\ast$}{*}this} and {\ttfamily that}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em that} & a \doxylink{classfolly_1_1_function}{folly\+::\+Function} ref \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/function.\+hh\end{DoxyCompactItemize}

@@ -1,0 +1,34 @@
+\doxysection{kiwi\+::initlist\+\_\+construct\+\_\+t Struct Reference}
+\hypertarget{structkiwi_1_1initlist__construct__t}{}\label{structkiwi_1_1initlist__construct__t}\index{kiwi::initlist\_construct\_t@{kiwi::initlist\_construct\_t}}
+
+
+{\ttfamily \#include $<$utility.\+hh$>$}
+
+
+
+\doxysubsection{Detailed Description}
+Initializer lists are a powerful compile time syntax introduced in C++11 but due to their often conflicting syntax they are not used by APIs for construction.
+
+Further standard conforming compilers {\itshape strongly} favor an std\+::initializer\+\_\+list overload for construction if one exists. The following is a simple tag used to disambiguate construction with initializer lists and regular uniform initialization.
+
+For example consider the following case
+
+class Something \{ public\+: explicit Something(int); Something(std\+::initializer\+\_\+list$<$int$>$);
+
+operator int(); \};
+
+... Something something\{1\}; // SURPRISE!!
+
+The last call to instantiate the Something object will go to the initializer\+\_\+list overload. Which may be surprising to users.
+
+If however this tag was used to disambiguate such construction it would be easy for users to see which construction overload their code was referring to. For example
+
+class Something \{ public\+: explicit Something(int); Something(folly\+::initlist\+\_\+construct\+\_\+t, std\+::initializer\+\_\+list$<$int$>$);
+
+operator int(); \};
+
+... Something something\+\_\+one\{1\}; // not the initializer\+\_\+list overload Something something\+\_\+two\{folly\+::initlist\+\_\+construct, \{1\}\}; // correct 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/common/utility.\+hh\end{DoxyCompactItemize}

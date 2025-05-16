@@ -1,5 +1,14 @@
 \doxysection{kiwi\+::internal\+::Is\+Value\+In\+Range\+Fast\+Op\texorpdfstring{$<$}{<} Dst, Src \texorpdfstring{$>$}{>} Struct Template Reference}
 \hypertarget{structkiwi_1_1internal_1_1_is_value_in_range_fast_op_3_01_dst_00_01_src_01_4}{}\label{structkiwi_1_1internal_1_1_is_value_in_range_fast_op_3_01_dst_00_01_src_01_4}\index{kiwi::internal::IsValueInRangeFastOp$<$ Dst, Src $>$@{kiwi::internal::IsValueInRangeFastOp$<$ Dst, Src $>$}}
+
+
+Signed to signed range comparison.  
+
+
+
+
+{\ttfamily \#include $<$safe\+\_\+conversions.\+hh$>$}
+
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -22,6 +31,12 @@ static constexpr bool {\bfseries is\+\_\+supported} = true
 static constexpr bool {\bfseries is\+\_\+supported}
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Dst, typename Src$>$\newline
+requires (std\+::signed\+\_\+integral$<$Dst$>$ \&\& std\+::signed\+\_\+integral$<$Src$>$ \&\& !k\+Is\+Type\+In\+Range\+For\+Numeric\+Type$<$Dst, Src$>$)\newline
+struct kiwi\+::internal\+::\+Is\+Value\+In\+Range\+Fast\+Op$<$ Dst, Src $>$}
+Signed to signed range comparison. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

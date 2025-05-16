@@ -16,45 +16,61 @@
 \DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
 \DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <utility>}}
 \DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
-\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }detail\ \{}
-\DoxyCodeLine{00022\ }
-\DoxyCodeLine{00023\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable>}
-\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }scope\_exit\ \{}
-\DoxyCodeLine{00025\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Fp>}
-\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{explicit}\ scope\_exit(Fp\&\&\ fp)\ :\ exit\_function\_(std::forward<Fp>(fp))\ \{\}}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ scope\_exit(scope\_exit\&\&\ rhs)}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ :\ exit\_function\_(std::move(rhs.exit\_function\_)),\ engaged\_(rhs.engaged\_)\ \{}
-\DoxyCodeLine{00031\ \ \ \ \ rhs.Dismiss();}
-\DoxyCodeLine{00032\ \ \ \}}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \ \ scope\_exit(\textcolor{keyword}{const}\ scope\_exit\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00035\ \ \ scope\_exit\&\ operator=(scope\_exit\&\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00036\ \ \ scope\_exit\&\ operator=(\textcolor{keyword}{const}\ scope\_exit\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ Dismiss()\ \{\ engaged\_\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/preprocessor.hh"{}}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable>}
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }ScopeExit\ \{}
+\DoxyCodeLine{00027\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Fp>}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{explicit}\ ScopeExit(Fp\&\&\ fp)\ :\ exit\_function\_(std::forward<Fp>(fp))\ \{\}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ ScopeExit(ScopeExit\&\&\ rhs)}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ :\ exit\_function\_(std::move(rhs.exit\_function\_)),\ engaged\_(rhs.engaged\_)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ rhs.Dismiss();}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ ScopeExit(\textcolor{keyword}{const}\ ScopeExit\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00037\ \ \ ScopeExit\&\ operator=(ScopeExit\&\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00038\ \ \ ScopeExit\&\ operator=(\textcolor{keyword}{const}\ ScopeExit\&)\ =\ \textcolor{keyword}{delete};}
 \DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \ \ \string~scope\_exit()\ \{}
-\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}\ (engaged\_)\ \{}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ exit\_function\_();}
-\DoxyCodeLine{00043\ \ \ \ \ \}}
-\DoxyCodeLine{00044\ \ \ \}}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00047\ \ \ Callable\ exit\_function\_;}
-\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{bool}\ engaged\_\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00049\ \};}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \}\ \ \textcolor{comment}{//\ end\ namespace\ detail}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Dismiss()\ \{\ engaged\_\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \string~ScopeExit()\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{if}\ (engaged\_)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ exit\_function\_();}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00049\ \ \ Callable\ exit\_function\_;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{bool}\ engaged\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00051\ \};}
 \DoxyCodeLine{00052\ }
-\DoxyCodeLine{00058\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable>}
-\DoxyCodeLine{00059\ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{detail::scope\_exit<std::decay\_t<Callable>}}>\ \mbox{\hyperlink{namespacekiwi_a851bea1bb4a936e7446e8fc1ab579231}{make\_scope\_exit}}(}
-\DoxyCodeLine{00060\ \ \ \ \ Callable\&\&\ fp)\ \{}
-\DoxyCodeLine{00061\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1detail_1_1scope__exit}{detail::scope\_exit<std::decay\_t<Callable>}}>(std::forward<Callable>(fp));}
-\DoxyCodeLine{00062\ \}}
-\DoxyCodeLine{00063\ }
-\DoxyCodeLine{00064\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ Internal\ use\ for\ the\ macro\ SCOPE\_EXIT\ below.}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{enum\ class}\ ScopeExitTag\ \{\};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \}\ \ \textcolor{comment}{//\ end\ namespace\ detail}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable>}
+\DoxyCodeLine{00064\ [[nodiscard]]\ \mbox{\hyperlink{classkiwi_1_1detail_1_1_scope_exit}{detail::ScopeExit<std::decay\_t<Callable>}}>\ \mbox{\hyperlink{namespacekiwi_a0f08f6f93fa42280d07db0f3c4723df7}{make\_scope\_exit}}(}
+\DoxyCodeLine{00065\ \ \ \ \ Callable\&\&\ fp)\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1detail_1_1_scope_exit}{detail::ScopeExit<std::decay\_t<Callable>}}>(std::forward<Callable>(fp));}
+\DoxyCodeLine{00067\ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FunctionType>}
+\DoxyCodeLine{00070\ detail::ScopeExit<typename\ std::decay<FunctionType>::type>\ operator+(}
+\DoxyCodeLine{00071\ \ \ \ \ detail::ScopeExitTag,\ FunctionType\&\&\ fn)\ \{}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordflow}{return}\ detail::ScopeExit<typename\ std::decay<FunctionType>::type>(}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ std::forward<FunctionType>(fn));}
+\DoxyCodeLine{00074\ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ SCOPE\_EXIT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\ \ auto\ KIWI\_ANONYMOUS\_VARIABLE(SCOPE\_EXIT\_STATE)\ =\ \(\backslash\)}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\ \ \ \ \ \ ::kiwi::detail::ScopeExitTag()\ +\ [\&]()\ noexcept}}
 
 \end{DoxyCode}

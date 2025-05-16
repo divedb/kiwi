@@ -1,9 +1,12 @@
 var searchData=
 [
-  ['rangecheck_0',['RangeCheck',['../classkiwi_1_1internal_1_1_range_check.html',1,'kiwi::internal']]],
-  ['receiver_1',['Receiver',['../classkiwi_1_1_scoped_generic_1_1_receiver.html',1,'kiwi::ScopedGeneric']]],
-  ['replacementoffset_2',['ReplacementOffset',['../structkiwi_1_1internal_1_1_replacement_offset.html',1,'kiwi::internal']]],
-  ['resizeuninitializedtraits_3',['ResizeUninitializedTraits',['../structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits.html',1,'kiwi::strings_internal']]],
-  ['resizeuninitializedtraits_3c_20string_5ftype_2c_20std_3a_3avoid_5ft_3c_20decltype_28std_3a_3adeclval_3c_20string_5ftype_20_26_20_3e_28_29_20_2e_5f_5fresize_5fdefault_5finit_28237_29_29_3e_20_3e_4',['ResizeUninitializedTraits&lt; string_type, std::void_t&lt; decltype(std::declval&lt; string_type &amp; &gt;() .__resize_default_init(237))&gt; &gt;',['../structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_3_01string__type_00_01std_1_1voi910255a708a951398ec96b81ff4fb79c.html',1,'kiwi::strings_internal']]],
-  ['rwspinlock_5',['RWSpinLock',['../class_r_w_spin_lock.html',1,'']]]
+  ['pointer_5ftraits_3c_3a_3akiwi_3a_3acheckedcontiguousiterator_3c_20t_20_3e_20_3e_0',['pointer_traits&lt;::kiwi::CheckedContiguousIterator&lt; T &gt; &gt;',['../structstd_1_1pointer__traits_3_1_1kiwi_1_1_checked_contiguous_iterator_3_01_t_01_4_01_4.html',1,'std']]],
+  ['pointerliketypetraits_1',['PointerLikeTypeTraits',['../structkiwi_1_1_pointer_like_type_traits.html',1,'kiwi']]],
+  ['pointerliketypetraits_3c_20const_20t_20_2a_20_3e_2',['PointerLikeTypeTraits&lt; const T * &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_5_01_4.html',1,'kiwi']]],
+  ['pointerliketypetraits_3c_20const_20t_20_3e_3',['PointerLikeTypeTraits&lt; const T &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_4.html',1,'kiwi']]],
+  ['pointerliketypetraits_3c_20returnt_28_2a_29_28paramts_2e_2e_2e_29_3e_4',['PointerLikeTypeTraits&lt; ReturnT(*)(ParamTs...)&gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01_return_t_07_5_08_07_param_ts_8_8_8_08_4.html',1,'kiwi']]],
+  ['pointerliketypetraits_3c_20uintptr_5ft_20_3e_5',['PointerLikeTypeTraits&lt; uintptr_t &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01uintptr__t_01_4.html',1,'kiwi']]],
+  ['pointerliketypetraits_3c_20void_20_2a_20_3e_6',['PointerLikeTypeTraits&lt; void * &gt;',['../structkiwi_1_1_pointer_like_type_traits_3_01void_01_5_01_4.html',1,'kiwi']]],
+  ['polldescriptor_7',['PollDescriptor',['../structfolly_1_1netops_1_1_poll_descriptor.html',1,'folly::netops']]],
+  ['predict_5fconstinit_5f_8',['predict_constinit_',['../structkiwi_1_1builtin_1_1detail_1_1predict__constinit__.html',1,'kiwi::builtin::detail']]]
 ];

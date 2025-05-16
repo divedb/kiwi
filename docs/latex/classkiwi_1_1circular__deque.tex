@@ -1,0 +1,231 @@
+\doxysection{kiwi\+::circular\+\_\+deque\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1circular__deque}{}\label{classkiwi_1_1circular__deque}\index{kiwi::circular\_deque$<$ T $>$@{kiwi::circular\_deque$<$ T $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a45aeb6d1a8e8489b1928666707bcc074}\label{classkiwi_1_1circular__deque_a45aeb6d1a8e8489b1928666707bcc074} 
+using {\bfseries value\+\_\+type} = T
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a20c55b5e1bc7155c3b61adca158f86af}\label{classkiwi_1_1circular__deque_a20c55b5e1bc7155c3b61adca158f86af} 
+using {\bfseries size\+\_\+type} = size\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ac2ad3a7e09c9265899675cc236eaf308}\label{classkiwi_1_1circular__deque_ac2ad3a7e09c9265899675cc236eaf308} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a495a9616e8fb30c31962b9c0d8d63813}\label{classkiwi_1_1circular__deque_a495a9616e8fb30c31962b9c0d8d63813} 
+using {\bfseries reference} = value\+\_\+type\&
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a448584fabf39aaee14ea3e04d0147472}\label{classkiwi_1_1circular__deque_a448584fabf39aaee14ea3e04d0147472} 
+using {\bfseries const\+\_\+reference} = const value\+\_\+type\&
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a03b121e86c1970af00f73fdb28d2392d}\label{classkiwi_1_1circular__deque_a03b121e86c1970af00f73fdb28d2392d} 
+using {\bfseries pointer} = value\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a5bd7b1bac7ceb36bb5526571c2f50e52}\label{classkiwi_1_1circular__deque_a5bd7b1bac7ceb36bb5526571c2f50e52} 
+using {\bfseries const\+\_\+pointer} = const value\+\_\+type\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ad4c42f83eaba98fdcc4139bd8fc1c979}\label{classkiwi_1_1circular__deque_ad4c42f83eaba98fdcc4139bd8fc1c979} 
+using {\bfseries iterator} = \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{internal\+::circular\+\_\+deque\+\_\+iterator}}$<$T$>$
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a8423f8407c7495f92e74834c08bb516a}\label{classkiwi_1_1circular__deque_a8423f8407c7495f92e74834c08bb516a} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{internal\+::circular\+\_\+deque\+\_\+const\+\_\+iterator}}$<$T$>$
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a25e22388358bad8d631d0ddcdadc52a1}\label{classkiwi_1_1circular__deque_a25e22388358bad8d631d0ddcdadc52a1} 
+using {\bfseries reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}}$>$
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a4c2f503fbff00a377a22b88e7dac7bc6}\label{classkiwi_1_1circular__deque_a4c2f503fbff00a377a22b88e7dac7bc6} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}}$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ae0ff2dec1dba0eb7cb8c46c53c5aa2d1}\label{classkiwi_1_1circular__deque_ae0ff2dec1dba0eb7cb8c46c53c5aa2d1} 
+{\bfseries circular\+\_\+deque} (size\+\_\+type count)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a301b14064091a139da6ab4743a54ca9e}\label{classkiwi_1_1circular__deque_a301b14064091a139da6ab4743a54ca9e} 
+{\bfseries circular\+\_\+deque} (size\+\_\+type count, const T \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a6971c491837f43f1d702fdbd93ee7683}\label{classkiwi_1_1circular__deque_a6971c491837f43f1d702fdbd93ee7683} 
+{\footnotesize template$<$class Input\+Iterator$>$ \newline
+requires (std\+::input\+\_\+iterator$<$Input\+Iterator$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE {\bfseries circular\+\_\+deque} (Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ab4a38a23d6583e62cdfcc76d27568a6e}\label{classkiwi_1_1circular__deque_ab4a38a23d6583e62cdfcc76d27568a6e} 
+{\footnotesize template$<$typename Range$>$ \newline
+requires (std\+::ranges\+::input\+\_\+range$<$Range$>$)}\\{\bfseries circular\+\_\+deque} (\mbox{\hyperlink{structbase_1_1from__range__t}{base\+::from\+\_\+range\+\_\+t}}, Range \&\&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_af2859fc248c255caf8bc3bd8b41789cb}\label{classkiwi_1_1circular__deque_af2859fc248c255caf8bc3bd8b41789cb} 
+{\bfseries circular\+\_\+deque} (const \mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&other)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a998bcbde40cf2416c75b6be0d02c3b10}\label{classkiwi_1_1circular__deque_a998bcbde40cf2416c75b6be0d02c3b10} 
+{\bfseries circular\+\_\+deque} (\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&\&other) noexcept
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_af3ce392858de0bb353699ea749331ec5}\label{classkiwi_1_1circular__deque_af3ce392858de0bb353699ea749331ec5} 
+{\bfseries circular\+\_\+deque} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ init)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a468b5ff3f1a58a0a9cf429eeecdc3be2}\label{classkiwi_1_1circular__deque_a468b5ff3f1a58a0a9cf429eeecdc3be2} 
+\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&other)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ad8e145a14c28e2fbafdffa1b15b1b9d8}\label{classkiwi_1_1circular__deque_ad8e145a14c28e2fbafdffa1b15b1b9d8} 
+\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&\&other) noexcept
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a7eae39b4bd5b50debe5f0b58b12ee9d2}\label{classkiwi_1_1circular__deque_a7eae39b4bd5b50debe5f0b58b12ee9d2} 
+\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \& {\bfseries operator=} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ ilist)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a874be1696ff6ad64b50992478b71e0da}\label{classkiwi_1_1circular__deque_a874be1696ff6ad64b50992478b71e0da} 
+void {\bfseries assign} (size\+\_\+type count, const value\+\_\+type \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a977127b2f0d0b75ebf08c27fe1297865}\label{classkiwi_1_1circular__deque_a977127b2f0d0b75ebf08c27fe1297865} 
+{\footnotesize template$<$typename Input\+Iterator$>$ \newline
+requires (std\+::forward\+\_\+iterator$<$Input\+Iterator$>$)}\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE void {\bfseries assign} (Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a45a9aa38b3ec388c1ee04a0dc87467ed}\label{classkiwi_1_1circular__deque_a45a9aa38b3ec388c1ee04a0dc87467ed} 
+void {\bfseries assign} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a34360bec57c48ec8448521d23629946c}\label{classkiwi_1_1circular__deque_a34360bec57c48ec8448521d23629946c} 
+{\footnotesize template$<$typename Range$>$ \newline
+requires (std\+::ranges\+::input\+\_\+range$<$Range$>$)}\\void {\bfseries assign\+\_\+range} (Range \&\&range)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ae13fa8ad70f02ab4bf500282e396aae0}\label{classkiwi_1_1circular__deque_ae13fa8ad70f02ab4bf500282e396aae0} 
+const value\+\_\+type \& {\bfseries at} (size\+\_\+type i) const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_aa31dacec8258925170908d7c9b3bfd3f}\label{classkiwi_1_1circular__deque_aa31dacec8258925170908d7c9b3bfd3f} 
+value\+\_\+type \& {\bfseries at} (size\+\_\+type i)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a584f37b5eddf2ef6f5cdb0bd3bf550c8}\label{classkiwi_1_1circular__deque_a584f37b5eddf2ef6f5cdb0bd3bf550c8} 
+const value\+\_\+type \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+type i) const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_aa581f048baf41e297c2885ec0faab119}\label{classkiwi_1_1circular__deque_aa581f048baf41e297c2885ec0faab119} 
+value\+\_\+type \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+type i)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a29db1654686f81e9308c7f8e45a109bb}\label{classkiwi_1_1circular__deque_a29db1654686f81e9308c7f8e45a109bb} 
+value\+\_\+type \& {\bfseries front} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a6d8ea95c4f495312f1ee8362f0db3418}\label{classkiwi_1_1circular__deque_a6d8ea95c4f495312f1ee8362f0db3418} 
+const value\+\_\+type \& {\bfseries front} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a9bc4efdef0bba3110dd27173400b085a}\label{classkiwi_1_1circular__deque_a9bc4efdef0bba3110dd27173400b085a} 
+value\+\_\+type \& {\bfseries back} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a2e4665990c1c00cc5611509890146bfd}\label{classkiwi_1_1circular__deque_a2e4665990c1c00cc5611509890146bfd} 
+const value\+\_\+type \& {\bfseries back} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_abaf40a12c0dc0d4101f0067022584562}\label{classkiwi_1_1circular__deque_abaf40a12c0dc0d4101f0067022584562} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries begin} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a58d068ca290655f2b783feb420dbe7f8}\label{classkiwi_1_1circular__deque_a58d068ca290655f2b783feb420dbe7f8} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} {\bfseries begin} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_af8194234892c5ef94a8e36d874ac6d5c}\label{classkiwi_1_1circular__deque_af8194234892c5ef94a8e36d874ac6d5c} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} {\bfseries cbegin} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_adb0612ccbaabeb168b4d2459e75873ee}\label{classkiwi_1_1circular__deque_adb0612ccbaabeb168b4d2459e75873ee} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries end} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_acf55169646ad273c961e3f8e16874250}\label{classkiwi_1_1circular__deque_acf55169646ad273c961e3f8e16874250} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} {\bfseries end} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a318a5de5b5351ad547c698f865e8e537}\label{classkiwi_1_1circular__deque_a318a5de5b5351ad547c698f865e8e537} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} {\bfseries cend} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ae5227e8105f552253b194fe914554396}\label{classkiwi_1_1circular__deque_ae5227e8105f552253b194fe914554396} 
+reverse\+\_\+iterator {\bfseries rbegin} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a637c8170c80d5b1bbf363383ae274016}\label{classkiwi_1_1circular__deque_a637c8170c80d5b1bbf363383ae274016} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rbegin} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a10fda0b68bea519ad205a92a636ab1fb}\label{classkiwi_1_1circular__deque_a10fda0b68bea519ad205a92a636ab1fb} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ad1aba57dddb75284108520f1cd7292f4}\label{classkiwi_1_1circular__deque_ad1aba57dddb75284108520f1cd7292f4} 
+reverse\+\_\+iterator {\bfseries rend} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a11cbb0db3b5e37b1698cdbc975bbb57a}\label{classkiwi_1_1circular__deque_a11cbb0db3b5e37b1698cdbc975bbb57a} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rend} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a60b011a796a2830933fbbb2e514cd5f1}\label{classkiwi_1_1circular__deque_a60b011a796a2830933fbbb2e514cd5f1} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_aff9262a6ef8d57bd06e494112c708179}\label{classkiwi_1_1circular__deque_aff9262a6ef8d57bd06e494112c708179} 
+void {\bfseries reserve} (size\+\_\+type new\+\_\+capacity)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a7191bae4850203b61f446f8ea2c7eccf}\label{classkiwi_1_1circular__deque_a7191bae4850203b61f446f8ea2c7eccf} 
+size\+\_\+type {\bfseries capacity} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_af20978486729c805e32f3efacf13ba40}\label{classkiwi_1_1circular__deque_af20978486729c805e32f3efacf13ba40} 
+void {\bfseries shrink\+\_\+to\+\_\+fit} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_af1693db7206aaf65357f91f5addd0c61}\label{classkiwi_1_1circular__deque_af1693db7206aaf65357f91f5addd0c61} 
+void {\bfseries clear} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a28967b2b990aec9486e1cb69f2c34b0f}\label{classkiwi_1_1circular__deque_a28967b2b990aec9486e1cb69f2c34b0f} 
+bool {\bfseries empty} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_abf570e1bfc1762e91065ad21b9ff62d1}\label{classkiwi_1_1circular__deque_abf570e1bfc1762e91065ad21b9ff62d1} 
+size\+\_\+type {\bfseries size} () const
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a6011ba2fee6743bf6b2cb69f23b143fc}\label{classkiwi_1_1circular__deque_a6011ba2fee6743bf6b2cb69f23b143fc} 
+void {\bfseries resize} (size\+\_\+type count)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_aedba3bbb1d3de20cf89c7987127a4d97}\label{classkiwi_1_1circular__deque_aedba3bbb1d3de20cf89c7987127a4d97} 
+void {\bfseries resize} (size\+\_\+type count, const value\+\_\+type \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a70fd4dfb8291b357c60fbbe60258010a}\label{classkiwi_1_1circular__deque_a70fd4dfb8291b357c60fbbe60258010a} 
+void {\bfseries insert} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos, size\+\_\+type count, const T \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a6a93e4f8a0618c2b42e67707493715ff}\label{classkiwi_1_1circular__deque_a6a93e4f8a0618c2b42e67707493715ff} 
+{\footnotesize template$<$class Input\+Iterator$>$ \newline
+requires (std\+::forward\+\_\+iterator$<$Input\+Iterator$>$)}\\void {\bfseries insert} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos, Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a7776d6e315497ad0e7381cf49cd03bf4}\label{classkiwi_1_1circular__deque_a7776d6e315497ad0e7381cf49cd03bf4} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos, const T \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a71d0f5f2e1f8d11c725bf8c18bf2e996}\label{classkiwi_1_1circular__deque_a71d0f5f2e1f8d11c725bf8c18bf2e996} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos, T \&\&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_add7ba0c8a5db7ba9c0cad040abc672e9}\label{classkiwi_1_1circular__deque_add7ba0c8a5db7ba9c0cad040abc672e9} 
+{\footnotesize template$<$class... Args$>$ }\\\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries emplace} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos, Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ac2129dbc1c426fca63d370ecd6831a9a}\label{classkiwi_1_1circular__deque_ac2129dbc1c426fca63d370ecd6831a9a} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a5311d523dde1daf4ce452da713a4f3b0}\label{classkiwi_1_1circular__deque_a5311d523dde1daf4ce452da713a4f3b0} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos\+\_\+begin, \mbox{\hyperlink{classkiwi_1_1internal_1_1circular__deque__const__iterator}{const\+\_\+iterator}} pos\+\_\+end)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a014d0ca8770322968a10a9a72b98a3fb}\label{classkiwi_1_1circular__deque_a014d0ca8770322968a10a9a72b98a3fb} 
+void {\bfseries push\+\_\+front} (const T \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a6a028197c03480e4a30bd7818b078d27}\label{classkiwi_1_1circular__deque_a6a028197c03480e4a30bd7818b078d27} 
+void {\bfseries push\+\_\+front} (T \&\&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ae95b57908d3f22c5e07bf060e58ead28}\label{classkiwi_1_1circular__deque_ae95b57908d3f22c5e07bf060e58ead28} 
+void {\bfseries push\+\_\+back} (const T \&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a8d2e09ffa60372bec769a12bc269c6af}\label{classkiwi_1_1circular__deque_a8d2e09ffa60372bec769a12bc269c6af} 
+void {\bfseries push\+\_\+back} (T \&\&value)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a94d119863b4e46ed30134d0365340319}\label{classkiwi_1_1circular__deque_a94d119863b4e46ed30134d0365340319} 
+{\footnotesize template$<$class... Args$>$ }\\reference {\bfseries emplace\+\_\+front} (Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_ab2039653b93330d022cab7e179b65eee}\label{classkiwi_1_1circular__deque_ab2039653b93330d022cab7e179b65eee} 
+{\footnotesize template$<$class... Args$>$ }\\reference {\bfseries emplace\+\_\+back} (Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_af47ff02dcb034fd96a72127a7025cf80}\label{classkiwi_1_1circular__deque_af47ff02dcb034fd96a72127a7025cf80} 
+void {\bfseries pop\+\_\+front} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a718188c6481af0af3be6a1aeaf9fe359}\label{classkiwi_1_1circular__deque_a718188c6481af0af3be6a1aeaf9fe359} 
+void {\bfseries pop\+\_\+back} ()
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_a2e0ee918aac4a987ee05c8c05bda5eb4}\label{classkiwi_1_1circular__deque_a2e0ee918aac4a987ee05c8c05bda5eb4} 
+void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&other)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1circular__deque_aca326bb6f8a238281e087ecb2e73ec0a}\label{classkiwi_1_1circular__deque_aca326bb6f8a238281e087ecb2e73ec0a} 
+void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&lhs, \mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}} \&rhs)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/containers/circular\+\_\+deque.\+hh\end{DoxyCompactItemize}

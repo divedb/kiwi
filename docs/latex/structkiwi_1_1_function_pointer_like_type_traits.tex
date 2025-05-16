@@ -25,7 +25,7 @@ static constexpr int \mbox{\hyperlink{structkiwi_1_1_function_pointer_like_type_
 struct kiwi\+::\+Function\+Pointer\+Like\+Type\+Traits$<$ Alignment, Function\+Pointer\+T $>$}
 Provide suitable custom traits struct for function pointers.
 
-Function pointers can\textquotesingle{}t be directly given these traits as functions can\textquotesingle{}t have their alignment computed with {\ttfamily alignof} and we need different casting.
+\doxylink{classkiwi_1_1_function}{Function} pointers can\textquotesingle{}t be directly given these traits as functions can\textquotesingle{}t have their alignment computed with {\ttfamily alignof} and we need different casting.
 
 To rely on higher alignment for a specialized use, you can provide a customized form of this template explicitly with higher alignment, and potentially use alignment attributes on functions to satisfy that. 
 

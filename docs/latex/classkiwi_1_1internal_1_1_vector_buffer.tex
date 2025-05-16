@@ -1,0 +1,89 @@
+\doxysection{kiwi\+::internal\+::Vector\+Buffer\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1internal_1_1_vector_buffer}{}\label{classkiwi_1_1internal_1_1_vector_buffer}\index{kiwi::internal::VectorBuffer$<$ T $>$@{kiwi::internal::VectorBuffer$<$ T $>$}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a2336883fd9ea3e3502fb79d86e10d1c5}\label{classkiwi_1_1internal_1_1_vector_buffer_a2336883fd9ea3e3502fb79d86e10d1c5} 
+{\bfseries Vector\+Buffer} (size\+\_\+t count)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_aa0631a17ae0a364bb1e80af31f30ebe8}\label{classkiwi_1_1internal_1_1_vector_buffer_aa0631a17ae0a364bb1e80af31f30ebe8} 
+{\bfseries Vector\+Buffer} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{Vector\+Buffer}} \&\&other) noexcept
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a57f269f15098c5d15807fbea7021cc06}\label{classkiwi_1_1internal_1_1_vector_buffer_a57f269f15098c5d15807fbea7021cc06} 
+{\bfseries Vector\+Buffer} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{Vector\+Buffer}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a16f385f56cb07e5a440de3a4ca96f084}\label{classkiwi_1_1internal_1_1_vector_buffer_a16f385f56cb07e5a440de3a4ca96f084} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{Vector\+Buffer}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{Vector\+Buffer}} \&)=delete
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a439c18224d42af8c376c8beab8e81da3}\label{classkiwi_1_1internal_1_1_vector_buffer_a439c18224d42af8c376c8beab8e81da3} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{Vector\+Buffer}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{Vector\+Buffer}} \&\&other)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a9e13d04cfb18f6ebe50346d1f05ddca0}\label{classkiwi_1_1internal_1_1_vector_buffer_a9e13d04cfb18f6ebe50346d1f05ddca0} 
+size\+\_\+t {\bfseries capacity} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a180e9e9cbe1b9602d2da992d5eb5f6df}\label{classkiwi_1_1internal_1_1_vector_buffer_a180e9e9cbe1b9602d2da992d5eb5f6df} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a1267b21aad41f9ac66a26d20a401a153}\label{classkiwi_1_1internal_1_1_vector_buffer_a1267b21aad41f9ac66a26d20a401a153} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_aa2dc7adde965af7dc9334047cfb0a825}\label{classkiwi_1_1internal_1_1_vector_buffer_aa2dc7adde965af7dc9334047cfb0a825} 
+const T \texorpdfstring{$\ast$}{*} {\bfseries data} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a44b3bb7e1de4b559d333f4bd90010997}\label{classkiwi_1_1internal_1_1_vector_buffer_a44b3bb7e1de4b559d333f4bd90010997} 
+T \texorpdfstring{$\ast$}{*} {\bfseries data} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a291cebd12a8cf0e921446be0b4047345}\label{classkiwi_1_1internal_1_1_vector_buffer_a291cebd12a8cf0e921446be0b4047345} 
+T \texorpdfstring{$\ast$}{*} {\bfseries begin} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a36517330c15c06187d3d2437e664d66e}\label{classkiwi_1_1internal_1_1_vector_buffer_a36517330c15c06187d3d2437e664d66e} 
+T \texorpdfstring{$\ast$}{*} {\bfseries end} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a4cdc026c80896d448f6f59679a198a1e}\label{classkiwi_1_1internal_1_1_vector_buffer_a4cdc026c80896d448f6f59679a198a1e} 
+\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ T $>$ {\bfseries as\+\_\+span} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a155a734bc86345de6557203fe0196d11}\label{classkiwi_1_1internal_1_1_vector_buffer_a155a734bc86345de6557203fe0196d11} 
+\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ T $>$ {\bfseries subspan} (size\+\_\+t index)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a5209ac4fcda83cf8fc8716b239ba90d1}\label{classkiwi_1_1internal_1_1_vector_buffer_a5209ac4fcda83cf8fc8716b239ba90d1} 
+\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ T $>$ {\bfseries subspan} (size\+\_\+t index, size\+\_\+t size)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_aafd13d62212fbdcd93a0e90d8d502ad8}\label{classkiwi_1_1internal_1_1_vector_buffer_aafd13d62212fbdcd93a0e90d8d502ad8} 
+T \texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+at} (size\+\_\+t index)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_af966246a94d30b9f6cb1d0191dbe1d3b}\label{classkiwi_1_1internal_1_1_vector_buffer_af966246a94d30b9f6cb1d0191dbe1d3b} 
+static void {\bfseries Destruct\+Range} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ T $>$ range)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a516bbbf7579a319ce3791151e624354a}\label{classkiwi_1_1internal_1_1_vector_buffer_a516bbbf7579a319ce3791151e624354a} 
+static void {\bfseries Move\+Construct\+Range} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ T $>$ from, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ T $>$ to)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T2$>$ }\\static constexpr bool \mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer_a6ee903522e40a438bac236b6249a4a28}{is\+\_\+trivially\+\_\+copyable\+\_\+or\+\_\+relocatable}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classkiwi_1_1internal_1_1_vector_buffer_a6ee903522e40a438bac236b6249a4a28}\index{kiwi::internal::VectorBuffer$<$ T $>$@{kiwi::internal::VectorBuffer$<$ T $>$}!is\_trivially\_copyable\_or\_relocatable@{is\_trivially\_copyable\_or\_relocatable}}
+\index{is\_trivially\_copyable\_or\_relocatable@{is\_trivially\_copyable\_or\_relocatable}!kiwi::internal::VectorBuffer$<$ T $>$@{kiwi::internal::VectorBuffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_trivially\_copyable\_or\_relocatable}{is\_trivially\_copyable\_or\_relocatable}}
+{\footnotesize\ttfamily \label{classkiwi_1_1internal_1_1_vector_buffer_a6ee903522e40a438bac236b6249a4a28} 
+template$<$typename T$>$ \\
+template$<$typename T2$>$ \\
+bool \mbox{\hyperlink{classkiwi_1_1internal_1_1_vector_buffer}{kiwi\+::internal\+::\+Vector\+Buffer}}$<$ T $>$\+::is\+\_\+trivially\+\_\+copyable\+\_\+or\+\_\+relocatable\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ std::is\_trivially\_copyable\_v<T2>\ ||\ IS\_TRIVIALLY\_RELOCATABLE(T2)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/containers/vector\+\_\+buffer.\+hh\end{DoxyCompactItemize}
