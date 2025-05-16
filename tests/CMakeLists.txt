@@ -92,7 +92,29 @@ foreach(target ${CONTAINERS_TEST_TARGETS})
   )
 endforeach()
 
+set(TYPES_TEST_TARGETS
+  pass_key_test
+  supports_ostream_operator_test
+)
+
+foreach(target ${TYPES_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+      ${target}
+    HDRS
+      ${GTEST_INCLUDE_DIR}
+      ${KIWI_INCLUDE_DIR}
+    SRCS
+      "types/${target}.cc"
+    COPTS
+      ${KIWI_TEST_COPTS}
+    DEPS
+      gtest
+      gtest_main
+      glog::glog
+  )
+endforeach()
+
 add_subdirectory(metrics)
 add_subdirectory(strings)
-add_subdirectory(types)
 add_subdirectory(files)

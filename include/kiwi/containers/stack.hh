@@ -6,9 +6,9 @@
 
 #include <stack>
 
-#include "base/containers/circular_deque.h"
+#include "kiwi/containers/circular_deque.hh"
 
-namespace base {
+namespace kiwi {
 
 // Provides a definition of base::stack that's like std::stack but uses a
 // base::circular_deque instead of std::deque. Since std::stack is just a
@@ -17,4 +17,4 @@ namespace base {
 template <class T, class Container = circular_deque<T>>
 using stack = std::stack<T, Container>;
 
-}  // namespace base
+}  // namespace kiwi

@@ -18,8 +18,7 @@
 #include <string_view>
 #include <vector>
 
-#include "base/functional/callback.h"
-#include "base/types/pass_key.h"
+#include "kiwi/common/function.hh"
 #include "kiwi/containers/span.hh"
 #include "kiwi/io/file.hh"
 #include "kiwi/io/file_path.hh"
@@ -27,6 +26,7 @@
 #include "kiwi/portability/base_export.hh"
 #include "kiwi/portability/build_config.hh"
 #include "kiwi/strings/cstring_view.hh"
+#include "kiwi/types/pass_key.hh"
 
 #if BUILDFLAG(IS_WIN)
 #include "base/win/windows_types.h"
@@ -41,7 +41,7 @@ namespace content::internal {
 class ChildProcessLauncherHelper;
 }  // namespace content::internal
 
-namespace base {
+namespace kiwi {
 
 class Environment;
 class Time;
@@ -49,7 +49,7 @@ class Time;
 #if BUILDFLAG(IS_WIN)
 class PreventExecuteMappingClasses {
  public:
-  using PassKey = base::PassKey<PreventExecuteMappingClasses>;
+  using PassKey = kiwi::PassKey<PreventExecuteMappingClasses>;
 
  private:
   static PassKey GetPassKey() { return PassKey(); }
@@ -157,11 +157,11 @@ BASE_EXPORT bool DeletePathRecursively(const FilePath& path);
 //
 // WARNING: It is NOT safe to use `path` until `reply_callback` is run, as the
 // retry task may still be actively trying to delete it.
-BASE_EXPORT OnceClosure GetDeleteFileCallback(
-    const FilePath& path, OnceCallback<void(bool)> reply_callback = {});
+BASE_EXPORT Function<void()> GetDeleteFileCallback(
+    const FilePath& path, Function<void(bool)> reply_callback = {});
 
-BASE_EXPORT OnceClosure GetDeletePathRecursivelyCallback(
-    const FilePath& path, OnceCallback<void(bool)> reply_callback = {});
+BASE_EXPORT Function<void()> GetDeletePathRecursivelyCallback(
+    const FilePath& path, Function<void(bool)> reply_callback = {});
 
 #if BUILDFLAG(IS_WIN)
 // Schedules to delete the given path, whether it's a file or a directory, until
@@ -180,7 +180,7 @@ BASE_EXPORT bool PreventExecuteMapping(const FilePath& path);
 // Only call this if you know the path you are providing is safe to mark as
 // non-executable, such as log files.
 BASE_EXPORT bool PreventExecuteMappingUnchecked(
-    const FilePath& path, base::PassKey<PreventExecuteMappingClasses> passkey);
+    const FilePath& path, kiwi::PassKey<PreventExecuteMappingClasses> passkey);
 
 // Set `path_key` to the second of two valid paths that support safely marking a
 // file as non-execute. The first allowed path is always PATH_TEMP. This is
@@ -304,7 +304,7 @@ BASE_EXPORT bool ReadFileToStringWithMaxSize(const FilePath& path,
 // As ReadFileToString, but reading from an open stream after seeking to its
 // start (if supported by the stream). This can also be used to read the whole
 // file from a file descriptor by converting the file descriptor into a stream
-// by using base::FileToFILE() before calling this function.
+// by using kiwi::FileToFILE() before calling this function.
 BASE_EXPORT bool ReadStreamToString(FILE* stream, std::string* contents);
 
 // As ReadFileToStringWithMaxSize, but reading from an open stream after seeking
@@ -337,7 +337,7 @@ BASE_EXPORT ScopedFD CreateAndOpenFdForTemporaryFileInDir(const FilePath& dir,
 // which are guaranteed not to block (such as kernel files). Or in situations
 // where a partial read would be acceptable because the backing store returned
 // EWOULDBLOCK.
-BASE_EXPORT bool ReadFileToStringNonBlocking(const base::FilePath& file,
+BASE_EXPORT bool ReadFileToStringNonBlocking(const kiwi::FilePath& file,
                                              std::string* ret);
 
 // Creates a symbolic link at |symlink| pointing to |target|.  Returns
@@ -505,7 +505,7 @@ BASE_EXPORT bool CreateDirectory(const FilePath& full_path);
 BASE_EXPORT std::optional<int64_t> GetFileSize(const FilePath& file_path);
 
 // Same as above, but as an OnceCallback.
-BASE_EXPORT OnceCallback<std::optional<int64_t>()> GetFileSizeCallback(
+BASE_EXPORT Function<std::optional<int64_t>()> GetFileSizeCallback(
     const FilePath& path);
 
 // Sets |real_path| to |path| with symbolic links and junctions expanded.
@@ -533,7 +533,7 @@ BASE_EXPORT bool DevicePathToDriveLetterPath(const FilePath& device_path,
 // temp file paths. If a username isn't a valid 8.3 short file name (even just a
 // lengthy name like "user with long name"), Windows will set the TMP and TEMP
 // environment variables to be 8.3 paths. ::GetTempPath (called in
-// base::GetTempDir) just uses the value specified by TMP or TEMP, and so can
+// kiwi::GetTempDir) just uses the value specified by TMP or TEMP, and so can
 // return a short path. Returns an empty path on error.
 BASE_EXPORT FilePath MakeLongFilePath(const FilePath& input);
 
@@ -644,7 +644,7 @@ BASE_EXPORT FilePath GetUniquePath(const FilePath& path);
 // (for example because you need a filename without spaces in it). Passing
 // " (%d)" as `suffix_format` makes this behave identical to `GetUniquePath()`.
 BASE_EXPORT FilePath GetUniquePathWithSuffixFormat(
-    const FilePath& path, base::cstring_view suffix_format);
+    const FilePath& path, kiwi::cstring_view suffix_format);
 
 // Sets the given |fd| to non-blocking mode.
 // Returns true if it was able to set it in the non-blocking mode, otherwise
@@ -718,8 +718,8 @@ BASE_EXPORT bool RemoveCloseOnExec(int fd);
 // * Are not symbolic links.
 // This is useful for checking that a config file is administrator-controlled.
 // |base| must contain |path|.
-BASE_EXPORT bool VerifyPathControlledByUser(const base::FilePath& base,
-                                            const base::FilePath& path,
+BASE_EXPORT bool VerifyPathControlledByUser(const kiwi::FilePath& base,
+                                            const kiwi::FilePath& path,
                                             uid_t owner_uid,
                                             const std::set<gid_t>& group_gids);
 
@@ -730,12 +730,12 @@ BASE_EXPORT bool VerifyPathControlledByUser(const base::FilePath& base,
 // the filesystem, are owned by the superuser, controlled by the group
 // "admin", are not writable by all users, and contain no symbolic links.
 // Will return false if |path| does not exist.
-BASE_EXPORT bool VerifyPathControlledByAdmin(const base::FilePath& path);
+BASE_EXPORT bool VerifyPathControlledByAdmin(const kiwi::FilePath& path);
 #endif  // BUILDFLAG(IS_MAC)
 
 // Returns the maximum length of path component on the volume containing
 // the directory |path|, in the number of FilePath::CharType, or -1 on failure.
-BASE_EXPORT int GetMaximumPathComponentLength(const base::FilePath& path);
+BASE_EXPORT int GetMaximumPathComponentLength(const kiwi::FilePath& path);
 
 #if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
 // Get a temporary directory for shared memory files. The directory may depend
@@ -779,4 +779,4 @@ BASE_EXPORT bool CopyFileContentsWithSendfile(File& infile, File& outfile,
         // BUILDFLAG(IS_ANDROID)
 
 }  // namespace internal
-}  // namespace base
+}  // namespace kiwi

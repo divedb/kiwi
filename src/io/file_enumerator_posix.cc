@@ -13,16 +13,15 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "base/files/file_enumerator.h"
-#include "base/logging.h"
-#include "base/threading/scoped_blocking_call.h"
-#include "build/build_config.h"
+#include "kiwi/common/logging.hh"
+#include "kiwi/io/file_enumerator.hh"
+#include "kiwi/portability/build_config.hh"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/content_uri_utils.h"
 #endif
 
-namespace base {
+namespace kiwi {
 namespace {
 
 bool GetStat(const FilePath& path, bool show_links, stat_wrapper_t* st) {
@@ -31,7 +30,7 @@ bool GetStat(const FilePath& path, bool show_links, stat_wrapper_t* st) {
   if (res < 0) {
     // Print the stat() error message unless it was ENOENT and we're following
     // symlinks.
-    DPLOG_IF(ERROR, errno != ENOENT || show_links)
+    LOG_IF(ERROR, errno != ENOENT || show_links)
         << "Cannot stat '" << path << "'";
     memset(st, 0, sizeof(*st));
     return false;
@@ -63,8 +62,8 @@ bool ShouldTrackVisitedDirectories(int file_type) {
 FileEnumerator::FileInfo::FileInfo() { memset(&stat_, 0, sizeof(stat_)); }
 
 #if BUILDFLAG(IS_ANDROID)
-FileEnumerator::FileInfo::FileInfo(base::FilePath content_uri,
-                                   base::FilePath filename, bool is_directory,
+FileEnumerator::FileInfo::FileInfo(kiwi::FilePath content_uri,
+                                   kiwi::FilePath filename, bool is_directory,
                                    off_t size, Time time)
     : content_uri_(std::move(content_uri)), filename_(std::move(filename)) {
   memset(&stat_, 0, sizeof(stat_));
@@ -82,8 +81,8 @@ FilePath FileEnumerator::FileInfo::GetName() const { return filename_; }
 
 int64_t FileEnumerator::FileInfo::GetSize() const { return stat_.st_size; }
 
-base::Time FileEnumerator::FileInfo::GetLastModifiedTime() const {
-  return base::Time::FromTimeT(stat_.st_mtime);
+kiwi::Time FileEnumerator::FileInfo::GetLastModifiedTime() const {
+  return kiwi::Time::FromTimeT(stat_.st_mtime);
 }
 
 // FileEnumerator --------------------------------------------------------------
@@ -152,8 +151,6 @@ FileEnumerator::FileEnumerator(const FilePath& root_path, bool recursive,
 FileEnumerator::~FileEnumerator() = default;
 
 FilePath FileEnumerator::Next() {
-  ScopedBlockingCall scoped_blocking_call(FROM_HERE, BlockingType::MAY_BLOCK);
-
   ++current_directory_entry_;
 
   // While we've exhausted the entries in the current directory, do the next
@@ -306,4 +303,4 @@ bool FileEnumerator::IsPatternMatched(const FilePath& path) const {
          !fnmatch(pattern_.c_str(), path.value().c_str(), FNM_NOESCAPE);
 }
 
-}  // namespace base
+}  // namespace kiwi

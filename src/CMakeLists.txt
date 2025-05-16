@@ -45,6 +45,8 @@ HDRS
     ${CMAKE_CURRENT_BINARY_DIR}
 SRCS
     "io/file.cc"
+    "io/file_enumerator.cc"
+    "io/file_enumerator_posix.cc"
     "io/file_path.cc"
     "io/file_posix.cc"
     "io/iobuf.cc"

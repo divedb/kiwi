@@ -9,10 +9,11 @@
 
 #include <vector>
 
+#include "kiwi/chrono/time.hh"
+#include "kiwi/common/function.hh"
 #include "kiwi/containers/stack.hh"
 #include "kiwi/io/file.hh"
 #include "kiwi/io/file_path.hh"
-#include "kiwi/io/time.hh"
 #include "kiwi/portability/base_export.hh"
 #include "kiwi/portability/build_config.hh"
 
@@ -262,7 +263,7 @@ class BASE_EXPORT FileEnumerator {
   FilePath::StringType pattern_;
   const FolderSearchPolicy folder_search_policy_;
   const ErrorPolicy error_policy_;
-  File::Error error_ = File::FILE_OK;
+  File::Error error_ = File::kFileOk;
 
   // A stack that keeps track of which subdirectories we still need to
   // enumerate in the breadth-first search.
