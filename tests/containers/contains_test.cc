@@ -2,19 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "base/containers/contains.h"
+#include "kiwi/containers/contains.hh"
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include <functional>
 #include <set>
 #include <string>
 #include <string_view>
 
-#include "base/containers/flat_set.h"
-#include "base/strings/string_util.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "kiwi/containers/flat_set.hh"
+#include "kiwi/strings/string_util.hh"
 
-namespace base {
+namespace kiwi {
 
 TEST(ContainsTest, GenericContains) {
   constexpr char allowed_chars[] = {'a', 'b', 'c', 'd'};
@@ -67,4 +68,4 @@ TEST(ContainsTest, ContainsWithContains) {
   EXPECT_FALSE(Contains(set, 0));
 }
 
-}  // namespace base
+}  // namespace kiwi
