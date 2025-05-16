@@ -67,6 +67,7 @@ endforeach()
 set(CONTAINERS_TEST_TARGETS
   checked_iterators_test  
   circular_deque_test
+  flat_set_test
   flat_tree_test
   heap_array_test
 )
