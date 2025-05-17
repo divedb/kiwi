@@ -130,6 +130,29 @@ foreach(target ${CONTAINERS_TEST_TARGETS})
     glog::glog)
 endforeach()
 
+# ================================================================================
+# IO
+# ================================================================================
+set(IO_TEST_TARGETS scoped_temp_file_test)
+
+foreach(target ${IO_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+    ${target}
+    HDRS
+    ${GTEST_INCLUDE_DIR}
+    ${KIWI_INCLUDE_DIR}
+    SRCS
+    "io/${target}.cc"
+    COPTS
+    ${KIWI_TEST_COPTS}
+    DEPS
+    gtest
+    gtest_main
+    glog::glog
+    kiwi::io)
+endforeach()
+
 set(TYPES_TEST_TARGETS pass_key_test supports_ostream_operator_test)
 
 foreach(target ${TYPES_TEST_TARGETS})

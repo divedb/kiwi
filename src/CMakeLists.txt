@@ -82,6 +82,7 @@ kiwi_cc_library(
   "io/iobuf.cc"
   "io/safe_base_name.cc"
   "io/scoped_file.cc"
+  "io/scoped_temp_file.cc"
   "io/uio.cc"
   COPTS
   ${KIWI_LIB_COPTS}
