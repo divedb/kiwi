@@ -16,10 +16,6 @@ add_subdirectory(third_party/double-conversion)
 enable_testing()
 find_package(GTest REQUIRED)
 
-message("GTest_FOUND = ${GTest_FOUND}")
-message("GTEST_INCLUDE_DIRS = ${GTEST_INCLUDE_DIRS}")
-message("GTEST_LIBRARIES = ${GTEST_LIBRARIES}")
-
 option(USE_ZLIB "Enable ZLIB compression support" OFF)
 
 if(USE_ZLIB)
