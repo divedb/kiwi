@@ -14,8 +14,7 @@
 #include "base/threading/scoped_blocking_call.h"
 #include "base/win/shlwapi.h"
 
-namespace base {
-
+namespace kiwi {
 namespace {
 
 FilePath BuildSearchFilter(FileEnumerator::FolderSearchPolicy policy,
@@ -211,4 +210,4 @@ bool FileEnumerator::IsPatternMatched(const FilePath& src) const {
   NOTREACHED();
 }
 
-}  // namespace base
+}  // namespace kiwi

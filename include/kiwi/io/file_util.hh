@@ -433,11 +433,15 @@ BASE_EXPORT FilePath GetHomeDir();
 BASE_EXPORT File CreateAndOpenTemporaryFileInDir(const FilePath& dir,
                                                  FilePath* temp_file);
 
-// Creates a temporary file. The full path is placed in `path`, and the
-// function returns true if was successful in creating the file. The file will
-// be empty and all handles closed after this function returns.
-// The caller is responsible for deleting the file `path` points to, if
-// appropriate.
+/// Creates a temporary file.  The file will be empty and all handles closed
+/// after this function returns.  The caller is responsible for deleting the
+/// file `path` points to, if appropriate.
+///
+/// @brief
+/// \param path A pointer to a FilePath object that will be populated with the
+///             path to the newly created temporary file upon success.
+/// \return true if the temporary file was successfully created; false
+///         otherwise.
 BASE_EXPORT bool CreateTemporaryFile(FilePath* path);
 
 // Same as CreateTemporaryFile() but the file is created in `dir`.

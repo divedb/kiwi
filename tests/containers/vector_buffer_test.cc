@@ -10,7 +10,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace base::internal {
+namespace kiwi::internal {
 
 namespace {
 
@@ -179,4 +179,4 @@ TEST(VectorBuffer, TrivialAbiMove) {
   EXPECT_EQ(move_count, kHaveTrivialRelocation ? 0 : size);
 }
 
-}  // namespace base::internal
+}  // namespace kiwi::internal

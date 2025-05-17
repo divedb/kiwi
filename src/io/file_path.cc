@@ -775,13 +775,13 @@ FilePath FilePath::Append(const SafeBaseName& component) const {
 
 FilePath FilePath::AppendASCII(std::string_view component) const {
   // TODO(gc):
-  // DCHECK(base::IsStringASCII(component));
+  // DCHECK(kiwi::IsStringASCII(component));
   return AppendUTF8(component);
 }
 
 FilePath FilePath::AppendUTF8(std::string_view component) const {
   // TODO(gc):
-  // DCHECK(base::IsStringUTF8(component));
+  // DCHECK(kiwi::IsStringUTF8(component));
 #if BUILDFLAG(IS_WIN)
   return Append(UTF8ToWide(component));
 #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
@@ -851,7 +851,7 @@ bool FilePath::ReferencesParent() const {
 std::u16string FilePath::LossyDisplayName() const { return AsString16(path_); }
 
 std::string FilePath::MaybeAsASCII() const {
-  return base::IsStringASCII(path_) ? WideToASCII(path_) : std::string();
+  return kiwi::IsStringASCII(path_) ? WideToASCII(path_) : std::string();
 }
 
 std::string FilePath::AsUTF8Unsafe() const { return WideToUTF8(value()); }
@@ -861,7 +861,7 @@ std::u16string FilePath::AsUTF16Unsafe() const { return WideToUTF16(value()); }
 // static
 FilePath FilePath::FromASCII(std::string_view ascii) {
   // TODO(gc):
-  // DCHECK(base::IsStringASCII(ascii));
+  // DCHECK(kiwi::IsStringASCII(ascii));
   return FilePath(ASCIIToWide(ascii));
 }
 
@@ -910,7 +910,7 @@ std::u16string FilePath::AsUTF16Unsafe() const {
 // static
 FilePath FilePath::FromASCII(std::string_view ascii) {
   // TODO(gc):
-  // DCHECK(base::IsStringASCII(ascii));
+  // DCHECK(kiwi::IsStringASCII(ascii));
   return FilePath(ascii);
 }
 
@@ -1663,7 +1663,7 @@ FilePath FilePath::NormalizePathSeparatorsTo(
 
 #if BUILDFLAG(IS_ANDROID)
 bool FilePath::IsContentUri() const {
-  return StartsWith(path_, "content://", base::CompareCase::INSENSITIVE_ASCII);
+  return StartsWith(path_, "content://", kiwi::CompareCase::INSENSITIVE_ASCII);
 }
 #endif
 
