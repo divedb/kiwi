@@ -4,3 +4,6 @@
 [submodule "third_party/double-conversion"]
 	path = third_party/double-conversion
 	url = https://github.com/google/double-conversion.git
+[submodule "third_party/googletest"]
+	path = third_party/googletest
+	url = https://github.com/google/googletest.git
