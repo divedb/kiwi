@@ -1,28 +1,19 @@
 cmake_minimum_required(VERSION 3.20)
-project(kiwi LANGUAGES CXX OBJCXX)
+project(kiwi LANGUAGES CXX)
+enable_testing()
 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(KIWI_TEST_COPTS -std=c++20 -Wall -Wextra)
-set(KIWI_LIB_COPTS -std=c++20 -Wall -Wextra)
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 20)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  message(STATUS "setting C++ standard to C++${CMAKE_CXX_STANDARD}")
+endif()
+
 set(KIWI_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(KIWI_TESTS_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests/include")
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-add_subdirectory(third_party/glog)
-add_subdirectory(third_party/double-conversion)
-
-enable_testing()
-find_package(GTest REQUIRED)
-
-option(USE_ZLIB "Enable ZLIB compression support" OFF)
-
-if(USE_ZLIB)
-  find_package(ZLIB REQUIRED)
-  add_definitions(-DENABLE_ZLIB)
-endif()
-
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+include(KiwiHelpers)
+include(KiwiConfigureCopts)
 include(KiwiConfigChecks)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/kiwi-config.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/src/kiwi-config.h)
@@ -33,5 +24,16 @@ else()
   include(KiwiCompilerUnix)
 endif()
 
+find_package(GTest REQUIRED)
+
+option(USE_ZLIB "Enable ZLIB compression support" OFF)
+
+if(USE_ZLIB)
+  find_package(ZLIB REQUIRED)
+  add_definitions(-DENABLE_ZLIB)
+endif()
+
+add_subdirectory(third_party/glog)
+add_subdirectory(third_party/double-conversion)
 add_subdirectory(src)
 add_subdirectory(tests)
