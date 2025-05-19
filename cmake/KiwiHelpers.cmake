@@ -340,8 +340,8 @@ function(kiwi_cc_test)
   target_include_directories(
     ${_NAME}
     PUBLIC ${KIWI_COMMON_INCLUDE_DIRS}
-    PRIVATE ${kiwi_gtest_src_dir}/googletest/include
-            ${kiwi_gtest_src_dir}/googlemock/include)
+    PRIVATE ${GTEST_INCLUDE_DIRS}
+  )
 
   if(${KIWI_BUILD_DLL})
     target_compile_definitions(
@@ -362,7 +362,8 @@ function(kiwi_cc_test)
   target_link_libraries(
     ${_NAME}
     PUBLIC ${KIWI_CC_TEST_DEPS}
-    PRIVATE ${KIWI_CC_TEST_LINKOPTS})
+    PRIVATE ${KIWI_CC_TEST_LINKOPTS} GTest::gtest GTest::gtest_main
+  )
 
   # Add all Abseil targets to a folder in the IDE for organization.
   set_property(TARGET ${_NAME} PROPERTY FOLDER ${KIWI_IDE_FOLDER}/test)
