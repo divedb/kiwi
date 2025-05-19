@@ -11,10 +11,8 @@
 #include <string>
 #include <string_view>
 
-// #include "base/check.h"
-// #include "base/check_op.h"
+#include "kiwi/common/logging.hh"
 #include "kiwi/containers/checked_iterators.hh"
-// #include "base/memory/raw_ptr_exclusion.h"
 #include "kiwi/numerics/safe_conversions.hh"
 #include "kiwi/portability/build_config.hh"
 #include "kiwi/portability/compiler_specific.hh"
@@ -87,7 +85,7 @@ class basic_cstring_view final {
     // without this being known to pass at compile time.
     //
     // SAFETY: lit is an array of size M, so M-1 is in bounds.
-    // DCHECK_EQ(UNSAFE_BUFFERS(lit[M - 1u]), Char{0});
+    // CHECK_EQ(UNSAFE_BUFFERS(lit[M - 1u]), Char{0});
   }
 
   // Constructs a cstring view from a std::string (or other std::basic_string
@@ -270,7 +268,7 @@ class basic_cstring_view final {
   // The function CHECKs that the string is non-empty, and will terminate
   // otherwise.
   PURE_FUNCTION constexpr const Char& front() const noexcept {
-    // CHECK(len_);
+    CHECK(len_);
     // Since `len_ > 0`, 0 is a valid offset into the string contents.
     return UNSAFE_BUFFERS(ptr_[0u]);
   }
@@ -281,7 +279,7 @@ class basic_cstring_view final {
   // The function CHECKs that the string is non-empty, and will terminate
   // otherwise.
   PURE_FUNCTION constexpr const Char& back() const noexcept {
-    // CHECK(len_);
+    CHECK(len_);
     // Since `len_ > 0`, `len - 1` will not underflow. There are `len_` many
     // chars in the string before a NUL, so `len_ - 1` is in range of the string
     // contents.
