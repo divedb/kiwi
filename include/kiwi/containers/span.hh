@@ -1559,15 +1559,23 @@ constexpr void PrintTo(span<ElementType, Extent, InternalPtrType> s,
   *os << s;
 }
 
-// Converts a `T&` to a `span<T, 1>`.
-//
-// (Not in `std::`; inspired by Rust's `slice::from_ref()`.)
+/// Creates a span of size 1 from a reference to an object.
+/// (Not in `std::`; inspired by Rust's `slice::from_ref()`.)
+///
+/// \tparam T The type of the referenced object.
+/// \param t A reference to an object, which must outlive the returned span.
+/// \return A span containing a single element referencing the provided object.
+///
+/// \note The returned span has a static extent of 1. This function is useful
+///       when treating a single object as a span-compatible buffer (e.g., for
+///       APIs that operate on spans).
 template <typename T>
 constexpr auto span_from_ref(const T& t KIWI_LIFETIME_BOUND) {
   // SAFETY: It's safe to read the memory at `t`'s address as long as the
   // provided reference is valid.
   return UNSAFE_BUFFERS(span<const T, 1>(std::addressof(t), 1u));
 }
+
 template <typename T>
 constexpr auto span_from_ref(T& t KIWI_LIFETIME_BOUND) {
   // SAFETY: It's safe to read the memory at `t`'s address as long as the

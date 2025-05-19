@@ -437,7 +437,6 @@ BASE_EXPORT File CreateAndOpenTemporaryFileInDir(const FilePath& dir,
 /// after this function returns.  The caller is responsible for deleting the
 /// file `path` points to, if appropriate.
 ///
-/// @brief
 /// \param path A pointer to a FilePath object that will be populated with the
 ///             path to the newly created temporary file upon success.
 /// \return true if the temporary file was successfully created; false

@@ -36,6 +36,7 @@ ScopedTempFile::~ScopedTempFile() {
 
 bool ScopedTempFile::Create() {
   CHECK(path_.empty());
+
   return kiwi::CreateTemporaryFile(&path_);
 }
 
