@@ -83,35 +83,80 @@ foreach(target ${COMMON_TEST_TARGETS})
     "kiwi::common")
 endforeach()
 
-# #
 # ================================================================================
 # # CONTAINERS #
 # ================================================================================
-# set(CONTAINERS_TEST_TARGETS adapters_test checked_iterators_test
-# circular_deque_test contains_test heap_array_test flat_set_test flat_tree_test
-# to_vector_test # vector_buffer_test )
+set(CONTAINERS_TEST_TARGETS
+    adapters_test
+    checked_iterators_test
+    circular_deque_test
+    contains_test
+    heap_array_test
+    flat_set_test
+    flat_tree_test
+    to_vector_test # vector_buffer_test
+)
 
-# foreach(target ${CONTAINERS_TEST_TARGETS}) kiwi_cc_test( NAME ${target} HDRS
-# ${GTEST_INCLUDE_DIR} ${KIWI_INCLUDE_DIR} ${KIWI_TESTS_INCLUDE_DIR} SRCS
-# "containers/${target}.cc" COPTS ${KIWI_TEST_COPTS} DEPS GTest::gtest
-# GTest::gtest_main glog::glog) endforeach()
+foreach(target ${CONTAINERS_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+    ${target}
+    HDRS
+    ${GTEST_INCLUDE_DIR}
+    ${KIWI_INCLUDE_DIR}
+    ${KIWI_TESTS_INCLUDE_DIR}
+    SRCS
+    "containers/${target}.cc"
+    COPTS
+    ${KIWI_TEST_COPTS}
+    DEPS
+    GTest::gtest
+    GTest::gtest_main
+    glog::glog)
+endforeach()
 
-# #
 # ================================================================================
 # # IO #
 # ================================================================================
-# set(IO_TEST_TARGETS scoped_temp_file_test)
+set(IO_TEST_TARGETS scoped_temp_file_test)
 
-# foreach(target ${IO_TEST_TARGETS}) kiwi_cc_test( NAME ${target} HDRS
-# ${GTEST_INCLUDE_DIR} ${KIWI_INCLUDE_DIR} SRCS "io/${target}.cc" COPTS
-# ${KIWI_TEST_COPTS} DEPS GTest::gtest GTest::gtest_main glog::glog kiwi::io)
-# endforeach()
+foreach(target ${IO_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+    ${target}
+    HDRS
+    ${GTEST_INCLUDE_DIR}
+    ${KIWI_INCLUDE_DIR}
+    SRCS
+    "io/${target}.cc"
+    COPTS
+    ${KIWI_TEST_COPTS}
+    DEPS
+    GTest::gtest
+    GTest::gtest_main
+    glog::glog
+    kiwi::io)
+endforeach()
 
-# set(TYPES_TEST_TARGETS pass_key_test supports_ostream_operator_test)
+set(TYPES_TEST_TARGETS pass_key_test supports_ostream_operator_test)
 
-# foreach(target ${TYPES_TEST_TARGETS}) kiwi_cc_test( NAME ${target} HDRS
-# ${GTEST_INCLUDE_DIR} ${KIWI_INCLUDE_DIR} SRCS "types/${target}.cc" COPTS
-# ${KIWI_TEST_COPTS} DEPS GTest::gtest GTest::gtest_main glog::glog)
-# endforeach()
+foreach(target ${TYPES_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+    ${target}
+    HDRS
+    ${GTEST_INCLUDE_DIR}
+    ${KIWI_INCLUDE_DIR}
+    SRCS
+    "types/${target}.cc"
+    COPTS
+    ${KIWI_TEST_COPTS}
+    DEPS
+    GTest::gtest
+    GTest::gtest_main
+    glog::glog)
+endforeach()
 
-# add_subdirectory(metrics) add_subdirectory(strings) add_subdirectory(files)
+add_subdirectory(metrics)
+add_subdirectory(strings)
+add_subdirectory(files)
