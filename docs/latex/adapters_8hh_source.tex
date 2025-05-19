@@ -1,0 +1,53 @@
+\doxysection{adapters.\+hh}
+\hypertarget{adapters_8hh_source}{}\label{adapters_8hh_source}\index{include/kiwi/containers/adapters.hh@{include/kiwi/containers/adapters.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2014\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <ranges>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/adapters\_internal.hh"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ Returns\ a\ range\ adapter\ that\ exposes\ its\ elements\ as\ rvalues.\ When\ used\ as\ an}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ input\ range,\ this\ means\ the\ values\ in\ \`{}range`\ will\ be\ moved\ from\ (and}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ the\ values\ potentially\ in\ an\ unspecified\ but\ valid\ state).}}
+\DoxyCodeLine{00019\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{requires}(std::ranges::input\_range<Range>\ \&\&}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ elements\ in\ the\ input\ range\ will\ be\ consumed,\ so\ restrict\ this}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ to\ non-\/borrowed\ ranges,\ as\ the\ elements\ from\ a\ borrowed\ range\ can}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ outlive\ this\ call.}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ !std::ranges::borrowed\_range<Range>\ \&\&}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Disallow\ input\ ranges\ if\ the\ elements\ cannot\ be\ moved\ from\ (e.g.}}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ they\ are\ const-\/qualified).}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ std::movable<}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::remove\_reference\_t<std::ranges::range\_reference\_t<Range>>>)}
+\DoxyCodeLine{00029\ \textcolor{keyword}{auto}\ RangeAsRvalues(Range\&\&\ range\ KIWI\_LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_of_rvalues_adapter}{internal::RangeOfRvaluesAdapter<Range>}}(std::forward<Range>(range));}
+\DoxyCodeLine{00031\ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ Reversed\ returns\ a\ container\ adapter\ usable\ in\ a\ range-\/based\ "{}for"{}\ statement}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ for\ iterating\ a\ reversible\ container\ in\ reverse\ order.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ Example:}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ \ std::vector<int>\ v\ =\ ...;}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ for\ (int\ i\ :\ base::Reversed(v))\ \{}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ \ \ \ //\ iterates\ through\ v\ from\ back\ to\ front}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00042\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00043\ \textcolor{keyword}{auto}\ Reversed(Range\&\&\ range\ KIWI\_LIFETIME\_BOUND)\ \{}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_reversed_adapter}{internal::ReversedAdapter<Range>}}(std::forward<Range>(range));}
+\DoxyCodeLine{00045\ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

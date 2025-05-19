@@ -157,6 +157,9 @@ class BASE_EXPORT File {
     Time creation_time;
   };
 
+  /// \name Constructors
+  /// @{
+
   File() = default;
 
   /// Creates or opens the given file. This will fail with 'access denied' if
@@ -184,17 +187,25 @@ class BASE_EXPORT File {
   File(ScopedPlatformFile platform_file, bool async);
   File(PlatformFile platform_file, bool async);
 
-  // Creates an object with a specific error_details code.
+  /// Creates an object with a specific error_details code.
+  ///
+  /// \param error_details An error code describing the failure (e.g.,
+  ///                      permission denied, not found).
   explicit File(Error error_details);
 
-  /// Move constructor.
+  /// Move constructor. Transfers ownership of the file handle from another File
+  /// object.
+  ///
+  /// \param other The File object to move from.
   File(File&& other);
+
+  /// @}
 
   ~File();
 
   File& operator=(File&& other);
 
-  // Creates or opens the given file.
+  /// Creates or opens the given file.
   void Initialize(const FilePath& path, uint32_t flags);
 
   /// \return true if the handle or fd wrapped by this object is valid.  This
@@ -417,6 +428,9 @@ class BASE_EXPORT File {
   static Error GetLastFileError();
 
   /// Converts an error value to a human-readable form. Used for logging.
+  ///
+  /// \param error The error code to convert.
+  /// \return A string describing the error.
   static std::string ErrorToString(Error error);
 
 #if BUILDFLAG(IS_POSIX)

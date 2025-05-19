@@ -215,200 +215,201 @@ $(function(){initNavTree('file_8hh_source.html',''); initResizable(true); });
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="structkiwi_1_1_file_1_1_info.html#a0e1c37f189fe7554fee41aafa668d7bf">  157</a></span>    <a class="code hl_class" href="classkiwi_1_1_time.html">Time</a> <a class="code hl_variable" href="structkiwi_1_1_file_1_1_info.html#a0e1c37f189fe7554fee41aafa668d7bf">creation_time</a>;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  };</div>
 </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  File() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  File(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, uint32_t flags);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="keyword">explicit</span> File(ScopedPlatformFile platform_file);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keyword">explicit</span> File(PlatformFile platform_file);</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  File(ScopedPlatformFile platform_file, <span class="keywordtype">bool</span> async);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  File(PlatformFile platform_file, <span class="keywordtype">bool</span> async);</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="comment">// Creates an object with a specific error_details code.</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="keyword">explicit</span> File(<a class="code hl_enumeration" href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> error_details);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  File() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  File(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, uint32_t flags);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="keyword">explicit</span> File(ScopedPlatformFile platform_file);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="keyword">explicit</span> File(PlatformFile platform_file);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  File(ScopedPlatformFile platform_file, <span class="keywordtype">bool</span> async);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  File(PlatformFile platform_file, <span class="keywordtype">bool</span> async);</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  File(File&amp;&amp; other);</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  ~File();</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  File&amp; operator=(File&amp;&amp; other);</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">// Creates or opens the given file.</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keywordtype">void</span> Initialize(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, uint32_t flags);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classkiwi_1_1_file.html#a71faf3633bb71e0af623c1bd2a978940">IsValid</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7">  208</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7">IsCreated</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> is_created_; }</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831">  220</a></span>  <a class="code hl_enumeration" href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> <a class="code hl_function" href="classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831">ErrorDetails</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> error_details_; }</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  PlatformFile GetPlatformFile()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> file_.get(); }</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  PlatformFile TakePlatformFile() { <span class="keywordflow">return</span> file_.Release(); }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keywordtype">void</span> Close();</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  int64_t Seek(Whence whence, int64_t offset);</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keywordtype">bool</span> ReadAndCheck(int64_t offset, kiwi::span&lt;uint8_t&gt; data);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <span class="keywordtype">bool</span> ReadAtCurrentPosAndCheck(kiwi::span&lt;uint8_t&gt; data);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> Read(int64_t offset, <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  std::optional&lt;size_t&gt; Read(int64_t offset, kiwi::span&lt;uint8_t&gt; data);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> ReadAtCurrentPos(<span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  std::optional&lt;size_t&gt; ReadAtCurrentPos(kiwi::span&lt;uint8_t&gt; data);</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> ReadNoBestEffort(int64_t offset, <span class="keywordtype">char</span>* data,</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                                           <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  std::optional&lt;size_t&gt; ReadNoBestEffort(int64_t offset,</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                                         kiwi::span&lt;uint8_t&gt; data);</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> ReadAtCurrentPosNoBestEffort(<span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  std::optional&lt;size_t&gt; ReadAtCurrentPosNoBestEffort(kiwi::span&lt;uint8_t&gt; data);</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  <span class="keywordtype">bool</span> WriteAndCheck(int64_t offset, span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="keywordtype">bool</span> WriteAtCurrentPosAndCheck(span&lt;const uint8_t&gt; data);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keyword">explicit</span> File(<a class="code hl_enumeration" href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> error_details);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  File(File&amp;&amp; other);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  ~File();</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  File&amp; operator=(File&amp;&amp; other);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classkiwi_1_1_file.html#a277a950e2310f6868d23d8e49ba2384e">Initialize</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, uint32_t flags);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classkiwi_1_1_file.html#a71faf3633bb71e0af623c1bd2a978940">IsValid</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7">  219</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7">IsCreated</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> is_created_; }</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831">  231</a></span>  <a class="code hl_enumeration" href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">Error</a> <a class="code hl_function" href="classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831">ErrorDetails</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> error_details_; }</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  PlatformFile GetPlatformFile()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> file_.get(); }</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  PlatformFile TakePlatformFile() { <span class="keywordflow">return</span> file_.Release(); }</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keywordtype">void</span> Close();</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  int64_t Seek(Whence whence, int64_t offset);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keywordtype">bool</span> ReadAndCheck(int64_t offset, kiwi::span&lt;uint8_t&gt; data);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="keywordtype">bool</span> ReadAtCurrentPosAndCheck(kiwi::span&lt;uint8_t&gt; data);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> Read(int64_t offset, <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  std::optional&lt;size_t&gt; Read(int64_t offset, kiwi::span&lt;uint8_t&gt; data);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> ReadAtCurrentPos(<span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  std::optional&lt;size_t&gt; ReadAtCurrentPos(kiwi::span&lt;uint8_t&gt; data);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> ReadNoBestEffort(int64_t offset, <span class="keywordtype">char</span>* data,</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                                           <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  std::optional&lt;size_t&gt; ReadNoBestEffort(int64_t offset,</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                                         kiwi::span&lt;uint8_t&gt; data);</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> Write(int64_t offset, <span class="keyword">const</span> <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  std::optional&lt;size_t&gt; Write(int64_t offset, kiwi::span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> WriteAtCurrentPos(<span class="keyword">const</span> <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  std::optional&lt;size_t&gt; WriteAtCurrentPos(kiwi::span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  ssize_t WriteIOBufAtCurrentPos(<span class="keyword">const</span> kiwi::IOBuf&amp; iobuf);</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> WriteAtCurrentPosNoBestEffort(<span class="keyword">const</span> <span class="keywordtype">char</span>* data,</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                                                        <span class="keywordtype">int</span> size);</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  std::optional&lt;size_t&gt; WriteAtCurrentPosNoBestEffort(</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>      kiwi::span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  int64_t GetLength() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> ReadAtCurrentPosNoBestEffort(<span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  std::optional&lt;size_t&gt; ReadAtCurrentPosNoBestEffort(kiwi::span&lt;uint8_t&gt; data);</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <span class="keywordtype">bool</span> WriteAndCheck(int64_t offset, span&lt;const uint8_t&gt; data);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keywordtype">bool</span> WriteAtCurrentPosAndCheck(span&lt;const uint8_t&gt; data);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> Write(int64_t offset, <span class="keyword">const</span> <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  std::optional&lt;size_t&gt; Write(int64_t offset, kiwi::span&lt;const uint8_t&gt; data);</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> WriteAtCurrentPos(<span class="keyword">const</span> <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  std::optional&lt;size_t&gt; WriteAtCurrentPos(kiwi::span&lt;const uint8_t&gt; data);</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  ssize_t WriteIOBufAtCurrentPos(<span class="keyword">const</span> kiwi::IOBuf&amp; iobuf);</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="keywordtype">bool</span> Truncate(int64_t length);</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <span class="keywordtype">bool</span> Flush();</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span></div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  <span class="keywordtype">bool</span> SetTimes(Time last_access_time, Time last_modified_time);</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="keywordtype">bool</span> GetInfo(Info* info) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <span class="comment">// Attempts to take an exclusive write lock on the file. Returns immediately</span></div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  <span class="comment">// (i.e. does not wait for another process to unlock the file). If the lock</span></div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <span class="comment">// was obtained, the result will be FILE_OK. A lock only guarantees</span></div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="comment">// that other processes may not also take a lock on the same file with the</span></div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  <span class="comment">// same API - it may still be opened, renamed, unlinked, etc.</span></div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <span class="comment">// Common semantics:</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="comment">//  * Locks are held by processes, but not inherited by child processes.</span></div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <span class="comment">//  * Locks are released by the OS on file close or process termination.</span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <span class="comment">//  * Locks are reliable only on local filesystems.</span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  <span class="comment">//  * Duplicated file handles may also write to locked files.</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="comment">// Windows-specific semantics:</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  <span class="comment">//  * Locks are mandatory for read/write APIs, advisory for mapping APIs.</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  <span class="comment">//  * Within a process, locking the same file (by the same or new handle)</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <span class="comment">//    will fail.</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <span class="comment">// POSIX-specific semantics:</span></div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>  <span class="comment">//  * Locks are advisory only.</span></div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="comment">//  * Within a process, locking the same file (by the same or new handle)</span></div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="comment">//    will succeed. The new lock replaces the old lock.</span></div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="comment">//  * Closing any descriptor on a given file releases the lock.</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  Error Lock(LockMode mode);</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  <span class="comment">// Unlock a file previously locked.</span></div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  Error Unlock();</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <span class="comment">// Returns a new object referencing this file for use within the current</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  <span class="comment">// process. Handling of FLAG_DELETE_ON_CLOSE varies by OS. On POSIX, the File</span></div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  <span class="comment">// object that was created or initialized with this flag will have unlinked</span></div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  <span class="comment">// the underlying file when it was created or opened. On Windows, the</span></div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  <span class="comment">// underlying file is deleted when the last handle to it is closed.</span></div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  File Duplicate() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  <span class="keywordtype">bool</span> IsAsync()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> is_async_; }</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <span class="comment">// Sets or clears the DeleteFile disposition on the file. Returns true if</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  <span class="comment">// the disposition was set or cleared, as indicated by |delete_on_close|.</span></div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  <span class="comment">// Microsoft Windows deletes a file only when the DeleteFile disposition is</span></div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  <span class="comment">// set on a file when the last handle to the last underlying kernel File</span></div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  <span class="comment">// object is closed. This disposition is be set by:</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  <span class="comment">// - Calling the Win32 DeleteFile function with the path to a file.</span></div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  <span class="comment">// - Opening/creating a file with FLAG_DELETE_ON_CLOSE and then closing all</span></div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  <span class="comment">//   handles to that File object.</span></div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="comment">// - Opening/creating a file with FLAG_CAN_DELETE_ON_CLOSE and subsequently</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  <span class="comment">//   calling DeleteOnClose(true).</span></div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  <span class="comment">// In all cases, all pre-existing handles to the file must have been opened</span></div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <span class="comment">// with FLAG_WIN_SHARE_DELETE. Once the disposition has been set by any of the</span></div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  <span class="comment">// above means, no new File objects can be created for the file.</span></div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  <span class="comment">// So:</span></div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  <span class="comment">// - Use FLAG_WIN_SHARE_DELETE when creating/opening a file to allow another</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  <span class="comment">//   entity on the system to cause it to be deleted when it is closed. (Note:</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  <span class="comment">//   another entity can delete the file the moment after it is closed, so not</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  <span class="comment">//   using this permission doesn&#39;t provide any protections.)</span></div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <span class="comment">// - Use FLAG_DELETE_ON_CLOSE for any file that is to be deleted after use.</span></div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  <span class="comment">//   The OS will ensure it is deleted even in the face of process termination.</span></div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <span class="comment">//   Note that it&#39;s possible for deletion to be cancelled via another File</span></div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <span class="comment">//   object referencing the same file using DeleteOnClose(false) to clear the</span></div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="comment">//   DeleteFile disposition after the original File is closed.</span></div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="comment">// - Use FLAG_CAN_DELETE_ON_CLOSE in conjunction with DeleteOnClose() to alter</span></div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="comment">//   the DeleteFile disposition on an open handle. This fine-grained control</span></div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="comment">//   allows for marking a file for deletion during processing so that it is</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <span class="comment">//   deleted in the event of untimely process termination, and then clearing</span></div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <span class="comment">//   this state once the file is suitable for persistence.</span></div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  <span class="keywordtype">bool</span> DeleteOnClose(<span class="keywordtype">bool</span> delete_on_close);</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  <span class="comment">// Precondition: last_error is not 0, also known as ERROR_SUCCESS.</span></div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  <span class="keyword">static</span> Error OSErrorToFileError(DWORD last_error);</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="preprocessor">#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  <span class="keyword">static</span> Error OSErrorToFileError(<span class="keywordtype">int</span> saved_errno);</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="keyword">static</span> Error GetLastFileError();</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span></div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  <span class="keyword">static</span> std::string ErrorToString(Error error);</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX)</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  <span class="comment">// Wrapper for stat().</span></div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> Stat(<span class="keyword">const</span> FilePath&amp; path, stat_wrapper_t* sb);</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  <span class="comment">// Wrapper for fstat().</span></div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> Fstat(<span class="keywordtype">int</span> fd, stat_wrapper_t* sb);</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>  <span class="comment">// Wrapper for lstat().</span></div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> Lstat(<span class="keyword">const</span> FilePath&amp; path, stat_wrapper_t* sb);</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span></div>
-<div class="foldopen" id="foldopen00436" data-start="{" data-end="}">
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno"><a class="line" href="classkiwi_1_1_file.html#ac35f70b9e7c4aff2a4c48581195402b8">  436</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t <a class="code hl_function" href="classkiwi_1_1_file.html#ac35f70b9e7c4aff2a4c48581195402b8">AddFlagsForPassingToUntrustedProcess</a>(</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      uint32_t flags) {</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    <span class="keywordflow">if</span> (flags &amp; File::kFlagWrite || flags &amp; File::kFlagAppend ||</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>        flags &amp; <a class="code hl_enumvalue" href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694">File::kFlagWriteAttributes</a>) {</div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>      flags |= <a class="code hl_enumvalue" href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78">File::kFlagWinNoExecute</a>;</div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    }</div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    <span class="keywordflow">return</span> flags;</div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>  }</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  UNSAFE_BUFFER_USAGE <span class="keywordtype">int</span> WriteAtCurrentPosNoBestEffort(<span class="keyword">const</span> <span class="keywordtype">char</span>* data,</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                                                        <span class="keywordtype">int</span> size);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  std::optional&lt;size_t&gt; WriteAtCurrentPosNoBestEffort(</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      kiwi::span&lt;const uint8_t&gt; data);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  int64_t GetLength() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  <span class="keywordtype">bool</span> Truncate(int64_t length);</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="keywordtype">bool</span> Flush();</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span></div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <span class="keywordtype">bool</span> SetTimes(Time last_access_time, Time last_modified_time);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <span class="keywordtype">bool</span> GetInfo(Info* info) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="comment">// Attempts to take an exclusive write lock on the file. Returns immediately</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  <span class="comment">// (i.e. does not wait for another process to unlock the file). If the lock</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  <span class="comment">// was obtained, the result will be FILE_OK. A lock only guarantees</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <span class="comment">// that other processes may not also take a lock on the same file with the</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <span class="comment">// same API - it may still be opened, renamed, unlinked, etc.</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="comment">// Common semantics:</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="comment">//  * Locks are held by processes, but not inherited by child processes.</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="comment">//  * Locks are released by the OS on file close or process termination.</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  <span class="comment">//  * Locks are reliable only on local filesystems.</span></div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  <span class="comment">//  * Duplicated file handles may also write to locked files.</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  <span class="comment">// Windows-specific semantics:</span></div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  <span class="comment">//  * Locks are mandatory for read/write APIs, advisory for mapping APIs.</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  <span class="comment">//  * Within a process, locking the same file (by the same or new handle)</span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <span class="comment">//    will fail.</span></div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  <span class="comment">// POSIX-specific semantics:</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  <span class="comment">//  * Locks are advisory only.</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  <span class="comment">//  * Within a process, locking the same file (by the same or new handle)</span></div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  <span class="comment">//    will succeed. The new lock replaces the old lock.</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <span class="comment">//  * Closing any descriptor on a given file releases the lock.</span></div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  Error Lock(LockMode mode);</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  <span class="comment">// Unlock a file previously locked.</span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  Error Unlock();</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  <span class="comment">// Returns a new object referencing this file for use within the current</span></div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="comment">// process. Handling of FLAG_DELETE_ON_CLOSE varies by OS. On POSIX, the File</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  <span class="comment">// object that was created or initialized with this flag will have unlinked</span></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  <span class="comment">// the underlying file when it was created or opened. On Windows, the</span></div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  <span class="comment">// underlying file is deleted when the last handle to it is closed.</span></div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  File Duplicate() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  <span class="keywordtype">bool</span> IsAsync()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> is_async_; }</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <span class="comment">// Sets or clears the DeleteFile disposition on the file. Returns true if</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  <span class="comment">// the disposition was set or cleared, as indicated by |delete_on_close|.</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  <span class="comment">// Microsoft Windows deletes a file only when the DeleteFile disposition is</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <span class="comment">// set on a file when the last handle to the last underlying kernel File</span></div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  <span class="comment">// object is closed. This disposition is be set by:</span></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  <span class="comment">// - Calling the Win32 DeleteFile function with the path to a file.</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  <span class="comment">// - Opening/creating a file with FLAG_DELETE_ON_CLOSE and then closing all</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  <span class="comment">//   handles to that File object.</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  <span class="comment">// - Opening/creating a file with FLAG_CAN_DELETE_ON_CLOSE and subsequently</span></div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <span class="comment">//   calling DeleteOnClose(true).</span></div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <span class="comment">// In all cases, all pre-existing handles to the file must have been opened</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <span class="comment">// with FLAG_WIN_SHARE_DELETE. Once the disposition has been set by any of the</span></div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="comment">// above means, no new File objects can be created for the file.</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="comment">//</span></div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="comment">// So:</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="comment">// - Use FLAG_WIN_SHARE_DELETE when creating/opening a file to allow another</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <span class="comment">//   entity on the system to cause it to be deleted when it is closed. (Note:</span></div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <span class="comment">//   another entity can delete the file the moment after it is closed, so not</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  <span class="comment">//   using this permission doesn&#39;t provide any protections.)</span></div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  <span class="comment">// - Use FLAG_DELETE_ON_CLOSE for any file that is to be deleted after use.</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  <span class="comment">//   The OS will ensure it is deleted even in the face of process termination.</span></div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  <span class="comment">//   Note that it&#39;s possible for deletion to be cancelled via another File</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <span class="comment">//   object referencing the same file using DeleteOnClose(false) to clear the</span></div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  <span class="comment">//   DeleteFile disposition after the original File is closed.</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  <span class="comment">// - Use FLAG_CAN_DELETE_ON_CLOSE in conjunction with DeleteOnClose() to alter</span></div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  <span class="comment">//   the DeleteFile disposition on an open handle. This fine-grained control</span></div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="comment">//   allows for marking a file for deletion during processing so that it is</span></div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  <span class="comment">//   deleted in the event of untimely process termination, and then clearing</span></div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  <span class="comment">//   this state once the file is suitable for persistence.</span></div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  <span class="keywordtype">bool</span> DeleteOnClose(<span class="keywordtype">bool</span> delete_on_close);</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span> </div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="comment">// Precondition: last_error is not 0, also known as ERROR_SUCCESS.</span></div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  <span class="keyword">static</span> Error OSErrorToFileError(DWORD last_error);</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="preprocessor">#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  <span class="keyword">static</span> Error OSErrorToFileError(<span class="keywordtype">int</span> saved_errno);</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>  <span class="keyword">static</span> Error GetLastFileError();</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>  <span class="keyword">static</span> std::string ErrorToString(Error error);</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX)</span></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>  <span class="comment">// Wrapper for stat().</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> Stat(<span class="keyword">const</span> FilePath&amp; path, stat_wrapper_t* sb);</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>  <span class="comment">// Wrapper for fstat().</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> Fstat(<span class="keywordtype">int</span> fd, stat_wrapper_t* sb);</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>  <span class="comment">// Wrapper for lstat().</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> Lstat(<span class="keyword">const</span> FilePath&amp; path, stat_wrapper_t* sb);</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span></div>
+<div class="foldopen" id="foldopen00450" data-start="{" data-end="}">
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno"><a class="line" href="classkiwi_1_1_file.html#ac35f70b9e7c4aff2a4c48581195402b8">  450</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t <a class="code hl_function" href="classkiwi_1_1_file.html#ac35f70b9e7c4aff2a4c48581195402b8">AddFlagsForPassingToUntrustedProcess</a>(</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>      uint32_t flags) {</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    <span class="keywordflow">if</span> (flags &amp; File::kFlagWrite || flags &amp; File::kFlagAppend ||</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>        flags &amp; <a class="code hl_enumvalue" href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619aa055c51aee983fd1e30f494767adb694">File::kFlagWriteAttributes</a>) {</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>      flags |= <a class="code hl_enumvalue" href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a209e8d74997912fcc2514aca68999e78">File::kFlagWinNoExecute</a>;</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    }</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    <span class="keywordflow">return</span> flags;</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>  }</div>
 </div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span> </div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>  <span class="comment">// Creates or opens the given file. Only called if |path| has no</span></div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  <span class="comment">// traversal (&#39;..&#39;) components.</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  <span class="keywordtype">void</span> DoInitialize(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, uint32_t flags);</div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>  <span class="keywordtype">void</span> SetPlatformFile(PlatformFile file);</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span> </div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>  ScopedPlatformFile file_;</div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>  <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> path_;</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>  Error error_details_ = kFileErrorFailed;</div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>  <span class="keywordtype">bool</span> is_created_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>  <span class="keywordtype">bool</span> is_async_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>};</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span> </div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>  <span class="comment">// Creates or opens the given file. Only called if |path| has no</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>  <span class="comment">// traversal (&#39;..&#39;) components.</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>  <span class="keywordtype">void</span> DoInitialize(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, uint32_t flags);</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>  <span class="keywordtype">void</span> SetPlatformFile(PlatformFile file);</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>  ScopedPlatformFile file_;</div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>  <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> path_;</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>  Error error_details_ = kFileErrorFailed;</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>  <span class="keywordtype">bool</span> is_created_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>  <span class="keywordtype">bool</span> is_async_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>};</div>
 </div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span> </div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>}  <span class="comment">// namespace kiwi</span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span> </div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="preprocessor">#endif  </span><span class="comment">// BASE_FILES_FILE_H_</span></div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span> </div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>}  <span class="comment">// namespace kiwi</span></div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span> </div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="preprocessor">#endif  </span><span class="comment">// BASE_FILES_FILE_H_</span></div>
+<div class="ttc" id="aclasskiwi_1_1_file_html_a277a950e2310f6868d23d8e49ba2384e"><div class="ttname"><a href="classkiwi_1_1_file.html#a277a950e2310f6868d23d8e49ba2384e">kiwi::File::Initialize</a></div><div class="ttdeci">void Initialize(const FilePath &amp;path, uint32_t flags)</div><div class="ttdoc">Creates or opens the given file.</div><div class="ttdef"><b>Definition</b> file.cc:71</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_a2e78d650505b819dd947f255e9d6a619"><div class="ttname"><a href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619">kiwi::File::Flags</a></div><div class="ttdeci">Flags</div><div class="ttdef"><b>Definition</b> file.hh:56</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d"><div class="ttname"><a href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a05771ebaf15284da0d661eaf3576944d">kiwi::File::kFlagCreate</a></div><div class="ttdeci">@ kFlagCreate</div><div class="ttdoc">Creates a new file, only if it does not already exist.</div><div class="ttdef"><b>Definition</b> file.hh:60</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e"><div class="ttname"><a href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619a1c9661c24d1980875aa9d17d4196c58e">kiwi::File::kFlagWinExecute</a></div><div class="ttdeci">@ kFlagWinExecute</div><div class="ttdoc">Windows only.</div><div class="ttdef"><b>Definition</b> file.hh:89</div></div>
@@ -428,12 +429,12 @@ $(function(){initNavTree('file_8hh_source.html',''); initResizable(true); });
 <div class="ttc" id="aclasskiwi_1_1_file_html_a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648"><div class="ttname"><a href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619af40583ba2b4d8b51a511a742ae315648">kiwi::File::kFlagOpenAlways</a></div><div class="ttdeci">@ kFlagOpenAlways</div><div class="ttdoc">May create a new file.</div><div class="ttdef"><b>Definition</b> file.hh:62</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52"><div class="ttname"><a href="classkiwi_1_1_file.html#a2e78d650505b819dd947f255e9d6a619af4b8583c6287ab58bd5ba9ce485b0d52">kiwi::File::kFlagWinShareDelete</a></div><div class="ttdeci">@ kFlagWinShareDelete</div><div class="ttdoc">Windows only.</div><div class="ttdef"><b>Definition</b> file.hh:83</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_a71faf3633bb71e0af623c1bd2a978940"><div class="ttname"><a href="classkiwi_1_1_file.html#a71faf3633bb71e0af623c1bd2a978940">kiwi::File::IsValid</a></div><div class="ttdeci">bool IsValid() const</div><div class="ttdef"><b>Definition</b> file_posix.cc:201</div></div>
-<div class="ttc" id="aclasskiwi_1_1_file_html_ac35f70b9e7c4aff2a4c48581195402b8"><div class="ttname"><a href="classkiwi_1_1_file.html#ac35f70b9e7c4aff2a4c48581195402b8">kiwi::File::AddFlagsForPassingToUntrustedProcess</a></div><div class="ttdeci">static constexpr uint32_t AddFlagsForPassingToUntrustedProcess(uint32_t flags)</div><div class="ttdef"><b>Definition</b> file.hh:436</div></div>
+<div class="ttc" id="aclasskiwi_1_1_file_html_ac35f70b9e7c4aff2a4c48581195402b8"><div class="ttname"><a href="classkiwi_1_1_file.html#ac35f70b9e7c4aff2a4c48581195402b8">kiwi::File::AddFlagsForPassingToUntrustedProcess</a></div><div class="ttdeci">static constexpr uint32_t AddFlagsForPassingToUntrustedProcess(uint32_t flags)</div><div class="ttdef"><b>Definition</b> file.hh:450</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_ad7e38cc4ada147c3bfe00b80387c8609"><div class="ttname"><a href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">kiwi::File::Error</a></div><div class="ttdeci">Error</div><div class="ttdef"><b>Definition</b> file.hh:105</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82"><div class="ttname"><a href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609a3957760ff3bcc5bd5995cc64f2a43e82">kiwi::File::kFileErrorMax</a></div><div class="ttdeci">@ kFileErrorMax</div><div class="ttdoc">Put new entries here and increment kFileErrorMax.</div><div class="ttdef"><b>Definition</b> file.hh:124</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_html_af604bf017dcbfa20966c1ecc71dff572"><div class="ttname"><a href="classkiwi_1_1_file.html#af604bf017dcbfa20966c1ecc71dff572">kiwi::File::Whence</a></div><div class="ttdeci">Whence</div><div class="ttdoc">This explicit mapping matches both FILE_ on Windows and SEEK_ on Linux.</div><div class="ttdef"><b>Definition</b> file.hh:128</div></div>
-<div class="ttc" id="aclasskiwi_1_1_file_html_af608a12b8bf763738a0b2e31f27e08e7"><div class="ttname"><a href="classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7">kiwi::File::IsCreated</a></div><div class="ttdeci">bool IsCreated() const</div><div class="ttdef"><b>Definition</b> file.hh:208</div></div>
-<div class="ttc" id="aclasskiwi_1_1_file_html_afbaf995f649310cc94a327d64b7f0831"><div class="ttname"><a href="classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831">kiwi::File::ErrorDetails</a></div><div class="ttdeci">Error ErrorDetails() const</div><div class="ttdef"><b>Definition</b> file.hh:220</div></div>
+<div class="ttc" id="aclasskiwi_1_1_file_html_af608a12b8bf763738a0b2e31f27e08e7"><div class="ttname"><a href="classkiwi_1_1_file.html#af608a12b8bf763738a0b2e31f27e08e7">kiwi::File::IsCreated</a></div><div class="ttdeci">bool IsCreated() const</div><div class="ttdef"><b>Definition</b> file.hh:219</div></div>
+<div class="ttc" id="aclasskiwi_1_1_file_html_afbaf995f649310cc94a327d64b7f0831"><div class="ttname"><a href="classkiwi_1_1_file.html#afbaf995f649310cc94a327d64b7f0831">kiwi::File::ErrorDetails</a></div><div class="ttdeci">Error ErrorDetails() const</div><div class="ttdef"><b>Definition</b> file.hh:231</div></div>
 <div class="ttc" id="aclasskiwi_1_1_file_path_html"><div class="ttname"><a href="classkiwi_1_1_file_path.html">kiwi::FilePath</a></div><div class="ttdef"><b>Definition</b> file_path.hh:158</div></div>
 <div class="ttc" id="aclasskiwi_1_1_i_o_buf_html"><div class="ttname"><a href="classkiwi_1_1_i_o_buf.html">kiwi::IOBuf</a></div><div class="ttdef"><b>Definition</b> iobuf.hh:291</div></div>
 <div class="ttc" id="aclasskiwi_1_1_time_html"><div class="ttname"><a href="classkiwi_1_1_time.html">kiwi::Time</a></div><div class="ttdef"><b>Definition</b> time.hh:524</div></div>

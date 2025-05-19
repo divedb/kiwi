@@ -125,15 +125,15 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;string_view&gt;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;base/functional/callback.h&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;base/types/pass_key.h&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;kiwi/containers/span.hh&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;kiwi/io/file.hh&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;kiwi/io/file_path.hh&quot;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;kiwi/io/scoped_file.hh&quot;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;kiwi/portability/base_export.hh&quot;</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;kiwi/portability/build_config.hh&quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;kiwi/strings/cstring_view.hh&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;kiwi/common/function.hh&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;kiwi/containers/span.hh&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;kiwi/io/file.hh&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;kiwi/io/file_path.hh&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;kiwi/io/scoped_file.hh&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;kiwi/portability/base_export.hh&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;kiwi/portability/build_config.hh&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;kiwi/strings/cstring_view.hh&quot;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;kiwi/types/pass_key.hh&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &quot;base/win/windows_types.h&quot;</span></div>
@@ -148,15 +148,15 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">class </span>ChildProcessLauncherHelper;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}  <span class="comment">// namespace content::internal</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">namespace </span>base {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacekiwi.html">kiwi</a> {</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">class </span>Environment;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">class </span>Time;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">class </span><a class="code hl_class" href="classkiwi_1_1_environment.html">Environment</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">class </span><a class="code hl_class" href="classkiwi_1_1_time.html">Time</a>;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">class </span>PreventExecuteMappingClasses {</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">using </span>PassKey = base::PassKey&lt;PreventExecuteMappingClasses&gt;;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">using </span>PassKey = kiwi::PassKey&lt;PreventExecuteMappingClasses&gt;;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">static</span> PassKey GetPassKey() { <span class="keywordflow">return</span> PassKey(); }</div>
@@ -170,18 +170,18 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// Functions that involve filesystem access or modification:</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>BASE_EXPORT FilePath MakeAbsoluteFilePath(<span class="keyword">const</span> FilePath&amp; input);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> <a class="code hl_function" href="namespacekiwi.html#a4b01fc85d65b8cda86e753f4a00ccb5f">MakeAbsoluteFilePath</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; input);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX)</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>[[nodiscard]] BASE_EXPORT std::optional&lt;FilePath&gt;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>MakeAbsoluteFilePathNoResolveSymbolicLinks(<span class="keyword">const</span> FilePath&amp; input);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>MakeAbsoluteFilePathNoResolveSymbolicLinks(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; input);</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>BASE_EXPORT int64_t ComputeDirectorySize(<span class="keyword">const</span> FilePath&amp; root_path);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>BASE_EXPORT int64_t <a class="code hl_function" href="namespacekiwi.html#ae2e14b776e74a84d7724ded6cff24a72">ComputeDirectorySize</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; root_path);</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>BASE_EXPORT <span class="keywordtype">bool</span> DeleteFile(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>BASE_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacekiwi.html#a724068dd3390a2442ca488909f68ed72">DeleteFile</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>BASE_EXPORT <span class="keywordtype">bool</span> DeletePathRecursively(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>BASE_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacekiwi.html#a00e53ebf2a52ed603c86d01d3781bfb6">DeletePathRecursively</a>(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">// Returns a closure that, when run on any sequence that allows blocking calls,</span></div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">// will kick off a potentially asynchronous operation to delete `path`, whose</span></div>
@@ -197,11 +197,11 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">//</span></div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">// WARNING: It is NOT safe to use `path` until `reply_callback` is run, as the</span></div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">// retry task may still be actively trying to delete it.</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>BASE_EXPORT OnceClosure GetDeleteFileCallback(</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keyword">const</span> FilePath&amp; path, OnceCallback&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span>)&gt; reply_callback = {});</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_function.html">Function</a>&lt;void()&gt; GetDeleteFileCallback(</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, <a class="code hl_class" href="classkiwi_1_1_function.html">Function</a>&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span>)&gt; reply_callback = {});</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>BASE_EXPORT OnceClosure GetDeletePathRecursivelyCallback(</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keyword">const</span> FilePath&amp; path, OnceCallback&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span>)&gt; reply_callback = {});</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_function.html">Function</a>&lt;void()&gt; GetDeletePathRecursivelyCallback(</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, <a class="code hl_class" href="classkiwi_1_1_function.html">Function</a>&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span>)&gt; reply_callback = {});</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">// Schedules to delete the given path, whether it&#39;s a file or a directory, until</span></div>
@@ -209,18 +209,18 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// Note:</span></div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// 1) The file/directory to be deleted should exist in a temp folder.</span></div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">// 2) The directory to be deleted must be empty.</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>BASE_EXPORT <span class="keywordtype">bool</span> DeleteFileAfterReboot(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>BASE_EXPORT <span class="keywordtype">bool</span> DeleteFileAfterReboot(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">// Prevents opening the file at `path` with EXECUTE access by adding a deny ACE</span></div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">// on the filesystem. This allows the file handle to be safely passed to an</span></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">// untrusted process. See also `File::FLAG_WIN_NO_EXECUTE`.</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>BASE_EXPORT <span class="keywordtype">bool</span> PreventExecuteMapping(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>BASE_EXPORT <span class="keywordtype">bool</span> PreventExecuteMapping(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">// Same as PreventExecuteMapping but DCHECK for known allowed paths is omitted.</span></div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">// Only call this if you know the path you are providing is safe to mark as</span></div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">// non-executable, such as log files.</span></div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>BASE_EXPORT <span class="keywordtype">bool</span> PreventExecuteMappingUnchecked(</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keyword">const</span> FilePath&amp; path, base::PassKey&lt;PreventExecuteMappingClasses&gt; passkey);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, kiwi::PassKey&lt;PreventExecuteMappingClasses&gt; passkey);</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">// Set `path_key` to the second of two valid paths that support safely marking a</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment">// file as non-execute. The first allowed path is always PATH_TEMP. This is</span></div>
@@ -234,7 +234,7 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">// on different volumes, this will attempt to copy and delete. Returns</span></div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">// true for success.</span></div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">// This function fails if either path contains traversal components (&#39;..&#39;).</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>BASE_EXPORT <span class="keywordtype">bool</span> Move(<span class="keyword">const</span> FilePath&amp; from_path, <span class="keyword">const</span> FilePath&amp; to_path);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>BASE_EXPORT <span class="keywordtype">bool</span> Move(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; from_path, <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; to_path);</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">// Renames file |from_path| to |to_path|. Both paths must be on the same</span></div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">// volume, or the function will fail. Destination file will be created</span></div>
@@ -242,8 +242,8 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">// temporary files. On Windows it preserves attributes of the target file.</span></div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">// Returns true on success, leaving *error unchanged.</span></div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">// Returns false on failure and sets *error appropriately, if it is non-NULL.</span></div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>BASE_EXPORT <span class="keywordtype">bool</span> ReplaceFile(<span class="keyword">const</span> FilePath&amp; from_path, <span class="keyword">const</span> FilePath&amp; to_path,</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                             File::Error* error);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>BASE_EXPORT <span class="keywordtype">bool</span> ReplaceFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; from_path, <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; to_path,</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                             <a class="code hl_enumeration" href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">File::Error</a>* error);</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">// Copies a single file. Use CopyDirectory() to copy directories.</span></div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">// This function fails if either path contains traversal components (&#39;..&#39;).</span></div>
@@ -265,13 +265,13 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">//   Always 0600.</span></div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">// - On ChromeOS, |to_path| has user read/write permissions and group/others</span></div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">//   read permissions. i.e. Always 0644.</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyFile(<span class="keyword">const</span> FilePath&amp; from_path, <span class="keyword">const</span> FilePath&amp; to_path);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; from_path, <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; to_path);</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">// Copies the contents of one file into another.</span></div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">// The files are taken as is: the copy is done starting from the current offset</span></div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment">// of |infile| until the end of |infile| is reached, into the current offset of</span></div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">// |outfile|.</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyFileContents(File&amp; infile, File&amp; outfile);</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyFileContents(<a class="code hl_class" href="classkiwi_1_1_file.html">File</a>&amp; infile, <a class="code hl_class" href="classkiwi_1_1_file.html">File</a>&amp; outfile);</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">// Copies the given path, and optionally all subdirectories and their contents</span></div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">// as well.</span></div>
@@ -282,42 +282,42 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="comment">// This function has the same metadata behavior as CopyFile().</span></div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="comment">//</span></div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="comment">// If you only need to copy a file use CopyFile, it&#39;s faster.</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyDirectory(<span class="keyword">const</span> FilePath&amp; from_path,</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                               <span class="keyword">const</span> FilePath&amp; to_path, <span class="keywordtype">bool</span> recursive);</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyDirectory(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; from_path,</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                               <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; to_path, <span class="keywordtype">bool</span> recursive);</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">// Like CopyDirectory() except trying to overwrite an existing file will not</span></div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">// work and will return false.</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyDirectoryExcl(<span class="keyword">const</span> FilePath&amp; from_path,</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                                   <span class="keyword">const</span> FilePath&amp; to_path, <span class="keywordtype">bool</span> recursive);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyDirectoryExcl(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; from_path,</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; to_path, <span class="keywordtype">bool</span> recursive);</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">// Returns true if the given path exists on the local filesystem,</span></div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">// false otherwise.</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>BASE_EXPORT <span class="keywordtype">bool</span> PathExists(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>BASE_EXPORT <span class="keywordtype">bool</span> PathExists(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">// Returns true if the given path is readable by the user, false otherwise.</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>BASE_EXPORT <span class="keywordtype">bool</span> PathIsReadable(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>BASE_EXPORT <span class="keywordtype">bool</span> PathIsReadable(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">// Returns true if the given path is writable by the user, false otherwise.</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>BASE_EXPORT <span class="keywordtype">bool</span> PathIsWritable(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>BASE_EXPORT <span class="keywordtype">bool</span> PathIsWritable(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment">// Returns true if the given path exists and is a directory, false otherwise.</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>BASE_EXPORT <span class="keywordtype">bool</span> DirectoryExists(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>BASE_EXPORT <span class="keywordtype">bool</span> DirectoryExists(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment">// Returns true if the contents of the two files given are equal, false</span></div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment">// otherwise.  If either file can&#39;t be read, returns false.</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>BASE_EXPORT <span class="keywordtype">bool</span> ContentsEqual(<span class="keyword">const</span> FilePath&amp; filename1,</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                               <span class="keyword">const</span> FilePath&amp; filename2);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>BASE_EXPORT <span class="keywordtype">bool</span> ContentsEqual(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename1,</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                               <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename2);</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">// Returns true if the contents of the two text files given are equal, false</span></div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">// otherwise.  This routine treats &quot;\r\n&quot; and &quot;\n&quot; as equivalent.</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>BASE_EXPORT <span class="keywordtype">bool</span> TextContentsEqual(<span class="keyword">const</span> FilePath&amp; filename1,</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                                   <span class="keyword">const</span> FilePath&amp; filename2);</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>BASE_EXPORT <span class="keywordtype">bool</span> TextContentsEqual(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename1,</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename2);</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">// Reads the file at |path| and returns a vector of bytes on success, and</span></div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">// nullopt on error. For security reasons, a |path| containing path traversal</span></div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">// components (&#39;..&#39;) is treated as a read error, returning nullopt.</span></div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>BASE_EXPORT std::optional&lt;std::vector&lt;uint8_t&gt;&gt; ReadFileToBytes(</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">// Reads the file at |path| into |contents| and returns true on success and</span></div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">// false on error.  For security reasons, a |path| containing path traversal</span></div>
@@ -326,7 +326,7 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment">// file before the error occurred.</span></div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">// |contents| may be NULL, in which case this function is useful for its side</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">// effect of priming the disk cache (could be used for unit tests).</span></div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFileToString(<span class="keyword">const</span> FilePath&amp; path, std::string* contents);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFileToString(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, std::string* contents);</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment">// Reads the file at |path| into |contents| and returns true on success and</span></div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment">// false on error.  For security reasons, a |path| containing path traversal</span></div>
@@ -337,14 +337,14 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment">// |max_size|.</span></div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment">// |contents| may be NULL, in which case this function is useful for its side</span></div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment">// effect of priming the disk cache (could be used for unit tests).</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFileToStringWithMaxSize(<span class="keyword">const</span> FilePath&amp; path,</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFileToStringWithMaxSize(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path,</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                                             std::string* contents,</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                                             <span class="keywordtype">size_t</span> max_size);</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">// As ReadFileToString, but reading from an open stream after seeking to its</span></div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment">// start (if supported by the stream). This can also be used to read the whole</span></div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment">// file from a file descriptor by converting the file descriptor into a stream</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment">// by using base::FileToFILE() before calling this function.</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment">// by using kiwi::FileToFILE() before calling this function.</span></div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadStreamToString(FILE* stream, std::string* contents);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment">// As ReadFileToStringWithMaxSize, but reading from an open stream after seeking</span></div>
@@ -357,15 +357,15 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment">// Reads exactly as many bytes as `buffer` can hold from file descriptor `fd`</span></div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment">// into `buffer`. This function is protected against EINTR and partial reads.</span></div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment">// Returns true iff `buffer` was successfully filled with bytes read from `fd`.</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFromFD(<span class="keywordtype">int</span> fd, span&lt;char&gt; buffer);</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFromFD(<span class="keywordtype">int</span> fd, <a class="code hl_class" href="classkiwi_1_1span.html">span&lt;char&gt;</a> buffer);</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="comment">// Performs the same function as CreateAndOpenTemporaryStreamInDir(), but</span></div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment">// returns the file-descriptor wrapped in a ScopedFD, rather than the stream</span></div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment">// wrapped in a ScopedFILE.</span></div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment">// The caller is responsible for deleting the file `path` points to, if</span></div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment">// appropriate.</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>BASE_EXPORT ScopedFD CreateAndOpenFdForTemporaryFileInDir(<span class="keyword">const</span> FilePath&amp; dir,</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                                                          FilePath* path);</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>BASE_EXPORT ScopedFD CreateAndOpenFdForTemporaryFileInDir(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; dir,</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                                                          <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
@@ -377,20 +377,20 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment">// which are guaranteed not to block (such as kernel files). Or in situations</span></div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="comment">// where a partial read would be acceptable because the backing store returned</span></div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="comment">// EWOULDBLOCK.</span></div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFileToStringNonBlocking(<span class="keyword">const</span> base::FilePath&amp; file,</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadFileToStringNonBlocking(<span class="keyword">const</span> kiwi::FilePath&amp; file,</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>                                             std::string* ret);</div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="comment">// Creates a symbolic link at |symlink| pointing to |target|.  Returns</span></div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="comment">// false on failure.</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateSymbolicLink(<span class="keyword">const</span> FilePath&amp; target,</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>                                    <span class="keyword">const</span> FilePath&amp; symlink);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateSymbolicLink(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; target,</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>                                    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; symlink);</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="comment">// Reads the given |symlink| and returns the raw string in |target|.</span></div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="comment">// Returns false upon failure.</span></div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment">// IMPORTANT NOTE: if the string stored in the symlink is a relative file path,</span></div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">// it should be interpreted relative to the symlink&#39;s directory, NOT the current</span></div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment">// working directory. ReadSymbolicLinkAbsolute() may be the better choice.</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadSymbolicLink(<span class="keyword">const</span> FilePath&amp; symlink, FilePath* target);</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>BASE_EXPORT <span class="keywordtype">bool</span> ReadSymbolicLink(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; symlink, <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* target);</div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="comment">// Same as ReadSymbolicLink(), but properly converts it into an absolute path if</span></div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="comment">// the link is relative.</span></div>
@@ -398,7 +398,7 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="comment">// MakeAbsoluteFilePathNoResolveSymbolicLinks() fails on the resulting absolute</span></div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="comment">// path.</span></div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>BASE_EXPORT std::optional&lt;FilePath&gt; ReadSymbolicLinkAbsolute(</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keyword">const</span> FilePath&amp; symlink);</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; symlink);</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="comment">// Bits and masks of the file permission.</span></div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="keyword">enum</span> FilePermissionBits {</div>
@@ -423,14 +423,14 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span><span class="comment">// Reads the permission of the given |path|, storing the file permission</span></div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="comment">// bits in |mode|. If |path| is symbolic link, |mode| is the permission of</span></div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span><span class="comment">// a file which the symlink points to.</span></div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>BASE_EXPORT <span class="keywordtype">bool</span> GetPosixFilePermissions(<span class="keyword">const</span> FilePath&amp; path, <span class="keywordtype">int</span>* mode);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>BASE_EXPORT <span class="keywordtype">bool</span> GetPosixFilePermissions(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, <span class="keywordtype">int</span>* mode);</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="comment">// Sets the permission of the given |path|. If |path| is symbolic link, sets</span></div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><span class="comment">// the permission of a file which the symlink points to.</span></div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>BASE_EXPORT <span class="keywordtype">bool</span> SetPosixFilePermissions(<span class="keyword">const</span> FilePath&amp; path, <span class="keywordtype">int</span> mode);</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>BASE_EXPORT <span class="keywordtype">bool</span> SetPosixFilePermissions(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, <span class="keywordtype">int</span> mode);</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="comment">// Returns true iff |executable| can be found in any directory specified by the</span></div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="comment">// environment variable in |env|.</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>BASE_EXPORT <span class="keywordtype">bool</span> ExecutableExistsInPath(Environment* env,</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>BASE_EXPORT <span class="keywordtype">bool</span> ExecutableExistsInPath(<a class="code hl_class" href="classkiwi_1_1_environment.html">Environment</a>* env,</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                                        <span class="keyword">const</span> FilePath::StringType&amp; executable);</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="preprocessor">#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_AIX)</span></div>
@@ -439,13 +439,13 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="comment">// among different Linux distributions and possibly local configuration. It also</span></div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span><span class="comment">// depends on details of kernel--ChromeOS uses the noexec option for /dev/shm</span></div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="comment">// but its kernel allows mprotect with PROT_EXEC anyway.</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>BASE_EXPORT <span class="keywordtype">bool</span> IsPathExecutable(<span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>BASE_EXPORT <span class="keywordtype">bool</span> IsPathExecutable(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_AIX)</span></div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_POSIX)</span></div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="comment">// Returns true if the given directory is empty</span></div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>BASE_EXPORT <span class="keywordtype">bool</span> IsDirectoryEmpty(<span class="keyword">const</span> FilePath&amp; dir_path);</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>BASE_EXPORT <span class="keywordtype">bool</span> IsDirectoryEmpty(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; dir_path);</div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span><span class="comment">// Get the temporary directory provided by the system.</span></div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="comment">//</span></div>
@@ -453,7 +453,7 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span><span class="comment">// instead of this function. Those variants will ensure that the proper</span></div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span><span class="comment">// permissions are set so that other users on the system can&#39;t edit them while</span></div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span><span class="comment">// they&#39;re open (which can lead to security issues).</span></div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>BASE_EXPORT <span class="keywordtype">bool</span> GetTempDir(FilePath* path);</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>BASE_EXPORT <span class="keywordtype">bool</span> GetTempDir(<a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span><span class="comment">// Get the home directory. This is more complicated than just getenv(&quot;HOME&quot;)</span></div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="comment">// as it knows to fall back on getpwent() etc.</span></div>
@@ -461,7 +461,7 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><span class="comment">// You should not generally call this directly. Instead use DIR_HOME with the</span></div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="comment">// path service which will use this function but cache the value.</span></div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span><span class="comment">// Path service may also override DIR_HOME.</span></div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>BASE_EXPORT FilePath GetHomeDir();</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> GetHomeDir();</div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><span class="comment">// Returns a new temporary file in |dir| with a unique name. The file is opened</span></div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="comment">// for exclusive read, write, and delete access.</span></div>
@@ -470,356 +470,365 @@ $(function(){initNavTree('file__util_8hh_source.html',''); initResizable(true); 
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="comment">// NOTE: Exclusivity is unique to Windows. On Windows, the returned file</span></div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="comment">// supports File::DeleteOnClose. On other platforms, the caller is responsible</span></div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="comment">// for deleting the file `temp_file` points to, if appropriate.</span></div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>BASE_EXPORT File CreateAndOpenTemporaryFileInDir(<span class="keyword">const</span> FilePath&amp; dir,</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                                                 FilePath* temp_file);</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="comment">// Creates a temporary file. The full path is placed in `path`, and the</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="comment">// function returns true if was successful in creating the file. The file will</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="comment">// be empty and all handles closed after this function returns.</span></div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="comment">// The caller is responsible for deleting the file `path` points to, if</span></div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="comment">// appropriate.</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateTemporaryFile(FilePath* path);</div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="comment">// Same as CreateTemporaryFile() but the file is created in `dir`.</span></div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="comment">// The caller is responsible for deleting the file `temp_file` points to, if</span></div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="comment">// appropriate.</span></div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateTemporaryFileInDir(<span class="keyword">const</span> FilePath&amp; dir,</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>                                          FilePath* temp_file);</div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span> </div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="comment">// Returns the file name for a temporary file by using a platform-specific</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="comment">// naming scheme that incorporates |identifier|.</span></div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>BASE_EXPORT FilePath</div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>FormatTemporaryFileName(FilePath::StringViewType identifier);</div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="comment">// Create and open a temporary file stream for exclusive read, write, and delete</span></div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="comment">// access. The full path is placed in `path`. Returns the opened file stream, or</span></div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="comment">// null in case of error.</span></div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span><span class="comment">// NOTE: Exclusivity is unique to Windows. On Windows, the returned file</span></div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="comment">// supports File::DeleteOnClose. On other platforms, the caller is responsible</span></div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="comment">// for deleting the file `path` points to, if appropriate.</span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>BASE_EXPORT ScopedFILE CreateAndOpenTemporaryStream(FilePath* path);</div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span> </div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="comment">// Similar to CreateAndOpenTemporaryStream(), but the file is created in `dir`.</span></div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>BASE_EXPORT ScopedFILE CreateAndOpenTemporaryStreamInDir(<span class="keyword">const</span> FilePath&amp; dir,</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>                                                         FilePath* path);</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file.html">File</a> CreateAndOpenTemporaryFileInDir(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; dir,</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                                                 <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* temp_file);</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>BASE_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacekiwi.html#af36300507ade71d4184c22720143fb71">CreateTemporaryFile</a>(<a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="comment">// Same as CreateTemporaryFile() but the file is created in `dir`.</span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="comment">// The caller is responsible for deleting the file `temp_file` points to, if</span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="comment">// appropriate.</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateTemporaryFileInDir(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; dir,</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>                                          <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* temp_file);</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span> </div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="comment">// Returns the file name for a temporary file by using a platform-specific</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="comment">// naming scheme that incorporates |identifier|.</span></div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>FormatTemporaryFileName(FilePath::StringViewType identifier);</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span> </div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="comment">// Create and open a temporary file stream for exclusive read, write, and delete</span></div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="comment">// access. The full path is placed in `path`. Returns the opened file stream, or</span></div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="comment">// null in case of error.</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="comment">// NOTE: Exclusivity is unique to Windows. On Windows, the returned file</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="comment">// supports File::DeleteOnClose. On other platforms, the caller is responsible</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="comment">// for deleting the file `path` points to, if appropriate.</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>BASE_EXPORT ScopedFILE CreateAndOpenTemporaryStream(<a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
 <div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="comment">// Do NOT USE in new code. Use ScopedTempDir instead.</span></div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span><span class="comment">// TODO(crbug.com/40446440) Remove existing usage and make this an</span></div>
-<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span><span class="comment">// implementation detail inside ScopedTempDir.</span></div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span><span class="comment">//</span></div>
-<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span><span class="comment">// Create a new directory. If prefix is provided, the new directory name is in</span></div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="comment">// the format of prefixyyyy.</span></div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span><span class="comment">// NOTE: prefix is ignored in the POSIX implementation.</span></div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span><span class="comment">// If success, return true and output the full path of the directory created.</span></div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span><span class="comment">//</span></div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="comment">// For Windows, this directory is usually created in a secure location if the</span></div>
-<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span><span class="comment">// caller is admin. This is because the default %TEMP% folder for Windows is</span></div>
-<div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span><span class="comment">// insecure, since low privilege users can get the path of folders under %TEMP%</span></div>
-<div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span><span class="comment">// after creation and are able to create subfolders and files within these</span></div>
-<div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span><span class="comment">// folders which can lead to privilege escalation.</span></div>
-<div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateNewTempDirectory(<span class="keyword">const</span> FilePath::StringType&amp; prefix,</div>
-<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>                                        FilePath* new_temp_path);</div>
-<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span> </div>
-<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span><span class="comment">// Create a directory within another directory.</span></div>
-<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span><span class="comment">// Extra characters will be appended to |prefix| to ensure that the</span></div>
-<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span><span class="comment">// new directory does not have the same name as an existing directory.</span></div>
-<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateTemporaryDirInDir(<span class="keyword">const</span> FilePath&amp; base_dir,</div>
-<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>                                         FilePath::StringViewType prefix,</div>
-<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>                                         FilePath* new_dir);</div>
-<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span> </div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span><span class="comment">// Ensures a directory exists, if necessary, creating it and parent directories.</span></div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span><span class="comment">// Returns true if the directory already existed or was created, leaving *error</span></div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="comment">// unchanged.</span></div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span><span class="comment">// Returns false on failure and sets *error appropriately if it is non-NULL.</span></div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="comment">//</span></div>
-<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="comment">// The created directories can only be accessed by the current user, except on</span></div>
-<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span><span class="comment">// ChromeOS, where the directories created under `~/MyFiles` or `/media` can</span></div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="comment">// also be accessed by ChromeOS services.</span></div>
-<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateDirectoryAndGetError(<span class="keyword">const</span> FilePath&amp; full_path,</div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>                                            File::Error* error);</div>
-<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span> </div>
-<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span><span class="comment">// Backward-compatible convenience method for the above.</span></div>
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateDirectory(<span class="keyword">const</span> FilePath&amp; full_path);</div>
-<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span> </div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span><span class="comment">// Returns the file size, or std::nullopt on failure.</span></div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>BASE_EXPORT std::optional&lt;int64_t&gt; GetFileSize(<span class="keyword">const</span> FilePath&amp; file_path);</div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span> </div>
-<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span><span class="comment">// Same as above, but as an OnceCallback.</span></div>
-<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>BASE_EXPORT OnceCallback&lt;std::optional&lt;int64_t&gt;()&gt; GetFileSizeCallback(</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>    <span class="keyword">const</span> FilePath&amp; path);</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="comment">// Similar to CreateAndOpenTemporaryStream(), but the file is created in `dir`.</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>BASE_EXPORT ScopedFILE CreateAndOpenTemporaryStreamInDir(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; dir,</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>                                                         <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span> </div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span><span class="comment">// Do NOT USE in new code. Use ScopedTempDir instead.</span></div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="comment">// TODO(crbug.com/40446440) Remove existing usage and make this an</span></div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span><span class="comment">// implementation detail inside ScopedTempDir.</span></div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span><span class="comment">//</span></div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span><span class="comment">// Create a new directory. If prefix is provided, the new directory name is in</span></div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="comment">// the format of prefixyyyy.</span></div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span><span class="comment">// NOTE: prefix is ignored in the POSIX implementation.</span></div>
+<div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span><span class="comment">// If success, return true and output the full path of the directory created.</span></div>
+<div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span><span class="comment">//</span></div>
+<div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span><span class="comment">// For Windows, this directory is usually created in a secure location if the</span></div>
+<div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span><span class="comment">// caller is admin. This is because the default %TEMP% folder for Windows is</span></div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span><span class="comment">// insecure, since low privilege users can get the path of folders under %TEMP%</span></div>
+<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span><span class="comment">// after creation and are able to create subfolders and files within these</span></div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span><span class="comment">// folders which can lead to privilege escalation.</span></div>
+<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateNewTempDirectory(<span class="keyword">const</span> FilePath::StringType&amp; prefix,</div>
+<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>                                        <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* new_temp_path);</div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span> </div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span><span class="comment">// Create a directory within another directory.</span></div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span><span class="comment">// Extra characters will be appended to |prefix| to ensure that the</span></div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span><span class="comment">// new directory does not have the same name as an existing directory.</span></div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateTemporaryDirInDir(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; base_dir,</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>                                         FilePath::StringViewType prefix,</div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>                                         <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* new_dir);</div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span> </div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="comment">// Ensures a directory exists, if necessary, creating it and parent directories.</span></div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><span class="comment">// Returns true if the directory already existed or was created, leaving *error</span></div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span><span class="comment">// unchanged.</span></div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="comment">// Returns false on failure and sets *error appropriately if it is non-NULL.</span></div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span><span class="comment">//</span></div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span><span class="comment">// The created directories can only be accessed by the current user, except on</span></div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span><span class="comment">// ChromeOS, where the directories created under `~/MyFiles` or `/media` can</span></div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span><span class="comment">// also be accessed by ChromeOS services.</span></div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateDirectoryAndGetError(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; full_path,</div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                                            <a class="code hl_enumeration" href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">File::Error</a>* error);</div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span> </div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span><span class="comment">// Backward-compatible convenience method for the above.</span></div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateDirectory(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; full_path);</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span> </div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span><span class="comment">// Returns the file size, or std::nullopt on failure.</span></div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>BASE_EXPORT std::optional&lt;int64_t&gt; GetFileSize(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; file_path);</div>
 <div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span> </div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span><span class="comment">// Sets |real_path| to |path| with symbolic links and junctions expanded.</span></div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span><span class="comment">// On Windows, the function ensures that the resulting |real_path| starts with a</span></div>
-<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span><span class="comment">// drive letter.</span></div>
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span><span class="comment">//</span></div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span><span class="comment">// The |path| parameter can reference either a file or a directory. The function</span></div>
-<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span><span class="comment">// will fail if |path| points to a nonexistent path or to a volume that isn&#39;t</span></div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span><span class="comment">// mapped to a drive letter on Windows.</span></div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span><span class="comment">// Same as above, but as an OnceCallback.</span></div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_function.html">Function&lt;std::optional&lt;int64_t&gt;</a>()&gt; GetFileSizeCallback(</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span> </div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span><span class="comment">// Sets |real_path| to |path| with symbolic links and junctions expanded.</span></div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span><span class="comment">// On Windows, the function ensures that the resulting |real_path| starts with a</span></div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span><span class="comment">// drive letter.</span></div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span><span class="comment">//</span></div>
-<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span><span class="comment">// In addition, on Windows this function will fail if the resulting |real_path|</span></div>
-<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span><span class="comment">// would exceed &#39;MAX_PATH&#39; characters in length.</span></div>
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>BASE_EXPORT <span class="keywordtype">bool</span> NormalizeFilePath(<span class="keyword">const</span> FilePath&amp; path, FilePath* real_path);</div>
-<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span> </div>
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span> </div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span><span class="comment">// Given a path in NT native form (&quot;\Device\HarddiskVolumeXX\...&quot;),</span></div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span><span class="comment">// return in |drive_letter_path| the equivalent path that starts with</span></div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="comment">// a drive letter (&quot;C:\...&quot;).  Return false if no such path exists.</span></div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>BASE_EXPORT <span class="keywordtype">bool</span> DevicePathToDriveLetterPath(<span class="keyword">const</span> FilePath&amp; device_path,</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>                                             FilePath* drive_letter_path);</div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span> </div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span><span class="comment">// Method that wraps the win32 GetLongPathName API, normalizing the specified</span></div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span><span class="comment">// path to its long form. An example where this is needed is when comparing</span></div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span><span class="comment">// temp file paths. If a username isn&#39;t a valid 8.3 short file name (even just a</span></div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span><span class="comment">// lengthy name like &quot;user with long name&quot;), Windows will set the TMP and TEMP</span></div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span><span class="comment">// environment variables to be 8.3 paths. ::GetTempPath (called in</span></div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span><span class="comment">// base::GetTempDir) just uses the value specified by TMP or TEMP, and so can</span></div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span><span class="comment">// return a short path. Returns an empty path on error.</span></div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>BASE_EXPORT FilePath MakeLongFilePath(<span class="keyword">const</span> FilePath&amp; input);</div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span> </div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><span class="comment">// Creates a hard link named |to_file| to the file |from_file|. Both paths</span></div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span><span class="comment">// must be on the same volume, and |from_file| may not name a directory.</span></div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span><span class="comment">// Returns true if the hard link is created, false if it fails.</span></div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateWinHardLink(<span class="keyword">const</span> FilePath&amp; to_file,</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>                                   <span class="keyword">const</span> FilePath&amp; from_file);</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span> </div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span><span class="comment">// This function will return if the given file is a symlink or not.</span></div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>BASE_EXPORT <span class="keywordtype">bool</span> IsLink(<span class="keyword">const</span> FilePath&amp; file_path);</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span> </div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span><span class="comment">// Returns information about the given file path. Also see |File::GetInfo|.</span></div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>BASE_EXPORT <span class="keywordtype">bool</span> GetFileInfo(<span class="keyword">const</span> FilePath&amp; file_path, File::Info* info);</div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span> </div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span><span class="comment">// Sets the time of the last access and the time of the last modification.</span></div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>BASE_EXPORT <span class="keywordtype">bool</span> TouchFile(<span class="keyword">const</span> FilePath&amp; path, <span class="keyword">const</span> Time&amp; last_accessed,</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>                           <span class="keyword">const</span> Time&amp; last_modified);</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span><span class="comment">// The |path| parameter can reference either a file or a directory. The function</span></div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span><span class="comment">// will fail if |path| points to a nonexistent path or to a volume that isn&#39;t</span></div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span><span class="comment">// mapped to a drive letter on Windows.</span></div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span><span class="comment">//</span></div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span><span class="comment">// In addition, on Windows this function will fail if the resulting |real_path|</span></div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span><span class="comment">// would exceed &#39;MAX_PATH&#39; characters in length.</span></div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>BASE_EXPORT <span class="keywordtype">bool</span> NormalizeFilePath(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* real_path);</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span> </div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span> </div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span><span class="comment">// Given a path in NT native form (&quot;\Device\HarddiskVolumeXX\...&quot;),</span></div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span><span class="comment">// return in |drive_letter_path| the equivalent path that starts with</span></div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span><span class="comment">// a drive letter (&quot;C:\...&quot;).  Return false if no such path exists.</span></div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>BASE_EXPORT <span class="keywordtype">bool</span> DevicePathToDriveLetterPath(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; device_path,</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>                                             <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* drive_letter_path);</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span> </div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span><span class="comment">// Method that wraps the win32 GetLongPathName API, normalizing the specified</span></div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span><span class="comment">// path to its long form. An example where this is needed is when comparing</span></div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span><span class="comment">// temp file paths. If a username isn&#39;t a valid 8.3 short file name (even just a</span></div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span><span class="comment">// lengthy name like &quot;user with long name&quot;), Windows will set the TMP and TEMP</span></div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span><span class="comment">// environment variables to be 8.3 paths. ::GetTempPath (called in</span></div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><span class="comment">// kiwi::GetTempDir) just uses the value specified by TMP or TEMP, and so can</span></div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span><span class="comment">// return a short path. Returns an empty path on error.</span></div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> MakeLongFilePath(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; input);</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span> </div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span><span class="comment">// Creates a hard link named |to_file| to the file |from_file|. Both paths</span></div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span><span class="comment">// must be on the same volume, and |from_file| may not name a directory.</span></div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span><span class="comment">// Returns true if the hard link is created, false if it fails.</span></div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateWinHardLink(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; to_file,</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; from_file);</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span> </div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span><span class="comment">// This function will return if the given file is a symlink or not.</span></div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>BASE_EXPORT <span class="keywordtype">bool</span> IsLink(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; file_path);</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span> </div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span><span class="comment">// Returns information about the given file path. Also see |File::GetInfo|.</span></div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>BASE_EXPORT <span class="keywordtype">bool</span> GetFileInfo(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; file_path, <a class="code hl_struct" href="structkiwi_1_1_file_1_1_info.html">File::Info</a>* info);</div>
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span> </div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="comment">// Wrapper for fopen-like calls. Returns non-NULL FILE* on success. The</span></div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span><span class="comment">// underlying file descriptor (POSIX) or handle (Windows) is unconditionally</span></div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span><span class="comment">// configured to not be propagated to child processes.</span></div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>BASE_EXPORT FILE* OpenFile(<span class="keyword">const</span> FilePath&amp; filename, <span class="keyword">const</span> <span class="keywordtype">char</span>* mode);</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span> </div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span><span class="comment">// Closes file opened by OpenFile. Returns true on success.</span></div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>BASE_EXPORT <span class="keywordtype">bool</span> CloseFile(FILE* file);</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span><span class="comment">// Associates a standard FILE stream with an existing File. Note that this</span></div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span><span class="comment">// functions take ownership of the existing File.</span></div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>BASE_EXPORT FILE* FileToFILE(File file, <span class="keyword">const</span> <span class="keywordtype">char</span>* mode);</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="comment">// Sets the time of the last access and the time of the last modification.</span></div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>BASE_EXPORT <span class="keywordtype">bool</span> TouchFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_time.html">Time</a>&amp; last_accessed,</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                           <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_time.html">Time</a>&amp; last_modified);</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span> </div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span><span class="comment">// Wrapper for fopen-like calls. Returns non-NULL FILE* on success. The</span></div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span><span class="comment">// underlying file descriptor (POSIX) or handle (Windows) is unconditionally</span></div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="comment">// configured to not be propagated to child processes.</span></div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>BASE_EXPORT FILE* OpenFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename, <span class="keyword">const</span> <span class="keywordtype">char</span>* mode);</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span> </div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span><span class="comment">// Closes file opened by OpenFile. Returns true on success.</span></div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>BASE_EXPORT <span class="keywordtype">bool</span> CloseFile(FILE* file);</div>
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span> </div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span><span class="comment">// Returns a new handle to the file underlying |file_stream|.</span></div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>BASE_EXPORT File FILEToFile(FILE* file_stream);</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span> </div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span><span class="comment">// Truncates an open file to end at the location of the current file pointer.</span></div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span><span class="comment">// This is a cross-platform analog to Windows&#39; SetEndOfFile() function.</span></div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>BASE_EXPORT <span class="keywordtype">bool</span> TruncateFile(FILE* file);</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span><span class="comment">// Associates a standard FILE stream with an existing File. Note that this</span></div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span><span class="comment">// functions take ownership of the existing File.</span></div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>BASE_EXPORT FILE* FileToFILE(<a class="code hl_class" href="classkiwi_1_1_file.html">File</a> file, <span class="keyword">const</span> <span class="keywordtype">char</span>* mode);</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span> </div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span><span class="comment">// Returns a new handle to the file underlying |file_stream|.</span></div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file.html">File</a> FILEToFile(FILE* file_stream);</div>
 <div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span> </div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span><span class="comment">// Reads from the file into `buffer`. This will read at most as many bytes as</span></div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span><span class="comment">// `buffer` can hold, but may not always fill `buffer` entirely.</span></div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span><span class="comment">// Returns the number of bytes read, or nullopt on error.</span></div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span><span class="comment">// TODO(crbug.com/40227936): Despite the 64-bit return value, this only supports</span></div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span><span class="comment">// reading at most INT_MAX bytes. The program will crash if a buffer is passed</span></div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span><span class="comment">// whose length exceeds INT_MAX.</span></div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>BASE_EXPORT std::optional&lt;uint64_t&gt; ReadFile(<span class="keyword">const</span> FilePath&amp; filename,</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>                                             span&lt;char&gt; buffer);</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>BASE_EXPORT std::optional&lt;uint64_t&gt; ReadFile(<span class="keyword">const</span> FilePath&amp; filename,</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>                                             span&lt;uint8_t&gt; buffer);</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span> </div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span><span class="comment">// Same as above, but returns -1 on error.</span></div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span><span class="comment">// TODO(crbug.com/40284755): Migrate callers to the span variant.</span></div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>BASE_EXPORT <span class="keywordtype">int</span> ReadFile(<span class="keyword">const</span> FilePath&amp; filename, <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> max_size);</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span><span class="comment">// Truncates an open file to end at the location of the current file pointer.</span></div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span><span class="comment">// This is a cross-platform analog to Windows&#39; SetEndOfFile() function.</span></div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>BASE_EXPORT <span class="keywordtype">bool</span> TruncateFile(FILE* file);</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span> </div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span><span class="comment">// Reads from the file into `buffer`. This will read at most as many bytes as</span></div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span><span class="comment">// `buffer` can hold, but may not always fill `buffer` entirely.</span></div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span><span class="comment">// Returns the number of bytes read, or nullopt on error.</span></div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span><span class="comment">// TODO(crbug.com/40227936): Despite the 64-bit return value, this only supports</span></div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span><span class="comment">// reading at most INT_MAX bytes. The program will crash if a buffer is passed</span></div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span><span class="comment">// whose length exceeds INT_MAX.</span></div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>BASE_EXPORT std::optional&lt;uint64_t&gt; ReadFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename,</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>                                             <a class="code hl_class" href="classkiwi_1_1span.html">span&lt;char&gt;</a> buffer);</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>BASE_EXPORT std::optional&lt;uint64_t&gt; ReadFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename,</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>                                             <a class="code hl_class" href="classkiwi_1_1span.html">span&lt;uint8_t&gt;</a> buffer);</div>
 <div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span> </div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span><span class="comment">// Writes |data| into the file, overwriting any data that was previously there.</span></div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="comment">// Returns true if and only if all of |data| was written. If the file does not</span></div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span><span class="comment">// exist, it gets created with read/write permissions for all.</span></div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFile(<span class="keyword">const</span> FilePath&amp; filename, span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="comment">// Another WriteFile() variant that takes a std::string_view so callers don&#39;t</span></div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="comment">// have to do manual conversions from a char span to a uint8_t span.</span></div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFile(<span class="keyword">const</span> FilePath&amp; filename, std::string_view data);</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span><span class="comment">// Same as above, but returns -1 on error.</span></div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="comment">// TODO(crbug.com/40284755): Migrate callers to the span variant.</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>BASE_EXPORT <span class="keywordtype">int</span> ReadFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename, <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> max_size);</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span> </div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span><span class="comment">// Writes |data| into the file, overwriting any data that was previously there.</span></div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="comment">// Returns true if and only if all of |data| was written. If the file does not</span></div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="comment">// exist, it gets created with read/write permissions for all.</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename, <a class="code hl_class" href="classkiwi_1_1span.html">span&lt;const uint8_t&gt;</a> data);</div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span> </div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="comment">// Appends |data| to |fd|. Does not close |fd| when done.  Returns true iff all</span></div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span><span class="comment">// of |data| were written to |fd|.</span></div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFileDescriptor(<span class="keywordtype">int</span> fd, span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span> </div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="comment">// WriteFileDescriptor() variant that takes a std::string_view so callers don&#39;t</span></div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span><span class="comment">// have to do manual conversions from a char span to a uint8_t span.</span></div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFileDescriptor(<span class="keywordtype">int</span> fd, std::string_view data);</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="comment">// Another WriteFile() variant that takes a std::string_view so callers don&#39;t</span></div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span><span class="comment">// have to do manual conversions from a char span to a uint8_t span.</span></div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename, std::string_view data);</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span> </div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="comment">// Appends |data| to |fd|. Does not close |fd| when done.  Returns true iff all</span></div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span><span class="comment">// of |data| were written to |fd|.</span></div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFileDescriptor(<span class="keywordtype">int</span> fd, <a class="code hl_class" href="classkiwi_1_1span.html">span&lt;const uint8_t&gt;</a> data);</div>
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span><span class="comment">// Allocates disk space for the file referred to by |fd| for the byte range</span></div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="comment">// starting at |offset| and continuing for |size| bytes. The file size will be</span></div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span><span class="comment">// changed if |offset|+|len| is greater than the file size. Zeros will fill the</span></div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span><span class="comment">// new space.</span></div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><span class="comment">// After a successful call, subsequent writes into the specified range are</span></div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="comment">// guaranteed not to fail because of lack of disk space.</span></div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>BASE_EXPORT <span class="keywordtype">bool</span> AllocateFileRegion(File* file, int64_t offset, <span class="keywordtype">size_t</span> size);</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span> </div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="comment">// Appends |data| to |filename|.  Returns true iff |data| were written to</span></div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="comment">// |filename|.</span></div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>BASE_EXPORT <span class="keywordtype">bool</span> AppendToFile(<span class="keyword">const</span> FilePath&amp; filename,</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                              span&lt;const uint8_t&gt; data);</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span> </div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="comment">// AppendToFile() variant that takes a std::string_view so callers don&#39;t have to</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="comment">// do manual conversions from a char span to a uint8_t span.</span></div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>BASE_EXPORT <span class="keywordtype">bool</span> AppendToFile(<span class="keyword">const</span> FilePath&amp; filename, std::string_view data);</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span><span class="comment">// WriteFileDescriptor() variant that takes a std::string_view so callers don&#39;t</span></div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="comment">// have to do manual conversions from a char span to a uint8_t span.</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>BASE_EXPORT <span class="keywordtype">bool</span> WriteFileDescriptor(<span class="keywordtype">int</span> fd, std::string_view data);</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span> </div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><span class="comment">// Allocates disk space for the file referred to by |fd| for the byte range</span></div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="comment">// starting at |offset| and continuing for |size| bytes. The file size will be</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span><span class="comment">// changed if |offset|+|len| is greater than the file size. Zeros will fill the</span></div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="comment">// new space.</span></div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="comment">// After a successful call, subsequent writes into the specified range are</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="comment">// guaranteed not to fail because of lack of disk space.</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>BASE_EXPORT <span class="keywordtype">bool</span> AllocateFileRegion(<a class="code hl_class" href="classkiwi_1_1_file.html">File</a>* file, int64_t offset, <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span> </div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="comment">// Appends |data| to |filename|.  Returns true iff |data| were written to</span></div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="comment">// |filename|.</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>BASE_EXPORT <span class="keywordtype">bool</span> AppendToFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename,</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                              <a class="code hl_class" href="classkiwi_1_1span.html">span&lt;const uint8_t&gt;</a> data);</div>
 <div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span> </div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="comment">// Gets the current working directory for the process.</span></div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>BASE_EXPORT <span class="keywordtype">bool</span> GetCurrentDirectory(FilePath* path);</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span> </div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="comment">// Sets the current working directory for the process.</span></div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>BASE_EXPORT <span class="keywordtype">bool</span> SetCurrentDirectory(<span class="keyword">const</span> FilePath&amp; path);</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span> </div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span><span class="comment">// The largest value attempted by GetUniquePath.</span></div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span><span class="keyword">enum</span> { kMaxUniqueFiles = 100 };</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> </div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span><span class="comment">// Returns |path| if it does not exist. Otherwise, returns |path| with the</span></div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="comment">// suffix &quot; (N)&quot; appended to its basename before any file extension, where N is</span></div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="comment">// a number between 1 and 100 (inclusive). Returns an empty path if no such</span></div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="comment">// number can be found.</span></div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>BASE_EXPORT FilePath GetUniquePath(<span class="keyword">const</span> FilePath&amp; path);</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> </div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span><span class="comment">// Same as `GetUniquePath()`, except this method allows specifying a custom</span></div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span><span class="comment">// suffix printf format string in cases where the default format doesn&#39;t work</span></div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span><span class="comment">// (for example because you need a filename without spaces in it). Passing</span></div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span><span class="comment">// &quot; (%d)&quot; as `suffix_format` makes this behave identical to `GetUniquePath()`.</span></div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>BASE_EXPORT FilePath GetUniquePathWithSuffixFormat(</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    <span class="keyword">const</span> FilePath&amp; path, base::cstring_view suffix_format);</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span> </div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="comment">// Sets the given |fd| to non-blocking mode.</span></div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span><span class="comment">// Returns true if it was able to set it in the non-blocking mode, otherwise</span></div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="comment">// false.</span></div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>BASE_EXPORT <span class="keywordtype">bool</span> SetNonBlocking(<span class="keywordtype">int</span> fd);</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span><span class="comment">// Hints the OS to prefetch the first |max_bytes| of |file_path| into its cache.</span></div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="comment">//</span></div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span><span class="comment">// If called at the appropriate time, this can reduce the latency incurred by</span></div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span><span class="comment">// feature code that needs to read the file.</span></div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span><span class="comment">//</span></div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="comment">// |max_bytes| specifies how many bytes should be pre-fetched. It may exceed the</span></div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span><span class="comment">// file&#39;s size. Passing in std::numeric_limits&lt;int64_t&gt;::max() is a convenient</span></div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="comment">// way to get the entire file pre-fetched.</span></div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="comment">// AppendToFile() variant that takes a std::string_view so callers don&#39;t have to</span></div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="comment">// do manual conversions from a char span to a uint8_t span.</span></div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>BASE_EXPORT <span class="keywordtype">bool</span> AppendToFile(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; filename, std::string_view data);</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span> </div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="comment">// Gets the current working directory for the process.</span></div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>BASE_EXPORT <span class="keywordtype">bool</span> GetCurrentDirectory(<a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span> </div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span><span class="comment">// Sets the current working directory for the process.</span></div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>BASE_EXPORT <span class="keywordtype">bool</span> SetCurrentDirectory(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="comment">// The largest value attempted by GetUniquePath.</span></div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="keyword">enum</span> { kMaxUniqueFiles = 100 };</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span> </div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span><span class="comment">// Returns |path| if it does not exist. Otherwise, returns |path| with the</span></div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span><span class="comment">// suffix &quot; (N)&quot; appended to its basename before any file extension, where N is</span></div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span><span class="comment">// a number between 1 and 100 (inclusive). Returns an empty path if no such</span></div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span><span class="comment">// number can be found.</span></div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> GetUniquePath(<span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path);</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="comment">// Same as `GetUniquePath()`, except this method allows specifying a custom</span></div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="comment">// suffix printf format string in cases where the default format doesn&#39;t work</span></div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span><span class="comment">// (for example because you need a filename without spaces in it). Passing</span></div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="comment">// &quot; (%d)&quot; as `suffix_format` makes this behave identical to `GetUniquePath()`.</span></div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>BASE_EXPORT <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a> GetUniquePathWithSuffixFormat(</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; path, kiwi::cstring_view suffix_format);</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span><span class="comment">// Sets the given |fd| to non-blocking mode.</span></div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span><span class="comment">// Returns true if it was able to set it in the non-blocking mode, otherwise</span></div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="comment">// false.</span></div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>BASE_EXPORT <span class="keywordtype">bool</span> SetNonBlocking(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span><span class="comment">// Hints the OS to prefetch the first |max_bytes| of |file_path| into its cache.</span></div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="comment">//</span></div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span><span class="comment">// If called at the appropriate time, this can reduce the latency incurred by</span></div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="comment">// feature code that needs to read the file.</span></div>
 <div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span><span class="comment">//</span></div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span><span class="comment">// |is_executable| specifies whether the file is to be prefetched as</span></div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span><span class="comment">// executable code or as data. Windows treats the file backed pages in RAM</span></div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span><span class="comment">// differently, and specifying the wrong value results in two copies in RAM.</span></div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span><span class="comment">// |max_bytes| specifies how many bytes should be pre-fetched. It may exceed the</span></div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span><span class="comment">// file&#39;s size. Passing in std::numeric_limits&lt;int64_t&gt;::max() is a convenient</span></div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span><span class="comment">// way to get the entire file pre-fetched.</span></div>
 <div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span><span class="comment">//</span></div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span><span class="comment">// |sequential| hints that the file will be read sequentially in the future.</span></div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span><span class="comment">// This has the affect of using POSIX_FADV_SEQUENTIAL on supported POSIX</span></div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span><span class="comment">// systems.</span></div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span><span class="comment">// |is_executable| specifies whether the file is to be prefetched as</span></div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span><span class="comment">// executable code or as data. Windows treats the file backed pages in RAM</span></div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span><span class="comment">// differently, and specifying the wrong value results in two copies in RAM.</span></div>
 <div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span><span class="comment">//</span></div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span><span class="comment">// Returns true if at least part of the requested range was successfully</span></div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span><span class="comment">// prefetched.</span></div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span><span class="comment">//</span></div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span><span class="comment">// Calling this before using ::LoadLibrary() on Windows is more efficient memory</span></div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span><span class="comment">// wise, but we must be sure no other threads try to LoadLibrary() the file</span></div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span><span class="comment">// while we are doing the mapping and prefetching, or the process will get a</span></div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span><span class="comment">// private copy of the DLL via COW.</span></div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>BASE_EXPORT <span class="keywordtype">bool</span> PreReadFile(</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>    <span class="keyword">const</span> FilePath&amp; file_path, <span class="keywordtype">bool</span> is_executable, <span class="keywordtype">bool</span> sequential,</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>    int64_t max_bytes = std::numeric_limits&lt;int64_t&gt;::max());</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span> </div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span> </div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span><span class="comment">// Creates a pipe. Returns true on success, otherwise false.</span></div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span><span class="comment">// On success, |read_fd| will be set to the fd of the read side, and</span></div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span><span class="comment">// |write_fd| will be set to the one of write side. If |non_blocking|</span></div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span><span class="comment">// is set the pipe will be created with O_NONBLOCK|O_CLOEXEC flags set</span></div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span><span class="comment">// otherwise flag is set to zero (default).</span></div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>BASE_EXPORT <span class="keywordtype">bool</span> CreatePipe(ScopedFD* read_fd, ScopedFD* write_fd,</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>                            <span class="keywordtype">bool</span> non_blocking = <span class="keyword">false</span>);</div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span> </div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span><span class="comment">// Creates a non-blocking, close-on-exec pipe.</span></div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span><span class="comment">// This creates a non-blocking pipe that is not intended to be shared with any</span></div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span><span class="comment">// child process. This will be done atomically if the operating system supports</span></div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span><span class="comment">// it. Returns true if it was able to create the pipe, otherwise false.</span></div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateLocalNonBlockingPipe(span&lt;int, 2u&gt; fds);</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span> </div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span><span class="comment">// Sets the given |fd| to close-on-exec mode.</span></div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span><span class="comment">// Returns true if it was able to set it in the close-on-exec mode, otherwise</span></div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span><span class="comment">// false.</span></div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>BASE_EXPORT <span class="keywordtype">bool</span> SetCloseOnExec(<span class="keywordtype">int</span> fd);</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span> </div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span><span class="comment">// Removes close-on-exec flag from the given |fd|.</span></div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span><span class="comment">// Returns true if it was able to remove the close-on-exec flag, otherwise</span></div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span><span class="comment">// false.</span></div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>BASE_EXPORT <span class="keywordtype">bool</span> RemoveCloseOnExec(<span class="keywordtype">int</span> fd);</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span> </div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span><span class="preprocessor">#if BUILDFLAG(IS_MAC)</span></div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span><span class="comment">// Test that |path| can only be changed by a given user and members of</span></div>
-<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span><span class="comment">// a given set of groups.</span></div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span><span class="comment">// Specifically, test that all parts of |path| under (and including) |base|:</span></div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span><span class="comment">// * Exist.</span></div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span><span class="comment">// * Are owned by a specific user.</span></div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span><span class="comment">// * Are not writable by all users.</span></div>
-<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span><span class="comment">// * Are owned by a member of a given set of groups, or are not writable by</span></div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span><span class="comment">//   their group.</span></div>
-<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span><span class="comment">// * Are not symbolic links.</span></div>
-<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span><span class="comment">// This is useful for checking that a config file is administrator-controlled.</span></div>
-<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span><span class="comment">// |base| must contain |path|.</span></div>
-<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>BASE_EXPORT <span class="keywordtype">bool</span> VerifyPathControlledByUser(<span class="keyword">const</span> base::FilePath&amp; base,</div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>                                            <span class="keyword">const</span> base::FilePath&amp; path,</div>
-<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>                                            uid_t owner_uid,</div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>                                            <span class="keyword">const</span> std::set&lt;gid_t&gt;&amp; group_gids);</div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span> </div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span><span class="comment">// Is |path| writable only by a user with administrator privileges?</span></div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span><span class="comment">// This function uses Mac OS conventions.  The super user is assumed to have</span></div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span><span class="comment">// uid 0, and the administrator group is assumed to be named &quot;admin&quot;.</span></div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span><span class="comment">// Testing that |path|, and every parent directory including the root of</span></div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span><span class="comment">// the filesystem, are owned by the superuser, controlled by the group</span></div>
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span><span class="comment">// &quot;admin&quot;, are not writable by all users, and contain no symbolic links.</span></div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span><span class="comment">// Will return false if |path| does not exist.</span></div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>BASE_EXPORT <span class="keywordtype">bool</span> VerifyPathControlledByAdmin(<span class="keyword">const</span> base::FilePath&amp; path);</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_MAC)</span></div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span> </div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span><span class="comment">// Returns the maximum length of path component on the volume containing</span></div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span><span class="comment">// the directory |path|, in the number of FilePath::CharType, or -1 on failure.</span></div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>BASE_EXPORT <span class="keywordtype">int</span> GetMaximumPathComponentLength(<span class="keyword">const</span> base::FilePath&amp; path);</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span><span class="comment">// |sequential| hints that the file will be read sequentially in the future.</span></div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span><span class="comment">// This has the affect of using POSIX_FADV_SEQUENTIAL on supported POSIX</span></div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span><span class="comment">// systems.</span></div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span><span class="comment">//</span></div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span><span class="comment">// Returns true if at least part of the requested range was successfully</span></div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span><span class="comment">// prefetched.</span></div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span><span class="comment">//</span></div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span><span class="comment">// Calling this before using ::LoadLibrary() on Windows is more efficient memory</span></div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span><span class="comment">// wise, but we must be sure no other threads try to LoadLibrary() the file</span></div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span><span class="comment">// while we are doing the mapping and prefetching, or the process will get a</span></div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="comment">// private copy of the DLL via COW.</span></div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>BASE_EXPORT <span class="keywordtype">bool</span> PreReadFile(</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>    <span class="keyword">const</span> <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>&amp; file_path, <span class="keywordtype">bool</span> is_executable, <span class="keywordtype">bool</span> sequential,</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    int64_t max_bytes = std::numeric_limits&lt;int64_t&gt;::max());</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span> </div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span> </div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span><span class="comment">// Creates a pipe. Returns true on success, otherwise false.</span></div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span><span class="comment">// On success, |read_fd| will be set to the fd of the read side, and</span></div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span><span class="comment">// |write_fd| will be set to the one of write side. If |non_blocking|</span></div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span><span class="comment">// is set the pipe will be created with O_NONBLOCK|O_CLOEXEC flags set</span></div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span><span class="comment">// otherwise flag is set to zero (default).</span></div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>BASE_EXPORT <span class="keywordtype">bool</span> CreatePipe(ScopedFD* read_fd, ScopedFD* write_fd,</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>                            <span class="keywordtype">bool</span> non_blocking = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span> </div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span><span class="comment">// Creates a non-blocking, close-on-exec pipe.</span></div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span><span class="comment">// This creates a non-blocking pipe that is not intended to be shared with any</span></div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span><span class="comment">// child process. This will be done atomically if the operating system supports</span></div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span><span class="comment">// it. Returns true if it was able to create the pipe, otherwise false.</span></div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>BASE_EXPORT <span class="keywordtype">bool</span> CreateLocalNonBlockingPipe(<a class="code hl_class" href="classkiwi_1_1span.html">span&lt;int, 2u&gt;</a> fds);</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span> </div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span><span class="comment">// Sets the given |fd| to close-on-exec mode.</span></div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span><span class="comment">// Returns true if it was able to set it in the close-on-exec mode, otherwise</span></div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span><span class="comment">// false.</span></div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>BASE_EXPORT <span class="keywordtype">bool</span> SetCloseOnExec(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span> </div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span><span class="comment">// Removes close-on-exec flag from the given |fd|.</span></div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span><span class="comment">// Returns true if it was able to remove the close-on-exec flag, otherwise</span></div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span><span class="comment">// false.</span></div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>BASE_EXPORT <span class="keywordtype">bool</span> RemoveCloseOnExec(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span> </div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span><span class="preprocessor">#if BUILDFLAG(IS_MAC)</span></div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span><span class="comment">// Test that |path| can only be changed by a given user and members of</span></div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span><span class="comment">// a given set of groups.</span></div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span><span class="comment">// Specifically, test that all parts of |path| under (and including) |base|:</span></div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span><span class="comment">// * Exist.</span></div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span><span class="comment">// * Are owned by a specific user.</span></div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span><span class="comment">// * Are not writable by all users.</span></div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span><span class="comment">// * Are owned by a member of a given set of groups, or are not writable by</span></div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span><span class="comment">//   their group.</span></div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span><span class="comment">// * Are not symbolic links.</span></div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span><span class="comment">// This is useful for checking that a config file is administrator-controlled.</span></div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="comment">// |base| must contain |path|.</span></div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>BASE_EXPORT <span class="keywordtype">bool</span> VerifyPathControlledByUser(<span class="keyword">const</span> kiwi::FilePath&amp; base,</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>                                            <span class="keyword">const</span> kiwi::FilePath&amp; path,</div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>                                            uid_t owner_uid,</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>                                            <span class="keyword">const</span> std::set&lt;gid_t&gt;&amp; group_gids);</div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span> </div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span><span class="comment">// Is |path| writable only by a user with administrator privileges?</span></div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span><span class="comment">// This function uses Mac OS conventions.  The super user is assumed to have</span></div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span><span class="comment">// uid 0, and the administrator group is assumed to be named &quot;admin&quot;.</span></div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span><span class="comment">// Testing that |path|, and every parent directory including the root of</span></div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span><span class="comment">// the filesystem, are owned by the superuser, controlled by the group</span></div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span><span class="comment">// &quot;admin&quot;, are not writable by all users, and contain no symbolic links.</span></div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span><span class="comment">// Will return false if |path| does not exist.</span></div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>BASE_EXPORT <span class="keywordtype">bool</span> VerifyPathControlledByAdmin(<span class="keyword">const</span> kiwi::FilePath&amp; path);</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_MAC)</span></div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span> </div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment">// Get a temporary directory for shared memory files. The directory may depend</span></div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span><span class="comment">// on whether the destination is intended for executable files, which in turn</span></div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span><span class="comment">// depends on how /dev/shmem was mounted. As a result, you must supply whether</span></div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span><span class="comment">// you intend to create executable shmem segments so this function can find</span></div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span><span class="comment">// an appropriate location.</span></div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>BASE_EXPORT <span class="keywordtype">bool</span> GetShmemTempDir(<span class="keywordtype">bool</span> executable, FilePath* path);</div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span> </div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span><span class="comment">// Internal --------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span> </div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span><span class="keyword">namespace </span>internal {</div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span><span class="comment">// Returns the maximum length of path component on the volume containing</span></div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span><span class="comment">// the directory |path|, in the number of FilePath::CharType, or -1 on failure.</span></div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>BASE_EXPORT <span class="keywordtype">int</span> GetMaximumPathComponentLength(<span class="keyword">const</span> kiwi::FilePath&amp; path);</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span> </div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span><span class="preprocessor">#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)</span></div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span><span class="comment">// Get a temporary directory for shared memory files. The directory may depend</span></div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span><span class="comment">// on whether the destination is intended for executable files, which in turn</span></div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span><span class="comment">// depends on how /dev/shmem was mounted. As a result, you must supply whether</span></div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span><span class="comment">// you intend to create executable shmem segments so this function can find</span></div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span><span class="comment">// an appropriate location.</span></div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>BASE_EXPORT <span class="keywordtype">bool</span> GetShmemTempDir(<span class="keywordtype">bool</span> executable, <a class="code hl_class" href="classkiwi_1_1_file_path.html">FilePath</a>* path);</div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span> </div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span><span class="comment">// Same as Move but allows paths with traversal components.</span></div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span><span class="comment">// Use only with extreme care.</span></div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>BASE_EXPORT <span class="keywordtype">bool</span> MoveUnsafe(<span class="keyword">const</span> FilePath&amp; from_path, <span class="keyword">const</span> FilePath&amp; to_path);</div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span><span class="comment">// Internal --------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span> </div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span><span class="keyword">namespace </span>internal {</div>
 <div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span> </div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span><span class="comment">// Copy from_path to to_path recursively and then delete from_path recursively.</span></div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span><span class="comment">// Returns true if all operations succeed.</span></div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span><span class="comment">// This function simulates Move(), but unlike Move() it works across volumes.</span></div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span><span class="comment">// This function is not transactional.</span></div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyAndDeleteDirectory(<span class="keyword">const</span> FilePath&amp; from_path,</div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>                                        <span class="keyword">const</span> FilePath&amp; to_path);</div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span> </div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_WIN)</span></div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span> </div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span><span class="preprocessor">#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)</span></div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span><span class="comment">// CopyFileContentsWithSendfile will use the sendfile(2) syscall to perform a</span></div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span><span class="comment">// file copy without moving the data between kernel and userspace. This is much</span></div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span><span class="comment">// more efficient than sequences of read(2)/write(2) calls. The |retry_slow|</span></div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="comment">// parameter instructs the caller that it should try to fall back to a normal</span></div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span><span class="comment">// sequences of read(2)/write(2) syscalls.</span></div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="comment">//</span></div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span><span class="comment">// The input file |infile| must be opened for reading and the output file</span></div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span><span class="comment">// |outfile| must be opened for writing.</span></div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyFileContentsWithSendfile(File&amp; infile, File&amp; outfile,</div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>                                              <span class="keywordtype">bool</span>&amp; retry_slow);</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) ||</span></div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>        <span class="comment">// BUILDFLAG(IS_ANDROID)</span></div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span> </div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>}  <span class="comment">// namespace internal</span></div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>}  <span class="comment">// namespace base</span></div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span><span class="comment">// Same as Move but allows paths with traversal components.</span></div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span><span class="comment">// Use only with extreme care.</span></div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>BASE_EXPORT <span class="keywordtype">bool</span> MoveUnsafe(<span class="keyword">const</span> FilePath&amp; from_path, <span class="keyword">const</span> FilePath&amp; to_path);</div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span> </div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span><span class="preprocessor">#if BUILDFLAG(IS_WIN)</span></div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span><span class="comment">// Copy from_path to to_path recursively and then delete from_path recursively.</span></div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span><span class="comment">// Returns true if all operations succeed.</span></div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span><span class="comment">// This function simulates Move(), but unlike Move() it works across volumes.</span></div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span><span class="comment">// This function is not transactional.</span></div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyAndDeleteDirectory(<span class="keyword">const</span> FilePath&amp; from_path,</div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>                                        <span class="keyword">const</span> FilePath&amp; to_path);</div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span> </div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_WIN)</span></div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span> </div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="preprocessor">#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)</span></div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span><span class="comment">// CopyFileContentsWithSendfile will use the sendfile(2) syscall to perform a</span></div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="comment">// file copy without moving the data between kernel and userspace. This is much</span></div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span><span class="comment">// more efficient than sequences of read(2)/write(2) calls. The |retry_slow|</span></div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span><span class="comment">// parameter instructs the caller that it should try to fall back to a normal</span></div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span><span class="comment">// sequences of read(2)/write(2) syscalls.</span></div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span><span class="comment">//</span></div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span><span class="comment">// The input file |infile| must be opened for reading and the output file</span></div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span><span class="comment">// |outfile| must be opened for writing.</span></div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>BASE_EXPORT <span class="keywordtype">bool</span> CopyFileContentsWithSendfile(File&amp; infile, File&amp; outfile,</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>                                              <span class="keywordtype">bool</span>&amp; retry_slow);</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span><span class="preprocessor">#endif  </span><span class="comment">// BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) ||</span></div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>        <span class="comment">// BUILDFLAG(IS_ANDROID)</span></div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span> </div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>}  <span class="comment">// namespace internal</span></div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>}  <span class="comment">// namespace kiwi</span></div>
+<div class="ttc" id="aclasskiwi_1_1_environment_html"><div class="ttname"><a href="classkiwi_1_1_environment.html">kiwi::Environment</a></div><div class="ttdef"><b>Definition</b> environment.hh:28</div></div>
+<div class="ttc" id="aclasskiwi_1_1_file_html"><div class="ttname"><a href="classkiwi_1_1_file.html">kiwi::File</a></div><div class="ttdef"><b>Definition</b> file.hh:43</div></div>
+<div class="ttc" id="aclasskiwi_1_1_file_html_ad7e38cc4ada147c3bfe00b80387c8609"><div class="ttname"><a href="classkiwi_1_1_file.html#ad7e38cc4ada147c3bfe00b80387c8609">kiwi::File::Error</a></div><div class="ttdeci">Error</div><div class="ttdef"><b>Definition</b> file.hh:105</div></div>
+<div class="ttc" id="aclasskiwi_1_1_file_path_html"><div class="ttname"><a href="classkiwi_1_1_file_path.html">kiwi::FilePath</a></div><div class="ttdef"><b>Definition</b> file_path.hh:158</div></div>
+<div class="ttc" id="aclasskiwi_1_1_function_html"><div class="ttname"><a href="classkiwi_1_1_function.html">kiwi::Function</a></div><div class="ttdef"><b>Definition</b> function.hh:598</div></div>
+<div class="ttc" id="aclasskiwi_1_1_time_html"><div class="ttname"><a href="classkiwi_1_1_time.html">kiwi::Time</a></div><div class="ttdef"><b>Definition</b> time.hh:524</div></div>
+<div class="ttc" id="aclasskiwi_1_1span_html"><div class="ttname"><a href="classkiwi_1_1span.html">kiwi::span</a></div><div class="ttdoc">[views.span]: class template span&lt;&gt;</div><div class="ttdef"><b>Definition</b> span.hh:436</div></div>
+<div class="ttc" id="anamespacekiwi_html"><div class="ttname"><a href="namespacekiwi.html">kiwi</a></div><div class="ttdef"><b>Definition</b> time_conversion_posix.cc:15</div></div>
+<div class="ttc" id="anamespacekiwi_html_a00e53ebf2a52ed603c86d01d3781bfb6"><div class="ttname"><a href="namespacekiwi.html#a00e53ebf2a52ed603c86d01d3781bfb6">kiwi::DeletePathRecursively</a></div><div class="ttdeci">bool DeletePathRecursively(const FilePath &amp;path)</div><div class="ttdef"><b>Definition</b> file_util_posix.cc:502</div></div>
+<div class="ttc" id="anamespacekiwi_html_a4b01fc85d65b8cda86e753f4a00ccb5f"><div class="ttname"><a href="namespacekiwi.html#a4b01fc85d65b8cda86e753f4a00ccb5f">kiwi::MakeAbsoluteFilePath</a></div><div class="ttdeci">FilePath MakeAbsoluteFilePath(const FilePath &amp;input)</div><div class="ttdef"><b>Definition</b> file_util_posix.cc:451</div></div>
+<div class="ttc" id="anamespacekiwi_html_a724068dd3390a2442ca488909f68ed72"><div class="ttname"><a href="namespacekiwi.html#a724068dd3390a2442ca488909f68ed72">kiwi::DeleteFile</a></div><div class="ttdeci">bool DeleteFile(const FilePath &amp;path)</div><div class="ttdef"><b>Definition</b> file_util_posix.cc:498</div></div>
+<div class="ttc" id="anamespacekiwi_html_ae2e14b776e74a84d7724ded6cff24a72"><div class="ttname"><a href="namespacekiwi.html#ae2e14b776e74a84d7724ded6cff24a72">kiwi::ComputeDirectorySize</a></div><div class="ttdeci">int64_t ComputeDirectorySize(const FilePath &amp;root_path)</div><div class="ttdef"><b>Definition</b> file_util.cc:176</div></div>
+<div class="ttc" id="anamespacekiwi_html_af36300507ade71d4184c22720143fb71"><div class="ttname"><a href="namespacekiwi.html#af36300507ade71d4184c22720143fb71">kiwi::CreateTemporaryFile</a></div><div class="ttdeci">bool CreateTemporaryFile(FilePath *path)</div><div class="ttdef"><b>Definition</b> file_util.cc:395</div></div>
+<div class="ttc" id="astructkiwi_1_1_file_1_1_info_html"><div class="ttname"><a href="structkiwi_1_1_file_1_1_info.html">kiwi::File::Info</a></div><div class="ttdef"><b>Definition</b> file.hh:134</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

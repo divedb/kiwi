@@ -1,0 +1,50 @@
+\doxysection{scoped\+\_\+temp\+\_\+file.\+hh}
+\hypertarget{scoped__temp__file_8hh_source}{}\label{scoped__temp__file_8hh_source}\index{include/kiwi/io/scoped\_temp\_file.hh@{include/kiwi/io/scoped\_temp\_file.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2023\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file\_path.hh"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ An\ owned\ FilePath\ that's\ deleted\ when\ this\ object\ goes\ out\ of\ scope.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ Deletion\ is\ attempted\ on\ destruction,\ but\ is\ not\ guaranteed.}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }BASE\_EXPORT\ ScopedTempFile\ \{}
+\DoxyCodeLine{00015\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \textcolor{comment}{//\ No\ file\ is\ owned/created\ initially.}}
+\DoxyCodeLine{00017\ \ \ ScopedTempFile();}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ ScopedTempFile(ScopedTempFile\&\&)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00020\ \ \ ScopedTempFile\&\ operator=(ScopedTempFile\&\&)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \string~ScopedTempFile();}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \textcolor{comment}{//\ The\ owned\ path\ must\ be\ empty\ before\ calling\ Create().}}
+\DoxyCodeLine{00025\ \ \ \textcolor{comment}{//\ Returns\ true\ on\ success.}}
+\DoxyCodeLine{00026\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ Create();}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ Returns\ true\ on\ success\ or\ if\ the\ file\ was\ never\ created.}}
+\DoxyCodeLine{00029\ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ Delete();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ Attempts\ to\ delete\ the\ file.\ \ The\ managed\ path\ is\ reset\ regardless\ of}}
+\DoxyCodeLine{00032\ \ \ \textcolor{comment}{//\ if\ the\ deletion\ was\ successful.}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ Reset();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi::FilePath}}\&\ Path()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ path\_;\ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ NOLINTNEXTLINE(google-\/explicit-\/constructor)}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !path\_.\mbox{\hyperlink{classkiwi_1_1_file_path_a9dfa92903e8b0a36440f5eada6b84e0e}{empty}}();\ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ path\_;}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

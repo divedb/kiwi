@@ -1,0 +1,99 @@
+\doxysection{adapters\+\_\+internal.\+hh}
+\hypertarget{adapters__internal_8hh_source}{}\label{adapters__internal_8hh_source}\index{include/kiwi/containers/adapters\_internal.hh@{include/kiwi/containers/adapters\_internal.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2014\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <ranges>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_range_of_rvalues_adapter}{RangeOfRvaluesAdapter}};}
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_reversed_adapter}{ReversedAdapter}};}
+\DoxyCodeLine{00020\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ This\ is\ technically\ correct,\ but\ presently\ always\ evaluates\ to\ false\ since}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \`{}RangeAsRvalues()`\ bans\ non-\/borrowed\ ranges.}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00025\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ std::ranges::enable\_borrowed\_range<}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1internal_1_1_range_of_rvalues_adapter}{kiwi::internal::RangeOfRvaluesAdapter<Range>}}>\ =}
+\DoxyCodeLine{00027\ \ \ \ \ std::ranges::borrowed\_range<Range>;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00030\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00031\ \ \ \ \ std::ranges::enable\_borrowed\_range<kiwi::internal::ReversedAdapter<Range>>\ =}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ std::ranges::borrowed\_range<Range>;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{namespace\ }kiwi::internal\ \{}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }RangeOfRvaluesAdapter\ \{}
+\DoxyCodeLine{00038\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{explicit}\ RangeOfRvaluesAdapter(Range\&\&\ range\ KIWI\_LIFETIME\_BOUND)}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ :\ range\_(std::forward<Range>(range))\ \{\}}
+\DoxyCodeLine{00041\ \ \ RangeOfRvaluesAdapter(\textcolor{keyword}{const}\ RangeOfRvaluesAdapter\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00042\ \ \ RangeOfRvaluesAdapter\&\ operator=(\textcolor{keyword}{const}\ RangeOfRvaluesAdapter\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{auto}\ size()\ \textcolor{keyword}{const}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{requires}\ std::ranges::sized\_range<Range>}
+\DoxyCodeLine{00046\ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ std::ranges::size(range\_);}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{auto}\ begin()\ \{\ \textcolor{keywordflow}{return}\ std::make\_move\_iterator(std::ranges::begin(range\_));\ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{auto}\ end()\ \{\ \textcolor{keywordflow}{return}\ std::make\_move\_iterator(std::ranges::end(range\_));\ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ RAW\_PTR\_EXCLUSION:\ References\ a\ STACK\_ALLOCATED\ class.\ It\ is\ only\ used}}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ inside\ for\ loops.\ Ideally,\ the\ container\ being\ iterated\ over\ should\ be\ the}}
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{//\ one\ held\ via\ a\ raw\_ref/raw\_ptrs.}}
+\DoxyCodeLine{00057\ \ \ Range\&\&\ range\_;}
+\DoxyCodeLine{00058\ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ Internal\ adapter\ class\ for\ implementing\ kiwi::Reversed.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ TODO(crbug.com/378623811):\ Parts\ of\ this\ (e.g.\ the\ \`{}size()`\ helper)\ should\ be}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ extracted\ to\ a\ base\ template\ that\ can\ be\ shared/reused.\ In\ addition,\ this}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ should\ be\ constrained\ to\ Ts\ that\ satisfy\ the\ std::ranges::range\ concept.}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range>}
+\DoxyCodeLine{00065\ \textcolor{keyword}{class\ }ReversedAdapter\ \{}
+\DoxyCodeLine{00066\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{explicit}\ ReversedAdapter(Range\&\&\ range\ KIWI\_LIFETIME\_BOUND)}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ :\ range\_(std::forward<Range>(range))\ \{\}}
+\DoxyCodeLine{00069\ \ \ ReversedAdapter(\textcolor{keyword}{const}\ ReversedAdapter\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00070\ \ \ ReversedAdapter\&\ operator=(\textcolor{keyword}{const}\ ReversedAdapter\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{auto}\ begin()\ \{\ \textcolor{keywordflow}{return}\ std::rbegin(range\_);\ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{auto}\ begin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::rbegin(range\_);\ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{auto}\ cbegin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::crbegin(range\_);\ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{auto}\ end()\ \{\ \textcolor{keywordflow}{return}\ std::rend(range\_);\ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{auto}\ end()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::rend(range\_);\ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{auto}\ cend()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ std::crend(range\_);\ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{auto}\ size()\ \textcolor{keyword}{const}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{requires}\ std::ranges::sized\_range<Range>}
+\DoxyCodeLine{00082\ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ std::ranges::size(range\_);}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ RAW\_PTR\_EXCLUSION:\ References\ a\ STACK\_ALLOCATED\ class.\ It\ is\ only\ used}}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ inside\ for\ loops.\ Ideally,\ the\ container\ being\ iterated\ over\ should\ be\ the}}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ one\ held\ via\ a\ raw\_ref/raw\_ptrs.}}
+\DoxyCodeLine{00090\ \ \ Range\&\&\ range\_;}
+\DoxyCodeLine{00091\ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::internal}}
+
+\end{DoxyCode}

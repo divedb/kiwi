@@ -13,272 +13,273 @@
 \DoxyCodeLine{00009\ }
 \DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <vector>}}
 \DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/stack.hh"{}}}
-\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file.hh"{}}}
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file\_path.hh"{}}}
-\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/time.hh"{}}}
-\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
-\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}base/win/windows\_types.h"{}}}
-\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)}}
-\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <sys/stat.h>}}
-\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
-\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
-\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \textcolor{comment}{//\ A\ class\ for\ enumerating\ the\ files\ in\ a\ provided\ path.\ The\ order\ of\ the}}
-\DoxyCodeLine{00032\ \textcolor{comment}{//\ results\ is\ not\ guaranteed.}}
-\DoxyCodeLine{00033\ \textcolor{comment}{//}}
-\DoxyCodeLine{00034\ \textcolor{comment}{//\ This\ is\ blocking.\ Do\ not\ use\ on\ critical\ threads.}}
-\DoxyCodeLine{00035\ \textcolor{comment}{//}}
-\DoxyCodeLine{00036\ \textcolor{comment}{//\ Example:}}
-\DoxyCodeLine{00037\ \textcolor{comment}{//}}
-\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ \ kiwi::FileEnumerator\ e(my\_dir,\ false,\ kiwi::FileEnumerator::FILES,}}
-\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FILE\_PATH\_LITERAL("{}*.txt"{}));}}
-\DoxyCodeLine{00040\ \textcolor{comment}{//\ Using\ \`{}ForEach`\ with\ a\ lambda:}}
-\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ \ e.ForEach([](const\ kiwi::FilePath\&\ item)\ \{...\});}}
-\DoxyCodeLine{00042\ \textcolor{comment}{//\ Using\ a\ \`{}for`\ loop:}}
-\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ for\ (kiwi::FilePath\ name\ =\ e.Next();\ !name.empty();\ name\ =\ e.Next())}}
-\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ \ \ ...}}
-\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }BASE\_EXPORT\ FileEnumerator\ \{}
-\DoxyCodeLine{00046\ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//\ Note:\ copy\ \&\ assign\ supported.}}
-\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{class\ }BASE\_EXPORT\ FileInfo\ \{}
-\DoxyCodeLine{00049\ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00050\ \ \ \ \ FileInfo();}
-\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
-\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ Android\ has\ both\ posix\ paths,\ and\ Content-\/URIs.\ It\ will\ use\ the\ linux\ /}}
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ posix\ code\ for\ posix\ paths\ where\ a\ FileInfo()\ object\ is\ constructed\ and}}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ then\ \`{}stat\_`\ is\ populated\ via\ fstat()\ and\ used\ for\ IsDirectory(),}}
-\DoxyCodeLine{00055\ \ \ \ \ \textcolor{comment}{//\ GetSize(),\ GetLastModifiedTime().\ Content-\/URIs\ provide\ all\ values\ in\ this}}
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\ constructor\ and\ writes\ \`{}is\_directory`,\ \`{}size`\ and\ \`{}time`\ to\ \`{}stat\_`.}}
-\DoxyCodeLine{00057\ \ \ \ \ FileInfo(\mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi::FilePath}}\ content\_uri,\ \mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi::FilePath}}\ filename,}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_directory,\ off\_t\ size,\ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ time);}
-\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00060\ \ \ \ \ FileInfo(\textcolor{keyword}{const}\ FileInfo\&\ that);}
-\DoxyCodeLine{00061\ \ \ \ \ FileInfo\&\ operator=(\textcolor{keyword}{const}\ FileInfo\&\ that);}
-\DoxyCodeLine{00062\ \ \ \ \ FileInfo(FileInfo\&\&\ that);}
-\DoxyCodeLine{00063\ \ \ \ \ FileInfo\&\ operator=(FileInfo\&\&\ that);}
-\DoxyCodeLine{00064\ \ \ \ \ \string~FileInfo();}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsDirectory()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//\ The\ name\ of\ the\ file.\ This\ will\ not\ include\ any\ path\ information.\ This}}
-\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ is\ in\ constrast\ to\ the\ value\ returned\ by\ FileEnumerator.Next()\ which}}
-\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ includes\ the\ |root\_path|\ passed\ into\ the\ FileEnumerator\ constructor.}}
-\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ GetName()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00072\ }
-\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
-\DoxyCodeLine{00074\ \ \ \ \ \textcolor{comment}{//\ Display\ names\ of\ subdirs.}}
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::string>\&\ subdirs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ subdirs\_;\ \}}
-\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \ \ \ \ int64\_t\ GetSize()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00079\ }
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\ On\ POSIX\ systems,\ this\ is\ rounded\ down\ to\ the\ second.}}
-\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ GetLastModifiedTime()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00082\ }
-\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
-\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ Note\ that\ the\ cAlternateFileName\ (used\ to\ hold\ the\ "{}short"{}\ 8.3\ name)}}
-\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ of\ the\ WIN32\_FIND\_DATA\ will\ be\ empty.\ Since\ we\ don't\ use\ short\ file}}
-\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ names,\ we\ tell\ Windows\ to\ omit\ it\ which\ speeds\ up\ the\ query\ slightly.}}
-\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{const}\ WIN32\_FIND\_DATA\&\ find\_data()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *ChromeToWindowsType(\&find\_data\_);}
-\DoxyCodeLine{00089\ \ \ \ \ \}}
-\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{const}\ stat\_wrapper\_t\&\ stat()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ stat\_;\ \}}
-\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00093\ }
-\DoxyCodeLine{00094\ \ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }FileEnumerator;}
-\DoxyCodeLine{00096\ }
-\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
-\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ content\_uri\_;}
-\DoxyCodeLine{00099\ \ \ \ \ std::vector<std::string>\ subdirs\_;}
-\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
-\DoxyCodeLine{00102\ \ \ \ \ CHROME\_WIN32\_FIND\_DATA\ find\_data\_;}
-\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00104\ \ \ \ \ stat\_wrapper\_t\ stat\_;}
-\DoxyCodeLine{00105\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ filename\_;}
-\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00107\ \ \ \};}
-\DoxyCodeLine{00108\ }
-\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{enum}\ FileType\ \{}
-\DoxyCodeLine{00110\ \ \ \ \ FILES\ =\ 1\ <<\ 0,}
-\DoxyCodeLine{00111\ \ \ \ \ DIRECTORIES\ =\ 1\ <<\ 1,}
-\DoxyCodeLine{00112\ \ \ \ \ INCLUDE\_DOT\_DOT\ =\ 1\ <<\ 2,}
-\DoxyCodeLine{00113\ }
-\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//\ Report\ only\ the\ names\ of\ entries\ and\ not\ their\ type,\ size,\ or}}
-\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ last-\/modified\ time.\ May\ only\ be\ used\ for\ non-\/recursive\ enumerations,\ and}}
-\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ implicitly\ includes\ both\ files\ and\ directories\ (neither\ of\ which\ may\ be}}
-\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ specified).\ When\ used,\ an\ enumerator's\ \`{}GetInfo()`\ method\ must\ not\ be}}
-\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\ called.}}
-\DoxyCodeLine{00119\ \ \ \ \ NAMES\_ONLY\ =\ 1\ <<\ 3,}
-\DoxyCodeLine{00120\ }
-\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00122\ \ \ \ \ SHOW\_SYM\_LINKS\ =\ 1\ <<\ 4,}
-\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00124\ \ \ \};}
-\DoxyCodeLine{00125\ }
-\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//\ Search\ policy\ for\ intermediate\ folders.}}
-\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{enum\ class}\ FolderSearchPolicy\ \{}
-\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//\ Recursive\ search\ will\ pass\ through\ folders\ whose\ names\ match\ the}}
-\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ pattern.\ Inside\ each\ one,\ all\ files\ will\ be\ returned.\ Folders\ with\ names}}
-\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ that\ do\ not\ match\ the\ pattern\ will\ be\ ignored\ within\ their\ interior.}}
-\DoxyCodeLine{00131\ \ \ \ \ MATCH\_ONLY,}
-\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ Recursive\ search\ will\ pass\ through\ every\ folder\ and\ perform\ pattern}}
-\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ matching\ inside\ each\ one.}}
-\DoxyCodeLine{00134\ \ \ \ \ ALL,}
-\DoxyCodeLine{00135\ \ \ \};}
-\DoxyCodeLine{00136\ }
-\DoxyCodeLine{00137\ \ \ \textcolor{comment}{//\ Determines\ how\ a\ FileEnumerator\ handles\ errors\ encountered\ during}}
-\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//\ enumeration.\ When\ no\ ErrorPolicy\ is\ explicitly\ set,\ FileEnumerator\ defaults}}
-\DoxyCodeLine{00139\ \ \ \textcolor{comment}{//\ to\ IGNORE\_ERRORS.}}
-\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{enum\ class}\ ErrorPolicy\ \{}
-\DoxyCodeLine{00141\ \ \ \ \ \textcolor{comment}{//\ Errors\ are\ ignored\ if\ possible\ and\ FileEnumerator\ returns\ as\ many\ files}}
-\DoxyCodeLine{00142\ \ \ \ \ \textcolor{comment}{//\ as\ it\ is\ able\ to\ enumerate.}}
-\DoxyCodeLine{00143\ \ \ \ \ IGNORE\_ERRORS,}
-\DoxyCodeLine{00144\ }
-\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ Any\ error\ encountered\ during\ enumeration\ will\ terminate\ the\ enumeration}}
-\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ immediately.\ An\ error\ code\ indicating\ the\ nature\ of\ a\ failure\ can\ be}}
-\DoxyCodeLine{00147\ \ \ \ \ \textcolor{comment}{//\ retrieved\ from\ |GetError()|.}}
-\DoxyCodeLine{00148\ \ \ \ \ STOP\_ENUMERATION,}
-\DoxyCodeLine{00149\ \ \ \};}
-\DoxyCodeLine{00150\ }
-\DoxyCodeLine{00151\ \ \ \textcolor{comment}{//\ |root\_path|\ is\ the\ starting\ directory\ to\ search\ for.\ It\ may\ or\ may\ not\ end}}
-\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ in\ a\ slash.}}
-\DoxyCodeLine{00153\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//\ If\ |recursive|\ is\ true,\ this\ will\ enumerate\ all\ matches\ in\ any}}
-\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ subdirectories\ matched\ as\ well.\ It\ does\ a\ breadth-\/first\ search,\ so\ all}}
-\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ files\ in\ one\ directory\ will\ be\ returned\ before\ any\ files\ in\ a}}
-\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ subdirectory.}}
-\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//\ |file\_type|,\ a\ bit\ mask\ of\ FileType,\ specifies\ whether\ the\ enumerator}}
-\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ should\ match\ files,\ directories,\ or\ both.}}
-\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ |pattern|\ is\ an\ optional\ pattern\ for\ which\ files\ to\ match.\ This}}
-\DoxyCodeLine{00163\ \ \ \textcolor{comment}{//\ works\ like\ shell\ globbing.\ For\ example,\ "{}*.txt"{}\ or\ "{}Foo???.doc"{}.}}
-\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//\ However,\ be\ careful\ in\ specifying\ patterns\ that\ aren't\ cross\ platform}}
-\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ since\ the\ underlying\ code\ uses\ OS-\/specific\ matching\ routines.\ \ In\ general,}}
-\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//\ Windows\ matching\ is\ less\ featureful\ than\ others,\ so\ test\ there\ first.}}
-\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ If\ unspecified,\ this\ will\ match\ all\ files.}}
-\DoxyCodeLine{00168\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ |folder\_search\_policy|\ optionally\ specifies\ a\ search\ behavior.\ Refer\ to}}
-\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ |FolderSearchPolicy|\ for\ a\ list\ of\ folder\ search\ policies\ and\ the\ meaning}}
-\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ of\ them.\ If\ |recursive|\ is\ false,\ this\ parameter\ has\ no\ effect.}}
-\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//\ |error\_policy|\ optionally\ specifies\ the\ behavior\ when\ an\ error\ occurs.}}
-\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ Refer\ to\ |ErrorPolicy|\ for\ a\ list\ of\ error\ policies\ and\ the\ meaning\ of}}
-\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ them.}}
-\DoxyCodeLine{00176\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type);}
-\DoxyCodeLine{00177\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type,}
-\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ pattern);}
-\DoxyCodeLine{00179\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type,}
-\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ pattern,}
-\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FolderSearchPolicy\ folder\_search\_policy);}
-\DoxyCodeLine{00182\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type,}
-\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ pattern,}
-\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FolderSearchPolicy\ folder\_search\_policy,}
-\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ErrorPolicy\ error\_policy);}
-\DoxyCodeLine{00186\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FileEnumerator\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00187\ \ \ FileEnumerator\&\ operator=(\textcolor{keyword}{const}\ FileEnumerator\&)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00188\ \ \ \string~FileEnumerator();}
-\DoxyCodeLine{00189\ }
-\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ Calls\ \`{}ref`\ synchronously\ for\ each\ path\ found\ by\ the\ \`{}FileEnumerator`.\ Each}}
-\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ path\ will\ incorporate\ the\ \`{}root\_path`\ passed\ in\ the\ constructor:}}
-\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ "{}<root\_path>/file\_name.txt"{}.\ If\ the\ \`{}root\_path`\ is\ absolute,\ then\ so\ will}}
-\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ be\ the\ paths\ provided\ in\ the\ \`{}ref`\ invocations.}}
-\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ ForEach(FunctionRef<\textcolor{keywordtype}{void}(\textcolor{keyword}{const}\ FilePath\&\ path)>\ ref);}
-\DoxyCodeLine{00195\ }
-\DoxyCodeLine{00196\ \ \ \textcolor{comment}{//\ Returns\ the\ next\ file\ or\ an\ empty\ string\ if\ there\ are\ no\ more\ results.}}
-\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//}}
-\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ The\ returned\ path\ will\ incorporate\ the\ |root\_path|\ passed\ in\ the}}
-\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//\ constructor:\ "{}<root\_path>/file\_name.txt"{}.\ If\ the\ |root\_path|\ is\ absolute,}}
-\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ then\ so\ will\ be\ the\ result\ of\ Next().}}
-\DoxyCodeLine{00201\ \ \ FilePath\ Next();}
-\DoxyCodeLine{00202\ }
-\DoxyCodeLine{00203\ \ \ \textcolor{comment}{//\ Returns\ info\ about\ the\ file\ last\ returned\ by\ Next().\ Note\ that\ on\ Windows}}
-\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ and\ Fuchsia,\ GetInfo()\ does\ not\ play\ well\ with\ INCLUDE\_DOT\_DOT.\ In}}
-\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ particular,\ the\ GetLastModifiedTime()\ for\ the\ ..\ directory\ is\ 1601-\/01-\/01}}
-\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ on\ Fuchsia\ (https://crbug.com/1106172)\ and\ is\ equal\ to\ the\ last\ modified}}
-\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ time\ of\ the\ current\ directory\ on\ Windows\ (https://crbug.com/1119546).}}
-\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//\ Must\ not\ be\ used\ with\ FileType::NAMES\_ONLY.}}
-\DoxyCodeLine{00209\ \ \ FileInfo\ GetInfo()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00210\ }
-\DoxyCodeLine{00211\ \ \ \textcolor{comment}{//\ Once\ |Next()|\ returns\ an\ empty\ path,\ enumeration\ has\ been\ terminated.\ If}}
-\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//\ termination\ was\ normal\ (i.e.\ no\ more\ results\ to\ enumerate)\ or\ ErrorPolicy}}
-\DoxyCodeLine{00213\ \ \ \textcolor{comment}{//\ is\ set\ to\ IGNORE\_ERRORS,\ this\ returns\ FILE\_OK.\ Otherwise\ it\ returns\ an}}
-\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ error\ code\ reflecting\ why\ enumeration\ was\ stopped\ early.}}
-\DoxyCodeLine{00215\ \ \ File::Error\ GetError()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ error\_;\ \}}
-\DoxyCodeLine{00216\ }
-\DoxyCodeLine{00217\ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ path\ should\ be\ skipped\ in\ enumeration.}}
-\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{bool}\ ShouldSkip(\textcolor{keyword}{const}\ FilePath\&\ path);}
-\DoxyCodeLine{00220\ }
-\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{bool}\ IsTypeMatched(\textcolor{keywordtype}{bool}\ is\_dir)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00222\ }
-\DoxyCodeLine{00223\ \ \ \textcolor{keywordtype}{bool}\ IsPatternMatched(\textcolor{keyword}{const}\ FilePath\&\ src)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00224\ }
-\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
-\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{const}\ WIN32\_FIND\_DATA\&\ find\_data()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ *ChromeToWindowsType(\&find\_data\_);}
-\DoxyCodeLine{00228\ \ \ \}}
-\DoxyCodeLine{00229\ }
-\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ True\ when\ find\_data\_\ is\ valid.}}
-\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{bool}\ has\_find\_data\_\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00232\ \ \ CHROME\_WIN32\_FIND\_DATA\ find\_data\_;}
-\DoxyCodeLine{00233\ \ \ HANDLE\ find\_handle\_\ =\ INVALID\_HANDLE\_VALUE;}
-\DoxyCodeLine{00234\ }
-\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
-\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//\ Marks\ the\ given\ inode\ as\ visited.\ Returns\ true\ if\ it\ is\ the\ first\ time\ that}}
-\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ it\ got\ marked\ as\ visited.}}
-\DoxyCodeLine{00238\ \ \ \textcolor{keywordtype}{bool}\ MarkVisited(\textcolor{keyword}{const}\ stat\_wrapper\_t\&\ st)\ \{}
-\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{return}\ visited\_[st.st\_dev].insert(st.st\_ino).second;}
-\DoxyCodeLine{00240\ \ \ \}}
-\DoxyCodeLine{00241\ }
-\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ The\ files\ in\ the\ current\ directory}}
-\DoxyCodeLine{00243\ \ \ std::vector<FileInfo>\ directory\_entries\_;}
-\DoxyCodeLine{00244\ }
-\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
-\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ The\ Android\ NDK\ (r23)\ does\ not\ declare\ \`{}st\_dev`\ as\ a\ \`{}dev\_t`,\ nor\ \`{}st\_ino`}}
-\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ as\ an\ \`{}ino\_t`,\ hence\ the\ need\ for\ these\ decltypes.}}
-\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{using\ }dev\_t\ =\ \textcolor{keyword}{decltype}(stat\_wrapper\_t::st\_dev);}
-\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{using\ }ino\_t\ =\ \textcolor{keyword}{decltype}(stat\_wrapper\_t::st\_ino);}
-\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00251\ }
-\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ Set\ of\ visited\ directories.\ Used\ to\ prevent\ infinite\ looping\ along\ circular}}
-\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ symlinks\ and\ bind-\/mounts.}}
-\DoxyCodeLine{00254\ \ \ std::unordered\_map<dev\_t,\ std::unordered\_set<ino\_t>>\ visited\_;}
-\DoxyCodeLine{00255\ }
-\DoxyCodeLine{00256\ \ \ \textcolor{comment}{//\ The\ next\ entry\ to\ use\ from\ the\ directory\_entries\_\ vector}}
-\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{size\_t}\ current\_directory\_entry\_;}
-\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00259\ \ \ FilePath\ root\_path\_;}
-\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ recursive\_;}
-\DoxyCodeLine{00261\ \ \ \textcolor{keywordtype}{int}\ file\_type\_;}
-\DoxyCodeLine{00262\ \ \ FilePath::StringType\ pattern\_;}
-\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{const}\ FolderSearchPolicy\ folder\_search\_policy\_;}
-\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{const}\ ErrorPolicy\ error\_policy\_;}
-\DoxyCodeLine{00265\ \ \ File::Error\ error\_\ =\ File::FILE\_OK;}
-\DoxyCodeLine{00266\ }
-\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//\ A\ stack\ that\ keeps\ track\ of\ which\ subdirectories\ we\ still\ need\ to}}
-\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ enumerate\ in\ the\ breadth-\/first\ search.}}
-\DoxyCodeLine{00269\ \ \ kiwi::stack<FilePath>\ pending\_paths\_;}
-\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
-\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ Matches\ pending\_paths\_,\ but\ with\ display\ names.}}
-\DoxyCodeLine{00272\ \ \ kiwi::stack<std::vector<std::string>>\ pending\_subdirs\_;}
-\DoxyCodeLine{00273\ \ \ \textcolor{comment}{//\ Display\ names\ of\ subdirs\ of\ the\ current\ entry.}}
-\DoxyCodeLine{00274\ \ \ std::vector<std::string>\ subdirs\_;}
-\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00276\ \};}
-\DoxyCodeLine{00277\ }
-\DoxyCodeLine{00278\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}kiwi/chrono/time.hh"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/function.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/stack.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file.hh"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/io/file\_path.hh"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}base/win/windows\_types.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <sys/stat.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ A\ class\ for\ enumerating\ the\ files\ in\ a\ provided\ path.\ The\ order\ of\ the}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ results\ is\ not\ guaranteed.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ This\ is\ blocking.\ Do\ not\ use\ on\ critical\ threads.}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ Example:}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ \ kiwi::FileEnumerator\ e(my\_dir,\ false,\ kiwi::FileEnumerator::FILES,}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FILE\_PATH\_LITERAL("{}*.txt"{}));}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ Using\ \`{}ForEach`\ with\ a\ lambda:}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ e.ForEach([](const\ kiwi::FilePath\&\ item)\ \{...\});}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ Using\ a\ \`{}for`\ loop:}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ for\ (kiwi::FilePath\ name\ =\ e.Next();\ !name.empty();\ name\ =\ e.Next())}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \ \ \ \ ...}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{class\ }BASE\_EXPORT\ FileEnumerator\ \{}
+\DoxyCodeLine{00047\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ Note:\ copy\ \&\ assign\ supported.}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{class\ }BASE\_EXPORT\ FileInfo\ \{}
+\DoxyCodeLine{00050\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ \ \ FileInfo();}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ Android\ has\ both\ posix\ paths,\ and\ Content-\/URIs.\ It\ will\ use\ the\ linux\ /}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ posix\ code\ for\ posix\ paths\ where\ a\ FileInfo()\ object\ is\ constructed\ and}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{comment}{//\ then\ \`{}stat\_`\ is\ populated\ via\ fstat()\ and\ used\ for\ IsDirectory(),}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\ GetSize(),\ GetLastModifiedTime().\ Content-\/URIs\ provide\ all\ values\ in\ this}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ constructor\ and\ writes\ \`{}is\_directory`,\ \`{}size`\ and\ \`{}time`\ to\ \`{}stat\_`.}}
+\DoxyCodeLine{00058\ \ \ \ \ FileInfo(\mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi::FilePath}}\ content\_uri,\ \mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi::FilePath}}\ filename,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_directory,\ off\_t\ size,\ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ time);}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00061\ \ \ \ \ FileInfo(\textcolor{keyword}{const}\ FileInfo\&\ that);}
+\DoxyCodeLine{00062\ \ \ \ \ FileInfo\&\ operator=(\textcolor{keyword}{const}\ FileInfo\&\ that);}
+\DoxyCodeLine{00063\ \ \ \ \ FileInfo(FileInfo\&\&\ that);}
+\DoxyCodeLine{00064\ \ \ \ \ FileInfo\&\ operator=(FileInfo\&\&\ that);}
+\DoxyCodeLine{00065\ \ \ \ \ \string~FileInfo();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsDirectory()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ The\ name\ of\ the\ file.\ This\ will\ not\ include\ any\ path\ information.\ This}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ is\ in\ constrast\ to\ the\ value\ returned\ by\ FileEnumerator.Next()\ which}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ includes\ the\ |root\_path|\ passed\ into\ the\ FileEnumerator\ constructor.}}
+\DoxyCodeLine{00072\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ GetName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//\ Display\ names\ of\ subdirs.}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::string>\&\ subdirs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ subdirs\_;\ \}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ int64\_t\ GetSize()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{comment}{//\ On\ POSIX\ systems,\ this\ is\ rounded\ down\ to\ the\ second.}}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_time}{Time}}\ GetLastModifiedTime()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ Note\ that\ the\ cAlternateFileName\ (used\ to\ hold\ the\ "{}short"{}\ 8.3\ name)}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ of\ the\ WIN32\_FIND\_DATA\ will\ be\ empty.\ Since\ we\ don't\ use\ short\ file}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ names,\ we\ tell\ Windows\ to\ omit\ it\ which\ speeds\ up\ the\ query\ slightly.}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{const}\ WIN32\_FIND\_DATA\&\ find\_data()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *ChromeToWindowsType(\&find\_data\_);}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{const}\ stat\_wrapper\_t\&\ stat()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ stat\_;\ \}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }FileEnumerator;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00099\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ content\_uri\_;}
+\DoxyCodeLine{00100\ \ \ \ \ std::vector<std::string>\ subdirs\_;}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00103\ \ \ \ \ CHROME\_WIN32\_FIND\_DATA\ find\_data\_;}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00105\ \ \ \ \ stat\_wrapper\_t\ stat\_;}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}}\ filename\_;}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00108\ \ \ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{enum}\ FileType\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ FILES\ =\ 1\ <<\ 0,}
+\DoxyCodeLine{00112\ \ \ \ \ DIRECTORIES\ =\ 1\ <<\ 1,}
+\DoxyCodeLine{00113\ \ \ \ \ INCLUDE\_DOT\_DOT\ =\ 1\ <<\ 2,}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ Report\ only\ the\ names\ of\ entries\ and\ not\ their\ type,\ size,\ or}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ last-\/modified\ time.\ May\ only\ be\ used\ for\ non-\/recursive\ enumerations,\ and}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ implicitly\ includes\ both\ files\ and\ directories\ (neither\ of\ which\ may\ be}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\ specified).\ When\ used,\ an\ enumerator's\ \`{}GetInfo()`\ method\ must\ not\ be}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ called.}}
+\DoxyCodeLine{00120\ \ \ \ \ NAMES\_ONLY\ =\ 1\ <<\ 3,}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00123\ \ \ \ \ SHOW\_SYM\_LINKS\ =\ 1\ <<\ 4,}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00125\ \ \ \};}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ Search\ policy\ for\ intermediate\ folders.}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{enum\ class}\ FolderSearchPolicy\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ Recursive\ search\ will\ pass\ through\ folders\ whose\ names\ match\ the}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ pattern.\ Inside\ each\ one,\ all\ files\ will\ be\ returned.\ Folders\ with\ names}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ that\ do\ not\ match\ the\ pattern\ will\ be\ ignored\ within\ their\ interior.}}
+\DoxyCodeLine{00132\ \ \ \ \ MATCH\_ONLY,}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ Recursive\ search\ will\ pass\ through\ every\ folder\ and\ perform\ pattern}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{comment}{//\ matching\ inside\ each\ one.}}
+\DoxyCodeLine{00135\ \ \ \ \ ALL,}
+\DoxyCodeLine{00136\ \ \ \};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//\ Determines\ how\ a\ FileEnumerator\ handles\ errors\ encountered\ during}}
+\DoxyCodeLine{00139\ \ \ \textcolor{comment}{//\ enumeration.\ When\ no\ ErrorPolicy\ is\ explicitly\ set,\ FileEnumerator\ defaults}}
+\DoxyCodeLine{00140\ \ \ \textcolor{comment}{//\ to\ IGNORE\_ERRORS.}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{enum\ class}\ ErrorPolicy\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{comment}{//\ Errors\ are\ ignored\ if\ possible\ and\ FileEnumerator\ returns\ as\ many\ files}}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{comment}{//\ as\ it\ is\ able\ to\ enumerate.}}
+\DoxyCodeLine{00144\ \ \ \ \ IGNORE\_ERRORS,}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ Any\ error\ encountered\ during\ enumeration\ will\ terminate\ the\ enumeration}}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{comment}{//\ immediately.\ An\ error\ code\ indicating\ the\ nature\ of\ a\ failure\ can\ be}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ retrieved\ from\ |GetError()|.}}
+\DoxyCodeLine{00149\ \ \ \ \ STOP\_ENUMERATION,}
+\DoxyCodeLine{00150\ \ \ \};}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ |root\_path|\ is\ the\ starting\ directory\ to\ search\ for.\ It\ may\ or\ may\ not\ end}}
+\DoxyCodeLine{00153\ \ \ \textcolor{comment}{//\ in\ a\ slash.}}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ If\ |recursive|\ is\ true,\ this\ will\ enumerate\ all\ matches\ in\ any}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ subdirectories\ matched\ as\ well.\ It\ does\ a\ breadth-\/first\ search,\ so\ all}}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ files\ in\ one\ directory\ will\ be\ returned\ before\ any\ files\ in\ a}}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ subdirectory.}}
+\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ |file\_type|,\ a\ bit\ mask\ of\ FileType,\ specifies\ whether\ the\ enumerator}}
+\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//\ should\ match\ files,\ directories,\ or\ both.}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00163\ \ \ \textcolor{comment}{//\ |pattern|\ is\ an\ optional\ pattern\ for\ which\ files\ to\ match.\ This}}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//\ works\ like\ shell\ globbing.\ For\ example,\ "{}*.txt"{}\ or\ "{}Foo???.doc"{}.}}
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ However,\ be\ careful\ in\ specifying\ patterns\ that\ aren't\ cross\ platform}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//\ since\ the\ underlying\ code\ uses\ OS-\/specific\ matching\ routines.\ \ In\ general,}}
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ Windows\ matching\ is\ less\ featureful\ than\ others,\ so\ test\ there\ first.}}
+\DoxyCodeLine{00168\ \ \ \textcolor{comment}{//\ If\ unspecified,\ this\ will\ match\ all\ files.}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ |folder\_search\_policy|\ optionally\ specifies\ a\ search\ behavior.\ Refer\ to}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ |FolderSearchPolicy|\ for\ a\ list\ of\ folder\ search\ policies\ and\ the\ meaning}}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//\ of\ them.\ If\ |recursive|\ is\ false,\ this\ parameter\ has\ no\ effect.}}
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ |error\_policy|\ optionally\ specifies\ the\ behavior\ when\ an\ error\ occurs.}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ Refer\ to\ |ErrorPolicy|\ for\ a\ list\ of\ error\ policies\ and\ the\ meaning\ of}}
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{//\ them.}}
+\DoxyCodeLine{00177\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type);}
+\DoxyCodeLine{00178\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type,}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ pattern);}
+\DoxyCodeLine{00180\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type,}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ pattern,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FolderSearchPolicy\ folder\_search\_policy);}
+\DoxyCodeLine{00183\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FilePath\&\ root\_path,\ \textcolor{keywordtype}{bool}\ recursive,\ \textcolor{keywordtype}{int}\ file\_type,}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FilePath::StringType\&\ pattern,}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FolderSearchPolicy\ folder\_search\_policy,}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ErrorPolicy\ error\_policy);}
+\DoxyCodeLine{00187\ \ \ FileEnumerator(\textcolor{keyword}{const}\ FileEnumerator\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00188\ \ \ FileEnumerator\&\ operator=(\textcolor{keyword}{const}\ FileEnumerator\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00189\ \ \ \string~FileEnumerator();}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ Calls\ \`{}ref`\ synchronously\ for\ each\ path\ found\ by\ the\ \`{}FileEnumerator`.\ Each}}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ path\ will\ incorporate\ the\ \`{}root\_path`\ passed\ in\ the\ constructor:}}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ "{}<root\_path>/file\_name.txt"{}.\ If\ the\ \`{}root\_path`\ is\ absolute,\ then\ so\ will}}
+\DoxyCodeLine{00194\ \ \ \textcolor{comment}{//\ be\ the\ paths\ provided\ in\ the\ \`{}ref`\ invocations.}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ ForEach(FunctionRef<\textcolor{keywordtype}{void}(\textcolor{keyword}{const}\ FilePath\&\ path)>\ ref);}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//\ Returns\ the\ next\ file\ or\ an\ empty\ string\ if\ there\ are\ no\ more\ results.}}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//\ The\ returned\ path\ will\ incorporate\ the\ |root\_path|\ passed\ in\ the}}
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ constructor:\ "{}<root\_path>/file\_name.txt"{}.\ If\ the\ |root\_path|\ is\ absolute,}}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//\ then\ so\ will\ be\ the\ result\ of\ Next().}}
+\DoxyCodeLine{00202\ \ \ FilePath\ Next();}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ Returns\ info\ about\ the\ file\ last\ returned\ by\ Next().\ Note\ that\ on\ Windows}}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ and\ Fuchsia,\ GetInfo()\ does\ not\ play\ well\ with\ INCLUDE\_DOT\_DOT.\ In}}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ particular,\ the\ GetLastModifiedTime()\ for\ the\ ..\ directory\ is\ 1601-\/01-\/01}}
+\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ on\ Fuchsia\ (https://crbug.com/1106172)\ and\ is\ equal\ to\ the\ last\ modified}}
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//\ time\ of\ the\ current\ directory\ on\ Windows\ (https://crbug.com/1119546).}}
+\DoxyCodeLine{00209\ \ \ \textcolor{comment}{//\ Must\ not\ be\ used\ with\ FileType::NAMES\_ONLY.}}
+\DoxyCodeLine{00210\ \ \ FileInfo\ GetInfo()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//\ Once\ |Next()|\ returns\ an\ empty\ path,\ enumeration\ has\ been\ terminated.\ If}}
+\DoxyCodeLine{00213\ \ \ \textcolor{comment}{//\ termination\ was\ normal\ (i.e.\ no\ more\ results\ to\ enumerate)\ or\ ErrorPolicy}}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ is\ set\ to\ IGNORE\_ERRORS,\ this\ returns\ FILE\_OK.\ Otherwise\ it\ returns\ an}}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ error\ code\ reflecting\ why\ enumeration\ was\ stopped\ early.}}
+\DoxyCodeLine{00216\ \ \ File::Error\ GetError()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ error\_;\ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ the\ given\ path\ should\ be\ skipped\ in\ enumeration.}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{bool}\ ShouldSkip(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{bool}\ IsTypeMatched(\textcolor{keywordtype}{bool}\ is\_dir)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ \textcolor{keywordtype}{bool}\ IsPatternMatched(\textcolor{keyword}{const}\ FilePath\&\ src)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{const}\ WIN32\_FIND\_DATA\&\ find\_data()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{return}\ *ChromeToWindowsType(\&find\_data\_);}
+\DoxyCodeLine{00229\ \ \ \}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \textcolor{comment}{//\ True\ when\ find\_data\_\ is\ valid.}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{bool}\ has\_find\_data\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00233\ \ \ CHROME\_WIN32\_FIND\_DATA\ find\_data\_;}
+\DoxyCodeLine{00234\ \ \ HANDLE\ find\_handle\_\ =\ INVALID\_HANDLE\_VALUE;}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ Marks\ the\ given\ inode\ as\ visited.\ Returns\ true\ if\ it\ is\ the\ first\ time\ that}}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//\ it\ got\ marked\ as\ visited.}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{bool}\ MarkVisited(\textcolor{keyword}{const}\ stat\_wrapper\_t\&\ st)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{return}\ visited\_[st.st\_dev].insert(st.st\_ino).second;}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{comment}{//\ The\ files\ in\ the\ current\ directory}}
+\DoxyCodeLine{00244\ \ \ std::vector<FileInfo>\ directory\_entries\_;}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ The\ Android\ NDK\ (r23)\ does\ not\ declare\ \`{}st\_dev`\ as\ a\ \`{}dev\_t`,\ nor\ \`{}st\_ino`}}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ as\ an\ \`{}ino\_t`,\ hence\ the\ need\ for\ these\ decltypes.}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{using\ }dev\_t\ =\ \textcolor{keyword}{decltype}(stat\_wrapper\_t::st\_dev);}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{using\ }ino\_t\ =\ \textcolor{keyword}{decltype}(stat\_wrapper\_t::st\_ino);}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ Set\ of\ visited\ directories.\ Used\ to\ prevent\ infinite\ looping\ along\ circular}}
+\DoxyCodeLine{00254\ \ \ \textcolor{comment}{//\ symlinks\ and\ bind-\/mounts.}}
+\DoxyCodeLine{00255\ \ \ std::unordered\_map<dev\_t,\ std::unordered\_set<ino\_t>>\ visited\_;}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \textcolor{comment}{//\ The\ next\ entry\ to\ use\ from\ the\ directory\_entries\_\ vector}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{size\_t}\ current\_directory\_entry\_;}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00260\ \ \ FilePath\ root\_path\_;}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ recursive\_;}
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{int}\ file\_type\_;}
+\DoxyCodeLine{00263\ \ \ FilePath::StringType\ pattern\_;}
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{const}\ FolderSearchPolicy\ folder\_search\_policy\_;}
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{const}\ ErrorPolicy\ error\_policy\_;}
+\DoxyCodeLine{00266\ \ \ File::Error\ error\_\ =\ File::kFileOk;}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ A\ stack\ that\ keeps\ track\ of\ which\ subdirectories\ we\ still\ need\ to}}
+\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//\ enumerate\ in\ the\ breadth-\/first\ search.}}
+\DoxyCodeLine{00270\ \ \ kiwi::stack<FilePath>\ pending\_paths\_;}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_ANDROID)}}
+\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//\ Matches\ pending\_paths\_,\ but\ with\ display\ names.}}
+\DoxyCodeLine{00273\ \ \ kiwi::stack<std::vector<std::string>>\ pending\_subdirs\_;}
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{//\ Display\ names\ of\ subdirs\ of\ the\ current\ entry.}}
+\DoxyCodeLine{00275\ \ \ std::vector<std::string>\ subdirs\_;}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00277\ \};}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
 
 \end{DoxyCode}

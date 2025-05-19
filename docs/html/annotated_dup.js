@@ -13,6 +13,13 @@ var annotated_dup =
       ] ]
     ] ],
     [ "kiwi", "namespacekiwi.html", [
+      [ "apple", null, [
+        [ "internal", null, [
+          [ "ScopedCFTypeRefTraits", "structkiwi_1_1apple_1_1internal_1_1_scoped_c_f_type_ref_traits.html", null ]
+        ] ],
+        [ "ScopedTypeRef", "classkiwi_1_1apple_1_1_scoped_type_ref.html", null ],
+        [ "ScopedTypeRefTraits", "structkiwi_1_1apple_1_1_scoped_type_ref_traits.html", null ]
+      ] ],
       [ "builtin", null, [
         [ "detail", null, [
           [ "predict_constinit_", "structkiwi_1_1builtin_1_1detail_1_1predict__constinit__.html", null ]
@@ -167,6 +174,7 @@ var annotated_dup =
         [ "DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kUnsigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_28e8c4d5749e96dd2728056f98fd8aaf.html", null ],
         [ "FastIntegerArithmeticPromotionImpl", "structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl.html", null ],
         [ "FastIntegerArithmeticPromotionImpl< Lhs, Rhs >", "structkiwi_1_1internal_1_1_fast_integer_arithmetic_promotion_impl_3_01_lhs_00_01_rhs_01_4.html", null ],
+        [ "flat_tree", "classkiwi_1_1internal_1_1flat__tree.html", "classkiwi_1_1internal_1_1flat__tree" ],
         [ "GetNumericRepresentation", "structkiwi_1_1internal_1_1_get_numeric_representation.html", null ],
         [ "IntegerForDigitsAndSignImpl", "structkiwi_1_1internal_1_1_integer_for_digits_and_sign_impl.html", null ],
         [ "IsEqual", "structkiwi_1_1internal_1_1_is_equal.html", null ],
@@ -180,13 +188,16 @@ var annotated_dup =
         [ "MathWrapper", "structkiwi_1_1internal_1_1_math_wrapper.html", null ],
         [ "NarrowingRange", "structkiwi_1_1internal_1_1_narrowing_range.html", null ],
         [ "RangeCheck", "classkiwi_1_1internal_1_1_range_check.html", null ],
+        [ "RangeOfRvaluesAdapter", "classkiwi_1_1internal_1_1_range_of_rvalues_adapter.html", null ],
         [ "ReplacementOffset", "structkiwi_1_1internal_1_1_replacement_offset.html", null ],
+        [ "ReversedAdapter", "classkiwi_1_1internal_1_1_reversed_adapter.html", null ],
         [ "SaturateFastAsmOp", "structkiwi_1_1internal_1_1_saturate_fast_asm_op.html", null ],
         [ "SaturateFastOp", "structkiwi_1_1internal_1_1_saturate_fast_op.html", null ],
         [ "SaturateFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_op_3_01_dst_00_01_src_01_4.html", null ],
         [ "SaturationDefaultLimits", "structkiwi_1_1internal_1_1_saturation_default_limits.html", null ],
         [ "ScopedFILECloser", "structkiwi_1_1internal_1_1_scoped_f_i_l_e_closer.html", null ],
         [ "StrictNumeric", "classkiwi_1_1internal_1_1_strict_numeric.html", null ],
+        [ "StringToNumberParser", "classkiwi_1_1internal_1_1_string_to_number_parser.html", "classkiwi_1_1internal_1_1_string_to_number_parser" ],
         [ "SubstringMatcher", "structkiwi_1_1internal_1_1_substring_matcher.html", null ],
         [ "ToStringHelper", "structkiwi_1_1internal_1_1_to_string_helper.html", null ],
         [ "ToStringHelper< bool >", "structkiwi_1_1internal_1_1_to_string_helper_3_01bool_01_4.html", null ],
@@ -271,6 +282,7 @@ var annotated_dup =
       [ "Disjunction", "structkiwi_1_1_disjunction.html", null ],
       [ "Disjunction< T >", "structkiwi_1_1_disjunction_3_01_t_01_4.html", null ],
       [ "Disjunction< T, TList... >", "structkiwi_1_1_disjunction_3_01_t_00_01_t_list_8_8_8_01_4.html", null ],
+      [ "Environment", "classkiwi_1_1_environment.html", null ],
       [ "explicitly_convertible", "structkiwi_1_1explicitly__convertible.html", null ],
       [ "explicitly_convertible< From, To, std::void_t< decltype(static_cast< To >(std::declval< std::add_rvalue_reference_t< From > >()))> >", "structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942.html", null ],
       [ "fbstring_core", "classkiwi_1_1fbstring__core.html", "classkiwi_1_1fbstring__core" ],
@@ -317,10 +329,12 @@ var annotated_dup =
       [ "Negation", "structkiwi_1_1_negation.html", null ],
       [ "NoDestructor", "classkiwi_1_1_no_destructor.html", null ],
       [ "NonCopyableNonMovable", "structkiwi_1_1_non_copyable_non_movable.html", null ],
+      [ "NonCopyablePassKey", "classkiwi_1_1_non_copyable_pass_key.html", null ],
       [ "nonesuch", "structkiwi_1_1nonesuch.html", null ],
       [ "NotNull", "classkiwi_1_1_not_null.html", "classkiwi_1_1_not_null" ],
       [ "NotNullHash", "structkiwi_1_1_not_null_hash.html", null ],
       [ "NotNullHash< T, U, false >", "structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4.html", null ],
+      [ "PassKey", "classkiwi_1_1_pass_key.html", null ],
       [ "PointerLikeTypeTraits", "structkiwi_1_1_pointer_like_type_traits.html", null ],
       [ "PointerLikeTypeTraits< const T * >", "structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_5_01_4.html", null ],
       [ "PointerLikeTypeTraits< const T >", "structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_4.html", null ],
@@ -331,6 +345,7 @@ var annotated_dup =
       [ "SafeBaseName", "classkiwi_1_1_safe_base_name.html", "classkiwi_1_1_safe_base_name" ],
       [ "ScopedGeneric", "classkiwi_1_1_scoped_generic.html", "classkiwi_1_1_scoped_generic" ],
       [ "ScopedGenericOwnershipTracking", "structkiwi_1_1_scoped_generic_ownership_tracking.html", null ],
+      [ "ScopedTempFile", "classkiwi_1_1_scoped_temp_file.html", null ],
       [ "SmallDenseMap", "classkiwi_1_1_small_dense_map.html", null ],
       [ "sorted_equivalent_t", "structkiwi_1_1sorted__equivalent__t.html", null ],
       [ "sorted_unique_t", "structkiwi_1_1sorted__unique__t.html", null ],

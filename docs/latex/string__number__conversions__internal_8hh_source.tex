@@ -1,0 +1,288 @@
+\doxysection{string\+\_\+number\+\_\+conversions\+\_\+internal.\+hh}
+\hypertarget{string__number__conversions__internal_8hh_source}{}\label{string__number__conversions__internal_8hh_source}\index{include/kiwi/strings/string\_number\_conversions\_internal.hh@{include/kiwi/strings/string\_number\_conversions\_internal.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2020\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <double-\/conversion/double-\/conversion.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <errno.h>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/logging.hh"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/numerics/safe\_math.hh"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/string\_util.hh"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ STR,\ \textcolor{keyword}{typename}\ INT>}
+\DoxyCodeLine{00024\ \textcolor{keyword}{static}\ STR\ IntToStringT(INT\ value)\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{comment}{//\ log10(2)\ \string~=\ 0.3\ bytes\ needed\ per\ bit\ or\ per\ byte\ log10(2**8)\ \string~=\ 2.4.}}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ So\ round\ up\ to\ allocate\ 3\ output\ characters\ per\ byte,\ plus\ 1\ for\ '-\/'.}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ kOutputBufSize\ =}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ 3\ *\ \textcolor{keyword}{sizeof}(INT)\ +\ std::numeric\_limits<INT>::is\_signed;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ Create\ the\ string\ in\ a\ temporary\ buffer,\ write\ it\ back\ to\ front,\ and}}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ then\ return\ the\ substr\ of\ what\ we\ ended\ up\ using.}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{using\ }CHR\ =\ \textcolor{keyword}{typename}\ STR::value\_type;}
+\DoxyCodeLine{00033\ \ \ CHR\ outbuf[kOutputBufSize];}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ The\ ValueOrDie\ call\ below\ can\ never\ fail,\ because\ UnsignedAbs\ is\ valid}}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ for\ all\ valid\ inputs.}}
+\DoxyCodeLine{00037\ \ \ std::make\_unsigned\_t<INT>\ res\ =}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1internal_1_1_checked_numeric}{CheckedNumeric<INT>}}(value).UnsignedAbs().ValueOrDie();}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ CHR*\ end\ =\ UNSAFE\_TODO(outbuf\ +\ kOutputBufSize);}
+\DoxyCodeLine{00041\ \ \ CHR*\ i\ =\ end;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ UNSAFE\_TODO(-\/-\/i);}
+\DoxyCodeLine{00044\ \ \ \ \ DCHECK(i\ !=\ outbuf);}
+\DoxyCodeLine{00045\ \ \ \ \ *i\ =\ \textcolor{keyword}{static\_cast<}CHR\textcolor{keyword}{>}((res\ \%\ 10)\ +\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00046\ \ \ \ \ res\ /=\ 10;}
+\DoxyCodeLine{00047\ \ \ \}\ \textcolor{keywordflow}{while}\ (res\ !=\ 0);}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{if}\ (IsValueNegative(value))\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ UNSAFE\_TODO(-\/-\/i);}
+\DoxyCodeLine{00050\ \ \ \ \ DCHECK(i\ !=\ outbuf);}
+\DoxyCodeLine{00051\ \ \ \ \ *i\ =\ \textcolor{keyword}{static\_cast<}CHR\textcolor{keyword}{>}(\textcolor{charliteral}{'-\/'});}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordflow}{return}\ STR(i,\ end);}
+\DoxyCodeLine{00054\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ Utility\ to\ convert\ a\ character\ to\ a\ digit\ in\ a\ given\ base}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ BASE,\ \textcolor{keyword}{typename}\ CHAR>}
+\DoxyCodeLine{00058\ std::optional<uint8\_t>\ CharToDigit(CHAR\ c)\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static\_assert}(1\ <=\ BASE\ \&\&\ BASE\ <=\ 36,\ \textcolor{stringliteral}{"{}BASE\ needs\ to\ be\ in\ [1,\ 36]"{}});}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordflow}{if}\ (c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <\ \textcolor{charliteral}{'0'}\ +\ std::min(BASE,\ 10))\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(c\ -\/\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordflow}{if}\ (c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <\ \textcolor{charliteral}{'a'}\ +\ BASE\ -\/\ 10)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(c\ -\/\ \textcolor{charliteral}{'a'}\ +\ 10);}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordflow}{if}\ (c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <\ \textcolor{charliteral}{'A'}\ +\ BASE\ -\/\ 10)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(c\ -\/\ \textcolor{charliteral}{'A'}\ +\ 10);}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00073\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Number,\ \textcolor{keywordtype}{int}\ kBase>}
+\DoxyCodeLine{00076\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser}{StringToNumberParser}}\ \{}
+\DoxyCodeLine{00077\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1_string_to_number_parser_1_1_result}{Result}}\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ Number\ value\ =\ 0;}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ valid\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00081\ \ \ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Number\ kMin\ =\ std::numeric\_limits<Number>::min();}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ Number\ kMax\ =\ std::numeric\_limits<Number>::max();}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ Sign\ provides:}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ \ -\/\ a\ static\ function,\ CheckBounds,\ that\ determines\ whether\ the\ next\ digit}}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ \ \ \ causes\ an\ overflow/underflow}}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ \ -\/\ a\ static\ function,\ Increment,\ that\ appends\ the\ next\ digit\ appropriately}}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ \ \ \ according\ to\ the\ sign\ of\ the\ number\ being\ parsed.}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Sign>}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser_1_1_base}{Base}}\ \{}
+\DoxyCodeLine{00093\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Iter>}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_string_to_number_parser_1_1_result}{Result}}\ Invoke(Iter\ begin,\ Iter\ end)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ Number\ value\ =\ 0;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\ ==\ end)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{value,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{comment}{//\ Note:\ no\ performance\ difference\ was\ found\ when\ using\ template}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{comment}{//\ specialization\ to\ remove\ this\ check\ in\ bases\ other\ than\ 16}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (kBase\ ==\ 16\ \&\&\ end\ -\/\ begin\ >\ 2\ \&\&\ *begin\ ==\ \textcolor{charliteral}{'0'}\ \&\&}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ (*(begin\ +\ 1)\ ==\ \textcolor{charliteral}{'x'}\ ||\ *(begin\ +\ 1)\ ==\ \textcolor{charliteral}{'X'}))\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ begin\ +=\ 2;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Iter\ current\ =\ begin;\ current\ !=\ end;\ ++current)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ std::optional<uint8\_t>\ new\_digit\ =\ CharToDigit<kBase>(*current);}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!new\_digit)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{value,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\ !=\ begin)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structkiwi_1_1internal_1_1_string_to_number_parser_1_1_result}{Result}}\ result\ =\ Sign::CheckBounds(value,\ *new\_digit);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result.valid)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ value\ *=\ kBase;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ value\ =\ Sign::Increment(value,\ *new\_digit);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{value,\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \};}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser_1_1_positive}{Positive}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser_1_1_base}{Base}}<Positive>\ \{}
+\DoxyCodeLine{00132\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_string_to_number_parser_1_1_result}{Result}}\ CheckBounds(Number\ value,\ uint8\_t\ new\_digit)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >\ \textcolor{keyword}{static\_cast<}Number\textcolor{keyword}{>}(kMax\ /\ kBase)\ ||}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ (value\ ==\ \textcolor{keyword}{static\_cast<}Number\textcolor{keyword}{>}(kMax\ /\ kBase)\ \&\&}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ new\_digit\ >\ kMax\ \%\ kBase))\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{kMax,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{value,\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{static}\ Number\ Increment(Number\ lhs,\ uint8\_t\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ +\ rhs;\ \}}
+\DoxyCodeLine{00142\ \ \ \};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser_1_1_negative}{Negative}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser_1_1_base}{Base}}<Negative>\ \{}
+\DoxyCodeLine{00145\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1_string_to_number_parser_1_1_result}{Result}}\ CheckBounds(Number\ value,\ uint8\_t\ new\_digit)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ <\ kMin\ /\ kBase\ ||}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ (value\ ==\ kMin\ /\ kBase\ \&\&\ new\_digit\ >\ 0\ -\/\ kMin\ \%\ kBase))\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{kMin,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{value,\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{static}\ Number\ Increment(Number\ lhs,\ uint8\_t\ rhs)\ \{\ \textcolor{keywordflow}{return}\ lhs\ -\/\ rhs;\ \}}
+\DoxyCodeLine{00154\ \ \ \};}
+\DoxyCodeLine{00155\ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Number,\ \textcolor{keywordtype}{int}\ kBase,\ \textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{00158\ \textcolor{keyword}{auto}\ StringToNumber(std::basic\_string\_view<CharT>\ input)\ \{}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{using\ }Parser\ =\ \mbox{\hyperlink{classkiwi_1_1internal_1_1_string_to_number_parser}{StringToNumberParser<Number,\ kBase>}};}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{using\ }Result\ =\ \textcolor{keyword}{typename}\ Parser::Result;}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{bool}\ has\_leading\_whitespace\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{auto}\ begin\ =\ input.begin();}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{auto}\ end\ =\ input.end();}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordflow}{while}\ (begin\ !=\ end\ \&\&\ IsAsciiWhitespace(*begin))\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ has\_leading\_whitespace\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00168\ \ \ \ \ ++begin;}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordflow}{if}\ (begin\ !=\ end\ \&\&\ *begin\ ==\ \textcolor{charliteral}{'-\/'})\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (!std::numeric\_limits<Number>::is\_signed)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Result\{0,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ Result\ result\ =\ Parser::Negative::Invoke(begin\ +\ 1,\ end);}
+\DoxyCodeLine{00177\ \ \ \ \ result.valid\ \&=\ !has\_leading\_whitespace;}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \textcolor{keywordflow}{if}\ (begin\ !=\ end\ \&\&\ *begin\ ==\ \textcolor{charliteral}{'+'})\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ ++begin;}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ Result\ result\ =\ Parser::Positive::Invoke(begin,\ end);}
+\DoxyCodeLine{00186\ \ \ result.valid\ \&=\ !has\_leading\_whitespace;}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00188\ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ VALUE,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00191\ \textcolor{keywordtype}{bool}\ StringToIntImpl(T\ input,\ VALUE\&\ output)\ \{}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{auto}\ result\ =\ StringToNumber<VALUE,\ 10,\ CharT>(input);}
+\DoxyCodeLine{00193\ \ \ output\ =\ result.value;}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordflow}{return}\ result.valid;}
+\DoxyCodeLine{00195\ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ VALUE,\ \textcolor{keyword}{typename}\ CharT\ =\ \textcolor{keyword}{typename}\ T::value\_type>}
+\DoxyCodeLine{00198\ \textcolor{keywordtype}{bool}\ HexStringToIntImpl(T\ input,\ VALUE\&\ output)\ \{}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{auto}\ result\ =\ StringToNumber<VALUE,\ 16,\ CharT>(input);}
+\DoxyCodeLine{00200\ \ \ output\ =\ result.value;}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordflow}{return}\ result.valid;}
+\DoxyCodeLine{00202\ \}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ double\_conversion::DoubleToStringConverter*}
+\DoxyCodeLine{00205\ GetDoubleToStringConverter()\ \{}
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{static}\ double\_conversion::DoubleToStringConverter\ converter(}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ double\_conversion::DoubleToStringConverter::EMIT\_POSITIVE\_EXPONENT\_SIGN,}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keyword}{nullptr},\ \textcolor{keyword}{nullptr},\ \textcolor{charliteral}{'e'},\ -\/6,\ 12,\ 0,\ 0);}
+\DoxyCodeLine{00209\ \ \ \textcolor{keywordflow}{return}\ \&converter;}
+\DoxyCodeLine{00210\ \}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ Converts\ a\ given\ (data,\ size)\ pair\ to\ a\ desired\ string\ type.\ For}}
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ performance\ reasons,\ this\ dispatches\ to\ a\ different\ constructor\ if\ the}}
+\DoxyCodeLine{00214\ \textcolor{comment}{//\ passed-\/in\ data\ matches\ the\ string's\ value\_type.}}
+\DoxyCodeLine{00215\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ StringT>}
+\DoxyCodeLine{00216\ StringT\ ToString(\textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ StringT::value\_type*\ data,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordflow}{return}\ StringT(data,\ size);}
+\DoxyCodeLine{00218\ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{comment}{//\ TODO(tsepez):\ should\ be\ UNSAFE\_BUFFER\_USAGE.}}
+\DoxyCodeLine{00221\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ StringT,\ \textcolor{keyword}{typename}\ CharT>}
+\DoxyCodeLine{00222\ StringT\ ToString(\textcolor{keyword}{const}\ CharT*\ data,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ SAFETY:\ required\ from\ caller.}}
+\DoxyCodeLine{00224\ \ \ \textcolor{keywordflow}{return}\ StringT(data,\ UNSAFE\_BUFFERS(data\ +\ size));}
+\DoxyCodeLine{00225\ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ StringT>}
+\DoxyCodeLine{00228\ StringT\ DoubleToStringT(\textcolor{keywordtype}{double}\ value)\ \{}
+\DoxyCodeLine{00229\ \ \ \textcolor{keywordtype}{char}\ buffer[32];}
+\DoxyCodeLine{00230\ \ \ double\_conversion::StringBuilder\ builder(buffer,\ \textcolor{keyword}{sizeof}(buffer));}
+\DoxyCodeLine{00231\ \ \ GetDoubleToStringConverter()-\/>ToShortest(value,\ \&builder);}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordflow}{return}\ ToString<StringT>(buffer,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(builder.position()));}
+\DoxyCodeLine{00233\ \}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ STRING,\ \textcolor{keyword}{typename}\ CHAR>}
+\DoxyCodeLine{00236\ \textcolor{keywordtype}{bool}\ StringToDoubleImpl(STRING\ input,\ \textcolor{keyword}{const}\ CHAR*\ data,\ \textcolor{keywordtype}{double}\&\ output)\ \{}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{static}\ double\_conversion::StringToDoubleConverter\ converter(}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ double\_conversion::StringToDoubleConverter::ALLOW\_LEADING\_SPACES\ |}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ double\_conversion::StringToDoubleConverter::ALLOW\_TRAILING\_JUNK,}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ 0.0,\ 0,\ \textcolor{keyword}{nullptr},\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordtype}{int}\ processed\_characters\_count;}
+\DoxyCodeLine{00243\ \ \ output\ =\ converter.StringToDouble(data,\ checked\_cast<int>(input.size()),}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&processed\_characters\_count);}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ Cases\ to\ return\ false:}}
+\DoxyCodeLine{00247\ \ \ \textcolor{comment}{//\ \ -\/\ If\ the\ input\ string\ is\ empty,\ there\ was\ nothing\ to\ parse.}}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ \ -\/\ If\ the\ value\ saturated\ to\ HUGE\_VAL.}}
+\DoxyCodeLine{00249\ \ \ \textcolor{comment}{//\ \ -\/\ If\ the\ entire\ string\ was\ not\ processed,\ there\ are\ either\ characters}}
+\DoxyCodeLine{00250\ \ \ \textcolor{comment}{//\ \ \ \ remaining\ in\ the\ string\ after\ a\ parsed\ number,\ or\ the\ string\ does\ not}}
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//\ \ \ \ begin\ with\ a\ parseable\ number.}}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ \ -\/\ If\ the\ first\ character\ is\ a\ space,\ there\ was\ leading\ whitespace.\ Note}}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ \ \ \ that\ this\ checks\ using\ IsWhitespace(),\ which\ behaves\ differently\ for}}
+\DoxyCodeLine{00254\ \ \ \textcolor{comment}{//\ \ \ \ wide\ and\ narrow\ characters\ -\/-\/\ that\ is\ intentional\ and\ matches\ the}}
+\DoxyCodeLine{00255\ \ \ \textcolor{comment}{//\ \ \ \ behavior\ of\ the\ double\_conversion\ library's\ whitespace-\/skipping}}
+\DoxyCodeLine{00256\ \ \ \textcolor{comment}{//\ \ \ \ algorithm.}}
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordflow}{return}\ !input.empty()\ \&\&\ output\ !=\ HUGE\_VAL\ \&\&\ output\ !=\ -\/HUGE\_VAL\ \&\&}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(processed\_characters\_count)\ ==\ input.size()\ \&\&}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ !IsWhitespace(input[0]);}
+\DoxyCodeLine{00260\ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char,\ \textcolor{keyword}{typename}\ OutIter>}
+\DoxyCodeLine{00263\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HexStringToByteContainer(std::string\_view\ input,\ OutIter\ output)\ \{}
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{size\_t}\ count\ =\ input.size();}
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordflow}{if}\ (count\ ==\ 0\ ||\ (count\ \%\ 2)\ !=\ 0)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00267\ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordflow}{for}\ (uintptr\_t\ i\ =\ 0;\ i\ <\ count\ /\ 2;\ ++i)\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{comment}{//\ most\ significant\ 4\ bits}}
+\DoxyCodeLine{00270\ \ \ \ \ std::optional<uint8\_t>\ msb\ =\ CharToDigit<16>(input[i\ *\ 2]);}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{comment}{//\ least\ significant\ 4\ bits}}
+\DoxyCodeLine{00272\ \ \ \ \ std::optional<uint8\_t>\ lsb\ =\ CharToDigit<16>(input[i\ *\ 2\ +\ 1]);}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordflow}{if}\ (!msb\ ||\ !lsb)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00275\ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ *(output++)\ =\ \textcolor{keyword}{static\_cast<}Char\textcolor{keyword}{>}((*msb\ <<\ 4)\ |\ *lsb);}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00279\ \}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00282\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

@@ -1,0 +1,1134 @@
+\doxysection{flat\+\_\+tree.\+hh}
+\hypertarget{flat__tree_8hh_source}{}\label{flat__tree_8hh_source}\index{include/kiwi/containers/flat\_tree.hh@{include/kiwi/containers/flat\_tree.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <compare>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <initializer\_list>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <ranges>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/logging.hh"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/utility.hh"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ Tag\ type\ that\ allows\ skipping\ the\ sort\_and\_unique\ step\ when\ constructing\ a}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ flat\_tree\ in\ case\ the\ underlying\ container\ is\ already\ sorted\ and\ has\ no}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ duplicate\ elements.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ struct\ sorted\_unique\_t\ \{}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ \ constexpr\ explicit\ sorted\_unique\_t()\ =\ default;}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \};}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ inline\ constexpr\ sorted\_unique\_t\ sorted\_unique;}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ Helper\ functions\ used\ in\ DCHECKs\ below\ to\ make\ sure\ that\ inputs\ tagged\ with}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ sorted\_unique\ are\ indeed\ sorted\ and\ unique.}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range,\ \textcolor{keyword}{typename}\ Comp>}
+\DoxyCodeLine{00037\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_sorted\_and\_unique(\textcolor{keyword}{const}\ Range\&\ range,\ Comp\ comp)\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{//\ Being\ unique\ implies\ that\ there\ are\ no\ adjacent\ elements\ that}}
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{//\ compare\ equal.\ So\ this\ checks\ that\ each\ element\ is\ strictly\ less}}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ than\ the\ element\ after\ it.}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordflow}{return}\ std::ranges::adjacent\_find(range,\ std::not\_fn(comp))\ ==}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ std::ranges::end(range);}
+\DoxyCodeLine{00043\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ Helper\ inspired\ by\ C++20's\ std::to\_array\ to\ convert\ a\ C-\/style\ array\ to\ a}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ std::array.\ As\ opposed\ to\ the\ C++20\ version\ this\ implementation\ does\ not}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ provide\ an\ overload\ for\ rvalues\ and\ does\ not\ strip\ cv\ qualifers\ from\ the}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ returned\ std::array::value\_type.\ The\ returned\ value\_type\ needs\ to\ be}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ specified\ explicitly,\ allowing\ the\ construction\ of\ std::arrays\ with\ const}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ elements.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ Reference:\ https://en.cppreference.com/w/cpp/container/array/to\_array}}
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U,\ \textcolor{keyword}{typename}\ T,\ \textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{requires}(std::constructible\_from<U,\ T>)}
+\DoxyCodeLine{00055\ \textcolor{keyword}{constexpr}\ std::array<U,\ N>\ ToArray(\textcolor{keyword}{const}\ T\ (\&data)[N])\ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{auto}\ impl\ =\ [\&]<\textcolor{keywordtype}{size\_t}...\ I>(std::index\_sequence<I...>)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ SAFETY:\ \`{}impl`\ is\ called\ with\ \`{}make\_index\_sequence<N>`,\ so\ the\ largest}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ \`{}I`\ will\ be\ \`{}N\ -\/\ 1`.}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ std::array<U,\ N>(\{UNSAFE\_BUFFERS(data[I])...\});}
+\DoxyCodeLine{00060\ \ \ \};}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordflow}{return}\ impl(std::make\_index\_sequence<N>());}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ Helper\ that\ calls\ \`{}container.reserve(std::size(source))`.}}
+\DoxyCodeLine{00065\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00066\ \textcolor{keywordtype}{void}\ ReserveIfSupported(T\&\ container,\ \textcolor{keyword}{const}\ U\&\ source)\ \{}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\textcolor{keyword}{requires}\ \{\ container.reserve(std::size(source));\ \})\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ container.reserve(std::size(source));}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ Implementation\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ Implementation\ for\ the\ sorted\ associative\ flat\_set\ and\ flat\_map\ using\ a}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ sorted\ vector\ as\ the\ backing\ store.\ Do\ not\ use\ directly.}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ The\ use\ of\ "{}value"{}\ in\ this\ is\ like\ std::map\ uses,\ meaning\ it's\ the\ thing}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ contained\ (in\ the\ case\ of\ map\ it's\ a\ <Key,\ Mapped>\ pair).\ The\ Key\ is\ how}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ things\ are\ looked\ up.\ In\ the\ case\ of\ a\ set,\ Key\ ==\ Value.\ In\ the\ case\ of}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ a\ map,\ the\ Key\ is\ a\ component\ of\ a\ Value.}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ The\ helper\ class\ GetKeyFromValue\ provides\ the\ means\ to\ extract\ a\ key\ from\ a}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ value\ for\ comparison\ purposes.\ It\ should\ implement:}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ \ \ const\ Key\&\ operator()(const\ Value\&).}}
+\DoxyCodeLine{00085\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00086\ \textcolor{keyword}{class\ }flat\_tree\ \{}
+\DoxyCodeLine{00087\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ Types.}}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{using\ }key\_type\ =\ Key;}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{using\ }key\_compare\ =\ KeyCompare;}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{using\ }value\_type\ =\ \textcolor{keyword}{typename}\ Container::value\_type;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ Wraps\ the\ templated\ key\ comparison\ to\ compare\ values.}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1internal_1_1flat__tree_1_1value__compare}{value\_compare}}\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator()(\textcolor{keyword}{const}\ value\_type\&\ left,}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ value\_type\&\ right)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ GetKeyFromValue\ extractor;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ comp(extractor(left),\ extractor(right));}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ NO\_UNIQUE\_ADDRESS\ key\_compare\ comp;}
+\DoxyCodeLine{00104\ \ \ \};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{using\ }pointer\ =\ \textcolor{keyword}{typename}\ Container::pointer;}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ \textcolor{keyword}{typename}\ Container::const\_pointer;}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{using\ }reference\ =\ \textcolor{keyword}{typename}\ Container::reference;}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ \textcolor{keyword}{typename}\ Container::const\_reference;}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{using\ }size\_type\ =\ \textcolor{keyword}{typename}\ Container::size\_type;}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ \textcolor{keyword}{typename}\ Container::difference\_type;}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{using\ }iterator\ =\ \textcolor{keyword}{typename}\ Container::iterator;}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{using\ }const\_iterator\ =\ \textcolor{keyword}{typename}\ Container::const\_iterator;}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{using\ }reverse\_iterator\ =\ \textcolor{keyword}{typename}\ Container::reverse\_iterator;}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{using\ }const\_reverse\_iterator\ =\ \textcolor{keyword}{typename}\ Container::const\_reverse\_iterator;}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{using\ }container\_type\ =\ Container;}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{//\ Lifetime.}}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{//\ Constructors\ that\ take\ range\ guarantee\ O(N\ *\ log\string^2(N))\ +\ O(N)\ complexity}}
+\DoxyCodeLine{00122\ \ \ \textcolor{comment}{//\ and\ take\ O(N\ *\ log(N))\ +\ O(N)\ if\ extra\ memory\ is\ available\ (N\ is\ a\ range}}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ length).}}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00125\ \ \ \textcolor{comment}{//\ Assume\ that\ move\ constructors\ invalidate\ iterators\ and\ references.}}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ The\ constructors\ that\ take\ ranges,\ lists,\ and\ vectors\ do\ not\ require\ that}}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ the\ input\ be\ sorted.}}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{//\ When\ passing\ the\ kiwi::sorted\_unique\ tag\ as\ the\ first\ argument\ no\ sort\ and}}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//\ unique\ step\ takes\ places.\ This\ is\ useful\ if\ the\ underlying\ container}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ already\ has\ the\ required\ properties.}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ flat\_tree()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00135\ \ \ flat\_tree(\textcolor{keyword}{const}\ flat\_tree\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00136\ \ \ flat\_tree(flat\_tree\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{explicit}\ flat\_tree(\textcolor{keyword}{const}\ key\_compare\&\ comp);}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00141\ \ \ flat\_tree(InputIterator\ first,\ InputIterator\ last,}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ flat\_tree(\textcolor{keyword}{const}\ container\_type\&\ items,}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ flat\_tree(container\_type\&\&\ items,\ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ flat\_tree(std::initializer\_list<value\_type>\ ilist,}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00153\ \ \ flat\_tree(\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\_unique\_t}},\ InputIterator\ first,\ InputIterator\ last,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ flat\_tree(\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\_unique\_t}},\ \textcolor{keyword}{const}\ container\_type\&\ items,}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{constexpr}\ flat\_tree(\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\_unique\_t}},\ container\_type\&\&\ items,}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ flat\_tree(\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\_unique\_t}},\ std::initializer\_list<value\_type>\ ilist,}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\ =\ key\_compare());}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \string~flat\_tree()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00168\ \ \ \textcolor{comment}{//\ Assignments.}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ Assume\ that\ move\ assignment\ invalidates\ iterators\ and\ references.}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ flat\_tree\&\ operator=(\textcolor{keyword}{const}\ flat\_tree\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00173\ \ \ flat\_tree\&\ operator=(flat\_tree\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ Takes\ the\ first\ if\ there\ are\ duplicates\ in\ the\ initializer\ list.}}
+\DoxyCodeLine{00175\ \ \ flat\_tree\&\ operator=(std::initializer\_list<value\_type>\ ilist);}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//\ Memory\ management.}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//\ Beware\ that\ shrink\_to\_fit()\ simply\ forwards\ the\ request\ to\ the}}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ container\_type\ and\ its\ implementation\ is\ free\ to\ optimize\ otherwise\ and}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//\ leave\ capacity()\ to\ be\ greater\ that\ its\ size.}}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ reserve()\ and\ shrink\_to\_fit()\ invalidate\ iterators\ and\ references.}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ reserve(size\_type\ new\_capacity);}
+\DoxyCodeLine{00187\ \ \ size\_type\ capacity()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ shrink\_to\_fit();}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ Size\ management.}}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ clear()\ leaves\ the\ capacity()\ of\ the\ flat\_tree\ unchanged.}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ clear();}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{constexpr}\ size\_type\ size()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{constexpr}\ size\_type\ max\_size()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ empty()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00202\ \ \ \textcolor{comment}{//\ Iterators.}}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00204\ \ \ \textcolor{comment}{//\ Iterators\ follow\ the\ ordering\ defined\ by\ the\ key\ comparator\ used\ in}}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ construction\ of\ the\ flat\_tree.}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ iterator\ begin();}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{constexpr}\ const\_iterator\ begin()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00209\ \ \ const\_iterator\ cbegin()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ iterator\ end();}
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{constexpr}\ const\_iterator\ end()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00213\ \ \ const\_iterator\ cend()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ reverse\_iterator\ rbegin();}
+\DoxyCodeLine{00216\ \ \ const\_reverse\_iterator\ rbegin()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00217\ \ \ const\_reverse\_iterator\ crbegin()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ reverse\_iterator\ rend();}
+\DoxyCodeLine{00220\ \ \ const\_reverse\_iterator\ rend()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00221\ \ \ const\_reverse\_iterator\ crend()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00224\ \ \ \textcolor{comment}{//\ Insert\ operations.}}
+\DoxyCodeLine{00225\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00226\ \ \ \textcolor{comment}{//\ Assume\ that\ every\ operation\ invalidates\ iterators\ and\ references.}}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//\ Insertion\ of\ one\ element\ can\ take\ O(size).\ Capacity\ of\ flat\_tree\ grows\ in}}
+\DoxyCodeLine{00228\ \ \ \textcolor{comment}{//\ an\ implementation-\/defined\ manner.}}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ NOTE:\ Prefer\ to\ build\ a\ new\ flat\_tree\ from\ a\ std::vector\ (or\ similar)}}
+\DoxyCodeLine{00231\ \ \ \textcolor{comment}{//\ instead\ of\ calling\ insert()\ repeatedly.}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ std::pair<iterator,\ bool>\ insert(\textcolor{keyword}{const}\ value\_type\&\ val);}
+\DoxyCodeLine{00234\ \ \ std::pair<iterator,\ bool>\ insert(value\_type\&\&\ val);}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ iterator\ insert(const\_iterator\ position\_hint,\ \textcolor{keyword}{const}\ value\_type\&\ x);}
+\DoxyCodeLine{00237\ \ \ iterator\ insert(const\_iterator\ position\_hint,\ value\_type\&\&\ x);}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \ \ \textcolor{comment}{//\ This\ method\ inserts\ the\ values\ from\ the\ range\ [first,\ last)\ into\ the}}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ current\ tree.}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{requires}(std::input\_iterator<InputIterator>)}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{void}\ insert(InputIterator\ first,\ InputIterator\ last);}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{comment}{//\ PRECONDITIONS:\ \`{}first`\ and\ \ \`{}last`\ must\ be\ iterators\ into\ the}}
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ same\ object,\ with\ \`{}first`\ less\ than\ or\ equal\ to\ \`{}last`.}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIteratorPtr>}
+\DoxyCodeLine{00248\ \ \ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{void}\ insert(InputIteratorPtr*\ first,}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ InputIteratorPtr*\ last);}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//\ Inserts\ the\ all\ values\ from\ the\ \`{}range`\ into\ the\ current\ tree.}}
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Range>}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keyword}{requires}(std::ranges::input\_range<Range>)}
+\DoxyCodeLine{00254\ \ \ \textcolor{keywordtype}{void}\ insert\_range(Range\&\&\ range);}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00257\ \ \ std::pair<iterator,\ bool>\ emplace(Args\&\&...\ args);}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00260\ \ \ iterator\ emplace\_hint(const\_iterator\ position\_hint,\ Args\&\&...\ args);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00263\ \ \ \textcolor{comment}{//\ Underlying\ type\ operations.}}
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00265\ \ \ \textcolor{comment}{//\ Assume\ that\ either\ operation\ invalidates\ iterators\ and\ references.}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//\ Extracts\ the\ container\_type\ and\ returns\ it\ to\ the\ caller.\ Ensures\ that}}
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ \`{}this`\ is\ \`{}empty()`\ afterwards.}}
+\DoxyCodeLine{00269\ \ \ container\_type\ extract()\ \&\&;}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ Replaces\ the\ container\_type\ with\ \`{}body`.\ Expects\ that\ \`{}body`\ is\ sorted}}
+\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//\ and\ has\ no\ repeated\ elements\ with\ regard\ to\ value\_comp().}}
+\DoxyCodeLine{00273\ \ \ \textcolor{keywordtype}{void}\ replace(container\_type\&\&\ body);}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//\ Erase\ operations.}}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//\ Assume\ that\ every\ operation\ invalidates\ iterators\ and\ references.}}
+\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ erase(position),\ erase(first,\ last)\ can\ take\ O(size).}}
+\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ erase(key)\ may\ take\ O(size)\ +\ O(log(size)).}}
+\DoxyCodeLine{00282\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00283\ \ \ \textcolor{comment}{//\ Prefer\ kiwi::EraseIf()\ or\ some\ other\ variation\ on\ erase(remove(),\ end())}}
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ idiom\ when\ deleting\ multiple\ non-\/consecutive\ elements.}}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ iterator\ erase(iterator\ position);}
+\DoxyCodeLine{00287\ \ \ \textcolor{comment}{//\ Artificially\ templatized\ to\ break\ ambiguity\ if\ \`{}iterator`\ and}}
+\DoxyCodeLine{00288\ \ \ \textcolor{comment}{//\ \`{}const\_iterator`\ are\ the\ same\ type.}}
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DummyT\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00290\ \ \ iterator\ erase(const\_iterator\ position);}
+\DoxyCodeLine{00291\ \ \ iterator\ erase(const\_iterator\ first,\ const\_iterator\ last);}
+\DoxyCodeLine{00292\ \ \ size\_type\ erase(\textcolor{keyword}{const}\ Key\&\ key);}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00294\ \ \ size\_type\ erase(\textcolor{keyword}{const}\ K\&\ key);}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00297\ \ \ \textcolor{comment}{//\ Comparators.}}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ \textcolor{keyword}{constexpr}\ key\_compare\ key\_comp()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1flat__tree_1_1value__compare}{value\_compare}}\ value\_comp()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ Search\ operations.}}
+\DoxyCodeLine{00304\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ Search\ operations\ have\ O(log(size))\ complexity.}}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00307\ \ \ size\_type\ count(\textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00308\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00309\ \ \ size\_type\ count(\textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \ \ iterator\ find(\textcolor{keyword}{const}\ Key\&\ key);}
+\DoxyCodeLine{00312\ \ \ const\_iterator\ find(\textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00314\ \ \ iterator\ find(\textcolor{keyword}{const}\ K\&\ key);}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00316\ \ \ const\_iterator\ find(\textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \textcolor{keywordtype}{bool}\ contains(\textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00320\ \ \ \textcolor{keywordtype}{bool}\ contains(\textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ std::pair<iterator,\ iterator>\ equal\_range(\textcolor{keyword}{const}\ Key\&\ key);}
+\DoxyCodeLine{00323\ \ \ std::pair<const\_iterator,\ const\_iterator>\ equal\_range(\textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00325\ \ \ std::pair<iterator,\ iterator>\ equal\_range(\textcolor{keyword}{const}\ K\&\ key);}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00327\ \ \ std::pair<const\_iterator,\ const\_iterator>\ equal\_range(\textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \ \ iterator\ lower\_bound(\textcolor{keyword}{const}\ Key\&\ key);}
+\DoxyCodeLine{00330\ \ \ const\_iterator\ lower\_bound(\textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00332\ \ \ iterator\ lower\_bound(\textcolor{keyword}{const}\ K\&\ key);}
+\DoxyCodeLine{00333\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00334\ \ \ const\_iterator\ lower\_bound(\textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ iterator\ upper\_bound(\textcolor{keyword}{const}\ Key\&\ key);}
+\DoxyCodeLine{00337\ \ \ const\_iterator\ upper\_bound(\textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00338\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00339\ \ \ iterator\ upper\_bound(\textcolor{keyword}{const}\ K\&\ key);}
+\DoxyCodeLine{00340\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00341\ \ \ const\_iterator\ upper\_bound(\textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//\ General\ operations.}}
+\DoxyCodeLine{00345\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00346\ \ \ \textcolor{comment}{//\ Assume\ that\ swap\ invalidates\ iterators\ and\ references.}}
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ Implementation\ note:\ currently\ we\ use\ operator==()\ and\ operator<()\ on}}
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//\ std::vector,\ because\ they\ have\ the\ same\ contract\ we\ need,\ so\ we\ use\ them}}
+\DoxyCodeLine{00350\ \ \ \textcolor{comment}{//\ directly\ for\ brevity\ and\ in\ case\ it\ is\ more\ optimal\ than\ calling\ equal()}}
+\DoxyCodeLine{00351\ \ \ \textcolor{comment}{//\ and\ lexicograhpical\_compare().\ If\ the\ underlying\ container\ type\ is\ changed,}}
+\DoxyCodeLine{00352\ \ \ \textcolor{comment}{//\ this\ code\ may\ need\ to\ be\ modified.}}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \ \ \textcolor{keywordtype}{void}\ swap(flat\_tree\&\ other)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ flat\_tree\&\ lhs,\ \textcolor{keyword}{const}\ flat\_tree\&\ rhs)\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.body\_\ ==\ rhs.body\_;}
+\DoxyCodeLine{00358\ \ \ \}}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{auto}\ operator<=>(\textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\_tree}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\_tree}}\&\ rhs)\ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordflow}{return}\ lhs.body\_\ <=>\ rhs.body\_;}
+\DoxyCodeLine{00362\ \ \ \}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(flat\_tree\&\ lhs,\ flat\_tree\&\ rhs)\ \textcolor{keyword}{noexcept}\ \{\ lhs.swap(rhs);\ \}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00367\ \ \ \textcolor{comment}{//\ Emplaces\ a\ new\ item\ into\ the\ tree\ that\ is\ known\ not\ to\ be\ in\ it.\ This}}
+\DoxyCodeLine{00368\ \ \ \textcolor{comment}{//\ is\ for\ implementing\ map\ operator[].}}
+\DoxyCodeLine{00369\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00370\ \ \ iterator\ unsafe\_emplace(const\_iterator\ position,\ Args\&\&...\ args);}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \ \ \textcolor{comment}{//\ Attempts\ to\ emplace\ a\ new\ element\ with\ key\ |key|.\ Only\ if\ |key|\ is\ not\ yet}}
+\DoxyCodeLine{00373\ \ \ \textcolor{comment}{//\ present,\ construct\ value\_type\ from\ |args|\ and\ insert\ it.\ Returns\ an}}
+\DoxyCodeLine{00374\ \ \ \textcolor{comment}{//\ iterator\ to\ the\ element\ with\ key\ |key|\ and\ a\ bool\ indicating\ whether\ an}}
+\DoxyCodeLine{00375\ \ \ \textcolor{comment}{//\ insertion\ happened.}}
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class\ }K,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00377\ \ \ std::pair<iterator,\ bool>\ emplace\_key\_args(\textcolor{keyword}{const}\ K\&\ key,\ Args\&\&...\ args);}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \textcolor{comment}{//\ Similar\ to\ |emplace\_key\_args|,\ but\ checks\ |hint|\ first\ as\ a\ possible}}
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{//\ insertion\ position.}}
+\DoxyCodeLine{00381\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class\ }K,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00382\ \ \ std::pair<iterator,\ bool>\ emplace\_hint\_key\_args(const\_iterator\ hint,}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key,\ Args\&\&...\ args);}
+\DoxyCodeLine{00384\ }
+\DoxyCodeLine{00385\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00386\ \ \ \textcolor{comment}{//\ Helper\ class\ for\ e.g.\ lower\_bound\ that\ can\ compare\ a\ value\ on\ the\ left}}
+\DoxyCodeLine{00387\ \ \ \textcolor{comment}{//\ to\ a\ key\ on\ the\ right.}}
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{struct\ }KeyValueCompare\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{comment}{//\ The\ key\ comparison\ object\ must\ outlive\ this\ class.}}
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keyword}{explicit}\ KeyValueCompare(\textcolor{keyword}{const}\ key\_compare\&\ comp)\ :\ comp\_(comp)\ \{\}}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator()(\textcolor{keyword}{const}\ T\&\ lhs,\ \textcolor{keyword}{const}\ U\&\ rhs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ comp\_(extract\_if\_value\_type(lhs),\ extract\_if\_value\_type(rhs));}
+\DoxyCodeLine{00395\ \ \ \ \ \}}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keyword}{const}\ key\_type\&\ extract\_if\_value\_type(\textcolor{keyword}{const}\ value\_type\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ GetKeyFromValue\ extractor;}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ extractor(v);}
+\DoxyCodeLine{00401\ \ \ \ \ \}}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ extract\_if\_value\_type(\textcolor{keyword}{const}\ K\&\ k)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ k;}
+\DoxyCodeLine{00406\ \ \ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{comment}{//\ RAW\_PTR\_EXCLUSION:\ Binary\ size\ increase.\ There's\ also\ little\ value\ to}}
+\DoxyCodeLine{00408\ \ \ \ \ \textcolor{comment}{//\ rewriting\ this\ member\ as\ it\ points\ to\ \`{}flat\_tree::comp\_`\ and\ flat\_tree}}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{comment}{//\ itself\ should\ be\ holding\ raw\_ptr/raw\_ref\ if\ necessary.}}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keyword}{const}\ key\_compare\&\ comp\_;}
+\DoxyCodeLine{00411\ \ \ \};}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ iterator\ const\_cast\_it(const\_iterator\ c\_it)\ \{}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{keyword}{auto}\ distance\ =\ std::distance(cbegin(),\ c\_it);}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordflow}{return}\ std::next(begin(),\ distance);}
+\DoxyCodeLine{00416\ \ \ \}}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \textcolor{comment}{//\ This\ method\ is\ inspired\ by\ both\ std::map::insert(P\&\&)\ and}}
+\DoxyCodeLine{00419\ \ \ \textcolor{comment}{//\ std::map::insert\_or\_assign(const\ K\&,\ V\&\&).\ It\ inserts\ val\ if\ an\ equivalent}}
+\DoxyCodeLine{00420\ \ \ \textcolor{comment}{//\ element\ is\ not\ present\ yet,\ otherwise\ it\ overwrites.\ It\ returns\ an\ iterator}}
+\DoxyCodeLine{00421\ \ \ \textcolor{comment}{//\ to\ the\ modified\ element\ and\ a\ flag\ indicating\ whether\ insertion\ or}}
+\DoxyCodeLine{00422\ \ \ \textcolor{comment}{//\ assignment\ happened.}}
+\DoxyCodeLine{00423\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00424\ \ \ std::pair<iterator,\ bool>\ insert\_or\_assign(V\&\&\ val)\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{keyword}{auto}\ position\ =\ lower\_bound(GetKeyFromValue()(val));}
+\DoxyCodeLine{00426\ }
+\DoxyCodeLine{00427\ \ \ \ \ \textcolor{keywordflow}{if}\ (position\ ==\ end()\ ||\ value\_comp()(val,\ *position))\ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{body\_.emplace(position,\ std::forward<V>(val)),\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{00429\ \ \ \ \ \}}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \ \ \ \ *position\ =\ std::forward<V>(val);}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keywordflow}{return}\ \{position,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00433\ \ \ \}}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \textcolor{comment}{//\ This\ method\ is\ similar\ to\ insert\_or\_assign,\ with\ the\ following\ differences:}}
+\DoxyCodeLine{00436\ \ \ \textcolor{comment}{//\ -\/\ Instead\ of\ searching\ [begin(),\ end())\ it\ only\ searches\ [first,\ last).}}
+\DoxyCodeLine{00437\ \ \ \textcolor{comment}{//\ -\/\ In\ case\ no\ equivalent\ element\ is\ found,\ val\ is\ appended\ to\ the\ end\ of\ the}}
+\DoxyCodeLine{00438\ \ \ \textcolor{comment}{//\ \ \ underlying\ body\ and\ an\ iterator\ to\ the\ next\ bigger\ element\ in\ [first,}}
+\DoxyCodeLine{00439\ \ \ \textcolor{comment}{//\ \ \ last)\ is\ returned.}}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00441\ \ \ std::pair<iterator,\ bool>\ append\_or\_assign(iterator\ first,\ iterator\ last,}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V\&\&\ val)\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ \textcolor{keyword}{auto}\ position\ =\ std::lower\_bound(first,\ last,\ val,\ value\_comp());}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \ \ \ \ \textcolor{keywordflow}{if}\ (position\ ==\ last\ ||\ value\_comp()(val,\ *position))\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \textcolor{comment}{//\ emplace\_back\ might\ invalidate\ position,\ which\ is\ why\ distance\ needs\ to}}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ cached.}}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \textcolor{keyword}{const}\ difference\_type\ distance\ =\ std::distance(begin(),\ position);}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ body\_.emplace\_back(std::forward<V>(val));}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{std::next(begin(),\ distance),\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{00451\ \ \ \ \ \}}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \ \ \ \ *position\ =\ std::forward<V>(val);}
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keywordflow}{return}\ \{position,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00455\ \ \ \}}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \ \ \textcolor{comment}{//\ This\ method\ is\ similar\ to\ insert,\ with\ the\ following\ differences:}}
+\DoxyCodeLine{00458\ \ \ \textcolor{comment}{//\ -\/\ Instead\ of\ searching\ [begin(),\ end())\ it\ only\ searches\ [first,\ last).}}
+\DoxyCodeLine{00459\ \ \ \textcolor{comment}{//\ -\/\ In\ case\ no\ equivalent\ element\ is\ found,\ val\ is\ appended\ to\ the\ end\ of\ the}}
+\DoxyCodeLine{00460\ \ \ \textcolor{comment}{//\ \ \ underlying\ body\ and\ an\ iterator\ to\ the\ next\ bigger\ element\ in\ [first,}}
+\DoxyCodeLine{00461\ \ \ \textcolor{comment}{//\ \ \ last)\ is\ returned.}}
+\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00463\ \ \ std::pair<iterator,\ bool>\ append\_unique(iterator\ first,\ iterator\ last,}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ V\&\&\ val)\ \{}
+\DoxyCodeLine{00465\ \ \ \ \ \textcolor{keyword}{auto}\ position\ =\ std::lower\_bound(first,\ last,\ val,\ value\_comp());}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{keywordflow}{if}\ (position\ ==\ last\ ||\ value\_comp()(val,\ *position))\ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \textcolor{comment}{//\ emplace\_back\ might\ invalidate\ position,\ which\ is\ why\ distance\ needs\ to}}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ cached.}}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \textcolor{keyword}{const}\ difference\_type\ distance\ =\ std::distance(begin(),\ position);}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ body\_.emplace\_back(std::forward<V>(val));}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{std::next(begin(),\ distance),\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{00473\ \ \ \ \ \}}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keywordflow}{return}\ \{position,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{00476\ \ \ \}}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \textcolor{keywordtype}{void}\ sort\_and\_unique(iterator\ first,\ iterator\ last)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{comment}{//\ Preserve\ stability\ for\ the\ unique\ code\ below.}}
+\DoxyCodeLine{00480\ \ \ \ \ std::stable\_sort(first,\ last,\ value\_comp());}
+\DoxyCodeLine{00481\ }
+\DoxyCodeLine{00482\ \ \ \ \ \textcolor{comment}{//\ lhs\ is\ already\ <=\ rhs\ due\ to\ sort,\ therefore\ !(lhs\ <\ rhs)\ <=>\ lhs\ ==\ rhs.}}
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{keyword}{auto}\ equal\_comp\ =\ std::not\_fn(value\_comp());}
+\DoxyCodeLine{00484\ \ \ \ \ erase(std::unique(first,\ last,\ equal\_comp),\ last);}
+\DoxyCodeLine{00485\ \ \ \}}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \ \ \textcolor{keywordtype}{void}\ sort\_and\_unique()\ \{\ sort\_and\_unique(begin(),\ end());\ \}}
+\DoxyCodeLine{00488\ }
+\DoxyCodeLine{00489\ \ \ \textcolor{comment}{//\ To\ support\ comparators\ that\ may\ not\ be\ possible\ to\ default-\/construct,\ we}}
+\DoxyCodeLine{00490\ \ \ \textcolor{comment}{//\ have\ to\ store\ an\ instance\ of\ Compare.\ Since\ Compare\ commonly\ is\ stateless,}}
+\DoxyCodeLine{00491\ \ \ \textcolor{comment}{//\ we\ use\ the\ NO\_UNIQUE\_ADDRESS\ attribute\ to\ save\ space.}}
+\DoxyCodeLine{00492\ \ \ NO\_UNIQUE\_ADDRESS\ key\_compare\ comp\_;}
+\DoxyCodeLine{00493\ \ \ \textcolor{comment}{//\ Declare\ after\ |key\_compare\_comp\_|\ to\ workaround\ GCC\ ICE.\ For\ details}}
+\DoxyCodeLine{00494\ \ \ \textcolor{comment}{//\ see\ https://crbug.com/1156268}}
+\DoxyCodeLine{00495\ \ \ container\_type\ body\_;}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00497\ \ \ \textcolor{comment}{//\ If\ the\ compare\ is\ not\ transparent\ we\ want\ to\ construct\ key\_type\ once.}}
+\DoxyCodeLine{00498\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00499\ \ \ \textcolor{keyword}{using\ }KeyTypeOrK\ =\ std::conditional\_t<\textcolor{keyword}{requires}\ \{}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keyword}{typename}\ key\_compare::is\_transparent;}
+\DoxyCodeLine{00501\ \ \ \},\ K,\ key\_type>;}
+\DoxyCodeLine{00502\ \};}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00505\ \textcolor{comment}{//\ Lifetime.}}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00508\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00510\ \ \ \ \ :\ comp\_(comp)\ \{\}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00513\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00514\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00515\ \ \ \ \ InputIterator\ first,\ InputIterator\ last,\ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00516\ \ \ \ \ :\ comp\_(comp),\ body\_(first,\ last)\ \{}
+\DoxyCodeLine{00517\ \ \ sort\_and\_unique();}
+\DoxyCodeLine{00518\ \}}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00521\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00522\ \ \ \ \ \textcolor{keyword}{const}\ container\_type\&\ items,\ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00523\ \ \ \ \ :\ comp\_(comp),\ body\_(items)\ \{}
+\DoxyCodeLine{00524\ \ \ sort\_and\_unique();}
+\DoxyCodeLine{00525\ \}}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00528\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00529\ \ \ \ \ container\_type\&\&\ items,\ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00530\ \ \ \ \ :\ comp\_(comp),\ body\_(std::move(items))\ \{}
+\DoxyCodeLine{00531\ \ \ sort\_and\_unique();}
+\DoxyCodeLine{00532\ \}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00535\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00536\ \ \ \ \ std::initializer\_list<value\_type>\ ilist,\ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00537\ \ \ \ \ :\ flat\_tree(std::ranges::begin(ilist),\ std::ranges::end(ilist),\ comp)\ \{\}}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00539\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00540\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00541\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00542\ \ \ \ \ sorted\_unique\_t,\ InputIterator\ first,\ InputIterator\ last,}
+\DoxyCodeLine{00543\ \ \ \ \ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00544\ \ \ \ \ :\ comp\_(comp),\ body\_(first,\ last)\ \{}
+\DoxyCodeLine{00545\ \ \ DCHECK(is\_sorted\_and\_unique(*\textcolor{keyword}{this},\ value\_comp()));}
+\DoxyCodeLine{00546\ \}}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00548\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00549\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00550\ \ \ \ \ sorted\_unique\_t,\ \textcolor{keyword}{const}\ container\_type\&\ items,\ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00551\ \ \ \ \ :\ comp\_(comp),\ body\_(items)\ \{}
+\DoxyCodeLine{00552\ \ \ DCHECK(is\_sorted\_and\_unique(*\textcolor{keyword}{this},\ value\_comp()));}
+\DoxyCodeLine{00553\ \}}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00556\ \textcolor{keyword}{constexpr}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00557\ \ \ \ \ sorted\_unique\_t,\ container\_type\&\&\ items,\ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00558\ \ \ \ \ :\ comp\_(comp),\ body\_(std::move(items))\ \{}
+\DoxyCodeLine{00559\ \ \ DCHECK(is\_sorted\_and\_unique(*\textcolor{keyword}{this},\ value\_comp()));}
+\DoxyCodeLine{00560\ \}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00563\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::flat\_tree(}
+\DoxyCodeLine{00564\ \ \ \ \ sorted\_unique\_t,\ std::initializer\_list<value\_type>\ ilist,}
+\DoxyCodeLine{00565\ \ \ \ \ \textcolor{keyword}{const}\ KeyCompare\&\ comp)}
+\DoxyCodeLine{00566\ \ \ \ \ :\ flat\_tree(sorted\_unique,\ std::ranges::begin(ilist),}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ranges::end(ilist),\ comp)\ \{\}}
+\DoxyCodeLine{00568\ }
+\DoxyCodeLine{00569\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00570\ \textcolor{comment}{//\ Assignments.}}
+\DoxyCodeLine{00571\ }
+\DoxyCodeLine{00572\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00573\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::operator=(}
+\DoxyCodeLine{00574\ \ \ \ \ std::initializer\_list<value\_type>\ ilist)\ -\/>\ flat\_tree\&\ \{}
+\DoxyCodeLine{00575\ \ \ body\_\ =\ ilist;}
+\DoxyCodeLine{00576\ \ \ sort\_and\_unique();}
+\DoxyCodeLine{00577\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00578\ \}}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00581\ \textcolor{comment}{//\ Memory\ management.}}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00584\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::reserve(}
+\DoxyCodeLine{00585\ \ \ \ \ size\_type\ new\_capacity)\ \{}
+\DoxyCodeLine{00586\ \ \ body\_.reserve(new\_capacity);}
+\DoxyCodeLine{00587\ \}}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00590\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::capacity()\ const}
+\DoxyCodeLine{00591\ \ \ \ \ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00592\ \ \ \textcolor{keywordflow}{return}\ body\_.capacity();}
+\DoxyCodeLine{00593\ \}}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00596\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::shrink\_to\_fit()\ \{}
+\DoxyCodeLine{00597\ \ \ body\_.shrink\_to\_fit();}
+\DoxyCodeLine{00598\ \}}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00601\ \textcolor{comment}{//\ Size\ management.}}
+\DoxyCodeLine{00602\ }
+\DoxyCodeLine{00603\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00604\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::clear()\ \{}
+\DoxyCodeLine{00605\ \ \ body\_.clear();}
+\DoxyCodeLine{00606\ \}}
+\DoxyCodeLine{00607\ }
+\DoxyCodeLine{00608\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00609\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::size()}
+\DoxyCodeLine{00610\ \ \ \ \ const\ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00611\ \ \ \textcolor{keywordflow}{return}\ body\_.size();}
+\DoxyCodeLine{00612\ \}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00615\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}}
+\DoxyCodeLine{00616\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::max\_size()\ const}
+\DoxyCodeLine{00617\ \ \ \ \ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00618\ \ \ \textcolor{keywordflow}{return}\ body\_.max\_size();}
+\DoxyCodeLine{00619\ \}}
+\DoxyCodeLine{00620\ }
+\DoxyCodeLine{00621\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00622\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::empty()\textcolor{keyword}{}}
+\DoxyCodeLine{00623\ \textcolor{keyword}{\ \ \ \ const\ }\{}
+\DoxyCodeLine{00624\ \ \ \textcolor{keywordflow}{return}\ body\_.empty();}
+\DoxyCodeLine{00625\ \}}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00628\ \textcolor{comment}{//\ Iterators.}}
+\DoxyCodeLine{00629\ }
+\DoxyCodeLine{00630\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00631\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::begin()}
+\DoxyCodeLine{00632\ \ \ \ \ -\/>\ iterator\ \{}
+\DoxyCodeLine{00633\ \ \ \textcolor{keywordflow}{return}\ body\_.begin();}
+\DoxyCodeLine{00634\ \}}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00637\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::begin()}
+\DoxyCodeLine{00638\ \ \ \ \ const\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{00639\ \ \ \textcolor{keywordflow}{return}\ std::ranges::begin(body\_);}
+\DoxyCodeLine{00640\ \}}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00643\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::cbegin()\ const}
+\DoxyCodeLine{00644\ \ \ \ \ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{00645\ \ \ \textcolor{keywordflow}{return}\ body\_.cbegin();}
+\DoxyCodeLine{00646\ \}}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00648\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00649\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::end()\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00650\ \ \ \textcolor{keywordflow}{return}\ body\_.end();}
+\DoxyCodeLine{00651\ \}}
+\DoxyCodeLine{00652\ }
+\DoxyCodeLine{00653\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00654\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::end()}
+\DoxyCodeLine{00655\ \ \ \ \ const\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{00656\ \ \ \textcolor{keywordflow}{return}\ std::ranges::end(body\_);}
+\DoxyCodeLine{00657\ \}}
+\DoxyCodeLine{00658\ }
+\DoxyCodeLine{00659\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00660\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::cend()\ const}
+\DoxyCodeLine{00661\ \ \ \ \ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{00662\ \ \ \textcolor{keywordflow}{return}\ body\_.cend();}
+\DoxyCodeLine{00663\ \}}
+\DoxyCodeLine{00664\ }
+\DoxyCodeLine{00665\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00666\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::rbegin()}
+\DoxyCodeLine{00667\ \ \ \ \ -\/>\ reverse\_iterator\ \{}
+\DoxyCodeLine{00668\ \ \ \textcolor{keywordflow}{return}\ body\_.rbegin();}
+\DoxyCodeLine{00669\ \}}
+\DoxyCodeLine{00670\ }
+\DoxyCodeLine{00671\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00672\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::rbegin()\ const}
+\DoxyCodeLine{00673\ \ \ \ \ -\/>\ const\_reverse\_iterator\ \{}
+\DoxyCodeLine{00674\ \ \ \textcolor{keywordflow}{return}\ body\_.rbegin();}
+\DoxyCodeLine{00675\ \}}
+\DoxyCodeLine{00676\ }
+\DoxyCodeLine{00677\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00678\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::crbegin()\ const}
+\DoxyCodeLine{00679\ \ \ \ \ -\/>\ const\_reverse\_iterator\ \{}
+\DoxyCodeLine{00680\ \ \ \textcolor{keywordflow}{return}\ body\_.crbegin();}
+\DoxyCodeLine{00681\ \}}
+\DoxyCodeLine{00682\ }
+\DoxyCodeLine{00683\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00684\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::rend()}
+\DoxyCodeLine{00685\ \ \ \ \ -\/>\ reverse\_iterator\ \{}
+\DoxyCodeLine{00686\ \ \ \textcolor{keywordflow}{return}\ body\_.rend();}
+\DoxyCodeLine{00687\ \}}
+\DoxyCodeLine{00688\ }
+\DoxyCodeLine{00689\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00690\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::rend()\ const}
+\DoxyCodeLine{00691\ \ \ \ \ -\/>\ const\_reverse\_iterator\ \{}
+\DoxyCodeLine{00692\ \ \ \textcolor{keywordflow}{return}\ body\_.rend();}
+\DoxyCodeLine{00693\ \}}
+\DoxyCodeLine{00694\ }
+\DoxyCodeLine{00695\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00696\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::crend()\ const}
+\DoxyCodeLine{00697\ \ \ \ \ -\/>\ const\_reverse\_iterator\ \{}
+\DoxyCodeLine{00698\ \ \ \textcolor{keywordflow}{return}\ body\_.crend();}
+\DoxyCodeLine{00699\ \}}
+\DoxyCodeLine{00700\ }
+\DoxyCodeLine{00701\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00702\ \textcolor{comment}{//\ Insert\ operations.}}
+\DoxyCodeLine{00703\ \textcolor{comment}{//}}
+\DoxyCodeLine{00704\ \textcolor{comment}{//\ Currently\ we\ use\ position\_hint\ the\ same\ way\ as\ eastl\ or\ boost:}}
+\DoxyCodeLine{00705\ \textcolor{comment}{//\ https://github.com/electronicarts/EASTL/blob/master/include/EASTL/vector\_set.h\#L493}}
+\DoxyCodeLine{00706\ }
+\DoxyCodeLine{00707\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00708\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert(}
+\DoxyCodeLine{00709\ \ \ \ \ \textcolor{keyword}{const}\ value\_type\&\ val)\ -\/>\ std::pair<iterator,\ bool>\ \{}
+\DoxyCodeLine{00710\ \ \ \textcolor{keywordflow}{return}\ emplace\_key\_args(GetKeyFromValue()(val),\ val);}
+\DoxyCodeLine{00711\ \}}
+\DoxyCodeLine{00712\ }
+\DoxyCodeLine{00713\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00714\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert(}
+\DoxyCodeLine{00715\ \ \ \ \ value\_type\&\&\ val)\ -\/>\ std::pair<iterator,\ bool>\ \{}
+\DoxyCodeLine{00716\ \ \ \textcolor{keywordflow}{return}\ emplace\_key\_args(GetKeyFromValue()(val),\ std::move(val));}
+\DoxyCodeLine{00717\ \}}
+\DoxyCodeLine{00718\ }
+\DoxyCodeLine{00719\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00720\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert(}
+\DoxyCodeLine{00721\ \ \ \ \ const\_iterator\ position\_hint,\ \textcolor{keyword}{const}\ value\_type\&\ val)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00722\ \ \ \textcolor{keywordflow}{return}\ emplace\_hint\_key\_args(position\_hint,\ GetKeyFromValue()(val),\ val)}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ .first;}
+\DoxyCodeLine{00724\ \}}
+\DoxyCodeLine{00725\ }
+\DoxyCodeLine{00726\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00727\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert(}
+\DoxyCodeLine{00728\ \ \ \ \ const\_iterator\ position\_hint,\ value\_type\&\&\ val)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00729\ \ \ \textcolor{keywordflow}{return}\ emplace\_hint\_key\_args(position\_hint,\ GetKeyFromValue()(val),}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::move(val))}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ .first;}
+\DoxyCodeLine{00732\ \}}
+\DoxyCodeLine{00733\ }
+\DoxyCodeLine{00734\ \textcolor{comment}{//\ PRECONDITIONS:\ \`{}first`\ and\ \ \`{}last`\ must\ be\ iterators\ into\ the}}
+\DoxyCodeLine{00735\ \textcolor{comment}{//\ same\ object,\ with\ \`{}first`\ less\ than\ or\ equal\ to\ \`{}last`.}}
+\DoxyCodeLine{00736\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00737\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIteratorPtr>}
+\DoxyCodeLine{00738\ UNSAFE\_BUFFER\_USAGE\ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00739\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert(}
+\DoxyCodeLine{00740\ \ \ \ \ InputIteratorPtr*\ input\_begin,\ InputIteratorPtr*\ input\_end)\ \{}
+\DoxyCodeLine{00741\ \ \ \textcolor{comment}{//\ SAFETY:\ The\ caller\ must\ ensure\ the\ pointers\ are\ a\ valid\ pair.}}
+\DoxyCodeLine{00742\ \ \ \textcolor{keyword}{auto}\ s\ =\ UNSAFE\_BUFFERS(kiwi::span(input\_begin,\ input\_end));}
+\DoxyCodeLine{00743\ \ \ insert(s.begin(),\ s.end());}
+\DoxyCodeLine{00744\ \}}
+\DoxyCodeLine{00745\ }
+\DoxyCodeLine{00746\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00747\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InputIterator>}
+\DoxyCodeLine{00748\ \ \ \textcolor{keyword}{requires}(std::input\_iterator<InputIterator>)}
+\DoxyCodeLine{00749\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert(}
+\DoxyCodeLine{00750\ \ \ \ \ InputIterator\ input\_begin,\ InputIterator\ input\_end)\ \{}
+\DoxyCodeLine{00751\ \ \ \textcolor{keywordflow}{if}\ (input\_begin\ ==\ input\_end)\ \{}
+\DoxyCodeLine{00752\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00753\ \ \ \}}
+\DoxyCodeLine{00754\ }
+\DoxyCodeLine{00755\ \ \ \textcolor{comment}{//\ Dispatch\ to\ single\ element\ insert\ if\ the\ input\ range\ contains\ a\ single}}
+\DoxyCodeLine{00756\ \ \ \textcolor{comment}{//\ element.}}
+\DoxyCodeLine{00757\ \ \ \textcolor{keywordflow}{if}\ (std::next(input\_begin)\ ==\ input\_end)\ \{}
+\DoxyCodeLine{00758\ \ \ \ \ insert(end(),\ *input\_begin);}
+\DoxyCodeLine{00759\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00760\ \ \ \}}
+\DoxyCodeLine{00761\ }
+\DoxyCodeLine{00762\ \ \ \textcolor{comment}{//\ Provide\ a\ convenience\ lambda\ to\ obtain\ an\ iterator\ pointing\ past\ the\ last}}
+\DoxyCodeLine{00763\ \ \ \textcolor{comment}{//\ old\ element.\ This\ needs\ to\ be\ dymanic\ due\ to\ possible\ re-\/allocations.}}
+\DoxyCodeLine{00764\ \ \ \textcolor{keyword}{auto}\ prior\_end\ =\ [\textcolor{keyword}{this},\ size\ =\ size()]\ \{}
+\DoxyCodeLine{00765\ \ \ \ \ \textcolor{keywordflow}{return}\ std::next(begin(),\ \textcolor{keyword}{static\_cast<}difference\_type\textcolor{keyword}{>}(size));}
+\DoxyCodeLine{00766\ \ \ \};}
+\DoxyCodeLine{00767\ }
+\DoxyCodeLine{00768\ \ \ \textcolor{comment}{//\ For\ batch\ updates\ initialize\ the\ first\ insertion\ point.}}
+\DoxyCodeLine{00769\ \ \ \textcolor{keyword}{auto}\ pos\_first\_new\ =\ \textcolor{keyword}{static\_cast<}difference\_type\textcolor{keyword}{>}(size());}
+\DoxyCodeLine{00770\ }
+\DoxyCodeLine{00771\ \ \ \textcolor{comment}{//\ Loop\ over\ the\ input\ range\ while\ appending\ new\ values\ and\ overwriting}}
+\DoxyCodeLine{00772\ \ \ \textcolor{comment}{//\ existing\ ones,\ if\ applicable.\ Keep\ track\ of\ the\ first\ insertion\ point.}}
+\DoxyCodeLine{00773\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ input\_begin;\ it\ !=\ input\_end;\ ++it)\ \{}
+\DoxyCodeLine{00774\ \ \ \ \ \textcolor{keyword}{auto}\ [inserted\_at,\ inserted]\ =\ append\_unique(begin(),\ prior\_end(),\ *it);}
+\DoxyCodeLine{00775\ \ \ \ \ \textcolor{keywordflow}{if}\ (inserted)\ \{}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ pos\_first\_new\ =}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \ \ std::min(pos\_first\_new,\ std::distance(begin(),\ inserted\_at));}
+\DoxyCodeLine{00778\ \ \ \ \ \}}
+\DoxyCodeLine{00779\ \ \ \}}
+\DoxyCodeLine{00780\ }
+\DoxyCodeLine{00781\ \ \ \textcolor{comment}{//\ The\ new\ elements\ might\ be\ unordered\ and\ contain\ duplicates,\ so\ post-\/process}}
+\DoxyCodeLine{00782\ \ \ \textcolor{comment}{//\ the\ just\ inserted\ elements\ and\ merge\ them\ with\ the\ rest,\ inserting\ them\ at}}
+\DoxyCodeLine{00783\ \ \ \textcolor{comment}{//\ the\ previously\ found\ spot.}}
+\DoxyCodeLine{00784\ \ \ sort\_and\_unique(prior\_end(),\ end());}
+\DoxyCodeLine{00785\ \ \ std::inplace\_merge(std::next(begin(),\ pos\_first\_new),\ prior\_end(),\ end(),}
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value\_comp());}
+\DoxyCodeLine{00787\ \}}
+\DoxyCodeLine{00788\ }
+\DoxyCodeLine{00789\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00790\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Range>}
+\DoxyCodeLine{00791\ \ \ \textcolor{keyword}{requires}(std::ranges::input\_range<Range>)}
+\DoxyCodeLine{00792\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::insert\_range(}
+\DoxyCodeLine{00793\ \ \ \ \ Range\&\&\ range)\ \{}
+\DoxyCodeLine{00794\ \ \ \textcolor{comment}{//\ SAFETY:\ A\ range\ should\ return\ a\ valid\ begin/end\ even\ if\ they\ are\ pointers.}}
+\DoxyCodeLine{00795\ \ \ UNSAFE\_BUFFERS(insert(std::ranges::begin(range),\ std::ranges::end(range)));}
+\DoxyCodeLine{00796\ \}}
+\DoxyCodeLine{00797\ }
+\DoxyCodeLine{00798\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00799\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00800\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::emplace(}
+\DoxyCodeLine{00801\ \ \ \ \ Args\&\&...\ args)\ -\/>\ std::pair<iterator,\ bool>\ \{}
+\DoxyCodeLine{00802\ \ \ \textcolor{keywordflow}{return}\ insert(value\_type(std::forward<Args>(args)...));}
+\DoxyCodeLine{00803\ \}}
+\DoxyCodeLine{00804\ }
+\DoxyCodeLine{00805\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00806\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00807\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::emplace\_hint(}
+\DoxyCodeLine{00808\ \ \ \ \ const\_iterator\ position\_hint,\ Args\&\&...\ args)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00809\ \ \ \textcolor{keywordflow}{return}\ insert(position\_hint,\ value\_type(std::forward<Args>(args)...));}
+\DoxyCodeLine{00810\ \}}
+\DoxyCodeLine{00811\ }
+\DoxyCodeLine{00812\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00813\ \textcolor{comment}{//\ Underlying\ type\ operations.}}
+\DoxyCodeLine{00814\ }
+\DoxyCodeLine{00815\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00816\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Container>::extract()\ \&\&\ -\/>\ container\_type\ \{}
+\DoxyCodeLine{00818\ \ \ \textcolor{keywordflow}{return}\ std::exchange(body\_,\ container\_type());}
+\DoxyCodeLine{00819\ \}}
+\DoxyCodeLine{00820\ }
+\DoxyCodeLine{00821\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00822\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::replace(}
+\DoxyCodeLine{00823\ \ \ \ \ container\_type\&\&\ body)\ \{}
+\DoxyCodeLine{00824\ \ \ \textcolor{comment}{//\ Ensure\ that\ \`{}body`\ is\ sorted\ and\ has\ no\ repeated\ elements\ according\ to}}
+\DoxyCodeLine{00825\ \ \ \textcolor{comment}{//\ \`{}value\_comp()`.}}
+\DoxyCodeLine{00826\ \ \ DCHECK(is\_sorted\_and\_unique(body,\ value\_comp()));}
+\DoxyCodeLine{00827\ \ \ body\_\ =\ std::move(body);}
+\DoxyCodeLine{00828\ \}}
+\DoxyCodeLine{00829\ }
+\DoxyCodeLine{00830\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00831\ \textcolor{comment}{//\ Erase\ operations.}}
+\DoxyCodeLine{00832\ }
+\DoxyCodeLine{00833\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00834\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::erase(}
+\DoxyCodeLine{00835\ \ \ \ \ iterator\ position)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00836\ \ \ CHECK(position\ !=\ body\_.end());}
+\DoxyCodeLine{00837\ \ \ \textcolor{keywordflow}{return}\ body\_.erase(position);}
+\DoxyCodeLine{00838\ \}}
+\DoxyCodeLine{00839\ }
+\DoxyCodeLine{00840\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00841\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DummyT>}
+\DoxyCodeLine{00842\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::erase(}
+\DoxyCodeLine{00843\ \ \ \ \ const\_iterator\ position)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00844\ \ \ CHECK(position\ !=\ body\_.end());}
+\DoxyCodeLine{00845\ \ \ \textcolor{keywordflow}{return}\ body\_.erase(position);}
+\DoxyCodeLine{00846\ \}}
+\DoxyCodeLine{00847\ }
+\DoxyCodeLine{00848\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00849\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::erase(}
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ val)\ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00851\ \ \ \textcolor{keyword}{auto}\ eq\_range\ =\ equal\_range(val);}
+\DoxyCodeLine{00852\ \ \ \textcolor{keyword}{auto}\ res\ =}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}size\_type\textcolor{keyword}{>}(std::distance(eq\_range.first,\ eq\_range.second));}
+\DoxyCodeLine{00854\ \ \ erase(eq\_range.first,\ eq\_range.second);}
+\DoxyCodeLine{00855\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00856\ \}}
+\DoxyCodeLine{00857\ }
+\DoxyCodeLine{00858\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00859\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00860\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::erase(\textcolor{keyword}{const}\ K\&\ val)}
+\DoxyCodeLine{00861\ \ \ \ \ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00862\ \ \ \textcolor{keyword}{auto}\ eq\_range\ =\ equal\_range(val);}
+\DoxyCodeLine{00863\ \ \ \textcolor{keyword}{auto}\ res\ =}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}size\_type\textcolor{keyword}{>}(std::distance(eq\_range.first,\ eq\_range.second));}
+\DoxyCodeLine{00865\ \ \ erase(eq\_range.first,\ eq\_range.second);}
+\DoxyCodeLine{00866\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00867\ \}}
+\DoxyCodeLine{00868\ }
+\DoxyCodeLine{00869\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00870\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::erase(}
+\DoxyCodeLine{00871\ \ \ \ \ const\_iterator\ first,\ const\_iterator\ last)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00872\ \ \ \textcolor{keywordflow}{return}\ body\_.erase(first,\ last);}
+\DoxyCodeLine{00873\ \}}
+\DoxyCodeLine{00874\ }
+\DoxyCodeLine{00875\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00876\ \textcolor{comment}{//\ Comparators.}}
+\DoxyCodeLine{00877\ }
+\DoxyCodeLine{00878\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00879\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}}
+\DoxyCodeLine{00880\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::key\_comp()\ const}
+\DoxyCodeLine{00881\ \ \ \ \ -\/>\ key\_compare\ \{}
+\DoxyCodeLine{00882\ \ \ \textcolor{keywordflow}{return}\ comp\_;}
+\DoxyCodeLine{00883\ \}}
+\DoxyCodeLine{00884\ }
+\DoxyCodeLine{00885\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00886\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}}
+\DoxyCodeLine{00887\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::value\_comp()\ const}
+\DoxyCodeLine{00888\ \ \ \ \ -\/>\ \mbox{\hyperlink{structkiwi_1_1internal_1_1flat__tree_1_1value__compare}{value\_compare}}\ \{}
+\DoxyCodeLine{00889\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structkiwi_1_1internal_1_1flat__tree_1_1value__compare}{value\_compare}}\{comp\_\};}
+\DoxyCodeLine{00890\ \}}
+\DoxyCodeLine{00891\ }
+\DoxyCodeLine{00892\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00893\ \textcolor{comment}{//\ Search\ operations.}}
+\DoxyCodeLine{00894\ }
+\DoxyCodeLine{00895\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00896\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00897\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::count(}
+\DoxyCodeLine{00898\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const}\ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00899\ \ \ \textcolor{keyword}{auto}\ eq\_range\ =\ equal\_range(key);}
+\DoxyCodeLine{00900\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}size\_type\textcolor{keyword}{>}(std::distance(eq\_range.first,\ eq\_range.second));}
+\DoxyCodeLine{00901\ \}}
+\DoxyCodeLine{00902\ }
+\DoxyCodeLine{00903\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00904\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::count(}
+\DoxyCodeLine{00905\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const}\ -\/>\ size\_type\ \{}
+\DoxyCodeLine{00906\ \ \ \textcolor{keyword}{auto}\ eq\_range\ =\ equal\_range(key);}
+\DoxyCodeLine{00907\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}size\_type\textcolor{keyword}{>}(std::distance(eq\_range.first,\ eq\_range.second));}
+\DoxyCodeLine{00908\ \}}
+\DoxyCodeLine{00909\ }
+\DoxyCodeLine{00910\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00911\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::find(}
+\DoxyCodeLine{00912\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00913\ \ \ \textcolor{keywordflow}{return}\ const\_cast\_it(std::as\_const(*this).find(key));}
+\DoxyCodeLine{00914\ \}}
+\DoxyCodeLine{00915\ }
+\DoxyCodeLine{00916\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00917\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::find(}
+\DoxyCodeLine{00918\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const}\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{00919\ \ \ \textcolor{keyword}{auto}\ eq\_range\ =\ equal\_range(key);}
+\DoxyCodeLine{00920\ \ \ \textcolor{keywordflow}{return}\ (eq\_range.first\ ==\ eq\_range.second)\ ?\ end()\ :\ eq\_range.first;}
+\DoxyCodeLine{00921\ \}}
+\DoxyCodeLine{00922\ }
+\DoxyCodeLine{00923\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00924\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00925\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::find(\textcolor{keyword}{const}\ K\&\ key)}
+\DoxyCodeLine{00926\ \ \ \ \ -\/>\ iterator\ \{}
+\DoxyCodeLine{00927\ \ \ \textcolor{keywordflow}{return}\ const\_cast\_it(std::as\_const(*this).find(key));}
+\DoxyCodeLine{00928\ \}}
+\DoxyCodeLine{00929\ }
+\DoxyCodeLine{00930\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00931\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00932\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::find(}
+\DoxyCodeLine{00933\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const}\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{00934\ \ \ \textcolor{keyword}{auto}\ eq\_range\ =\ equal\_range(key);}
+\DoxyCodeLine{00935\ \ \ \textcolor{keywordflow}{return}\ (eq\_range.first\ ==\ eq\_range.second)\ ?\ end()\ :\ eq\_range.first;}
+\DoxyCodeLine{00936\ \}}
+\DoxyCodeLine{00937\ }
+\DoxyCodeLine{00938\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00939\ \textcolor{keywordtype}{bool}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::contains(}
+\DoxyCodeLine{00940\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00941\ \ \ \textcolor{keyword}{auto}\ lower\ =\ lower\_bound(key);}
+\DoxyCodeLine{00942\ \ \ \textcolor{keywordflow}{return}\ lower\ !=\ end()\ \&\&\ !comp\_(key,\ GetKeyFromValue()(*lower));}
+\DoxyCodeLine{00943\ \}}
+\DoxyCodeLine{00944\ }
+\DoxyCodeLine{00945\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00946\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00947\ \textcolor{keywordtype}{bool}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::contains(}
+\DoxyCodeLine{00948\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00949\ \ \ \textcolor{keyword}{auto}\ lower\ =\ lower\_bound(key);}
+\DoxyCodeLine{00950\ \ \ \textcolor{keywordflow}{return}\ lower\ !=\ end()\ \&\&\ !comp\_(key,\ GetKeyFromValue()(*lower));}
+\DoxyCodeLine{00951\ \}}
+\DoxyCodeLine{00952\ }
+\DoxyCodeLine{00953\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00954\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::equal\_range(}
+\DoxyCodeLine{00955\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ -\/>\ std::pair<iterator,\ iterator>\ \{}
+\DoxyCodeLine{00956\ \ \ \textcolor{keyword}{auto}\ res\ =\ std::as\_const(*this).equal\_range(key);}
+\DoxyCodeLine{00957\ \ \ \textcolor{keywordflow}{return}\ \{const\_cast\_it(res.first),\ const\_cast\_it(res.second)\};}
+\DoxyCodeLine{00958\ \}}
+\DoxyCodeLine{00959\ }
+\DoxyCodeLine{00960\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00961\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::equal\_range(}
+\DoxyCodeLine{00962\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const}\ -\/>\ std::pair<const\_iterator,\ const\_iterator>\ \{}
+\DoxyCodeLine{00963\ \ \ \textcolor{keyword}{auto}\ lower\ =\ lower\_bound(key);}
+\DoxyCodeLine{00964\ }
+\DoxyCodeLine{00965\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{00966\ \ \ \textcolor{keywordflow}{if}\ (lower\ ==\ end()\ ||\ comp(key,\ *lower))\ \{}
+\DoxyCodeLine{00967\ \ \ \ \ \textcolor{keywordflow}{return}\ \{lower,\ lower\};}
+\DoxyCodeLine{00968\ \ \ \}}
+\DoxyCodeLine{00969\ }
+\DoxyCodeLine{00970\ \ \ \textcolor{keywordflow}{return}\ \{lower,\ std::next(lower)\};}
+\DoxyCodeLine{00971\ \}}
+\DoxyCodeLine{00972\ }
+\DoxyCodeLine{00973\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00974\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00975\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::equal\_range(}
+\DoxyCodeLine{00976\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ -\/>\ std::pair<iterator,\ iterator>\ \{}
+\DoxyCodeLine{00977\ \ \ \textcolor{keyword}{auto}\ res\ =\ std::as\_const(*this).equal\_range(key);}
+\DoxyCodeLine{00978\ \ \ \textcolor{keywordflow}{return}\ \{const\_cast\_it(res.first),\ const\_cast\_it(res.second)\};}
+\DoxyCodeLine{00979\ \}}
+\DoxyCodeLine{00980\ }
+\DoxyCodeLine{00981\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00982\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00983\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::equal\_range(}
+\DoxyCodeLine{00984\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const}\ -\/>\ std::pair<const\_iterator,\ const\_iterator>\ \{}
+\DoxyCodeLine{00985\ \ \ \textcolor{keyword}{auto}\ lower\ =\ lower\_bound(key);}
+\DoxyCodeLine{00986\ }
+\DoxyCodeLine{00987\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{00988\ \ \ \textcolor{keywordflow}{if}\ (lower\ ==\ end()\ ||\ comp(key,\ *lower))\ \{}
+\DoxyCodeLine{00989\ \ \ \ \ \textcolor{keywordflow}{return}\ \{lower,\ lower\};}
+\DoxyCodeLine{00990\ \ \ \}}
+\DoxyCodeLine{00991\ }
+\DoxyCodeLine{00992\ \ \ \textcolor{keywordflow}{return}\ \{lower,\ std::next(lower)\};}
+\DoxyCodeLine{00993\ \}}
+\DoxyCodeLine{00994\ }
+\DoxyCodeLine{00995\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{00996\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::lower\_bound(}
+\DoxyCodeLine{00997\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{00998\ \ \ \textcolor{keywordflow}{return}\ const\_cast\_it(std::as\_const(*this).lower\_bound(key));}
+\DoxyCodeLine{00999\ \}}
+\DoxyCodeLine{01000\ }
+\DoxyCodeLine{01001\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01002\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::lower\_bound(}
+\DoxyCodeLine{01003\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const}\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{01004\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{01005\ \ \ \textcolor{keywordflow}{return}\ std::ranges::lower\_bound(*\textcolor{keyword}{this},\ key,\ comp);}
+\DoxyCodeLine{01006\ \}}
+\DoxyCodeLine{01007\ }
+\DoxyCodeLine{01008\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01009\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{01010\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::lower\_bound(}
+\DoxyCodeLine{01011\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{01012\ \ \ \textcolor{keywordflow}{return}\ const\_cast\_it(std::as\_const(*this).lower\_bound(key));}
+\DoxyCodeLine{01013\ \}}
+\DoxyCodeLine{01014\ }
+\DoxyCodeLine{01015\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01016\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{01017\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::lower\_bound(}
+\DoxyCodeLine{01018\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const}\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{01019\ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<const\ KeyTypeOrK<K>\&,\ \textcolor{keyword}{const}\ K\&>,}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Requested\ type\ cannot\ be\ bound\ to\ the\ container's\ key\_type\ "{}}}
+\DoxyCodeLine{01021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}which\ is\ required\ for\ a\ non-\/transparent\ compare."{}});}
+\DoxyCodeLine{01022\ }
+\DoxyCodeLine{01023\ \ \ \textcolor{keyword}{const}\ KeyTypeOrK<K>\&\ key\_ref\ =\ key;}
+\DoxyCodeLine{01024\ }
+\DoxyCodeLine{01025\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{01026\ \ \ \textcolor{keywordflow}{return}\ std::ranges::lower\_bound(*\textcolor{keyword}{this},\ key\_ref,\ comp);}
+\DoxyCodeLine{01027\ \}}
+\DoxyCodeLine{01028\ }
+\DoxyCodeLine{01029\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01030\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::upper\_bound(}
+\DoxyCodeLine{01031\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{01032\ \ \ \textcolor{keywordflow}{return}\ const\_cast\_it(std::as\_const(*this).upper\_bound(key));}
+\DoxyCodeLine{01033\ \}}
+\DoxyCodeLine{01034\ }
+\DoxyCodeLine{01035\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01036\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::upper\_bound(}
+\DoxyCodeLine{01037\ \ \ \ \ \textcolor{keyword}{const}\ Key\&\ key)\ \textcolor{keyword}{const}\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{01038\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{01039\ \ \ \textcolor{keywordflow}{return}\ std::ranges::upper\_bound(*\textcolor{keyword}{this},\ key,\ comp);}
+\DoxyCodeLine{01040\ \}}
+\DoxyCodeLine{01041\ }
+\DoxyCodeLine{01042\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01043\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{01044\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::upper\_bound(}
+\DoxyCodeLine{01045\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{01046\ \ \ \textcolor{keywordflow}{return}\ const\_cast\_it(std::as\_const(*this).upper\_bound(key));}
+\DoxyCodeLine{01047\ \}}
+\DoxyCodeLine{01048\ }
+\DoxyCodeLine{01049\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01050\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{01051\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::upper\_bound(}
+\DoxyCodeLine{01052\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key)\ \textcolor{keyword}{const}\ -\/>\ const\_iterator\ \{}
+\DoxyCodeLine{01053\ \ \ \textcolor{keyword}{static\_assert}(std::is\_convertible\_v<const\ KeyTypeOrK<K>\&,\ \textcolor{keyword}{const}\ K\&>,}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Requested\ type\ cannot\ be\ bound\ to\ the\ container's\ key\_type\ "{}}}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}which\ is\ required\ for\ a\ non-\/transparent\ compare."{}});}
+\DoxyCodeLine{01056\ }
+\DoxyCodeLine{01057\ \ \ \textcolor{keyword}{const}\ KeyTypeOrK<K>\&\ key\_ref\ =\ key;}
+\DoxyCodeLine{01058\ }
+\DoxyCodeLine{01059\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{01060\ \ \ \textcolor{keywordflow}{return}\ std::ranges::upper\_bound(*\textcolor{keyword}{this},\ key\_ref,\ comp);}
+\DoxyCodeLine{01061\ \}}
+\DoxyCodeLine{01062\ }
+\DoxyCodeLine{01063\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01064\ \textcolor{comment}{//\ General\ operations.}}
+\DoxyCodeLine{01065\ }
+\DoxyCodeLine{01066\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01067\ \textcolor{keywordtype}{void}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::swap(}
+\DoxyCodeLine{01068\ \ \ \ \ flat\_tree\&\ other)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01069\ \ \ std::swap(*\textcolor{keyword}{this},\ other);}
+\DoxyCodeLine{01070\ \}}
+\DoxyCodeLine{01071\ }
+\DoxyCodeLine{01072\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01073\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{01074\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::unsafe\_emplace(}
+\DoxyCodeLine{01075\ \ \ \ \ const\_iterator\ position,\ Args\&\&...\ args)\ -\/>\ iterator\ \{}
+\DoxyCodeLine{01076\ \ \ \textcolor{keywordflow}{return}\ body\_.emplace(position,\ std::forward<Args>(args)...);}
+\DoxyCodeLine{01077\ \}}
+\DoxyCodeLine{01078\ }
+\DoxyCodeLine{01079\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01080\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class\ }K,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{01081\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,\ Container>::emplace\_key\_args(}
+\DoxyCodeLine{01082\ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key,\ Args\&\&...\ args)\ -\/>\ std::pair<iterator,\ bool>\ \{}
+\DoxyCodeLine{01083\ \ \ \textcolor{keyword}{auto}\ lower\ =\ lower\_bound(key);}
+\DoxyCodeLine{01084\ \ \ \textcolor{keywordflow}{if}\ (lower\ ==\ end()\ ||\ comp\_(key,\ GetKeyFromValue()(*lower)))\ \{}
+\DoxyCodeLine{01085\ \ \ \ \ \textcolor{keywordflow}{return}\ \{unsafe\_emplace(lower,\ std::forward<Args>(args)...),\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{01086\ \ \ \}}
+\DoxyCodeLine{01087\ \ \ \textcolor{keywordflow}{return}\ \{lower,\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{01088\ \}}
+\DoxyCodeLine{01089\ }
+\DoxyCodeLine{01090\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ GetKeyFromValue,\ \textcolor{keyword}{class}\ KeyCompare,\ \textcolor{keyword}{class}\ Container>}
+\DoxyCodeLine{01091\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class\ }K,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{01092\ \textcolor{keyword}{auto}\ flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Container>::emplace\_hint\_key\_args(const\_iterator\ hint,}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K\&\ key,\ Args\&\&...\ args)}
+\DoxyCodeLine{01095\ \ \ \ \ -\/>\ std::pair<iterator,\ bool>\ \{}
+\DoxyCodeLine{01096\ \ \ KeyValueCompare\ comp(comp\_);}
+\DoxyCodeLine{01097\ \ \ \textcolor{keywordflow}{if}\ ((hint\ ==\ begin()\ ||\ comp(*std::prev(hint),\ key)))\ \{}
+\DoxyCodeLine{01098\ \ \ \ \ \textcolor{keywordflow}{if}\ (hint\ ==\ end()\ ||\ comp(key,\ *hint))\ \{}
+\DoxyCodeLine{01099\ \ \ \ \ \ \ \textcolor{comment}{//\ *(hint\ -\/\ 1)\ <\ key\ <\ *hint\ =>\ key\ did\ not\ exist\ and\ hint\ is\ correct.}}
+\DoxyCodeLine{01100\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{unsafe\_emplace(hint,\ std::forward<Args>(args)...),\ \textcolor{keyword}{true}\};}
+\DoxyCodeLine{01101\ \ \ \ \ \}}
+\DoxyCodeLine{01102\ \ \ \ \ \textcolor{keywordflow}{if}\ (!comp(*hint,\ key))\ \{}
+\DoxyCodeLine{01103\ \ \ \ \ \ \ \textcolor{comment}{//\ key\ ==\ *hint\ =>\ no-\/op,\ return\ correct\ hint.}}
+\DoxyCodeLine{01104\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{const\_cast\_it(hint),\ \textcolor{keyword}{false}\};}
+\DoxyCodeLine{01105\ \ \ \ \ \}}
+\DoxyCodeLine{01106\ \ \ \}}
+\DoxyCodeLine{01107\ \ \ \textcolor{comment}{//\ hint\ was\ not\ helpful,\ dispatch\ to\ hintless\ version.}}
+\DoxyCodeLine{01108\ \ \ \textcolor{keywordflow}{return}\ emplace\_key\_args(key,\ std::forward<Args>(args)...);}
+\DoxyCodeLine{01109\ \}}
+\DoxyCodeLine{01110\ }
+\DoxyCodeLine{01111\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{01112\ }
+\DoxyCodeLine{01113\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01114\ \textcolor{comment}{//\ Free\ functions.}}
+\DoxyCodeLine{01115\ }
+\DoxyCodeLine{01116\ \textcolor{comment}{//\ Erases\ all\ elements\ that\ match\ predicate.\ It\ has\ O(size)\ complexity.}}
+\DoxyCodeLine{01117\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class\ }Key,\ \textcolor{keyword}{class\ }GetKeyFromValue,\ \textcolor{keyword}{class\ }KeyCompare,\ \textcolor{keyword}{class\ }Container,}
+\DoxyCodeLine{01118\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Predicate>}
+\DoxyCodeLine{01119\ \textcolor{keywordtype}{size\_t}\ EraseIf(kiwi::internal::flat\_tree<Key,\ GetKeyFromValue,\ KeyCompare,}
+\DoxyCodeLine{01120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Container>\&\ container,}
+\DoxyCodeLine{01121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Predicate\ pred)\ \{}
+\DoxyCodeLine{01122\ \ \ \textcolor{keyword}{auto}\ removed\ =\ std::ranges::remove\_if(container,\ pred);}
+\DoxyCodeLine{01123\ \ \ \textcolor{keywordtype}{size\_t}\ num\_removed\ =\ removed.size();}
+\DoxyCodeLine{01124\ \ \ container.erase(removed.begin(),\ removed.end());}
+\DoxyCodeLine{01125\ \ \ \textcolor{keywordflow}{return}\ num\_removed;}
+\DoxyCodeLine{01126\ \}}
+\DoxyCodeLine{01127\ }
+\DoxyCodeLine{01128\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

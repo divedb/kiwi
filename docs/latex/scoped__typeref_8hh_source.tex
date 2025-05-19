@@ -1,0 +1,192 @@
+\doxysection{scoped\+\_\+typeref.\+hh}
+\hypertarget{scoped__typeref_8hh_source}{}\label{scoped__typeref_8hh_source}\index{include/kiwi/apple/scoped\_typeref.hh@{include/kiwi/apple/scoped\_typeref.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2014\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/logging.hh"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}kiwi/memory/scoped\_policy.hh"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }kiwi::apple\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ ScopedTypeRef<>\ is\ patterned\ after\ std::shared\_ptr<>,\ but\ maintains\ ownership}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ of\ a\ reference\ to\ any\ type\ that\ is\ maintained\ by\ Retain\ and\ Release\ methods.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ The\ Traits\ structure\ must\ provide\ the\ Retain\ and\ Release\ methods\ for\ type\ T.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ A\ default\ ScopedTypeRefTraits\ is\ used\ but\ not\ defined,\ and\ should\ be\ defined}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ for\ each\ type\ to\ use\ this\ interface.\ For\ example,\ an\ appropriate\ definition}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ of\ ScopedTypeRefTraits\ for\ CGLContextObj\ would\ be:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ \ template<>}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \ \ struct\ ScopedTypeRefTraits<CGLContextObj>\ \{}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ \ \ \ static\ CGLContextObj\ InvalidValue()\ \{\ return\ nullptr;\ \}}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ \ \ \ static\ CGLContextObj\ Retain(CGLContextObj\ object)\ \{}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ \ \ \ \ \ CGLContextRetain(object);}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ \ \ \ \ \ return\ object;}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ \ \ \ \}}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ \ \ \ static\ void\ Release(CGLContextObj\ object)\ \{\ CGLContextRelease(object);\ \}}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ \ \};}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ For\ the\ many\ types\ that\ have\ pass-\/by-\/pointer\ create\ functions,\ the\ function}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ InitializeInto()\ is\ provided\ to\ allow\ direct\ initialization\ and\ assumption}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ of\ ownership\ of\ the\ object.\ For\ example,\ continuing\ to\ use\ the\ above}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ CGLContextObj\ specialization:}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ \ \ kiwi::apple::ScopedTypeRef<CGLContextObj>\ context;}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ \ CGLCreateContext(pixel\_format,\ share\_group,\ context.InitializeInto());}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ For\ initialization\ with\ an\ existing\ object,\ the\ caller\ may\ specify\ whether}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ the\ ScopedTypeRef<>\ being\ initialized\ is\ assuming\ the\ caller's\ existing}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ ownership\ of\ the\ object\ (and\ should\ not\ call\ Retain\ in\ initialization)\ or\ if}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ it\ should\ not\ assume\ this\ ownership\ and\ must\ create\ its\ own\ (by\ calling}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Retain\ in\ initialization).\ This\ behavior\ is\ based\ on\ the\ \`{}policy`\ parameter,}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ with\ \`{}kAssume`\ for\ the\ former\ and\ \`{}kRetain`\ for\ the\ latter.\ The\ default}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ policy\ is\ to\ \`{}kAssume`.}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00047\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1apple_1_1_scoped_type_ref_traits}{ScopedTypeRefTraits}};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ Traits\ =\ ScopedTypeRefTraits<T>>}
+\DoxyCodeLine{00050\ \textcolor{keyword}{class\ }ScopedTypeRef\ \{}
+\DoxyCodeLine{00051\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{using\ }element\_type\ =\ T;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ Construction\ from\ underlying\ type}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{constexpr}\ ScopedTypeRef(element\_type\ \textcolor{keywordtype}{object}\ =\ Traits::InvalidValue(),}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::scoped\_policy::OwnershipPolicy\ policy\ =}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::scoped\_policy::kAssume)}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ :\ object\_(\textcolor{keywordtype}{object})\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (object\_\ !=\ Traits::InvalidValue()\ \&\&}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ policy\ ==\ kiwi::scoped\_policy::kRetain)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ object\_\ =\ Traits::Retain(object\_);}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//\ The\ pattern\ in\ the\ four\ [copy|move]\ [constructors|assignment\ operators]}}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//\ below\ is\ that\ for\ each\ of\ them\ there\ is\ the\ standard\ version\ for\ use\ by}}
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//\ scopers\ wrapping\ objects\ of\ this\ type,\ and\ a\ templated\ version\ to\ handle}}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{//\ scopers\ wrapping\ objects\ of\ subtypes.\ One\ might\ think\ that\ one\ could\ get}}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//\ away\ only\ the\ templated\ versions,\ as\ their\ templates\ should\ match\ the}}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ usage,\ but\ that\ doesn't\ work.\ Having\ a\ templated\ function\ that\ matches\ the}}
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//\ types\ of,\ say,\ a\ copy\ constructor,\ doesn't\ count\ as\ a\ copy\ constructor,\ and}}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ the\ compiler's\ generated\ copy\ constructor\ is\ incorrect.}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ Copy\ construction}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ ScopedTypeRef(\textcolor{keyword}{const}\ ScopedTypeRef<T,\ Traits>\&\ that)\ :\ object\_(that.get())\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (object\_\ !=\ Traits::InvalidValue())\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ object\_\ =\ Traits::Retain(object\_);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keyword}{typename}\ RTraits>}
+\DoxyCodeLine{00084\ \ \ ScopedTypeRef(\textcolor{keyword}{const}\ ScopedTypeRef<R,\ RTraits>\&\ that)\ :\ object\_(that.get())\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{if}\ (object\_\ !=\ Traits::InvalidValue())\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ object\_\ =\ Traits::Retain(object\_);}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ Copy\ assignment}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ ScopedTypeRef\&\ operator=(\textcolor{keyword}{const}\ ScopedTypeRef<T,\ Traits>\&\ that)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ reset(that.get(),\ kiwi::scoped\_policy::kRetain);}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keyword}{typename}\ RTraits>}
+\DoxyCodeLine{00098\ \ \ ScopedTypeRef\&\ operator=(\textcolor{keyword}{const}\ ScopedTypeRef<R,\ RTraits>\&\ that)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ reset(that.get(),\ kiwi::scoped\_policy::kRetain);}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00101\ \ \ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ Move\ construction}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ ScopedTypeRef(ScopedTypeRef<T,\ Traits>\&\&\ that)\ :\ object\_(that.release())\ \{\}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keyword}{typename}\ RTraits>}
+\DoxyCodeLine{00108\ \ \ ScopedTypeRef(ScopedTypeRef<R,\ RTraits>\&\&\ that)\ :\ object\_(that.release())\ \{\}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//\ Move\ assignment}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ ScopedTypeRef\&\ operator=(ScopedTypeRef<T,\ Traits>\&\&\ that)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ reset(that.release(),\ kiwi::scoped\_policy::kAssume);}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keyword}{typename}\ RTraits>}
+\DoxyCodeLine{00118\ \ \ ScopedTypeRef\&\ operator=(ScopedTypeRef<R,\ RTraits>\&\&\ that)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ reset(that.release(),\ kiwi::scoped\_policy::kAssume);}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ Resetting}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ R,\ \textcolor{keyword}{typename}\ RTraits>}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ reset(\textcolor{keyword}{const}\ ScopedTypeRef<R,\ RTraits>\&\ that)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ reset(that.get(),\ kiwi::scoped\_policy::kRetain);}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ reset(element\_type\ \textcolor{keywordtype}{object}\ =\ Traits::InvalidValue(),}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::scoped\_policy::OwnershipPolicy\ policy\ =}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::scoped\_policy::kAssume)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{object}\ !=\ Traits::InvalidValue()\ \&\&}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ policy\ ==\ kiwi::scoped\_policy::kRetain)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordtype}{object}\ =\ Traits::Retain(\textcolor{keywordtype}{object});}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{if}\ (object\_\ !=\ Traits::InvalidValue())\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ Traits::Release(object\_);}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ object\_\ =\ object;}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//\ Destruction}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \string~ScopedTypeRef()\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (object\_\ !=\ Traits::InvalidValue())\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ Traits::Release(object\_);}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{comment}{//\ This\ is\ to\ be\ used\ only\ to\ take\ ownership\ of\ objects\ that\ are\ created\ by}}
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ pass-\/by-\/pointer\ create\ functions.\ To\ enforce\ this,\ require\ that\ this\ object}}
+\DoxyCodeLine{00153\ \ \ \textcolor{comment}{//\ be\ empty\ before\ use.}}
+\DoxyCodeLine{00154\ \ \ [[nodiscard]]\ element\_type*\ InitializeInto()\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ CHECK\_EQ(object\_,\ Traits::InvalidValue());}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ \&object\_;}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ ScopedTypeRef\&\ that)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{return}\ object\_\ ==\ that.object\_;}
+\DoxyCodeLine{00161\ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ object\_\ !=\ Traits::InvalidValue();\ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ element\_type\ get()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ object\_;\ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{keywordtype}{void}\ swap(ScopedTypeRef\&\ that)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ element\_type\ temp\ =\ that.object\_;}
+\DoxyCodeLine{00169\ \ \ \ \ that.object\_\ =\ object\_;}
+\DoxyCodeLine{00170\ \ \ \ \ object\_\ =\ temp;}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//\ ScopedTypeRef<>::release()\ is\ like\ std::unique\_ptr<>::release.\ \ It\ is\ NOT}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ a\ wrapper\ for\ Release().\ \ To\ force\ a\ ScopedTypeRef<>\ object\ to\ call}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ Release(),\ use\ ScopedTypeRef<>::reset().}}
+\DoxyCodeLine{00176\ \ \ [[nodiscard]]\ element\_type\ release()\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ element\_type\ temp\ =\ object\_;}
+\DoxyCodeLine{00178\ \ \ \ \ object\_\ =\ Traits::InvalidValue();}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ temp;}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00183\ \ \ element\_type\ object\_;}
+\DoxyCodeLine{00184\ \};}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::apple}}
+
+\end{DoxyCode}

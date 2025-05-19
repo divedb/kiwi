@@ -1,0 +1,234 @@
+\doxysection{foundation\+\_\+util.\+hh}
+\hypertarget{foundation__util_8hh_source}{}\label{foundation__util_8hh_source}\index{include/kiwi/apple/foundation\_util.hh@{include/kiwi/apple/foundation\_util.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <AvailabilityMacros.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <CoreFoundation/CoreFoundation.h>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <CoreText/CoreText.h>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <Security/Security.h>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/apple/scoped\_cftyperef.hh"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classkiwi_1_1_file_path}{FilePath}};}
+\DoxyCodeLine{00022\ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{namespace\ }kiwi::apple\ \{}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ Returns\ true\ if\ the\ application\ is\ running\ from\ a\ bundle}}
+\DoxyCodeLine{00027\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ AmIBundled();}
+\DoxyCodeLine{00028\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ SetOverrideAmIBundled(\textcolor{keywordtype}{bool}\ value);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#if\ defined(UNIT\_TEST)}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ This\ is\ required\ because\ instantiating\ some\ tests\ requires\ checking\ the}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ directory\ structure,\ which\ sets\ the\ AmIBundled\ cache\ state.\ Individual\ tests}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ may\ or\ may\ not\ be\ bundled,\ and\ this\ would\ trip\ them\ up\ if\ the\ cache\ weren't}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ cleared.\ This\ should\ not\ be\ called\ from\ individual\ tests,\ just\ from\ test}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ instantiation\ code\ that\ gets\ a\ path\ from\ PathService.}}
+\DoxyCodeLine{00036\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ ClearAmIBundledCache();}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ Returns\ true\ if\ this\ process\ is\ marked\ as\ a\ "{}Background\ only\ process"{}.}}
+\DoxyCodeLine{00040\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ IsBackgroundOnlyProcess();}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Returns\ the\ path\ to\ a\ resource\ within\ the\ framework\ bundle.}}
+\DoxyCodeLine{00043\ BASE\_EXPORT\ FilePath\ PathForFrameworkBundleResource(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ resource\_name);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ Returns\ the\ creator\ code\ associated\ with\ the\ CFBundleRef\ at\ bundle.}}
+\DoxyCodeLine{00046\ OSType\ CreatorCodeForCFBundleRef(CFBundleRef\ bundle);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ Returns\ the\ creator\ code\ associated\ with\ this\ application,\ by\ calling}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ CreatorCodeForCFBundleRef\ for\ the\ application's\ main\ bundle.\ \ If\ this}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ information\ cannot\ be\ determined,\ returns\ kUnknownType\ ('????').\ \ This}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ does\ not\ respect\ the\ override\ app\ bundle\ because\ it's\ based\ on\ CFBundle}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ instead\ of\ NSBundle,\ and\ because\ callers\ probably\ don't\ want\ the\ override}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ app\ bundle's\ creator\ code\ anyway.}}
+\DoxyCodeLine{00054\ BASE\_EXPORT\ OSType\ CreatorCodeForApplication();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ Returns\ the\ \string~/Library\ directory.}}
+\DoxyCodeLine{00057\ BASE\_EXPORT\ FilePath\ GetUserLibraryPath();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ Returns\ the\ \string~/Documents\ directory.}}
+\DoxyCodeLine{00060\ BASE\_EXPORT\ FilePath\ GetUserDocumentPath();}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ Takes\ a\ path\ to\ an\ (executable)\ binary\ and\ tries\ to\ provide\ the\ path\ to\ an}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ application\ bundle\ containing\ it.\ It\ takes\ the\ outermost\ bundle\ that\ it\ can}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ find\ (so\ for\ "{}/Foo/Bar.app/.../Baz.app/..."{}\ it\ produces\ "{}/Foo/Bar.app"{}).}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ \ \ |exec\_name|\ -\/\ path\ to\ the\ binary}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ \ \ returns\ -\/\ path\ to\ the\ application\ bundle,\ or\ empty\ on\ error}}
+\DoxyCodeLine{00067\ BASE\_EXPORT\ FilePath\ GetAppBundlePath(\textcolor{keyword}{const}\ FilePath\&\ exec\_name);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ Takes\ a\ path\ to\ an\ (executable)\ binary\ and\ tries\ to\ provide\ the\ path\ to\ an}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ application\ bundle\ containing\ it.\ It\ takes\ the\ innermost\ bundle\ that\ it\ can}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ find\ (so\ for\ "{}/Foo/Bar.app/.../Baz.app/..."{}\ it\ produces}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ "{}/Foo/Bar.app/.../Baz.app"{}).}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ \ |exec\_name|\ -\/\ path\ to\ the\ binary}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ \ \ returns\ -\/\ path\ to\ the\ application\ bundle,\ or\ empty\ on\ error}}
+\DoxyCodeLine{00075\ BASE\_EXPORT\ FilePath\ GetInnermostAppBundlePath(\textcolor{keyword}{const}\ FilePath\&\ exec\_name);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(TypeCF)\ \(\backslash\)}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\ \ BASE\_EXPORT\ std::string\ TypeNameForCFType(TypeCF\#\#Ref)}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFArray);}
+\DoxyCodeLine{00081\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFBag);}
+\DoxyCodeLine{00082\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFBoolean);}
+\DoxyCodeLine{00083\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFData);}
+\DoxyCodeLine{00084\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFDate);}
+\DoxyCodeLine{00085\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFDictionary);}
+\DoxyCodeLine{00086\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFNull);}
+\DoxyCodeLine{00087\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFNumber);}
+\DoxyCodeLine{00088\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFSet);}
+\DoxyCodeLine{00089\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFString);}
+\DoxyCodeLine{00090\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFURL);}
+\DoxyCodeLine{00091\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CFUUID);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CGColor);}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CTFont);}
+\DoxyCodeLine{00096\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(CTRun);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(SecAccessControl);}
+\DoxyCodeLine{00099\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(SecCertificate);}
+\DoxyCodeLine{00100\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(SecKey);}
+\DoxyCodeLine{00101\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL(SecPolicy);}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#undef\ TYPE\_NAME\_FOR\_CF\_TYPE\_DECL}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ Returns\ the\ base\ bundle\ ID,\ which\ can\ be\ set\ by\ SetBaseBundleIDOverride,}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ below,\ but\ defaults\ to\ a\ reasonable\ string.}}
+\DoxyCodeLine{00107\ BASE\_EXPORT\ std::string\_view\ BaseBundleID();}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ Sets\ a\ base\ bundle\ ID\ to\ override\ the\ default\ value\ returned\ by}}
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ BaseBundleID(),\ above.}}
+\DoxyCodeLine{00111\ BASE\_EXPORT\ \textcolor{keywordtype}{void}\ SetBaseBundleIDOverride(std::string\_view\ new\_base\_bundle\_id);}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ CFCast<>()\ and\ CFCastStrict<>()\ cast\ a\ basic\ CFTypeRef\ to\ a\ more\ specific}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//\ CoreFoundation\ type.\ The\ compatibility\ of\ the\ passed\ object\ is\ found\ by}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ comparing\ its\ opaque\ type\ against\ the\ requested\ type\ identifier.\ If\ the}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ supplied\ object\ is\ not\ compatible\ with\ the\ requested\ return\ type,\ CFCast<>()}}
+\DoxyCodeLine{00117\ \textcolor{comment}{//\ returns\ null\ and\ CFCastStrict<>()\ will\ CHECK.\ Providing\ a\ null\ pointer\ to}}
+\DoxyCodeLine{00118\ \textcolor{comment}{//\ either\ variant\ results\ in\ null\ being\ returned\ without\ triggering\ any\ CHECK.}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//}}
+\DoxyCodeLine{00120\ \textcolor{comment}{//\ Example\ usage:}}
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ CFNumberRef\ some\_number\ =\ base::apple::CFCast<CFNumberRef>(}}
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ \ \ \ \ CFArrayGetValueAtIndex(array,\ index));}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ CFTypeRef\ hello\ =\ CFSTR("{}hello\ world"{});}}
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ CFStringRef\ some\_string\ =\ base::apple::CFCastStrict<CFStringRef>(hello);}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00128\ T\ CFCast(\textcolor{keyword}{const}\ CFTypeRef\&\ cf\_val);}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00131\ T\ CFCastStrict(\textcolor{keyword}{const}\ CFTypeRef\&\ cf\_val);}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ CF\_CAST\_DECL(TypeCF)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\ \ template\ <>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\ \ BASE\_EXPORT\ TypeCF\#\#Ref\ CFCast<TypeCF\#\#Ref>(const\ CFTypeRef\&\ cf\_val);\ \(\backslash\)}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\ \ template\ <>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\ \ BASE\_EXPORT\ TypeCF\#\#Ref\ CFCastStrict<TypeCF\#\#Ref>(const\ CFTypeRef\&\ cf\_val)}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ CF\_CAST\_DECL(CFArray);}
+\DoxyCodeLine{00141\ CF\_CAST\_DECL(CFBag);}
+\DoxyCodeLine{00142\ CF\_CAST\_DECL(CFBoolean);}
+\DoxyCodeLine{00143\ CF\_CAST\_DECL(CFData);}
+\DoxyCodeLine{00144\ CF\_CAST\_DECL(CFDate);}
+\DoxyCodeLine{00145\ CF\_CAST\_DECL(CFDictionary);}
+\DoxyCodeLine{00146\ CF\_CAST\_DECL(CFNull);}
+\DoxyCodeLine{00147\ CF\_CAST\_DECL(CFNumber);}
+\DoxyCodeLine{00148\ CF\_CAST\_DECL(CFSet);}
+\DoxyCodeLine{00149\ CF\_CAST\_DECL(CFString);}
+\DoxyCodeLine{00150\ CF\_CAST\_DECL(CFURL);}
+\DoxyCodeLine{00151\ CF\_CAST\_DECL(CFUUID);}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ CF\_CAST\_DECL(CGColor);}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ CF\_CAST\_DECL(CTFont);}
+\DoxyCodeLine{00156\ CF\_CAST\_DECL(CTFontDescriptor);}
+\DoxyCodeLine{00157\ CF\_CAST\_DECL(CTRun);}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ CF\_CAST\_DECL(SecAccessControl);}
+\DoxyCodeLine{00160\ CF\_CAST\_DECL(SecCertificate);}
+\DoxyCodeLine{00161\ CF\_CAST\_DECL(SecKey);}
+\DoxyCodeLine{00162\ CF\_CAST\_DECL(SecPolicy);}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#undef\ CF\_CAST\_DECL}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{comment}{//\ Helper\ function\ for\ GetValueFromDictionary\ to\ create\ the\ error\ message}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//\ that\ appears\ when\ a\ type\ mismatch\ is\ encountered.}}
+\DoxyCodeLine{00168\ BASE\_EXPORT\ std::string\ GetValueFromDictionaryErrorMessage(}
+\DoxyCodeLine{00169\ \ \ \ \ CFStringRef\ key,\ \textcolor{keyword}{const}\ std::string\&\ expected\_type,\ CFTypeRef\ value);}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{comment}{//\ Utility\ function\ to\ pull\ out\ a\ value\ from\ a\ dictionary,\ check\ its\ type,\ and}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ return\ it.\ Returns\ NULL\ if\ the\ key\ is\ not\ present\ or\ of\ the\ wrong\ type.}}
+\DoxyCodeLine{00173\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00174\ T\ GetValueFromDictionary(CFDictionaryRef\ dict,\ CFStringRef\ key)\ \{}
+\DoxyCodeLine{00175\ \ \ CFTypeRef\ value\ =\ CFDictionaryGetValue(dict,\ key);}
+\DoxyCodeLine{00176\ \ \ T\ value\_specific\ =\ CFCast<T>(value);}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordflow}{if}\ (value\ \&\&\ !value\_specific)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ std::string\ expected\_type\ =\ TypeNameForCFType(value\_specific);}
+\DoxyCodeLine{00180\ \ \ \ \ DLOG(WARNING)\ <<\ GetValueFromDictionaryErrorMessage(key,\ expected\_type,}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value);}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordflow}{return}\ value\_specific;}
+\DoxyCodeLine{00185\ \}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \textcolor{comment}{//\ CoreFoundation\ versions\ of\ the\ above\ calls.\ These\ only\ uses\ manually-\/owned}}
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ resources,\ so\ they\ do\ not\ depend\ on\ an\ NSAutoreleasePool\ being\ set\ up\ on\ the}}
+\DoxyCodeLine{00189\ \textcolor{comment}{//\ current\ thread.}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{comment}{//\ Converts\ |path|\ to\ a\ CFURLRef.\ Returns\ nil\ if\ |path|\ is\ empty.}}
+\DoxyCodeLine{00192\ BASE\_EXPORT\ ScopedCFTypeRef<CFURLRef>\ FilePathToCFURL(\textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \textcolor{comment}{//\ Converts\ |path|\ to\ a\ CFStringRef.\ Returns\ nil\ if\ |path|\ is\ empty.}}
+\DoxyCodeLine{00195\ BASE\_EXPORT\ ScopedCFTypeRef<CFStringRef>\ FilePathToCFString(}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keyword}{const}\ FilePath\&\ path);}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \textcolor{comment}{//\ Converts\ |str|\ to\ a\ FilePath.\ Returns\ an\ empty\ path\ if\ |str|\ is\ nil.}}
+\DoxyCodeLine{00199\ BASE\_EXPORT\ FilePath\ CFStringToFilePath(CFStringRef\ str);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \textcolor{comment}{//\ Converts\ |url|\ to\ a\ FilePath.\ Returns\ an\ empty\ path\ if\ |url|\ is\ nil\ or\ if}}
+\DoxyCodeLine{00202\ \textcolor{comment}{//\ |url|\ is\ not\ of\ scheme\ "{}file"{}.}}
+\DoxyCodeLine{00203\ BASE\_EXPORT\ FilePath\ CFURLToFilePath(CFURLRef\ url);}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \textcolor{comment}{//\ Returns\ an\ immutable\ \`{}base::span<const\ uint8\_t>`\ pointing\ to\ the\ memory}}
+\DoxyCodeLine{00206\ \textcolor{comment}{//\ owned\ by\ \`{}data`.\ \`{}data`\ must\ outlive\ the\ returned\ span.}}
+\DoxyCodeLine{00207\ \textcolor{comment}{//\ Returns\ an\ empty\ span\ if\ \`{}data`\ is\ null\ or\ empty.}}
+\DoxyCodeLine{00208\ BASE\_EXPORT\ span<const\ uint8\_t>\ CFDataToSpan(CFDataRef\ data);}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \textcolor{comment}{//\ Returns\ a\ mutable\ \`{}base::span<uint8\_t>`\ pointing\ to\ the\ memory}}
+\DoxyCodeLine{00211\ \textcolor{comment}{//\ owned\ by\ \`{}data`.\ \`{}data`\ must\ outlive\ the\ returned\ span.}}
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ Returns\ an\ empty\ span\ if\ \`{}data`\ is\ null\ or\ empty.}}
+\DoxyCodeLine{00213\ BASE\_EXPORT\ span<uint8\_t>\ CFMutableDataToSpan(CFMutableDataRef\ data);}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::apple}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{comment}{//\ Stream\ operations\ for\ CFTypes.\ They\ can\ be\ used\ with\ Objective-\/C\ types\ as}}
+\DoxyCodeLine{00218\ \textcolor{comment}{//\ well\ by\ using\ the\ casting\ methods\ in\ base/apple/bridging.h.}}
+\DoxyCodeLine{00219\ \textcolor{comment}{//}}
+\DoxyCodeLine{00220\ \textcolor{comment}{//\ For\ example:\ LOG(INFO)\ <<\ base::apple::NSToCFPtrCast(@"{}foo"{});}}
+\DoxyCodeLine{00221\ \textcolor{comment}{//}}
+\DoxyCodeLine{00222\ \textcolor{comment}{//\ operator<<()\ can\ not\ be\ overloaded\ for\ Objective-\/C\ types\ as\ the\ compiler}}
+\DoxyCodeLine{00223\ \textcolor{comment}{//\ cannot\ distinguish\ between\ overloads\ for\ id\ with\ overloads\ for\ void*.}}
+\DoxyCodeLine{00224\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ std::ostream\&\ operator<<(std::ostream\&\ o,}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ CFErrorRef\ err);}
+\DoxyCodeLine{00226\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ std::ostream\&\ operator<<(std::ostream\&\ o,}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ CFStringRef\ str);}
+\DoxyCodeLine{00228\ BASE\_EXPORT\ \textcolor{keyword}{extern}\ std::ostream\&\ operator<<(std::ostream\&\ o,\ CFRange);}
+
+\end{DoxyCode}

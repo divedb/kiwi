@@ -81,30 +81,12 @@ enum \mbox{\hyperlink{classkiwi_1_1_file_af604bf017dcbfa20966c1ecc71dff572}{When
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}{File}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
-\item 
-\mbox{\hyperlink{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}{File}} (Scoped\+Platform\+File platform\+\_\+file)
-\item 
-\Hypertarget{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899}\label{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899} 
-{\bfseries File} (Platform\+File platform\+\_\+file)
-\item 
-\mbox{\hyperlink{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}{File}} (Scoped\+Platform\+File platform\+\_\+file, bool async)
-\item 
-\Hypertarget{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f}\label{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f} 
-{\bfseries File} (Platform\+File platform\+\_\+file, bool async)
-\item 
-\Hypertarget{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049}\label{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049} 
-{\bfseries File} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error\+\_\+details)
-\item 
-\Hypertarget{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4}\label{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4} 
-{\bfseries File} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
-\begin{DoxyCompactList}\small\item\em Move constructor. \end{DoxyCompactList}\item 
 \Hypertarget{classkiwi_1_1_file_a7c2ae7d574cb16e26a59407554428ec8}\label{classkiwi_1_1_file_a7c2ae7d574cb16e26a59407554428ec8} 
 \mbox{\hyperlink{classkiwi_1_1_file}{File}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
 \item 
 \Hypertarget{classkiwi_1_1_file_a277a950e2310f6868d23d8e49ba2384e}\label{classkiwi_1_1_file_a277a950e2310f6868d23d8e49ba2384e} 
 void {\bfseries Initialize} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
-\item 
+\begin{DoxyCompactList}\small\item\em Creates or opens the given file. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{classkiwi_1_1_file_a71faf3633bb71e0af623c1bd2a978940}{Is\+Valid}} () const
 \item 
 bool \mbox{\hyperlink{classkiwi_1_1_file_af608a12b8bf763738a0b2e31f27e08e7}{Is\+Created}} () const
@@ -196,14 +178,33 @@ bool {\bfseries Get\+Info} (\mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{Info}
 \Hypertarget{classkiwi_1_1_file_af9caf46549b6e03a532fdc64146302b8}\label{classkiwi_1_1_file_af9caf46549b6e03a532fdc64146302b8} 
 bool {\bfseries Is\+Async} () const
 \end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Constructors}\par
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}{File}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, uint32\+\_\+t flags)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}{File}} (Scoped\+Platform\+File platform\+\_\+file)
+\item 
+\Hypertarget{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899}\label{classkiwi_1_1_file_a8c46201090bc9c9c6b0666c1b64e3899} 
+{\bfseries File} (Platform\+File platform\+\_\+file)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}{File}} (Scoped\+Platform\+File platform\+\_\+file, bool async)
+\item 
+\Hypertarget{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f}\label{classkiwi_1_1_file_a706ca8a0cc8c990bf836b848d88aec1f} 
+{\bfseries File} (Platform\+File platform\+\_\+file, bool async)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049}{File}} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error\+\_\+details)
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4}{File}} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&other)
+\end{DoxyCompactItemize}
+\end{Indent}
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 static \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} \mbox{\hyperlink{classkiwi_1_1_file_a2497e2ef31b7e7781d6e691d235dc084}{Get\+Last\+File\+Error}} ()
 \item 
-\Hypertarget{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae}\label{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae} 
-static std\+::string {\bfseries Error\+To\+String} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error)
-\begin{DoxyCompactList}\small\item\em Converts an error value to a human-\/readable form. Used for logging. \end{DoxyCompactList}\item 
+static std\+::string \mbox{\hyperlink{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae}{Error\+To\+String}} (\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}} error)
+\item 
 static constexpr uint32\+\_\+t \mbox{\hyperlink{classkiwi_1_1_file_ac35f70b9e7c4aff2a4c48581195402b8}{Add\+Flags\+For\+Passing\+To\+Untrusted\+Process}} (uint32\+\_\+t flags)
 \end{DoxyCompactItemize}
 
@@ -311,7 +312,7 @@ k\+Flag\+Win\+No\+Execute&Windows only. Prevents EXECUTE access. \\
 \doxysubsection{Constructor \& Destructor Documentation}
 \Hypertarget{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387}\index{kiwi::File@{kiwi::File}!File@{File}}
 \index{File@{File}!kiwi::File@{kiwi::File}}
-\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_a44b3d51c5757a4f59f47b5c1a6e8f387} 
 kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{path}{, }\item[{uint32\+\_\+t}]{flags}{}\end{DoxyParamCaption})}
 
@@ -329,7 +330,7 @@ Creates or opens the given file. This will fail with \textquotesingle{}access de
 \end{DoxySeeAlso}
 \Hypertarget{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0}\index{kiwi::File@{kiwi::File}!File@{File}}
 \index{File@{File}!kiwi::File@{kiwi::File}}
-\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_a53d85e9599f331db0cf8d8363f01a5c0} 
 kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{Scoped\+Platform\+File}]{platform\+\_\+file}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
@@ -346,7 +347,7 @@ Takes ownership of {\ttfamily platform\+\_\+file} and sets async to the given va
 \end{DoxyParams}
 \Hypertarget{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03}\index{kiwi::File@{kiwi::File}!File@{File}}
 \index{File@{File}!kiwi::File@{kiwi::File}}
-\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
 {\footnotesize\ttfamily \label{classkiwi_1_1_file_ac73e093b86380d33db3010492a4f0f03} 
 kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{Scoped\+Platform\+File}]{platform\+\_\+file}{, }\item[{bool}]{async}{}\end{DoxyParamCaption})}
 
@@ -357,6 +358,32 @@ Takes ownership of {\ttfamily platform\+\_\+file} and sets async to the given va
 {\em platform\+\_\+file} & A scoped handle to an already-\/opened platform-\/specific file. \\
 \hline
 {\em async} & If true, the file will be operated in asynchronous (non-\/blocking) mode; otherwise, operations will be synchronous. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049}\index{kiwi::File@{kiwi::File}!File@{File}}
+\index{File@{File}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_a017b3007405be8db844ee422e9b14049} 
+kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}}}]{error\+\_\+details}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Creates an object with a specific error\+\_\+details code.
+
+
+\begin{DoxyParams}{Parameters}
+{\em error\+\_\+details} & An error code describing the failure (e.\+g., permission denied, not found). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4}\index{kiwi::File@{kiwi::File}!File@{File}}
+\index{File@{File}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{File()}{File()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_acb3d77177d6e0785dc4ad3b1f36023a4} 
+kiwi\+::\+File\+::\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&\&}]{other}{}\end{DoxyParamCaption})}
+
+Move constructor. Transfers ownership of the file handle from another \doxylink{classkiwi_1_1_file}{File} object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \doxylink{classkiwi_1_1_file}{File} object to move from. \\
 \hline
 \end{DoxyParams}
 
@@ -387,6 +414,22 @@ Note that the way to verify the success of the operation is to use \doxylink{cla
 
 \begin{DoxyReturn}{Returns}
 The OS result of opening this file. 
+\end{DoxyReturn}
+\Hypertarget{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae}\index{kiwi::File@{kiwi::File}!ErrorToString@{ErrorToString}}
+\index{ErrorToString@{ErrorToString}!kiwi::File@{kiwi::File}}
+\doxysubsubsection{\texorpdfstring{ErrorToString()}{ErrorToString()}}
+{\footnotesize\ttfamily \label{classkiwi_1_1_file_ab5187b304515a8f2b0c73a15f6c023ae} 
+std\+::string kiwi\+::\+File\+::\+Error\+To\+String (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{Error}}}]{error}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts an error value to a human-\/readable form. Used for logging.
+
+
+\begin{DoxyParams}{Parameters}
+{\em error} & The error code to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A string describing the error. 
 \end{DoxyReturn}
 \Hypertarget{classkiwi_1_1_file_a013f9c9d01ee3c46494a9a80e9fba8b3}\index{kiwi::File@{kiwi::File}!Flush@{Flush}}
 \index{Flush@{Flush}!kiwi::File@{kiwi::File}}

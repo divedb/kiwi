@@ -1,0 +1,350 @@
+\doxysection{kiwi\+::internal\+::flat\+\_\+tree\texorpdfstring{$<$}{<} Key, Get\+Key\+From\+Value, Key\+Compare, Container \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classkiwi_1_1internal_1_1flat__tree}{}\label{classkiwi_1_1internal_1_1flat__tree}\index{kiwi::internal::flat\_tree$<$ Key, GetKeyFromValue, KeyCompare, Container $>$@{kiwi::internal::flat\_tree$<$ Key, GetKeyFromValue, KeyCompare, Container $>$}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structkiwi_1_1internal_1_1flat__tree_1_1value__compare}{value\+\_\+compare}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a62130761b48b592ea0e7ee79ae0b0353}\label{classkiwi_1_1internal_1_1flat__tree_a62130761b48b592ea0e7ee79ae0b0353} 
+using {\bfseries key\+\_\+type} = Key
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a0488e08fede6ef2550df82004855c3ae}\label{classkiwi_1_1internal_1_1flat__tree_a0488e08fede6ef2550df82004855c3ae} 
+using {\bfseries key\+\_\+compare} = Key\+Compare
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ae396f96543356a4c8dcce12cf9db1b51}\label{classkiwi_1_1internal_1_1flat__tree_ae396f96543356a4c8dcce12cf9db1b51} 
+using {\bfseries value\+\_\+type} = typename Container\+::value\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a093f06e8f9017cd8df86203f1d693e12}\label{classkiwi_1_1internal_1_1flat__tree_a093f06e8f9017cd8df86203f1d693e12} 
+using {\bfseries pointer} = typename Container\+::pointer
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a16dea86face0497c28b6dea7bd0b1ba4}\label{classkiwi_1_1internal_1_1flat__tree_a16dea86face0497c28b6dea7bd0b1ba4} 
+using {\bfseries const\+\_\+pointer} = typename Container\+::const\+\_\+pointer
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a286c26dd556b800647975d7601b63f47}\label{classkiwi_1_1internal_1_1flat__tree_a286c26dd556b800647975d7601b63f47} 
+using {\bfseries reference} = typename Container\+::reference
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aa2b240c720d65ba68c8487514e742dbb}\label{classkiwi_1_1internal_1_1flat__tree_aa2b240c720d65ba68c8487514e742dbb} 
+using {\bfseries const\+\_\+reference} = typename Container\+::const\+\_\+reference
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ae7f6fbcb31383c4d0aea8f33b2c2eff2}\label{classkiwi_1_1internal_1_1flat__tree_ae7f6fbcb31383c4d0aea8f33b2c2eff2} 
+using {\bfseries size\+\_\+type} = typename Container\+::size\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4e06f0c7784ed72522005265211fb85c}\label{classkiwi_1_1internal_1_1flat__tree_a4e06f0c7784ed72522005265211fb85c} 
+using {\bfseries difference\+\_\+type} = typename Container\+::difference\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a352575c8f78b2fcd6c70846350064bab}\label{classkiwi_1_1internal_1_1flat__tree_a352575c8f78b2fcd6c70846350064bab} 
+using {\bfseries iterator} = typename Container\+::iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a6559e6db16bbdf60cff5a0b0fe77217e}\label{classkiwi_1_1internal_1_1flat__tree_a6559e6db16bbdf60cff5a0b0fe77217e} 
+using {\bfseries const\+\_\+iterator} = typename Container\+::const\+\_\+iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a8c95bea9d8bdb19d05668f6c787500bd}\label{classkiwi_1_1internal_1_1flat__tree_a8c95bea9d8bdb19d05668f6c787500bd} 
+using {\bfseries reverse\+\_\+iterator} = typename Container\+::reverse\+\_\+iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ac01a1171c8b345bb6d8ee48102780c02}\label{classkiwi_1_1internal_1_1flat__tree_ac01a1171c8b345bb6d8ee48102780c02} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = typename Container\+::const\+\_\+reverse\+\_\+iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4b6776a75319f4a343fb49f236c2cfb5}\label{classkiwi_1_1internal_1_1flat__tree_a4b6776a75319f4a343fb49f236c2cfb5} 
+using {\bfseries container\+\_\+type} = Container
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a0a104e1efe056966bebe66012003250b}\label{classkiwi_1_1internal_1_1flat__tree_a0a104e1efe056966bebe66012003250b} 
+{\bfseries flat\+\_\+tree} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&)=default
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ad65a76a9c1d164b73a2ded3bb21c6591}\label{classkiwi_1_1internal_1_1flat__tree_ad65a76a9c1d164b73a2ded3bb21c6591} 
+{\bfseries flat\+\_\+tree} (\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&\&)=default
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a336f624afc3c60faab63d51b81d78f2d}\label{classkiwi_1_1internal_1_1flat__tree_a336f624afc3c60faab63d51b81d78f2d} 
+{\bfseries flat\+\_\+tree} (const key\+\_\+compare \&comp)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a1417df4097d8d2c396a253b91b6d980d}\label{classkiwi_1_1internal_1_1flat__tree_a1417df4097d8d2c396a253b91b6d980d} 
+{\footnotesize template$<$class Input\+Iterator$>$ }\\{\bfseries flat\+\_\+tree} (Input\+Iterator first, Input\+Iterator last, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4162c0d60d177572cc044dd8aed175ee}\label{classkiwi_1_1internal_1_1flat__tree_a4162c0d60d177572cc044dd8aed175ee} 
+{\bfseries flat\+\_\+tree} (const container\+\_\+type \&items, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a3e40b46327fc951b5ac6409596cf4576}\label{classkiwi_1_1internal_1_1flat__tree_a3e40b46327fc951b5ac6409596cf4576} 
+{\bfseries flat\+\_\+tree} (container\+\_\+type \&\&items, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a1430d091a3658409ef8d116efae434db}\label{classkiwi_1_1internal_1_1flat__tree_a1430d091a3658409ef8d116efae434db} 
+{\bfseries flat\+\_\+tree} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ ilist, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a376d682254f0ce5d71a30cf18b8a7d06}\label{classkiwi_1_1internal_1_1flat__tree_a376d682254f0ce5d71a30cf18b8a7d06} 
+{\footnotesize template$<$class Input\+Iterator$>$ }\\{\bfseries flat\+\_\+tree} (\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\+\_\+unique\+\_\+t}}, Input\+Iterator first, Input\+Iterator last, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a160a424716430d6f4fd9198feacedf0c}\label{classkiwi_1_1internal_1_1flat__tree_a160a424716430d6f4fd9198feacedf0c} 
+{\bfseries flat\+\_\+tree} (\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\+\_\+unique\+\_\+t}}, const container\+\_\+type \&items, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a2c8c3f36e3bd23096c7b153e57e409b4}\label{classkiwi_1_1internal_1_1flat__tree_a2c8c3f36e3bd23096c7b153e57e409b4} 
+constexpr {\bfseries flat\+\_\+tree} (\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\+\_\+unique\+\_\+t}}, container\+\_\+type \&\&items, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a64510711fea84cf4f1e4fe4f4fd8d955}\label{classkiwi_1_1internal_1_1flat__tree_a64510711fea84cf4f1e4fe4f4fd8d955} 
+{\bfseries flat\+\_\+tree} (\mbox{\hyperlink{structkiwi_1_1sorted__unique__t}{sorted\+\_\+unique\+\_\+t}}, std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ ilist, const key\+\_\+compare \&comp=key\+\_\+compare())
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a72235f27158a747de8fe053ed1f8aef6}\label{classkiwi_1_1internal_1_1flat__tree_a72235f27158a747de8fe053ed1f8aef6} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \& {\bfseries operator=} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&)=default
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a9524f68bc4a3beed5fa18d0bcf96aaff}\label{classkiwi_1_1internal_1_1flat__tree_a9524f68bc4a3beed5fa18d0bcf96aaff} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \& {\bfseries operator=} (\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&\&)=default
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a94c96023506fa9e7f87be6dabd1078f4}\label{classkiwi_1_1internal_1_1flat__tree_a94c96023506fa9e7f87be6dabd1078f4} 
+\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \& {\bfseries operator=} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ ilist)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_afc3b1736c22d559c50534206aae42d94}\label{classkiwi_1_1internal_1_1flat__tree_afc3b1736c22d559c50534206aae42d94} 
+void {\bfseries reserve} (size\+\_\+type new\+\_\+capacity)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aaae7ef6c4bbb5277e3ab6feb1ea2972e}\label{classkiwi_1_1internal_1_1flat__tree_aaae7ef6c4bbb5277e3ab6feb1ea2972e} 
+size\+\_\+type {\bfseries capacity} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a5614d3cd670c395b2973530dd45518ef}\label{classkiwi_1_1internal_1_1flat__tree_a5614d3cd670c395b2973530dd45518ef} 
+void {\bfseries shrink\+\_\+to\+\_\+fit} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a04eb30554ada64b3fbf0abeaddabe13f}\label{classkiwi_1_1internal_1_1flat__tree_a04eb30554ada64b3fbf0abeaddabe13f} 
+void {\bfseries clear} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a7c5747f8d62da21786180d16939a3caf}\label{classkiwi_1_1internal_1_1flat__tree_a7c5747f8d62da21786180d16939a3caf} 
+constexpr size\+\_\+type {\bfseries size} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_afba47aa78ab8d406f0c3ffb47b0e5231}\label{classkiwi_1_1internal_1_1flat__tree_afba47aa78ab8d406f0c3ffb47b0e5231} 
+constexpr size\+\_\+type {\bfseries max\+\_\+size} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a2a530ce07a8baa4d6d7e6149686cbe2a}\label{classkiwi_1_1internal_1_1flat__tree_a2a530ce07a8baa4d6d7e6149686cbe2a} 
+constexpr bool {\bfseries empty} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a2a1bb2a3881e6c314dc6c721c3b5278a}\label{classkiwi_1_1internal_1_1flat__tree_a2a1bb2a3881e6c314dc6c721c3b5278a} 
+iterator {\bfseries begin} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a81288abe06cbfefa3ddd0173fa845138}\label{classkiwi_1_1internal_1_1flat__tree_a81288abe06cbfefa3ddd0173fa845138} 
+constexpr const\+\_\+iterator {\bfseries begin} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4f59ebde9d8248ecc0addb4f788d0271}\label{classkiwi_1_1internal_1_1flat__tree_a4f59ebde9d8248ecc0addb4f788d0271} 
+const\+\_\+iterator {\bfseries cbegin} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a25d4710ec5762c67e6856cc3cf19cbdb}\label{classkiwi_1_1internal_1_1flat__tree_a25d4710ec5762c67e6856cc3cf19cbdb} 
+iterator {\bfseries end} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a5db73534328f68220ad80b4924c0fe87}\label{classkiwi_1_1internal_1_1flat__tree_a5db73534328f68220ad80b4924c0fe87} 
+constexpr const\+\_\+iterator {\bfseries end} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a5fdf35e1908dc42d091a2d86bf3608c5}\label{classkiwi_1_1internal_1_1flat__tree_a5fdf35e1908dc42d091a2d86bf3608c5} 
+const\+\_\+iterator {\bfseries cend} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aa0e14762d99abb40aeaaa94c422b473b}\label{classkiwi_1_1internal_1_1flat__tree_aa0e14762d99abb40aeaaa94c422b473b} 
+reverse\+\_\+iterator {\bfseries rbegin} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a89d442e28aab3234513e350a87767d19}\label{classkiwi_1_1internal_1_1flat__tree_a89d442e28aab3234513e350a87767d19} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rbegin} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a511728d2fefc18b4e68ed3f962b8292e}\label{classkiwi_1_1internal_1_1flat__tree_a511728d2fefc18b4e68ed3f962b8292e} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_acb926825949a7d292a24df6c97d4ba39}\label{classkiwi_1_1internal_1_1flat__tree_acb926825949a7d292a24df6c97d4ba39} 
+reverse\+\_\+iterator {\bfseries rend} ()
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aa3a17612c50056ce351ca719a5462507}\label{classkiwi_1_1internal_1_1flat__tree_aa3a17612c50056ce351ca719a5462507} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rend} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ad34dfaf65f451b4371f437b5ad8ea2ad}\label{classkiwi_1_1internal_1_1flat__tree_ad34dfaf65f451b4371f437b5ad8ea2ad} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a477f0445229ddc9a099868bd82955c85}\label{classkiwi_1_1internal_1_1flat__tree_a477f0445229ddc9a099868bd82955c85} 
+std\+::pair$<$ iterator, bool $>$ {\bfseries insert} (const value\+\_\+type \&val)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a567d71c4b415635773bffb0e3a106688}\label{classkiwi_1_1internal_1_1flat__tree_a567d71c4b415635773bffb0e3a106688} 
+std\+::pair$<$ iterator, bool $>$ {\bfseries insert} (value\+\_\+type \&\&val)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a93f7a3eedc94ab34ea93d00df9e62e4f}\label{classkiwi_1_1internal_1_1flat__tree_a93f7a3eedc94ab34ea93d00df9e62e4f} 
+iterator {\bfseries insert} (const\+\_\+iterator position\+\_\+hint, const value\+\_\+type \&x)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_af703926cda5b87b3e3501f9faf93576f}\label{classkiwi_1_1internal_1_1flat__tree_af703926cda5b87b3e3501f9faf93576f} 
+iterator {\bfseries insert} (const\+\_\+iterator position\+\_\+hint, value\+\_\+type \&\&x)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a66e38b6596515c31b5a8d483fdc79ae6}\label{classkiwi_1_1internal_1_1flat__tree_a66e38b6596515c31b5a8d483fdc79ae6} 
+{\footnotesize template$<$class Input\+Iterator$>$ \newline
+requires (std\+::input\+\_\+iterator$<$Input\+Iterator$>$)}\\void {\bfseries insert} (Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a5374ccb16d3fedef4bd6a259ade4b28f}\label{classkiwi_1_1internal_1_1flat__tree_a5374ccb16d3fedef4bd6a259ade4b28f} 
+{\footnotesize template$<$class Input\+Iterator\+Ptr$>$ }\\UNSAFE\+\_\+\+BUFFER\+\_\+\+USAGE void {\bfseries insert} (Input\+Iterator\+Ptr \texorpdfstring{$\ast$}{*}first, Input\+Iterator\+Ptr \texorpdfstring{$\ast$}{*}last)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a04a9099c1298d21b64ff267b017db337}\label{classkiwi_1_1internal_1_1flat__tree_a04a9099c1298d21b64ff267b017db337} 
+{\footnotesize template$<$class Range$>$ \newline
+requires (std\+::ranges\+::input\+\_\+range$<$Range$>$)}\\void {\bfseries insert\+\_\+range} (Range \&\&range)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aa711a17245cc4bd841e561e4f22348cf}\label{classkiwi_1_1internal_1_1flat__tree_aa711a17245cc4bd841e561e4f22348cf} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ iterator, bool $>$ {\bfseries emplace} (Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_af3c7758dd85fe00096f8aceb9feae485}\label{classkiwi_1_1internal_1_1flat__tree_af3c7758dd85fe00096f8aceb9feae485} 
+{\footnotesize template$<$class... Args$>$ }\\iterator {\bfseries emplace\+\_\+hint} (const\+\_\+iterator position\+\_\+hint, Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a21ab810db750c10a4580e4f20806770b}\label{classkiwi_1_1internal_1_1flat__tree_a21ab810db750c10a4580e4f20806770b} 
+container\+\_\+type {\bfseries extract} () \&\&
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a5d1db5c484a2523d11e642ccd3287bbf}\label{classkiwi_1_1internal_1_1flat__tree_a5d1db5c484a2523d11e642ccd3287bbf} 
+void {\bfseries replace} (container\+\_\+type \&\&body)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a07ed9a43a47a8861b3256d5dff715c63}\label{classkiwi_1_1internal_1_1flat__tree_a07ed9a43a47a8861b3256d5dff715c63} 
+iterator {\bfseries erase} (iterator position)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4f58ab1833b1977780094f9e26e58ba0}\label{classkiwi_1_1internal_1_1flat__tree_a4f58ab1833b1977780094f9e26e58ba0} 
+{\footnotesize template$<$typename DummyT = void$>$ }\\iterator {\bfseries erase} (const\+\_\+iterator position)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_afe881cc4d967c200dfb125bb2f21d3c3}\label{classkiwi_1_1internal_1_1flat__tree_afe881cc4d967c200dfb125bb2f21d3c3} 
+iterator {\bfseries erase} (const\+\_\+iterator first, const\+\_\+iterator last)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_acddd45e6b4de6e9759d1610388ed0095}\label{classkiwi_1_1internal_1_1flat__tree_acddd45e6b4de6e9759d1610388ed0095} 
+size\+\_\+type {\bfseries erase} (const Key \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aba3a206ac0cb65bb27d0accd68e3be6e}\label{classkiwi_1_1internal_1_1flat__tree_aba3a206ac0cb65bb27d0accd68e3be6e} 
+{\footnotesize template$<$typename K$>$ }\\size\+\_\+type {\bfseries erase} (const K \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a50370d02da9f80351fce4784cafb5980}\label{classkiwi_1_1internal_1_1flat__tree_a50370d02da9f80351fce4784cafb5980} 
+constexpr key\+\_\+compare {\bfseries key\+\_\+comp} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ad643b0831f30005305d41c3a28faf80c}\label{classkiwi_1_1internal_1_1flat__tree_ad643b0831f30005305d41c3a28faf80c} 
+constexpr \mbox{\hyperlink{structkiwi_1_1internal_1_1flat__tree_1_1value__compare}{value\+\_\+compare}} {\bfseries value\+\_\+comp} () const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a14890f7cd769ec27b18322ba0dab7d51}\label{classkiwi_1_1internal_1_1flat__tree_a14890f7cd769ec27b18322ba0dab7d51} 
+size\+\_\+type {\bfseries count} (const Key \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ad3e33dea1919e275a200dbe5dfeb4e24}\label{classkiwi_1_1internal_1_1flat__tree_ad3e33dea1919e275a200dbe5dfeb4e24} 
+{\footnotesize template$<$typename K$>$ }\\size\+\_\+type {\bfseries count} (const K \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a707d8de739827f05612ab4dd7c284a67}\label{classkiwi_1_1internal_1_1flat__tree_a707d8de739827f05612ab4dd7c284a67} 
+iterator {\bfseries find} (const Key \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a265a6f0126e6c5305a48d76bfabc9e6f}\label{classkiwi_1_1internal_1_1flat__tree_a265a6f0126e6c5305a48d76bfabc9e6f} 
+const\+\_\+iterator {\bfseries find} (const Key \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a8e3eafda162a3ea07fd1097ca2b88540}\label{classkiwi_1_1internal_1_1flat__tree_a8e3eafda162a3ea07fd1097ca2b88540} 
+{\footnotesize template$<$typename K$>$ }\\iterator {\bfseries find} (const K \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a9d19e259635bc4f5c8a4c21aec85d074}\label{classkiwi_1_1internal_1_1flat__tree_a9d19e259635bc4f5c8a4c21aec85d074} 
+{\footnotesize template$<$typename K$>$ }\\const\+\_\+iterator {\bfseries find} (const K \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ab22a1884829ebe982ecbb8eca353e7db}\label{classkiwi_1_1internal_1_1flat__tree_ab22a1884829ebe982ecbb8eca353e7db} 
+bool {\bfseries contains} (const Key \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a10286acc1dd6f9fd5fa6d2f25e7dba92}\label{classkiwi_1_1internal_1_1flat__tree_a10286acc1dd6f9fd5fa6d2f25e7dba92} 
+{\footnotesize template$<$typename K$>$ }\\bool {\bfseries contains} (const K \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a1aa1f13ce3ec537d1dd7b270f900ef58}\label{classkiwi_1_1internal_1_1flat__tree_a1aa1f13ce3ec537d1dd7b270f900ef58} 
+std\+::pair$<$ iterator, iterator $>$ {\bfseries equal\+\_\+range} (const Key \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_afacb1679ba4b7c1bc69a0ef5cd734326}\label{classkiwi_1_1internal_1_1flat__tree_afacb1679ba4b7c1bc69a0ef5cd734326} 
+std\+::pair$<$ const\+\_\+iterator, const\+\_\+iterator $>$ {\bfseries equal\+\_\+range} (const Key \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a30b10b1efc145471f56d446d2be2afbb}\label{classkiwi_1_1internal_1_1flat__tree_a30b10b1efc145471f56d446d2be2afbb} 
+{\footnotesize template$<$typename K$>$ }\\std\+::pair$<$ iterator, iterator $>$ {\bfseries equal\+\_\+range} (const K \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a085cf53c4ba04516b788143ace752c2d}\label{classkiwi_1_1internal_1_1flat__tree_a085cf53c4ba04516b788143ace752c2d} 
+{\footnotesize template$<$typename K$>$ }\\std\+::pair$<$ const\+\_\+iterator, const\+\_\+iterator $>$ {\bfseries equal\+\_\+range} (const K \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aa06a83c63c3da0062e31a5d96480a3a8}\label{classkiwi_1_1internal_1_1flat__tree_aa06a83c63c3da0062e31a5d96480a3a8} 
+iterator {\bfseries lower\+\_\+bound} (const Key \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a76438a1841204c967662d6e7debda640}\label{classkiwi_1_1internal_1_1flat__tree_a76438a1841204c967662d6e7debda640} 
+const\+\_\+iterator {\bfseries lower\+\_\+bound} (const Key \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_adaab04a70a0beb542ce94ad92d87df57}\label{classkiwi_1_1internal_1_1flat__tree_adaab04a70a0beb542ce94ad92d87df57} 
+{\footnotesize template$<$typename K$>$ }\\iterator {\bfseries lower\+\_\+bound} (const K \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_acd3bc54d7c267d79cd4442547a3c0fa7}\label{classkiwi_1_1internal_1_1flat__tree_acd3bc54d7c267d79cd4442547a3c0fa7} 
+{\footnotesize template$<$typename K$>$ }\\const\+\_\+iterator {\bfseries lower\+\_\+bound} (const K \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_af0da2d19ed58f7a1c39c83148753c3b4}\label{classkiwi_1_1internal_1_1flat__tree_af0da2d19ed58f7a1c39c83148753c3b4} 
+iterator {\bfseries upper\+\_\+bound} (const Key \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4b6f1f5f0b06e8f77cccea5ae9a7da7c}\label{classkiwi_1_1internal_1_1flat__tree_a4b6f1f5f0b06e8f77cccea5ae9a7da7c} 
+const\+\_\+iterator {\bfseries upper\+\_\+bound} (const Key \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a9950618641c3ce0c511d1fa5b5e7a347}\label{classkiwi_1_1internal_1_1flat__tree_a9950618641c3ce0c511d1fa5b5e7a347} 
+{\footnotesize template$<$typename K$>$ }\\iterator {\bfseries upper\+\_\+bound} (const K \&key)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aaff87cc58407ae28a955b6c68e5aff27}\label{classkiwi_1_1internal_1_1flat__tree_aaff87cc58407ae28a955b6c68e5aff27} 
+{\footnotesize template$<$typename K$>$ }\\const\+\_\+iterator {\bfseries upper\+\_\+bound} (const K \&key) const
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ae3deb9093bdae29138238ca82e8f4dfc}\label{classkiwi_1_1internal_1_1flat__tree_ae3deb9093bdae29138238ca82e8f4dfc} 
+void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&other) noexcept
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aa043fcb2346da48c48221b5effa02b7c}\label{classkiwi_1_1internal_1_1flat__tree_aa043fcb2346da48c48221b5effa02b7c} 
+{\footnotesize template$<$class... Args$>$ }\\auto {\bfseries emplace} (Args \&\&... args) -\/$>$ std\+::pair$<$ iterator, bool $>$
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a97f8e94d396f4b8cb60b465aa5ad6920}\label{classkiwi_1_1internal_1_1flat__tree_a97f8e94d396f4b8cb60b465aa5ad6920} 
+{\footnotesize template$<$class... Args$>$ }\\auto {\bfseries emplace\+\_\+hint} (const\+\_\+iterator position\+\_\+hint, Args \&\&... args) -\/$>$ iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_ac220f0afff9755bc560e676770e8131b}\label{classkiwi_1_1internal_1_1flat__tree_ac220f0afff9755bc560e676770e8131b} 
+{\footnotesize template$<$typename DummyT$>$ }\\auto {\bfseries erase} (const\+\_\+iterator position) -\/$>$ iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4f57dbbc4cb01e0de26d4a3b5d69a503}\label{classkiwi_1_1internal_1_1flat__tree_a4f57dbbc4cb01e0de26d4a3b5d69a503} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries erase} (const K \&val) -\/$>$ size\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a4d551649e9c944577da9746c48bdf02b}\label{classkiwi_1_1internal_1_1flat__tree_a4d551649e9c944577da9746c48bdf02b} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries count} (const K \&key) const -\/$>$ size\+\_\+type
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a49e53dac8e01a5d380e7766d1e209460}\label{classkiwi_1_1internal_1_1flat__tree_a49e53dac8e01a5d380e7766d1e209460} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries find} (const K \&key) -\/$>$ iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a706abd3502a79a1286f79fc4f88b97ae}\label{classkiwi_1_1internal_1_1flat__tree_a706abd3502a79a1286f79fc4f88b97ae} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries find} (const K \&key) const -\/$>$ const\+\_\+iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_afc4541bab47c600a62541cd908afe1e0}\label{classkiwi_1_1internal_1_1flat__tree_afc4541bab47c600a62541cd908afe1e0} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries equal\+\_\+range} (const K \&key) -\/$>$ std\+::pair$<$ iterator, iterator $>$
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_add8a1edb93c5cb19a9152eb64b9b4498}\label{classkiwi_1_1internal_1_1flat__tree_add8a1edb93c5cb19a9152eb64b9b4498} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries equal\+\_\+range} (const K \&key) const -\/$>$ std\+::pair$<$ const\+\_\+iterator, const\+\_\+iterator $>$
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a032cd0a9cf227ca174dc060ee34cc965}\label{classkiwi_1_1internal_1_1flat__tree_a032cd0a9cf227ca174dc060ee34cc965} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries lower\+\_\+bound} (const K \&key) -\/$>$ iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_acb076c67b58cb13b112c2f2ff47e25bd}\label{classkiwi_1_1internal_1_1flat__tree_acb076c67b58cb13b112c2f2ff47e25bd} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries lower\+\_\+bound} (const K \&key) const -\/$>$ const\+\_\+iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aebfc7027d50afa2233e25f6fd4e2e1f1}\label{classkiwi_1_1internal_1_1flat__tree_aebfc7027d50afa2233e25f6fd4e2e1f1} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries upper\+\_\+bound} (const K \&key) -\/$>$ iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a648e2832c1b1c6407b69ee222b9327f9}\label{classkiwi_1_1internal_1_1flat__tree_a648e2832c1b1c6407b69ee222b9327f9} 
+{\footnotesize template$<$typename K$>$ }\\auto {\bfseries upper\+\_\+bound} (const K \&key) const -\/$>$ const\+\_\+iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a2bc99afc457ec00a616860bd87618581}\label{classkiwi_1_1internal_1_1flat__tree_a2bc99afc457ec00a616860bd87618581} 
+{\footnotesize template$<$class... Args$>$ }\\auto {\bfseries unsafe\+\_\+emplace} (const\+\_\+iterator position, Args \&\&... args) -\/$>$ iterator
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a953710d997720b3d95e4810604850e47}\label{classkiwi_1_1internal_1_1flat__tree_a953710d997720b3d95e4810604850e47} 
+{\footnotesize template$<$class K, class... Args$>$ }\\auto {\bfseries emplace\+\_\+key\+\_\+args} (const K \&key, Args \&\&... args) -\/$>$ std\+::pair$<$ iterator, bool $>$
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aeaf2e9267fd3f732794969a89c5f8c41}\label{classkiwi_1_1internal_1_1flat__tree_aeaf2e9267fd3f732794969a89c5f8c41} 
+{\footnotesize template$<$class K, class... Args$>$ }\\auto {\bfseries emplace\+\_\+hint\+\_\+key\+\_\+args} (const\+\_\+iterator hint, const K \&key, Args \&\&... args) -\/$>$ std\+::pair$<$ iterator, bool $>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a42919a28fb68066061236cb22d274360}\label{classkiwi_1_1internal_1_1flat__tree_a42919a28fb68066061236cb22d274360} 
+{\footnotesize template$<$class... Args$>$ }\\iterator {\bfseries unsafe\+\_\+emplace} (const\+\_\+iterator position, Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a89636a5dc630649693fd23925275f94e}\label{classkiwi_1_1internal_1_1flat__tree_a89636a5dc630649693fd23925275f94e} 
+{\footnotesize template$<$class K, class... Args$>$ }\\std\+::pair$<$ iterator, bool $>$ {\bfseries emplace\+\_\+key\+\_\+args} (const K \&key, Args \&\&... args)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_af2d90090b198436bdde8e894ea058b8a}\label{classkiwi_1_1internal_1_1flat__tree_af2d90090b198436bdde8e894ea058b8a} 
+{\footnotesize template$<$class K, class... Args$>$ }\\std\+::pair$<$ iterator, bool $>$ {\bfseries emplace\+\_\+hint\+\_\+key\+\_\+args} (const\+\_\+iterator hint, const K \&key, Args \&\&... args)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a8d1d668b614e389c157554b1beb26613}\label{classkiwi_1_1internal_1_1flat__tree_a8d1d668b614e389c157554b1beb26613} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&lhs, const \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_a47adac4490e0b351b75a1806809f4fbf}\label{classkiwi_1_1internal_1_1flat__tree_a47adac4490e0b351b75a1806809f4fbf} 
+auto {\bfseries operator$<$=$>$} (const \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&lhs, const \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&rhs)
+\item 
+\Hypertarget{classkiwi_1_1internal_1_1flat__tree_aff34f8303c6749a0c2d24fa23423e78a}\label{classkiwi_1_1internal_1_1flat__tree_aff34f8303c6749a0c2d24fa23423e78a} 
+void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&lhs, \mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{flat\+\_\+tree}} \&rhs) noexcept
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/kiwi/containers/flat\+\_\+tree.\+hh\end{DoxyCompactItemize}

@@ -734,16 +734,29 @@ class GSL_POINTER span {
         span<element_type>(data() + size_type{offset}, count));
   }
 
-  // Splits a span a given offset, returning a pair of spans that cover the
-  // ranges strictly before the offset and starting at the offset, respectively.
-  //
-  // (Not in `std::span`; inspired by Rust's `slice::split_at()` and
-  // `split_at_mut()`.)
+  /// Splits a span a given offset, returning a pair of spans that cover the
+  /// ranges strictly before the offset and starting at the offset,
+  /// respectively.
+  ///
+  /// (Not in `std::span`; inspired by Rust's `slice::split_at()` and
+  /// `split_at_mut()`.)
   template <size_t Offset>
     requires(Offset <= extent)
   constexpr auto split_at() const {
     return std::pair(first<Offset>(), subspan<Offset, extent - Offset>());
   }
+
+  /// Splits the span at the given runtime offset.
+  ///
+  /// Returns a pair of spans:
+  /// - The first covers the range `[0, offset)`
+  /// - The second covers the range `[offset, size())`
+  ///
+  /// Inspired by Rust's `slice::split_at()`.
+  ///
+  /// \param offset The index at which to split the span; must be less than or
+  ///               equal to `size()`.
+  /// \return A pair of spans split at the given offset.
   constexpr auto split_at(StrictNumeric<size_type> offset) const {
     return std::pair(first(offset), subspan(offset));
   }

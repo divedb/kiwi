@@ -1,0 +1,59 @@
+\doxysection{pass\+\_\+key.\+hh}
+\hypertarget{pass__key_8hh_source}{}\label{pass__key_8hh_source}\index{include/kiwi/types/pass\_key.hh@{include/kiwi/types/pass\_key.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2019\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ base::PassKey\ can\ be\ used\ to\ restrict\ access\ to\ functions\ to\ an\ authorized}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ caller.\ The\ primary\ use\ case\ is\ restricting\ the\ construction\ of\ an\ object\ in}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ situations\ where\ the\ constructor\ needs\ to\ be\ public,\ which\ may\ be\ the\ case}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ if\ the\ object\ must\ be\ constructed\ through\ a\ helper\ function,\ such\ as}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ blink::MakeGarbageCollected.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ For\ example,\ to\ limit\ the\ creation\ of\ 'Foo'\ to\ the\ 'Manager'\ class:}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \ class\ Foo\ \{}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ public:}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ \ \ \ Foo(base::PassKey<Manager>);}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ \ \};}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ \ class\ Manager\ \{}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ \ \ public:}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ \ \ \ using\ PassKey\ =\ base::PassKey<Manager>;}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ \ \ \ Manager()\ :\ foo\_(blink::MakeGarbageCollected<Foo>(PassKey()))\ \{\}}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ \ \ void\ Trace(blink::Visitor*\ visitor)\ const\ \{\ visitor-\/>Trace(foo\_);\ \}}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ \ \ Foo*\ GetFooSingleton()\ \{\ foo\_;\ \}}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ \ private:}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ \ \ blink::Member<Foo>\ foo\_;}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \ \};}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ In\ the\ above\ example,\ the\ 'Foo'\ constructor\ requires\ an\ instance\ of}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ base::PassKey<Manager>.\ Only\ Manager\ is\ allowed\ to\ create\ such\ instances,}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ making\ the\ constructor\ unusable\ elsewhere.}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }PassKey\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{friend}\ T;}
+\DoxyCodeLine{00039\ \ \ PassKey()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ NonCopyablePassKey\ is\ a\ version\ of\ PassKey\ that\ also\ disallows\ copy/move}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ construction/assignment.\ This\ way\ functions\ called\ with\ a\ passkey\ cannot\ use}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ that\ key\ to\ invoke\ other\ passkey-\/protected\ functions.}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00046\ \textcolor{keyword}{class\ }NonCopyablePassKey\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{friend}\ T;}
+\DoxyCodeLine{00048\ \ \ NonCopyablePassKey()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00049\ \ \ NonCopyablePassKey(\textcolor{keyword}{const}\ NonCopyablePassKey\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00050\ \ \ NonCopyablePassKey\&\ operator=(\textcolor{keyword}{const}\ NonCopyablePassKey\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

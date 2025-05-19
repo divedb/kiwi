@@ -1,0 +1,140 @@
+\doxysection{bits.\+hh}
+\hypertarget{bits_8hh_source}{}\label{bits_8hh_source}\index{include/kiwi/common/bits.hh@{include/kiwi/common/bits.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2013\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ This\ file\ defines\ some\ bit\ utilities.}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ BASE\_BITS\_H\_}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ BASE\_BITS\_H\_}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <bit>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}kiwi/common/logging.hh"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }kiwi::bits\ \{}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ Bit\ functions\ in\ <bit>\ are\ restricted\ to\ a\ specific\ set\ of\ types\ of\ unsigned}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ integer;\ restrict\ functions\ in\ this\ file\ that\ are\ related\ to\ those\ in\ that}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ header\ to\ match\ for\ consistency.}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00025\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1bits_1_1_unsigned_integer}{UnsignedInteger}}\ =}
+\DoxyCodeLine{00026\ \ \ \ \ std::unsigned\_integral<T>\ \&\&\ !std::same\_as<T,\ bool>\ \&\&}
+\DoxyCodeLine{00027\ \ \ \ \ !std::same\_as<T,\ char>\ \&\&\ !std::same\_as<T,\ char8\_t>\ \&\&}
+\DoxyCodeLine{00028\ \ \ \ \ !std::same\_as<T,\ char16\_t>\ \&\&\ !std::same\_as<T,\ char32\_t>\ \&\&}
+\DoxyCodeLine{00029\ \ \ \ \ !std::same\_as<T,\ wchar\_t>;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ We\ want\ to\ migrate\ all\ users\ of\ these\ functions\ to\ use\ the\ unsigned\ type}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ versions\ of\ the\ functions,\ but\ until\ they\ are\ all\ moved\ over,\ create\ a}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ concept\ that\ captures\ all\ the\ types\ that\ must\ be\ supported\ for\ compatibility}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ but\ that\ we\ want\ to\ remove.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ TODO(crbug.com/40256225):\ Switch\ uses\ to\ supported\ functions\ and}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ remove.}}
+\DoxyCodeLine{00038\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00039\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1bits_1_1_signed_integer_deprecated_do_not_use}{SignedIntegerDeprecatedDoNotUse}}\ =}
+\DoxyCodeLine{00040\ \ \ \ \ std::integral<T>\ \&\&\ !\mbox{\hyperlink{conceptkiwi_1_1bits_1_1_unsigned_integer}{UnsignedInteger<T>}};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Round\ down\ |size|\ to\ a\ multiple\ of\ alignment,\ which\ must\ be\ a\ power\ of\ two.}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptkiwi_1_1bits_1_1_unsigned_integer}{UnsignedInteger<T>}}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ T\ AlignDown(T\ size,\ T\ alignment)\ \{}
+\DoxyCodeLine{00046\ \ \ DCHECK(std::has\_single\_bit(alignment));}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordflow}{return}\ size\ \&\ \string~(alignment\ -\/\ 1);}
+\DoxyCodeLine{00048\ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Round\ down\ |size|\ to\ a\ multiple\ of\ alignment,\ which\ must\ be\ a\ power\ of\ two.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ DEPRECATED;\ use\ the\ UnsignedInteger\ version.}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ TODO(crbug.com/40256225):\ Switch\ uses\ and\ remove.}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00055\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ AlignDownDeprecatedDoNotUse(T\ size,\ T\ alignment)\ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{using\ }U\ =\ std::make\_unsigned\_t<T>;}
+\DoxyCodeLine{00057\ \ \ DCHECK(std::has\_single\_bit(\textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(alignment)));}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(size)\ \&\ \string~\textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(alignment\ -\/\ 1);}
+\DoxyCodeLine{00059\ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ Move\ |ptr|\ back\ to\ the\ previous\ multiple\ of\ alignment,\ which\ must\ be\ a\ power}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ of\ two.\ Defined\ for\ types\ where\ sizeof(T)\ is\ one\ byte.}}
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{requires}(\textcolor{keyword}{sizeof}(T)\ ==\ 1)}
+\DoxyCodeLine{00065\ \textcolor{keyword}{inline}\ T*\ AlignDown(T*\ ptr,\ uintptr\_t\ alignment)\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ AlignDown(\textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(ptr),\ alignment));}
+\DoxyCodeLine{00068\ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ Round\ up\ |size|\ to\ a\ multiple\ of\ alignment,\ which\ must\ be\ a\ power\ of\ two.}}
+\DoxyCodeLine{00071\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{requires}\ UnsignedInteger<T>}
+\DoxyCodeLine{00073\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ T\ AlignUp(T\ size,\ T\ alignment)\ \{}
+\DoxyCodeLine{00074\ \ \ DCHECK(std::has\_single\_bit(alignment));}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{return}\ (size\ +\ alignment\ -\/\ 1)\ \&\ \string~(alignment\ -\/\ 1);}
+\DoxyCodeLine{00076\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ Round\ up\ |size|\ to\ a\ multiple\ of\ alignment,\ which\ must\ be\ a\ power\ of\ two.}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ DEPRECATED;\ use\ the\ UnsignedInteger\ version.}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ TODO(crbug.com/40256225):\ Switch\ uses\ and\ remove.}}
+\DoxyCodeLine{00082\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{requires}\ \mbox{\hyperlink{conceptkiwi_1_1bits_1_1_signed_integer_deprecated_do_not_use}{SignedIntegerDeprecatedDoNotUse<T>}}}
+\DoxyCodeLine{00084\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ T\ AlignUpDeprecatedDoNotUse(T\ size,\ T\ alignment)\ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{using\ }U\ =\ std::make\_unsigned\_t<T>;}
+\DoxyCodeLine{00086\ \ \ DCHECK(std::has\_single\_bit(\textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(alignment)));}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(size\ +\ alignment\ -\/\ 1)\ \&\ \string~\textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(alignment\ -\/\ 1);}
+\DoxyCodeLine{00088\ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ Advance\ |ptr|\ to\ the\ next\ multiple\ of\ alignment,\ which\ must\ be\ a\ power\ of}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ two.\ Defined\ for\ types\ where\ sizeof(T)\ is\ one\ byte.}}
+\DoxyCodeLine{00092\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{requires}(\textcolor{keyword}{sizeof}(T)\ ==\ 1)}
+\DoxyCodeLine{00094\ \textcolor{keyword}{inline}\ T*\ AlignUp(T*\ ptr,\ uintptr\_t\ alignment)\ \{}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ AlignUp(\textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(ptr),\ alignment));}
+\DoxyCodeLine{00097\ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ Returns\ the\ integer\ i\ such\ as\ 2\string^i\ <=\ n\ <\ 2\string^(i+1).}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ A\ common\ use\ for\ this\ function\ is\ to\ measure\ the\ number\ of\ bits\ required\ to}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ contain\ a\ value;\ for\ that\ case\ use\ std::bit\_width().}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ A\ common\ use\ for\ this\ function\ is\ to\ take\ its\ result\ and\ use\ it\ to\ left-\/shift}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ a\ bit;\ instead\ of\ doing\ so,\ use\ std::bit\_floor().}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ Log2Floor(uint32\_t\ n)\ \{\ \textcolor{keywordflow}{return}\ 31\ -\/\ std::countl\_zero(n);\ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ Returns\ the\ integer\ i\ such\ as\ 2\string^(i-\/1)\ <\ n\ <=\ 2\string^i.}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//}}
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ A\ common\ use\ for\ this\ function\ is\ to\ measure\ the\ number\ of\ bits\ required\ to}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ contain\ a\ value;\ for\ that\ case\ use\ std::bit\_width().}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ A\ common\ use\ for\ this\ function\ is\ to\ take\ its\ result\ and\ use\ it\ to\ left-\/shift}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//\ a\ bit;\ instead\ of\ doing\ so,\ use\ std::bit\_ceil().}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ Log2Ceiling(uint32\_t\ n)\ \{}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ When\ n\ ==\ 0,\ we\ want\ the\ function\ to\ return\ -\/1.}}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//\ When\ n\ ==\ 0,\ (n\ -\/\ 1)\ will\ underflow\ to\ 0xFFFFFFFF,\ which\ is}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ why\ the\ statement\ below\ starts\ with\ (n\ ?\ 32\ :\ -\/1).}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordflow}{return}\ (n\ ?\ 32\ :\ -\/1)\ -\/\ std::countl\_zero(n\ -\/\ 1);}
+\DoxyCodeLine{00120\ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ Returns\ a\ value\ of\ type\ T\ with\ a\ single\ bit\ set\ in\ the\ left-\/most\ position.}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ Can\ be\ used\ instead\ of\ manually\ shifting\ a\ 1\ to\ the\ left.\ Unlike\ the\ other}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ functions\ in\ this\ file,\ usable\ for\ any\ integral\ type.}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{requires}\ std::integral<T>}
+\DoxyCodeLine{00127\ \textcolor{keyword}{constexpr}\ T\ LeftmostBit()\ \{}
+\DoxyCodeLine{00128\ \ \ T\ one(1u);}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordflow}{return}\ one\ <<\ (8\ *\ \textcolor{keyword}{sizeof}(T)\ -\/\ 1);}
+\DoxyCodeLine{00130\ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::bits}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_BITS\_H\_}}
+
+\end{DoxyCode}

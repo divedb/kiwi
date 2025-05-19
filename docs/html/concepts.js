@@ -1,6 +1,10 @@
 var concepts =
 [
     [ "kiwi", "namespacekiwi.html", [
+      [ "bits", null, [
+        [ "UnsignedInteger", "conceptkiwi_1_1bits_1_1_unsigned_integer.html", null ],
+        [ "SignedIntegerDeprecatedDoNotUse", "conceptkiwi_1_1bits_1_1_signed_integer_deprecated_do_not_use.html", null ]
+      ] ],
       [ "internal", null, [
         [ "LegalDataConversion", "conceptkiwi_1_1internal_1_1_legal_data_conversion.html", null ],
         [ "SpanConstructibleFrom", "conceptkiwi_1_1internal_1_1_span_constructible_from.html", null ],

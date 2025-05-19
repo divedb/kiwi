@@ -1,0 +1,48 @@
+\doxysection{bit\+\_\+cast.\+hh}
+\hypertarget{bit__cast_8hh_source}{}\label{bit__cast_8hh_source}\index{include/kiwi/common/bit\_cast.hh@{include/kiwi/common/bit\_cast.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2016\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ This\ is\ an\ equivalent\ to\ C++20's\ std::bit\_cast<>(),\ but\ with\ additional}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ warnings.\ It\ morally\ does\ what\ \`{}*reinterpret\_cast<Dest*>(\&source)`\ does,\ but}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ the\ cast/deref\ pair\ is\ undefined\ behavior,\ while\ bit\_cast<>()\ isn't.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ This\ is\ not\ a\ magic\ "{}get\ out\ of\ UB\ free"{}\ card.\ This\ must\ only\ be\ used\ on}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ values,\ not\ on\ references\ or\ pointers.\ For\ pointers,\ use}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ reinterpret\_cast<>(),\ and\ then\ look\ at\ https://eel.is/c++draft/basic.lval\#11}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ as\ that's\ probably\ UB\ also.}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Dest,\ \textcolor{keyword}{class}\ Source>}
+\DoxyCodeLine{00021\ \textcolor{keyword}{constexpr}\ Dest\ bit\_cast(\textcolor{keyword}{const}\ Source\&\ source)\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static\_assert}(!std::is\_pointer\_v<Source>,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ must\ not\ be\ used\ on\ pointer\ types"{}});}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static\_assert}(!std::is\_pointer\_v<Dest>,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ must\ not\ be\ used\ on\ pointer\ types"{}});}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{static\_assert}(!std::is\_reference\_v<Source>,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ must\ not\ be\ used\ on\ reference\ types"{}});}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static\_assert}(!std::is\_reference\_v<Dest>,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ must\ not\ be\ used\ on\ reference\ types"{}});}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static\_assert}(}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(Dest)\ ==\ \textcolor{keyword}{sizeof}(Source),}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ requires\ source\ and\ destination\ types\ to\ be\ the\ same\ size"{}});}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{static\_assert}(std::is\_trivially\_copyable\_v<Source>,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ requires\ the\ source\ type\ to\ be\ trivially\ copyable"{}});}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static\_assert}(}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ std::is\_trivially\_copyable\_v<Dest>,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bit\_cast\ requires\ the\ destination\ type\ to\ be\ trivially\ copyable"{}});}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordflow}{return}\ \_\_builtin\_bit\_cast(Dest,\ source);}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

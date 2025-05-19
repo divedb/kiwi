@@ -1,0 +1,37 @@
+\doxysection{string\+\_\+number\+\_\+conversions\+\_\+win.\+hh}
+\hypertarget{string__number__conversions__win_8hh_source}{}\label{string__number__conversions__win_8hh_source}\index{include/kiwi/strings/string\_number\_conversions\_win.hh@{include/kiwi/strings/string\_number\_conversions\_win.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2020\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{00015\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{00016\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00017\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00018\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00019\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00020\ BASE\_EXPORT\ std::wstring\ NumberToWString(\textcolor{keywordtype}{double}\ value);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ The\ following\ section\ contains\ overloads\ of\ the\ cross-\/platform\ APIs\ for}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ std::wstring\ and\ std::wstring\_view.}}
+\DoxyCodeLine{00024\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToInt(std::wstring\_view\ input,\ \textcolor{keywordtype}{int}*\ output);}
+\DoxyCodeLine{00025\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToUint(std::wstring\_view\ input,\ \textcolor{keywordtype}{unsigned}*\ output);}
+\DoxyCodeLine{00026\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToInt64(std::wstring\_view\ input,\ int64\_t*\ output);}
+\DoxyCodeLine{00027\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToUint64(std::wstring\_view\ input,\ uint64\_t*\ output);}
+\DoxyCodeLine{00028\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToSizeT(std::wstring\_view\ input,\ \textcolor{keywordtype}{size\_t}*\ output);}
+\DoxyCodeLine{00029\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToDouble(std::wstring\_view\ input,\ \textcolor{keywordtype}{double}*\ output);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

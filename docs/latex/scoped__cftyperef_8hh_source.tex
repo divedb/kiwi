@@ -1,0 +1,51 @@
+\doxysection{scoped\+\_\+cftyperef.\+hh}
+\hypertarget{scoped__cftyperef_8hh_source}{}\label{scoped__cftyperef_8hh_source}\index{include/kiwi/apple/scoped\_cftyperef.hh@{include/kiwi/apple/scoped\_cftyperef.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <CoreFoundation/CoreFoundation.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}kiwi/apple/scoped\_typeref.hh"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }kiwi::apple\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ ScopedCFTypeRef<>\ is\ patterned\ after\ std::unique\_ptr<>,\ but\ maintains}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ ownership\ of\ a\ CoreFoundation\ object:\ any\ object\ that\ can\ be\ represented}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ as\ a\ CFTypeRef.\ \ Style\ deviations\ here\ are\ solely\ for\ compatibility\ with}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ std::unique\_ptr<>'s\ interface,\ with\ which\ everyone\ is\ already\ familiar.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ By\ default,\ ScopedCFTypeRef<>\ takes\ ownership\ of\ an\ object\ (in\ the}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ constructor\ or\ in\ reset())\ by\ taking\ over\ the\ caller's\ existing\ ownership}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ claim.\ \ The\ caller\ must\ own\ the\ object\ it\ gives\ to\ ScopedCFTypeRef<>,\ and}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ relinquishes\ an\ ownership\ claim\ to\ that\ object.\ \ ScopedCFTypeRef<>\ does\ not}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ call\ CFRetain().\ This\ behavior\ is\ parameterized\ by\ the\ |OwnershipPolicy|}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ enum.\ If\ the\ value\ |RETAIN|\ is\ passed\ (in\ the\ constructor\ or\ in\ reset()),}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ then\ ScopedCFTypeRef<>\ will\ call\ CFRetain()\ on\ the\ object,\ and\ the\ initial}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ ownership\ is\ not\ changed.}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CFT>}
+\DoxyCodeLine{00030\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structkiwi_1_1apple_1_1internal_1_1_scoped_c_f_type_ref_traits}{ScopedCFTypeRefTraits}}\ \{}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ CFT\ InvalidValue()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};\ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{static}\ CFT\ Retain(CFT\ \textcolor{keywordtype}{object})\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ CFRetain(\textcolor{keywordtype}{object});}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ object;}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Release(CFT\ \textcolor{keywordtype}{object})\ \{\ CFRelease(\textcolor{keywordtype}{object});\ \}}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \}\ \ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CFT>}
+\DoxyCodeLine{00042\ \textcolor{keyword}{using\ }ScopedCFTypeRef\ =}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{classkiwi_1_1apple_1_1_scoped_type_ref}{ScopedTypeRef<CFT,\ internal::ScopedCFTypeRefTraits<CFT>}}>;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi::apple}}
+
+\end{DoxyCode}

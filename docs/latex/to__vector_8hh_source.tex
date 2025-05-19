@@ -1,0 +1,45 @@
+\doxysection{to\+\_\+vector.\+hh}
+\hypertarget{to__vector_8hh_source}{}\label{to__vector_8hh_source}\index{include/kiwi/containers/to\_vector.hh@{include/kiwi/containers/to\_vector.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2024\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <ranges>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ Maps\ a\ container\ to\ a\ std::vector<>\ with\ respect\ to\ the\ provided\ projection.}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ The\ deduced\ vector\ element\ type\ is\ equal\ to\ the\ projection's\ return\ type\ with}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ cv-\/qualifiers\ removed.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ In\ C++20\ this\ is\ roughly\ equal\ to:}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ auto\ vec\ =\ range\ |\ std::views:transform(proj)\ |}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ std::ranges::to<std::vector>;}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ Complexity:\ Exactly\ \`{}size(range)`\ applications\ of\ \`{}proj`.}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Range,\ \textcolor{keyword}{typename}\ Proj\ =\ std::\textcolor{keywordtype}{id}entity>}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{requires}\ std::ranges::sized\_range<Range>\ \&\&\ std::ranges::input\_range<Range>\ \&\&}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ std::indirectly\_unary\_invocable<Proj,\ std::ranges::iterator\_t<Range>>}
+\DoxyCodeLine{00029\ \textcolor{keyword}{auto}\ ToVector(Range\&\&\ range,\ Proj\ proj\ =\ \{\})\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{using\ }ProjectedType\ =\ std::indirectly\_readable\_traits<}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ std::projected<std::ranges::iterator\_t<Range>,\ Proj>>::value\_type;}
+\DoxyCodeLine{00032\ \ \ std::vector<ProjectedType>\ container;}
+\DoxyCodeLine{00033\ \ \ container.reserve(std::ranges::size(range));}
+\DoxyCodeLine{00034\ \ \ std::ranges::transform(std::forward<Range>(range),}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::back\_inserter(container),\ std::move(proj));}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordflow}{return}\ container;}
+\DoxyCodeLine{00037\ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

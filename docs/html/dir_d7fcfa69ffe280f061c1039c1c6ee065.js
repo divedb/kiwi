@@ -9,5 +9,6 @@ var dir_d7fcfa69ffe280f061c1039c1c6ee065 =
     [ "platform_file.hh", "platform__file_8hh_source.html", null ],
     [ "safe_base_name.hh", "safe__base__name_8hh_source.html", null ],
     [ "scoped_file.hh", "scoped__file_8hh_source.html", null ],
+    [ "scoped_temp_file.hh", "scoped__temp__file_8hh_source.html", null ],
     [ "uio.hh", "uio_8hh_source.html", null ]
 ];

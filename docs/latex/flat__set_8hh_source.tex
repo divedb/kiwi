@@ -1,0 +1,183 @@
+\doxysection{flat\+\_\+set.\+hh}
+\hypertarget{flat__set_8hh_source}{}\label{flat__set_8hh_source}\index{include/kiwi/containers/flat\_set.hh@{include/kiwi/containers/flat\_set.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2017\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/flat\_tree.hh"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ flat\_set\ is\ a\ container\ with\ a\ std::set-\/like\ interface\ that\ stores\ its}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ contents\ in\ a\ sorted\ container,\ by\ default\ a\ vector.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ Its\ implementation\ mostly\ tracks\ the\ corresponding\ standardization\ proposal}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ https://wg21.link/P1222.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ Please\ see\ //base/containers/README.md\ for\ an\ overview\ of\ which\ container}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ to\ select.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ PROS}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ \ -\/\ Good\ memory\ locality.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ -\/\ Low\ overhead,\ especially\ for\ smaller\ sets.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ -\/\ Performance\ is\ good\ for\ more\ workloads\ than\ you\ might\ expect\ (see}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ \ \ overview\ link\ above).}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ \ -\/\ Supports\ C++14\ set\ interface.}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ CONS}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ \ -\/\ Inserts\ and\ removals\ are\ O(n).}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ IMPORTANT\ NOTES}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ \ -\/\ Iterators\ are\ invalidated\ across\ mutations.}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ \ -\/\ If\ possible,\ construct\ a\ flat\_set\ in\ one\ operation\ by\ inserting\ into}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ \ \ \ a\ container\ and\ moving\ that\ container\ into\ the\ flat\_set\ constructor.}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \ -\/\ For\ multiple\ removals\ use\ kiwi::EraseIf()\ which\ is\ O(n)\ rather\ than}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ \ O(n\ *\ removed\_items).}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ QUICK\ REFERENCE}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ Most\ of\ the\ core\ functionality\ is\ inherited\ from\ flat\_tree.\ Please\ see}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ flat\_tree.h\ for\ more\ details\ for\ most\ of\ these\ functions.\ As\ a\ quick}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ reference,\ the\ functions\ available\ are:}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ Constructors\ (inputs\ need\ not\ be\ sorted):}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ \ \ flat\_set(const\ flat\_set\&);}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ \ \ flat\_set(flat\_set\&\&);}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ flat\_set(InputIterator\ first,\ InputIterator\ last,}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ compare\ =\ Compare());}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ \ \ flat\_set(const\ container\_type\&\ items,}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ compare\ =\ Compare());}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ \ \ flat\_set(container\_type\&\&\ items,}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ compare\ =\ Compare());\ \ //\ Re-\/use\ storage.}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ \ \ flat\_set(std::initializer\_list<value\_type>\ ilist,}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ comp\ =\ Compare());}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ Constructors\ (inputs\ need\ to\ be\ sorted):}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ \ \ flat\_set(sorted\_unique\_t,}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ InputIterator\ first,\ InputIterator\ last,}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ compare\ =\ Compare());}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ \ \ flat\_set(sorted\_unique\_t,}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ container\_type\&\ items,}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ compare\ =\ Compare());}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ \ \ flat\_set(sorted\_unique\_t,}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ container\_type\&\&\ items,}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ compare\ =\ Compare());\ \ //\ Re-\/use\ storage.}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ \ \ flat\_set(sorted\_unique\_t,}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ std::initializer\_list<value\_type>\ ilist,}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ const\ Compare\&\ comp\ =\ Compare());}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ Assignment\ functions:}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ \ \ flat\_set\&\ operator=(const\ flat\_set\&);}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ \ \ flat\_set\&\ operator=(flat\_set\&\&);}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ \ \ flat\_set\&\ operator=(initializer\_list<Key>);}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ Memory\ management\ functions:}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ \ \ void\ \ \ reserve(size\_t);}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ \ \ size\_t\ capacity()\ const;}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ \ \ void\ \ \ shrink\_to\_fit();}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ Size\ management\ functions:}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ \ \ void\ \ \ clear();}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ \ \ size\_t\ size()\ const;}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ \ \ size\_t\ max\_size()\ const;}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ \ \ bool\ \ \ empty()\ const;}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ Iterator\ functions:}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ begin();}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ begin()\ const;}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ cbegin()\ const;}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ end();}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ end()\ const;}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \ const\_iterator\ \ \ \ \ \ \ \ \ cend()\ const;}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ \ \ reverse\_iterator\ \ \ \ \ \ \ rbegin();}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ \ const\ reverse\_iterator\ rbegin()\ const;}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ crbegin()\ const;}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ \ \ reverse\_iterator\ \ \ \ \ \ \ rend();}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ rend()\ const;}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ \ \ const\_reverse\_iterator\ crend()\ const;}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ Insert\ and\ accessor\ functions:}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ \ \ pair<iterator,\ bool>\ insert(const\ key\_type\&);}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ \ \ pair<iterator,\ bool>\ insert(key\_type\&\&);}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ \ \ void\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ insert(InputIterator\ first,\ InputIterator\ last);}}
+\DoxyCodeLine{00110\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ insert(const\_iterator\ hint,\ const\ key\_type\&);}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ insert(const\_iterator\ hint,\ key\_type\&\&);}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//\ \ \ pair<iterator,\ bool>\ emplace(Args\&\&...);}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ \ \ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ emplace\_hint(const\_iterator,\ Args\&\&...);}}
+\DoxyCodeLine{00114\ \textcolor{comment}{//}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//\ Underlying\ type\ functions:}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ \ \ container\_type\ \ \ \ \ \ \ extract()\ \&\&;}}
+\DoxyCodeLine{00117\ \textcolor{comment}{//\ \ \ void\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ replace(container\_type\&\&);}}
+\DoxyCodeLine{00118\ \textcolor{comment}{//}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//\ Erase\ functions:}}
+\DoxyCodeLine{00120\ \textcolor{comment}{//\ \ \ iterator\ erase(iterator);}}
+\DoxyCodeLine{00121\ \textcolor{comment}{//\ \ \ iterator\ erase(const\_iterator);}}
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ \ \ iterator\ erase(const\_iterator\ first,\ const\_iterator\&\ last);}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ size\_t\ erase(const\ K\&\ key);}}
+\DoxyCodeLine{00124\ \textcolor{comment}{//}}
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ Comparators\ (see\ std::set\ documentation).}}
+\DoxyCodeLine{00126\ \textcolor{comment}{//\ \ \ key\_compare\ \ \ key\_comp()\ const;}}
+\DoxyCodeLine{00127\ \textcolor{comment}{//\ \ \ value\_compare\ value\_comp()\ const;}}
+\DoxyCodeLine{00128\ \textcolor{comment}{//}}
+\DoxyCodeLine{00129\ \textcolor{comment}{//\ Search\ functions:}}
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ size\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ count(const\ K\&)\ const;}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ find(const\ K\&);}}
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ const\_iterator\ \ \ \ \ \ \ \ \ \ \ find(const\ K\&)\ const;}}
+\DoxyCodeLine{00133\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ bool\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ contains(const\ K\&)\ const;}}
+\DoxyCodeLine{00134\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ pair<iterator,\ iterator>\ equal\_range(K\&);}}
+\DoxyCodeLine{00135\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ lower\_bound(const\ K\&);}}
+\DoxyCodeLine{00136\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ const\_iterator\ \ \ \ \ \ \ \ \ \ \ lower\_bound(const\ K\&)\ const;}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ iterator\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upper\_bound(const\ K\&);}}
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ \ \ template\ <typename\ K>\ const\_iterator\ \ \ \ \ \ \ \ \ \ \ upper\_bound(const\ K\&)\ const;}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//\ General\ functions:}}
+\DoxyCodeLine{00141\ \textcolor{comment}{//\ \ \ void\ swap(flat\_set\&);}}
+\DoxyCodeLine{00142\ \textcolor{comment}{//}}
+\DoxyCodeLine{00143\ \textcolor{comment}{//\ Non-\/member\ operators:}}
+\DoxyCodeLine{00144\ \textcolor{comment}{//\ \ \ bool\ operator==(const\ flat\_set\&,\ const\ flat\_set);}}
+\DoxyCodeLine{00145\ \textcolor{comment}{//\ \ \ bool\ operator!=(const\ flat\_set\&,\ const\ flat\_set);}}
+\DoxyCodeLine{00146\ \textcolor{comment}{//\ \ \ bool\ operator<(const\ flat\_set\&,\ const\ flat\_set);}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//\ \ \ bool\ operator>(const\ flat\_set\&,\ const\ flat\_set);}}
+\DoxyCodeLine{00148\ \textcolor{comment}{//\ \ \ bool\ operator>=(const\ flat\_set\&,\ const\ flat\_set);}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//\ \ \ bool\ operator<=(const\ flat\_set\&,\ const\ flat\_set);}}
+\DoxyCodeLine{00150\ \textcolor{comment}{//}}
+\DoxyCodeLine{00151\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ Compare\ =\ std::less<>,}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class}\ Container\ =\ std::vector<Key>>}
+\DoxyCodeLine{00153\ \textcolor{keyword}{using\ }flat\_set\ =\ typename\ ::kiwi::internal::flat\_tree<Key,\ std::identity,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Compare,\ Container>;}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \textcolor{comment}{//\ Utility\ function\ to\ simplify\ constructing\ a\ flat\_set\ from\ a\ fixed\ list}}
+\DoxyCodeLine{00157\ \textcolor{comment}{//\ of\ keys.\ The\ keys\ are\ obtained\ by\ applying\ the\ projection\ |proj|\ to\ the}}
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ |unprojected\_elements|.\ The\ set's\ keys\ are\ sorted\ by\ |comp|.}}
+\DoxyCodeLine{00159\ \textcolor{comment}{//}}
+\DoxyCodeLine{00160\ \textcolor{comment}{//\ Example\ usage\ (creates\ a\ set\ \{16,\ 9,\ 4,\ 1\}):}}
+\DoxyCodeLine{00161\ \textcolor{comment}{//\ \ \ auto\ set\ =\ kiwi::MakeFlatSet<int>(}}
+\DoxyCodeLine{00162\ \textcolor{comment}{//\ \ \ \ \ \ \ std::vector<int>\{1,\ 2,\ 3,\ 4\},\ [](int\ i,\ int\ j)\ \{\ return\ i\ >\ j;\ \},}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//\ \ \ \ \ \ \ [](int\ i)\ \{\ return\ i\ *\ i;\ \});}}
+\DoxyCodeLine{00164\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Key,\ \textcolor{keyword}{class}\ Compare\ =\ std::less<>,}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class}\ Container\ =\ std::vector<Key>,\ \textcolor{keyword}{class}\ InputContainer,}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class}\ Projection\ =\ std::\textcolor{keywordtype}{id}entity>}
+\DoxyCodeLine{00167\ \textcolor{keyword}{constexpr}\ flat\_set<Key,\ Compare,\ Container>\ MakeFlatSet(}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{const}\ InputContainer\&\ unprojected\_elements,\ \textcolor{keyword}{const}\ Compare\&\ comp\ =\ Compare(),}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{const}\ Projection\&\ proj\ =\ Projection())\ \{}
+\DoxyCodeLine{00170\ \ \ Container\ elements;}
+\DoxyCodeLine{00171\ \ \ internal::ReserveIfSupported(elements,\ unprojected\_elements);}
+\DoxyCodeLine{00172\ \ \ std::ranges::transform(unprojected\_elements,\ std::back\_inserter(elements),}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proj);}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordflow}{return}\ flat\_set<Key,\ Compare,\ Container>(std::move(elements),\ comp);}
+\DoxyCodeLine{00175\ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

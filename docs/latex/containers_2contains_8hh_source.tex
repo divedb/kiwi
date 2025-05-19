@@ -1,0 +1,58 @@
+\doxysection{contains.\+hh}
+\hypertarget{containers_2contains_8hh_source}{}\label{containers_2contains_8hh_source}\index{include/kiwi/containers/contains.hh@{include/kiwi/containers/contains.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2020\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Provides\ \`{}Contains()`,\ a\ general\ purpose\ utility\ to\ check\ whether\ a\ container}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ contains\ a\ value.\ This\ will\ probe\ whether\ a\ \`{}contains`\ or\ \`{}find`\ member}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ function\ on\ \`{}container`\ exists,\ and\ fall\ back\ to\ a\ generic\ linear\ search\ over}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \`{}container`.}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <concepts>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <ranges>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ A\ general\ purpose\ utility\ to\ check\ whether\ \`{}container`\ contains\ \`{}value`.\ This}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ will\ probe\ whether\ a\ \`{}contains`\ or\ \`{}find`\ member\ function\ on\ \`{}container`}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ exists,\ and\ fall\ back\ to\ a\ generic\ linear\ search\ over\ \`{}container`.}}
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Container,\ \textcolor{keyword}{typename}\ Value>}
+\DoxyCodeLine{00023\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ Container\&\ container,\ \textcolor{keyword}{const}\ Value\&\ value)\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\textcolor{keyword}{requires}\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ container.contains(value)\ \}\ -\/>\ std::same\_as<bool>;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \})\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ container.contains(value);}
+\DoxyCodeLine{00028\ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\textcolor{keyword}{requires}\ \{\ container.find(value)\ !=\ Container::npos;\ \})\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ container.find(value)\ !=\ Container::npos;}
+\DoxyCodeLine{00030\ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\textcolor{keyword}{requires}\ \{\ container.find(value)\ !=\ container.end();\ \})\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ container.find(value)\ !=\ container.end();}
+\DoxyCodeLine{00032\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{static\_assert}(}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ !\textcolor{keyword}{requires}\ \{\ \textcolor{keyword}{typename}\ Container::key\_type;\ \},}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Error:\ About\ to\ perform\ linear\ search\ on\ an\ associative\ container.\ "{}}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Either\ use\ a\ more\ generic\ comparator\ (e.g.\ std::less<>)\ or,\ if\ a\ "{}}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}linear\ search\ is\ desired,\ provide\ an\ explicit\ projection\ parameter."{}});}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ std::ranges::find(container,\ value)\ !=\ std::ranges::end(container);}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Overload\ that\ allows\ callers\ to\ provide\ an\ additional\ projection\ invocable.}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ This\ projection\ will\ be\ applied\ to\ every\ element\ in\ \`{}container`\ before}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ comparing\ it\ with\ \`{}value`.\ This\ will\ always\ perform\ a\ linear\ search.}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Container,\ \textcolor{keyword}{typename}\ Value,\ \textcolor{keyword}{typename}\ Proj>}
+\DoxyCodeLine{00046\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ Container\&\ container,\ \textcolor{keyword}{const}\ Value\&\ value,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Proj\ proj)\ \{}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{return}\ std::ranges::find(container,\ value,\ std::move(proj))\ !=}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ std::ranges::end(container);}
+\DoxyCodeLine{00050\ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+
+\end{DoxyCode}

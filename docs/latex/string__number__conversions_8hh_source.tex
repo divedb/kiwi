@@ -1,0 +1,178 @@
+\doxysection{string\+\_\+number\+\_\+conversions.\+hh}
+\hypertarget{string__number__conversions_8hh_source}{}\label{string__number__conversions_8hh_source}\index{include/kiwi/strings/string\_number\_conversions.hh@{include/kiwi/strings/string\_number\_conversions.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2012\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/containers/span.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/compiler\_specific.hh"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ IMPORTANT\ MESSAGE\ FROM\ YOUR\ SPONSOR}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ Please\ do\ not\ add\ "{}convenience"{}\ functions\ for\ converting\ strings\ to\ integers}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ that\ return\ the\ value\ and\ ignore\ success/failure.\ That\ encourages\ people\ to}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ write\ code\ that\ doesn't\ properly\ handle\ the\ error\ conditions.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ DO\ NOT\ use\ these\ functions\ in\ any\ UI\ unless\ it's\ NOT\ localized\ on\ purpose.}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ Instead,\ use\ kiwi::MessageFormatter\ for\ a\ complex\ message\ with\ numbers}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ (integer,\ float,\ double)\ embedded\ or\ kiwi::Format\{Number,Double,Percent\}\ to}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ just\ format\ a\ single\ number/percent.\ Note\ that\ some\ languages\ use\ native}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ digits\ instead\ of\ ASCII\ digits\ while\ others\ use\ a\ group\ separator\ or\ decimal}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ point\ different\ from\ ','\ and\ '.'.\ Using\ these\ functions\ in\ the\ UI\ would\ lead}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ numbers\ to\ be\ formatted\ in\ a\ non-\/native\ way.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ Number\ -\/>\ string\ conversions\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Ignores\ locale!\ see\ warning\ above.}}
+\DoxyCodeLine{00039\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{00040\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{00041\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{00042\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{00043\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00044\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00045\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00046\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00047\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00048\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00049\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00050\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ value);}
+\DoxyCodeLine{00051\ BASE\_EXPORT\ std::string\ NumberToString(\textcolor{keywordtype}{double}\ value);}
+\DoxyCodeLine{00052\ BASE\_EXPORT\ std::u16string\ NumberToString16(\textcolor{keywordtype}{double}\ value);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ String\ -\/>\ number\ conversions\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ Perform\ a\ best-\/effort\ conversion\ of\ the\ input\ string\ to\ a\ numeric\ type,}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ setting\ |*output|\ to\ the\ result\ of\ the\ conversion.\ \ Returns\ true\ for}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ "{}perfect"{}\ conversions;\ returns\ false\ in\ the\ following\ cases:}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ \ -\/\ Overflow.\ |*output|\ will\ be\ set\ to\ the\ maximum\ value\ supported}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ \ \ \ by\ the\ data\ type.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ \ -\/\ Underflow.\ |*output|\ will\ be\ set\ to\ the\ minimum\ value\ supported}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ \ \ by\ the\ data\ type.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ \ -\/\ Trailing\ characters\ in\ the\ string\ after\ parsing\ the\ number.\ \ |*output|}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ \ \ \ will\ be\ set\ to\ the\ value\ of\ the\ number\ that\ was\ parsed.}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//\ \ -\/\ Leading\ whitespace\ in\ the\ string\ before\ parsing\ the\ number.\ |*output|\ will}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ \ \ \ be\ set\ to\ the\ value\ of\ the\ number\ that\ was\ parsed.}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ \ -\/\ No\ characters\ parseable\ as\ a\ number\ at\ the\ beginning\ of\ the\ string.}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \ \ \ |*output|\ will\ be\ set\ to\ 0.}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//\ \ -\/\ Empty\ string.\ \ |*output|\ will\ be\ set\ to\ 0.}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ WARNING:\ Will\ write\ to\ |output|\ even\ when\ returning\ false.}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ Read\ the\ comments\ above\ carefully.}}
+\DoxyCodeLine{00072\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToInt(std::string\_view\ input,\ \textcolor{keywordtype}{int}*\ output);}
+\DoxyCodeLine{00073\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToInt(std::u16string\_view\ input,\ \textcolor{keywordtype}{int}*\ output);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToUint(std::string\_view\ input,\ \textcolor{keywordtype}{unsigned}*\ output);}
+\DoxyCodeLine{00076\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToUint(std::u16string\_view\ input,\ \textcolor{keywordtype}{unsigned}*\ output);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToInt64(std::string\_view\ input,\ int64\_t*\ output);}
+\DoxyCodeLine{00079\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToInt64(std::u16string\_view\ input,\ int64\_t*\ output);}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToUint64(std::string\_view\ input,\ uint64\_t*\ output);}
+\DoxyCodeLine{00082\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToUint64(std::u16string\_view\ input,\ uint64\_t*\ output);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToSizeT(std::string\_view\ input,\ \textcolor{keywordtype}{size\_t}*\ output);}
+\DoxyCodeLine{00085\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToSizeT(std::u16string\_view\ input,\ \textcolor{keywordtype}{size\_t}*\ output);}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ For\ floating-\/point\ conversions,\ only\ conversions\ of\ input\ strings\ in\ decimal}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ form\ are\ defined\ to\ work.\ \ Behavior\ with\ strings\ representing\ floating-\/point}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ numbers\ in\ hexadecimal,\ and\ strings\ representing\ non-\/finite\ values\ (such\ as}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ NaN\ and\ inf)\ is\ undefined.\ \ Otherwise,\ these\ behave\ the\ same\ as\ the\ integral}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ variants.\ \ This\ expects\ the\ input\ string\ to\ NOT\ be\ specific\ to\ the\ locale.}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ If\ your\ input\ is\ locale\ specific,\ use\ ICU\ to\ read\ the\ number.}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ WARNING:\ Will\ write\ to\ |output|\ even\ when\ returning\ false.}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ Read\ the\ comments\ here\ and\ above\ StringToInt()\ carefully.}}
+\DoxyCodeLine{00095\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToDouble(std::string\_view\ input,\ \textcolor{keywordtype}{double}*\ output);}
+\DoxyCodeLine{00096\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ StringToDouble(std::u16string\_view\ input,\ \textcolor{keywordtype}{double}*\ output);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ Hex\ encoding\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ Returns\ a\ hex\ string\ representation\ of\ a\ binary\ buffer.\ The\ returned\ hex}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ string\ will\ be\ in\ upper\ case.\ This\ function\ does\ not\ check\ if\ |size|\ is}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ within\ reasonable\ limits\ since\ it's\ written\ with\ trusted\ data\ in\ mind.\ \ If}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ you\ suspect\ that\ the\ data\ you\ want\ to\ format\ might\ be\ large,\ the\ absolute}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ max\ size\ for\ |size|\ should\ be\ is}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ \ \ std::numeric\_limits<size\_t>::max()\ /\ 2}}
+\DoxyCodeLine{00106\ BASE\_EXPORT\ std::string\ HexEncode(kiwi::span<const\ uint8\_t>\ bytes);}
+\DoxyCodeLine{00107\ BASE\_EXPORT\ std::string\ HexEncode(std::string\_view\ chars);}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ TODO(crbug.com/40284755):\ The\ pointer-\/based\ overload\ should\ be\ removed.}}
+\DoxyCodeLine{00109\ BASE\_EXPORT\ std::string\ HexEncode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ bytes,\ \textcolor{keywordtype}{size\_t}\ size);}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ Appends\ a\ hex\ representation\ of\ \`{}byte`,\ as\ two\ uppercase\ (by\ default)}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//\ characters,\ to\ \`{}output`.\ This\ is\ a\ useful\ primitive\ in\ larger\ conversion}}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ routines.}}
+\DoxyCodeLine{00114\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ AppendHexEncodedByte(uint8\_t\ \textcolor{keywordtype}{byte},\ std::string\&\ output,}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ uppercase\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char}\ kHexCharsUpper[]\ =\ \{\textcolor{charliteral}{'0'},\ \textcolor{charliteral}{'1'},\ \textcolor{charliteral}{'2'},\ \textcolor{charliteral}{'3'},\ \textcolor{charliteral}{'4'},\ \textcolor{charliteral}{'5'},}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{charliteral}{'6'},\ \textcolor{charliteral}{'7'},\ \textcolor{charliteral}{'8'},\ \textcolor{charliteral}{'9'},\ \textcolor{charliteral}{'A'},\ \textcolor{charliteral}{'B'},}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{charliteral}{'C'},\ \textcolor{charliteral}{'D'},\ \textcolor{charliteral}{'E'},\ \textcolor{charliteral}{'F'}\};}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char}\ kHexCharsLower[]\ =\ \{\textcolor{charliteral}{'0'},\ \textcolor{charliteral}{'1'},\ \textcolor{charliteral}{'2'},\ \textcolor{charliteral}{'3'},\ \textcolor{charliteral}{'4'},\ \textcolor{charliteral}{'5'},}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{charliteral}{'6'},\ \textcolor{charliteral}{'7'},\ \textcolor{charliteral}{'8'},\ \textcolor{charliteral}{'9'},\ \textcolor{charliteral}{'a'},\ \textcolor{charliteral}{'b'},}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{charliteral}{'c'},\ \textcolor{charliteral}{'d'},\ \textcolor{charliteral}{'e'},\ \textcolor{charliteral}{'f'}\};}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \textcolor{keyword}{const}\ hex\_chars\ =\ uppercase\ ?\ kHexCharsUpper\ :\ kHexCharsLower;}
+\DoxyCodeLine{00123\ \ \ output.append(}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \{UNSAFE\_TODO(hex\_chars[\textcolor{keywordtype}{byte}\ >>\ 4]),\ UNSAFE\_TODO(hex\_chars[\textcolor{keywordtype}{byte}\ \&\ 0xf])\});}
+\DoxyCodeLine{00125\ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{comment}{//\ Best\ effort\ conversion,\ see\ StringToInt\ above\ for\ restrictions.}}
+\DoxyCodeLine{00128\ \textcolor{comment}{//\ Will\ only\ successful\ parse\ hex\ values\ that\ will\ fit\ into\ |output|,\ i.e.}}
+\DoxyCodeLine{00129\ \textcolor{comment}{//\ -\/0x80000000\ <\ |input|\ <\ 0x7FFFFFFF.}}
+\DoxyCodeLine{00130\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToInt(std::string\_view\ input,\ \textcolor{keywordtype}{int}*\ output);}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ Best\ effort\ conversion,\ see\ StringToInt\ above\ for\ restrictions.}}
+\DoxyCodeLine{00133\ \textcolor{comment}{//\ Will\ only\ successful\ parse\ hex\ values\ that\ will\ fit\ into\ |output|,\ i.e.}}
+\DoxyCodeLine{00134\ \textcolor{comment}{//\ 0x00000000\ <\ |input|\ <\ 0xFFFFFFFF.}}
+\DoxyCodeLine{00135\ \textcolor{comment}{//\ The\ string\ is\ not\ required\ to\ start\ with\ 0x.}}
+\DoxyCodeLine{00136\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToUInt(std::string\_view\ input,\ uint32\_t*\ output);}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ Best\ effort\ conversion,\ see\ StringToInt\ above\ for\ restrictions.}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//\ Will\ only\ successful\ parse\ hex\ values\ that\ will\ fit\ into\ |output|,\ i.e.}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//\ -\/0x8000000000000000\ <\ |input|\ <\ 0x7FFFFFFFFFFFFFFF.}}
+\DoxyCodeLine{00141\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToInt64(std::string\_view\ input,\ int64\_t*\ output);}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{comment}{//\ Best\ effort\ conversion,\ see\ StringToInt\ above\ for\ restrictions.}}
+\DoxyCodeLine{00144\ \textcolor{comment}{//\ Will\ only\ successful\ parse\ hex\ values\ that\ will\ fit\ into\ |output|,\ i.e.}}
+\DoxyCodeLine{00145\ \textcolor{comment}{//\ 0x0000000000000000\ <\ |input|\ <\ 0xFFFFFFFFFFFFFFFF.}}
+\DoxyCodeLine{00146\ \textcolor{comment}{//\ The\ string\ is\ not\ required\ to\ start\ with\ 0x.}}
+\DoxyCodeLine{00147\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToUInt64(std::string\_view\ input,\ uint64\_t*\ output);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \textcolor{comment}{//\ Similar\ to\ the\ previous\ functions,\ except\ that\ output\ is\ a\ vector\ of\ bytes.}}
+\DoxyCodeLine{00150\ \textcolor{comment}{//\ |*output|\ will\ contain\ as\ many\ bytes\ as\ were\ successfully\ parsed\ prior\ to\ the}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ error.\ \ There\ is\ no\ overflow,\ but\ input.size()\ must\ be\ evenly\ divisible\ by\ 2.}}
+\DoxyCodeLine{00152\ \textcolor{comment}{//\ Leading\ 0x\ or\ +/-\/\ are\ not\ allowed.}}
+\DoxyCodeLine{00153\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToBytes(std::string\_view\ input,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<uint8\_t>*\ output);}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \textcolor{comment}{//\ Same\ as\ HexStringToBytes,\ but\ for\ an\ std::string.}}
+\DoxyCodeLine{00157\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToString(std::string\_view\ input,\ std::string*\ output);}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{comment}{//\ Decodes\ the\ hex\ string\ |input|\ into\ a\ presized\ |output|.\ The\ output\ buffer}}
+\DoxyCodeLine{00160\ \textcolor{comment}{//\ must\ be\ sized\ exactly\ to\ |input.size()\ /\ 2|\ or\ decoding\ will\ fail\ and\ no}}
+\DoxyCodeLine{00161\ \textcolor{comment}{//\ bytes\ will\ be\ written\ to\ |output|.\ Decoding\ an\ empty\ input\ is\ also}}
+\DoxyCodeLine{00162\ \textcolor{comment}{//\ considered\ a\ failure.\ When\ decoding\ fails\ due\ to\ encountering\ invalid\ input}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//\ characters,\ |output|\ will\ have\ been\ filled\ with\ the\ decoded\ bytes\ up\ until}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//\ the\ failure.}}
+\DoxyCodeLine{00165\ BASE\_EXPORT\ \textcolor{keywordtype}{bool}\ HexStringToSpan(std::string\_view\ input,}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kiwi::span<uint8\_t>\ output);}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/string\_number\_conversions\_win.hh"{}}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

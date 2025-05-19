@@ -1,0 +1,69 @@
+\doxysection{environment.\+hh}
+\hypertarget{environment_8hh_source}{}\label{environment_8hh_source}\index{include/kiwi/common/environment.hh@{include/kiwi/common/environment.hh}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ 2011\ The\ Chromium\ Authors}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Use\ of\ this\ source\ code\ is\ governed\ by\ a\ BSD-\/style\ license\ that\ can\ be}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ found\ in\ the\ LICENSE\ file.}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#ifndef\ BASE\_ENVIRONMENT\_H\_}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ BASE\_ENVIRONMENT\_H\_}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/base\_export.hh"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}kiwi/portability/build\_config.hh"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}kiwi/strings/cstring\_view.hh"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacekiwi}{kiwi}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }env\_vars\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ On\ Posix\ systems,\ this\ variable\ contains\ the\ location\ of\ the\ user's\ home}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ directory.\ (e.g,\ /home/username/).}}
+\DoxyCodeLine{00023\ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char}\ kHome[]\ =\ \textcolor{stringliteral}{"{}HOME"{}};}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \}\ \ \textcolor{comment}{//\ namespace\ env\_vars}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }BASE\_EXPORT\ \mbox{\hyperlink{classkiwi_1_1_environment}{Environment}}\ \{}
+\DoxyCodeLine{00029\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classkiwi_1_1_environment}{\string~Environment}}();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{comment}{//\ Returns\ the\ appropriate\ platform-\/specific\ instance.}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{static}\ std::unique\_ptr<Environment>\ Create();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ Returns\ an\ environment\ variable's\ value.}}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ Returns\ std::nullopt\ if\ the\ key\ is\ unset.}}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ Note\ that\ the\ variable\ may\ be\ set\ to\ an\ empty\ string.}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ std::optional<std::string>\ GetVar(cstring\_view\ variable\_name)\ =\ 0;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ Syntactic\ sugar\ for\ GetVar(variable\_name).has\_value();}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{bool}\ HasVar(cstring\_view\ variable\_name);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ Returns\ true\ on\ success,\ otherwise\ returns\ false.\ This\ method\ should\ not}}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ be\ called\ in\ a\ multi-\/threaded\ process.}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ SetVar(cstring\_view\ variable\_name,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ new\_value)\ =\ 0;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ Returns\ true\ on\ success,\ otherwise\ returns\ false.\ This\ method\ should\ not}}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ be\ called\ in\ a\ multi-\/threaded\ process.}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ UnSetVar(cstring\_view\ variable\_name)\ =\ 0;}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#if\ BUILDFLAG(IS\_WIN)}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{using\ }NativeEnvironmentString\ =\ std::wstring;}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#elif\ BUILDFLAG(IS\_POSIX)\ ||\ BUILDFLAG(IS\_FUCHSIA)}}
+\DoxyCodeLine{00056\ \textcolor{keyword}{using\ }NativeEnvironmentString\ =\ std::string;}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00058\ \textcolor{keyword}{using\ }EnvironmentMap\ =}
+\DoxyCodeLine{00059\ \ \ \ \ std::map<NativeEnvironmentString,\ NativeEnvironmentString>;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \}\ \ \textcolor{comment}{//\ namespace\ kiwi}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BASE\_ENVIRONMENT\_H\_}}
+
+\end{DoxyCode}

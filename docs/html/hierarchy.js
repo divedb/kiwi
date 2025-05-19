@@ -5,6 +5,13 @@ var hierarchy =
     [ "kiwi::internal::AlwaysFalseHelper< Args >", "structkiwi_1_1internal_1_1_always_false_helper.html", null ],
     [ "kiwi::internal::ArithmeticOrIntegralConstant< T >", "structkiwi_1_1internal_1_1_arithmetic_or_integral_constant.html", null ],
     [ "kiwi::internal::ArithmeticOrIntegralConstant< T >", "structkiwi_1_1internal_1_1_arithmetic_or_integral_constant_3_01_t_01_4.html", null ],
+    [ "kiwi::internal::StringToNumberParser< Number, kBase >::Base< Sign >", "classkiwi_1_1internal_1_1_string_to_number_parser_1_1_base.html", null ],
+    [ "kiwi::internal::StringToNumberParser< Number, kBase >::Base< Negative >", "classkiwi_1_1internal_1_1_string_to_number_parser_1_1_base.html", [
+      [ "kiwi::internal::StringToNumberParser< Number, kBase >::Negative", "classkiwi_1_1internal_1_1_string_to_number_parser_1_1_negative.html", null ]
+    ] ],
+    [ "kiwi::internal::StringToNumberParser< Number, kBase >::Base< Positive >", "classkiwi_1_1internal_1_1_string_to_number_parser_1_1_base.html", [
+      [ "kiwi::internal::StringToNumberParser< Number, kBase >::Positive", "classkiwi_1_1internal_1_1_string_to_number_parser_1_1_positive.html", null ]
+    ] ],
     [ "kiwi::basic_cstring_view< Char >", "classkiwi_1_1basic__cstring__view.html", null ],
     [ "kiwi::BigEndian", "classkiwi_1_1_big_endian.html", null ],
     [ "kiwi::internal::BigEnoughPromotionImpl< Lhs, Rhs, is_intmax_type, is_max_exponent >", "structkiwi_1_1internal_1_1_big_enough_promotion_impl.html", null ],
@@ -162,6 +169,7 @@ var hierarchy =
     [ "kiwi::internal::DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kSigned, IntegerRepresentation::kUnsigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_b5ff0de3dac7b218349d8b0532835ded.html", null ],
     [ "kiwi::internal::DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kSigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_068019bfc45e94b50e41ebc27487aac3.html", null ],
     [ "kiwi::internal::DstRangeRelationToSrcRangeImpl< Dst, Src, Bounds, IntegerRepresentation::kUnsigned, IntegerRepresentation::kUnsigned, NumericRangeRepresentation::kNotContained >", "structkiwi_1_1internal_1_1_dst_range_relation_to_src_range_impl_3_01_dst_00_01_src_00_01_bounds_28e8c4d5749e96dd2728056f98fd8aaf.html", null ],
+    [ "kiwi::Environment", "classkiwi_1_1_environment.html", null ],
     [ "chibicpp::ErrorOr< T >", "classchibicpp_1_1_error_or.html", null ],
     [ "kiwi::Time::Exploded", "structkiwi_1_1_time_1_1_exploded.html", null ],
     [ "std::false_type", null, [
@@ -183,6 +191,7 @@ var hierarchy =
     [ "kiwi::FileEnumerator::FileInfo", "classkiwi_1_1_file_enumerator_1_1_file_info.html", null ],
     [ "kiwi::FilePath", "classkiwi_1_1_file_path.html", null ],
     [ "kiwi::IOBuf::FillIovResult", "structkiwi_1_1_i_o_buf_1_1_fill_iov_result.html", null ],
+    [ "kiwi::internal::flat_tree< Key, GetKeyFromValue, KeyCompare, Container >", "classkiwi_1_1internal_1_1flat__tree.html", null ],
     [ "base::from_range_t", "structbase_1_1from__range__t.html", null ],
     [ "Function", "classfolly_1_1_function.html", null ],
     [ "kiwi::detail::function_ctor_deduce_< Void, typename >", "structkiwi_1_1detail_1_1function__ctor__deduce__.html", null ],
@@ -308,6 +317,7 @@ var hierarchy =
     [ "kiwi::NoDestructor< T >", "classkiwi_1_1_no_destructor.html", null ],
     [ "kiwi::moveonly_::NonCopyableNonMovable", "structkiwi_1_1moveonly___1_1_non_copyable_non_movable.html", null ],
     [ "kiwi::NonCopyableNonMovable", "structkiwi_1_1_non_copyable_non_movable.html", null ],
+    [ "kiwi::NonCopyablePassKey< T >", "classkiwi_1_1_non_copyable_pass_key.html", null ],
     [ "kiwi::nonesuch", "structkiwi_1_1nonesuch.html", null ],
     [ "kiwi::NotNull< T >", "classkiwi_1_1_not_null.html", [
       [ "kiwi::StrictNotNull< T >", "classkiwi_1_1_strict_not_null.html", null ]
@@ -326,6 +336,7 @@ var hierarchy =
     [ "std::pair", null, [
       [ "kiwi::detail::DenseMapPair< KeyT, ValueT >", "structkiwi_1_1detail_1_1_dense_map_pair.html", null ]
     ] ],
+    [ "kiwi::PassKey< T >", "classkiwi_1_1_pass_key.html", null ],
     [ "std::pointer_traits<::kiwi::CheckedContiguousIterator< T > >", "structstd_1_1pointer__traits_3_1_1kiwi_1_1_checked_contiguous_iterator_3_01_t_01_4_01_4.html", null ],
     [ "kiwi::PointerLikeTypeTraits< T >", "structkiwi_1_1_pointer_like_type_traits.html", null ],
     [ "kiwi::PointerLikeTypeTraits< const T * >", "structkiwi_1_1_pointer_like_type_traits_3_01const_01_t_01_5_01_4.html", null ],
@@ -335,6 +346,7 @@ var hierarchy =
     [ "folly::netops::PollDescriptor", "structfolly_1_1netops_1_1_poll_descriptor.html", null ],
     [ "kiwi::builtin::detail::predict_constinit_< V >", "structkiwi_1_1builtin_1_1detail_1_1predict__constinit__.html", null ],
     [ "kiwi::internal::RangeCheck", "classkiwi_1_1internal_1_1_range_check.html", null ],
+    [ "kiwi::internal::RangeOfRvaluesAdapter< Range >", "classkiwi_1_1internal_1_1_range_of_rvalues_adapter.html", null ],
     [ "kiwi::ScopedGeneric< T, Traits >::Receiver", "classkiwi_1_1_scoped_generic_1_1_receiver.html", null ],
     [ "kiwi::remove_cvref< T >", "structkiwi_1_1remove__cvref.html", null ],
     [ "kiwi::internal::ReplacementOffset", "structkiwi_1_1internal_1_1_replacement_offset.html", null ],
@@ -342,14 +354,20 @@ var hierarchy =
     [ "kiwi::detail::require_sizeof_< decltype(void(sizeof(T))), T >", "structkiwi_1_1detail_1_1require__sizeof___3_01decltype_07void_07sizeof_07_t_08_08_08_00_01_t_01_4.html", null ],
     [ "kiwi::strings_internal::ResizeUninitializedTraits< string_type, typename >", "structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits.html", null ],
     [ "kiwi::strings_internal::ResizeUninitializedTraits< string_type, std::void_t< decltype(std::declval< string_type & >() .__resize_default_init(237))> >", "structkiwi_1_1strings__internal_1_1_resize_uninitialized_traits_3_01string__type_00_01std_1_1voi910255a708a951398ec96b81ff4fb79c.html", null ],
+    [ "kiwi::internal::StringToNumberParser< Number, kBase >::Result", "structkiwi_1_1internal_1_1_string_to_number_parser_1_1_result.html", null ],
+    [ "kiwi::internal::ReversedAdapter< Range >", "classkiwi_1_1internal_1_1_reversed_adapter.html", null ],
     [ "RWSpinLock", "class_r_w_spin_lock.html", null ],
     [ "kiwi::SafeBaseName", "classkiwi_1_1_safe_base_name.html", null ],
     [ "kiwi::internal::SaturateFastAsmOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_asm_op.html", null ],
     [ "kiwi::internal::SaturateFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_op.html", null ],
     [ "kiwi::internal::SaturateFastOp< Dst, Src >", "structkiwi_1_1internal_1_1_saturate_fast_op_3_01_dst_00_01_src_01_4.html", null ],
+    [ "kiwi::apple::internal::ScopedCFTypeRefTraits< CFT >", "structkiwi_1_1apple_1_1internal_1_1_scoped_c_f_type_ref_traits.html", null ],
     [ "kiwi::internal::ScopedFILECloser", "structkiwi_1_1internal_1_1_scoped_f_i_l_e_closer.html", null ],
     [ "kiwi::ScopedGeneric< T, Traits >", "classkiwi_1_1_scoped_generic.html", null ],
     [ "kiwi::ScopedGenericOwnershipTracking", "structkiwi_1_1_scoped_generic_ownership_tracking.html", null ],
+    [ "kiwi::ScopedTempFile", "classkiwi_1_1_scoped_temp_file.html", null ],
+    [ "kiwi::apple::ScopedTypeRef< T, Traits >", "classkiwi_1_1apple_1_1_scoped_type_ref.html", null ],
+    [ "kiwi::apple::ScopedTypeRefTraits< T >", "structkiwi_1_1apple_1_1_scoped_type_ref_traits.html", null ],
     [ "kiwi::detail::ScopeExit< Callable >", "classkiwi_1_1detail_1_1_scope_exit.html", null ],
     [ "kiwi::sorted_equivalent_t", "structkiwi_1_1sorted__equivalent__t.html", null ],
     [ "kiwi::sorted_unique_t", "structkiwi_1_1sorted__unique__t.html", null ],
@@ -360,6 +378,7 @@ var hierarchy =
     [ "kiwi::StringRef", "classkiwi_1_1_string_ref.html", [
       [ "kiwi::StringLiteral", "classkiwi_1_1_string_literal.html", null ]
     ] ],
+    [ "kiwi::internal::StringToNumberParser< Number, kBase >", "classkiwi_1_1internal_1_1_string_to_number_parser.html", null ],
     [ "kiwi::internal::SubstringMatcher< CharT >", "structkiwi_1_1internal_1_1_substring_matcher.html", null ],
     [ "T", null, [
       [ "kiwi::Conjunction< T >", "structkiwi_1_1_conjunction_3_01_t_01_4.html", null ],
@@ -443,6 +462,7 @@ var hierarchy =
     [ "kiwi::unsafe_default_initialized_cv", "structkiwi_1_1unsafe__default__initialized__cv.html", null ],
     [ "kiwi::internal::UnsignedOrFloatForSize< Numeric >", "structkiwi_1_1internal_1_1_unsigned_or_float_for_size.html", null ],
     [ "kiwi::internal::UnsignedOrFloatForSize< Numeric >", "structkiwi_1_1internal_1_1_unsigned_or_float_for_size_3_01_numeric_01_4.html", null ],
+    [ "kiwi::internal::flat_tree< Key, GetKeyFromValue, KeyCompare, Container >::value_compare", "structkiwi_1_1internal_1_1flat__tree_1_1value__compare.html", null ],
     [ "detected_or::value_t", null, [
       [ "kiwi::is_detected< T, A >", "structkiwi_1_1is__detected.html", null ]
     ] ],

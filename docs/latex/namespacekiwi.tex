@@ -90,6 +90,8 @@ struct \mbox{\hyperlink{structkiwi_1_1_disjunction_3_01_t_01_4}{Disjunction$<$ T
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_disjunction_3_01_t_00_01_t_list_8_8_8_01_4}{Disjunction$<$ T, TList... $>$}}
 \item 
+class \mbox{\hyperlink{classkiwi_1_1_environment}{Environment}}
+\item 
 struct \mbox{\hyperlink{structkiwi_1_1explicitly__convertible}{explicitly\+\_\+convertible}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1explicitly__convertible_3_01_from_00_01_to_00_01std_1_1void__t_3_01decltype_07statefcd7b9d6e4719551bf6f0ee41916942}{explicitly\+\_\+convertible$<$ From, To, std\+::void\+\_\+t$<$ decltype(static\+\_\+cast$<$ To $>$(std\+::declval$<$ std\+::add\+\_\+rvalue\+\_\+reference\+\_\+t$<$ From $>$ $>$()))$>$ $>$}}
@@ -182,6 +184,8 @@ class \mbox{\hyperlink{classkiwi_1_1_no_destructor}{No\+Destructor}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_non_copyable_non_movable}{Non\+Copyable\+Non\+Movable}}
 \item 
+class \mbox{\hyperlink{classkiwi_1_1_non_copyable_pass_key}{Non\+Copyable\+Pass\+Key}}
+\item 
 struct \mbox{\hyperlink{structkiwi_1_1nonesuch}{nonesuch}}
 \item 
 class \mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}}
@@ -189,6 +193,8 @@ class \mbox{\hyperlink{classkiwi_1_1_not_null}{Not\+Null}}
 struct \mbox{\hyperlink{structkiwi_1_1_not_null_hash}{Not\+Null\+Hash}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_not_null_hash_3_01_t_00_01_u_00_01false_01_4}{Not\+Null\+Hash$<$ T, U, false $>$}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_pass_key}{Pass\+Key}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_pointer_like_type_traits}{Pointer\+Like\+Type\+Traits}}
 \item 
@@ -211,6 +217,8 @@ class \mbox{\hyperlink{classkiwi_1_1_safe_base_name}{Safe\+Base\+Name}}
 class \mbox{\hyperlink{classkiwi_1_1_scoped_generic}{Scoped\+Generic}}
 \item 
 struct \mbox{\hyperlink{structkiwi_1_1_scoped_generic_ownership_tracking}{Scoped\+Generic\+Ownership\+Tracking}}
+\item 
+class \mbox{\hyperlink{classkiwi_1_1_scoped_temp_file}{Scoped\+Temp\+File}}
 \item 
 class \mbox{\hyperlink{classkiwi_1_1_small_dense_map}{Small\+Dense\+Map}}
 \item 
@@ -287,6 +295,8 @@ using {\bfseries String\+Type} = File\+Path\+::\+String\+Type
 \item 
 \Hypertarget{namespacekiwi_aeadde4c18ac419fb91253958fe0e1968}\label{namespacekiwi_aeadde4c18ac419fb91253958fe0e1968} 
 using {\bfseries String\+View\+Type} = File\+Path\+::\+String\+View\+Type
+\item 
+using \mbox{\hyperlink{namespacekiwi_a35b73775477f87f09996cfa4d528eb54}{Environment\+Map}}
 \item 
 \Hypertarget{namespacekiwi_aab078854ad8d042b4bc0d6b9225aa808}\label{namespacekiwi_aab078854ad8d042b4bc0d6b9225aa808} 
 {\footnotesize template$<$typename T$>$ }\\using {\bfseries type\+\_\+identity\+\_\+t} = typename \mbox{\hyperlink{structkiwi_1_1type__identity}{type\+\_\+identity}}$<$T$>$\+::type
@@ -371,6 +381,11 @@ using {\bfseries Identity} = \mbox{\hyperlink{structkiwi_1_1identity__fn}{identi
 \Hypertarget{namespacekiwi_a1413773015c31db91472382f0cd23415}\label{namespacekiwi_a1413773015c31db91472382f0cd23415} 
 {\footnotesize template$<$typename T$>$ }\\using {\bfseries Checked\+Contiguous\+Const\+Iterator} = \mbox{\hyperlink{classkiwi_1_1_checked_contiguous_iterator}{Checked\+Contiguous\+Iterator}}$<$const T$>$
 \item 
+{\footnotesize template$<$class Key, class Compare = std\+::less$<$$>$, class Container = std\+::vector$<$\+Key$>$$>$ }\\using \mbox{\hyperlink{namespacekiwi_a2ff42f16440568ee81b09801035c1396}{flat\+\_\+set}}
+\item 
+\Hypertarget{namespacekiwi_ad95e43e158cde59c07145f75bef78b37}\label{namespacekiwi_ad95e43e158cde59c07145f75bef78b37} 
+{\footnotesize template$<$class T, class Container = circular\+\_\+deque$<$\+T$>$$>$ }\\using {\bfseries stack} = std\+::stack$<$T, Container$>$
+\item 
 \Hypertarget{namespacekiwi_ab22846865dc3cdda9ef11410bcf566a9}\label{namespacekiwi_ab22846865dc3cdda9ef11410bcf566a9} 
 using {\bfseries stat\+\_\+wrapper\+\_\+t} = struct stat
 \item 
@@ -402,6 +417,10 @@ using {\bfseries String\+Pairs} = std\+::vector$<$std\+::pair$<$std\+::string, s
 \item 
 enum class \mbox{\hyperlink{namespacekiwi_a7df83edab5560ff28ed4ebc60cebed70}{Acquire\+Mallocated\+String}} 
 \item 
+\Hypertarget{namespacekiwi_a54a1fd79a06a6d39f13085248572dc27}\label{namespacekiwi_a54a1fd79a06a6d39f13085248572dc27} 
+enum \{ {\bfseries k\+Max\+Unique\+Files} = 100
+ \}
+\item 
 \Hypertarget{namespacekiwi_abbab885c69bee0f95b20156ee798a016}\label{namespacekiwi_abbab885c69bee0f95b20156ee798a016} 
 enum {\bfseries Whitespace\+Handling} \{ {\bfseries KEEP\+\_\+\+WHITESPACE}
 , {\bfseries TRIM\+\_\+\+WHITESPACE}
@@ -430,25 +449,107 @@ enum class {\bfseries Compare\+Case} \{ {\bfseries SENSITIVE}
 \Hypertarget{namespacekiwi_ad82a0d2a7703125b851e1d6e61a94db8}\label{namespacekiwi_ad82a0d2a7703125b851e1d6e61a94db8} 
 std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&out, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&file\+\_\+path)
 \item 
-\Hypertarget{namespacekiwi_a563cf2d6cad68b98bbb81669bdc029b3}\label{namespacekiwi_a563cf2d6cad68b98bbb81669bdc029b3} 
-\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Make\+Absolute\+File\+Path} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&input)
+\Hypertarget{namespacekiwi_aded3c24dc961b9bd3bd6eeb61b011c90}\label{namespacekiwi_aded3c24dc961b9bd3bd6eeb61b011c90} 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ void()$>$ {\bfseries Get\+Delete\+File\+Callback} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, \mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ void(bool)$>$ reply\+\_\+callback)
+\item 
+\Hypertarget{namespacekiwi_a530545f9ff0dd46b89decad5e2ffba5c}\label{namespacekiwi_a530545f9ff0dd46b89decad5e2ffba5c} 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ void()$>$ {\bfseries Get\+Delete\+Path\+Recursively\+Callback} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, \mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ void(bool)$>$ reply\+\_\+callback)
+\item 
+int64\+\_\+t \mbox{\hyperlink{namespacekiwi_ae2e14b776e74a84d7724ded6cff24a72}{Compute\+Directory\+Size}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&root\+\_\+path)
+\item 
+\Hypertarget{namespacekiwi_a62aec8fe363b03ab1ca20b9f8a93d241}\label{namespacekiwi_a62aec8fe363b03ab1ca20b9f8a93d241} 
+bool {\bfseries Move} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&from\+\_\+path, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&to\+\_\+path)
+\item 
+\Hypertarget{namespacekiwi_a82579fafc1ee3678a86046086ad7e071}\label{namespacekiwi_a82579fafc1ee3678a86046086ad7e071} 
+bool {\bfseries Copy\+File\+Contents} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \&infile, \mbox{\hyperlink{classkiwi_1_1_file}{File}} \&outfile)
+\item 
+\Hypertarget{namespacekiwi_acd1153b6bb0d12a6c469f640796041cf}\label{namespacekiwi_acd1153b6bb0d12a6c469f640796041cf} 
+bool {\bfseries Contents\+Equal} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename1, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename2)
+\item 
+\Hypertarget{namespacekiwi_a1595c460f3b0c42928b682f674209f07}\label{namespacekiwi_a1595c460f3b0c42928b682f674209f07} 
+bool {\bfseries Text\+Contents\+Equal} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename1, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename2)
+\item 
+\Hypertarget{namespacekiwi_aa55b160e142145a671db058b0b8ff4b5}\label{namespacekiwi_aa55b160e142145a671db058b0b8ff4b5} 
+bool {\bfseries Read\+Stream\+To\+String} (FILE \texorpdfstring{$\ast$}{*}stream, std\+::string \texorpdfstring{$\ast$}{*}contents)
+\item 
+\Hypertarget{namespacekiwi_a73248043785743fec4cb0f793e50187d}\label{namespacekiwi_a73248043785743fec4cb0f793e50187d} 
+bool {\bfseries Read\+Stream\+To\+String\+With\+Max\+Size} (FILE \texorpdfstring{$\ast$}{*}stream, size\+\_\+t max\+\_\+size, std\+::string \texorpdfstring{$\ast$}{*}contents)
+\item 
+\Hypertarget{namespacekiwi_a6fb8028c260ceee03672742093c2c694}\label{namespacekiwi_a6fb8028c260ceee03672742093c2c694} 
+std\+::optional$<$ std\+::vector$<$ uint8\+\_\+t $>$ $>$ {\bfseries Read\+File\+To\+Bytes} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
+\item 
+\Hypertarget{namespacekiwi_a8f5bf8043d6943bb6887a146008c883f}\label{namespacekiwi_a8f5bf8043d6943bb6887a146008c883f} 
+bool {\bfseries Read\+File\+To\+String} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, std\+::string \texorpdfstring{$\ast$}{*}contents)
+\item 
+\Hypertarget{namespacekiwi_a1fe8d705afdfbf976ee10ebc57b56bb5}\label{namespacekiwi_a1fe8d705afdfbf976ee10ebc57b56bb5} 
+bool {\bfseries Read\+File\+To\+String\+With\+Max\+Size} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, std\+::string \texorpdfstring{$\ast$}{*}contents, size\+\_\+t max\+\_\+size)
+\item 
+\Hypertarget{namespacekiwi_af22fba5610922d5910e31f9a313dd658}\label{namespacekiwi_af22fba5610922d5910e31f9a313dd658} 
+bool {\bfseries Is\+Directory\+Empty} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&dir\+\_\+path)
+\item 
+bool \mbox{\hyperlink{namespacekiwi_af36300507ade71d4184c22720143fb71}{Create\+Temporary\+File}} (\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path)
+\item 
+\Hypertarget{namespacekiwi_add05d746ac3465d3aa07ec80e5f13b2d}\label{namespacekiwi_add05d746ac3465d3aa07ec80e5f13b2d} 
+Scoped\+FILE {\bfseries Create\+And\+Open\+Temporary\+Stream} (\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path)
+\item 
+\Hypertarget{namespacekiwi_a4604499cb77b647627868f031e465090}\label{namespacekiwi_a4604499cb77b647627868f031e465090} 
+bool {\bfseries Create\+Directory} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&full\+\_\+path)
+\item 
+\Hypertarget{namespacekiwi_ac537ee10f685065e3e8ee8e4d3abac67}\label{namespacekiwi_ac537ee10f685065e3e8ee8e4d3abac67} 
+std\+::optional$<$ int64\+\_\+t $>$ {\bfseries Get\+File\+Size} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&file\+\_\+path)
+\item 
+\Hypertarget{namespacekiwi_afdce30d3f43bd0c99c53aa21dc34eda9}\label{namespacekiwi_afdce30d3f43bd0c99c53aa21dc34eda9} 
+\mbox{\hyperlink{classkiwi_1_1_function}{Function}}$<$ std\+::optional$<$ int64\+\_\+t $>$()$>$ {\bfseries Get\+File\+Size\+Callback} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
+\item 
+\Hypertarget{namespacekiwi_ab2c02903a98301640da82343b2f0cb28}\label{namespacekiwi_ab2c02903a98301640da82343b2f0cb28} 
+bool {\bfseries Touch\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, const \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \&last\+\_\+accessed, const \mbox{\hyperlink{classkiwi_1_1_time}{Time}} \&last\+\_\+modified)
+\item 
+\Hypertarget{namespacekiwi_a4fe39ebf6b8534fdce3daae97af5d61f}\label{namespacekiwi_a4fe39ebf6b8534fdce3daae97af5d61f} 
+bool {\bfseries Close\+File} (FILE \texorpdfstring{$\ast$}{*}file)
+\item 
+\Hypertarget{namespacekiwi_a0bf8609fd19c61f5ce60d8c9bd181664}\label{namespacekiwi_a0bf8609fd19c61f5ce60d8c9bd181664} 
+bool {\bfseries Truncate\+File} (FILE \texorpdfstring{$\ast$}{*}file)
+\item 
+\Hypertarget{namespacekiwi_ae79a5c0c15fa3ce106cf4d29b9cb9eb4}\label{namespacekiwi_ae79a5c0c15fa3ce106cf4d29b9cb9eb4} 
+std\+::optional$<$ uint64\+\_\+t $>$ {\bfseries Read\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ uint8\+\_\+t $>$ buffer)
+\item 
+\Hypertarget{namespacekiwi_a02385c0ba69d1065494a8638bda77c81}\label{namespacekiwi_a02385c0ba69d1065494a8638bda77c81} 
+int {\bfseries Read\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, char \texorpdfstring{$\ast$}{*}data, int max\+\_\+size)
+\item 
+\Hypertarget{namespacekiwi_ac1850d8915beab350e85e539b3fe4c2f}\label{namespacekiwi_ac1850d8915beab350e85e539b3fe4c2f} 
+bool {\bfseries Write\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, std\+::string\+\_\+view data)
+\item 
+\Hypertarget{namespacekiwi_ac84b162436b85b85f6060399746f5955}\label{namespacekiwi_ac84b162436b85b85f6060399746f5955} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Get\+Unique\+Path} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
+\item 
+\Hypertarget{namespacekiwi_a582488a67aa1a73314d7327071e3b44c}\label{namespacekiwi_a582488a67aa1a73314d7327071e3b44c} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Get\+Unique\+Path\+With\+Suffix\+Format} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, \mbox{\hyperlink{classkiwi_1_1basic__cstring__view}{kiwi\+::cstring\+\_\+view}} suffix\+\_\+format)
+\item 
+\Hypertarget{namespacekiwi_a98c31cf6df5d2a4b20cda9ebcbbad022}\label{namespacekiwi_a98c31cf6df5d2a4b20cda9ebcbbad022} 
+bool {\bfseries Copy\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&from\+\_\+path, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&to\+\_\+path)
+\item 
+\Hypertarget{namespacekiwi_a3218b6108fddcfd450e62bde1cdc3473}\label{namespacekiwi_a3218b6108fddcfd450e62bde1cdc3473} 
+bool {\bfseries Get\+Temp\+Dir} (\mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi\+::\+File\+Path}} \texorpdfstring{$\ast$}{*}path)
+\item 
+\Hypertarget{namespacekiwi_a48beff72ab5d60ece7b0416a1fbcec6b}\label{namespacekiwi_a48beff72ab5d60ece7b0416a1fbcec6b} 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Get\+Home\+Dir} ()
+\item 
+\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \mbox{\hyperlink{namespacekiwi_a4b01fc85d65b8cda86e753f4a00ccb5f}{Make\+Absolute\+File\+Path}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&input)
 \item 
 \Hypertarget{namespacekiwi_a046304223446b84efd91f7c8d75e516f}\label{namespacekiwi_a046304223446b84efd91f7c8d75e516f} 
 std\+::optional$<$ \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} $>$ {\bfseries Make\+Absolute\+File\+Path\+No\+Resolve\+Symbolic\+Links} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&input)
 \item 
-\Hypertarget{namespacekiwi_af518bc86534d098603cf208ca6972362}\label{namespacekiwi_af518bc86534d098603cf208ca6972362} 
-bool {\bfseries Delete\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
+bool \mbox{\hyperlink{namespacekiwi_a724068dd3390a2442ca488909f68ed72}{Delete\+File}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
-\Hypertarget{namespacekiwi_a768d932cdac6afa8ab1fb636ad54613f}\label{namespacekiwi_a768d932cdac6afa8ab1fb636ad54613f} 
-bool {\bfseries Delete\+Path\+Recursively} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
+bool \mbox{\hyperlink{namespacekiwi_a00e53ebf2a52ed603c86d01d3781bfb6}{Delete\+Path\+Recursively}} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
-\Hypertarget{namespacekiwi_aaa494bd8e7fddbad616bbef0d1b7c113}\label{namespacekiwi_aaa494bd8e7fddbad616bbef0d1b7c113} 
+\Hypertarget{namespacekiwi_aaffbbf5464ad1c7bcce8dd14f7254b7a}\label{namespacekiwi_aaffbbf5464ad1c7bcce8dd14f7254b7a} 
 bool {\bfseries Replace\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&from\+\_\+path, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&to\+\_\+path, \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{File\+::\+Error}} \texorpdfstring{$\ast$}{*}error)
 \item 
-\Hypertarget{namespacekiwi_aece54ca33ebcb53451a4566fab7689a8}\label{namespacekiwi_aece54ca33ebcb53451a4566fab7689a8} 
+\Hypertarget{namespacekiwi_ad9ae6f9703f263338ffb06578280db99}\label{namespacekiwi_ad9ae6f9703f263338ffb06578280db99} 
 bool {\bfseries Copy\+Directory} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&from\+\_\+path, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&to\+\_\+path, bool recursive)
 \item 
-\Hypertarget{namespacekiwi_aa609ac833c6ce78a24738f26e0f5cd07}\label{namespacekiwi_aa609ac833c6ce78a24738f26e0f5cd07} 
+\Hypertarget{namespacekiwi_aea4f6e681271a13388e1bf7ff0c7f6ac}\label{namespacekiwi_aea4f6e681271a13388e1bf7ff0c7f6ac} 
 bool {\bfseries Copy\+Directory\+Excl} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&from\+\_\+path, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&to\+\_\+path, bool recursive)
 \item 
 \Hypertarget{namespacekiwi_ae008babf8b790691a0848c4a8e2b61f4}\label{namespacekiwi_ae008babf8b790691a0848c4a8e2b61f4} 
@@ -457,7 +558,7 @@ bool {\bfseries Create\+Pipe} (Scoped\+FD \texorpdfstring{$\ast$}{*}read\+\_\+fd
 \Hypertarget{namespacekiwi_aa92fd288f8d186d9dc6aa829d292475c}\label{namespacekiwi_aa92fd288f8d186d9dc6aa829d292475c} 
 bool {\bfseries Create\+Local\+Non\+Blocking\+Pipe} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ int, 2u $>$ fds)
 \item 
-\Hypertarget{namespacekiwi_abb4dd7914f4eb8788fb73e57b4113b90}\label{namespacekiwi_abb4dd7914f4eb8788fb73e57b4113b90} 
+\Hypertarget{namespacekiwi_a4e069147ab9ee17a5888c4747035a200}\label{namespacekiwi_a4e069147ab9ee17a5888c4747035a200} 
 bool {\bfseries Set\+Non\+Blocking} (int fd)
 \item 
 \Hypertarget{namespacekiwi_a3535954f278afe4c69dc4b9b4ce8ef15}\label{namespacekiwi_a3535954f278afe4c69dc4b9b4ce8ef15} 
@@ -466,16 +567,16 @@ bool {\bfseries Set\+Close\+On\+Exec} (int fd)
 \Hypertarget{namespacekiwi_ac67a6816a09639462de9693adf49706a}\label{namespacekiwi_ac67a6816a09639462de9693adf49706a} 
 bool {\bfseries Remove\+Close\+On\+Exec} (int fd)
 \item 
-\Hypertarget{namespacekiwi_ae7b583f8c51844016f4522f56ac0d746}\label{namespacekiwi_ae7b583f8c51844016f4522f56ac0d746} 
+\Hypertarget{namespacekiwi_a2f5c040a9c42c47061285611b05e090c}\label{namespacekiwi_a2f5c040a9c42c47061285611b05e090c} 
 bool {\bfseries Path\+Exists} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
-\Hypertarget{namespacekiwi_a77fc5c930407bb13bda4f51bcc2000a6}\label{namespacekiwi_a77fc5c930407bb13bda4f51bcc2000a6} 
+\Hypertarget{namespacekiwi_aaab258656ede1a1fd5de6f10b6ffdb1f}\label{namespacekiwi_aaab258656ede1a1fd5de6f10b6ffdb1f} 
 bool {\bfseries Path\+Is\+Readable} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
-\Hypertarget{namespacekiwi_ace07ce2f5041436307dc216fc38c7650}\label{namespacekiwi_ace07ce2f5041436307dc216fc38c7650} 
+\Hypertarget{namespacekiwi_a4a685cd5a99948ab7c2c4e7474dc687c}\label{namespacekiwi_a4a685cd5a99948ab7c2c4e7474dc687c} 
 bool {\bfseries Path\+Is\+Writable} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
-\Hypertarget{namespacekiwi_ac4c1691b1552e1dfe2c214bf12b1ea65}\label{namespacekiwi_ac4c1691b1552e1dfe2c214bf12b1ea65} 
+\Hypertarget{namespacekiwi_a3f9042a4c6d38fbfee91d315e58592c6}\label{namespacekiwi_a3f9042a4c6d38fbfee91d315e58592c6} 
 bool {\bfseries Directory\+Exists} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
 \Hypertarget{namespacekiwi_a10a752fef1670ece9ebcd94195bac978}\label{namespacekiwi_a10a752fef1670ece9ebcd94195bac978} 
@@ -500,60 +601,54 @@ bool {\bfseries Get\+Posix\+File\+Permissions} (const \mbox{\hyperlink{classkiwi
 bool {\bfseries Set\+Posix\+File\+Permissions} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, int mode)
 \item 
 \Hypertarget{namespacekiwi_a54d38dba78542c3c5b904f4c0ac385cf}\label{namespacekiwi_a54d38dba78542c3c5b904f4c0ac385cf} 
-bool {\bfseries Executable\+Exists\+In\+Path} (Environment \texorpdfstring{$\ast$}{*}env, const File\+Path\+::\+String\+Type \&executable)
+bool {\bfseries Executable\+Exists\+In\+Path} (\mbox{\hyperlink{classkiwi_1_1_environment}{Environment}} \texorpdfstring{$\ast$}{*}env, const File\+Path\+::\+String\+Type \&executable)
 \item 
-\Hypertarget{namespacekiwi_ace953b5ef6d8ff292b1ba7ea9143b64d}\label{namespacekiwi_ace953b5ef6d8ff292b1ba7ea9143b64d} 
-bool {\bfseries Get\+Temp\+Dir} (\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path)
-\item 
-\Hypertarget{namespacekiwi_ad578838a32938669871ec4d0076a7b67}\label{namespacekiwi_ad578838a32938669871ec4d0076a7b67} 
-\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Get\+Home\+Dir} ()
-\item 
-\Hypertarget{namespacekiwi_a428e6c9f0a922a2b73fd3bfa33c0fa44}\label{namespacekiwi_a428e6c9f0a922a2b73fd3bfa33c0fa44} 
+\Hypertarget{namespacekiwi_a82c23d65fc0147cd2fd799cda921816e}\label{namespacekiwi_a82c23d65fc0147cd2fd799cda921816e} 
 \mbox{\hyperlink{classkiwi_1_1_file}{File}} {\bfseries Create\+And\+Open\+Temporary\+File\+In\+Dir} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&dir, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}temp\+\_\+file)
 \item 
-\Hypertarget{namespacekiwi_a54adf98fc5a97043ea4e68d4f2f55d19}\label{namespacekiwi_a54adf98fc5a97043ea4e68d4f2f55d19} 
+\Hypertarget{namespacekiwi_a81f2eccfe520184d4a4411cb3bd29be8}\label{namespacekiwi_a81f2eccfe520184d4a4411cb3bd29be8} 
 bool {\bfseries Create\+Temporary\+File\+In\+Dir} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&dir, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}temp\+\_\+file)
 \item 
-\Hypertarget{namespacekiwi_a99497ab02e433adb7542577c39635e5a}\label{namespacekiwi_a99497ab02e433adb7542577c39635e5a} 
+\Hypertarget{namespacekiwi_ad8e4738fdd2f10725fd16c6dfee36717}\label{namespacekiwi_ad8e4738fdd2f10725fd16c6dfee36717} 
 \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} {\bfseries Format\+Temporary\+File\+Name} (File\+Path\+::\+String\+View\+Type identifier)
 \item 
-\Hypertarget{namespacekiwi_a2810af6410c9b06c4e8ec5369eb352d9}\label{namespacekiwi_a2810af6410c9b06c4e8ec5369eb352d9} 
+\Hypertarget{namespacekiwi_afc2d59ba2b619d4479927172f53b9f59}\label{namespacekiwi_afc2d59ba2b619d4479927172f53b9f59} 
 Scoped\+FILE {\bfseries Create\+And\+Open\+Temporary\+Stream\+In\+Dir} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&dir, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path)
 \item 
-\Hypertarget{namespacekiwi_abda517bcb1d8714959817d3a035cc4dd}\label{namespacekiwi_abda517bcb1d8714959817d3a035cc4dd} 
+\Hypertarget{namespacekiwi_a0e78937bada9a5ec9fb9018fb7ea4eb7}\label{namespacekiwi_a0e78937bada9a5ec9fb9018fb7ea4eb7} 
 bool {\bfseries Create\+Temporary\+Dir\+In\+Dir} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&base\+\_\+dir, File\+Path\+::\+String\+View\+Type prefix, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}new\+\_\+dir)
 \item 
-\Hypertarget{namespacekiwi_a9b5da41386dc7c181a78c89710453183}\label{namespacekiwi_a9b5da41386dc7c181a78c89710453183} 
+\Hypertarget{namespacekiwi_af52a8c8b91fc411aaa5a2945e52f8ba8}\label{namespacekiwi_af52a8c8b91fc411aaa5a2945e52f8ba8} 
 bool {\bfseries Create\+New\+Temp\+Directory} (const File\+Path\+::\+String\+Type \&prefix, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}new\+\_\+temp\+\_\+path)
 \item 
-\Hypertarget{namespacekiwi_a610ea2fbbde4e359bc0c80fb5982c542}\label{namespacekiwi_a610ea2fbbde4e359bc0c80fb5982c542} 
+\Hypertarget{namespacekiwi_aa86664cd0d7dc92738b84b7262193aae}\label{namespacekiwi_aa86664cd0d7dc92738b84b7262193aae} 
 bool {\bfseries Create\+Directory\+And\+Get\+Error} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&full\+\_\+path, \mbox{\hyperlink{classkiwi_1_1_file_ad7e38cc4ada147c3bfe00b80387c8609}{File\+::\+Error}} \texorpdfstring{$\ast$}{*}error)
 \item 
-\Hypertarget{namespacekiwi_aee2f6203a41794b9f64ab1ad3977553c}\label{namespacekiwi_aee2f6203a41794b9f64ab1ad3977553c} 
-bool {\bfseries Read\+File\+To\+String\+Non\+Blocking} (const base\+::\+File\+Path \&file, std\+::string \texorpdfstring{$\ast$}{*}ret)
+\Hypertarget{namespacekiwi_a8a41bfa7719eeb499d5041ba0d0cc98b}\label{namespacekiwi_a8a41bfa7719eeb499d5041ba0d0cc98b} 
+bool {\bfseries Read\+File\+To\+String\+Non\+Blocking} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{kiwi\+::\+File\+Path}} \&file, std\+::string \texorpdfstring{$\ast$}{*}ret)
 \item 
-\Hypertarget{namespacekiwi_a38de950f2c7bf7b26de582384b87b92c}\label{namespacekiwi_a38de950f2c7bf7b26de582384b87b92c} 
+\Hypertarget{namespacekiwi_ae41cdce6f53d0b397a917aeeeda59ee3}\label{namespacekiwi_ae41cdce6f53d0b397a917aeeeda59ee3} 
 bool {\bfseries Normalize\+File\+Path} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}normalized\+\_\+path)
 \item 
-\Hypertarget{namespacekiwi_a83b9fc0d48e2618fcfe53d17cca8d5ec}\label{namespacekiwi_a83b9fc0d48e2618fcfe53d17cca8d5ec} 
+\Hypertarget{namespacekiwi_a99eff9261cf827d3bd1359362d679ff7}\label{namespacekiwi_a99eff9261cf827d3bd1359362d679ff7} 
 bool {\bfseries Is\+Link} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&file\+\_\+path)
 \item 
-\Hypertarget{namespacekiwi_a412cef1ffb2e0c37325f070c0a401869}\label{namespacekiwi_a412cef1ffb2e0c37325f070c0a401869} 
+\Hypertarget{namespacekiwi_a6decc29e56ebf2cff7f57246c46a7790}\label{namespacekiwi_a6decc29e56ebf2cff7f57246c46a7790} 
 bool {\bfseries Get\+File\+Info} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&file\+\_\+path, \mbox{\hyperlink{structkiwi_1_1_file_1_1_info}{File\+::\+Info}} \texorpdfstring{$\ast$}{*}results)
 \item 
-\Hypertarget{namespacekiwi_af3129dca291e3cde3f67c943c78978c4}\label{namespacekiwi_af3129dca291e3cde3f67c943c78978c4} 
+\Hypertarget{namespacekiwi_a9b671fe17d22b7becef51a45d87f036a}\label{namespacekiwi_a9b671fe17d22b7becef51a45d87f036a} 
 FILE \texorpdfstring{$\ast$}{*} {\bfseries Open\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, const char \texorpdfstring{$\ast$}{*}mode)
 \item 
-\Hypertarget{namespacekiwi_a4e339b128db2da959f9044a28652d006}\label{namespacekiwi_a4e339b128db2da959f9044a28652d006} 
+\Hypertarget{namespacekiwi_ae24adf07cce24201fddc223ec2f859d4}\label{namespacekiwi_ae24adf07cce24201fddc223ec2f859d4} 
 FILE \texorpdfstring{$\ast$}{*} {\bfseries File\+To\+FILE} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} file, const char \texorpdfstring{$\ast$}{*}mode)
 \item 
-\Hypertarget{namespacekiwi_a54f2565e4dec6759243598c138e1a00a}\label{namespacekiwi_a54f2565e4dec6759243598c138e1a00a} 
+\Hypertarget{namespacekiwi_a1e0d2c08ef6f1ffa373aa92e45e33f51}\label{namespacekiwi_a1e0d2c08ef6f1ffa373aa92e45e33f51} 
 \mbox{\hyperlink{classkiwi_1_1_file}{File}} {\bfseries FILETo\+File} (FILE \texorpdfstring{$\ast$}{*}file\+\_\+stream)
 \item 
-\Hypertarget{namespacekiwi_a68f60d7055050d7055320686ca1aa6b6}\label{namespacekiwi_a68f60d7055050d7055320686ca1aa6b6} 
+\Hypertarget{namespacekiwi_ae5652be48b7f5f87f411c1b6eb912bc5}\label{namespacekiwi_ae5652be48b7f5f87f411c1b6eb912bc5} 
 std\+::optional$<$ uint64\+\_\+t $>$ {\bfseries Read\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ char $>$ buffer)
 \item 
-\Hypertarget{namespacekiwi_aeff0a3e7894fdf576fc7c5cdd90958ba}\label{namespacekiwi_aeff0a3e7894fdf576fc7c5cdd90958ba} 
+\Hypertarget{namespacekiwi_ab4a9f230b1655e77ca1dc45ece94829a}\label{namespacekiwi_ab4a9f230b1655e77ca1dc45ece94829a} 
 bool {\bfseries Write\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
 \Hypertarget{namespacekiwi_a99748e44bb51087ce82ef21cb35e6f48}\label{namespacekiwi_a99748e44bb51087ce82ef21cb35e6f48} 
@@ -565,28 +660,25 @@ bool {\bfseries Write\+File\+Descriptor} (int fd, std\+::string\+\_\+view data)
 \Hypertarget{namespacekiwi_ab29c5cf62bfdb1fc6c67ca1874b0f83f}\label{namespacekiwi_ab29c5cf62bfdb1fc6c67ca1874b0f83f} 
 bool {\bfseries Allocate\+File\+Region} (\mbox{\hyperlink{classkiwi_1_1_file}{File}} \texorpdfstring{$\ast$}{*}file, int64\+\_\+t offset, size\+\_\+t size)
 \item 
-\Hypertarget{namespacekiwi_abb4ff91549854afb5f63e171fb6dc7cf}\label{namespacekiwi_abb4ff91549854afb5f63e171fb6dc7cf} 
+\Hypertarget{namespacekiwi_ade13a2c5977f541a4100d92731d09af4}\label{namespacekiwi_ade13a2c5977f541a4100d92731d09af4} 
 bool {\bfseries Append\+To\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ data)
 \item 
-\Hypertarget{namespacekiwi_a1e0152ce00cbaba23e781ac7f10611d9}\label{namespacekiwi_a1e0152ce00cbaba23e781ac7f10611d9} 
+\Hypertarget{namespacekiwi_a3f2ef08db0f193a012344dd7509f3893}\label{namespacekiwi_a3f2ef08db0f193a012344dd7509f3893} 
 bool {\bfseries Append\+To\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&filename, std\+::string\+\_\+view data)
 \item 
-\Hypertarget{namespacekiwi_ae9828e920f31fba52afc57bf4a07f508}\label{namespacekiwi_ae9828e920f31fba52afc57bf4a07f508} 
+\Hypertarget{namespacekiwi_a49cb09274b38807201e1ce5dde6d5c92}\label{namespacekiwi_a49cb09274b38807201e1ce5dde6d5c92} 
 bool {\bfseries Get\+Current\+Directory} (\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}dir)
 \item 
-\Hypertarget{namespacekiwi_a1c8fb994c3320f24f36b6a33fc476c92}\label{namespacekiwi_a1c8fb994c3320f24f36b6a33fc476c92} 
+\Hypertarget{namespacekiwi_ab2716ca31406a483645378db9d71115e}\label{namespacekiwi_ab2716ca31406a483645378db9d71115e} 
 bool {\bfseries Set\+Current\+Directory} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
-\Hypertarget{namespacekiwi_a14c671bdf7bcb0020fdf0cf4abc0e727}\label{namespacekiwi_a14c671bdf7bcb0020fdf0cf4abc0e727} 
+\Hypertarget{namespacekiwi_aa0c6ac2e5a5b7ee7ead8e8a41041805f}\label{namespacekiwi_aa0c6ac2e5a5b7ee7ead8e8a41041805f} 
 int {\bfseries Get\+Maximum\+Path\+Component\+Length} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&path)
 \item 
 \Hypertarget{namespacekiwi_ac11d3e17f4207207c82f19949324c330}\label{namespacekiwi_ac11d3e17f4207207c82f19949324c330} 
 bool {\bfseries Get\+Shmem\+Temp\+Dir} (bool executable, \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}path)
 \item 
-\Hypertarget{namespacekiwi_a8ea3ad3c303325cb0cc9a91e478f5e37}\label{namespacekiwi_a8ea3ad3c303325cb0cc9a91e478f5e37} 
-bool {\bfseries Copy\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&from\+\_\+path, const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&to\+\_\+path)
-\item 
-\Hypertarget{namespacekiwi_ab54c33194fd27e31394e37efed792cf9}\label{namespacekiwi_ab54c33194fd27e31394e37efed792cf9} 
+\Hypertarget{namespacekiwi_a8aaaa207aa046212c7936fa6a1dee575}\label{namespacekiwi_a8aaaa207aa046212c7936fa6a1dee575} 
 bool {\bfseries Pre\+Read\+File} (const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&file\+\_\+path, bool is\+\_\+executable, bool sequential, int64\+\_\+t max\+\_\+bytes)
 \item 
 \Hypertarget{namespacekiwi_aad3bfa56f9543bd2026245a069f73c14}\label{namespacekiwi_aad3bfa56f9543bd2026245a069f73c14} 
@@ -629,6 +721,114 @@ void {\bfseries Str\+Append} (std\+::string \texorpdfstring{$\ast$}{*}dest, \mbo
 \item 
 \Hypertarget{namespacekiwi_a44d51e506a508ebecd291e026b38889a}\label{namespacekiwi_a44d51e506a508ebecd291e026b38889a} 
 void {\bfseries Str\+Append} (std\+::u16string \texorpdfstring{$\ast$}{*}dest, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const std\+::u16string $>$ pieces)
+\item 
+\Hypertarget{namespacekiwi_a4a602b1b8569b6721de68a150ff80e62}\label{namespacekiwi_a4a602b1b8569b6721de68a150ff80e62} 
+std\+::string {\bfseries Number\+To\+String} (int value)
+\item 
+\Hypertarget{namespacekiwi_afa30151c086d7ad4da73b30a4c7d139d}\label{namespacekiwi_afa30151c086d7ad4da73b30a4c7d139d} 
+std\+::u16string {\bfseries Number\+To\+String16} (int value)
+\item 
+\Hypertarget{namespacekiwi_a4a2964d5d4477a35d9610f5d90a880da}\label{namespacekiwi_a4a2964d5d4477a35d9610f5d90a880da} 
+std\+::string {\bfseries Number\+To\+String} (unsigned value)
+\item 
+\Hypertarget{namespacekiwi_a30842c8dfcaec8e7f09c8f1f67ad5606}\label{namespacekiwi_a30842c8dfcaec8e7f09c8f1f67ad5606} 
+std\+::u16string {\bfseries Number\+To\+String16} (unsigned value)
+\item 
+\Hypertarget{namespacekiwi_a1bb05b397ed66d2568db40370ae7689f}\label{namespacekiwi_a1bb05b397ed66d2568db40370ae7689f} 
+std\+::string {\bfseries Number\+To\+String} (long value)
+\item 
+\Hypertarget{namespacekiwi_ab85231aa2f83eca467312cba1f82b264}\label{namespacekiwi_ab85231aa2f83eca467312cba1f82b264} 
+std\+::u16string {\bfseries Number\+To\+String16} (long value)
+\item 
+\Hypertarget{namespacekiwi_a76d3c442f8d1417dcbca50293c96ddfb}\label{namespacekiwi_a76d3c442f8d1417dcbca50293c96ddfb} 
+std\+::string {\bfseries Number\+To\+String} (unsigned long value)
+\item 
+\Hypertarget{namespacekiwi_a14a78726d53603a3d7c57146c92d676f}\label{namespacekiwi_a14a78726d53603a3d7c57146c92d676f} 
+std\+::u16string {\bfseries Number\+To\+String16} (unsigned long value)
+\item 
+\Hypertarget{namespacekiwi_a4ee3c3e996b0dc5baa96a6d3174b3af3}\label{namespacekiwi_a4ee3c3e996b0dc5baa96a6d3174b3af3} 
+std\+::string {\bfseries Number\+To\+String} (long long value)
+\item 
+\Hypertarget{namespacekiwi_a1499dce43b2b2fec86d64830111c2a1b}\label{namespacekiwi_a1499dce43b2b2fec86d64830111c2a1b} 
+std\+::u16string {\bfseries Number\+To\+String16} (long long value)
+\item 
+\Hypertarget{namespacekiwi_a6f496ddda0f3f3e927ce48740c60e375}\label{namespacekiwi_a6f496ddda0f3f3e927ce48740c60e375} 
+std\+::string {\bfseries Number\+To\+String} (unsigned long long value)
+\item 
+\Hypertarget{namespacekiwi_a7aa9bb368c5d6397408ac739dccdf68c}\label{namespacekiwi_a7aa9bb368c5d6397408ac739dccdf68c} 
+std\+::u16string {\bfseries Number\+To\+String16} (unsigned long long value)
+\item 
+\Hypertarget{namespacekiwi_a12f90fbe960b4a0a7f1f64352c615a17}\label{namespacekiwi_a12f90fbe960b4a0a7f1f64352c615a17} 
+std\+::string {\bfseries Number\+To\+String} (double value)
+\item 
+\Hypertarget{namespacekiwi_ada5e5d77fdd5ca5b3cf9faf95ccd15da}\label{namespacekiwi_ada5e5d77fdd5ca5b3cf9faf95ccd15da} 
+std\+::u16string {\bfseries Number\+To\+String16} (double value)
+\item 
+\Hypertarget{namespacekiwi_a0b30bc56f068f2dda483cf9ca3e234ab}\label{namespacekiwi_a0b30bc56f068f2dda483cf9ca3e234ab} 
+bool {\bfseries String\+To\+Int} (std\+::string\+\_\+view input, int \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_aaaa19f751b7d388f8f7b53866db84257}\label{namespacekiwi_aaaa19f751b7d388f8f7b53866db84257} 
+bool {\bfseries String\+To\+Int} (std\+::u16string\+\_\+view input, int \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a9a821e2af8b09e334973d56b38093cc9}\label{namespacekiwi_a9a821e2af8b09e334973d56b38093cc9} 
+bool {\bfseries String\+To\+Uint} (std\+::string\+\_\+view input, unsigned \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a8ff560e277ed859d71d034cbb1446f21}\label{namespacekiwi_a8ff560e277ed859d71d034cbb1446f21} 
+bool {\bfseries String\+To\+Uint} (std\+::u16string\+\_\+view input, unsigned \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a3c5699d4750e680f2f1553ed769d0afa}\label{namespacekiwi_a3c5699d4750e680f2f1553ed769d0afa} 
+bool {\bfseries String\+To\+Int64} (std\+::string\+\_\+view input, int64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_ac0c8c2b967a5b437d8b5ac7d231c4ccf}\label{namespacekiwi_ac0c8c2b967a5b437d8b5ac7d231c4ccf} 
+bool {\bfseries String\+To\+Int64} (std\+::u16string\+\_\+view input, int64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_ac5511999de8c4176af0046bb0b10c7be}\label{namespacekiwi_ac5511999de8c4176af0046bb0b10c7be} 
+bool {\bfseries String\+To\+Uint64} (std\+::string\+\_\+view input, uint64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a2488f58ed09a620064010cb32d5717b1}\label{namespacekiwi_a2488f58ed09a620064010cb32d5717b1} 
+bool {\bfseries String\+To\+Uint64} (std\+::u16string\+\_\+view input, uint64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a4a0d77d9d6610eb6cac98b79c1c7fd15}\label{namespacekiwi_a4a0d77d9d6610eb6cac98b79c1c7fd15} 
+bool {\bfseries String\+To\+SizeT} (std\+::string\+\_\+view input, size\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a487daec097d968c5b604484f2d18659f}\label{namespacekiwi_a487daec097d968c5b604484f2d18659f} 
+bool {\bfseries String\+To\+SizeT} (std\+::u16string\+\_\+view input, size\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a2da4dca27966fb6226c31a9d72f1253b}\label{namespacekiwi_a2da4dca27966fb6226c31a9d72f1253b} 
+bool {\bfseries String\+To\+Double} (std\+::string\+\_\+view input, double \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a4ff1d41a7d3fb5106463bff059e04f73}\label{namespacekiwi_a4ff1d41a7d3fb5106463bff059e04f73} 
+bool {\bfseries String\+To\+Double} (std\+::u16string\+\_\+view input, double \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_ae2d6ff81bfa65e8808ed8dbd5046c4ba}\label{namespacekiwi_ae2d6ff81bfa65e8808ed8dbd5046c4ba} 
+std\+::string {\bfseries Hex\+Encode} (const void \texorpdfstring{$\ast$}{*}bytes, size\+\_\+t size)
+\item 
+\Hypertarget{namespacekiwi_a5042cf0cb16b840774a009e01b7deb94}\label{namespacekiwi_a5042cf0cb16b840774a009e01b7deb94} 
+std\+::string {\bfseries Hex\+Encode} (\mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ const uint8\+\_\+t $>$ bytes)
+\item 
+\Hypertarget{namespacekiwi_abe5a42a50b37c6ee62d707e3665d6fdb}\label{namespacekiwi_abe5a42a50b37c6ee62d707e3665d6fdb} 
+std\+::string {\bfseries Hex\+Encode} (std\+::string\+\_\+view chars)
+\item 
+\Hypertarget{namespacekiwi_ac537bed3c42cf63210f2a97f7a782d9f}\label{namespacekiwi_ac537bed3c42cf63210f2a97f7a782d9f} 
+bool {\bfseries Hex\+String\+To\+Int} (std\+::string\+\_\+view input, int \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a2a7e38bcda9c82d1a37cf017876bf988}\label{namespacekiwi_a2a7e38bcda9c82d1a37cf017876bf988} 
+bool {\bfseries Hex\+String\+To\+UInt} (std\+::string\+\_\+view input, uint32\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a7aab7619d2ed757acff560187030884e}\label{namespacekiwi_a7aab7619d2ed757acff560187030884e} 
+bool {\bfseries Hex\+String\+To\+Int64} (std\+::string\+\_\+view input, int64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_af833feb099536d59101a3af9cfddbd45}\label{namespacekiwi_af833feb099536d59101a3af9cfddbd45} 
+bool {\bfseries Hex\+String\+To\+UInt64} (std\+::string\+\_\+view input, uint64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a6bcf14fb91b49f9d522f8198e33cbec6}\label{namespacekiwi_a6bcf14fb91b49f9d522f8198e33cbec6} 
+bool {\bfseries Hex\+String\+To\+Bytes} (std\+::string\+\_\+view input, std\+::vector$<$ uint8\+\_\+t $>$ \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a4dc6145a20cb725a9bf4d5eb991d3d29}\label{namespacekiwi_a4dc6145a20cb725a9bf4d5eb991d3d29} 
+bool {\bfseries Hex\+String\+To\+String} (std\+::string\+\_\+view input, std\+::string \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a6980727b185249d4a012916d2ff7059f}\label{namespacekiwi_a6980727b185249d4a012916d2ff7059f} 
+bool {\bfseries Hex\+String\+To\+Span} (std\+::string\+\_\+view input, \mbox{\hyperlink{classkiwi_1_1span}{span}}$<$ uint8\+\_\+t $>$ output)
 \item 
 \Hypertarget{namespacekiwi_aba132e01bc5edc8b64f10b7783704e6b}\label{namespacekiwi_aba132e01bc5edc8b64f10b7783704e6b} 
 std\+::optional$<$ std\+::pair$<$ std\+::string\+\_\+view, std\+::string\+\_\+view $>$ $>$ {\bfseries Split\+String\+Once} (std\+::string\+\_\+view input, char separator)
@@ -969,6 +1169,9 @@ BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream 
 \Hypertarget{namespacekiwi_af873ba15bad0b10eb3bc3a827599b66f}\label{namespacekiwi_af873ba15bad0b10eb3bc3a827599b66f} 
 BASE\+\_\+\+EXPORT std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, \mbox{\hyperlink{classkiwi_1_1_thread_ticks}{Thread\+Ticks}} time\+\_\+ticks)
 \item 
+\Hypertarget{namespacekiwi_af1eda3b71e2f3a3f31bdc5971ab8ac77}\label{namespacekiwi_af1eda3b71e2f3a3f31bdc5971ab8ac77} 
+{\footnotesize template$<$class Dest, class Source$>$ }\\constexpr Dest {\bfseries bit\+\_\+cast} (const Source \&source)
+\item 
 {\footnotesize template$<$typename Ex$>$ }\\KIWI\+\_\+\+NOINLINE void \mbox{\hyperlink{namespacekiwi_abe3cc88b10ffe4cc4b1796c4bf782900}{throw\+\_\+exception}} (Ex \&\&ex)
 \item 
 {\footnotesize template$<$typename Ex$>$ }\\KIWI\+\_\+\+NOINLINE void \mbox{\hyperlink{namespacekiwi_af132070951b2a07a01af8a189a3aed0a}{terminate\+\_\+with}} (Ex \&\&ex) noexcept
@@ -1048,11 +1251,24 @@ void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacekiwi_a3b36ff54230b55db
 \Hypertarget{namespacekiwi_aa20f9b5fb1f28545394ecd16f32781de}\label{namespacekiwi_aa20f9b5fb1f28545394ecd16f32781de} 
 {\footnotesize template$<$typename Src, typename Dst$>$ }\\constexpr like\+\_\+t$<$ Src, Dst $>$ \&\& {\bfseries forward\+\_\+like} (Dst \&\&dst) noexcept
 \item 
+\Hypertarget{namespacekiwi_ae9d23b44321fdc567e741e34f5b9a2eb}\label{namespacekiwi_ae9d23b44321fdc567e741e34f5b9a2eb} 
+{\footnotesize template$<$typename Range$>$ \newline
+requires (std\+::ranges\+::input\+\_\+range$<$Range$>$ \&\& // The elements in the input range will be consumed, so restrict this // to non-\/borrowed ranges, as the elements from a borrowed range can // outlive this call. !std\+::ranges\+::borrowed\+\_\+range$<$Range$>$ \&\& // Disallow input ranges if the elements cannot be moved from (e.\+g. // if they are const-\/qualified). std\+::movable$<$ std\+::remove\+\_\+reference\+\_\+t$<$std\+::ranges\+::range\+\_\+reference\+\_\+t$<$Range$>$$>$$>$)}\\auto {\bfseries Range\+As\+Rvalues} (Range \&\&range KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
+\item 
+\Hypertarget{namespacekiwi_a5be81d6186bc9708f56c4e5260bb70ac}\label{namespacekiwi_a5be81d6186bc9708f56c4e5260bb70ac} 
+{\footnotesize template$<$typename Range$>$ }\\auto {\bfseries Reversed} (Range \&\&range KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)
+\item 
 \Hypertarget{namespacekiwi_a5e298c65f2ad4538b02aa180995baffa}\label{namespacekiwi_a5e298c65f2ad4538b02aa180995baffa} 
 {\footnotesize template$<$class T, class Value$>$ }\\size\+\_\+t {\bfseries Erase} (\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}}$<$ T $>$ \&container, const Value \&value)
 \item 
 \Hypertarget{namespacekiwi_ae0d87e6b32e95a139d2b881ec9a075b0}\label{namespacekiwi_ae0d87e6b32e95a139d2b881ec9a075b0} 
 {\footnotesize template$<$class T, class Predicate$>$ }\\size\+\_\+t {\bfseries Erase\+If} (\mbox{\hyperlink{classkiwi_1_1circular__deque}{circular\+\_\+deque}}$<$ T $>$ \&container, Predicate pred)
+\item 
+\Hypertarget{namespacekiwi_a28edbf4cd7cb0b2b319d4170f02d16e7}\label{namespacekiwi_a28edbf4cd7cb0b2b319d4170f02d16e7} 
+{\footnotesize template$<$typename Container, typename Value$>$ }\\constexpr bool {\bfseries Contains} (const Container \&container, const Value \&value)
+\item 
+\Hypertarget{namespacekiwi_a81dd1423996b7a209023cc2f93ee6104}\label{namespacekiwi_a81dd1423996b7a209023cc2f93ee6104} 
+{\footnotesize template$<$typename Container, typename Value, typename Proj$>$ }\\constexpr bool {\bfseries Contains} (const Container \&container, const Value \&value, Proj proj)
 \item 
 {\footnotesize template$<$typename DerivedT, typename KeyT, typename ValueT, typename Key\+InfoT, typename BucketT$>$ }\\bool \mbox{\hyperlink{namespacekiwi_a0d27e9ac9b943e14361fe2ba7ec21a46}{operator==}} (const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&LHS, const \mbox{\hyperlink{classkiwi_1_1_dense_map_base}{Dense\+Map\+Base}}$<$ DerivedT, KeyT, ValueT, Key\+InfoT, BucketT $>$ \&RHS)
 \item 
@@ -1060,6 +1276,12 @@ void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacekiwi_a3b36ff54230b55db
 \item 
 \Hypertarget{namespacekiwi_a17e2f3adbc1f7b74232fafa46584e5ee}\label{namespacekiwi_a17e2f3adbc1f7b74232fafa46584e5ee} 
 {\footnotesize template$<$typename KeyT, typename ValueT, typename Key\+InfoT$>$ }\\size\+\_\+t {\bfseries capacity\+\_\+in\+\_\+bytes} (const \mbox{\hyperlink{classkiwi_1_1_dense_map}{Dense\+Map}}$<$ KeyT, ValueT, Key\+InfoT $>$ \&X)
+\item 
+\Hypertarget{namespacekiwi_ac90d07db49848a861b6ca1e7fbe47876}\label{namespacekiwi_ac90d07db49848a861b6ca1e7fbe47876} 
+{\footnotesize template$<$class Key, class Compare = std\+::less$<$$>$, class Container = std\+::vector$<$\+Key$>$, class Input\+Container, class Projection = std\+::identity$>$ }\\constexpr flat\+\_\+set$<$ Key, Compare, Container $>$ {\bfseries Make\+Flat\+Set} (const Input\+Container \&unprojected\+\_\+elements, const Compare \&comp=Compare(), const Projection \&proj=Projection())
+\item 
+\Hypertarget{namespacekiwi_a71ecfb761228a00a88932795e5495e4c}\label{namespacekiwi_a71ecfb761228a00a88932795e5495e4c} 
+{\footnotesize template$<$class Key, class Get\+Key\+From\+Value, class Key\+Compare, class Container, typename Predicate$>$ }\\size\+\_\+t {\bfseries Erase\+If} (\mbox{\hyperlink{classkiwi_1_1internal_1_1flat__tree}{kiwi\+::internal\+::flat\+\_\+tree}}$<$ Key, Get\+Key\+From\+Value, Key\+Compare, Container $>$ \&container, Predicate pred)
 \item 
 \Hypertarget{namespacekiwi_a5918c1d57af638ec5d178d0a52ceff4f}\label{namespacekiwi_a5918c1d57af638ec5d178d0a52ceff4f} 
 {\footnotesize template$<$typename It, typename End\+Or\+Size$>$ \newline
@@ -1203,6 +1425,10 @@ requires (internal\+::\+Can\+Safely\+Convert\+To\+Byte\+Span$<$Element\+Type$>$ 
 {\footnotesize template$<$int \&... Explicit\+Argument\+Barrier, typename Element\+Type, size\+\_\+t Extent$>$ \newline
 requires (internal\+::\+Can\+Safely\+Convert\+Non\+Unique\+To\+Byte\+Span$<$Element\+Type$>$ \&\& !std\+::is\+\_\+const\+\_\+v$<$Element\+Type$>$)}\\constexpr auto {\bfseries as\+\_\+writable\+\_\+byte\+\_\+span} (\mbox{\hyperlink{structkiwi_1_1allow__nonunique__obj__t}{allow\+\_\+nonunique\+\_\+obj\+\_\+t}}, Element\+Type(\&arr KIWI\+\_\+\+LIFETIME\+\_\+\+BOUND)\mbox{[}Extent\mbox{]})
 \item 
+\Hypertarget{namespacekiwi_a5414d46785767b2908310d1b66cea264}\label{namespacekiwi_a5414d46785767b2908310d1b66cea264} 
+{\footnotesize template$<$typename Range, typename Proj = std\+::identity$>$ \newline
+requires std\+::ranges\+::sized\+\_\+range$<$Range$>$ \&\& std\+::ranges\+::input\+\_\+range$<$Range$>$ \&\& std\+::indirectly\+\_\+unary\+\_\+invocable$<$Proj, std\+::ranges\+::iterator\+\_\+t$<$Range$>$$>$}\\auto {\bfseries To\+Vector} (Range \&\&range, Proj proj=\{\})
+\item 
 \Hypertarget{namespacekiwi_a480f5c3c291cd7825477354a3b8d2fb1}\label{namespacekiwi_a480f5c3c291cd7825477354a3b8d2fb1} 
 ssize\+\_\+t {\bfseries preadv} (int fd, const struct iovec \texorpdfstring{$\ast$}{*}iov, int count, off\+\_\+t offset)
 \item 
@@ -1306,6 +1532,54 @@ void {\bfseries Str\+Append} (std\+::string \texorpdfstring{$\ast$}{*}dest, std\
 \item 
 \Hypertarget{namespacekiwi_a41137c792e001fb39a23b1d4e459b2d5}\label{namespacekiwi_a41137c792e001fb39a23b1d4e459b2d5} 
 void {\bfseries Str\+Append} (std\+::u16string \texorpdfstring{$\ast$}{*}dest, std\+::initializer\+\_\+list$<$ std\+::u16string\+\_\+view $>$ pieces)
+\item 
+\Hypertarget{namespacekiwi_a9d06c7b9108c568b9470183d927f9ea3}\label{namespacekiwi_a9d06c7b9108c568b9470183d927f9ea3} 
+BASE\+\_\+\+EXPORT std\+::string {\bfseries Number\+To\+String} (unsigned int value)
+\item 
+\Hypertarget{namespacekiwi_af5efc21d9480e77a52a21f764860792f}\label{namespacekiwi_af5efc21d9480e77a52a21f764860792f} 
+BASE\+\_\+\+EXPORT std\+::u16string {\bfseries Number\+To\+String16} (unsigned int value)
+\item 
+\Hypertarget{namespacekiwi_a8f705e51c7ea60d750f6ec695dbe8b2e}\label{namespacekiwi_a8f705e51c7ea60d750f6ec695dbe8b2e} 
+void {\bfseries Append\+Hex\+Encoded\+Byte} (uint8\+\_\+t byte, std\+::string \&output, bool uppercase=true)
+\item 
+\Hypertarget{namespacekiwi_a4bbee92524266987fdf4e54154993bc0}\label{namespacekiwi_a4bbee92524266987fdf4e54154993bc0} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (int value)
+\item 
+\Hypertarget{namespacekiwi_a636d9597c43c7f24d626969415983fa5}\label{namespacekiwi_a636d9597c43c7f24d626969415983fa5} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (unsigned int value)
+\item 
+\Hypertarget{namespacekiwi_a8677c197b0df61d12d29e54a2a1849fa}\label{namespacekiwi_a8677c197b0df61d12d29e54a2a1849fa} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (long value)
+\item 
+\Hypertarget{namespacekiwi_a35e073573de489687abc7be30bf7e89b}\label{namespacekiwi_a35e073573de489687abc7be30bf7e89b} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (unsigned long value)
+\item 
+\Hypertarget{namespacekiwi_a7bab46952a8eb037e924ba8e9c9b3dc8}\label{namespacekiwi_a7bab46952a8eb037e924ba8e9c9b3dc8} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (long long value)
+\item 
+\Hypertarget{namespacekiwi_a471fd9e944a1f730f6a9bbacec0403ae}\label{namespacekiwi_a471fd9e944a1f730f6a9bbacec0403ae} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (unsigned long long value)
+\item 
+\Hypertarget{namespacekiwi_a615988eedc8142119197d3c60f8b6890}\label{namespacekiwi_a615988eedc8142119197d3c60f8b6890} 
+BASE\+\_\+\+EXPORT std\+::wstring {\bfseries Number\+To\+WString} (double value)
+\item 
+\Hypertarget{namespacekiwi_a64254f66653a3a18af0025dc08347861}\label{namespacekiwi_a64254f66653a3a18af0025dc08347861} 
+BASE\+\_\+\+EXPORT bool {\bfseries String\+To\+Int} (std\+::wstring\+\_\+view input, int \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a0b05cc638af9e4776339bcc62a4e3500}\label{namespacekiwi_a0b05cc638af9e4776339bcc62a4e3500} 
+BASE\+\_\+\+EXPORT bool {\bfseries String\+To\+Uint} (std\+::wstring\+\_\+view input, unsigned \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_a09508b00c78afd8178cd6b139c1aab87}\label{namespacekiwi_a09508b00c78afd8178cd6b139c1aab87} 
+BASE\+\_\+\+EXPORT bool {\bfseries String\+To\+Int64} (std\+::wstring\+\_\+view input, int64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_aef21070c0b65ad3a228274b2c07a8da9}\label{namespacekiwi_aef21070c0b65ad3a228274b2c07a8da9} 
+BASE\+\_\+\+EXPORT bool {\bfseries String\+To\+Uint64} (std\+::wstring\+\_\+view input, uint64\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_ab4c2c0a586d33108f3f967eddc780582}\label{namespacekiwi_ab4c2c0a586d33108f3f967eddc780582} 
+BASE\+\_\+\+EXPORT bool {\bfseries String\+To\+SizeT} (std\+::wstring\+\_\+view input, size\+\_\+t \texorpdfstring{$\ast$}{*}output)
+\item 
+\Hypertarget{namespacekiwi_ac40f189b63d0b6513b0b0498f22dc10c}\label{namespacekiwi_ac40f189b63d0b6513b0b0498f22dc10c} 
+BASE\+\_\+\+EXPORT bool {\bfseries String\+To\+Double} (std\+::wstring\+\_\+view input, double \texorpdfstring{$\ast$}{*}output)
 \item 
 \Hypertarget{namespacekiwi_ae7883ff336370379a1a1984766108ea9}\label{namespacekiwi_ae7883ff336370379a1a1984766108ea9} 
 int {\bfseries vsnprintf} (char \texorpdfstring{$\ast$}{*}buffer, size\+\_\+t size, const char \texorpdfstring{$\ast$}{*}format, va\+\_\+list arguments)
@@ -1502,12 +1776,6 @@ requires requires(const P\& p) \{ std\+::pointer\+\_\+traits$<$P$>$\+::to\+\_\+a
 \item 
 \Hypertarget{namespacekiwi_aa853fa8697503ff46bca3de124bb384f}\label{namespacekiwi_aa853fa8697503ff46bca3de124bb384f} 
 {\footnotesize template$<$typename T1, typename T2$>$ }\\void {\bfseries swap} (\mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}}$<$ T1, T2 $>$ \&lhs, \mbox{\hyperlink{classkiwi_1_1_compressed_pair}{Compressed\+Pair}}$<$ T1, T2 $>$ \&rhs) noexcept(std\+::is\+\_\+nothrow\+\_\+swappable\+\_\+v$<$ T1 $>$ \&\&std\+::is\+\_\+nothrow\+\_\+swappable\+\_\+v$<$ T2 $>$)
-\item 
-\Hypertarget{namespacekiwi_a28edbf4cd7cb0b2b319d4170f02d16e7}\label{namespacekiwi_a28edbf4cd7cb0b2b319d4170f02d16e7} 
-{\footnotesize template$<$typename Container, typename Value$>$ }\\constexpr bool {\bfseries Contains} (const Container \&container, const Value \&value)
-\item 
-\Hypertarget{namespacekiwi_a81dd1423996b7a209023cc2f93ee6104}\label{namespacekiwi_a81dd1423996b7a209023cc2f93ee6104} 
-{\footnotesize template$<$typename Container, typename Value, typename Proj$>$ }\\constexpr bool {\bfseries Contains} (const Container \&container, const Value \&value, Proj proj)
 \item 
 constexpr uint64\+\_\+t \mbox{\hyperlink{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4}{next\+\_\+power\+\_\+of\+\_\+2}} (uint64\+\_\+t x)
 \item 
@@ -1914,7 +2182,32 @@ Example\+:
 \DoxyCodeLine{\};}
 
 \end{DoxyCode}
- \Hypertarget{namespacekiwi_a5bf3bcd33521f00d21f9e61df0bce470}\index{kiwi@{kiwi}!is\_hashable@{is\_hashable}}
+ \Hypertarget{namespacekiwi_a35b73775477f87f09996cfa4d528eb54}\index{kiwi@{kiwi}!EnvironmentMap@{EnvironmentMap}}
+\index{EnvironmentMap@{EnvironmentMap}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{EnvironmentMap}{EnvironmentMap}}
+{\footnotesize\ttfamily \label{namespacekiwi_a35b73775477f87f09996cfa4d528eb54} 
+using kiwi\+::\+Environment\+Map}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ std::map<NativeEnvironmentString,\ NativeEnvironmentString>}
+
+\end{DoxyCode}
+\Hypertarget{namespacekiwi_a2ff42f16440568ee81b09801035c1396}\index{kiwi@{kiwi}!flat\_set@{flat\_set}}
+\index{flat\_set@{flat\_set}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{flat\_set}{flat\_set}}
+{\footnotesize\ttfamily \label{namespacekiwi_a2ff42f16440568ee81b09801035c1396} 
+template$<$class Key, class Compare = std\+::less$<$$>$, class Container = std\+::vector$<$\+Key$>$$>$ \\
+using kiwi\+::flat\+\_\+set}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ typename\ ::kiwi::internal::flat\_tree<Key,\ std::identity,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Compare,\ Container>}
+
+\end{DoxyCode}
+\Hypertarget{namespacekiwi_a5bf3bcd33521f00d21f9e61df0bce470}\index{kiwi@{kiwi}!is\_hashable@{is\_hashable}}
 \index{is\_hashable@{is\_hashable}!kiwi@{kiwi}}
 \doxysubsubsection{\texorpdfstring{is\_hashable}{is\_hashable}}
 {\footnotesize\ttfamily \label{namespacekiwi_a5bf3bcd33521f00d21f9e61df0bce470} 
@@ -2110,6 +2403,24 @@ Trivial wrapper around malloc that check for allocation failure and throw std\+:
 \begin{DoxyReturn}{Returns}
 The pointer to allocated buffer. \textbackslash{}methodset Allocation Wrappers 
 \end{DoxyReturn}
+\Hypertarget{namespacekiwi_ae2e14b776e74a84d7724ded6cff24a72}\index{kiwi@{kiwi}!ComputeDirectorySize@{ComputeDirectorySize}}
+\index{ComputeDirectorySize@{ComputeDirectorySize}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{ComputeDirectorySize()}{ComputeDirectorySize()}}
+{\footnotesize\ttfamily \label{namespacekiwi_ae2e14b776e74a84d7724ded6cff24a72} 
+BASE\+\_\+\+EXPORT int64\+\_\+t kiwi\+::\+Compute\+Directory\+Size (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{root\+\_\+path}{}\end{DoxyParamCaption})}
+
+Returns the total number of bytes used by all the files under {\ttfamily root\+\_\+path}.
+
+This function is implemented using the \doxylink{classkiwi_1_1_file_enumerator}{File\+Enumerator} class so it is not particularly speedy on any platform.
+
+
+\begin{DoxyParams}{Parameters}
+{\em root\+\_\+path} & The root directory whose size (including all subdirectories and files) is to be calculated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total size in bytes of all files under the given directory path. Returns -\/1 if an error occurs (e.\+g., permission denied). 
+\end{DoxyReturn}
 \Hypertarget{namespacekiwi_a60a5cfa5df6cc93c3804817084f57052}\index{kiwi@{kiwi}!const\_cast\_function@{const\_cast\_function}}
 \index{const\_cast\_function@{const\_cast\_function}!kiwi@{kiwi}}
 \doxysubsubsection{\texorpdfstring{const\_cast\_function()}{const\_cast\_function()}}
@@ -2176,7 +2487,51 @@ BASE\+\_\+\+EXPORT uint32\+\_\+t kiwi\+::\+Crc32 (\begin{DoxyParamCaption}\item[
 
 We generate the CRC-\/32 using the low order bits to select whether to XOR in the reversed polynomial 0x\+EDB88320. This is nice and simple, and allows us to keep the quotient in a uint32\+\_\+t. Since we\textquotesingle{}re not concerned about the nature of corruptions (i.\+e., we don\textquotesingle{}t care about bit sequencing, since we are handling memory changes, which are more grotesque) so we don\textquotesingle{}t bother to get the CRC correct for big-\/endian vs little-\/ending calculations. All we need is a nice hash, that tends to depend on all the bits of the sample, with very little chance of changes in one place impacting changes in another place.
 
-This provides a simple, fast CRC-\/32 calculation that can be used for checking the integrity of data. It is not a "{}secure"{} calculation! {\ttfamily sum} can start with any seed or be used to continue an operation began with previous data. \Hypertarget{namespacekiwi_a0f08f6f93fa42280d07db0f3c4723df7}\index{kiwi@{kiwi}!make\_scope\_exit@{make\_scope\_exit}}
+This provides a simple, fast CRC-\/32 calculation that can be used for checking the integrity of data. It is not a "{}secure"{} calculation! {\ttfamily sum} can start with any seed or be used to continue an operation began with previous data. \Hypertarget{namespacekiwi_af36300507ade71d4184c22720143fb71}\index{kiwi@{kiwi}!CreateTemporaryFile@{CreateTemporaryFile}}
+\index{CreateTemporaryFile@{CreateTemporaryFile}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{CreateTemporaryFile()}{CreateTemporaryFile()}}
+{\footnotesize\ttfamily \label{namespacekiwi_af36300507ade71d4184c22720143fb71} 
+BASE\+\_\+\+EXPORT bool kiwi\+::\+Create\+Temporary\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \texorpdfstring{$\ast$}{*}}]{path}{}\end{DoxyParamCaption})}
+
+Creates a temporary file. The file will be empty and all handles closed after this function returns. The caller is responsible for deleting the file {\ttfamily path} points to, if appropriate.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & A pointer to a \doxylink{classkiwi_1_1_file_path}{File\+Path} object that will be populated with the path to the newly created temporary file upon success. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the temporary file was successfully created; false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{namespacekiwi_a724068dd3390a2442ca488909f68ed72}\index{kiwi@{kiwi}!DeleteFile@{DeleteFile}}
+\index{DeleteFile@{DeleteFile}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{DeleteFile()}{DeleteFile()}}
+{\footnotesize\ttfamily \label{namespacekiwi_a724068dd3390a2442ca488909f68ed72} 
+BASE\+\_\+\+EXPORT bool kiwi\+::\+Delete\+File (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{path}{}\end{DoxyParamCaption})}
+
+Deletes the given path, whether it\textquotesingle{}s a file or a directory. If it\textquotesingle{}s a directory, it\textquotesingle{}s perfectly happy to delete all of the directory\textquotesingle{}s contents, but it will not recursively delete subdirectories and their contents. Returns true if successful, false otherwise. It is considered successful to attempt to delete a file that does not exist.
+
+In POSIX environment and if {\ttfamily path} is a symbolic link, this deletes only the symlink. (even if the symlink points to a non-\/existent file)
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The file or directory path to be deleted. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the file or directory was successfully deleted; false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{namespacekiwi_a00e53ebf2a52ed603c86d01d3781bfb6}\index{kiwi@{kiwi}!DeletePathRecursively@{DeletePathRecursively}}
+\index{DeletePathRecursively@{DeletePathRecursively}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{DeletePathRecursively()}{DeletePathRecursively()}}
+{\footnotesize\ttfamily \label{namespacekiwi_a00e53ebf2a52ed603c86d01d3781bfb6} 
+BASE\+\_\+\+EXPORT bool kiwi\+::\+Delete\+Path\+Recursively (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{path}{}\end{DoxyParamCaption})}
+
+Deletes the given path, whether it\textquotesingle{}s a file or a directory. If it\textquotesingle{}s a directory, it\textquotesingle{}s perfectly happy to delete all of the directory\textquotesingle{}s contents, including subdirectories and their contents. Returns true if successful, false otherwise. It is considered successful to attempt to delete a file that does not exist.
+
+In POSIX environment and if {\ttfamily path} is a symbolic link, this deletes only the symlink. (even if the symlink points to a non-\/existent file)
+
+WARNING\+: USING THIS EQUIVALENT TO "{}rm -\/rf"{}, SO USE WITH CAUTION. \Hypertarget{namespacekiwi_a0f08f6f93fa42280d07db0f3c4723df7}\index{kiwi@{kiwi}!make\_scope\_exit@{make\_scope\_exit}}
 \index{make\_scope\_exit@{make\_scope\_exit}!kiwi@{kiwi}}
 \doxysubsubsection{\texorpdfstring{make\_scope\_exit()}{make\_scope\_exit()}}
 {\footnotesize\ttfamily \label{namespacekiwi_a0f08f6f93fa42280d07db0f3c4723df7} 
@@ -2185,7 +2540,31 @@ template$<$typename Callable$>$ \\
 
 Keeps the callable object that is passed in, and execute it at the destruction of the returned object (usually at the scope exit where the returned object is kept).
 
-Interface is specified by p0052r2. \Hypertarget{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4}\index{kiwi@{kiwi}!next\_power\_of\_2@{next\_power\_of\_2}}
+Interface is specified by p0052r2. \Hypertarget{namespacekiwi_a4b01fc85d65b8cda86e753f4a00ccb5f}\index{kiwi@{kiwi}!MakeAbsoluteFilePath@{MakeAbsoluteFilePath}}
+\index{MakeAbsoluteFilePath@{MakeAbsoluteFilePath}!kiwi@{kiwi}}
+\doxysubsubsection{\texorpdfstring{MakeAbsoluteFilePath()}{MakeAbsoluteFilePath()}}
+{\footnotesize\ttfamily \label{namespacekiwi_a4b01fc85d65b8cda86e753f4a00ccb5f} 
+BASE\+\_\+\+EXPORT \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} kiwi\+::\+Make\+Absolute\+File\+Path (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classkiwi_1_1_file_path}{File\+Path}} \&}]{input}{}\end{DoxyParamCaption})}
+
+char\texorpdfstring{$\ast$}{*} realpath(const char \texorpdfstring{$\ast$}{*}restrict file\+\_\+name, char \texorpdfstring{$\ast$}{*}restrict resolved\+\_\+name)
+
+The realpath() function resolves all symbolic links, extra "{}/"{} characters, and references to /./ and /../ in file\+\_\+name. If the resolved\+\_\+name argument is non-\/\+NULL, the resulting absolute pathname is copied there (it must refer to a buffer capable of storing at least PATH\+\_\+\+MAX characters).
+
+As a permitted extension to the standard, if resolved\+\_\+name is NULL, memory is allocated for the resulting absolute pathname, and is returned by realpath(). This memory should be freed by a call to free(3) when no longer needed.
+
+The realpath() function will resolve both absolute and relative paths and return the absolute pathname corresponding to file\+\_\+name. All components of file\+\_\+name must exist when realpath() is called. Returns an absolute version of a relative path. Returns an empty path on error. This function can result in I/O so it can be slow.
+
+On POSIX, this function calls realpath(), so\+: 1) it fails if the path does not exist. 2) it expands all symlink components of the path. 3) it removes "{}."{} and "{}.."{} directory components.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input path, which can be relative or absolute. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \doxylink{classkiwi_1_1_file_path}{File\+Path} representing the absolute (canonicalized) version of the input. 
+\end{DoxyReturn}
+\Hypertarget{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4}\index{kiwi@{kiwi}!next\_power\_of\_2@{next\_power\_of\_2}}
 \index{next\_power\_of\_2@{next\_power\_of\_2}!kiwi@{kiwi}}
 \doxysubsubsection{\texorpdfstring{next\_power\_of\_2()}{next\_power\_of\_2()}}
 {\footnotesize\ttfamily \label{namespacekiwi_a4dc5f5939c0201509e3946b90aaa09f4} 

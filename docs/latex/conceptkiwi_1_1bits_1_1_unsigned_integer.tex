@@ -1,0 +1,13 @@
+\doxysection{kiwi\+::bits\+::Unsigned\+Integer Concept Reference}
+\hypertarget{conceptkiwi_1_1bits_1_1_unsigned_integer}{}\label{conceptkiwi_1_1bits_1_1_unsigned_integer}\index{kiwi::bits::UnsignedInteger@{kiwi::bits::UnsignedInteger}}
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{\textcolor{keyword}{concept\ }\mbox{\hyperlink{conceptkiwi_1_1bits_1_1_unsigned_integer}{kiwi::bits::UnsignedInteger}}\ =\ }
+\DoxyCodeLine{\ \ \ \ std::unsigned\_integral<T>\ \&\&\ !std::same\_as<T,\ bool>\ \&\&}
+\DoxyCodeLine{\ \ \ \ !std::same\_as<T,\ char>\ \&\&\ !std::same\_as<T,\ char8\_t>\ \&\&}
+\DoxyCodeLine{\ \ \ \ !std::same\_as<T,\ char16\_t>\ \&\&\ !std::same\_as<T,\ char32\_t>\ \&\&}
+\DoxyCodeLine{\ \ \ \ !std::same\_as<T,\ wchar\_t>}
+
+\end{DoxyCode}
