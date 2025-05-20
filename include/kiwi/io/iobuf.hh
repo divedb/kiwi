@@ -302,7 +302,7 @@ class IOBuf {
   using value_type = uint8_t;
   using iterator = Iterator;
   using const_iterator = Iterator;
-  using ByteRange = kiwi::span<uint8_t>;
+  using ByteRange = kiwi::span<const uint8_t>;
   using FreeFunction = void (*)(void* buf, void* user_data);
 
  private:
