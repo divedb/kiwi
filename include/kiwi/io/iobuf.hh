@@ -535,7 +535,7 @@ class IOBuf {
   /// \throws std::bad_alloc on error (the allocation of the IOBuf may
   ///         throw).
   /// \returns A unique_ptr to a newly-constructed IOBuf.
-  /// @methodset Makers
+  /// \methodset Makers
   static std::unique_ptr<IOBuf> WrapBuffer(const void* buf,
                                            std::size_t capacity);
 
@@ -651,9 +651,9 @@ class IOBuf {
   }
 
   /**
-   * @copydoc IOBuf(CopyBufferOp, ByteRange, std::size_t, std::size_t)
-   * @returns  A unique_ptr to a newly-constructed IOBuf
-   * @methodset Makers
+   * \copydoc IOBuf(CopyBufferOp, ByteRange, std::size_t, std::size_t)
+   * \returns  A unique_ptr to a newly-constructed IOBuf
+   * \methodset Makers
    */
   static std::unique_ptr<IOBuf> CopyBuffer(ByteRange br,
                                            std::size_t head_room = 0,
@@ -825,7 +825,7 @@ class IOBuf {
 
   /// Copy assignment operator.
   ///
-  /// @copydetails operator=(IOBuf&&)
+  /// \copydetails operator=(IOBuf&&)
   /// \see cloneAsValue()
   IOBuf& operator=(const IOBuf& other);
 
@@ -933,7 +933,7 @@ class IOBuf {
   /// Use ComputeChainDataLength() for the sum of data length for the full
   /// chain.
   ///
-  /// @methodset Buffer Capacity
+  /// \methodset Buffer Capacity
   std::size_t Length() const { return length_; }
 
   /// Get the amount of head room.
@@ -1069,7 +1069,7 @@ class IOBuf {
   /// \param amount The amount by which to shift the data() pointer backward.
   /// \post Length() is increased by amount.
   ///
-  /// @methodset Shifting
+  /// \methodset Shifting
   void Prepend(std::size_t amount) {
     DCHECK_LE(amount, HeadRoom());
 
@@ -1314,7 +1314,7 @@ class IOBuf {
   /// Since pop() transfers ownership of the rest to the caller, be careful
   /// not to call pop() except on the head of a chain.
   ///
-  /// @returns A new unique_ptr pointing to the rest of the chain; nullptr if
+  /// \returns A new unique_ptr pointing to the rest of the chain; nullptr if
   ///          this IOBuf was the only chain element.
   std::unique_ptr<IOBuf> pop() {
     IOBuf* next = next_;
@@ -1802,7 +1802,7 @@ class IOBuf {
   /// Similar to CloneOne(), but returns by argument. The argument will become
   /// the clone.
   ///
-  /// @param[out] other An IOBuf to assign the clone to.
+  /// \param[out] other An IOBuf to assign the clone to.
   void CloneOneInto(IOBuf& other) const { other = CloneOneAsValue(); }
 
   /// Append the chain data into the provided container.
