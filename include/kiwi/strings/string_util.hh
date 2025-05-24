@@ -9,8 +9,7 @@
 #pragma allow_unsafe_libc_calls
 #endif
 
-#ifndef BASE_STRINGS_STRING_UTIL_H_
-#define BASE_STRINGS_STRING_UTIL_H_
+#pragma once
 
 #include <stdarg.h>  // va_list
 #include <stddef.h>
@@ -24,12 +23,9 @@
 #include <string_view>
 #include <vector>
 
-#include "kiwi/portability/base_export.hh"
-// #include "base/check_op.h"
 #include "kiwi/containers/span.hh"
+#include "kiwi/portability/base_export.hh"
 #include "kiwi/portability/compiler_specific.hh"
-// For implicit conversions.
-#include "kiwi/portability/build_config.hh"
 #include "kiwi/strings/string_util_internal.hh"
 #include "kiwi/types/to_address.hh"
 
@@ -670,5 +666,3 @@ std::basic_string_view<CharT> MakeStringViewWithNulChars(
 #else
 #error Define string operations appropriately for your platform
 #endif
-
-#endif  // BASE_STRINGS_STRING_UTIL_H_

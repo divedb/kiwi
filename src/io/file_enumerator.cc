@@ -26,12 +26,12 @@ bool FileEnumerator::ShouldSkip(const FilePath& path) {
   const FilePath::StringType& basename = base_path.value();
   return basename == FILE_PATH_LITERAL(".") ||
          (basename == FILE_PATH_LITERAL("..") &&
-          !(INCLUDE_DOT_DOT & file_type_));
+          !(kIncludeDotDot & file_type_));
 }
 
 bool FileEnumerator::IsTypeMatched(bool is_dir) const {
-  return (file_type_ &
-          (is_dir ? FileEnumerator::DIRECTORIES : FileEnumerator::FILES)) != 0;
+  return (file_type_ & (is_dir ? FileEnumerator::kDirectories
+                               : FileEnumerator::kFiles)) != 0;
 }
 
 void FileEnumerator::ForEach(FunctionRef<void(const FilePath& path)> ref) {

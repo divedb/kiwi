@@ -36,37 +36,32 @@ foreach(target ${COMMON_TEST_TARGETS})
   )
 endforeach()
 
-# # ================================================================================
-# # # CONTAINERS #
-# # ================================================================================
-# set(CONTAINERS_TEST_TARGETS
-#     adapters_test
-#     checked_iterators_test
-#     circular_deque_test
-#     contains_test
-#     heap_array_test
-#     flat_set_test
-#     flat_tree_test
-#     to_vector_test # vector_buffer_test
-# )
+# ================================================================================
+# # CONTAINERS #
+# ================================================================================
+set(CONTAINERS_TEST_TARGETS
+    adapters_test
+    checked_iterators_test
+    circular_deque_test
+    contains_test
+    heap_array_test
+    flat_set_test
+    flat_tree_test
+    span_test
+    to_vector_test # vector_buffer_test
+)
 
-# foreach(target ${CONTAINERS_TEST_TARGETS})
-#   kiwi_cc_test(
-#     NAME
-#     ${target}
-#     HDRS
-#     ${GTEST_INCLUDE_DIR}
-#     ${KIWI_INCLUDE_DIR}
-#     ${KIWI_TESTS_INCLUDE_DIR}
-#     SRCS
-#     "containers/${target}.cc"
-#     COPTS
-#     ${KIWI_TEST_COPTS}
-#     DEPS
-#     GTest::gtest
-#     GTest::gtest_main
-#     glog::glog)
-# endforeach()
+foreach(target ${CONTAINERS_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+      ${target}
+    SRCS
+      "containers/${target}.cc"
+    COPTS
+      ${KIWI_TEST_COPTS}
+    DEPS
+      glog::glog)
+endforeach()
 
 # # ================================================================================
 # # # IO #

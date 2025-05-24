@@ -163,10 +163,12 @@ bool DoCopyDirectory(const FilePath& from_path, const FilePath& to_path,
     return false;
   }
 
-  int traverse_type = FileEnumerator::FILES | FileEnumerator::SHOW_SYM_LINKS;
+  int traverse_type = FileEnumerator::kFiles | FileEnumerator::kShowSymLinks;
+
   if (recursive) {
-    traverse_type |= FileEnumerator::DIRECTORIES;
+    traverse_type |= FileEnumerator::kDirectories;
   }
+
   FileEnumerator traversal(from_path, recursive, traverse_type);
 
   // We have to mimic windows behavior here. |to_path| may not exist yet,

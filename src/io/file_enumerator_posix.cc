@@ -43,7 +43,7 @@ bool GetStat(const FilePath& path, bool show_links, stat_wrapper_t* st) {
 bool ShouldShowSymLinks(int file_type) { return false; }
 #else
 bool ShouldShowSymLinks(int file_type) {
-  return file_type & FileEnumerator::SHOW_SYM_LINKS;
+  return file_type & FileEnumerator::kShowSymLinks;
 }
 #endif  // BUILDFLAG(IS_FUCHSIA)
 
@@ -51,7 +51,7 @@ bool ShouldShowSymLinks(int file_type) {
 bool ShouldTrackVisitedDirectories(int file_type) { return false; }
 #else
 bool ShouldTrackVisitedDirectories(int file_type) {
-  return !(file_type & FileEnumerator::SHOW_SYM_LINKS);
+  return !(file_type & FileEnumerator::kShowSymLinks);
 }
 #endif  // BUILDFLAG(IS_FUCHSIA)
 
@@ -118,7 +118,7 @@ FileEnumerator::FileEnumerator(const FilePath& root_path, bool recursive,
       folder_search_policy_(folder_search_policy),
       error_policy_(error_policy) {
   // INCLUDE_DOT_DOT must not be specified if recursive.
-  DCHECK(!(recursive && (INCLUDE_DOT_DOT & file_type_)));
+  DCHECK(!(recursive && (kIncludeDotDot & file_type_)));
 
 #if BUILDFLAG(IS_ANDROID)
   // Content-URIs have limited support.
@@ -132,11 +132,11 @@ FileEnumerator::FileEnumerator(const FilePath& root_path, bool recursive,
   }
 #endif
 
-  if (file_type_ & FileType::NAMES_ONLY) {
+  if (file_type_ & FileType::kNamesOnly) {
     DCHECK(!recursive_);
-    DCHECK_EQ(file_type_ & ~(FileType::NAMES_ONLY | FileType::INCLUDE_DOT_DOT),
+    DCHECK_EQ(file_type_ & ~(FileType::kNamesOnly | FileType::kIncludeDotDot),
               0);
-    file_type_ |= (FileType::FILES | FileType::DIRECTORIES);
+    file_type_ |= (FileType::kFiles | FileType::kDirectories);
   }
 
   if (recursive && ShouldTrackVisitedDirectories(file_type_)) {
@@ -245,7 +245,7 @@ FilePath FileEnumerator::Next() {
 
       // If the caller only wants the names of files and directories, then
       // continue without populating `info` further.
-      if (file_type_ & FileType::NAMES_ONLY) {
+      if (file_type_ & FileType::kNamesOnly) {
         directory_entries_.push_back(std::move(info));
         continue;
       }
@@ -294,7 +294,7 @@ FilePath FileEnumerator::Next() {
 }
 
 FileEnumerator::FileInfo FileEnumerator::GetInfo() const {
-  DCHECK(!(file_type_ & FileType::NAMES_ONLY));
+  DCHECK(!(file_type_ & FileType::kNamesOnly));
   return directory_entries_[current_directory_entry_];
 }
 

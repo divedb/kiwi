@@ -108,19 +108,19 @@ class BASE_EXPORT FileEnumerator {
   };
 
   enum FileType {
-    FILES = 1 << 0,
-    DIRECTORIES = 1 << 1,
-    INCLUDE_DOT_DOT = 1 << 2,
+    kFiles = 1 << 0,
+    kDirectories = 1 << 1,
+    kIncludeDotDot = 1 << 2,
 
     // Report only the names of entries and not their type, size, or
     // last-modified time. May only be used for non-recursive enumerations, and
     // implicitly includes both files and directories (neither of which may be
     // specified). When used, an enumerator's `GetInfo()` method must not be
     // called.
-    NAMES_ONLY = 1 << 3,
+    kNamesOnly = 1 << 3,
 
-#if BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-    SHOW_SYM_LINKS = 1 << 4,
+#if BUILDFLAG(IS_POSIX)
+    kShowSymLinks = 1 << 4,
 #endif
   };
 
@@ -184,6 +184,7 @@ class BASE_EXPORT FileEnumerator {
                  const FilePath::StringType& pattern,
                  FolderSearchPolicy folder_search_policy,
                  ErrorPolicy error_policy);
+
   FileEnumerator(const FileEnumerator&) = delete;
   FileEnumerator& operator=(const FileEnumerator&) = delete;
   ~FileEnumerator();

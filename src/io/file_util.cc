@@ -175,7 +175,7 @@ Function<void()> GetDeletePathRecursivelyCallback(
 
 int64_t ComputeDirectorySize(const FilePath& root_path) {
   int64_t running_size = 0;
-  FileEnumerator file_iter(root_path, true, FileEnumerator::FILES);
+  FileEnumerator file_iter(root_path, true, FileEnumerator::kFiles);
   while (!file_iter.Next().empty()) {
     running_size += file_iter.GetInfo().GetSize();
   }
@@ -385,7 +385,7 @@ bool ReadFileToStringWithMaxSize(const FilePath& path, std::string* contents,
 
 bool IsDirectoryEmpty(const FilePath& dir_path) {
   FileEnumerator files(dir_path, false,
-                       FileEnumerator::FILES | FileEnumerator::DIRECTORIES);
+                       FileEnumerator::kFiles | FileEnumerator::kDirectories);
   if (files.Next().empty()) {
     return true;
   }

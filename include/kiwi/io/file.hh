@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef BASE_FILES_FILE_H_
-#define BASE_FILES_FILE_H_
+#pragma once
 
 #include <stdint.h>
 
@@ -17,7 +16,6 @@
 #include "kiwi/io/iovec.hh"
 #include "kiwi/io/platform_file.hh"
 #include "kiwi/portability/base_export.hh"
-#include "kiwi/portability/build_config.hh"
 #include "kiwi/portability/compiler_specific.hh"
 
 struct stat;
@@ -102,8 +100,11 @@ class BASE_EXPORT File {
   /// kFileErrorAccessDenied is returned when a call fails because of a
   /// filesystem restriction. FILE_ERROR_SECURITY is returned when a browser
   /// policy doesn't allow the operation to be executed.
+
   enum Error {
     kFileOk = 0,
+    // [EROFS]: The named file resides on a read-only file system, and the file
+    //          is to be modified.
     kFileErrorFailed = -1,
     kFileErrorInUse = -2,
     kFileErrorExists = -3,
@@ -471,5 +472,3 @@ class BASE_EXPORT File {
 };
 
 }  // namespace kiwi
-
-#endif  // BASE_FILES_FILE_H_

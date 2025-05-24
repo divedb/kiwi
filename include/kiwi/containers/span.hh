@@ -306,6 +306,52 @@ template <typename T>
 inline constexpr bool kCanSafelyConvertToByteSpan =
     std::has_unique_object_representations_v<T>;
 template <typename T, typename U>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 inline constexpr bool kCanSafelyConvertToByteSpan<std::pair<T, U>> =
     kCanSafelyConvertToByteSpan<std::remove_cvref_t<T>> &&
     kCanSafelyConvertToByteSpan<std::remove_cvref_t<U>>;

@@ -7,8 +7,7 @@
 #pragma allow_unsafe_libc_calls
 #endif
 
-#ifndef BASE_STRINGS_STRING_UTIL_POSIX_H_
-#define BASE_STRINGS_STRING_UTIL_POSIX_H_
+#pragma once
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -37,5 +36,3 @@ inline int vswprintf(wchar_t* buffer, size_t size, const wchar_t* format,
 }
 
 }  // namespace kiwi
-
-#endif  // BASE_STRINGS_STRING_UTIL_POSIX_H_

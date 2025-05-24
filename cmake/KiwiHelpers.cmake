@@ -340,7 +340,7 @@ function(kiwi_cc_test)
   target_include_directories(
     ${_NAME}
     PUBLIC ${KIWI_COMMON_INCLUDE_DIRS}
-    PRIVATE ${GTEST_INCLUDE_DIRS}
+    PRIVATE ${GTEST_INCLUDE_DIRS} ${KIWI_TESTS_INCLUDE_DIR}
   )
 
   if(${KIWI_BUILD_DLL})
