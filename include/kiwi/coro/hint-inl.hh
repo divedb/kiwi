@@ -19,7 +19,8 @@
 namespace kiwi {
 
 KIWI_ALWAYS_INLINE void compiler_may_unsafely_assume(bool cond) {
-  KIWI_SAFE_DCHECK(cond, "compiler-hint assumption fails at runtime");
+  CHECK(cond) << "compiler-hint assumption fails at runtime";
+
 #if defined(__clang__)
   __builtin_assume(cond);
 #elif defined(__GNUC__)
@@ -35,7 +36,8 @@ KIWI_ALWAYS_INLINE void compiler_may_unsafely_assume(bool cond) {
 
 [[noreturn]] KIWI_ALWAYS_INLINE void
 compiler_may_unsafely_assume_unreachable() {
-  KIWI_SAFE_DCHECK(false, "compiler-hint unreachability reached at runtime");
+  CHECK(false) << "compiler-hint unreachability reached at runtime";
+
 #if defined(__GNUC__)
   __builtin_unreachable();
 #elif defined(_MSC_VER)
@@ -47,8 +49,8 @@ compiler_may_unsafely_assume_unreachable() {
 
 KIWI_ALWAYS_INLINE void compiler_may_unsafely_assume_separate_storage(
     void const* const a, void const* const b) {
-  KIWI_SAFE_DCHECK(
-      a != b, "compiler-hint separate storage assumption fails at runtime");
+  CHECK(a != b) << "compiler-hint separate storage assumption fails at runtime";
+
 #if KIWI_HAS_BUILTIN(__builtin_assume_separate_storage) && !defined(__CUDACC__)
   __builtin_assume_separate_storage(a, b);
 #endif

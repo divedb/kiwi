@@ -21,6 +21,8 @@
 #include <functional>
 #include <tuple>
 
+#include "kiwi/common/utility.hh"
+
 using namespace std::literals::chrono_literals;
 
 namespace {

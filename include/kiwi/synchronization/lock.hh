@@ -74,7 +74,8 @@ template <typename Mutex, typename Policy>
 class lock_base {
  public:
   using mutex_type = Mutex;
-  using state_type = invoke_result_t<typename Policy::lock_fn, mutex_type&>;
+  using state_type =
+      std::invoke_result_t<typename Policy::lock_fn, mutex_type&>;
 
   static_assert(std::is_same<state_type, std::decay_t<state_type>>::value,
                 "state_type, if not void, must be a value type");
@@ -88,6 +89,13 @@ class lock_base {
                     std::is_constructible<bool, state_type>::value,
                 "state_type, if not void, must explicitly convert to bool");
 
+ private:
+  static constexpr bool kHasState = !std::is_void<state_type>::value;
+  using owner_type = std::conditional_t<kHasState, state_type, bool>;
+  template <bool C, typename V = int>
+  using if_ = std::enable_if_t<C, V>;
+
+ public:
   lock_base() = default;
 
   lock_base(lock_base&& that) noexcept
@@ -238,11 +246,6 @@ class lock_base {
     throw_exception<std::system_error>(std::make_error_code(code));
   }
 
-  static constexpr bool kHasState = !std::is_void<state_type>::value;
-  using owner_type = std::conditional_t<kHasState, state_type, bool>;
-  template <bool C, typename V = int>
-  using if_ = std::enable_if_t<C, V>;
-
   static bool owner_true_(tag_t<bool>) noexcept { return true; }
   static owner_type owner_true_(tag_t<state_type>) noexcept { return {}; }
 
@@ -311,7 +314,7 @@ struct lock_policy_upgrade {
 
 template <typename Mutex>
 using lock_policy_hybrid =
-    std::conditional_t<is_invocable_v<access::lock_shared_fn, Mutex&>,
+    std::conditional_t<std::is_invocable_v<access::lock_shared_fn, Mutex&>,
                        lock_policy_shared, lock_policy_unique>;
 
 template <typename Mutex>
@@ -613,13 +616,14 @@ using lock_state_type_of_t = detected_or_t<void, lock_state_type_of_t_, L>;
 template <typename State>
 struct transition_lock_result_ {
   template <typename Transition, typename Mutex, typename... A>
-  using apply = invoke_result_t<Transition, Mutex&, State const&, A const&...>;
+  using apply =
+      std::invoke_result_t<Transition, Mutex&, State const&, A const&...>;
 };
 
 template <>
 struct transition_lock_result_<void> {
   template <typename Transition, typename Mutex, typename... A>
-  using apply = invoke_result_t<Transition, Mutex&, A const&...>;
+  using apply = std::invoke_result_t<Transition, Mutex&, A const&...>;
 };
 
 template <typename From, typename Transition, typename... A>

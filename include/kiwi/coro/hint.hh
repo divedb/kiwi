@@ -18,6 +18,7 @@
 
 #include <type_traits>
 
+#include "kiwi/common/logging.hh"
 #include "kiwi/common/traits.hh"
 #include "kiwi/portability/attributes.hh"
 
