@@ -16,23 +16,21 @@
 
 #pragma once
 
-#include <folly/Portability.h>
-#include <folly/Traits.h>
-#include <folly/lang/Exception.h>
-#include <folly/lang/Hint.h>
-
 #include <chrono>
 #include <mutex>
 #include <shared_mutex>
 #include <system_error>
 #include <type_traits>
 
+#include "kiwi/common/exception.hh"
+#include "kiwi/common/traits.hh"
+#include "kiwi/coro/hint.hh"
 #include "kiwi/functional/invoke.hh"
 
 namespace kiwi {
 namespace access {
 
-// Locks and UnLocks.
+// Lock and UnLock.
 KIWI_CREATE_MEMBER_INVOKER_SUITE(lock);
 KIWI_CREATE_MEMBER_INVOKER_SUITE(try_lock);
 KIWI_CREATE_MEMBER_INVOKER_SUITE(try_lock_for);
@@ -49,20 +47,20 @@ KIWI_CREATE_MEMBER_INVOKER_SUITE(try_lock_upgrade_for);
 KIWI_CREATE_MEMBER_INVOKER_SUITE(try_lock_upgrade_until);
 KIWI_CREATE_MEMBER_INVOKER_SUITE(unlock_upgrade);
 
-//  transitions
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(unlock_and_lock_shared);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(unlock_and_lock_upgrade);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_for);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_until);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_upgrade);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_upgrade_for);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_upgrade_until);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(unlock_upgrade_and_lock);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_upgrade_and_lock);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_upgrade_and_lock_for);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(try_unlock_upgrade_and_lock_until);
-FOLLY_CREATE_MEMBER_INVOKER_SUITE(unlock_upgrade_and_lock_shared);
+// Transition.
+KIWI_CREATE_MEMBER_INVOKER_SUITE(unlock_and_lock_shared);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(unlock_and_lock_upgrade);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_for);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_until);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_upgrade);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_upgrade_for);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_shared_and_lock_upgrade_until);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(unlock_upgrade_and_lock);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_upgrade_and_lock);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_upgrade_and_lock_for);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(try_unlock_upgrade_and_lock_until);
+KIWI_CREATE_MEMBER_INVOKER_SUITE(unlock_upgrade_and_lock_shared);
 
 }  // namespace access
 
@@ -90,50 +88,45 @@ class lock_base {
                     std::is_constructible<bool, state_type>::value,
                 "state_type, if not void, must explicitly convert to bool");
 
- private:
-  static constexpr bool has_state_ = !std::is_void<state_type>::value;
-  using owner_type = conditional_t<has_state_, state_type, bool>;
-  template <bool C, typename V = int>
-  using if_ = std::enable_if_t<C, V>;
-
-  static bool owner_true_(tag_t<bool>) noexcept { return true; }
-  static owner_type owner_true_(tag_t<state_type>) noexcept { return {}; }
-
-  mutex_type* mutex_{};
-  owner_type state_{};
-
- public:
   lock_base() = default;
+
   lock_base(lock_base&& that) noexcept
       : mutex_{std::exchange(that.mutex_, nullptr)},
         state_{std::exchange(that.state_, owner_type{})} {}
-  template <typename M = mutex_type, if_<!has_state_, M>* = nullptr>
+
+  template <typename M = mutex_type, if_<!kHasState, M>* = nullptr>
   lock_base(type_t<M>& mutex, std::adopt_lock_t)
       : mutex_{std::addressof(mutex)}, state_{owner_true_(tag<owner_type>)} {}
-  template <typename M = mutex_type, if_<has_state_, M>* = nullptr>
+
+  template <typename M = mutex_type, if_<kHasState, M>* = nullptr>
   lock_base(type_t<M>& mutex, std::adopt_lock_t, owner_type const& state)
       : mutex_{std::addressof(mutex)}, state_{state} {
     state_ || (check_fail_<true>(), 0);
   }
-  FOLLY_NODISCARD explicit lock_base(mutex_type& mutex) {
+
+  KIWI_NODISCARD explicit lock_base(mutex_type& mutex) {
     mutex_ = std::addressof(mutex);
     lock();
   }
+
   lock_base(mutex_type& mutex, std::defer_lock_t) noexcept {
     mutex_ = std::addressof(mutex);
   }
-  FOLLY_NODISCARD lock_base(mutex_type& mutex, std::try_to_lock_t) {
+
+  KIWI_NODISCARD lock_base(mutex_type& mutex, std::try_to_lock_t) {
     mutex_ = std::addressof(mutex);
     try_lock();
   }
+
   template <typename Rep, typename Period>
-  FOLLY_NODISCARD lock_base(mutex_type& mutex,
-                            std::chrono::duration<Rep, Period> const& timeout) {
+  KIWI_NODISCARD lock_base(mutex_type& mutex,
+                           std::chrono::duration<Rep, Period> const& timeout) {
     mutex_ = std::addressof(mutex);
     try_lock_for(timeout);
   }
+
   template <typename Clock, typename Duration>
-  FOLLY_NODISCARD lock_base(
+  KIWI_NODISCARD lock_base(
       mutex_type& mutex,
       std::chrono::time_point<Clock, Duration> const& deadline) {
     mutex_ = std::addressof(mutex);
@@ -150,14 +143,17 @@ class lock_base {
     if (owns_lock()) {
       unlock();
     }
+
     mutex_ = std::exchange(that.mutex_, nullptr);
     state_ = std::exchange(that.state_, owner_type{});
+
     return *this;
   }
 
   void lock() {
     check<false>();
-    if constexpr (has_state_) {
+
+    if constexpr (kHasState) {
       state_ = typename Policy::lock_fn{}(*mutex_);
     } else {
       typename Policy::lock_fn{}(*mutex_);
@@ -168,6 +164,7 @@ class lock_base {
   bool try_lock() {
     check<false>();
     state_ = typename Policy::try_lock_fn{}(*mutex_);
+
     return !!state_;
   }
 
@@ -175,6 +172,7 @@ class lock_base {
   bool try_lock_for(std::chrono::duration<Rep, Period> const& timeout) {
     check<false>();
     state_ = typename Policy::try_lock_for_fn{}(*mutex_, timeout);
+
     return !!state_;
   }
 
@@ -183,28 +181,32 @@ class lock_base {
       std::chrono::time_point<Clock, Duration> const& deadline) {
     check<false>();
     state_ = typename Policy::try_lock_until_fn{}(*mutex_, deadline);
+
     return !!state_;
   }
 
   void unlock() {
     check<true>();
-    if constexpr (has_state_) {
+
+    if constexpr (kHasState) {
       auto const& state = state_;  // prohibit unlock to mutate state_
       typename Policy::unlock_fn{}(*mutex_, state);
     } else {
       typename Policy::unlock_fn{}(*mutex_);
     }
+
     state_ = decltype(state_){};
   }
 
   mutex_type* release() noexcept {
     state_ = {};
+
     return std::exchange(mutex_, nullptr);
   }
 
   mutex_type* mutex() const noexcept { return mutex_; }
 
-  template <bool C = has_state_, if_<C> = 0>
+  template <bool C = kHasState, if_<C> = 0>
   state_type state() const noexcept {
     return state_;
   }
@@ -228,23 +230,34 @@ class lock_base {
   }
 
   template <bool Owns>
-  [[noreturn]] FOLLY_NOINLINE void check_fail_() {
+  [[noreturn]] KIWI_NOINLINE void check_fail_() {
     auto perm = std::errc::operation_not_permitted;
     auto dead = std::errc::resource_deadlock_would_occur;
     auto code = !mutex_ || !state_ ? perm : dead;
+
     throw_exception<std::system_error>(std::make_error_code(code));
   }
+
+  static constexpr bool kHasState = !std::is_void<state_type>::value;
+  using owner_type = std::conditional_t<kHasState, state_type, bool>;
+  template <bool C, typename V = int>
+  using if_ = std::enable_if_t<C, V>;
+
+  static bool owner_true_(tag_t<bool>) noexcept { return true; }
+  static owner_type owner_true_(tag_t<state_type>) noexcept { return {}; }
+
+  mutex_type* mutex_{};
+  owner_type state_{};
 };
 
 template <typename Mutex, typename Policy>
 class lock_guard_base
     : unsafe_for_async_usage_if<!is_coro_aware_mutex_v<Mutex>> {
- private:
   using lock_type_ = lock_base<Mutex, Policy>;
   using lock_state_type_ = typename lock_type_::state_type;
 
-  static constexpr bool has_state_ = !std::is_void<lock_state_type_>::value;
-  using state_type_ = conditional_t<has_state_, lock_state_type_, bool>;
+  static constexpr bool kHasState = !std::is_void<lock_state_type_>::value;
+  using state_type_ = std::conditional_t<kHasState, lock_state_type_, bool>;
   template <bool C>
   using if_ = std::enable_if_t<C, int>;
 
@@ -253,11 +266,14 @@ class lock_guard_base
 
   lock_guard_base(lock_guard_base const&) = delete;
   lock_guard_base(lock_guard_base&&) = delete;
+
   explicit lock_guard_base(mutex_type& mutex) : lock_{mutex} {}
-  template <bool C = has_state_, if_<!C> = 0>
+
+  template <bool C = kHasState, if_<!C> = 0>
   lock_guard_base(mutex_type& mutex, std::adopt_lock_t)
       : lock_{mutex, std::adopt_lock} {}
-  template <bool C = has_state_, if_<C> = 0>
+
+  template <bool C = kHasState, if_<C> = 0>
   lock_guard_base(mutex_type& mutex, std::adopt_lock_t,
                   state_type_ const& state)
       : lock_{mutex, std::adopt_lock, state} {}
@@ -295,8 +311,8 @@ struct lock_policy_upgrade {
 
 template <typename Mutex>
 using lock_policy_hybrid =
-    conditional_t<is_invocable_v<access::lock_shared_fn, Mutex&>,
-                  lock_policy_shared, lock_policy_unique>;
+    std::conditional_t<is_invocable_v<access::lock_shared_fn, Mutex&>,
+                       lock_policy_shared, lock_policy_unique>;
 
 template <typename Mutex>
 using lock_base_unique = lock_base<Mutex, lock_policy_unique>;
@@ -526,7 +542,7 @@ explicit hybrid_lock_guard(Mutex&, A const&...) -> hybrid_lock_guard<Mutex>;
 //  mutex type.
 struct make_unique_lock_fn {
   template <typename Mutex, typename... A>
-  FOLLY_NODISCARD unique_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
+  KIWI_NODISCARD unique_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
     return unique_lock<Mutex>{mutex, static_cast<A&&>(a)...};
   }
 };
@@ -538,7 +554,7 @@ inline constexpr make_unique_lock_fn make_unique_lock{};
 //  mutex type.
 struct make_shared_lock_fn {
   template <typename Mutex, typename... A>
-  FOLLY_NODISCARD shared_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
+  KIWI_NODISCARD shared_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
     return shared_lock<Mutex>{mutex, static_cast<A&&>(a)...};
   }
 };
@@ -550,7 +566,7 @@ inline constexpr make_shared_lock_fn make_shared_lock{};
 //  mutex type.
 struct make_upgrade_lock_fn {
   template <typename Mutex, typename... A>
-  FOLLY_NODISCARD upgrade_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
+  KIWI_NODISCARD upgrade_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
     return upgrade_lock<Mutex>{mutex, static_cast<A&&>(a)...};
   }
 };
@@ -562,7 +578,7 @@ inline constexpr make_upgrade_lock_fn make_upgrade_lock{};
 //  mutex type.
 struct make_hybrid_lock_fn {
   template <typename Mutex, typename... A>
-  FOLLY_NODISCARD hybrid_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
+  KIWI_NODISCARD hybrid_lock<Mutex> operator()(Mutex& mutex, A&&... a) const {
     return hybrid_lock<Mutex>{mutex, static_cast<A&&>(a)...};
   }
 };
@@ -570,24 +586,23 @@ inline constexpr make_hybrid_lock_fn make_hybrid_lock{};
 
 }  // namespace kiwi
 
-FOLLY_NAMESPACE_STD_BEGIN
+KIWI_NAMESPACE_STD_BEGIN
 
-template <typename Mutex, typename LockFn = ::folly::access::lock_fn>
+template <typename Mutex, typename LockFn = ::kiwi::access::lock_fn>
 unique_lock(Mutex&, adopt_lock_t, invoke_result_t<LockFn, Mutex&> const&)
     -> unique_lock<Mutex>;
 
-template <typename Mutex, typename LockFn = ::folly::access::lock_shared_fn>
+template <typename Mutex, typename LockFn = ::kiwi::access::lock_shared_fn>
 shared_lock(Mutex&, adopt_lock_t, invoke_result_t<LockFn, Mutex&> const&)
     -> shared_lock<Mutex>;
 
-template <typename Mutex, typename LockFn = ::folly::access::lock_upgrade_fn>
+template <typename Mutex, typename LockFn = ::kiwi::access::lock_upgrade_fn>
 lock_guard(Mutex&, adopt_lock_t, invoke_result_t<LockFn, Mutex&> const&)
     -> lock_guard<Mutex>;
 
-FOLLY_NAMESPACE_STD_END
+KIWI_NAMESPACE_STD_END
 
-namespace folly {
-
+namespace kiwi {
 namespace detail {
 
 template <typename L>
@@ -600,11 +615,13 @@ struct transition_lock_result_ {
   template <typename Transition, typename Mutex, typename... A>
   using apply = invoke_result_t<Transition, Mutex&, State const&, A const&...>;
 };
+
 template <>
 struct transition_lock_result_<void> {
   template <typename Transition, typename Mutex, typename... A>
   using apply = invoke_result_t<Transition, Mutex&, A const&...>;
 };
+
 template <typename From, typename Transition, typename... A>
 using transition_lock_result_t_ =
     typename transition_lock_result_<lock_state_type_of_t<From>>::
@@ -624,6 +641,7 @@ auto transition_lock_2_(From& lock, Transition transition, A const&... a) {
     return transition(*lock.release(), std::move(state), a...);
   }
 }
+
 template <typename From, typename Transition, typename... A>
 auto transition_lock_1_(From& lock, Transition transition, A const&... a) {
   using Result = transition_lock_result_t_<From, Transition, A...>;
@@ -633,6 +651,7 @@ auto transition_lock_1_(From& lock, Transition transition, A const&... a) {
     return detail::transition_lock_2_(lock, transition, a...);
   }
 }
+
 template <typename To, typename From, typename Transition, typename... A>
 auto transition_lock_0_(From& lock, Transition transition, A const&... a) {
   using ToState = lock_state_type_of_t<To>;
@@ -644,6 +663,7 @@ auto transition_lock_0_(From& lock, Transition transition, A const&... a) {
     return !s ? To{} : To{mutex, std::adopt_lock, s};
   }
 }
+
 template <template <typename> class To, template <typename> class From,
           typename Mutex, typename Transition, typename... A>
 auto transition_lock_(From<Mutex>& lock, Transition transition, A const&... a) {
@@ -662,16 +682,19 @@ template <typename Mutex>
 struct transition_lock_policy<unique_lock<Mutex>, shared_lock<Mutex>> {
   using transition_fn = access::unlock_and_lock_shared_fn;
 };
+
 template <typename Mutex>
 struct transition_lock_policy<unique_lock<Mutex>, upgrade_lock<Mutex>> {
   using transition_fn = access::unlock_and_lock_upgrade_fn;
 };
+
 template <typename Mutex>
 struct transition_lock_policy<shared_lock<Mutex>, unique_lock<Mutex>> {
   using try_transition_fn = access::try_unlock_shared_and_lock_fn;
   using try_transition_for_fn = access::try_unlock_shared_and_lock_for_fn;
   using try_transition_until_fn = access::try_unlock_shared_and_lock_until_fn;
 };
+
 template <typename Mutex>
 struct transition_lock_policy<shared_lock<Mutex>, upgrade_lock<Mutex>> {
   using try_transition_fn = access::try_unlock_shared_and_lock_upgrade_fn;
@@ -680,6 +703,7 @@ struct transition_lock_policy<shared_lock<Mutex>, upgrade_lock<Mutex>> {
   using try_transition_until_fn =
       access::try_unlock_shared_and_lock_upgrade_until_fn;
 };
+
 template <typename Mutex>
 struct transition_lock_policy<upgrade_lock<Mutex>, unique_lock<Mutex>> {
   using transition_fn = access::unlock_upgrade_and_lock_fn;
@@ -687,6 +711,7 @@ struct transition_lock_policy<upgrade_lock<Mutex>, unique_lock<Mutex>> {
   using try_transition_for_fn = access::try_unlock_upgrade_and_lock_for_fn;
   using try_transition_until_fn = access::try_unlock_upgrade_and_lock_until_fn;
 };
+
 template <typename Mutex>
 struct transition_lock_policy<upgrade_lock<Mutex>, shared_lock<Mutex>> {
   using transition_fn = access::unlock_upgrade_and_lock_shared_fn;
@@ -902,4 +927,4 @@ upgrade_lock<Mutex> try_transition_to_upgrade_lock_until(
   return try_transition_lock_until<upgrade_lock>(lock, deadline);
 }
 
-}  // namespace folly
+}  // namespace kiwi

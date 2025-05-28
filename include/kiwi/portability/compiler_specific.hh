@@ -346,3 +346,14 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
 #else
 #define KIWI_HAS_EXCEPTIONS 1  // default assumption for unknown platforms
 #endif
+
+// It turns out that GNU libstdc++ and LLVM libc++ differ on how they implement
+// the 'std' namespace; the latter uses inline namespaces. Wrap this decision
+// up in a macro to make forward-declarations easier.
+#if defined(_LIBCPP_VERSION)
+#define KIWI_NAMESPACE_STD_BEGIN _LIBCPP_BEGIN_NAMESPACE_STD
+#define KIWI_NAMESPACE_STD_END _LIBCPP_END_NAMESPACE_STD
+#else
+#define KIWI_NAMESPACE_STD_BEGIN namespace std {
+#define KIWI_NAMESPACE_STD_END }
+#endif

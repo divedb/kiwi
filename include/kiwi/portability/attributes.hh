@@ -1058,3 +1058,19 @@
 #else
 #define KIWI_ERASE_HACK_GCC KIWI_ERASE
 #endif
+
+// warn unused result
+#if defined(__has_cpp_attribute)
+#if __has_cpp_attribute(nodiscard)
+#if defined(__clang__) || defined(__GNUC__)
+#if __clang_major__ >= 10 || __GNUC__ >= 10
+// early clang and gcc both warn on [[nodiscard]] when applied to class ctors
+// easiest option is just to avoid emitting [[nodiscard]] under early clang/gcc
+#define KIWI_NODISCARD [[nodiscard]]
+#endif
+#endif
+#endif
+#endif
+#ifndef KIWI_NODISCARD
+#define KIWI_NODISCARD
+#endif

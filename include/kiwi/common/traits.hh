@@ -583,8 +583,8 @@ struct IsEqualityComparable
                           bool> {};
 }  // namespace traits_detail_IsEqualityComparable
 
-/* using override */ using traits_detail_IsEqualityComparable::
-    IsEqualityComparable;
+/* using override */
+using traits_detail_IsEqualityComparable::IsEqualityComparable;
 
 namespace traits_detail_IsLessThanComparable {
 Ignore operator<(Ignore, Ignore);
