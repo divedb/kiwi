@@ -490,14 +490,14 @@ BASE_EXPORT bool CreateTemporaryDirInDir(const FilePath& base_dir,
                                          FilePath::StringViewType prefix,
                                          FilePath* new_dir);
 
-// Ensures a directory exists, if necessary, creating it and parent directories.
-// Returns true if the directory already existed or was created, leaving *error
-// unchanged.
-// Returns false on failure and sets *error appropriately if it is non-NULL.
-//
-// The created directories can only be accessed by the current user, except on
-// ChromeOS, where the directories created under `~/MyFiles` or `/media` can
-// also be accessed by ChromeOS services.
+/// Ensures a directory exists, if necessary, creating it and parent
+/// directories. Returns true if the directory already existed or was created,
+/// leaving *error unchanged. Returns false on failure and sets *error
+/// appropriately if it is non-NULL.
+///
+/// The created directories can only be accessed by the current user, except on
+/// ChromeOS, where the directories created under `~/MyFiles` or `/media` can
+/// also be accessed by ChromeOS services.
 BASE_EXPORT bool CreateDirectoryAndGetError(const FilePath& full_path,
                                             File::Error* error);
 

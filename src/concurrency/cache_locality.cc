@@ -572,6 +572,7 @@ class Allocator {
 void* coreMalloc(size_t size, size_t numStripes, size_t stripe) {
   static folly::Indestructible<Allocator>
       allocators[AccessSpreader<>::maxLocalityIndexValue()];
+
   auto index = AccessSpreader<>::localityIndexForStripe(numStripes, stripe);
   return allocators[index]->allocate(size);
 }

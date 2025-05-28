@@ -37,7 +37,7 @@ foreach(target ${COMMON_TEST_TARGETS})
 endforeach()
 
 # ================================================================================
-# # CONTAINERS #
+# CONTAINERS
 # ================================================================================
 set(CONTAINERS_TEST_TARGETS
     adapters_test
@@ -105,6 +105,21 @@ endforeach()
 #     glog::glog)
 # endforeach()
 
-# add_subdirectory(metrics)
-# add_subdirectory(strings)
-# add_subdirectory(files)
+# ================================================================================
+# SYNCHRONIZATION
+# ================================================================================
+set(SYNCHRONIZATION_TEST_TARGETS
+    lock_test
+)
+
+foreach(target ${SYNCHRONIZATION_TEST_TARGETS})
+  kiwi_cc_test(
+    NAME
+      ${target}
+    SRCS
+      "synchronization/${target}.cc"
+    COPTS
+      ${KIWI_TEST_COPTS}
+    DEPS
+      glog::glog)
+endforeach()
