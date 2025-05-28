@@ -22,13 +22,13 @@
 
 #include "kiwi/portability/build_config.hh"
 
-/// A wrapper around `__has_attribute()`, which is similar to the C++20-standard
-/// `__has_cpp_attribute()`, but tests for support for `__attribute__(())`s.
-/// Compilers that do not support this (e.g. MSVC) are also assumed not to
-/// support `__attribute__`, so this is simply mapped to `0` there.
-///
-/// See also:
-///   https://clang.llvm.org/docs/LanguageExtensions.html#has-attribute
+// A wrapper around `__has_attribute()`, which is similar to the C++20-standard
+// `__has_cpp_attribute()`, but tests for support for `__attribute__(())`s.
+// Compilers that do not support this (e.g. MSVC) are also assumed not to
+// support `__attribute__`, so this is simply mapped to `0` there.
+//
+// See also:
+//   https://clang.llvm.org/docs/LanguageExtensions.html#has-attribute
 #ifndef __has_attribute
 #define KIWI_HAS_ATTRIBUTE(x) 0
 #else
@@ -47,21 +47,21 @@
 #define KIWI_HAS_EXTENSION(x) __has_extension(x)
 #endif
 
-/// Annotates a function indicating it should not be inlined.
-///
-/// You may also want `NOOPT` if your goal is to preserve a function call even
-/// for the most trivial cases; see
-/// https://stackoverflow.com/questions/54481855/clang-ignoring-attribute-noinline/54482070#54482070.
-///
-/// See also:
-///   https://clang.llvm.org/docs/AttributeReference.html#noinline
-///
-/// Usage:
-/// \code
-/// KIWI_NOINLINE void Func() {
-///   // This body will not be inlined into callers.
-/// }
-/// \endcode
+// Annotates a function indicating it should not be inlined.
+//
+// You may also want `NOOPT` if your goal is to preserve a function call even
+// for the most trivial cases; see
+// https://stackoverflow.com/questions/54481855/clang-ignoring-attribute-noinline/54482070#54482070.
+//
+// See also:
+//   https://clang.llvm.org/docs/AttributeReference.html#noinline
+//
+// Usage:
+// \code
+// KIWI_NOINLINE void Func() {
+//   // This body will not be inlined into callers.
+// }
+// \endcode
 #if KIWI_HAS_CPP_ATTRIBUTE(clang::noinline)
 #define KIWI_NOINLINE [[clang::noinline]]
 #elif KIWI_HAS_CPP_ATTRIBUTE(gnu::noinline)
@@ -72,18 +72,19 @@
 #define KIWI_NOINLINE
 #endif
 
-/// Annotates a function indicating it should not be optimized.
-///
-/// See also:
-///   https://clang.llvm.org/docs/AttributeReference.html#optnone
-///   https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-optimize-function-attribute
-///
-/// Usage:
-/// \code
-/// NOOPT void Func() {
-///   // This body will not be optimized.
-/// }
-/// \endcode
+// Annotates a function indicating it should not be optimized.
+//
+// See also:
+//   https://clang.llvm.org/docs/AttributeReference.html#optnone
+//   https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-optimize-function-attribute
+//
+// Usage:
+//
+// \code
+// NOOPT void Func() {
+//   // This body will not be optimized.
+// }
+// \endcode
 #if KIWI_HAS_CPP_ATTRIBUTE(clang::optnone)
 #define KIWI_NOOPT [[clang::optnone]]
 #elif KIWI_HAS_CPP_ATTRIBUTE(gnu::optimize)
@@ -119,26 +120,26 @@
 #define KIWI_ALWAYS_INLINE inline
 #endif
 
-/// Nullable indicates that a return value or a parameter may be a `nullptr`,
-/// e.g.
-///
-/// \code
-/// int* KIWI_NULLABLE foo(int* a, int* KIWI_NULLABLE b) {
-///   if (*a > 0) {                   // safe dereference
-///     return nullptr;
-///   }
-///   if (*b < 0) {                   // unsafe dereference
-///     return *a;
-///   }
-///   if (b != nullptr && *b == 1) {  // safe checked dereference
-///     return new int(1);
-///   }
-///   return nullptr;
-/// }
-/// \endcode
-///
-/// Ignores Clang's -Wnullability-extension since it correctly handles the case
-/// where the extension is not present.
+// Nullable indicates that a return value or a parameter may be a `nullptr`,
+// e.g.
+//
+// \code
+// int* KIWI_NULLABLE foo(int* a, int* KIWI_NULLABLE b) {
+//   if (*a > 0) {                   // safe dereference
+//     return nullptr;
+//   }
+//   if (*b < 0) {                   // unsafe dereference
+//     return *a;
+//   }
+//   if (b != nullptr && *b == 1) {  // safe checked dereference
+//     return new int(1);
+//   }
+//   return nullptr;
+// }
+// \endcode
+//
+// Ignores Clang's -Wnullability-extension since it correctly handles the case
+// where the extension is not present.
 #if KIWI_HAS_EXTENSION(nullability)
 #define KIWI_NULLABLE                                   \
   KIWI_PUSH_WARNING                                     \
@@ -153,46 +154,46 @@
 #define KIWI_NONNULL
 #endif
 
-/// "Cold" indicates to the compiler that a function is only expected to be
-/// called from unlikely code paths. It can affect decisions made by the
-/// optimizer both when processing the function body and when analyzing
-/// call-sites.
+// "Cold" indicates to the compiler that a function is only expected to be
+// called from unlikely code paths. It can affect decisions made by the
+// optimizer both when processing the function body and when analyzing
+// call-sites.
 #if KIWI_HAS_CPP_ATTRIBUTE(gnu::cold)
 #define KIWI_ATTR_GNU_COLD gnu::cold
 #else
 #define KIWI_ATTR_GNU_COLD
 #endif
 
-/// KIWI_ATTR_MAYBE_UNUSED_IF_NDEBUG
-///
-/// When defined(NDEBUG), expands to maybe_unused; otherwise, expands to empty.
-/// Useful for marking variables that are used, in the sense checked for by the
-/// attribute maybe_unused, only in debug builds.
+// KIWI_ATTR_MAYBE_UNUSED_IF_NDEBUG
+//
+// When defined(NDEBUG), expands to maybe_unused; otherwise, expands to empty.
+// Useful for marking variables that are used, in the sense checked for by the
+// attribute maybe_unused, only in debug builds.
 #if defined(NDEBUG)
 #define KIWI_ATTR_MAYBE_UNUSED_IF_NDEBUG [[maybe_unused]]
 #else
 #define KIWI_ATTR_MAYBE_UNUSED_IF_NDEBUG
 #endif
 
-/// no_unique_address indicates that a member variable can be optimized to
-/// occupy no space, rather than the minimum 1-byte used by default.
-///
-/// \code
-///  class Empty {};
-///
-///  class NonEmpty1 {
-///    KIWI_ATTR_NO_UNIQUE_ADDRESS Empty e;
-///    int f;
-///  };
-///
-///  class NonEmpty2 {
-///    Empty e;
-///    int f;
-///  };
-///
-///  sizeof(NonEmpty1); // may be == sizeof(int)
-///  sizeof(NonEmpty2); // must be > sizeof(int)
-/// \endcode
+// no_unique_address indicates that a member variable can be optimized to
+// occupy no space, rather than the minimum 1-byte used by default.
+//
+// \code
+//  class Empty {};
+//
+//  class NonEmpty1 {
+//    KIWI_ATTR_NO_UNIQUE_ADDRESS Empty e;
+//    int f;
+//  };
+//
+//  class NonEmpty2 {
+//    Empty e;
+//    int f;
+//  };
+//
+//  sizeof(NonEmpty1); // may be == sizeof(int)
+//  sizeof(NonEmpty2); // must be > sizeof(int)
+// \endcode
 #if KIWI_HAS_CPP_ATTRIBUTE(no_unique_address)
 #define KIWI_ATTR_NO_UNIQUE_ADDRESS [[no_unique_address]]
 #else
@@ -205,9 +206,9 @@
 #define KIWI_ATTR_CLANG_NO_DESTROY
 #endif
 
-/// Accesses to objects with types with this attribute are not subjected to
-/// type-based alias analysis, but are instead assumed to be able to alias any
-/// other type of objects, just like the char type.
+// Accesses to objects with types with this attribute are not subjected to
+// type-based alias analysis, but are instead assumed to be able to alias any
+// other type of objects, just like the char type.
 #if KIWI_HAS_CPP_ATTRIBUTE(gnu::may_alias)
 #define KIWI_ATTR_GNU_MAY_ALIAS gnu::may_alias
 #else
@@ -1042,4 +1043,18 @@
 #define KIWI_ATTR_WEAK __attribute__((__weak__))
 #else
 #define KIWI_ATTR_WEAK
+#endif
+
+// KIWI_ERASE_HACK_GCC
+//
+// Equivalent to KIWI_ERASE, but without hiding under gcc. Useful when applied
+// to a function which may sometimes be hidden separately, for example by being
+// declared in an anonymous namespace, since in such cases with -Wattributes
+// enabled, gcc would emit: 'visibility' attribute ignored.
+//
+// Semantically includes the inline specifier.
+#if defined(__GNUC__) && !defined(__clang__)
+#define KIWI_ERASE_HACK_GCC KIWI_ALWAYS_INLINE
+#else
+#define KIWI_ERASE_HACK_GCC KIWI_ERASE
 #endif

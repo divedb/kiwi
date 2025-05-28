@@ -140,6 +140,13 @@ struct CacheLocality {
   /// For each cpu, a list of cache identifiers following the same layout as
   /// num_caches_by_level. The identifier itself is an arbitrary number: it only
   /// signifies that cpus with the same identifier share a cache at that level.
+  ///
+  /// equiv_classes_by_cpu = {
+  ///   {0, 0, 0}, // CPU 0: L1(0), L2(0), L3(0)
+  ///   {1, 0, 0}, // CPU 1: L1(1), L2(0), L3(0)
+  ///   {2, 1, 0}, // CPU 2: L1(2), L2(1), L3(0)
+  ///   {3, 1, 0}  // CPU 3: L1(3), L2(1), L3(0)
+  /// }
   std::vector<std::vector<size_t>> equiv_classes_by_cpu;
 
  private:
@@ -189,7 +196,7 @@ struct GetCPUFallback {
   }
 };
 
-using FallbackGetcpuType = FallbackGetcpu<
+using FallbackGetcpuType = GetCPUFallback<
     conditional_t<kIsMobile, HashingThreadId, SequentialThreadId>>;
 
 namespace detail {

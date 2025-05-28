@@ -22,8 +22,6 @@
 #endif
 
 #include <fmt/core.h>
-#include <folly/Conv.h>
-#include <folly/Exception.h>
 #include <folly/Indestructible.h>
 #include <folly/Memory.h>
 #include <folly/Optional.h>
@@ -36,13 +34,16 @@
 #include <fstream>
 #include <mutex>
 
+#include "kiwi/common/exception.hh"
+#include "kiwi/portability/build_config.hh"
+
 namespace kiwi {
 
 /// Returns the CacheLocality information best for this machine
 static CacheLocality GetSystemLocalityInfo() {
-  if (kIsLinux) {
+  if (BUILDFLAG(IS_LINUX)) {
     try {
-      return CacheLocality::ReadFromProcCpuinfo();
+      return CacheLocality::ReadFromProcCPUInfo();
     } catch (...) {
       // keep trying
     }
@@ -62,7 +63,7 @@ static CacheLocality GetSystemLocalityInfo() {
     numCpus = 32;
   }
 
-  return CacheLocality::uniform(size_t(numCpus));
+  return CacheLocality::Uniform(size_t(numCpus));
 }
 
 template <>
@@ -80,87 +81,95 @@ const CacheLocality& CacheLocality::system<std::atomic>() {
   return *value;
 }
 
-// Each level of cache has sharing sets, which are the set of cpus
-// that share a common cache at that level.  These are available in a
-// hex bitset form (/sys/devices/system/cpu/cpu0/index0/shared_cpu_map,
-// for example).  They are also available in a human-readable list form,
-// as in /sys/devices/system/cpu/cpu0/index0/shared_cpu_list.  The list
-// is a comma-separated list of numbers and ranges, where the ranges are
-// a pair of decimal numbers separated by a '-'.
-//
-// To sort the cpus for optimum locality we don't really need to parse
-// the sharing sets, we just need a unique representative from the
-// equivalence class.  The smallest value works fine, and happens to be
-// the first decimal number in the file.  We load all of the equivalence
-// class information from all of the cpu*/index* directories, order the
-// cpus first by increasing last-level cache equivalence class, then by
-// the smaller caches.  Finally, we break ties with the cpu number itself.
-
+/// Each level of cache has sharing sets, which are the set of cpus
+/// that share a common cache at that level.  These are available in a
+/// hex bitset form (/sys/devices/system/cpu/cpu0/cache/index0/shared_cpu_map,
+/// for example).  They are also available in a human-readable list form,
+/// as in /sys/devices/system/cpu/cpu0/cache/index0/shared_cpu_list.  The list
+/// is a comma-separated list of numbers and ranges, where the ranges are
+/// a pair of decimal numbers separated by a '-'.
+///
+/// To sort the cpus for optimum locality we don't really need to parse
+/// the sharing sets, we just need a unique representative from the
+/// equivalence class.  The smallest value works fine, and happens to be
+/// the first decimal number in the file.  We load all of the equivalence
+/// class information from all of the cpu*/index* directories, order the
+/// cpus first by increasing last-level cache equivalence class, then by
+/// the smaller caches.  Finally, we break ties with the cpu number itself.
+///
 /// Returns the first decimal number in the string, or throws an exception
 /// if the string does not start with a number terminated by ',', '-',
 /// '\n', or eos.
-static size_t parseLeadingNumber(const std::string& line) {
-  auto raw = line.c_str();
+static size_t ParseLeadingNumber(const std::string& line) {
   char* end;
+  auto raw = line.c_str();
   unsigned long val = strtoul(raw, &end, 10);
+
   if (end == raw || (*end != ',' && *end != '-' && *end != '\n' && *end != 0)) {
-    throw std::runtime_error(
-        to<std::string>("error parsing list '", line, "'").c_str());
+    throw std::runtime_error(fmt::format("error parsing list '{}'", line));
   }
+
   return val;
 }
 
 CacheLocality CacheLocality::ReadFromSysfsTree(
     const std::function<std::string(std::string)>& mapping) {
   // The number of equivalence classes per level.
-  std::vector<size_t> numCachesByLevel;
+  std::vector<size_t> num_caches_by_level;
 
   // The list of cache equivalence classes, where equivalance classes
   // are named by the smallest cpu in the class
-  std::vector<std::vector<size_t>> equivClassesByCpu;
+  std::vector<std::vector<size_t>> equiv_classes_by_cpu;
 
   std::vector<size_t> cpus;
 
   while (true) {
     auto cpu = cpus.size();
     std::vector<size_t> levels;
+
     for (size_t index = 0;; ++index) {
       auto dir = fmt::format("/sys/devices/system/cpu/cpu{}/cache/index{}/",
                              cpu, index);
-      auto cacheType = mapping(dir + "type");
-      auto equivStr = mapping(dir + "shared_cpu_list");
-      if (cacheType.empty() || equivStr.empty()) {
-        // no more caches
+      auto cache_type = mapping(dir + "type");
+      auto equiv_str = mapping(dir + "shared_cpu_list");
+
+      // No more caches.
+      if (cache_type.empty() || equiv_str.empty()) {
         break;
       }
-      if (cacheType[0] == 'I') {
-        // cacheType in { "Data", "Instruction", "Unified" }. skip icache
+
+      // The cache_type in { "Data", "Instruction", "Unified" }. Skip icache.
+      if (cache_type[0] == 'I') {
         continue;
       }
-      auto equiv = parseLeadingNumber(equivStr);
+
+      auto equiv = ParseLeadingNumber(equiv_str);
       auto level = levels.size();
+
       levels.push_back(equiv);
 
       if (equiv == cpu) {
         // we only want to count the equiv classes once, so we do it when
         // we first encounter them
-        while (numCachesByLevel.size() <= level) {
-          numCachesByLevel.push_back(0);
+        while (num_caches_by_level.size() <= level) {
+          num_caches_by_level.push_back(0);
         }
-        numCachesByLevel[level]++;
+
+        num_caches_by_level[level]++;
       }
     }
 
     if (levels.empty()) {
-      // no levels at all for this cpu, we must be done
+      // No levels at all for this cpu, we must be done.
       break;
     }
-    equivClassesByCpu.emplace_back(std::move(levels));
+
+    equiv_classes_by_cpu.emplace_back(std::move(levels));
     cpus.push_back(cpu);
   }
 
   if (cpus.empty()) {
-    throw std::runtime_error("unable to load cache sharing info");
+    throw std::runtime_error("Unable to load cache sharing info");
   }
 
   std::sort(cpus.begin(), cpus.end(), [&](size_t lhs, size_t rhs) -> bool {
@@ -186,6 +195,7 @@ CacheLocality CacheLocality::ReadFromSysfsTree(
   // to each other than entries that are far away.  For striping we want
   // the inverse map, since we are starting with the cpu
   std::vector<size_t> indexes(cpus.size());
+
   for (size_t i = 0; i < cpus.size(); ++i) {
     indexes[cpus[i]] = i;
   }
@@ -405,10 +415,8 @@ bool AccessSpreaderBase::initialize(GlobalState& state,
 
 namespace {
 
-/**
- * A simple freelist allocator.  Allocates things of size sz, from slabs of size
- * kAllocSize.  Takes a lock on each allocation/deallocation.
- */
+/// A simple freelist allocator.  Allocates things of size sz, from slabs of
+/// size kAllocSize.  Takes a lock on each allocation/deallocation.
 class SimpleAllocator {
  public:
   // To support array aggregate initialization without an implicit constructor.
