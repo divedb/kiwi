@@ -23,7 +23,6 @@
 #include <folly/concurrency/CacheLocality.h>
 #include <folly/detail/Futex.h>
 #include <folly/portability/Asm.h>
-#include <folly/synchronization/Lock.h>
 #include <folly/synchronization/RelaxedAtomic.h>
 #include <folly/synchronization/SanitizeThread.h>
 #include <folly/system/ThreadId.h>
@@ -37,6 +36,8 @@
 #include <thread>
 #include <type_traits>
 #include <utility>
+
+#include "kiwi/synchronization/lock.hh"
 
 // SharedMutex is a reader-writer lock.  It is small, very fast, scalable
 // on multi-core, and suitable for use when readers or writers may block.

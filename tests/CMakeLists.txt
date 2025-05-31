@@ -18,8 +18,12 @@
 # ================================================================================
 # COMMON
 # ================================================================================
-set(COMMON_TEST_TARGETS bits_test bit_cast_test environment_test traits_test
-                        function_test)
+set(COMMON_TEST_TARGETS 
+  bits_test bit_cast_test
+  environment_test
+  traits_test
+  indestructible_test
+  function_test)
 
 foreach(target ${COMMON_TEST_TARGETS})
   kiwi_cc_test(

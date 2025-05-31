@@ -29,7 +29,6 @@
 #include <folly/detail/StaticSingletonManager.h>
 #include <folly/hash/Hash.h>
 #include <folly/portability/Unistd.h>
-#include <glog/logging.h>
 
 #include <fstream>
 #include <mutex>
