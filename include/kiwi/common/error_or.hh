@@ -19,9 +19,9 @@
 #include <type_traits>
 #include <utility>
 
-#include "kiwi/support/align_of.hh"
+#include "kiwi/common/align_of.hh"
 
-namespace chibicpp {
+namespace kiwi {
 
 /// Represents either an error or a value T.
 ///
@@ -259,4 +259,4 @@ operator==(const ErrorOr<T>& err, E code) {
   return err.GetError() == code;
 }
 
-}  // namespace chibicpp
+}  // namespace kiwi
